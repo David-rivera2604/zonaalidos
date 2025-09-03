@@ -3,6 +3,7 @@ var app = app || {};
 
 app.CoberturasComponent = (function () {
     let settings = {
+        ramo: 0,
         tableId: 'coberturasTbl',
         modalId: 'coberturasNewModal',
         newTableId: 'coberturasNewTbl',
@@ -360,7 +361,7 @@ app.CoberturasComponent = (function () {
         var result = false;
         for (var i = 0; i < lista.length; i++) {
             if (lista[i].codigo == codigo) {
-                result = lista[i].seleccionar;
+                result = true; // lista[i].seleccionar;
                 break;
             }
         }
@@ -389,63 +390,206 @@ app.CoberturasComponent = (function () {
     function EnabledControls() {
         var coberturas = $(`#${settings.tableId}`).bootstrapTable('getData');
 
-        if (CoberturasTable_Seleccionada(coberturas, 2002) || CoberturasTable_Seleccionada(coberturas, 2024) || CoberturasTable_Seleccionada(coberturas, 2025) || CoberturasTable_Seleccionada(coberturas, 2026) || CoberturasTable_Seleccionada(coberturas, 2004)) {
-            Coberturas_ComportamientoDependencia('#sAEdificio', false);
-        }
-        else {
-            Coberturas_ComportamientoDependencia('#sAEdificio', true);
-            app.ui.SetNumericValue('#sAEdificio', 0);
-        }
-
-        if (CoberturasTable_Seleccionada(coberturas, 2010) || CoberturasTable_Seleccionada(coberturas, 2055) || CoberturasTable_Seleccionada(coberturas, 2056) || CoberturasTable_Seleccionada(coberturas, 2057) || CoberturasTable_Seleccionada(coberturas, 2012) || CoberturasTable_Seleccionada(coberturas, 2014)) {
-            if (!localStorage.getItem('Roles').includes('ESPH')) {
-                Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', false);
+        if (settings.ramo === 201) {
+            if (CoberturasTable_Seleccionada(coberturas, 2002) || CoberturasTable_Seleccionada(coberturas, 2024) || CoberturasTable_Seleccionada(coberturas, 2025) || CoberturasTable_Seleccionada(coberturas, 2026) || CoberturasTable_Seleccionada(coberturas, 2004)) {
+                Coberturas_ComportamientoDependencia('#sAEdificio', false);
             }
-            //if (poliza_grupo == "2012410199312" || poliza_grupo == "2012410199320") {
-            //    Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', true);
-            //}
-            Coberturas_ComportamientoDependencia('#sAMobiliario', false);
-        }
-        else {
-            Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', true);
-            Coberturas_ComportamientoDependencia('#sAMobiliario', true);
-            app.ui.SetNumericValue('#sAObjetosvaliosos', 0);
-            app.ui.SetNumericValue('#sAMobiliario', 0);
+            else {
+                Coberturas_ComportamientoDependencia('#sAEdificio', true);
+                app.ui.SetNumericValue('#sAEdificio', 0);
+            }
+
+            if (CoberturasTable_Seleccionada(coberturas, 2010) || CoberturasTable_Seleccionada(coberturas, 2055) || CoberturasTable_Seleccionada(coberturas, 2056) || CoberturasTable_Seleccionada(coberturas, 2057) || CoberturasTable_Seleccionada(coberturas, 2012) || CoberturasTable_Seleccionada(coberturas, 2014)) {
+                if (!localStorage.getItem('Roles').includes('ESPH')) {
+                    Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', false);
+                }
+                //if (poliza_grupo == "2012410199312" || poliza_grupo == "2012410199320") {
+                //    Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', true);
+                //}
+                Coberturas_ComportamientoDependencia('#sAMobiliario', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', true);
+                Coberturas_ComportamientoDependencia('#sAMobiliario', true);
+                app.ui.SetNumericValue('#sAObjetosvaliosos', 0);
+                app.ui.SetNumericValue('#sAMobiliario', 0);
+            }
+
+            if (CoberturasTable_Seleccionada(coberturas, 2007)) {
+                Coberturas_ComportamientoDependencia('#sADomocristalmarmolgranito', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#sADomocristalmarmolgranito', true);
+                app.ui.SetNumericValue('#sADomocristalmarmolgranito', 0);
+            }
+
+            if (CoberturasTable_Seleccionada(coberturas, 2017)) {
+                Coberturas_ComportamientoDependencia('#sAGastosalquiler', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#sAGastosalquiler', true);
+                app.ui.SetNumericValue('#sAGastosalquiler', 0);
+            }
+
+            if (CoberturasTable_Seleccionada(coberturas, 2018)) {
+                Coberturas_ComportamientoDependencia('#sAPerdidaderentas', false);
+                Coberturas_ComportamientoDependencia('#mesesaampararporperdrentas', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#sAPerdidaderentas', true);
+                Coberturas_ComportamientoDependencia('#mesesaampararporperdrentas', true);
+                app.ui.SetNumericValue('#sAPerdidaderentas', 0);
+                app.ui.SetNumericValue('#mesesaampararporperdrentas', 0);
+            }
+
+            if (CoberturasTable_Seleccionada(coberturas, 2034)) {
+                Coberturas_ComportamientoDependencia('#sARespcivil', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#sARespcivil', true);
+                $('#sARespcivil').val(-1);
+            }
         }
 
-        if (CoberturasTable_Seleccionada(coberturas, 2007)) {
-            Coberturas_ComportamientoDependencia('#sADomocristalmarmolgranito', false);
-        }
-        else {
-            Coberturas_ComportamientoDependencia('#sADomocristalmarmolgranito', true);
-            app.ui.SetNumericValue('#sADomocristalmarmolgranito', 0);
-        }
+        if (settings.ramo === 202) {
 
-        if (CoberturasTable_Seleccionada(coberturas, 2017)) {
-            Coberturas_ComportamientoDependencia('#sAGastosalquiler', false);
-        }
-        else {
-            Coberturas_ComportamientoDependencia('#sAGastosalquiler', true);
-            app.ui.SetNumericValue('#sAGastosalquiler', 0);
-        }
+            if (Coberturas_Seleccionada(coberturas, 2001) ||
+                Coberturas_Seleccionada(coberturas, 2002) ||
+                Coberturas_Seleccionada(coberturas, 2024) ||
+                Coberturas_Seleccionada(coberturas, 2025) ||
+                Coberturas_Seleccionada(coberturas, 2026) ||
+                Coberturas_Seleccionada(coberturas, 2004)) {
+                Coberturas_ComportamientoDependencia('#IMP_EDIFICIO', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#IMP_EDIFICIO', true);
+                app.ui.SetNumericValue('#IMP_EDIFICIO', 0);
+            }
 
-        if (CoberturasTable_Seleccionada(coberturas, 2018)) {
-            Coberturas_ComportamientoDependencia('#sAPerdidaderentas', false);
-            Coberturas_ComportamientoDependencia('#mesesaampararporperdrentas', false);
-        }
-        else {
-            Coberturas_ComportamientoDependencia('#sAPerdidaderentas', true);
-            Coberturas_ComportamientoDependencia('#mesesaampararporperdrentas', true);
-            app.ui.SetNumericValue('#sAPerdidaderentas', 0);
-            app.ui.SetNumericValue('#mesesaampararporperdrentas', 0);
-        }
+            if (Coberturas_Seleccionada(coberturas, 2002)) {
+                Coberturas_ComportamientoDependencia('#cod_tip_med_inc', false);
+                $('[name=MCA_EXTIN_INC]').prop("disabled", false);
+                Coberturas_ComportamientoDependencia('#NUM_EXTIN_INC', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#cod_tip_med_inc', true);
+                $('[name=MCA_EXTIN_INC]').prop("disabled", true);
+                Coberturas_ComportamientoDependencia('#NUM_EXTIN_INC', true);
+                $('#cod_tip_med_inc').val(-1);
+                $('#NUM_EXTIN_INC').val(-1);
+            }
 
-        if (CoberturasTable_Seleccionada(coberturas, 2034)) {
-            Coberturas_ComportamientoDependencia('#sARespcivil', false);
-        }
-        else {
-            Coberturas_ComportamientoDependencia('#sARespcivil', true);
-            $('#sARespcivil').val(-1);
+
+            if (Coberturas_Seleccionada(coberturas, 2008) ||
+                Coberturas_Seleccionada(coberturas, 2009) ||
+                Coberturas_Seleccionada(coberturas, 2010) ||
+                Coberturas_Seleccionada(coberturas, 2055) ||
+                Coberturas_Seleccionada(coberturas, 2056) ||
+                Coberturas_Seleccionada(coberturas, 2057) ||
+                Coberturas_Seleccionada(coberturas, 2012)) {
+                Coberturas_ComportamientoDependencia('#IMP_MOBILIARIO', false);
+                Coberturas_ComportamientoDependencia('#IMP_MAQUINARIA', false);
+                Coberturas_ComportamientoDependencia('#IMP_MERCADERIA', false);
+                Coberturas_ComportamientoDependencia('#IMP_BIE_TEM_DES', false);
+                Coberturas_ComportamientoDependencia('#IMP_BIE_INT', false);
+                Coberturas_ComportamientoDependencia('#IMP_OBJ_ESP_VAL', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#IMP_MOBILIARIO', true);
+                Coberturas_ComportamientoDependencia('#IMP_MAQUINARIA', true);
+                Coberturas_ComportamientoDependencia('#IMP_MERCADERIA', true);
+                Coberturas_ComportamientoDependencia('#IMP_BIE_TEM_DES', true);
+                Coberturas_ComportamientoDependencia('#IMP_BIE_INT', true);
+                Coberturas_ComportamientoDependencia('#IMP_OBJ_ESP_VAL', true);
+                app.ui.SetNumericValue('#IMP_MOBILIARIO', 0);
+                app.ui.SetNumericValue('#IMP_MAQUINARIA', 0);
+                app.ui.SetNumericValue('#IMP_MERCADERIA', 0);
+                app.ui.SetNumericValue('#IMP_BIE_TEM_DES', 0);
+                app.ui.SetNumericValue('#IMP_BIE_INT', 0);
+                app.ui.SetNumericValue('#IMP_OBJ_ESP_VAL', 0);
+            }
+
+            if (Coberturas_Seleccionada(coberturas, 2008) ||
+                Coberturas_Seleccionada(coberturas, 2009) ||
+                Coberturas_Seleccionada(coberturas, 2010) ||
+                Coberturas_Seleccionada(coberturas, 2055) ||
+                Coberturas_Seleccionada(coberturas, 2056) ||
+                Coberturas_Seleccionada(coberturas, 2057) ||
+                Coberturas_Seleccionada(coberturas, 2012) ||
+                Coberturas_Seleccionada(coberturas, 2022)) {
+                Coberturas_ComportamientoDependencia('#IMP_EQUIP_ELEC', false);
+                Coberturas_ComportamientoDependencia('#IMP_EQUIP_ELEC_M', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#IMP_EQUIP_ELEC', true);
+                Coberturas_ComportamientoDependencia('#IMP_EQUIP_ELEC_M', true);
+                app.ui.SetNumericValue('#IMP_EQUIP_ELEC', 0);
+                app.ui.SetNumericValue('#IMP_EQUIP_ELEC_M', 0);
+            }
+
+            if (Coberturas_Seleccionada(coberturas, 2008)) {
+                Coberturas_ComportamientoDependencia('#cod_tip_med_rob', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#cod_tip_med_rob', true);
+                $('#cod_tip_med_rob').val(-1);
+            }
+
+            if (Coberturas_Seleccionada(coberturas, 2007)) {
+                Coberturas_ComportamientoDependencia('#IMP_DOMOS_TOTAL', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#IMP_DOMOS_TOTAL', true);
+                app.ui.SetNumericValue('#IMP_DOMOS_TOTAL', 0);
+            }
+
+            if (Coberturas_Seleccionada(coberturas, 2017)) {
+                Coberturas_ComportamientoDependencia('#IMP_GAS_ALQ', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#IMP_GAS_ALQ', true);
+                app.ui.SetNumericValue('#IMP_GAS_ALQ', 0);
+            }
+
+            if (Coberturas_Seleccionada(coberturas, 2018)) {
+                Coberturas_ComportamientoDependencia('#IMP_PER_REN', false);
+                Coberturas_ComportamientoDependencia('#COB_PDR_MESES', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#IMP_PER_REN', true);
+                Coberturas_ComportamientoDependencia('#COB_PDR_MESES', true);
+                app.ui.SetNumericValue('#IMP_PER_REN', 0);
+                app.ui.SetNumericValue('#COB_PDR_MESES', 0);
+            }
+
+            if (Coberturas_Seleccionada(coberturas, 2020)) {
+                Coberturas_ComportamientoDependencia('#IMP_MER_TRA', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#IMP_MER_TRA', true);
+                app.ui.SetNumericValue('#IMP_MER_TRA', 0);
+            }
+            if (Coberturas_Seleccionada(coberturas, 2021)) {
+                Coberturas_ComportamientoDependencia('#cod_tip_med_rdm', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#cod_tip_med_rdm', true);
+                app.ui.SetNumericValue('#cod_tip_med_rdm', 0);
+                $("#cod_tip_med_rdm").val(-1);
+            }
+            if (Coberturas_Seleccionada(coberturas, 2023)) {
+                Coberturas_ComportamientoDependencia('#IMP_INT_NEG', false);
+                Coberturas_ComportamientoDependencia('#COB_IDN_MESES', false);
+                Coberturas_ComportamientoDependencia('#cod_tip_rgo_idn', false);
+            }
+            else {
+                Coberturas_ComportamientoDependencia('#IMP_INT_NEG', true);
+                Coberturas_ComportamientoDependencia('#COB_IDN_MESES', true);
+                Coberturas_ComportamientoDependencia('#cod_tip_rgo_idn', true);
+                app.ui.SetNumericValue('#IMP_INT_NEG', 0);
+                app.ui.SetNumericValue('#COB_IDN_MESES', 0);
+                // $("#cod_tip_rgo_idn").val(-1);
+            }
         }
 
     }
@@ -453,7 +597,7 @@ app.CoberturasComponent = (function () {
     function Coberturas_ManejoDeCapital() {
         var coberturas = $(`#${settings.newTableId}`).bootstrapTable('getData');
 
-        //if (grouped_coverage_management) {
+        if (settings.ramo === 201 || settings.ramo === 202) {
         
             let cob2001Selected = Coberturas_Seleccionada(coberturas, 2001);
             coberturas.filter(r => [2002, 2024, 2025, 2026, 2004].includes(r.codigo)).forEach(function (item, index) {
@@ -470,68 +614,7 @@ app.CoberturasComponent = (function () {
                 $('[name=btSelectItem][data-index=' + index + ']').prop('disabled',
                     [2002, 2024, 2025, 2026, 2004].includes(value.codigo) || [2010, 2055, 2056, 2057, 2012].includes(value.codigo));
             });
-            
-        //}
-
-        //if (Coberturas_Seleccionada(coberturas, 2002) || Coberturas_Seleccionada(coberturas, 2024) || Coberturas_Seleccionada(coberturas, 2025) || Coberturas_Seleccionada(coberturas, 2026) || Coberturas_Seleccionada(coberturas, 2004)) {
-        //    Coberturas_ComportamientoDependencia('#sAEdificio', false);
-        //}
-        //else {
-        //    Coberturas_ComportamientoDependencia('#sAEdificio', true);
-        //    app.ui.SetNumericValue('#sAEdificio', 0);
-        //}
-
-        //if (Coberturas_Seleccionada(coberturas, 2010) || Coberturas_Seleccionada(coberturas, 2055) || Coberturas_Seleccionada(coberturas, 2056) || Coberturas_Seleccionada(coberturas, 2057) || Coberturas_Seleccionada(coberturas, 2012) || Coberturas_Seleccionada(coberturas, 2014)) {
-        //    if (!localStorage.getItem('Roles').includes('ESPH')) {
-        //        Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', false);
-        //    }
-        //    if (poliza_grupo == "2012410199312" || poliza_grupo == "2012410199320") {
-        //        Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', true);
-        //    }
-        //    Coberturas_ComportamientoDependencia('#sAMobiliario', false);
-        //}
-        //else {
-        //    Coberturas_ComportamientoDependencia('#sAObjetosvaliosos', true);
-        //    Coberturas_ComportamientoDependencia('#sAMobiliario', true);
-        //    app.ui.SetNumericValue('#sAObjetosvaliosos', 0);
-        //    app.ui.SetNumericValue('#sAMobiliario', 0);
-        //}
-
-        //if (Coberturas_Seleccionada(coberturas, 2007)) {
-        //    Coberturas_ComportamientoDependencia('#sADomocristalmarmolgranito', false);
-        //}
-        //else {
-        //    Coberturas_ComportamientoDependencia('#sADomocristalmarmolgranito', true);
-        //    app.ui.SetNumericValue('#sADomocristalmarmolgranito', 0);
-        //}
-
-        //if (Coberturas_Seleccionada(coberturas, 2017)) {
-        //    Coberturas_ComportamientoDependencia('#sAGastosalquiler', false);
-        //}
-        //else {
-        //    Coberturas_ComportamientoDependencia('#sAGastosalquiler', true);
-        //    app.ui.SetNumericValue('#sAGastosalquiler', 0);
-        //}
-
-        //if (Coberturas_Seleccionada(coberturas, 2018)) {
-        //    Coberturas_ComportamientoDependencia('#sAPerdidaderentas', false);
-        //    Coberturas_ComportamientoDependencia('#mesesaampararporperdrentas', false);
-        //}
-        //else {
-        //    Coberturas_ComportamientoDependencia('#sAPerdidaderentas', true);
-        //    Coberturas_ComportamientoDependencia('#mesesaampararporperdrentas', true);
-        //    app.ui.SetNumericValue('#sAPerdidaderentas', 0);
-        //    app.ui.SetNumericValue('#mesesaampararporperdrentas', 0);
-        //}
-
-        //if (Coberturas_Seleccionada(coberturas, 2034)) {
-        //    Coberturas_ComportamientoDependencia('#sARespcivil', false);
-        //}
-        //else {
-        //    Coberturas_ComportamientoDependencia('#sARespcivil', true);
-        //    $('#sARespcivil').val(-1);
-        //}
-        //data_changed();
+        }       
 
         $(`#${settings.newTableId}`).bootstrapTable('getData').forEach(function (value, index, array) {
             if (value.requerida) {

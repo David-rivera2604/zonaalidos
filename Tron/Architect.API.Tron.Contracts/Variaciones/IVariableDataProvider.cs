@@ -8,6 +8,6 @@ namespace Architect.API.Tron.Contracts.Variaciones
 {
     public interface IVariableDataProvider
     {
-        Dictionary<string, string> GetVariableData();
+        Dictionary<string, ValDatoVariable> GetVariableData();
     }
 }

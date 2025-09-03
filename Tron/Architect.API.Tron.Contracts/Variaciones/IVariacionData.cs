@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Architect.API.Tron.Contracts.Poliza;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,8 @@ namespace Architect.API.Tron.Contracts.Variaciones
         [DataMember(), JsonProperty()] DateTime fec_efec_cancel { get; set; }
         [DataMember(), JsonProperty()] string txt_motivo { get; set; }
         [DataMember(), JsonProperty()] DateTime? fec_efec { get; set; }
+        [DataMember(), JsonProperty()] List<Riesgo> Riesgos { get; set; }
+        [DataMember(), JsonProperty()] List<Ocurrencia> Ocurrencias { get; set; }
 
     }
 }

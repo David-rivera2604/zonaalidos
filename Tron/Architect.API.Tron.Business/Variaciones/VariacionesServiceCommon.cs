@@ -1,5 +1,7 @@
-﻿using Architect.API.Tron.Contracts.Variaciones;
+﻿using Architect.API.Tron.Contracts.Poliza;
+using Architect.API.Tron.Contracts.Variaciones;
 using Architect.API.Tron.DataAccess.Variaciones;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -29,10 +31,10 @@ namespace Architect.API.Tron.Business.Variaciones
                 if (quoteInfo is IVariableDataProvider variableProvider)
                 {
                     var variableData = variableProvider.GetVariableData();
-                    if (variableData.ContainsKey("NUM_MATRICULA") && !string.IsNullOrEmpty(variableData["NUM_MATRICULA"]))
+                    if (variableData.ContainsKey("NUM_MATRICULA") && !string.IsNullOrEmpty(variableData["NUM_MATRICULA"].val_campo))
                     {
                         var cleanedData = variableProvider.GetVariableData();
-                        cleanedData["NUM_MATRICULA"] = Regex.Replace(cleanedData["NUM_MATRICULA"], @"[^a-zA-Z0-9]", String.Empty);
+                        cleanedData["NUM_MATRICULA"].val_campo = Regex.Replace(cleanedData["NUM_MATRICULA"].val_campo, @"[^a-zA-Z0-9]", String.Empty);
                     }
                 }
 
@@ -226,9 +228,18 @@ namespace Architect.API.Tron.Business.Variaciones
 
             foreach (var item in variableData)
             {
-                if (!string.IsNullOrEmpty(item.Value))
+                if (!string.IsNullOrEmpty(item.Value.val_campo))
                 {
-                    RegisterS2000020(datosVariables, fecTratamiento, item.Key, item.Value, tipMvtoBatch);
+                    RegisterS2000020(datosVariables, fecTratamiento, item.Key, item.Value.val_campo, tipMvtoBatch);
+
+                    if (item.Value.tiene_ocurrencia)
+                    {
+                        int num_riesgo = quoteInfo.Riesgos.FirstOrDefault().num_riesgo;
+                        foreach ( OcurrenciaVariacion ocurr in item.Value.ocurrencias)
+                        {
+                            RegisterS2000025(quoteInfo, fecTratamiento, tipMvtoBatch, num_riesgo, ocurr.cod_campo, ocurr.val_campo, ocurr.index);
+                        }
+                    }
                 }
             }
         }
@@ -276,9 +287,9 @@ namespace Architect.API.Tron.Business.Variaciones
             CoberturaVariacion item, DateTime fecTratamiento, string tipMvtoBatch) where T : IVariacionData
         {
             var variableData = variableProvider.GetVariableData();
-            if (variableData.TryGetValue("IMP_AUTO_EQESP", out string impAutoEqesp))
+            if (variableData.TryGetValue("IMP_AUTO_EQESP", out ValDatoVariable impAutoEqesp))
             {
-                if (int.TryParse(impAutoEqesp, out int impValue))
+                if (double.TryParse(impAutoEqesp.val_campo, out double impValue))
                 {
                     S2100610.Create(new s2100610
                     {
@@ -395,6 +406,51 @@ namespace Architect.API.Tron.Business.Variaciones
         #endregion
 
         #region Métodos Auxiliares
+
+
+        private static void RegisterS2000025<T>(T quoteInfo, DateTime fec_tratamiento, string tip_mvto_batch, int num_riesgo, string cod_campo, string val_campo, int num_ocurrencia) where T : IVariacionData
+        {
+            Ocurrencia Ocurrencia = quoteInfo.Ocurrencias.Where(x => x.cod_campo == cod_campo && x.val_campo == val_campo).FirstOrDefault();
+
+            if(Ocurrencia == null)
+            {
+                s2000025 result = new s2000025()
+                {
+                    Fec_Tratamiento = fec_tratamiento,
+                    Tip_Mvto_Batch = tip_mvto_batch,
+                    Cod_Cia = quoteInfo.cod_cia,
+                    Num_Poliza = quoteInfo.num_poliza,
+                    Num_Riesgo = num_riesgo,
+                    Cod_Lista = 0,
+                    Num_Ocurrencia = num_ocurrencia,
+                    Cod_Campo = cod_campo,
+                    Val_Campo = val_campo
+                };
+
+                switch (cod_campo)
+                {
+                    case "COD_TIP_BR":
+                        result.Cod_Lista = 206;
+                        break;
+                    case "COD_TIP_MED_INC":
+                        result.Cod_Lista = 200;
+                        break;
+                    case "COD_TIP_MED_BR":
+                        result.Cod_Lista = 201;
+                        break;
+                    case "COD_TIP_MED_ROB":
+                        result.Cod_Lista = 202;
+                        break;
+                    case "COD_TIP_MED_RDM":
+                        result.Cod_Lista = 203;
+                        break;
+
+                };
+
+                Architect.API.Tron.DataAccess.Variaciones.S2000025.Create(result);
+            }
+
+        }
 
         private static void RegisterS2000020(List<Contracts.Poliza.DatoVariable> datosVariables,
             DateTime fec_tratamiento, string cod_campo, string val_campo_nuevo, string tip_mvto_batch)

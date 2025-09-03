@@ -119,7 +119,6 @@ app.TercerosDisplayComponent = (function () {
         loadData: function (terceros) {
             componentData.terceros = terceros || [];
             if (terceros) {
-                console.log("terceros:", terceros);
                 $(`#${settings.tableId}`).bootstrapTable('load', terceros);
             }
         },

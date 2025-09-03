@@ -445,7 +445,6 @@ app.VariacionMapfreMasPlus = (function () {
     }
 
     function MapObjectToInput_First(data) {
-        console.log("data 2:", data);
         setupDataFirst = data;
         app.ui.SetNumericValue('#NUM_POLIZA', data.num_poliza);
         $('#NUM_POLIZA').val(data.num_poliza);

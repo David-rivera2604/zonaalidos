@@ -1,4 +1,5 @@
 ﻿using Architect.API.Tron.Contracts.Cotizacion;
+using Architect.API.Tron.Contracts.Poliza;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -146,63 +147,31 @@ namespace Architect.API.Tron.Contracts.Variaciones
         public DateTime fec_efec_cancel { get; set; }
         public string txt_motivo { get; set; }
         public DateTime? fec_efec { get; set; }
-
-        public Dictionary<string, string> GetVariableData()
+        public List<Riesgo> Riesgos { get; set; }
+        public List<Ocurrencia> Ocurrencias { get; set; }
+        public Dictionary<string, ValDatoVariable> GetVariableData()
         {
-            var variableData = new Dictionary<string, string>
+            var variableData = new Dictionary<string, ValDatoVariable>
             {
-                ["IMP_EDIFICIO"] = this.sAEdificio.ToString(),
-                ["IMP_MOBILIARIO"] = this.sAMobiliario.ToString(),
-                ["IMP_OBJ_VALIOSO"] = this.sAObjetosvaliosos.ToString(),
-                ["IMP_DOMOS_TOTAL"] = this.sADomocristalmarmolgranito.ToString(),
-                ["IMP_GAS_ALQ"] = this.sAGastosalquiler.ToString(),
-                ["IMP_PER_REN"] = this.sAPerdidaderentas.ToString(),
-                ["IMP_SA_RC"] = this.sARespcivil.ToString()
+                ["IMP_EDIFICIO"] = new ValDatoVariable { val_campo= this.sAEdificio.ToString(), tiene_ocurrencia = false },
+                ["IMP_MOBILIARIO"] = new ValDatoVariable { val_campo= this.sAMobiliario.ToString(), tiene_ocurrencia = false },
+                ["IMP_OBJ_VALIOSO"] = new ValDatoVariable { val_campo= this.sAObjetosvaliosos.ToString(), tiene_ocurrencia = false },
+                ["IMP_DOMOS_TOTAL"] = new ValDatoVariable { val_campo= this.sADomocristalmarmolgranito.ToString(), tiene_ocurrencia = false },
+                ["IMP_GAS_ALQ"] = new ValDatoVariable { val_campo= this.sAGastosalquiler.ToString(), tiene_ocurrencia = false },
+                ["IMP_PER_REN"] = new ValDatoVariable { val_campo= this.sAPerdidaderentas.ToString(), tiene_ocurrencia = false },
+                ["IMP_SA_RC"] = new ValDatoVariable { val_campo= this.sARespcivil.ToString(), tiene_ocurrencia = false }
             };
 
-            EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2002 || c.codigo == 2010), "MCA_COB_INCENDIO");
-            EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2024 || c.codigo == 2025 || c.codigo == 2026 || c.codigo == 2055 || c.codigo == 2056 || c.codigo == 2057), "MCA_COB_NC");
-            EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2004 || c.codigo == 2012), "MCA_COB_DPA");
-            EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2007), "MCA_COB_DCMG");
-            EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2014), "MCA_COB_ROB");
-            EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2017), "MCA_COB_GPA");
-            EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2018), "MCA_COB_PDR");
-            EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2034), "MCA_RESP_CIVIL");
+            VariacionBase.EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2002 || c.codigo == 2010), "MCA_COB_INCENDIO");
+            VariacionBase.EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2024 || c.codigo == 2025 || c.codigo == 2026 || c.codigo == 2055 || c.codigo == 2056 || c.codigo == 2057), "MCA_COB_NC");
+            VariacionBase.EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2004 || c.codigo == 2012), "MCA_COB_DPA");
+            VariacionBase.EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2007), "MCA_COB_DCMG");
+            VariacionBase.EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2014), "MCA_COB_ROB");
+            VariacionBase.EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2017), "MCA_COB_GPA");
+            VariacionBase.EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2018), "MCA_COB_PDR");
+            VariacionBase.EvaluaAgregarItem(variableData, NewCoverages, c => (c.codigo == 2034), "MCA_RESP_CIVIL");
 
             return variableData;
-        }
-
-        private void EvaluaAgregarItem<T>(
-            Dictionary<string, string> diccionario,
-            IEnumerable<T> lista,            
-            Func<T, bool> condicion,
-            string nuevaClave)
-            where T: class
-        {
-            var filtrados = lista.Where(condicion).ToList();
-
-            if (filtrados.Any())
-            {
-                var prop = typeof(T).GetProperty("mcaSeleccion");
-                if(prop != null)
-                {
-                    var valores = filtrados.Select(x => prop.GetValue(x)?.ToString()).ToList();
-
-                    string nuevoValor = string.Empty;
-
-                    if (valores.Any(v => v == "*"))
-                        nuevoValor = "S";
-                    else if (valores.All(v => v == "X"))
-                        nuevoValor = "N";
-                    else
-                        return;
-
-                    if (!diccionario.ContainsKey(nuevaClave))
-                    {
-                        diccionario.Add(nuevaClave, nuevoValor);
-                    }
-                }
-            }
         }
     }
 }

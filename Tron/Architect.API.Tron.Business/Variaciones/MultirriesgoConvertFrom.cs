@@ -9,11 +9,11 @@ using System.Linq;
 
 namespace Architect.API.Tron.Business.Variaciones
 {
-    internal static class HogarTotalConvertFrom
+    internal static class MultirriesgoConvertFrom
     {
-        internal static Contracts.Variaciones.HogarTotal Quote(Contracts.Poliza.DatoFijo tronQuoteInfo)
+        internal static Contracts.Variaciones.Multirriesgo Quote(Contracts.Poliza.DatoFijo tronQuoteInfo)
         {
-            Contracts.Variaciones.HogarTotal quoteInfo = new Contracts.Variaciones.HogarTotal()
+            Contracts.Variaciones.Multirriesgo quoteInfo = new Contracts.Variaciones.Multirriesgo()
             {
                 cod_cia = tronQuoteInfo.cod_cia,
                 cod_ramo = tronQuoteInfo.cod_ramo,
@@ -28,7 +28,9 @@ namespace Architect.API.Tron.Business.Variaciones
                 MCA_FEC_EFEC_SYS = "N",
                 cod_agt = tronQuoteInfo.cod_agt,
                 cod_cuadro_com = tronQuoteInfo.cod_cuadro_com,
-                coberturas = new List<Contracts.Comun.Cobertura>()
+                coberturas = new List<Contracts.Comun.Cobertura>(),
+                Riesgos = tronQuoteInfo.Riesgos,
+                Ocurrencias = tronQuoteInfo.Ocurrencias
             };
 
             quoteInfo = DatosVariables(quoteInfo, tronQuoteInfo);
@@ -79,169 +81,224 @@ namespace Architect.API.Tron.Business.Variaciones
             return DatosVariables(quoteInfo, tronQuoteInfo);
         }
 
-        private static Contracts.Variaciones.HogarTotal DatosVariables(Contracts.Variaciones.HogarTotal quoteInfo, Architect.API.Tron.Contracts.Poliza.DatoFijo tronQuoteInfo)
+        private static Contracts.Variaciones.Multirriesgo DatosVariables(Contracts.Variaciones.Multirriesgo quoteInfo, Architect.API.Tron.Contracts.Poliza.DatoFijo tronQuoteInfo)
         {
             foreach (Contracts.Poliza.DatoVariable item in tronQuoteInfo.DatosVariables)
             {
                 switch (item.cod_campo)
                 {
                     case "COD_PAIS": //	PAÍS
-                        quoteInfo.pais = item.val_campo;
-                        quoteInfo.paisDesc = item.txt_campo;
+                        quoteInfo.cod_pais = item.val_campo;
                         break;
                     case "COD_ESTADO": // PROVINCIA
-                        quoteInfo.provincia = Convert.ToInt32(item.val_campo);
-                        quoteInfo.provinciaDesc = item.txt_campo;
+                        quoteInfo.cod_estado = Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_PROV": // CANTÓN
-                        quoteInfo.canton = Convert.ToInt32(item.val_campo);
-                        quoteInfo.cantonDesc = item.txt_campo;
+                        quoteInfo.cod_prov = Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_LOCALIDAD": // DISTRITO
-                        quoteInfo.distrito = Convert.ToInt32(item.val_campo);
-                        quoteInfo.distritoDesc = item.txt_campo;
-                        break;
-                    case "COD_TIPO_OCUP_RGO": // OCUPACIÓN DEL RIESGO
-                        quoteInfo.ocupaciondelriesgo = Convert.ToInt32(item.val_campo);
-                        quoteInfo.ocupaciondelriesgoDesc = item.txt_campo;
-                        break;
-                    case "TIP_SUSCRIPCION": // TIPO DE SUSCRIPCION
-                        quoteInfo.tipodesuscripcion = Convert.ToInt32(item.val_campo);
-                        quoteInfo.tipodesuscripcionDesc = item.txt_campo;
+                        quoteInfo.cod_localidad = Convert.ToInt32(item.val_campo);
                         break;
                     case "NUM_PISOS_EDIF": // NÚMERO DE PISOS EDIFICACIÓN
-                        quoteInfo.numerodepisosedificacion = Convert.ToInt32(item.val_campo);
+                        quoteInfo.num_pisos_edif = Convert.ToInt32(item.val_campo);
                         break;
                     case "COD_TIPO_ESTRUC": // TIPO DE ESTRUC DE LA EDIFICACI
-                        quoteInfo.tipodeestrucdelaedificacion = Convert.ToInt32(item.val_campo);
+                        quoteInfo.cod_tipo_estruc = Convert.ToInt32(item.val_campo);
                         break;
-                    case "COB_PDR_MESES": // MESES A AMPARAR POR PERD RENTA
-                        quoteInfo.mesesaampararporperdrentas = Convert.ToInt32(item.val_campo);
+                    case "COD_TIPO_TECHO": // TIPO DE TECHO DE EDIFICACIÓN
+                        quoteInfo.cod_tipo_techo = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "COD_TIPO_PARED": // TIPO DE PARED DE EDIFICACIÓN
+                        quoteInfo.cod_tipo_pared = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "OTRA_SENAS_RGO1": // OTRAS SEÑAS DEL RIESGO
+                        quoteInfo.otrassenasdelriesgo = item.val_campo;
+                        break;
+                    case "COD_TIP_EDIF": // TIPO DE EDIFICACIÓN
+                        quoteInfo.cod_tip_edit = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "MCA_EXTIN_INC": // ¿POSEE EXTINTORES DE INCENDIO?
+                        quoteInfo.MCA_EXTIN_INC = item.val_campo == "S" ? 1 : 2;
+                        break;
+                    case "NUM_EXTIN_INC": // CUANTOS EXTINTORES DE INCENDIO
+                        quoteInfo.NUM_EXTIN_INC = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "COD_TIP_RGO_IDN": // TIP DE RIESG POR INTER DE NEG
+                        quoteInfo.cod_tip_rgo_idn = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "COD_TIPO_OCUP_RGO": // OCUPACIÓN DEL RIESGO
+                        quoteInfo.cod_tip_ocup = Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_EDIFICIO": // S.A. EDIFICIO
-                        quoteInfo.sAEdificio = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_EDIFICIO = Convert.ToInt32(item.val_campo);
                         break;
                     case "IMP_MOBILIARIO": // S.A. MOBILIARIO
-                        quoteInfo.sAMobiliario = Convert.ToInt32(item.val_campo);
+                        quoteInfo.IMP_MOBILIARIO = Convert.ToInt32(item.val_campo);
                         break;
-                    case "IMP_OBJ_VALIOSO": // S.A. OBJETOS VALIOSOS
-                        quoteInfo.sAObjetosvaliosos = Convert.ToInt32(item.val_campo);
+                    case "IMP_MERCADERIA": // S.A. MERCADERÍA
+                        quoteInfo.IMP_MERCADERIA = Convert.ToInt32(item.val_campo);
                         break;
-                    case "IMP_DOMOS_TOTAL": // S.A. DOMO,CRISTAL,MÁRMOL,GRAN.
-                        quoteInfo.sADomocristalmarmolgranito = Convert.ToInt32(item.val_campo);
+                    case "IMP_BIE_TEM_DES": // S.A. BIENES TEMPO. DESP.
+                        quoteInfo.IMP_BIE_TEM_DES = Convert.ToInt32(item.val_campo);
                         break;
-                    case "IMP_GAS_ALQ": // S.A. GASTOS DE ALQUILER
-                        quoteInfo.sAGastosalquiler = Convert.ToInt32(item.val_campo);
+                    case "IMP_BIE_INT": // S.A. BIENES A LA INTERPERIE
+                        quoteInfo.IMP_BIE_INT = Convert.ToInt32(item.val_campo);
                         break;
-                    case "IMP_PER_REN": // S.A. PÉRDIDA DE RENTAS
-                        quoteInfo.sAPerdidaderentas = Convert.ToInt32(item.val_campo);
+                    case "IMP_OBJ_ESP_VAL": // S.A. OBJETOS DE ESPECIAL VALOR
+                        quoteInfo.IMP_OBJ_ESP_VAL = Convert.ToInt32(item.val_campo);
                         break;
-                    case "IMP_SA_RC	S.A.": // RESP. CIVIL
-                        quoteInfo.sARespcivil = Convert.ToInt32(item.val_campo);
+                    case "IMP_MAQUINARIA": // S.A. MAQUINARIA
+                        quoteInfo.IMP_MAQUINARIA = Convert.ToInt32(item.val_campo);
                         break;
-                    case "PCT_AJUSTE_GEN": // PORCENTAJE AJUSTE COMERCIAL
-                        quoteInfo.descuento = Convert.ToInt32(item.val_campo);
-                        quoteInfo.descuentoDesc = item.txt_campo;
+                    case "IMP_EQUIP_ELEC": // S.A. EQUIPOS ELECT. (NO MÓVIL)
+                        quoteInfo.IMP_EQUIP_ELEC = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "IMP_EQUIP_ELEC_M": // S.A. EQUIPOS ELECT. (MÓVIL)
+                        quoteInfo.IMP_EQUIP_ELEC_M = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "NUM_MED_INC": // ¿# MEDIDAS CONTRA INCENDIOS?
+                        if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
+                        {
+                            foreach (Contracts.Poliza.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_INC" orderby t.num_ocurrencia select t)
+                            {
+                                if (quoteInfo.cod_tip_med_inc.IsNotEmpty())
+                                {
+                                    quoteInfo.cod_tip_med_inc += ",";
+                                }
+                                quoteInfo.cod_tip_med_inc += ocurrencia.val_campo;
+                            }
+                        }
                         break;
                     case "NUM_MED_ROB": // ¿# MEDIDAS SEGURIDAD ROBO?
                         if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
                         {
-                            quoteInfo.medidasdeseguridad = string.Empty;
+                            quoteInfo.cod_tip_med_rob = string.Empty;
                             foreach (Contracts.Poliza.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_ROB" orderby t.num_ocurrencia select t)
                             {
-                                if (quoteInfo.medidasdeseguridad.IsNotEmpty())
+                                if (quoteInfo.cod_tip_med_rob.IsNotEmpty())
                                 {
-                                    quoteInfo.medidasdeseguridad += ",";
+                                    quoteInfo.cod_tip_med_rob += ",";
                                 }
-                                quoteInfo.medidasdeseguridad += ocurrencia.val_campo;
+                                quoteInfo.cod_tip_med_rob += ocurrencia.val_campo;
                             }
                         }
                         break;
-
-
-                    case "COD_TIP_EDIF": // No existe en la configuración de TRON en QA
-                        quoteInfo.tipodeestrucdelaedificacion = Convert.ToInt32(item.val_campo);
-                        quoteInfo.tipodeestrucdelaedificacionDesc = item.txt_campo;
+                    case "IMP_DOMOS_TOTAL": // S.A. DOMO,CRISTAL,MÁRMOL,GRAN.
+                        quoteInfo.IMP_DOMOS_TOTAL = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "IMP_GAS_ALQ": // S.A. GASTOS DE ALQUILER
+                        quoteInfo.IMP_GAS_ALQ = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "COB_PDR_MESES": // MESES A AMPARAR POR PERD RENTA
+                        quoteInfo.COB_PDR_MESES = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "IMP_PER_REN": // S.A. PÉRDIDA DE RENTAS
+                        quoteInfo.IMP_PER_REN = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "NUM_MED_BR": // ¿# MEDIDAS PARA BIENES REFRI.?
+                        if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
+                        {
+                            quoteInfo.cod_tip_med_rob = string.Empty;
+                            foreach (Contracts.Poliza.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_BR" orderby t.num_ocurrencia select t)
+                            {
+                                if (quoteInfo.cod_tip_med_rob.IsNotEmpty())
+                                {
+                                    quoteInfo.cod_tip_med_rob += ",";
+                                }
+                                quoteInfo.cod_tip_med_rob += ocurrencia.val_campo;
+                            }
+                        }
+                        break;
+                    case "IMP_MER_TRA": // S.A. MERCANCÍA EN TRÁNSITO
+                        quoteInfo.IMP_MER_TRA = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "NUM_MED_RDM": // ¿# MEDIDAS PARA ROT. DE MAQ.?
+                        if (Convert.ToInt32(item.val_campo) > 0 && tronQuoteInfo.Ocurrencias?.Count > 0)
+                        {
+                            quoteInfo.cod_tip_med_rdm = string.Empty;
+                            foreach (Contracts.Poliza.Ocurrencia ocurrencia in from t in tronQuoteInfo.Ocurrencias where t.cod_campo == "COD_TIP_MED_RDM" orderby t.num_ocurrencia select t)
+                            {
+                                if (quoteInfo.cod_tip_med_rdm.IsNotEmpty())
+                                {
+                                    quoteInfo.cod_tip_med_rdm += ",";
+                                }
+                                quoteInfo.cod_tip_med_rdm += ocurrencia.val_campo;
+                            }
+                        }
+                        break;
+                    case "COB_IDN_MESES": // MESES A AMPARAR X INTE DE NEG
+                        quoteInfo.COB_IDN_MESES = Convert.ToInt32(item.val_campo);
+                        break;
+                    case "IMP_INT_NEG": // S.A. INTERRUPCIÓN DE NEGOCIOS
+                        quoteInfo.IMP_INT_NEG = Convert.ToInt32(item.val_campo);
                         break;
 
 
-                    case "MCA_SUBLIM_ROBO2056": // SUBLIM. DE ROBO (%) S/PERDIDA 
-                    case "MCA_SUBLIM_ROBO2057": // SUBLIM. DE ROBO (%) S/PERDIDA 
-                    case "MCA_SUBLIM_ROBO2055": // SUBLIM. DE ROBO (%) S/PERDIDA 
-                    case "NUM_SOLICITUD": // SOLICITUD / CRUCE COBRANZAS
-                    case "DEDUCIBLE2056": // MÍNIMO POR EVENTO
-                    case "DEDUCIBLE2057": // MÍNIMO POR EVENTO
-                    case "PCT_DCTO_COL": // % DCTO. COLABORADOR
-                    case "DEDUCIBLE2055": // MÍNIMO POR EVENTO
-                    case "OTRA_SENAS_RGO1": // OTRAS SEÑAS DEL RIESGO
-                    case "FOLIO_RGO1": // N° DE FOLIO REAL
-                    case "FOLIO_RGO2": // N° DE FINCA MADRE
-                    case "NUM_PISO": // PISO EN QUE ESTÁ UBICADO
-                    case "MCA_ACTUALIZA_VAL_REN": // ¿ACTUALIZA VALORES A LA RENOV?
-                    case "NUM_DES_BIEN": // ¿# ESTRUCTURAS ESPECIALES?
-                    case "ANO_CONST": // AÑO DE CONSTRUCCIÓN
 
-                    case "NUM_METROS_CONSTRUIDOS": // METROS CONSTRUIDOS
-                    case "ALTURA_EDIF": // ÁLTURA APRÓXIMADA EN METROS
                     case "MCA_COB_INCENDIO": // ¿COB, A-INCENDIO?
+                    case "NUM_SOLICITUD": // SOLICITUD / CRUCE COBRANZAS
+                    case "MCA_SUBLIM_ROBO2056": // SUBLIM. DE ROBO (%) S/PERDIDA 
+                    case "MCA_SUBLIM_ROBO2055": // SUBLIM. DE ROBO (%) S/PERDIDA 
+                    case "MCA_SUBLIM_ROBO2057": // SUBLIM. DE ROBO (%) S/PERDIDA 
+                    case "DEDUCIBLE2055": // MÍNIMO POR EVENTO
+                    case "COD_TIPO_OCUP_POL": // OCUPACIÓN DEL ASEGURADO
+                    case "DEDUCIBLE2056": // MÍNIMO POR EVENTO
                     case "MCA_COB_TERR": // ¿COB. TERREMOTO (S/N)?
+                    case "DEDUCIBLE2057": // MÍNIMO POR EVENTO
                     case "MCA_COB_INUN": // ¿COB. INUNDACIÓN (S/N)?
                     case "MCA_COB_DESL": // ¿COB. DESLIZAMIENTO (S/N)?
                     case "MCA_COB_DPA": // ¿COB. C-DAÑOS POR AGUA?
                     case "MCA_COB_DCMG": // ¿COB. D-DOMO,CRIST,MÁRM,GRAN.?
                     case "MCA_COB_ROB": // ¿COB. E-ROBO?
-
                     case "MCA_COB_GPA": // ¿COB. F-GASTOS DE ALQUILER?
-                    case "MCA_COB_PDR": // ¿COB, G-PÉRDIDA DE RENTAS?
-
-                    case "MCA_RESP_CIVIL": // ¿COB. H-RESPONSABILIDAD CIVIL?
-                    case "MCA_COB_AV": // ¿COB. Q-ASIST. EN LA VIVIENDA?
-
+                    case "MCA_COB_PDR": // ¿COB, G-PÉRDIDA DE RENTAS?                    
+                    case "MCA_COB_BR": // ¿COB. BIENES REF. O CONG.?
+                    case "NUM_TIP_BR": // ¿# PERÍODOS DE CARENCIA?
+                    case "MCA_COB_MET": // ¿COB. MERCANCÍA EN TRÁNSIT.?
+                    case "MCA_COB_RDM": // ¿COB. ROTURA DE MAQUINARIA?
+                    case "MCA_COB_EE": // ¿COB. EQUIPO ELECTRÓNICO?
+                    case "MCA_COB_IDN": // ¿COB. INTERR, DE NEGOCIO?
+                    case "MCA_COB_AE": // ¿COB. ASIST. EN LA EMPRESA?
+                    case "COD_TIP_BR": // ¿TIPO DE PERÍODO DE CARENCIA?
+                    case "COD_TIP_MED_INC": // SELEC TIPO DE MED CONTRA INCEN
+                    case "IMP_BIE_REF": // S.A. BIENES REFRIG. O CONG.
+                    case "COD_TIP_MED_BR": // SELEC TIPO DE MED BIENES REFRI
+                    case "IMP_CONTENIDO": // S.A. CONTENIDO
                     case "COD_TIP_MED_ROB": // SELEC TIPO DE MED POR ROBO
-                    case "COD_DES_BIEN": // SELEC TIPO DE ESTRUC.ESPECIAL                    
+                    case "COD_TIP_MED_RDM": // SELEC TIP DE MED ROTURA DE MAQ
+                    case "FOLIO_RGO1": // N° DE FOLIO REAL
+                    case "FOLIO_RGO2": // N° DE FINCA MADRE
+                    case "MCA_OCU_POLIZA": // ¿OCUP.POLIZA = OCUP.RIESG?
+                    case "COD_CLASE_RGO_INC": // CLASE DE RIESGO DE INCENDIO
+                    case "COD_CLASE_RGO_ROB": // CLASE DE RIESGO ROBO
+                    case "COD_ZONA_TER": // ZONA DE RIESGO
+                    case "COD_TIP_INUNDA": // COLINDANCIA POR INUNDACIÓN
+                    case "COD_TIP_DESLIZ": // TIPO DE RIESGO PARA DESLIZAMIE
+                    case "ANO_CONST": // AÑO DE CONSTRUCCIÓN
+                    case "ALTURA_EDIF": // ÁLTURA APRÓXIMADA EN METROS
+                    case "TIP_EXTIN_INC": // TIPO DE EXTINTORES DE INCENDIO
+                    case "PCT_AJUSTE_GEN": // PORCENTAJE AJUSTE COMERCIAL
                     case "MCA_SUB_ROB": // ¿SUB-LIMITE DE ROBO (S/N)?
-                    case "COD_POSTAL": // CODIGO POSTAL
-                    case "GEO_LATITUD": // LATITUD
-                    case "GEO_LONGITUD": // LONGITUD
-                    case "COLINDANTE_NORTE": // COLINDANTE EN EL NORTE
-                    case "COLINDANTE_SUR": // COLINDANTE AL SUR
-                    case "COLINDANTE_ESTE": // COLINDANTE AL ESTE
-                    case "COLINDANTE_OESTE": // COLINDANTE AL OESTE
-                    case "CERCA_RI_MAR_LAG_TA_CI": // CERCA DE UN RÍO, MAR, LAGO,CIM
-                    case "DISTANCIA_MTS": // DISTANCIA METROS
-                    case "MATERIAL_ESTRUCTURA": // QUE MATERIAL ES LA ESTRUCTURA
-                    case "TIP_MAMPOSTERIA": // TIPO MAMPOSTERIA
-                    case "MATERIAL_PARED_INTERNAS": // MATERIAL PAREDES INTERNAS
-                    case "MATERIAL_TECHO": // MATERIAL DEL TECHO
-                    case "MATERIAL_ENTREPISOS": // MATERIAL DE ENTREPISOS
-                    case "MATERIAL_PISO": // MATERIAL DEL PISO
-                    case "SOBREPESO_EXTRUCTURAS": // EXISTE SOBREPESO ESTRUCTURAS
-                    case "BIEN_ESQ_INTER_VEHI": // BIEN SE ENCUENTRA EN ESQUINA
-                    case "DANOS_PREVIOS_REPARACION": // DAÑOS PREV AL BIEN, SE REPARÓ
-                    case "INS_ELECT_ENTUB": // INSTALACIÓN ELECTRICA ENTUBADA
-                    case "VULNERABILIDAD_CONTENIDO": //	VULNERABILIDAD DEL CONTENIDO
-                    case "OBJ_ESPE_DES1": // OBJETO ESPECIAL DESCRIPCION1
-                    case "OBJ_ESPE_DES2": // OBJ ESPECIALES DESCRIPCION2
-                    case "OBJ_ESPE_DES3": // OBJ ESPECIALES DESCRIPCION3
-                    case "OBJ_ESPE_MAR_MOD1": // OBJ ESPECIALES MARCA/MODELO1
-                    case "OBJ_ESPE_MAR_MOD2": // OBJ ESPECIALES MARCA/MODELO2
-                    case "OBJ_ESPE_MAR_MOD3": // OBJ ESPECIALES MARCA/MODELO3
-                    case "OBJ_ESPE_ANO1": // OBJ ESPECIALES AÑO1
-                    case "OBJ_ESPE_ANO2": // OBJ ESPECIALES AÑO2
-                    case "OBJ_ESPE_ANO3": // OBJ ESPECIALES AÑO3
-                    case "OBJ_VALOR1": // OBJ ESPECIALES VALOR1
-                    case "TIP_PLAN_ASIST": // TIPO PLAN ASISTENCIA
-                    case "OBJ_VALOR2": // OBJ ESPECIALES VALOR2
-                    case "OBJ_VALOR3": // OBJ ESPECIALES VALOR3
-                    case "POSEE_POLIZA_HOG": // POSEE PÓLIZA
-                    case "NOM_ASEG_SEGU": // ASEGURADORA QUE BRINDA SEGURO
-                    case "NO_POLIZA_SEGUG": // PÓLIZA DEL SEGURO DE HOGAR
-                    case "SUM_ASEG_ASEG": // SUMA ASEGURADA PÓLIZA HOGAR
-                    case "SINIESTRO_ANTERIORES": // HUBO SINIESTRO  BIEN ASEGURAR
-                    case "FEC_SINI_ASEG": // FECHA EN QUE OCURRIÓ SINIESTRO
-                    case "NOM_ASEG_SINI": // NOMBRE ASEGURADORA  SINIESTRO
-                    case "NO_POLIZA_SINI": // NÚMERO PÓLIZA DEL SINIESTRO
-                    case "MONTO_SINI_ASEG": // MONTO SINIESTRO ANTERIOR
+                    case "CLASE_CONST1": // HASTA 20% MATE COMBU PARED INT
+                    case "CLASE_CONST2": // MÁS 20% MAT COMB PAREDES INT
+                    case "CLASE_CONST3": // PARED INT Y EXT DE MAT COMBUST
+                    case "VOLT_INSTA": // VOLTAJE INSTALACIÓN ELÉCTRICA
+                    case "CAJA_BREAKERS": // POSEE CAJA BREAKERS
+                    case "INTERRUPTORES": // TIENE INTERRUPTORES CUCHILLA
+                    case "FUSIBLE_ALAMBRE": // ¿HAY CUCHILLA?FUSIBLE/ALAMBRE
+                    case "PRO_INUNDACION": // HA TENIDO PROBLEMAS INUNDACIÓN
+                    case "PRO_VIENTOS_HU": // PROBLEMAS VIENTOS HURACANADOS
+                    case "PRO_DESLIZAMIENTO": // TENIDO PROBLEMAS DESLIZAMIENTO
+                    case "UBI_RIO": // UBICACION CERCA DE UN RÍO
+                    case "UBI_PENDIENTE": // UBI CERCA DE UNA PENDIENTE
+                    case "UBI_PIE_TALUD": // UBI CERCA AL PIE DE TALUD
+                    case "UBI_BORDE_TALUD": // UBI CERCA BORDE UN TALUD
+                    case "SIS_ALCAN_PLUVIAL": // BUEN FUNC ALCANT PLUVIAL
+                    case "LAM_TORINILLO": // LAMINA DE TECHO CON TORINILLO
+                    case "LAM_CLAVOS": // LAMINA DE TECHO CON CLAVOS
+                    case "LAM_ZINC_SUELTAS": // LÁMINAS DE ZINC SUELTAS
+                    case "LAM_ZINC_FLOJAS": // LÁMINAS DE ZINC FLOJAS
+                    case "LAM_ZINC_OXIDADAS": // LÁMINAS DE ZINC OXIDADAS
                     case "TIP_BENEFICIO": // TIPO DE BENEFICIO
                     case "MCA_COLECTIVO": // ¿COLECTIVO?
                         break;
@@ -250,7 +307,7 @@ namespace Architect.API.Tron.Business.Variaciones
             return quoteInfo;
         }
 
-        internal static Contracts.Variaciones.HogarTotal Quote(Contracts.Variaciones.HogarTotal quoteInfo, Architect.API.Tron.Contracts.Poliza.DatoFijo tronQuoteInfo)
+        internal static Contracts.Variaciones.Multirriesgo Quote(Contracts.Variaciones.Multirriesgo quoteInfo, Architect.API.Tron.Contracts.Poliza.DatoFijo tronQuoteInfo)
         {
             int riesgo = 0;
             if (tronQuoteInfo.Coberturas != null)
@@ -348,12 +405,15 @@ namespace Architect.API.Tron.Business.Variaciones
             foreach (var item in quoteInfo.coberturas)
             {
                 var obj = quoteInfo.AvailableCoverages.FirstOrDefault(c => c.codigo == item.codigo);
-                item.requerida = obj.mcaObligatorio == "S";
-                item.seleccionado = obj.seleccionado;
-
-                if (item.codigo != 1060 && item.codigo != 3010 && item.codigo != 3016)
+                if(obj != null)
                 {
-                    quoteInfo.AvailableCoverages.RemoveAll(c => c.codigo == item.codigo);
+                    item.requerida = obj.mcaObligatorio == "S";
+                    item.seleccionado = obj.seleccionado;
+
+                    if (item.codigo != 1060 && item.codigo != 3010 && item.codigo != 3016)
+                    {
+                        quoteInfo.AvailableCoverages.RemoveAll(c => c.codigo == item.codigo);
+                    }
                 }
             }
 
@@ -515,7 +575,7 @@ namespace Architect.API.Tron.Business.Variaciones
             return coberturas;
         }
 
-        internal static List<Contracts.Comun.tercero> Terceros(Contracts.Variaciones.HogarTotal quoteInfo, Contracts.Poliza.DatoFijo datosFijos)
+        internal static List<Contracts.Comun.tercero> Terceros(Contracts.Variaciones.Multirriesgo quoteInfo, Contracts.Poliza.DatoFijo datosFijos)
         {
             quoteInfo.terceros = new List<Contracts.Comun.tercero>();
 

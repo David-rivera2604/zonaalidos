@@ -1,6 +1,6 @@
 ﻿var app = app || {};
 
-app.VariacionHogarTotal = (function () {
+app.VariacionMultirriesgo = (function () {
 
     let mainHolder = null;
     let fec_vcto_poliza_grupo = null;
@@ -33,7 +33,7 @@ app.VariacionHogarTotal = (function () {
 
         if (_id != '') {
             $('#coberturasTbl').bootstrapTable('showLoading');
-            app.core.Get(app.setting.apipath + 'v1/Variaciones/HogarTotalSetup/' + _id + '/' + NUM_SPTO + '/' + MCA_PROVISIONAL)
+            app.core.Get(app.setting.apipath + 'v1/Variaciones/MultirriesgoSetup/' + _id + '/' + NUM_SPTO + '/' + MCA_PROVISIONAL)
                 .done(function (data, textStatus, jqXHR) {
                     if (localStorage.getItem('Roles').includes('Purdy')) {
                         $('.Purdy').removeClass('d-none');
@@ -71,21 +71,38 @@ app.VariacionHogarTotal = (function () {
     function Init_Lookups(data) {
         setupData = JSON.parse(JSON.stringify(data));
         let lookupList = [
+            //'MonedasPorRamo.cod_mon',
+            //'FrecuenciaDePagoPorRamo.cod_fracc_pago',
+            //'MM_MCA_TIP_FIRMA.tip_firma',
+            //'Paises.pais',
+            //'Provincias.provincia',
+            //'Cantones.canton',
+            //'Distritos.distrito',
+            //'TiposOcupacion.ocupaciondelriesgo',
+            //'TiposSuscripcion.tipodesuscripcion',
+            //'NumeroPisos.numerodepisosedificacion',
+            //'TipoEstructura.tipodeestrucdelaedificacion',
+            //'MedidasSeguridad.medidasdeseguridad',
+            //'DescuentoHogarTotal.descuento',
+            //'SumasAseguradasRC.sARespcivil',
+            //'Paises.cod_pais', 'Provincias.TProvincia', 'Cantones.TCanton', 'Distritos.TDistrito'
+
             'MonedasPorRamo.cod_mon',
             'FrecuenciaDePagoPorRamo.cod_fracc_pago',
-            'MM_MCA_TIP_FIRMA.tip_firma',
-            'Paises.pais',
-            'Provincias.provincia',
-            'Cantones.canton',
-            'Distritos.distrito',
-            'TiposOcupacion.ocupaciondelriesgo',
-            'TiposSuscripcion.tipodesuscripcion',
-            'NumeroPisos.numerodepisosedificacion',
-            'TipoEstructura.tipodeestrucdelaedificacion',
-            'MedidasSeguridad.medidasdeseguridad',
-            'DescuentoHogarTotal.descuento',
-            'SumasAseguradasRC.sARespcivil',
-            'Paises.cod_pais', 'Provincias.TProvincia', 'Cantones.TCanton', 'Distritos.TDistrito'
+            'Paises.cod_pais',
+            'Provincias.cod_estado',
+            'Cantones.cod_prov',
+            'Distritos.cod_localidad',
+            'TiposOcupacion.cod_tip_ocup',
+            'TiposEdificacion.cod_tip_edit',
+            'NumeroPisosEdificacion.num_pisos_edif',
+            'TipoEstructura.cod_tipo_estruc',
+            'TipoTechoEdificacion.cod_tipo_techo',
+            'TipoParedEdificacion.cod_tipo_pared',
+            'TipoMedidasRobo.cod_tip_med_rob',
+            'TipoMedidasRoturaMaquinaria.cod_tip_med_rdm',
+            'TipoRiesgoInterrupNegocios.cod_tip_rgo_idn',
+            'TiposMedidasContraIncendio.cod_tip_med_inc'
         ];
 
         //if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
@@ -106,7 +123,8 @@ app.VariacionHogarTotal = (function () {
 
             ReadOnly();
         //}, `cod_ramo=${data.cod_ramo}:cod_pais=CRI:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:num_contrato=${data.contrato}:cod_agt=${data.cod_agt}`);
-        }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}:cod_agt=${data.cod_agt}`);
+        }, //`cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.provincia}:cod_prov=${data.canton}:cod_agt=${data.cod_agt}`);
+            `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:cod_pais=${data.cod_pais}:cod_tip_ocup=${data.cod_ramo}%:cod_estado=${data.cod_estado}:cod_prov=${data.cod_prov}:cod_agt=${data.cod_agt}:num_contrato=99999`);
     }
 
     function initializeComponents(data) {
@@ -167,7 +185,7 @@ app.VariacionHogarTotal = (function () {
 
         // Configurar sumas aseguradas
         sumasAseguradasComponent.setSetupData(data);
-        sumasAseguradasComponent.loadData201(data);
+        sumasAseguradasComponent.loadData202(data);
         sumasAseguradasComponent.setProductCode(COD_PLAN_AUTO);
         sumasAseguradasComponent.enableControlsByCoverages(data.coberturas);
 
@@ -189,7 +207,7 @@ app.VariacionHogarTotal = (function () {
         param.cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
 
         //app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
-        app.core.Get(app.setting.apipath + 'v1/Variaciones/HogarTotalSettings?' + `cod_ramo=${param.cod_ramo}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&cod_mon=${param.cod_mon}&cod_agt=${param.cod_agt}`)
+        app.core.Get(app.setting.apipath + 'v1/Variaciones/MultirriesgoSettings?' + `cod_ramo=${param.cod_ramo}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&cod_mon=${param.cod_mon}&cod_agt=${param.cod_agt}`)
             .done(function (settingData) {
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
 
@@ -252,7 +270,7 @@ app.VariacionHogarTotal = (function () {
 
         // Obtener datos de sumas aseguradas del componente
         if (sumasAseguradasComponent) {
-            const sumasData = sumasAseguradasComponent.getData();
+            const sumasData = sumasAseguradasComponent.getData202();
             Object.assign(data, sumasData);
         }
 
@@ -333,52 +351,22 @@ app.VariacionHogarTotal = (function () {
         $('#fec_vcto_poliza_group').data("DateTimePicker").minDate($('#fec_efec_poliza_group').data("DateTimePicker").date());
         app.ui.SetDateValue('#fec_vcto_poliza', data.fec_vcto_poliza);
 
-        $('#pais').val(data.pais);
-        $('#provincia').val(data.provincia);
-        $('#canton').val(data.canton);
-        $('#distrito').val(data.distrito);
-        $('#ocupaciondelriesgo').val(data.ocupaciondelriesgo);
-        $('#tipodesuscripcion').val(data.tipodesuscripcion);
-        $('#numerodepisosedificacion').val(data.numerodepisosedificacion);
-        $('#tipodeestrucdelaedificacion').val(data.tipodeestrucdelaedificacion);
-        app.ui.SetNumericValue('#mesesaampararporperdrentas', data.mesesaampararporperdrentas);
-        /*$('#medidasdeseguridad').val(data.medidasdeseguridad);*/
-        $('#descuento').val(data.descuento);
-        //app.ui.SetNumericValue('#sAEdificio', data.sAEdificio);
-        app.ui.SetNumericValue('#sAObjetosvaliosos', data.sAObjetosvaliosos);
-        app.ui.SetNumericValue('#sADomocristalmarmolgranito', data.sADomocristalmarmolgranito);
-        app.ui.SetNumericValue('#sAGastosalquiler', data.sAGastosalquiler);
-        app.ui.SetNumericValue('#sAPerdidaderentas', data.sAPerdidaderentas);
-        $('#sARespcivil').val(data.sARespcivil);
-        app.ui.SetNumericValue('#sAMobiliario', data.sAMobiliario);
+        //$('#pais').val(data.pais);
+        //$('#provincia').val(data.provincia);
+        //$('#canton').val(data.canton);
 
-        //app.ui.SetRadioStringValue('tipo_prod', data.tipo_prod);
-        //app.ui.DropDownValueWithOption('#COD_PLAN_AUTO', data.COD_PLAN_AUTO, data.COD_PLAN_AUTODesc);
-        //app.ui.DropDownValueWithOption('#cod_zona_circul', data.cod_zona_circul, data.cod_zona_circulDesc);
-        //$('#cod_marca').val(data.cod_marca);
-        //$('#cod_modelo').val(data.cod_modelo);
-        //$('#cod_sub_modelo').val(data.cod_sub_modelo);
-        //app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
-        //$('#cod_tip_vehi').val(data.cod_tip_vehi);
-        //$('#cod_uso_vehi').val(data.cod_uso_vehi);
-        //$('#NUM_MATRICULA').val(data.NUM_MATRICULA);
-        //$('#COD_CHASSIS').val(data.COD_CHASSIS);
-        //$('#NUM_MOTOR').val(data.NUM_MOTOR);
-        //$('#DES_TIP_CILINDRAJE').val(data.DES_TIP_CILINDRAJE);
-        //app.ui.SetNumericValue('#VAL_PESO', data.VAL_PESO);
-        //$('#COD_COLOR').val(data.COD_COLOR);
-        //app.ui.SetNumericValue('#VAL_CAPACIDAD', data.VAL_CAPACIDAD);
-        //app.ui.SetRadioNumericValue('MCA_CERO_KM', data.MCA_CERO_KM);
-        //app.ui.SetRadioNumericValue('MCA_AUTO_GPS', data.MCA_AUTO_GPS);
-        //app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
-        //app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);
-        //app.ui.SetRadioNumericValue('MCA_PRA', data.MCA_PRA);
-        //app.ui.SetRadioNumericValue('MCA_VR', data.MCA_VR);
-        //app.ui.SetNumericValue('#IMP_VR', data.IMP_VR);
-        //app.ui.SetRadioStringValue('Vehiculo_Otra_Poliza', data.Vehiculo_Otra_Poliza);
-        //app.ui.SetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO', data.MCA_DESC_CLIENTE_NUEVO);
-        //app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
-        //app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
+        $('#cod_pais').val(data.cod_pais);
+        $('#cod_estado').val(data.cod_estado);
+        $('#cod_prov').val(data.cod_prov);
+        $('#cod_localidad').val(data.cod_localidad);
+        $('#otrassenasdelriesgo').val(data.otrassenasdelriesgo);
+        $('#cod_tip_ocup').val(data.cod_tip_ocup);
+        $('#cod_tip_edit').val(data.cod_tip_edit);
+        $('#num_pisos_edif').val(data.num_pisos_edif);
+        $('#cod_tipo_estruc').val(data.cod_tipo_estruc);
+        $('#cod_tipo_techo').val(data.cod_tipo_techo);
+        $('#cod_tipo_pared').val(data.cod_tipo_pared);
+        app.ui.SetNumericValue('#anodeconstruccion', data.anodeconstruccion);
 
         app.ui.SetRadioStringValue('MCA_FEC_EFEC_SYS', data.MCA_FEC_EFEC_SYS);
 
@@ -435,17 +423,21 @@ app.VariacionHogarTotal = (function () {
         $('#iniciodevigencia_group').replaceWith("<div>" + $('#iniciodevigencia').val() + "</div>");
         $('#findevigencia_group').replaceWith("<div>" + $('#findevigencia').val() + "</div>");
 
-        $('#pais').replaceWith("<div>" + $('#pais option:selected').text() + "</div>");
-        $('#provincia').replaceWith("<div>" + $('#provincia option:selected').text() + "</div>");
-        $('#canton').replaceWith("<div>" + $('#canton option:selected').text() + "</div>");
-        $('#distrito').replaceWith("<div>" + $('#distrito option:selected').text() + "</div>");
-        $('#ocupaciondelriesgo').replaceWith("<div>" + $('#ocupaciondelriesgo option:selected').text() + "</div>");
-        $('#tipodesuscripcion').replaceWith("<div>" + $('#tipodesuscripcion option:selected').text() + "</div>");
-        $('#numerodepisosedificacion').replaceWith("<div>" + $('#numerodepisosedificacion option:selected').text() + "</div>");
-        $('#tipodeestrucdelaedificacion').replaceWith("<div>" + $('#tipodeestrucdelaedificacion option:selected').text() + "</div>");
-        //$('#mesesaampararporperdrentas').replaceWith("<div>" + $('#mesesaampararporperdrentas').val() + "</div>");
-        //$('#medidasdeseguridad').next().replaceWith("<div>" + $('#medidasdeseguridad option:selected').text() + "</div>");
-        $('#descuento').replaceWith("<div>" + $('#descuento option:selected').text() + "</div>");
+        $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
+        //$('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
+        $('#fec_efec_poliza_group').replaceWith('<div>' + $('#fec_efec_poliza').val() + '</div>');
+        $('#fec_vcto_poliza_group').replaceWith('<div>' + $('#fec_vcto_poliza').val() + '</div>');
+        $('#cod_pais').replaceWith('<div>' + $('#cod_pais option:selected').text() + '</div>');
+        $('#cod_estado').replaceWith('<div>' + $('#cod_estado option:selected').text() + '</div>');
+        $('#cod_prov').replaceWith('<div>' + $('#cod_prov option:selected').text() + '</div>');
+        $('#cod_localidad').replaceWith('<div>' + $('#cod_localidad option:selected').text() + '</div>');
+        $('#otrassenasdelriesgo').replaceWith('<div>' + $('#otrassenasdelriesgo').val() + '</div>');
+        $('#cod_tip_ocup').replaceWith('<div>' + $('#cod_tip_ocup option:selected').text() + '</div>');
+        $('#cod_tip_edit').replaceWith('<div>' + $('#cod_tip_edit option:selected').text() + '</div>');
+        $('#num_pisos_edif').replaceWith('<div>' + $('#num_pisos_edif option:selected').text() + '</div>');
+        $('#cod_tipo_estruc').replaceWith('<div>' + $('#cod_tipo_estruc option:selected').text() + '</div>');
+        $('#cod_tipo_techo').replaceWith('<div>' + $('#cod_tipo_techo option:selected').text() + '</div>');
+        $('#cod_tipo_pared').replaceWith('<div>' + $('#cod_tipo_pared option:selected').text() + '</div>');
 
         //$('#sAEdificio').replaceWith("<div>" + $('#sAEdificio').val() + "</div>");
         //$('#sAObjetosvaliosos').replaceWith("<div>" + $('#sAObjetosvaliosos').val() + "</div>");
@@ -521,57 +513,7 @@ app.VariacionHogarTotal = (function () {
             locale: 'es'
         });
 
-        // Configurar controles numéricos básicos
-        //new AutoNumeric('#ANIO_SUB_MODELO', {
-        //    decimalCharacter: ',',
-        //    decimalCharacterAlternative: '.',
-        //    digitGroupSeparator: '',
-        //    maximumValue: '9999',
-        //    minimumValue: '0',
-        //    decimalPlaces: '0',
-        //    emptyInputBehavior: 'null'
-        //});
-
-        //new AutoNumeric('#VAL_PESO', {
-        //    decimalCharacter: ',',
-        //    decimalCharacterAlternative: '.',
-        //    digitGroupSeparator: '.',
-        //    maximumValue: '9999999999',
-        //    minimumValue: '0',
-        //    decimalPlaces: '0',
-        //    emptyInputBehavior: 'null'
-        //});
-
-        //new AutoNumeric('#VAL_CAPACIDAD', {
-        //    decimalCharacter: ',',
-        //    decimalCharacterAlternative: '.',
-        //    digitGroupSeparator: '.',
-        //    maximumValue: '9999999999',
-        //    minimumValue: '0',
-        //    decimalPlaces: '0',
-        //    emptyInputBehavior: 'null'
-        //});
-
-        //new AutoNumeric('#IMP_VR', {
-        //    decimalCharacter: ',',
-        //    decimalCharacterAlternative: '.',
-        //    digitGroupSeparator: '.',
-        //    maximumValue: '99999999999999',
-        //    minimumValue: '0',
-        //    decimalPlaces: '2',
-        //    emptyInputBehavior: 'null'
-        //});
-
-        //new AutoNumeric('#PCT_AJUSTE_GEN', {
-        //    decimalCharacter: ',',
-        //    decimalCharacterAlternative: '.',
-        //    digitGroupSeparator: '.',
-        //    maximumValue: '0',
-        //    minimumValue: '-99',
-        //    decimalPlaces: '0',
-        //    emptyInputBehavior: 'null'
-        //});
-
+     
         $('#fec_efec_cancel_group').datetimepicker({
             format: 'DD/MM/YYYY',
             locale: 'es',
@@ -585,6 +527,10 @@ app.VariacionHogarTotal = (function () {
         });
 
         $('#medidasdeseguridad').select2({ width: '100%', theme: 'bootstrap4' });
+
+
+        
+
     }
 
     function Controls_Events() {
@@ -639,7 +585,7 @@ app.VariacionHogarTotal = (function () {
 
     function generateVariation() {
         app.ui.ButtonDoing('#generarvariacion');
-        app.core.Post(app.setting.apipath + 'v1/Variaciones/HogarTotal',
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/Multirriesgo',
             JSON.stringify(MapInputToObject()),
             function (data) {
                 if (data.McaError === "N") {
@@ -782,7 +728,7 @@ app.VariacionHogarTotal = (function () {
                 var data = setupData;
                 data.Mca_Autoriza_CT = "N";
 
-                app.core.Post(app.setting.apipath + 'v1/Variaciones/HogarTotalManageAuthorizationCT',
+                app.core.Post(app.setting.apipath + 'v1/Variaciones/MultirriesgoManageAuthorizationCT',
                     JSON.stringify(data),
                     function (data) {
                         if (data.McaError === "N") {
@@ -808,7 +754,7 @@ app.VariacionHogarTotal = (function () {
         $('#aceptarmessage').click(function () {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
                 app.ui.ButtonDoing('#aceptarmessage');
-                app.core.Post(app.setting.apipath + 'v1/Variaciones/HogarTotal',
+                app.core.Post(app.setting.apipath + 'v1/Variaciones/Multirriesgo',
                     JSON.stringify(MapInputToObject()),
                     function (data) {
                         $('#Fuente_Tomador').replaceWith('<div>' + $('#Fuente_Tomador option:selected').text() + '</div>');
@@ -955,7 +901,7 @@ app.VariacionHogarTotal = (function () {
     }
 
     function generateVariacionFraccPago() {
-        app.core.Post(app.setting.apipath + 'v1/Variaciones/HogarTotal',
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/Multirriesgo',
             JSON.stringify(MapInputToObject()),
             function (data) {
                 $('#Fuente_Tomador').replaceWith('<div>' + $('#Fuente_Tomador option:selected').text() + '</div>');
@@ -988,7 +934,7 @@ app.VariacionHogarTotal = (function () {
         ctData.Mca_Autoriza_CT = "S";
         ctData.num_spto = NEW_NUM_SPTO;
 
-        app.core.Post(app.setting.apipath + 'v1/Variaciones/HogarTotalManageAuthorizationCT',
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/MultirriesgoManageAuthorizationCT',
             JSON.stringify(ctData),
             function (data) {
                 if (data.McaError === "N") {
@@ -1196,7 +1142,7 @@ app.VariacionHogarTotal = (function () {
         cancelData.fec_efec_cancel = app.ui.GetDateValue('#fec_efec_cancel');
         cancelData.txt_motivo = $('#txt_motivo').val();
 
-        app.core.Post(app.setting.apipath + 'v1/Variaciones/HogarTotalCancelation',
+        app.core.Post(app.setting.apipath + 'v1/Variaciones/MultirriesgoCancelation',
             JSON.stringify(cancelData),
             function (data) {
                 if (data.McaError === "N") {

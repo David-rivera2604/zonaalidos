@@ -296,5 +296,111 @@ namespace Architect.API.Tron.Controllers
 
         #endregion
 
+        #region Multirriesgo
+
+        /// <summary>
+        /// Devuelve la estructura de datos con los valores por defecto para una cotización de tipo Hogar Total
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("MultirriesgoSetup/{poliza}/{num_spto}/{mca_provisional}")]
+        public async Task<IHttpActionResult> MultirriesgoSetup(string poliza, int num_spto, string mca_provisional)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Variaciones.Multirriesgo result = null;
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Variaciones.Multirriesgo.Setup(poliza, num_spto, mca_provisional, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Recupera lista de valores para sumas aseguradas de coberturas o valores deducibles según el rol del usuario
+        /// </summary>
+        /// <param name="cod_ramo"></param>
+        /// <param name="num_contrato"></param>
+        /// <param name="num_subcontrato"></param>
+        /// <param name="num_poliza_grupo"></param>
+        /// <param name="cod_mon"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("MultirriesgoSettings")]
+        public async Task<IHttpActionResult> MultirriesgoSettings(int cod_ramo, int num_contrato, int num_subcontrato, string num_poliza_grupo, int cod_mon, int cod_agt = 0)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Tron.Contracts.Cotizacion.MultirriesgoSettings result = null;
+            await Task.Run(() =>
+            {
+                if (cod_agt == 0)
+                {
+                    cod_agt = tokenInfo.AgentCode;
+                }
+                result = Architect.API.Tron.Business.Cotizacion.Multirriesgo.Settings(cod_ramo, num_contrato, num_subcontrato, num_poliza_grupo, cod_mon, cod_agt, tokenInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Realiza la validación de datos y emisión de la variacion para un producto de tipo Mapfre Más
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Multirriesgo")]
+        public async Task<IHttpActionResult> MultirriesgoIssue([FromBody] Tron.Contracts.Variaciones.Multirriesgo quoteInfo)
+        {
+            VariacionIssueResult result = null;
+
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Variaciones.Multirriesgo.Issue(quoteInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la cancelacion para un producto de tipo Mapfre Más
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MultirriesgoCancelation")]
+        public async Task<IHttpActionResult> MultirriesgoCancelation([FromBody] Tron.Contracts.Variaciones.Multirriesgo quoteInfo)
+        {
+            VariacionIssueResult result = null;
+
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Variaciones.Multirriesgo.Cancelation(quoteInfo);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Realiza la cancelacion para un producto de tipo Mapfre Más
+        /// </summary>
+        /// <param name="quoteInfo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("MultirriesgoManageAuthorizationCT")]
+        public async Task<IHttpActionResult> MultirriesgoManageAuthorizationCT([FromBody] Tron.Contracts.Variaciones.Multirriesgo quoteInfo)
+        {
+            VariacionIssueResult result = null;
+
+            await Task.Run(() =>
+            {
+                result = Architect.API.Tron.Business.Variaciones.Multirriesgo.ManageAuthorizationCT(quoteInfo.cod_cia, quoteInfo.cod_ramo, quoteInfo.num_poliza, quoteInfo.num_spto, quoteInfo.Mca_Autoriza_CT);
+            })
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        #endregion
     }
 }
