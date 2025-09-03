@@ -283,7 +283,8 @@ app.VariacionMapfreMasPlus = (function () {
 
             num_contrato: setupData.contrato,
             num_subcontrato: setupData.subcontrato,
-            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo
+            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo,
+            cod_agt: setupData.cod_agt
         };
     }
 
@@ -445,7 +446,6 @@ app.VariacionMapfreMasPlus = (function () {
     }
 
     function MapObjectToInput_First(data) {
-        console.log("data 2:", data);
         setupDataFirst = data;
         app.ui.SetNumericValue('#NUM_POLIZA', data.num_poliza);
         $('#NUM_POLIZA').val(data.num_poliza);

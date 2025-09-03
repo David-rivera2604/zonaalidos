@@ -1264,6 +1264,13 @@
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Extend.CobrosRechazados.js" />
     <Content Include="Scripts\Form.Ext.ExcludedPolicies.js" />
+    <Content Include="Scripts\Variaciones.Multirriesgo.js" />
+    <Content Include="Scripts\Variaciones.HogarTotalPlus.js" />
+    <Content Include="Scripts\Variaciones.HogarTotal.js" />
+    <Content Include="Scripts\Variaciones.PlanPagoResumen.js" />
+    <Content Include="Scripts\Variaciones.Terceros.js" />
+    <Content Include="Scripts\Variaciones.SumasAseguradas.js" />
+    <Content Include="Scripts\Variaciones.Coberturas.js" />
     <Content Include="Scripts\Variaciones.MapfreMasPlus.js" />
     <Content Include="Scripts\Variaciones.MapfreMasOld.js" />
     <Content Include="Scripts\Emision.AccidentesPersonales.js" />
@@ -1845,6 +1852,9 @@
     <Content Include="Views\Variaciones\MapfreMasPlus.cshtml" />
     <Content Include="Views\Variaciones\_confirmarAutorizacion.cshtml" />
     <Content Include="Views\Variaciones\_confirmarCancelacion.cshtml" />
+    <Content Include="Views\Variaciones\HogarTotal.cshtml" />
+    <Content Include="Views\Variaciones\HogarTotalPlus.cshtml" />
+    <Content Include="Views\Variaciones\Multirriesgo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -3834,7 +3834,7 @@ app.EmisionMapfreMas = (function () {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
                     }
                 }).done(function (data, textStatus, jqXHR) {
-                    console.log("upload", data);
+
                     $('#DNombre').val(data[0].FileName);
                     $('#DStored').val(data[0].StoredFileName);
                     $('#DTamano').val(data[0].Size);
