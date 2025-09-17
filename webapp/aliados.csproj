@@ -1262,7 +1262,15 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\Extend.CobrosRechazados.js" />
     <Content Include="Scripts\Form.Ext.ExcludedPolicies.js" />
+    <Content Include="Scripts\Variaciones.Multirriesgo.js" />
+    <Content Include="Scripts\Variaciones.HogarTotalPlus.js" />
+    <Content Include="Scripts\Variaciones.HogarTotal.js" />
+    <Content Include="Scripts\Variaciones.PlanPagoResumen.js" />
+    <Content Include="Scripts\Variaciones.Terceros.js" />
+    <Content Include="Scripts\Variaciones.SumasAseguradas.js" />
+    <Content Include="Scripts\Variaciones.Coberturas.js" />
     <Content Include="Scripts\Variaciones.MapfreMasPlus.js" />
     <Content Include="Scripts\Variaciones.MapfreMasOld.js" />
     <Content Include="Scripts\Emision.AccidentesPersonales.js" />
@@ -1629,6 +1637,7 @@
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <Content Include="data\dummy.json" />
+    <Content Include="logs\borrame.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1843,6 +1852,9 @@
     <Content Include="Views\Variaciones\MapfreMasPlus.cshtml" />
     <Content Include="Views\Variaciones\_confirmarAutorizacion.cshtml" />
     <Content Include="Views\Variaciones\_confirmarCancelacion.cshtml" />
+    <Content Include="Views\Variaciones\HogarTotal.cshtml" />
+    <Content Include="Views\Variaciones\HogarTotalPlus.cshtml" />
+    <Content Include="Views\Variaciones\Multirriesgo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1856,7 +1868,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="assets\jquery-validation\dist\" />
     <Folder Include="files\" />
-    <Folder Include="logs\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
