@@ -59,7 +59,7 @@ namespace Architect.API.Tron.Contracts.Batch
         public int cod_agt { get; set; } = 0;
 
         public int cod_cuadro_com { get; set; } = 0;
-        
+
 
         /// <summary>
         ///
@@ -352,16 +352,18 @@ namespace Architect.API.Tron.Contracts.Batch
         public string p_mca_grupo_familiar { get; set; } = string.Empty;
         public string p_mca_auto_sust { get; set; } = "N";
         public string p_ded_auto_sust { get; set; } = "1";
+        public string p_mca_auto_sust_connect { get; set; } = "N";
+        public string p_ded_auto_sust_connect { get; set; } = "1";
         public string p_ext_garantia { get; set; } = "N";
         public string num_matricula { get; set; }
         public string num_motor { get; set; }
         public string cod_chassis { get; set; }
         public string rc_alcohol { get; set; } = "N";
         public string mc_cuotas_gratis { get; set; } = "N";
-        public int num_cuotas_gratis { get; set;} = 0;
+        public int num_cuotas_gratis { get; set; } = 0;
 
         public string nombredelcontratante { get; set; }
-        
+
 
     }
 }

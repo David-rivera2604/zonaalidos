@@ -145,6 +145,12 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Bienes a la interperie.
         /// </summary>
         [DataMember(), JsonProperty()] public int IMP_BIE_INT { get; set; }
+
+        /// <summary>
+        /// Bienes Refrigerante.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int IMP_BIE_REF { get; set; }
+
         /// <summary>
         /// Objetos de especial valor.
         /// </summary>

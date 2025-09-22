@@ -75,6 +75,8 @@ namespace Architect.API.Tron.DataAccess
 
                 .AddParameter("P_MCA_AUTO_SUST", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.p_mca_auto_sust)
                 .AddParameter("P_DED_AUTO_SUST", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.p_ded_auto_sust)
+                 .AddParameter("P_MCA_AUTO_SUST_CONNECT", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.p_mca_auto_sust_connect)
+                .AddParameter("P_DED_AUTO_SUST_CONNECT", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.p_ded_auto_sust_connect)
                 .AddParameter("P_EXT_GARANTIA", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.p_ext_garantia)
                 .AddParameter("P_RC_ALCOHOL", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.rc_alcohol)
                 .AddParameter("P_MCA_CUOTAS_GRATIS", Architect.DataFactory.Enumerations.DbType.String, 2, p2000030Instance.mc_cuotas_gratis)
@@ -83,7 +85,7 @@ namespace Architect.API.Tron.DataAccess
                 .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
                 .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                 {
-                    if(result.Coberturas.IsEmpty())
+                    if (result.Coberturas.IsEmpty())
                     {
                         result.Coberturas = new System.Collections.Generic.List<Contracts.Presupuesto.Cobertura>();
                     }

@@ -232,7 +232,9 @@ namespace Architect.API.Tron.Business.Variaciones
                     case "IMP_INT_NEG": // S.A. INTERRUPCIÓN DE NEGOCIOS
                         quoteInfo.IMP_INT_NEG = Convert.ToInt32(item.val_campo);
                         break;
-
+                    case "IMP_BIE_REF": // S.A. BIENES REFRIG. O CONG.
+                        quoteInfo.IMP_BIE_REF = Convert.ToInt32(item.val_campo);
+                        break;
 
 
                     case "MCA_COB_INCENDIO": // ¿COB, A-INCENDIO?
@@ -261,7 +263,6 @@ namespace Architect.API.Tron.Business.Variaciones
                     case "MCA_COB_AE": // ¿COB. ASIST. EN LA EMPRESA?
                     case "COD_TIP_BR": // ¿TIPO DE PERÍODO DE CARENCIA?
                     case "COD_TIP_MED_INC": // SELEC TIPO DE MED CONTRA INCEN
-                    case "IMP_BIE_REF": // S.A. BIENES REFRIG. O CONG.
                     case "COD_TIP_MED_BR": // SELEC TIPO DE MED BIENES REFRI
                     case "IMP_CONTENIDO": // S.A. CONTENIDO
                     case "COD_TIP_MED_ROB": // SELEC TIPO DE MED POR ROBO
