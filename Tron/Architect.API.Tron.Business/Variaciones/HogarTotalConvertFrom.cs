@@ -348,12 +348,15 @@ namespace Architect.API.Tron.Business.Variaciones
             foreach (var item in quoteInfo.coberturas)
             {
                 var obj = quoteInfo.AvailableCoverages.FirstOrDefault(c => c.codigo == item.codigo);
-                item.requerida = obj.mcaObligatorio == "S";
-                item.seleccionado = obj.seleccionado;
-
-                if (item.codigo != 1060 && item.codigo != 3010 && item.codigo != 3016)
+                if (obj != null)
                 {
-                    quoteInfo.AvailableCoverages.RemoveAll(c => c.codigo == item.codigo);
+                    item.requerida = obj.mcaObligatorio == "S";
+                    item.seleccionado = obj.seleccionado;
+
+                    if (item.codigo != 1060 && item.codigo != 3010 && item.codigo != 3016)
+                    {
+                        quoteInfo.AvailableCoverages.RemoveAll(c => c.codigo == item.codigo);
+                    }
                 }
             }
 

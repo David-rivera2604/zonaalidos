@@ -54,8 +54,9 @@ namespace Architect.API.Tron.Contracts.Variaciones
                 ["IMP_MAQUINARIA"] = new ValDatoVariable { val_campo= this.IMP_MAQUINARIA.ToString(), tiene_ocurrencia = false },
                 ["IMP_EQUIP_ELEC"] = new ValDatoVariable { val_campo= this.IMP_EQUIP_ELEC.ToString(), tiene_ocurrencia = false },
                 ["IMP_EQUIP_ELEC_M"] = new ValDatoVariable { val_campo= this.IMP_EQUIP_ELEC_M.ToString(), tiene_ocurrencia = false },
-                ["MCA_EXTIN_INC"] = new ValDatoVariable { val_campo = this.MCA_EXTIN_INC.ToString(), tiene_ocurrencia = false },
+                ["MCA_EXTIN_INC"] = new ValDatoVariable { val_campo = this.MCA_EXTIN_INC == 1 ? "S" : "N", tiene_ocurrencia = false },
                 ["NUM_EXTIN_INC"] = new ValDatoVariable { val_campo = this.NUM_EXTIN_INC.ToString(), tiene_ocurrencia = false },
+                ["COD_TIPO_OCUP_POL"] = new ValDatoVariable { val_campo = this.cod_tip_ocup.ToString(), tiene_ocurrencia = false },
 
                 //2007 Cobertura de Rotura domo,crist, marmol y gra
                 ["IMP_DOMOS_TOTAL"] = new ValDatoVariable { val_campo= this.IMP_DOMOS_TOTAL.ToString(), tiene_ocurrencia = false },
@@ -68,7 +69,7 @@ namespace Architect.API.Tron.Contracts.Variaciones
                 ["IMP_PER_REN"] = new ValDatoVariable { val_campo= this.IMP_PER_REN.ToString(), tiene_ocurrencia = false },
 
                 //2019 Cobertura de bienes refrigerados o congelados
-                ["IMP_BIE_REF"] = new ValDatoVariable { val_campo= "0", tiene_ocurrencia = false },
+                ["IMP_BIE_REF"] = new ValDatoVariable { val_campo = this.IMP_BIE_REF.ToString(), tiene_ocurrencia = false },
 
                 //2020 Cobertura de Mercancía en tránsito
                 ["IMP_MER_TRA"] = new ValDatoVariable { val_campo= this.IMP_MER_TRA.ToString(), tiene_ocurrencia = false },
