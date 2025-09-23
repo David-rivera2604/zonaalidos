@@ -114,5 +114,22 @@ namespace Architect.API.Tron.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("Recobro")]
+        public async Task<IHttpActionResult> Recobro([FromBody] Contracts.Pagos.RecibosParaRecobro recibos)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            
+
+            string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            string userAgent = Request.Headers.UserAgent.ToString();
+            int agentCode = tokenInfo.AgentCode;
+
+            string result = "Ejecución exitosa";
+
+
+            return Ok(result);
+        }
+
     }
 }

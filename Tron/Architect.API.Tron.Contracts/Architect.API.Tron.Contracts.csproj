@@ -76,6 +76,7 @@
     <Compile Include="Emision\AccidentesPersonales.cs" />
     <Compile Include="Emision\Estudiantil.cs" />
     <Compile Include="Comun\ConoceTuCliente.cs" />
+    <Compile Include="Pagos\RecibosParaRecobro.cs" />
     <Compile Include="Pagos\Recibo.cs" />
     <Compile Include="Pagos\Tarjeta.cs" />
     <Compile Include="Poliza\Parameters\ControlTecnicoParametros.cs" />

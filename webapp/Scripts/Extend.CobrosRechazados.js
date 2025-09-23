@@ -11,17 +11,14 @@ app.CobrosRechazados = (function () {
                         let data = this.data;
                         if (data.filter(i => i.SEL).length > 0) {
                             let datasel = data.filter(i => i.SEL);
-                            let payload = {
-                                Num_Aviso: datasel[0].COD_DOCUM_PAGO,
-                                Lista_Recibos: datasel.map(u => u.NUM_RECIBO).join(';')
-                            };
+                            let payload = { NUM_RECIBO: data.filter(i => i.SEL).map(u => u.BILLNUMBER) };
                             $('.ibox-content').toggleClass('sk-loading');
-                            app.core.Put(app.setting.apipath + 'v1/CobrosRechazados',
+                            app.core.Post(app.setting.apipath + 'v1/Pagos/Recobro',
                                 JSON.stringify(payload))
                                 .done(function (data, textStatus, jqXHR) {
                                     toastr.success("La exclusión se hizo de forma exitosa", "", { timeOut: 5000, closeButton: true, progressBar: true });
                                     //Por mejorar para que sea mas dinamico
-                                    app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 400, '', 1);
+                                    app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 113, '', 1);
                                 }).always(function () {
                                     $('.ibox-content').toggleClass('sk-loading');
                                 });
