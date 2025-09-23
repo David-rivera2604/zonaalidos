@@ -125,6 +125,8 @@ namespace Architect.API.Tron.Controllers
             string userAgent = Request.Headers.UserAgent.ToString();
             int agentCode = tokenInfo.AgentCode;
 
+            Architect.API.Tron.Business.Backoffice.v2.Pagos.Recobro(recibos);
+
             string result = "Ejecución exitosa";
 
 
