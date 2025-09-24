@@ -30,78 +30,28 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Proceso 'Batch', que envía a cobro los recibos pendiente con cobro recurrente.
         /// </summary>
-        public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo)
+        public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo, Contracts.Pagos.RecibosParaRecobro recibosParaRecobro = null)
         {
             int recordCount = 0;
             string procesoId = Guid.NewGuid().ToString();
             Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", "Inicio - Proceso pendientes recurrentes al cobro", "payment");
-
+            List<Contracts.Pagos.Recibo> pendientes;
             try
             {
                 string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
                 string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
                 int limitCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.RecurringReceipts.Limit.Count", 5);
                 int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
-
-
-                List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, fec_efect_recibo, limitCount, filter);
-                if (pendientes.Count > 0)
-                {
-                    recordCount = PendientesRecurrentesAlCobro(pendientes, procesoId, false);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilities.Log.ErrorLog("Payment", "RecurrentesAlCobro", ex);
-                Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("FALLA: no controlada del proceso #{0} - {1}", procesoId, ex.Message), "payment");
-                recordCount = -1;
-            }
-
-            Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("Fin - Proceso pendientes recurrentes al cobro ({0})", recordCount), "payment");
-            return recordCount;
-        }
-
-        public static int Recobro(Contracts.Pagos.RecibosParaRecobro recibos)
-        {
-            int recordCount = 0;
-            string procesoId = Guid.NewGuid().ToString();
-            Utilities.Log.TraceLog("Payment.Recobro", "Inicio - Proceso de recobro", "payment");
-
-            try
-            {
-                string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
-                int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
-
-
-                List<Contracts.Pagos.Recibo> pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.Recobro(cod_cia, string.Join(",", recibos.NUM_RECIBO));
-                if (pendientes.Count > 0)
-                {
-                    recordCount = PendientesRecurrentesAlCobro(pendientes, procesoId, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilities.Log.ErrorLog("Payment", "Recobro", ex);
-                Utilities.Log.TraceLog("Payment.Recobro", string.Format("FALLA: no controlada del proceso #{0} - {1}", procesoId, ex.Message), "payment");
-                recordCount = -1;
-            }
-
-            Utilities.Log.TraceLog("Payment.Recobro", string.Format("Fin - Proceso de recobro ({0})", recordCount), "payment");
-            return recordCount;
-        }
-
-        /// <summary>
-        /// Proceso 'Batch', que procesa los recibos a ser cobrados.
-        /// </summary>
-        internal static int PendientesRecurrentesAlCobro(List<Contracts.Pagos.Recibo> pendientes, string procesoId, bool recobro)
-        {
-            int recordCount = 0;
-
-            try
-            {
-                string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
-                int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
                 string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
+
+                if (recibosParaRecobro == null)
+                {
+                    pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.PendientesRecurrentesAlCobro(cod_cia, fec_efect_recibo, limitCount, filter);
+                }
+                else
+                {
+                    pendientes = Architect.API.Tron.DataAccess.Pagos.Recibos.Recobro(cod_cia, string.Join(",", recibosParaRecobro.NUM_RECIBO));
+                }
 
                 if (pendientes.Count > 0)
                 {
@@ -184,7 +134,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     //client.Timeout = TimeSpan.FromSeconds(3);
                     client.DefaultRequestHeaders.Authorization = null;
 
-                    List<Architect.Payment.Integrations.Contracts.InformationRequest> result = Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq).Result;
+                    List<Architect.Payment.Integrations.Contracts.InformationRequest> result = Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq);
 
                     if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
                     {
@@ -268,6 +218,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                         EnviarReporteDeDomiciliacion(reciboReq);
                     }
+
                 }
             }
             catch (Exception ex)
@@ -277,9 +228,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 recordCount = -1;
             }
 
+            Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("Fin - Proceso pendientes recurrentes al cobro ({0})", recordCount), "payment");
             return recordCount;
         }
-
 
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
@@ -506,15 +457,16 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Proceso 'Batch', que envía a tokenizar las tarjetas de créditos registradas en tron.
         /// </summary>
-        public static int TokenizeTarjetas(string cod_docum)
+        public static int TokenizeTarjetas(string num_poliza)
         {
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             string prefix = Core.Business.Settings.StringValue(0, "EMail.Test");
             int cardCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.Tokenize.Cantidad.Tarjetas", 50);
             string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
+            string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.Tokenize.Filter.Policies", string.Empty);
 
-            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, cardCount, cod_docum);
+            List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, cardCount, string.IsNullOrEmpty(filter) ? num_poliza : filter);
 
             List<DatosTarjeta> datosTajetas = new List<DatosTarjeta>();
             string email = string.Empty;

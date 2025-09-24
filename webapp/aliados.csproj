@@ -1911,6 +1911,10 @@
       <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>
       <Name>Architect.API.Tron.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tron\Architect.API.Tron.Contracts\Architect.API.Tron.Contracts.csproj">
+      <Project>{e45fc69a-0702-4a98-885e-f43dd79a424e}</Project>
+      <Name>Architect.API.Tron.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tron\Architect.API.Tron\Architect.API.Tron.csproj">
       <Project>{89532941-0a32-495a-bfe9-81b8b03f2a61}</Project>
       <Name>Architect.API.Tron</Name>
@@ -1944,7 +1948,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57965</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8081/aliados/</IISUrl>
+          <IISUrl>http://localhost:8080/aliados/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -16,7 +16,7 @@ app.CobrosRechazados = (function () {
                             app.core.Post(app.setting.apipath + 'v1/Pagos/Recobro',
                                 JSON.stringify(payload))
                                 .done(function (data, textStatus, jqXHR) {
-                                    toastr.success("La exclusión se hizo de forma exitosa", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                                    toastr.success("Proceso de recobro para los recibos seleccionados ejecutado de forma exitosa", "", { timeOut: 5000, closeButton: true, progressBar: true });
                                     //Por mejorar para que sea mas dinamico
                                     app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 113, '', 1);
                                 }).always(function () {

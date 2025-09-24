@@ -14,26 +14,24 @@ namespace Architect.API.Tron.DataAccess.Pagos
         /// <summary>
         /// Extrae la información de tarjetas a ser tokenizadas.
         /// </summary>
-        public static List<Contracts.Pagos.Tarjeta> PendientesPorTokenizar(int cod_cia, int fetchRows, string cod_docum)
+        public static List<Contracts.Pagos.Tarjeta> PendientesPorTokenizar(int cod_cia, int fetchRows, string filter)
         {
             List<Contracts.Pagos.Tarjeta> result = new List<Contracts.Pagos.Tarjeta>();
-            string filter = string.Empty;
 
-            if (!string.IsNullOrEmpty(cod_docum))
+            if (!string.IsNullOrEmpty(filter))
             {
-                filter = string.Format( " AND A99.COD_DOCUM='{0}'", cod_docum);
+                filter = " AND TJ.NUM_POLIZA IN ('" + filter.Replace(",", "','") + "') ";
             }
 
-            //TODO: Falta definir condición para saber que la tarjeta ya fue tokenizada
-            Database.Select(@"
-WITH CARDTOTOKEN AS (
+            Database.Select(
+$@"WITH CARDTOTOKEN AS (
 SELECT DISTINCT B.REASON,A99.MCA_FISICO, A99.TIP_DOCUM, A99.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO, 
        A99.TLF_MOVIL, A31.TLF_NUMERO, A31.FAX_NUMERO,A31.EMAIL, A31.EMAIL_COM, A31.TXT_EMAIL,
        TJ.TIP_TARJETA, A21.NOM_TIP_TARJETA, TJ.COD_TARJETA, A22.NOM_TARJETA, TJ.NUM_TARJETA NUM_TARJETA, TJ.FEC_VCTO_TARJETA,
        TJ.NUM_POLIZA, TJ.NUM_SPTO --, TJ.NUM_RIESGO
   FROM A1001399 A99
   LEFT JOIN A1001331 A31 ON A31.COD_CIA=A99.COD_CIA AND A31.TIP_DOCUM=A99.TIP_DOCUM AND A31.COD_DOCUM=A99.COD_DOCUM
-  LEFT JOIN A1000802  TJ ON TJ.COD_CIA=A99.COD_CIA AND TJ.TIP_DOCUM=A99.TIP_DOCUM AND TJ.COD_DOCUM=A99.COD_DOCUM
+  LEFT JOIN A1000802  TJ ON TJ.COD_CIA=A99.COD_CIA AND TJ.TIP_DOCUM=A99.TIP_DOCUM AND TJ.COD_DOCUM=A99.COD_DOCUM {filter}
   LEFT JOIN A5020021 A21 ON A21.TIP_TARJETA=TJ.TIP_TARJETA
   LEFT JOIN A5020022 A22 ON A22.COD_CIA=A99.COD_CIA AND A22.TIP_TARJETA=TJ.TIP_TARJETA AND A22.COD_TARJETA=TJ.COD_TARJETA  
   LEFT JOIN ALIADOS.BOVEDA B ON B.TIP_DOCUM=A99.TIP_DOCUM AND B.COD_DOCUM=A99.COD_DOCUM AND B.NUM_POLIZA=TJ.NUM_POLIZA AND B.NUM_SPTO=TJ.NUM_SPTO --AND B.NUM_RIESGO=TJ.NUM_RIESGO
