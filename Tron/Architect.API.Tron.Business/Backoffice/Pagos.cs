@@ -156,6 +156,15 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         public async static Task<Dictionary<string, object>> CrearSesionCore(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, int agentCode, bool widget, bool onlyInfo = false, string email = "")
         {
+            if (!Core.Business.Settings.BoolValue(0, "Payment.Placetopay.Enabled", true))
+            {
+                return new Dictionary<string, object>() { { "session", new Architect.Payment.Integrations.Contracts.SessionInformation()
+                        {
+                            Status = "FAIL",
+                            Reason = "Disculpe, pero en este momento los pagos están deshabilitados"
+                         } },
+                    { "recibo", null }, { "payinfo", null } };
+            }
             int timeout = Core.Business.General.DynamicSetting.IntegerValue(tokenInfo, "Payment.Silice.Init.Timeout", 5);
             Payment.Integrations.Contracts.SessionInformation session = await Payment.Integrations.Payment.VerifySession(tokenInfo.CompanyId, num_poliza, num_recibo, timeout);
             Contracts.Vistas.Recibo recibo = null;

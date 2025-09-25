@@ -56,7 +56,7 @@ namespace Architect.Utilities
             ThrowException = true;
         }
 
-        public RestClient(string baseUrl, string source, bool throwException) 
+        public RestClient(string baseUrl, string source, bool throwException)
         {
             _baseUrl = baseUrl;
             _source = source;
@@ -71,6 +71,7 @@ namespace Architect.Utilities
         {
             string stringResponse = null;
             string message = null;
+            string json = null;
             try
             {
                 string url = _baseUrl.EndsWith("/") ? $"{_baseUrl}{endpoint}" : $"{_baseUrl}/{endpoint}";
@@ -78,7 +79,7 @@ namespace Architect.Utilities
 
                 if (data != null && !data.Equals(default(TRequest))) // Comprobación mejorada para tipos de valor
                 {
-                    var json = JsonConvert.SerializeObject(data);
+                    json = JsonConvert.SerializeObject(data);
                     request.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 }
 
@@ -116,7 +117,9 @@ namespace Architect.Utilities
                         message = $"Se ha recibido una respuesta fallida al hacer el llamado REST del tipo {method.Method} a la URL {_baseUrl}/{endpoint}. Detalle de la respuesta:\n {stringResponse}";
                         if (ThrowException)
                         {
-                            throw new Utilities.Exceptions.CustomException(message, stringResponse);
+                            var customEx =  new Utilities.Exceptions.CustomException(message, stringResponse);
+                            customEx.Data?.Add("json", json);
+                            throw customEx;
                         }
                         else
                         {
