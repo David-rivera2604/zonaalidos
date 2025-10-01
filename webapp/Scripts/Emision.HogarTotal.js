@@ -1530,7 +1530,7 @@ app.HogarTotal = (function () {
             detailFormatter: 'app.ui.GenericDetailFormatter',
             columns: [
                 {
-                    field: 'tipoplan',
+                    field: 'tipoplanDesc',
                     title: 'Tipo plan',
                     titleTooltip: '',
                     sortable: false,
@@ -1648,7 +1648,7 @@ app.HogarTotal = (function () {
                 numerodefolio: null,
                 anodeconstruccion: null,
                 numerometrosconstruidos: null,
-                numerodepiso: null,
+                numerodepiso: setupData.numerodepiso,
 
                 numerofincafilial: null,
                 numerodefoliomadre: null,
@@ -1686,11 +1686,12 @@ app.HogarTotal = (function () {
             return {
                 propiedadId: $('#propiedadModal').data('id'),
                 tipoplan: $('#tipoplan').val(),
+                tipoplanDesc: $("#tipoplan option:selected").text(),
                 otrassenas: $('#otrassenas').val(),
                 numerodefolio: $('#numerodefolio').val(),
                 anodeconstruccion: $('#anodeconstruccion').val(),
                 numerometrosconstruidos: $('#numerometrosconstruidos').val(),
-                numerodepiso: $('#numerodepiso').val(),
+                numerodepiso: app.ui.GetNumericValue('#numerodepiso'),
 
 
 
@@ -1752,8 +1753,7 @@ app.HogarTotal = (function () {
         $('#otrassenas').val(row.otrassenas);
         $('#numerodefolio').val(row.numerodefolio);
         $('#anodeconstruccion').val(row.anodeconstruccion);
-        $('#numerodepiso').val(row.numerodepiso);
-
+        app.ui.SetNumericValue('#numerodepiso', row.numerodepiso);
 
         $('#numerofincafilial').val(row.numerofincafilial);
         $('#numerodefoliomadre').val(row.numerodefoliomadre);
@@ -1809,7 +1809,8 @@ app.HogarTotal = (function () {
                 numerodefolio: { required: true },
                 anodeconstruccion: { required: true },
                 numerometrosconstruidos: { required: true },
-                numerodepiso: { required: true },
+                numerodepiso: { required: true, Numeric: true }
+
             },
             messages: {
                 tipoplan: { required: 'Debe indicar el tipo plan' },
@@ -1817,7 +1818,7 @@ app.HogarTotal = (function () {
                 numerodefolio: { required: 'Debe indicar el número de folio' },
                 anodeconstruccion: { required: 'Debe indicar el año de construcción' },
                 numerometrosconstruidos: { required: 'Debe indicar el número metros construidos' },
-                numerodepiso: { required: 'Debe indicar el número de piso' },
+                numerodepiso: { required: 'Debe indicar el número de piso', Numeric: 'Debe indicar el número de piso' }
             }
         });
     };
