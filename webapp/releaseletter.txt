@@ -749,4 +749,4 @@
 1.6.148 24/09/2025 Pasarela. Recobros. Se habilita el proceso de recobros de recibos recurrentes de forma manual por medio de la consulta 113.
                    Pasarela. Tokenización. Se habilita la posibilidad de pasar un número de póliza a ser usado para la tokenización.
                    Pasarela. Tokenización. Se habilita la posibilidad de filtrar por mas deuna póliza por medio del setting de bd 'Payment.Silice.Tokenize.Filter.Policies'.
-1.6.148 01/10/2025 Pasarela. Recobros. Consulta de cobros rechazados (113), se agrega filtro por cliente.
+1.6.149 01/10/2025 Pasarela. Recobros. Consulta de cobros rechazados (113), se agrega filtro por agente.
