@@ -8,7 +8,7 @@ app.GeneralProcessSpecStep = (function () {
         if (flowIdFltVal != null && flowIdFltVal != '' && flowIdFltVal != '0') {
             filter = filter + ':flowId=' + flowIdFltVal;
         }
-        if (flowIdFltVal.length > 0) {
+        if (flowIdFltVal?.length > 0) {
             $('#ProcessSpecStepGridTbl').bootstrapTable('showLoading');
             app.core.Get(app.setting.apipath + 'v1/ProcessSpecStep?filter=' + filter)
                 .done(function (data, textStatus, jqXHR) {
@@ -220,7 +220,7 @@ app.GeneralProcessSpecStep = (function () {
                         app.GeneralProcessSpecStep.New();
                         break;
                     case 'Copy':
-                        uidata.RoleName += ' copia';
+                        uidata.Name += ' copia';
                         app.GeneralProcessSpecStep.New(uidata);
                         break;
                 }
