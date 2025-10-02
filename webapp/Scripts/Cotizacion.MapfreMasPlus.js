@@ -96,7 +96,8 @@ app.CotizacionMapfreMasPlus = (function () {
             'MM_MarcasVehiculos.cod_marca',
             'MM_ModelosVehiculos.cod_modelo',
             'UsoVehiculo.cod_uso_vehi',
-            'TRON_G1010031:DEDUC303_3017.DedudAutoSust'];
+            'TRON_G1010031:DEDUC303_3017.DedudAutoSust',
+            'TRON_G1010031:DEDUC303_3019.DedudAutoSustConnect'];
 
         setupData = JSON.parse(JSON.stringify(data));
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
@@ -270,6 +271,7 @@ app.CotizacionMapfreMasPlus = (function () {
             DED_AUTO_CRI: app.ui.GetDropDownNumericValue('#DED_AUTO_CRI'),
             AutoSust: app.ui.GetDropDownNumericValue('#AutoSust'),
             DedudAutoSust: app.ui.GetDropDownNumericValue('#DedudAutoSust'),
+            DedudAutoSustConnect: app.ui.GetDropDownNumericValue('#DedudAutoSustConnect'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
             plandepagoFull: $('#plandepagoFullTbl').bootstrapTable('getData'),
@@ -736,7 +738,7 @@ app.CotizacionMapfreMasPlus = (function () {
                 cod_tip_vehi: { required: true },
                 cod_uso_vehi: { required: true },
                 IMP_VR: { required: true, Numeric: true },
-                PCT_AJUSTE_GEN:{AjustePorAnoFabricacion: !localStorage.getItem('Roles')?.includes('Purdy'),ValidarAjusteConRol: true },
+                PCT_AJUSTE_GEN: { AjustePorAnoFabricacion: !localStorage.getItem('Roles')?.includes('Purdy'), ValidarAjusteConRol: true },
                 IMP_AUTO_RC: { required: true },
                 DED_AUTO_RC: { required: true },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: true },
@@ -754,6 +756,7 @@ app.CotizacionMapfreMasPlus = (function () {
                 DED_AUTO_CRI: { required: true },
                 AutoSust: { required: true },
                 DedudAutoSust: { required: true },
+                DedudAutoSustConnect: { required: true },
                 contrato: { required: false },
                 subcontrato: { required: false }
             },
@@ -772,7 +775,7 @@ app.CotizacionMapfreMasPlus = (function () {
                 cod_tip_vehi: { required: 'Debe indicar el clase del vehículo' },
                 cod_uso_vehi: { required: 'Debe indicar el uso del vehículo' },
                 IMP_VR: { required: 'Debe indicar el valor del vehículo asegurado', Numeric: 'Debe indicar el valor del vehículo asegurado' },
-                PCT_AJUSTE_GEN:{ValidarAjusteConRol: '', /*El mensaje ya está definido dinámicamente en la regla*/ AjustePorAnoFabricacion: ''},
+                PCT_AJUSTE_GEN: { ValidarAjusteConRol: '', /*El mensaje ya está definido dinámicamente en la regla*/ AjustePorAnoFabricacion: '' },
                 IMP_AUTO_RC: { required: 'Debe indicar el responsabilidad civil' },
                 DED_AUTO_RC: { required: 'Debe indicar el deducible responsabilidad civil' },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el monto de gastos médicos de ocupantes para el plan seleccionado' },
@@ -791,6 +794,7 @@ app.CotizacionMapfreMasPlus = (function () {
 
                 AutoSust: { required: 'Debe indicar el auto sustituto' },
                 DedudAutoSust: { required: 'Debe indicar el deducible para el auto sustituto' },
+                DedudAutoSustConnect: { required: 'Debe indicar el deducible para el auto sustituto connect' },
                 contrato: { required: 'Debe indicar el contrato' },
                 subcontrato: { required: 'Debe indicar el subcontrato' }
             }
@@ -1309,6 +1313,14 @@ app.CotizacionMapfreMasPlus = (function () {
         else {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSust', true);
             app.ui.SetDropDownNumericValue('#DedudAutoSust', 0);
+        }
+
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3019)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSustConnect', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSustConnect', true);
+            app.ui.SetDropDownNumericValue('#DedudAutoSustConnect', 0);
         }
         data_changed();
         Coberturas_Fijas(coberturas);
