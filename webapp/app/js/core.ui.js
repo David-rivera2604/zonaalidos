@@ -1555,6 +1555,143 @@ app.ui = (function () {
         NewPhoneWidget: function (selector) {
             return $(selector).formatter({ pattern: '{{9999}}-{{9999}}', persistent: false });
         },
+        NewSelectWidget: function (selector) {
+            return $(selector).select2({ width: '100%', theme: 'bootstrap4' });
+        },
+        TableWidget: function (selector, options, estilo = null) {
+            const conf = {
+                uniqueId: 'Id',
+                classes: 'table table-bordered table-hover table-index',
+                pagination: true,
+                smartDisplay: true,
+                showColumns: false,
+                icons: {
+                    paginationSwitchDown: 'fa-caret-square-o-down',
+                    paginationSwitchUp: 'fa-caret-square-o-up',
+                    refresh: 'fa-refresh',
+                    toggleOff: 'fa-toggle-off',
+                    toggleOn: 'fa-toggle-on',
+                    columns: 'fa-th-list',
+                    fullscreen: 'fa-arrows-alt',
+                    detailOpen: 'fa-angle-double-right',
+                    detailClose: 'fa-angle-double-down',
+                    export: 'fa-download'
+                }
+            };
+            const fullconfig = { ...conf, ...options };
+            if (typeof selector === 'string') {
+                $(selector).bootstrapTable(fullconfig);
+            } else {
+                selector.bootstrapTable(fullconfig);
+            }
+        },
+        IntegerColumnWidget: function (field, title, titleTooltip = '', visible = true) {
+            return {
+                field: field,
+                title: title,
+                titleTooltip: titleTooltip,
+                sortable: true,
+                halign: 'center',
+                align: 'right',
+                formatter: 'app.ui.IntegerFormatter',
+                visible: visible
+            };
+        },
+        StringColumnWidget: function (field, title, titleTooltip = '', options) {
+            const conf = {
+                field: field,
+                title: title,
+                titleTooltip: titleTooltip,
+                sortable: true,
+                halign: 'center',
+                align: 'left',
+                formatter: 'app.ui.StringFormatter'
+            };
+            const fullconfig = { ...conf, ...options };
+            return fullconfig;
+        },
+        UpdateDateAndUserColumnWidget: function (field) {
+            return {
+                field: field,
+                title: 'Realizado por',
+                class: 'd-none d-sm-table-cell',
+                sortable: true,
+                halign: 'center',
+                width: 15,
+                widthUnit: '%',
+                formatter: 'app.ui.UpdateDateAndUserFormatter'
+            }
+        },
+        ActionsColumnWidget: function (titleTooltip, events) {
+            return {
+                title: 'Acciones',
+                class: 'd-none d-sm-table-cell',
+                titleTooltip: titleTooltip,
+                sortable: false,
+                halign: 'center',
+                align: 'center',
+                width: 10,
+                widthUnit: "%",
+                events: events,
+                formatter: function (value, row, index, field) {
+                    return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del process spec step de la fila"> <i class="fa fa-pencil"></i> </button>' +
+                        '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del process spec step de la fila"> <i class="fa fa-close"></i> </button>';
+                },
+                cellStyle: function (value, row, index) {
+                    return {
+                        css: {
+                            'white-space': 'nowrap',
+                            'vertical-align': 'top'
+                        }
+                    }
+                }
+            };
+        },
+        ValidateWidget: function (selector, options) {
+            const conf = {
+                errorPlacement: function (error, element) {
+                    var name = $(element).attr("name");
+                    var $obj = $("#" + name + "_validate");
+                    if ($obj.length) {
+                        error.appendTo($obj);
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }
+                }
+            };
+            const rules = options.rules.reduce((acc, item) => {
+                const fieldName = item.field;
+                const ruleType = item.type; // e.g., 'required'
+                const messageText = item.message;
+
+                // 1. Construir el objeto 'rules'
+                // acc.rules es el objeto acumulador para las reglas
+                acc.rules[fieldName] = {
+                    ...acc.rules[fieldName], // Mantener reglas existentes (si las hay)
+                    [ruleType]: true         // Agregar la nueva regla (e.g., required: true)
+                };
+
+                // 2. Construir el objeto 'messages'
+                // acc.messages es el objeto acumulador para los mensajes
+                acc.messages[fieldName] = {
+                    ...acc.messages[fieldName], // Mantener mensajes existentes
+                    [ruleType]: messageText     // Agregar el nuevo mensaje
+                };
+
+                return acc;
+            }, {
+                // Objeto inicial (el valor inicial del acumulador 'acc')
+                rules: {},
+                messages: {}
+            });
+
+            const fullconfig = { ...conf, ...rules };
+            if (options.DateValidators) {
+                app.ui.DateValidators();
+            }
+            $(selector).validate(fullconfig);
+        },
         Redirect: function (url) {
             window.location.href = url;
         },

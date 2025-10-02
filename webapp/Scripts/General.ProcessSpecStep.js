@@ -3,8 +3,8 @@
 app.GeneralProcessSpecStep = (function () {
 
     function Refresh() {
-        var filter = '';
-        var flowIdFltVal = $('#FlowIdFlt').val();
+        let filter = '';
+        let flowIdFltVal = $('#FlowIdFlt').val();
         if (flowIdFltVal != null && flowIdFltVal != '' && flowIdFltVal != '0') {
             filter = filter + ':flowId=' + flowIdFltVal;
         }
@@ -22,195 +22,43 @@ app.GeneralProcessSpecStep = (function () {
     }
 
     function Init_Controls() {
-        new AutoNumeric('#StepOrder', {
-            decimalCharacter: ',',
-            digitGroupSeparator: '.',
-            maximumValue: '99999',
-            minimumValue: '0',
-            decimalPlaces: 0,
-            emptyInputBehavior: 'null'
-        });
+        app.ui.NewNumericWidget('#StepOrder', '', '0', '99999', '0');
+        app.ui.NewSelectWidget('#FlowIdFlt');
+        app.ui.NewSelectWidget('#Roles');
+        app.ui.NewSelectWidget('#References');
 
-        $('#FlowIdFlt').select2({ width: '100%', theme: 'bootstrap4' });
-
-        $('#Roles').select2({ width: '100%', theme: 'bootstrap4' });
-        $('#References').select2({ width: '100%', theme: 'bootstrap4' });
-
-
-        $(".formbtn").appendTo("#GenericToolBar");
+        $('.formbtn').appendTo("#GenericToolBar");
     }
 
     function Init_List() {
-        $('#ProcessSpecStepGridTbl').bootstrapTable({
-            uniqueId: 'Id',
-            classes: 'table table-bordered table-hover table-index',
-            pagination: true,
-            smartDisplay: true,
-            showColumns: false,
-            detailView: true,
-            onExpandRow: function (index, row, $detail) {
-                $detail.append('<span class="detail-title">Tareas</span>');
-                $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px; width: 99%!important;"><table style="font-size: 11px"></table></div>');
 
-                Task_Init_List($detail.find('span'), $detail.find('table'), row);
-            },
-            columns: [
-                {
-                    field: 'FlowIdDesc',
-                    title: 'Proceso',
-                    sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'Name',
-                    title: 'Nombre',
-                    sortable: true,
-                    halign: 'center',
-                    events: 'ProcessSpecStepGridTbl_Events',
-                    formatter: function (value, row, index, field) {
-                        return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de los datos del process spec step">' + value + '</a>';
-                    }
-                }, {
-                    field: 'Description',
-                    title: 'Descripción',
-                    sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'StepOrder',
-                    title: 'Orden',
-                    titleTooltip: 'Orden en que se procesan los pasos para un proceso.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter'
-                }, {
-                    field: 'ProcessStatusDesc',
-                    title: 'Estado',
-                    sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'ProcessLabel',
-                    title: 'Etiqueta',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'EnableComment',
-                    title: 'Enable Comment',
-                    titleTooltip: '.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.BooleanFormatter',
-                    visible: false
-                }, {
-                    field: 'ProgressModeDesc',
-                    title: 'Tipo',
-                    sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'MailServerDesc',
-                    title: 'Servidor de correo',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailToContactDesc',
-                    title: 'Contacto',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailToContactCustom',
-                    title: 'Contacto',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailToContactTmplDesc',
-                    title: 'Mai Tmpll to Contact',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailToStepResponsibleDesc',
-                    title: 'Responsables',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailToStepResponsibleCustom',
-                    title: 'Responsables',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'MailToStepResponsibleTmplDesc',
-                    title: 'Mail to Step Responsible Tmpl',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'PreScript',
-                    title: 'Pre Script',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'PostScript',
-                    title: 'Post Script',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'RoleNames',
-                    title: 'Roles',
-                    sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'UpdateDate',
-                    title: 'Realizado por',
-                    class: 'd-none d-sm-table-cell',
-                    sortable: true,
-                    halign: 'center',
-                    width: 15,
-                    widthUnit: '%',
-                    formatter: 'app.ui.UpdateDateAndUserFormatter'
-                }, {
-                    title: 'Acciones',
-                    class: 'd-none d-sm-table-cell',
-                    titleTooltip: 'Acciones disponibles para un process spec step',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    width: 10,
-                    widthUnit: "%",
-                    events: 'ProcessSpecStepGridTbl_Events',
-                    formatter: function (value, row, index, field) {
-                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del process spec step de la fila"> <i class="fa fa-pencil"></i> </button>' +
-                            '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del process spec step de la fila"> <i class="fa fa-close"></i> </button>';
-                    },
-                    cellStyle: function (value, row, index) {
-                        return {
-                            css: {
-                                'white-space': 'nowrap',
-                                'vertical-align': 'top'
+        app.ui.TableWidget('#ProcessSpecStepGridTbl',
+            {
+                detailView: true,
+                onExpandRow: function (index, row, $detail) {
+                    $detail.append('<span class="detail-title">Tareas</span>');
+                    $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px; width: 99%!important;"><table style="font-size: 11px"></table></div>');
+
+                    Task_Init_List($detail.find('span'), $detail.find('table'), row);
+                },
+                columns: [
+                    app.ui.StringColumnWidget('FlowIdDesc', 'Proceso'),
+                    app.ui.StringColumnWidget('Name', 'Nombre', '',
+                        {
+                            events: 'ProcessSpecStepGridTbl_Events',
+                            formatter: function (value, row, index, field) {
+                                return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de los datos de la etapa">' + value + '</a>';
                             }
-                        }
-                    }
-                }],
-            icons: {
-                paginationSwitchDown: 'fa-caret-square-o-down',
-                paginationSwitchUp: 'fa-caret-square-o-up',
-                refresh: 'fa-refresh',
-                toggleOff: 'fa-toggle-off',
-                toggleOn: 'fa-toggle-on',
-                columns: 'fa-th-list',
-                fullscreen: 'fa-arrows-alt',
-                detailOpen: 'fa-angle-double-right',
-                detailClose: 'fa-angle-double-down',
-                export: 'fa-download'
-            }
-        });
+                        }),
+                    app.ui.StringColumnWidget('Description', 'Descripción'),
+                    app.ui.IntegerColumnWidget('StepOrder', 'Orden', 'Orden en que se procesan los pasos para un proceso.'),
+                    app.ui.StringColumnWidget('ProcessStatusDesc', 'Estado'),
+                    app.ui.StringColumnWidget('ProgressModeDesc', 'Tipo'),
+                    app.ui.StringColumnWidget('RoleNames', 'Roles'),
+                    app.ui.UpdateDateAndUserColumnWidget('UpdateDate'),
+                    app.ui.ActionsColumnWidget('Acciones disponibles para una etapa', 'ProcessSpecStepGridTbl_Events')]
+            });
+
     }
 
     function Event_Controls() {
@@ -236,10 +84,10 @@ app.GeneralProcessSpecStep = (function () {
             Refresh();
         });
 
-        $('#ProcessSpecStepEdtFormSave').click(function () {
+        $('#ProcessSpecStepEdtFormSave').click(function (event) {
             if (app.ui.IsValid('#ProcessSpecStepEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessSpecStepEdtFormSave');
-                var data = MapInputToObject();
+                let data = MapInputToObject();
                 if (data.Id === 0)
                     Create(data, 'Save');
                 else
@@ -248,28 +96,28 @@ app.GeneralProcessSpecStep = (function () {
             event.preventDefault();
         });
 
-        $('#ProcessSpecStepEdtFormSaveContinue').click(function () {
+        $('#ProcessSpecStepEdtFormSaveContinue').click(function (event) {
             if (app.ui.IsValid('#ProcessSpecStepEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessSpecStepEdtFormSaveContinue');
-                var data = MapInputToObject();
+                let data = MapInputToObject();
                 Create(data, 'Continue');
             }
             event.preventDefault();
         });
 
-        $('#ProcessSpecStepEdtFormSaveCopy').click(function () {
+        $('#ProcessSpecStepEdtFormSaveCopy').click(function (event) {
             if (app.ui.IsValid('#ProcessSpecStepEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessSpecStepEdtFormSaveCopy');
-                var data = MapInputToObject();
+                let data = MapInputToObject();
                 Create(data, 'Copy');
             }
             event.preventDefault();
         });
 
-        $('#ProcessSpecStepEdtFormDuplicate').click(function () {
+        $('#ProcessSpecStepEdtFormDuplicate').click(function (event) {
             if (app.ui.IsValid('#ProcessSpecStepEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessSpecStepEdtFormDuplicate');
-                var data = MapInputToObject();
+                let data = MapInputToObject();
                 data.Id = 0;
                 data.Name += ' duplicado';
                 app.ui.ButtonDone('#ProcessSpecStepEdtFormDuplicate');
@@ -278,17 +126,17 @@ app.GeneralProcessSpecStep = (function () {
             event.preventDefault();
         });
 
-        $('#ProcessSpecStepEdtFormDelete').click(function () {
+        $('#ProcessSpecStepEdtFormDelete').click(function (event) {
             if (app.ui.IsValid('#ProcessSpecStepEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessSpecStepEdtFormDelete');
-                var data = MapInputToObject();
+                let data = MapInputToObject();
                 app.ui.ButtonDone('#ProcessSpecStepEdtFormDelete');
                 app.GeneralProcessSpecStep.DeleteRow(data);
             }
             event.preventDefault();
         });
 
-        $('#ProcessSpecStepEdtFormCancel').click(function () {
+        $('#ProcessSpecStepEdtFormCancel').click(function (event) {
             ViewMode();
             event.preventDefault();
         });
@@ -362,7 +210,7 @@ app.GeneralProcessSpecStep = (function () {
     function Create(uidata, mode) {
         app.core.Post(app.setting.apipath + 'v1/ProcessSpecStep', JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("El process spec step '" + uidata.Name + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                toastr.success("La etapa '" + uidata.Name + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                 Refresh();
                 switch (mode) {
                     case 'Save':
@@ -394,7 +242,7 @@ app.GeneralProcessSpecStep = (function () {
     function Update(uidata) {
         app.core.Put(app.setting.apipath + 'v1/ProcessSpecStep/' + uidata.Id, JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("El process spec step '" + uidata.Name + "' fue modificado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                toastr.success("La etapa '" + uidata.Name + "' fue modificado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                 ViewMode();
                 Refresh();
             }).always(function () {
@@ -403,14 +251,14 @@ app.GeneralProcessSpecStep = (function () {
     };
 
     function Delete(uidata) {
-        toastr.warning("Si está seguro de querer eliminar el process spec step '" + uidata.Name + "' haga clic aquí", null,
+        toastr.warning("Si está seguro de querer eliminar la etapa '" + uidata.Name + "' haga clic aquí", null,
             {
                 timeOut: 5000, closeButton: true, progressBar: true,
                 onclick: function () {
                     $('.ibox-content').toggleClass('sk-loading');
                     app.core.Delete(app.setting.apipath + 'v1/ProcessSpecStep/' + uidata.Id)
                         .done(function (data, textStatus, jqXHR) {
-                            toastr.success("El process spec step '" + uidata.Name + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                            toastr.success("La etapa '" + uidata.Name + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                             ViewMode();
                             Refresh();
                         }).always(function () {
@@ -426,12 +274,12 @@ app.GeneralProcessSpecStep = (function () {
     };
 
     function Dynamic_Event_Controls() {
-        $('#FlowIdFlt').select2({ width: '100%', theme: 'bootstrap4' });
+        app.ui.NewSelectWidget('#FlowIdFlt');
         app.core.LoadLookup(app.setting.apipath + 'v1/RoleMember/Lookup', 'Roles');
     };
 
     function MapInputToObject() {
-        var data = {
+        let data = {
             Id: parseInt(0 + $('#Id').val(), 10),
             FlowId: app.ui.GetDropDownNumericValue('#FlowId'),
             Name: $('#Name').val(),
@@ -483,64 +331,19 @@ app.GeneralProcessSpecStep = (function () {
 
         $('#PreScript').val(data.PreScript);
         $('#PostScript').val(data.PostScript);
-        
-
     };
 
     function Setup_Validations() {
-        app.ui.DateValidators();
-        $("#ProcessSpecStepEdtForm").validate({
-            errorPlacement: function (error, element) {
-                var name = $(element).attr("name");
-                var $obj = $("#" + name + "_validate");
-                if ($obj.length) {
-                    error.appendTo($obj);
-                }
-                else {
-                    error.insertAfter(element);
-                }
-            },
-            rules: {
-                FlowId: {
-                    required: true
-                },
-                Name: {
-                    required: true
-                },
-                StepOrder: {
-                    required: true
-                },
-                ProgressMode: {
-                    required: true
-                },
-                MailServer: {
-                    required: true
-                },
-                ProcessStatus: {
-                    required: true
-                }
-            },
-            messages: {
-                FlowId: {
-                    required: 'Debe indicar el proceso'
-                },
-                Name: {
-                    required: 'Debe indicar el nombre'
-                },
-                StepOrder: {
-                    required: 'Debe indicar el orden'
-                },
-                ProgressMode: {
-                    required: 'Debe indicar el tipo'
-                },
-                MailServer: {
-                    required: 'Debe indicar el servidor de correo'
-                },
-                ProcessStatus: {
-                    required: 'Debe indicar el estado'
-                }
-            }
-
+        app.ui.ValidateWidget('#ProcessSpecStepEdtForm', {
+            DateValidators: false,
+            rules: [
+                { field: 'FlowId', type: 'required', message: 'Debe indicar el proceso' },
+                { field: 'Name', type: 'required', message: 'Debe indicar el nombre' },
+                { field: 'StepOrder', type: 'required', message: 'Debe indicar el orden' },
+                { field: 'ProgressMode', type: 'required', message: 'Debe indicar el tipo' },
+                { field: 'MailServer', type: 'required', message: 'Debe indicar el servidor de correo' },
+                { field: 'ProcessStatus', type: 'required', message: 'Debe indicar el estado' }
+            ]
         });
     };
 
@@ -569,16 +372,16 @@ app.GeneralProcessSpecStep = (function () {
 
                     app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + data.FlowId + '/References')
                         .done(function (dataRef, textStatus, jqXHR) {
-                            var ctrol = $('select#References');
+                            let ctrol = $('select#References');
                             ctrol.children().remove();
                             $.each(dataRef, function () {
                                 ctrol.append($('<option />').val(this['Code']).text(this['Description']));
                             });
-                            ctrol.select2({ width: '100%', theme: 'bootstrap4' });
+                            app.ui.NewSelectWidget('select#References');
                             if (data.References == '') {
                                 data.References = '[]';
                             }
-                            app.ui.SetDropDownMultiValues('References', JSON.parse(data.References) );
+                            app.ui.SetDropDownMultiValues('References', JSON.parse(data.References));
                         });
 
                     $('#Name').focus();
@@ -606,102 +409,23 @@ app.GeneralProcessSpecStep = (function () {
     };
 
     function Task_Init_List(title, gridTbl, parentRow) {
-        gridTbl.bootstrapTable({
-            uniqueId: 'Id',
-            classes: 'table table-bordered table-hover table-index',
-            pagination: true,
-            smartDisplay: true,
-            detailView: false,
-            showColumns: false,
-            detailFormatter: 'app.ui.GenericDetailFormatter',
-            columns: [
-                {
-                    field: 'TaskOrder',
-                    title: 'Orden',
-                    titleTooltip: 'Orden en que se procesan la tarea.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter'
-                }, {
-                    field: 'Name',
-                    title: 'Name',
-                    sortable: true,
-                    halign: 'center',
-                    formatter: function (value, row, index, field) {
-                        return `<a class="edit" href="ProcessSpecTask?id=${row.Id}" title="Al hacer click permite editar la tarea">${value}</a>`;
-                    }
-                }, {
-                    field: 'Description',
-                    title: 'Descripción',
-                    sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'IsRequired',
-                    title: 'Is Required',
-                    titleTooltip: '.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.BooleanFormatter',
-                    visible: false
-                }, {
-                    field: 'IsSelected',
-                    title: 'Is Selected',
-                    titleTooltip: '.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.BooleanFormatter',
-                    visible: false
-                }, {
-                    field: 'TypeDesc',
-                    title: 'Tipo',
-                    sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'ActionDesc',
-                    title: 'Acción',
-                    sortable: true,
-                    halign: 'center'
-                }, {
-                    field: 'SubStatus',
-                    title: 'Estado',
-                    titleTooltip: '.',
-                    sortable: true,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
-                }, {
-                    field: 'SubLabel',
-                    title: 'Etiqueta',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'PreScript',
-                    title: 'Pre Script',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'PostScript',
-                    title: 'Post Script',
-                    sortable: true,
-                    halign: 'center',
-                    visible: false
-                }, {
-                    field: 'UpdateDate',
-                    title: 'Realizado por',
-                    class: 'd-none d-sm-table-cell',
-                    sortable: true,
-                    halign: 'center',
-                    width: 15,
-                    widthUnit: '%',
-                    formatter: 'app.ui.UpdateDateAndUserFormatter'
-                }]
-        });
+        app.ui.TableWidget(gridTbl,
+            {
+                detailFormatter: 'app.ui.GenericDetailFormatter',
+                columns: [
+                    app.ui.IntegerColumnWidget('TaskOrder', 'Orden', 'Orden en que se procesan la tarea.'),
+                    app.ui.StringColumnWidget('Name', 'Nombre', '',
+                        {
+                            formatter: function (value, row, index, field) {
+                                return `<a class="edit" href="ProcessSpecTask?id=${row.Id}" title="Al hacer click permite editar la tarea">${value}</a>`;
+                            }
+                        }),
+                    app.ui.StringColumnWidget('Description', 'Descripción'),
+                    app.ui.StringColumnWidget('TypeDesc', 'Tipo'),
+                    app.ui.StringColumnWidget('ActionDesc', 'Acción'),
+                    app.ui.UpdateDateAndUserColumnWidget('UpdateDate')]
+            });
+
         gridTbl.bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + 'v1/ProcessSpecTask?filter=:flowId=' + parentRow.FlowId + ':stepId=' + parentRow.Id)
             .done(function (data, textStatus, jqXHR) {
@@ -718,7 +442,7 @@ app.GeneralProcessSpecStep = (function () {
             Init_Lookups();
             Event_Controls();
             Setup_Validations();
-            var _id = app.core.URLNumericValue('id');
+            let _id = app.core.URLNumericValue('id');
             if (_id !== 0) {
                 $("body").toggleClass("mini-navbar");
                 EditMode({ Id: _id });
