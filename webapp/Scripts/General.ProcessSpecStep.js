@@ -567,7 +567,6 @@ app.GeneralProcessSpecStep = (function () {
                 .done(function (data, textStatus, jqXHR) {
                     MapObjectToInput(data);
 
-
                     app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + data.FlowId + '/References')
                         .done(function (dataRef, textStatus, jqXHR) {
                             var ctrol = $('select#References');
@@ -576,7 +575,7 @@ app.GeneralProcessSpecStep = (function () {
                                 ctrol.append($('<option />').val(this['Code']).text(this['Description']));
                             });
                             ctrol.select2({ width: '100%', theme: 'bootstrap4' });
-                            if (data.References = '') {
+                            if (data.References == '') {
                                 data.References = '[]';
                             }
                             app.ui.SetDropDownMultiValues('References', JSON.parse(data.References) );
