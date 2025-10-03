@@ -1756,6 +1756,112 @@ app.ui = (function () {
                         console.error("Error al ejecutar el script:", error);
                     }
                 });
+        },
+        InitDataEntry: async function (elementsConfig) {
+            for (const [fieldName, configObject] of Object.entries(elementsConfig)) {
+                let selector = `#${fieldName}`;
+                if (configObject.type === 'radionumeric') {
+                    selector = `input:radio[name=${fieldName}]`;
+                }
+                configObject.element = $(selector);
+            }
+            return elementsConfig;
+        },
+        ObjectToDataEntry: async function (elementsConfig, data) {
+            for (const [fieldName, configObject] of Object.entries(elementsConfig)) {
+
+                const dataType = configObject.type;
+                let $element = configObject.element;
+                let $change = configObject.change || false;
+                let value;
+
+                if ((!$element || $element.length === 0) && dataType != 'radioboolean') {
+                    console.warn(`Elemento no encontrado para el campo: ${fieldName}.`);
+                    continue;
+                }
+
+                switch (dataType) {
+                    case 'numeric':
+                        value = app.ui.SetNumericValue(`#${$element[0].id}`, data[fieldName]);
+                        break;
+                    case 'dropdownnumeric':
+                        value = app.ui.SetDropDownNumericValue(`#${$element[0].id}`, data[fieldName]);
+                        break;
+
+                    case 'dropdownmulti':
+                        app.ui.SetDropDownMultiValues(fieldName, data[fieldName]);
+                        break;
+
+                    case 'radioboolean':
+                        if (!$element || $element.length === 0) {
+                            $element = $(`input:radio[name=${fieldName}]:checked`);
+                            configObject.element = $element;
+                        }
+                        app.ui.SetRadioNumericValue(fieldName, data[fieldName]);
+                        break;
+                    case 'hiddennumeric':
+                        $element.val(data[fieldName]);
+                        break;
+                    case 'string':
+                        $element.val(data[fieldName]);
+                        break;
+                    default:
+                        throw new Error(`El tipo ${dataType}" no esta implementado`)
+                        break;
+                }
+                if ($change) {
+                    $element.change();
+                }
+            }
+        },
+        DataEntryToObject: function (elementsConfig) {
+            const formData = {};
+
+            for (const [fieldName, configObject] of Object.entries(elementsConfig)) {
+
+                const dataType = configObject.type;
+                let $element = configObject.element;
+                let value;
+
+                if ((!$element || $element.length === 0) && dataType != 'radioboolean') {
+                    console.warn(`Elemento no encontrado para el campo: ${fieldName}. Se asigna null.`);
+                    formData[fieldName] = null;
+                    continue;
+                }
+
+                switch (dataType) {
+                    case 'numeric':
+                        value = app.ui.GetNumericValue(`#${$element[0].id}`);
+                        break;
+                    case 'dropdownnumeric':
+                        value = app.ui.GetDropDownNumericValue(`#${$element[0].id}`);
+                        break;
+
+                    case 'dropdownmulti':
+                        value = app.ui.GetDropDownMultiValues(fieldName);
+                        break;
+
+                    case 'radioboolean':
+                        if (!$element || $element.length === 0) {
+                            $element = $(`input:radio[name=${fieldName}]`);
+                            configObject.element = $element;
+                        }
+                        value =  $element.filter(':checked').val() == 'true';
+                        break;
+                    case 'hiddennumeric':
+                        value = parseInt(0 + $element.val(), 10) || null;
+                        break;
+                    case 'string':
+                        value = $element.val();
+                        break;
+                    default:
+                        throw new Error(`El tipo ${dataType}" no esta implementado`)
+                        break;
+                }
+                formData[fieldName] = value;
+            }
+
+            return formData;
         }
     };
 })();

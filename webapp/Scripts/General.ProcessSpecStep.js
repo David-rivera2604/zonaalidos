@@ -1,8 +1,32 @@
 ﻿var app = app || {};
 
-app.GeneralProcessSpecStep = (function () {
+app.GeneralProcessSpecStep = (() => {
 
-    function Refresh() {
+    const elements = {
+        Id: { type: 'hiddennumeric' },
+        FlowId: { type: 'dropdownnumeric' },
+        Name: { type: 'string' },
+        Description: { type: 'string' },
+        Roles: { type: 'dropdownmulti', change: true },
+        StepOrder: { type: 'numeric' },
+        ProcessStatus: { type: 'string' },
+        ProcessLabel: { type: 'string' },
+        EnableComment: { type: 'radioboolean' },
+        ProgressMode: { type: 'string' },
+        SLA: { type: 'dropdownnumeric' },
+        MailServer: { type: 'string' },
+        MailToContact: { type: 'string', change: true },
+        MailToContactCustom: { type: 'string' },
+        MailToContactTmpl: { type: 'string' },
+        MailToStepResponsible: { type: 'string', change: true },
+        MailToStepResponsibleCustom: { type: 'string' },
+        MailToStepResponsibleTmpl: { type: 'string' },
+        PreScript: { type: 'string' },
+        PostScript: { type: 'string' },
+        References: { type: 'dropdownmulti' }
+    }
+
+    const Refresh = () => {
         let filter = '';
         let flowIdFltVal = $('#FlowIdFlt').val();
         if (flowIdFltVal != null && flowIdFltVal != '' && flowIdFltVal != '0') {
@@ -21,7 +45,7 @@ app.GeneralProcessSpecStep = (function () {
         }
     }
 
-    function Init_Controls() {
+    const Init_Controls = () => {
         app.ui.NewNumericWidget('#StepOrder', '', '0', '99999', '0');
         app.ui.NewSelectWidget('#FlowIdFlt');
         app.ui.NewSelectWidget('#Roles');
@@ -30,7 +54,7 @@ app.GeneralProcessSpecStep = (function () {
         $('.formbtn').appendTo("#GenericToolBar");
     }
 
-    function Init_List() {
+    const Init_List = () => {
 
         app.ui.TableWidget('#ProcessSpecStepGridTbl',
             {
@@ -61,7 +85,7 @@ app.GeneralProcessSpecStep = (function () {
 
     }
 
-    function Event_Controls() {
+    const Event_Controls = () => {
 
         $('.tool-audit').on('click', function (e) {
             app.ui.components.ShowModalChangeSet(1301);
@@ -198,7 +222,7 @@ app.GeneralProcessSpecStep = (function () {
         });
     };
 
-    function EdtForm_Change() {
+    const EdtForm_Change = () => {
         if ($('#ProgressMode').val() == '1') {
             $('.progressmode-visible').removeClass('d-none');
         }
@@ -207,7 +231,7 @@ app.GeneralProcessSpecStep = (function () {
         }
     };
 
-    function Create(uidata, mode) {
+    const Create = async (uidata, mode) => {
         app.core.Post(app.setting.apipath + 'v1/ProcessSpecStep', JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
                 toastr.success("La etapa '" + uidata.Name + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
@@ -239,7 +263,7 @@ app.GeneralProcessSpecStep = (function () {
             });
     };
 
-    function Update(uidata) {
+    const Update = async (uidata) => {
         app.core.Put(app.setting.apipath + 'v1/ProcessSpecStep/' + uidata.Id, JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
                 toastr.success("La etapa '" + uidata.Name + "' fue modificado", "", { timeOut: 5000, closeButton: true, progressBar: true });
@@ -250,7 +274,7 @@ app.GeneralProcessSpecStep = (function () {
             });
     };
 
-    function Delete(uidata) {
+    const Delete = async (uidata) => {
         toastr.warning("Si está seguro de querer eliminar la etapa '" + uidata.Name + "' haga clic aquí", null,
             {
                 timeOut: 5000, closeButton: true, progressBar: true,
@@ -268,72 +292,27 @@ app.GeneralProcessSpecStep = (function () {
             });
     };
 
-    function Init_Lookups() {
+    const Init_Lookups = () => {
         app.core.Lookups(['Process.FlowId', 'Process.FlowIdFlt', 'ProcessStatus.ProcessStatus', 'ProgressMode.ProgressMode', 'MailServer.MailServer', 'MailSendOptions.MailToContact', 'MailTemplate.MailToContactTmpl', 'MailSendOptions.MailToStepResponsible', 'MailTemplate.MailToStepResponsibleTmpl', 'SLA.SLA.'], Dynamic_Event_Controls);
         // Dependencies
     };
 
-    function Dynamic_Event_Controls() {
+    const Dynamic_Event_Controls = () => {
         app.ui.NewSelectWidget('#FlowIdFlt');
         app.core.LoadLookup(app.setting.apipath + 'v1/RoleMember/Lookup', 'Roles');
     };
 
-    function MapInputToObject() {
-        let data = {
-            Id: parseInt(0 + $('#Id').val(), 10),
-            FlowId: app.ui.GetDropDownNumericValue('#FlowId'),
-            Name: $('#Name').val(),
-            Description: $('#Description').val(),
-            Roles: app.ui.GetDropDownMultiValues('Roles'),
-            StepOrder: app.ui.GetNumericValue('#StepOrder'),
-            ProcessStatus: $('#ProcessStatus').val(),
-            ProcessLabel: $('#ProcessLabel').val(),
-            EnableComment: app.ui.GetRadioNumericValue('EnableComment'),
-            ProgressMode: $('#ProgressMode').val(),
-            SLA: app.ui.GetDropDownNumericValue('#SLA'),
-            MailServer: $('#MailServer').val(),
-            MailToContact: $('#MailToContact').val(),
-            MailToContactCustom: $('#MailToContactCustom').val(),
-            MailToContactTmpl: $('#MailToContactTmpl').val(),
-            MailToStepResponsible: $('#MailToStepResponsible').val(),
-            MailToStepResponsibleCustom: $('#MailToStepResponsibleCustom').val(),
-            MailToStepResponsibleTmpl: $('#MailToStepResponsibleTmpl').val(),
-            PreScript: $('#PreScript').val(),
-            PostScript: $('#PostScript').val(),
-            References: JSON.stringify(app.ui.GetDropDownMultiValues('References'))
-        };
+    const MapInputToObject = () => {
+        let data = app.ui.DataEntryToObject(elements);
+        data.References = JSON.stringify(data.References)
         return data;
     };
 
-    function MapObjectToInput(data) {
-        $('#Id').val(data.Id);
-        $('#FlowId').val(data.FlowId);
-        $('#Name').val(data.Name);
-        $('#Description').val(data.Description);
-        app.ui.SetDropDownMultiValues('Roles', data.Roles);
-        $('#Roles').change();
-        app.ui.SetNumericValue('#StepOrder', data.StepOrder);
-        $('#ProcessStatus').val(data.ProcessStatus);
-        $('#ProcessLabel').val(data.ProcessLabel);
-        $('#EnableComment').prop('checked', data.EnableComment);
-        app.ui.SetRadioNumericValue('EnableComment', data.EnableComment);
-        $('#ProgressMode').val(data.ProgressMode);
-        $('#SLA').val(data.SLA);
-        $('#MailServer').val(data.MailServer);
-
-        $('#MailToContactCustom').val(data.MailToContactCustom);
-        $('#MailToContactTmpl').val(data.MailToContactTmpl);
-        $('#MailToContact').val(data.MailToContact).change();
-
-        $('#MailToStepResponsibleCustom').val(data.MailToStepResponsibleCustom);
-        $('#MailToStepResponsibleTmpl').val(data.MailToStepResponsibleTmpl);
-        $('#MailToStepResponsible').val(data.MailToStepResponsible).change();
-
-        $('#PreScript').val(data.PreScript);
-        $('#PostScript').val(data.PostScript);
+    const MapObjectToInput = (data) => {
+        app.ui.ObjectToDataEntry(elements, data);
     };
 
-    function Setup_Validations() {
+    const Setup_Validations = () => {
         app.ui.ValidateWidget('#ProcessSpecStepEdtForm', {
             DateValidators: false,
             rules: [
@@ -347,7 +326,7 @@ app.GeneralProcessSpecStep = (function () {
         });
     };
 
-    function EditMode(row) {
+    const EditMode = (row) => {
         $('.filter-row').addClass('d-none');
         $('.advancefilter-row').addClass('d-none');
         $('#ProcessSpecStepGridTbl').parents().find('.table-responsive').addClass('d-none');
@@ -400,7 +379,7 @@ app.GeneralProcessSpecStep = (function () {
         }
     };
 
-    function ViewMode() {
+    const ViewMode = () => {
         $('.filter-row').removeClass('d-none');
         $('.advancefilter-row').removeClass('d-none');
         $('#ProcessSpecStepGridTbl').parents().find('.table-responsive').removeClass('d-none');
@@ -408,7 +387,7 @@ app.GeneralProcessSpecStep = (function () {
         $('.formbtn').addClass('d-none');
     };
 
-    function Task_Init_List(title, gridTbl, parentRow) {
+    const Task_Init_List = (title, gridTbl, parentRow) => {
         app.ui.TableWidget(gridTbl,
             {
                 detailFormatter: 'app.ui.GenericDetailFormatter',
@@ -436,7 +415,7 @@ app.GeneralProcessSpecStep = (function () {
     }
 
     return {
-        Init: function () {
+        Init() {
             Init_List();
             Init_Controls();
             Init_Lookups();
@@ -450,8 +429,11 @@ app.GeneralProcessSpecStep = (function () {
             else {
                 Refresh();
             }
+
+            app.ui.InitDataEntry(elements);
+
         },
-        New: function (row) {
+        New(row) {
             let newRow = { Id: 0, FlowId: 0, Name: null, Description: null, StepOrder: 0, ProcessStatus: 0, ProcessLabel: null, EnableComment: false, ProgressMode: 1, SLA: 0, MailServer: 1, MailToContact: 1, MailToContactCustom: null, MailToContactTmpl: 1, MailToStepResponsible: 1, MailToStepResponsibleCustom: null, MailToStepResponsibleTmpl: 1, PreScript: null, PostScript: null, References: null }
             if (row !== undefined) {
                 row.Id = 0;
@@ -462,10 +444,10 @@ app.GeneralProcessSpecStep = (function () {
             }
             EditMode(newRow);
         },
-        EditRow: function (row) {
+        EditRow(row) {
             EditMode(row);
         },
-        DeleteRow: function (row) {
+        DeleteRow(row) {
             Delete(row);
         }
     };
