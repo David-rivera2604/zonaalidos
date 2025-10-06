@@ -737,3 +737,15 @@
                    Clientes. Consultas Mis Pólizas/Siniestros, se ajustan para visualizar los datos cuando el cliente conectando es el tomandor, asegurado o el pagador.
 1.6.140 08/07/2025 Pasarela. Recurrente. Se corrigue verificación de la cantidad de reintento.
 1.6.141 09/07/2025 Trazabilidad. Cambio en el listado de casos por devolución de dinero (120), para manejar la fecha de completado de la devolucion en función al paso.
+1.6.142 28/07/2025 Clientes. Mantenimiento de pólizas excluida para el portal de clientes (form ExcludedPolicies (9107)).
+                   Clientes. Consultas Mis Pólizas/Siniestros, se ajustan para manejar la información de pólizas excluidas.
+                   Clientes. Se ajusta la creación de sesión para pago por falla al conseguir el recibo según la identificación del cliente conectado.
+1.6.143 30/07/2025 Trazabilidad. Se permitir la modificación de los campos de referencia de un caso después de su creación.
+1.6.144 04/08/2025 Purdy. Siniestros. Cambios en el reporte de siniestros (Mapfre), se ajusta el excel para cambiar las columnas código y descripción de coberturas mas la columna anio_mes.
+1.6.145 11/08/2025 Trazabilidad. Se habilita en la configuración del paso, la posibilidad de indicar cuales campos de referencia pueden ser editados.
+1.6.146 20/08/2025 Pasarela. SINPE. Se ajusta código de retorno en caso de no ubicar la poliza/recibo, se cambia la tolerancia del monto de pago de 1 a 100 colones.
+                   Pasarela. SINPE. Se cambia el atributo "authorization" para usar el campo CodReferenciaBanco en vez de CodReferencia.
+1.6.147 25/08/2025 Aliados. Siniestros. Consulta de Siniestros (350). Se agrega a la consulta de Expedientes (351) un nueva consulta Plan de tramitación (353).
+1.6.148 24/09/2024 Pasarela. Recobros. Se habilita el proceso de recobros de recibos recurrentes de forma manual por medio de la consulta 113.
+                   Pasarela. Tokenización. Se habilita la posibilidad de pasar un número de póliza a ser usado para la tokenización.
+                   Pasarela. Tokenización. Se habilita la posibilidad de filtrar por mas deuna póliza por medio del setting de bd 'Payment.Silice.Tokenize.Filter.Policies'.

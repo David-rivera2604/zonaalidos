@@ -86,7 +86,7 @@ app.GeneralNewCase = (function () {
 
                 selectedOptions.append($('<option selected />').val('').text(''));
                 $.each(valueList.split(';'), function () {
-                    selectedOptions.append($('<option />').val(this).text(this));
+                    selectedOptions.append($('<option />').val(this.trim()).text(this.trim()));
                 });
             }
             $('#' + id).parent().parent().removeClass('d-none');

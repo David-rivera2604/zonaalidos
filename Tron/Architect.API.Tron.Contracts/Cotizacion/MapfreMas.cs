@@ -209,6 +209,11 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// Deducible auto sustituto.
         /// </summary>
         [DataMember(), JsonProperty()] public int DedudAutoSust { get; set; }
+
+        /// <summary>
+        /// Deducible auto sustituto Connect.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int DedudAutoSustConnect { get; set; }
         /// <summary>
         /// Coberturas
         /// </summary>

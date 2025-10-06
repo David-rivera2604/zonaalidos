@@ -27,6 +27,8 @@ namespace Architect.API.Tron.Business.Variaciones
                 subcontrato = tronQuoteInfo.num_subcontrato,
                 polizagrupo = tronQuoteInfo.num_poliza_grupo,
                 MCA_FEC_EFEC_SYS = "N",
+                tipo_prod = "basico",
+                tipo_prodDesc = "Básico",
                 cod_agt = tronQuoteInfo.cod_agt,
                 cod_cuadro_com = tronQuoteInfo.cod_cuadro_com,
                 coberturas = new List<Contracts.Comun.Cobertura>()

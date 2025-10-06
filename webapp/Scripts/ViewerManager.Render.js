@@ -225,7 +225,7 @@ app.ViewerQuery = (function () {
                 }
 
                 $detail.append('<span class="detail-title">...</span>');
-                $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px;"><table style="font-size: 11px" id="' + id + '"></table></div>');
+                $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px; padding-right: 10px"><table style="font-size: 11px" id="' + id + '"></table></div>');
 
                 Child($detail.find('span'), $detail.find('table'), this.detailId, url, id, row);
             };
@@ -261,6 +261,10 @@ app.ViewerQuery = (function () {
         else if (!spec.Direct)
             EventDirect(spec);
 
+        if (spec.onAll != undefined) {
+            spec.onAll = new Function(["name", "args"], "{ " + spec.onAll + "('" + index + "GridTbl', name, args); }");
+        }
+        
         if (Array.isArray(spec.columns[0])) {
             spec.columns.forEach(function (group, gindex, garray) {
                 group.forEach(function (column, index, array) {
@@ -482,6 +486,18 @@ app.ViewerQuery = (function () {
                 spec.showColumns = false;
                 spec.showColumnsToggleAll = false;
                 spec.maintainMetaData = true;
+                spec.icons = {
+                    paginationSwitchDown: 'fa-caret-square-o-down',
+                    paginationSwitchUp: 'fa-caret-square-o-up',
+                    refresh: 'fa-refresh',
+                    toggleOff: 'fa-toggle-off',
+                    toggleOn: 'fa-toggle-on',
+                    columns: 'fa-th-list',
+                    fullscreen: 'fa-arrows-alt',
+                    detailOpen: 'fa-angle-double-right',
+                    detailClose: 'fa-angle-double-down',
+                    export: 'fa-download'
+                };
                 spec.onPostBody = function (data) {
                     app.ui.CommonBehaviour();
                     let extendName = spec.extendName != undefined ? spec.extendName : "Extend";
@@ -499,6 +515,36 @@ app.ViewerQuery = (function () {
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);
                 //};
+
+                //NEW
+                if (spec.detailId != undefined) {
+                    spec.detailView = true;
+                    //spec.detailId = 3;
+                    //spec.detailParameters = "CompanyId=CompanyId:UserId=UserId";
+                    spec.onExpandRow = function (index, row, $detail) {
+                        var url = '';
+                        var parentKey = '';
+                        var key = '';
+                        var parameters = this.detailParameters.split(":");
+                        var id = `tbl${this.detailId}${index}`;
+                        for (i = 0; i < parameters.length; i++) {
+                            url += ':' + parameters[i].split("=")[0] + '=';
+                            if (parameters[i].split("=")[1].startsWith("const.")) {
+                                url += parameters[i].split("=")[1].substring(6);
+                            }
+                            else {
+                                parentKey += row[parameters[i].split("=")[1]];
+                                url += row[parameters[i].split("=")[1]];
+                            }
+                        }
+
+                        $detail.append('<span class="detail-title">...</span>');
+                        $detail.append('<div class="table-responsive" style="background-color: white; margin: 0px 0px 0px 10px; padding-right: 10px"><table style="font-size: 11px" id="' + id + '"></table></div>');
+
+                        Child($detail.find('span'), $detail.find('table'), this.detailId, url, id, row);
+                    };
+                }
+                //NEW
 
                 if (spec.onAll != undefined) {
                     spec.onAll = new Function(["name", "args"], "{ " + spec.onAll + "('" + tableId + "', name, args); }");
@@ -589,17 +635,36 @@ app.ViewerQuery = (function () {
                                 item.table.key = _id;
                                 $("#container").append(RenderTabContentUI(item));
                                 if (item.include !== null && item.include !== '') {
-                                    app.core.LoadScriptFile(item.include)
-                                        .then(d => {
-                                            Render(item);
-                                            let extendName = item.table.extendName != undefined ? item.table.extendName : "Extend";
-                                            if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
-                                                app[extendName]['EventHandler'](_id, item.index, 'loaded');
-                                            }
-                                        })
-                                        .catch(err => {
-                                            console.error(err);
-                                        });
+
+                                    if (item.include.startsWith('class:')) {
+                                        let extendName = item.include.substring(6);
+                                        let entityType = 'Render';
+                                        app.core.Get(app.setting.apipath + `v1/CustomData/${extendName}/${entityType}/Data`)
+                                            .done(function (data) {
+                                                try {
+                                                    app[extendName] = new Function(data)();
+                                                    Render(item);
+                                                    if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
+                                                        app[extendName]['EventHandler'](_id, item.index, 'loaded');
+                                                    }
+                                                } catch (error) {
+                                                    console.error("Error al ejecutar el script:", error);
+                                                }
+                                            });
+                                    } else {
+                                        app.core.LoadScriptFile(item.include)
+                                            .then(d => {
+                                                Render(item);
+                                                let extendName = item.table.extendName != undefined ? item.table.extendName : "Extend";
+                                                if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
+                                                    app[extendName]['EventHandler'](_id, item.index, 'loaded');
+                                                }
+                                            })
+                                            .catch(err => {
+                                                console.error(err);
+                                            });
+                                    }
+
                                 } else {
                                     Render(item);
                                 }
@@ -685,7 +750,8 @@ app.ViewerQuery = (function () {
                     if (params != undefined) {
                         params.multiQuery = this.options?.multiquery;
                     }
-                    app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + window.location.search.slice(1).replace(/&/g, ':') + url)
+                    let originalUrl = window.location.search.slice(1).replace(/&/g, ':');
+                    app.core.Get(app.setting.apipath + 'v1/datasource/json?id=' + id + '&sequence=' + index + '&url=' + originalUrl + url)
                         .done(function (data, textStatus, jqXHR) {
                             if (data == null)
                                 data = [];

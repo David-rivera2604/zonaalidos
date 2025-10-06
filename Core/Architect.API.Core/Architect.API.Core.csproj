@@ -149,6 +149,7 @@
     <Compile Include="Controllers\ProcessSpecStepController.cs" />
     <Compile Include="Controllers\ProcessSpecTaskController.cs" />
     <Compile Include="Controllers\ProcessController.cs" />
+    <Compile Include="Controllers\CustomDataController.cs" />
     <Compile Include="Controllers\RoleMemberController.cs" />
     <Compile Include="Controllers\SecurityCasesController.cs" />
     <Compile Include="Controllers\SendAttachmentsController.cs" />

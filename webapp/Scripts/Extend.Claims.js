@@ -33,7 +33,8 @@ app.ExtendClaims = (function () {
             }
             return `<i class="fa ${status}" aria-hidden="true" style="margin: 0px 8px 0px 5px;color: ${color};" title="${app.ui.StringCapitalizeFormatter(row.NOM_TIP_EST_SINI)}"></i>` +
                 `<span  title="${app.ui.StringCapitalizeFormatter(row.NOM_CAUSA)}">` + row.NUM_SINI + '</span>' +
-                `<button type="button" name="viewClaim" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver detalle del siniestro"><i class="fa fa-plus-square-o"></i></button>`;
+                `<button type="button" name="viewClaim" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver detalle del siniestro"><i class="fa fa-plus-square-o"></i></button>` +
+                `<button type="button" name="viewPlan" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver plan de tramitación"><i class="fa fa-sitemap"></i></button>`;
         },
         ASIGESFormatter: function (value, row, index, field) {
             let comp = '';
@@ -77,6 +78,13 @@ app.ExtendClaims = (function () {
                     `<span>${row.NUM_EXP} - ${app.ui.StringCapitalizeFormatter(value)}</span>` +
                     ` <button type="button" name="viewClaimExp" class="btn btn-slim btn-sm btn-link ${attr} event" title="Ver detalle del expediente"><i class="fa fa-plus-square-o" ></i></button>`;
         },
+        ObservacionesFormatter: function (value, row, index, field) {
+            if (value === undefined || value === null || value === 0)
+                return '';
+            else {
+                return `<ul class="Observaciones"><li><i class="fa fa-check" style="color: #c31f09;"></i> ${value.replaceAll(",", "</li><li><i class='fa fa-check' style='color: #c31f09;'></i>")}</li></ul>`;
+            }
+        },
         NOM_TIP_EST_SINICellStyle: function (value, row, index) {
             if (row.TIP_EST_SINI === 'P') {
                 return {
@@ -87,6 +95,9 @@ app.ExtendClaims = (function () {
             }
             else
                 return {};
+        },
+        ShowClaimPlan: function (row) {
+            app.ui.SmartCode('PlanTramitacion', 'Render', row.NUM_SINI);
         },
         ShowClaimDetail: function (row) {
             var html = [];
@@ -120,8 +131,9 @@ app.ExtendClaims = (function () {
                 html.push(`<div class="col-md-${item.size}"><div class="readonlyfield"><strong>${item.key}</strong><div>${item.value}</div></div></div>`);
             });
             html.push(`</div>`);
+            html.push('<div class="row"><div id="plantramitacion"></div></div>');
             app.ui.ShowSideBar({ title: 'SINIESTRO #{NUM_SINI}', subtitle: 'Información', isHTML: true, HTML: html.join(''), data: row, width: '360px' });
-            LoadRelato(row.NUM_SINI);
+            LoadRelato(row.NUM_SINI);            
         },
         ShowExpedienteDetail: function (row) {
             var html = [];
@@ -238,7 +250,7 @@ app.ExtendClaims = (function () {
                 desde.setDate(1);
                 _loaded = true;
                 app.Prototype1.SetData({ desde: desde, hasta: new Date() });
-                
+
             }
 
             if (stage == 'onPostBody') {

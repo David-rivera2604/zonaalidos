@@ -3,7 +3,8 @@
 app.GeneralCase = (function () {
 
     let _data = null;
-    let _enabledRef = null;
+    let _refDef = [];
+    let _allowref = [];
     let _managerLinks = null;
     let _instance = null;
 
@@ -19,20 +20,20 @@ app.GeneralCase = (function () {
             $('#ProcessStepAccept').prop("disabled", false);
         });
 
-        $('#ProcessStepAccept').click(function () {
-            event.preventDefault();
+        $('#ProcessStepAccept').click(function (e) {
+            e.preventDefault();
             $('fieldset').prop("disabled", true);
             app.ui.ButtonDoing('#ProcessStepAccept', false);
             TaskChecked(_data.InstanceId, app.ui.GetRadioNumericValue('task'), $('#Annotation').val(), $('#CustomNotify').is(':checked'));
         });
 
-        $('.Historial-link').click(function () {
-            event.preventDefault();
+        $('.Historial-link').click(function (e) {
+            e.preventDefault();
             $('#right-sidebar').toggleClass('sidebar-open');
         });
 
-        $('#saveNote').click(function () {
-            event.preventDefault();
+        $('#saveNote').click(function (e) {
+            e.preventDefault();
 
             app.ui.ButtonDoing('#saveNote');
             app.core.Post(app.setting.apipath + 'v1/Common/Note',
@@ -92,61 +93,31 @@ app.GeneralCase = (function () {
 
         $('#SLADesc').html(data.SLADesc);
 
+        for (let i = 1; i <= 10; i++) {
+            $(`#EReference${i}`).parent().parent().addClass('d-none');
+        }
+
         app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + data.FlowId)
             .done(function (dataFlow, textStatus, jqXHR) {
-                if (dataFlow.ReferenceCaption1 != '') {
-                    $('#ReferenceCaption1').html(dataFlow.ReferenceCaption1);
-                    $('#Reference1').html(data.Reference1 === '' ? '...' : data.Reference1);
-                    $('#Reference1').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption2 != '') {
-                    $('#ReferenceCaption2').html(dataFlow.ReferenceCaption2);
-                    $('#Reference2').html(data.Reference2 === '' ? '...' : data.Reference2);
-                    $('#Reference2').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption3 != '') {
-                    $('#ReferenceCaption3').html(dataFlow.ReferenceCaption3);
-                    $('#Reference3').html(data.Reference3 === '' ? '...' : data.Reference3);
-                    $('#Reference3').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption4 != '') {
-                    $('#ReferenceCaption4').html(dataFlow.ReferenceCaption4);
-                    $('#Reference4').html(data.Reference4 === '' ? '...' : data.Reference4);
-                    $('#Reference4').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption5 != '') {
-                    $('#ReferenceCaption5').html(dataFlow.ReferenceCaption5);
-                    $('#Reference5').html(data.Reference5 === '' ? '...' : data.Reference5);
-                    $('#Reference5').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption6 != '') {
-                    $('#ReferenceCaption6').html(dataFlow.ReferenceCaption6);
-                    $('#Reference6').html(data.Reference6 === '' ? '...' : data.Reference6);
-                    $('#Reference6').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption7 != '') {
-                    $('#ReferenceCaption7').html(dataFlow.ReferenceCaption7);
-                    $('#Reference7').html(data.Reference7 === '' ? '...' : data.Reference7);
-                    $('#Reference7').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption8 != '') {
-                    $('#ReferenceCaption8').html(dataFlow.ReferenceCaption8);
-                    $('#Reference8').html(data.Reference8 === '' ? '...' : data.Reference8);
-                    $('#Reference8').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption9 != '') {
-                    $('#ReferenceCaption9').html(dataFlow.ReferenceCaption9);
-                    $('#Reference9').html(data.Reference9 === '' ? '...' : data.Reference9);
-                    $('#Reference9').parent().removeClass('d-none');
-                }
-                if (dataFlow.ReferenceCaption10 != '') {
-                    $('#ReferenceCaption10').html(dataFlow.ReferenceCaption10);
-                    $('#Reference10').html(data.Reference10 === '' ? '...' : data.Reference10);
-                    $('#Reference10').parent().removeClass('d-none');
-                }
+                _refDef = [];
 
                 for (let i = 1; i <= 10; i++) {
-                    ReferenceHandler(dataFlow[`ReferenceCaption${i}`], dataFlow[`ReferenceType${i}`], dataFlow[`ReferenceRequired${i}`], dataFlow[`ReferenceLookupList${i}`], `Reference${i}`);
+                    $(`#ReferenceCaption${i}`).html(dataFlow[`ReferenceCaption${i}`]);
+                    $(`#Reference${i}`).html(_data[`#Reference${i}`] === '' ? '...' : _data[`Reference${i}`]);
+                    $(`#Reference${i}`).parent().removeClass('d-none');
+                }
+
+                $.each(_allowref, function () {
+                    let i = parseInt(this.Code.replace(/[^0-9]/g, ''));
+
+                    ReferenceHandler(dataFlow[`ReferenceCaption${i}`], dataFlow[`ReferenceType${i}`], dataFlow[`ReferenceRequired${i}`], dataFlow[`ReferenceLookupList${i}`], `Reference${i}`, i);
+                });
+
+
+                if (_allowref.length > 0) {
+                    $('.references-section').removeClass('d-none');
+                } else {
+                    $('.references-section').addClass('d-none');
                 }
 
                 $('#TotalDays').html(data.TotalDays);
@@ -158,7 +129,7 @@ app.GeneralCase = (function () {
             });
     }
 
-    async function ReferenceHandler(caption, type, required, valueList, id) {
+    async function ReferenceHandler(caption, type, required, valueList, id, index) {
         if (caption != '') {
             if (required)
                 $("label[for='E" + id + "']").html(caption + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
@@ -168,19 +139,22 @@ app.GeneralCase = (function () {
             if (valueList == '') {
                 $('#E' + id).removeClass('d-none');
                 $('#E' + id).val(_data[id]);
+                _refDef.push({ id: id, ctrl: '#E' + id });
             }
             else {
                 let selectedOptions = $('#E' + id + 'List');
+                let value = _data[id].trim();
                 selectedOptions.removeClass('d-none');
                 selectedOptions.children().remove();
 
-                selectedOptions.append($('<option selected />').val('').text(''));
+                selectedOptions.append($('<option />').val('').text(''));
                 $.each(valueList.split(';'), function () {
-                    selectedOptions.append($('<option />').val(this).text(this));
+                    selectedOptions.append($('<option />').val(this.trim()).text(this.trim()));
                 });
                 selectedOptions.val(_data[id]);
+                _refDef.push({ id: id, ctrl: '#E' + id + 'List' });
             }
-            //$('#E' + id).parent().parent().removeClass('d-none');
+            $('#E' + id).parent().parent().removeClass('d-none');
         } else {
             $('#E' + id).parent().parent().addClass('d-none');
             $('#E' + id).addClass('d-none');
@@ -188,21 +162,6 @@ app.GeneralCase = (function () {
             $('#E' + id + 'List').val('');
         }
     }
-
-    async function EnableReference(dataRef) {
-        _enabledRef = JSON.parse(dataRef);
-        for (let i = 1; i <= 10; i++) {
-            $(`#EReference${i}`).parent().parent().addClass('d-none');
-        }
-
-        $.each(_enabledRef, function () {
-            $('#E' + this.Code).parent().parent().removeClass('d-none');
-        });
-        if (_enabledRef.length > 0) {
-            $('.references-section').removeClass('d-none');
-        }
-    }
-
     function NotasDraw(entityId) {
 
         app.core.Get(app.setting.apipath + 'v1/Common/Notes?entityType=1304&entityId=' + entityId)
@@ -396,7 +355,7 @@ app.GeneralCase = (function () {
     }
 
     async function RefreshProcess(instanceId) {
-
+        _allowref = [];
         app.core.Get(app.setting.apipath + 'v1/Process/Instance/' + instanceId + '/3')
             .done(function (data, textStatus, jqXHR) {
                 _instance = data;
@@ -412,7 +371,7 @@ app.GeneralCase = (function () {
                         $('#CurrentStep').html(current[0].Name);
 
                         if (current[0].References != null && current[0].References != '') {
-                            EnableReference(current[0].References);
+                            _allowref = JSON.parse(current[0].References);
                         }
                     }
                     if (data.Tasks.length > 0) {
@@ -474,9 +433,11 @@ app.GeneralCase = (function () {
 
     function TaskChecked(instanceId, activityId, comment, notify) {
         let references = [];
-        $.each(_enabledRef, function () {
-            references.push({ Code: this.Code, Description: $('#E' + this.Code).val() });
-        });
+        if (_refDef.length > 0) {
+            $.each(_refDef, function () {
+                references.push({ Code: this.id, Description: $(this.ctrl).val() });
+            });
+        }
 
         app.core.Put(app.setting.apipath + `v1/Process/Task/Checked/${instanceId}`,
             JSON.stringify({

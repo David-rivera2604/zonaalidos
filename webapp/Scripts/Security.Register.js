@@ -83,6 +83,14 @@ app.SecurityRegister = (function () {
 
     function Setup_Validations() {
         app.ui.DateValidators();
+
+        $.validator.addMethod("pattern", function (value, element, param) {
+            if (this.optional(element)) {
+                return true;
+            }
+            return param.test(value);
+        }, "Formato inválido.");
+
         $("#RegisterEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
             rules: {

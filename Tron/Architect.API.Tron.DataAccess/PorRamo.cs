@@ -67,17 +67,19 @@ namespace Architect.API.Tron.DataAccess
         public static Architect.API.Tron.Contracts.Vistas.Recibo Informacion_de_un_Recibo(int cod_cia, int cod_agt, string tip_docum, string cod_docum, string num_poliza, Int64 num_recibo, IDbConnection connection = null)
         {
             List<DataFactory.Contracts.Parameter> parameters = new List<DataFactory.Contracts.Parameter>();
+            List<DataFactory.Contracts.Parameter> agtparameters = new List<DataFactory.Contracts.Parameter>();
             Architect.API.Tron.Contracts.Vistas.Recibo result = null;
             string filter = string.Empty;
+            string agtfilter = string.Empty;
 
             if (cod_agt > 0)
             {
-                filter = " AND a30.COD_AGT = :COD_AGT";
-                parameters = Database.ParameterList().AddParameter("COD_AGT", DbType.Decimal, 7, cod_agt).Parameters;
+                agtfilter = " AND a30.COD_AGT = :COD_AGT";
+                agtparameters = Database.ParameterList().AddParameter("COD_AGT", DbType.Decimal, 7, cod_agt).Parameters;
             }
             else
             {
-                filter += " AND a30.TIP_DOCUM = :TIP_DOCUM AND a30.COD_DOCUM = :COD_DOCUM";
+                filter += " AND a1331.TIP_DOCUM = :TIP_DOCUM AND a1331.COD_DOCUM = :COD_DOCUM";
                 parameters = Database.ParameterList()
                         .AddParameter("TIP_DOCUM", DbType.String, 3, tip_docum)
                         .AddParameter("COD_DOCUM", DbType.String, 20, cod_docum).Parameters;
@@ -98,19 +100,21 @@ SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD
   FROM a2000030 a30
   JOIN A1001800 a1800 ON a1800.COD_CIA=a30.COD_CIA AND a1800.COD_RAMO = a30.COD_RAMO
   JOIN A1000200 a200 ON a200.COD_CIA=a30.COD_CIA AND a200.COD_SECTOR = a30.COD_SECTOR
-  JOIN TERCEROS a1331 ON a1331.COD_CIA=a30.COD_CIA
-  JOIN a2990700 a700 ON a700.COD_CIA=a30.COD_CIA AND a700.NUM_POLIZA= a30.NUM_POLIZA AND a700.num_spto = a30.num_spto AND a700.num_apli = a30.num_apli AND a700.num_poliza = a30.num_poliza AND a700.num_spto_apli = a30.num_spto_apli AND a700.NUM_RECIBO = :NUM_RECIBO AND a700.TIP_SITUACION = 'EP'
+  JOIN TERCEROS a1331 ON a1331.COD_CIA=a30.COD_CIA" + filter +
+@" JOIN a2990700 a700 ON a700.COD_CIA=a30.COD_CIA AND a700.NUM_POLIZA= a30.NUM_POLIZA AND a700.num_spto = a30.num_spto AND a700.num_apli = a30.num_apli AND a700.num_poliza = a30.num_poliza AND a700.num_spto_apli = a30.num_spto_apli AND a700.NUM_RECIBO = :NUM_RECIBO AND a700.TIP_SITUACION = 'EP'
  WHERE a30.COD_CIA   = :COD_CIA
-  AND a30.NUM_POLIZA = :NUM_POLIZA" + filter +
+  AND a30.NUM_POLIZA = :NUM_POLIZA" + agtfilter +
 @" AND a30.mca_spto_anulado   = 'N'
   AND a30.mca_poliza_anulada = 'N'
  GROUP BY a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD_DOCUM, a1331.NOM_TERCERO, a1331.NOM2_TERCERO, a1331.APE1_TERCERO, a1331.APE2_TERCERO, a1331.email, a1331.TXT_EMAIL, a1331.tlf_numero, a1331.TLF_MOVIL, a700.cod_mon, a1331.TIP_TARJETA, a1331.COD_TARJETA, a1331.NUM_TARJETA")
+                        
                         .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)
-                        .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)
+                        .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)                        
+                        .AddParameter(parameters)
                         .AddParameter("NUM_RECIBO", DbType.Decimal, 11, num_recibo)
                         .AddParameter("COD_CIA", DbType.Decimal, 5, cod_cia)
                         .AddParameter("NUM_POLIZA", DbType.AnsiString, 13, num_poliza)
-                        .AddParameter(parameters)
+                        .AddParameter(agtparameters)
                         .Query(connection, "Tron", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result = new Architect.API.Tron.Contracts.Vistas.Recibo()
@@ -249,6 +253,11 @@ SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD
         public static List<Architect.API.Tron.Contracts.Ramo.A1001403> FrecuenciaDePago(int cod_cia, int cod_ramo, int cod_mon)
         {
             List<Architect.API.Tron.Contracts.Ramo.A1001403> result = new List<Architect.API.Tron.Contracts.Ramo.A1001403>();
+            string filter_bimensual = "";
+
+            if(cod_ramo == 302 || cod_ramo == 303){
+                filter_bimensual = ",6";
+            }
 
             Database.Select("SELECT a.cod_fracc_pago, b.nom_fracc_pago, c.pct_fracc_pago" +
                              " FROM a1001403 a" +
@@ -259,7 +268,7 @@ SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD
                             " WHERE a.cod_cia = :cod_cia" +
                               " AND a.cod_ramo = :cod_ramo" +
                               " AND a.cod_mon = :cod_mon" +
-                              " AND a.cod_fracc_pago IN (1,2,4,12)" +
+                              " AND a.cod_fracc_pago IN (1,2,4,12" + filter_bimensual + ")" +
                               " AND a.COD_NIVEL1 = 99 AND a.COD_NIVEL2 = 999 AND a.COD_NIVEL3 = 9999 " +
                             " ORDER BY a.cod_fracc_pago asc")
                     .AddParameter("cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)

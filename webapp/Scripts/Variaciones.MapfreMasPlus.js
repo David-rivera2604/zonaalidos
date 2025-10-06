@@ -283,7 +283,8 @@ app.VariacionMapfreMasPlus = (function () {
 
             num_contrato: setupData.contrato,
             num_subcontrato: setupData.subcontrato,
-            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo
+            num_poliza_grupo: setupData.polizagrupo == null ? '' : setupData.polizagrupo,
+            cod_agt: setupData.cod_agt
         };
     }
 
@@ -445,7 +446,6 @@ app.VariacionMapfreMasPlus = (function () {
     }
 
     function MapObjectToInput_First(data) {
-        console.log("data 2:", data);
         setupDataFirst = data;
         app.ui.SetNumericValue('#NUM_POLIZA', data.num_poliza);
         $('#NUM_POLIZA').val(data.num_poliza);
@@ -705,6 +705,17 @@ app.VariacionMapfreMasPlus = (function () {
 
                 if (!existeCambios()) {
                     return;
+                }
+
+                result = true;
+                var fec_efec = app.ui.GetDateValue('#fec_efec');
+                const date = new Date(fec_efec);
+                const timestamp = date.getTime();
+
+                if (isNaN(timestamp) || timestamp < 0) {
+                    toastr.error('Debe registrar la fecha de efecto', "Autorización", { timeOut: 9000, closeButton: true, progressBar: true });
+                    result = false;
+                    return result;
                 }
 
                 if (setupDataFirst.cod_fracc_pago !== app.ui.GetDropDownNumericValue('#cod_fracc_pago')) {
