@@ -461,6 +461,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
 
             var data = new StringContent(payLoad, Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
+
             var response = await client.PostAsync(Utilities.Helpers.Settings.StringValue("Payment.Placetopay.PaymentUrl.Recurring") + "gateway/process", data);
             string resultResponse = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)

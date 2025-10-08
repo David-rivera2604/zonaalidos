@@ -192,7 +192,7 @@ namespace Architect.API.Tron.Business.Backoffice
 
             if (policyNumber.Length != 13)
             {
-                result.Codigo = ErrorInProcess;
+                result.Codigo = PaymentNotRegistered;
                 result.Mensaje = "Error en el proceso. No se puede identificar el número de la póliza.";
             }
             else
@@ -202,19 +202,19 @@ namespace Architect.API.Tron.Business.Backoffice
 
             if (result.Codigo == RegisteredButNotProcessed && recibo == null)
             {
-                result.Codigo = ErrorInProcess;
+                result.Codigo = PaymentNotRegistered;
                 result.Mensaje = "Error en el proceso. No existen recibos pendiente para la póliza.";
             }
             double diff = aplicarPagoRequest.Monto - recibo.IMP_RECIBO;
-            if (result.Codigo == RegisteredButNotProcessed && (diff < -1.0 || diff > 1.0))
+            if (result.Codigo == RegisteredButNotProcessed && (diff < -100.0 || diff > 100.0))
             {
-                result.Codigo = ErrorInProcess;
+                result.Codigo = PaymentNotRegistered;
                 result.Mensaje = "Error en el proceso. El monto del recibo no coinciden con el pago.";
             }
 
             if (result.Codigo == RegisteredButNotProcessed && (aplicarPagoRequest.Moneda != 1 || recibo.NOM_MON != "CRC"))
             {
-                result.Codigo = ErrorInProcess;
+                result.Codigo = PaymentNotRegistered;
                 result.Mensaje = "Error en el proceso. La moneda del recibo no coinciden con la del pago.";
             }
 
@@ -274,7 +274,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 payerSurname = track.LastName,
                 paymentMethodName = "SINPE",
                 lastDigits = "0000",
-                authorization = aplicarPagoRequest.CodReferencia,
+                authorization = aplicarPagoRequest.CodReferenciaBanco,
                 receipt = aplicarPagoRequest.CodReferencia,
                 subscribe = false,
                 date = payment.IssueDate.ToString("yyyy-MM-dd HH:mm:ss"),

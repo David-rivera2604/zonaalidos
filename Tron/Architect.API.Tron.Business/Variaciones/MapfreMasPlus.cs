@@ -1,4 +1,5 @@
-﻿using Architect.API.Core.Contracts;
+﻿using Architect.API.Core.Business.General;
+using Architect.API.Core.Contracts;
 using Architect.API.Insurance.Contracts.Bayer;
 using Architect.API.Tron.Business.Backoffice;
 using Architect.API.Tron.Contracts.Presupuesto.API;
@@ -57,6 +58,22 @@ namespace Architect.API.Tron.Business.Variaciones
             Contracts.Variaciones.MapfreMas resultInfo2 = Variaciones.MapfreMasPlusConvertFrom.Quote(Variaciones.MapfreMasPlusConvertFrom.Quote(PolizaInstance), PolizaInstance);
 
             resultInfo2 = Variaciones.MapfreMasPlusConvertFrom.SetTipoProducto(resultInfo2);
+
+            //Se recupera la información de campos que no son almacenados en tron.
+            Core.Contracts.General.CustomData customData = CustomData.RetrieveByEntity(3000, Convert.ToInt64(PolizaInstance.num_presupuesto), tokenInfo.CompanyId);
+            if (!string.IsNullOrEmpty(customData?.Data))
+            {
+                Contracts.Cotizacion.MapfreMas custom = JsonConvert.DeserializeObject<Contracts.Emision.MapfreMas>(customData.Data);
+
+                if (custom != null)
+                {
+                    resultInfo2.nombredelcontratante = custom.nombredelcontratante;
+                    resultInfo2.edad = custom.edad;
+                    resultInfo2.mca_sexo = custom.mca_sexo;
+                    resultInfo2.mca_sexoDesc = custom.mca_sexoDesc;
+                    resultInfo2.AutoSust = custom.AutoSust;
+                }
+            }
 
             if (mca_provisional.Equals("S"))
             {

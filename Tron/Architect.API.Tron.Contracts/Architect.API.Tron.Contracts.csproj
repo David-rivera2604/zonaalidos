@@ -76,6 +76,7 @@
     <Compile Include="Emision\AccidentesPersonales.cs" />
     <Compile Include="Emision\Estudiantil.cs" />
     <Compile Include="Comun\ConoceTuCliente.cs" />
+    <Compile Include="Pagos\RecibosParaRecobro.cs" />
     <Compile Include="Pagos\Recibo.cs" />
     <Compile Include="Pagos\Tarjeta.cs" />
     <Compile Include="Poliza\Parameters\ControlTecnicoParametros.cs" />
@@ -181,13 +182,19 @@
     <Compile Include="Traza\TrackRequest.cs" />
     <Compile Include="Variaciones\CoberturaVariacion.cs" />
     <Compile Include="Variaciones\g1010031.cs" />
+    <Compile Include="Variaciones\HogarTotal.cs" />
+    <Compile Include="Variaciones\IVariableDataProvider.cs" />
     <Compile Include="Variaciones\MapfreMas.cs" />
     <Compile Include="Variaciones\MapfreMasPlus.cs" />
     <Compile Include="Variaciones\MapfreVariacionBase.cs" />
+    <Compile Include="Variaciones\Multirriesgo.cs" />
+    <Compile Include="Variaciones\s2000025.cs" />
     <Compile Include="Variaciones\s2000040.cs" />
     <Compile Include="Variaciones\s2000020.cs" />
     <Compile Include="Variaciones\s2000030.cs" />
     <Compile Include="Variaciones\s2100610.cs" />
+    <Compile Include="Variaciones\IVariacionData.cs" />
+    <Compile Include="Variaciones\VariacionBase.cs" />
     <Compile Include="Variaciones\VariacionIssueResult.cs" />
     <Compile Include="Vistas\Recibo.cs" />
   </ItemGroup>

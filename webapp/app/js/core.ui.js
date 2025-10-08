@@ -613,10 +613,16 @@ app.ui = (function () {
             else if (row.UPDATEUSERNAME != undefined) {
                 userName = row.UPDATEUSERNAME;
             }
-            if (value === null || value === '0001-01-01T00:00:00')
+            return app.ui.UpdateDateFormatter(userName, value, false);
+        },
+        UpdateDateFormatter: function (userName, updateDate, allmuted) {
+            if (updateDate === null || updateDate === '0001-01-01T00:00:00')
                 return '';
             else
-                return '<span title="' + moment(value).format('DD/MM/YYYY hh:mm:ssa') + '">' + userName + ' <small class="text-muted"> ' + moment(value).from() + '</small></span>';
+                if (allmuted)
+                    return '<small class="text-muted" title="' + moment(updateDate).format('DD/MM/YYYY hh:mm:ssa') + '">' + userName + ' ' + moment(updateDate).from() + '</small>';
+                else
+                    return '<span title="' + moment(updateDate).format('DD/MM/YYYY hh:mm:ssa') + '">' + userName + ' <small class="text-muted"> ' + moment(updateDate).from() + '</small></span>';
         },
         EditLinkFormatter: function (value, row, index, field) {
             return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de la fila">' + value + '</a>';
@@ -1602,6 +1608,17 @@ app.ui = (function () {
                         console.error('Error al leer del portapapeles:', err)
                     })
             }
+        },
+        SmartCode: async function (key, entityType, context) {
+            app.core.Get(app.setting.apipath + `v1/CustomData/${key}/${entityType}/Data`)
+                .done(function (data) {
+                    try {
+                        const funcionEjecutable = new Function('context', data);
+                        funcionEjecutable(context);
+                    } catch (error) {
+                        console.error("Error al ejecutar el script:", error);
+                    }
+                });
         }
     };
 })();

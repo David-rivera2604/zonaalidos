@@ -440,6 +440,21 @@ namespace Architect.API.Core.DataAccess.General
             return result;
         }
 
+        public static Architect.API.Core.Contracts.General.CustomData Retrieve(string key1, string key2, IDbConnection connection = null)
+        {
+            Architect.API.Core.Contracts.General.CustomData result = null;
+            Database.Select("SELECT Id, CustomData.CompanyId, EntityType, EntitySubType, EntityId, Data, Key1, Key2, CustomData.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, CustomData.UpdateDate " +
+                              "FROM CustomData LEFT JOIN UserMember um ON um.UserId = CustomData.UpdateUserCode " +
+                             "WHERE Key1 =:Key1 AND Key2 =:Key2 ORDER BY Id")
+                        .AddParameter("Key1", DbType.AnsiString, 80, key1)
+                        .AddParameter("Key2", DbType.AnsiString, 80, key2)
+                        .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                        {
+                            result = DataReaderToCustomData(reader);
+                        }));
+            return result;
+        }
+
     }
 
 }

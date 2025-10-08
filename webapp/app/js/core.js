@@ -2,10 +2,10 @@
 
 // CONSERVAR DEL ORIGINAL DESDE AQUI
 app.setting = {
-    apibase: 'http://localhost:8081',
-    apipath: 'http://localhost:8081/aliados/api/',
+    apibase: 'http://localhost:8080',
+    apipath: 'http://localhost:8080/aliados/api/',
     basepath: '/Aliados/',
-    viewpath: 'http://localhost:8081/aliados/',
+    viewpath: 'http://localhost:8080/aliados/',
     entityapi: 'https://appqa.mapfrecr.com/datapides/api/entity',
     reportapi: 'https://appqa.mapfrecr.com/aliadoservreports'
 };
@@ -462,7 +462,7 @@ app.core = (function () {
                 url = '';
             }
             else {
-                url = url + parentValue;
+                url = url + (url.endsWith('=') ? parentValue : '' );
             }
 
             ajaxCall('GET', app.setting.apipath + path + '?key=' + lookupKey + '&parentId=' + parentValue + '&url=' + url, null,

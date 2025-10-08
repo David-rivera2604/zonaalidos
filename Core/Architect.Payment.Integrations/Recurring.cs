@@ -14,7 +14,7 @@ namespace Architect.Payment.Integrations
     public static class Recurring
     {
 
-        public async static Task<List<Architect.Payment.Integrations.Contracts.InformationRequest>> Request(string provider, HttpClient client, Architect.Payment.Integrations.Contracts.v2.ReciboRequest recibos)
+        public static List<Architect.Payment.Integrations.Contracts.InformationRequest> Request(string provider, HttpClient client, Architect.Payment.Integrations.Contracts.v2.ReciboRequest recibos)
         {
             List<Architect.Payment.Integrations.Contracts.InformationRequest> infoResult = new List<Contracts.InformationRequest>();
 
@@ -73,7 +73,7 @@ namespace Architect.Payment.Integrations
                     trace.AppendFormat("  Información: {0}\n", item.concepto);
                     trace.AppendFormat("    Solicitud: {0}\n",  json);
                     
-                    CollectTransaction collectResponse = await Providers.Placetopay.Webcheckout.Collect(json);
+                    CollectTransaction collectResponse = Providers.Placetopay.Webcheckout.Collect(json).Result;
                     trace.AppendFormat("    Respuesta: {0}\n", collectResponse.rawresponse);
 
                     Architect.Payment.Integrations.Contracts.InformationRequest infoItem = new Architect.Payment.Integrations.Contracts.InformationRequest()

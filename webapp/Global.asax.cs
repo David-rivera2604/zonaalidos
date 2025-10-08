@@ -101,7 +101,7 @@ namespace aliados
                 if (Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.RecurringReceipts.ExecutionTime").IsNotEmpty())
                 {
                     RecurringJob.AddOrUpdate("Payment.Silice.RecurringReceipts",
-                        () => Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro(DateTime.Today),
+                        () => Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro(DateTime.Today, null),
                         Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.RecurringReceipts.ExecutionTime"));
                 }
 
