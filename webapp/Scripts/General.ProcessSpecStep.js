@@ -46,17 +46,17 @@ app.GeneralProcessSpecStep = (() => {
     }
 
     const Init_Controls = () => {
-        app.ui.NewNumericWidget('#StepOrder', '', '0', '99999', '0');
-        app.ui.NewSelectWidget('#FlowIdFlt');
-        app.ui.NewSelectWidget('#Roles');
-        app.ui.NewSelectWidget('#References');
+        app.frm.NumericWidget('#StepOrder', '', '0', '99999', '0');
+        app.frm.SelectWidget('#FlowIdFlt');
+        app.frm.SelectWidget('#Roles');
+        app.frm.SelectWidget('#References');
 
         $('.formbtn').appendTo("#GenericToolBar");
     }
 
     const Init_List = () => {
 
-        app.ui.TableWidget('#ProcessSpecStepGridTbl',
+        app.frm.TableWidget('#ProcessSpecStepGridTbl',
             {
                 detailView: true,
                 onExpandRow: function (index, row, $detail) {
@@ -66,21 +66,21 @@ app.GeneralProcessSpecStep = (() => {
                     Task_Init_List($detail.find('span'), $detail.find('table'), row);
                 },
                 columns: [
-                    app.ui.StringColumnWidget('FlowIdDesc', 'Proceso'),
-                    app.ui.StringColumnWidget('Name', 'Nombre', '',
+                    app.frm.StringColumnWidget('FlowIdDesc', 'Proceso'),
+                    app.frm.StringColumnWidget('Name', 'Nombre', '',
                         {
                             events: 'ProcessSpecStepGridTbl_Events',
                             formatter: function (value, row, index, field) {
                                 return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de los datos de la etapa">' + value + '</a>';
                             }
                         }),
-                    app.ui.StringColumnWidget('Description', 'Descripción'),
-                    app.ui.IntegerColumnWidget('StepOrder', 'Orden', 'Orden en que se procesan los pasos para un proceso.'),
-                    app.ui.StringColumnWidget('ProcessStatusDesc', 'Estado'),
-                    app.ui.StringColumnWidget('ProgressModeDesc', 'Tipo'),
-                    app.ui.StringColumnWidget('RoleNames', 'Roles'),
-                    app.ui.UpdateDateAndUserColumnWidget('UpdateDate'),
-                    app.ui.ActionsColumnWidget('Acciones disponibles para una etapa', 'ProcessSpecStepGridTbl_Events')]
+                    app.frm.StringColumnWidget('Description', 'Descripción'),
+                    app.frm.IntegerColumnWidget('StepOrder', 'Orden', 'Orden en que se procesan los pasos para un proceso.'),
+                    app.frm.StringColumnWidget('ProcessStatusDesc', 'Estado'),
+                    app.frm.StringColumnWidget('ProgressModeDesc', 'Tipo'),
+                    app.frm.StringColumnWidget('RoleNames', 'Roles'),
+                    app.frm.UpdateDateAndUserColumnWidget('UpdateDate'),
+                    app.frm.ActionsColumnWidget('Acciones disponibles para una etapa', 'ProcessSpecStepGridTbl_Events')]
             });
 
     }
@@ -234,7 +234,7 @@ app.GeneralProcessSpecStep = (() => {
     const Create = async (uidata, mode) => {
         app.core.Post(app.setting.apipath + 'v1/ProcessSpecStep', JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("La etapa '" + uidata.Name + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                toastr.success("La etapa '" + uidata.Name + "' fue creada", "", { timeOut: 5000, closeButton: true, progressBar: true });
                 Refresh();
                 switch (mode) {
                     case 'Save':
@@ -266,7 +266,7 @@ app.GeneralProcessSpecStep = (() => {
     const Update = async (uidata) => {
         app.core.Put(app.setting.apipath + 'v1/ProcessSpecStep/' + uidata.Id, JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("La etapa '" + uidata.Name + "' fue modificado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                toastr.success("La etapa '" + uidata.Name + "' fue modificada", "", { timeOut: 5000, closeButton: true, progressBar: true });
                 ViewMode();
                 Refresh();
             }).always(function () {
@@ -282,7 +282,7 @@ app.GeneralProcessSpecStep = (() => {
                     $('.ibox-content').toggleClass('sk-loading');
                     app.core.Delete(app.setting.apipath + 'v1/ProcessSpecStep/' + uidata.Id)
                         .done(function (data, textStatus, jqXHR) {
-                            toastr.success("La etapa '" + uidata.Name + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                            toastr.success("La etapa '" + uidata.Name + "' fue eliminada", "", { timeOut: 5000, closeButton: true, progressBar: true });
                             ViewMode();
                             Refresh();
                         }).always(function () {
@@ -298,22 +298,22 @@ app.GeneralProcessSpecStep = (() => {
     };
 
     const Dynamic_Event_Controls = () => {
-        app.ui.NewSelectWidget('#FlowIdFlt');
+        app.frm.SelectWidget('#FlowIdFlt');
         app.core.LoadLookup(app.setting.apipath + 'v1/RoleMember/Lookup', 'Roles');
     };
 
     const MapInputToObject = () => {
-        let data = app.ui.DataEntryToObject(elements);
+        let data = app.frm.DataEntryToObject(elements);
         data.References = JSON.stringify(data.References)
         return data;
     };
 
     const MapObjectToInput = (data) => {
-        app.ui.ObjectToDataEntry(elements, data);
+        app.frm.ObjectToDataEntry(elements, data);
     };
 
     const Setup_Validations = () => {
-        app.ui.ValidateWidget('#ProcessSpecStepEdtForm', {
+        app.frm.ValidateWidget('#ProcessSpecStepEdtForm', {
             DateValidators: false,
             rules: [
                 { field: 'FlowId', type: 'required', message: 'Debe indicar el proceso' },
@@ -356,7 +356,7 @@ app.GeneralProcessSpecStep = (() => {
                             $.each(dataRef, function () {
                                 ctrol.append($('<option />').val(this['Code']).text(this['Description']));
                             });
-                            app.ui.NewSelectWidget('select#References');
+                            app.frm.SelectWidget('select#References');
                             if (data.References == '') {
                                 data.References = '[]';
                             }
@@ -388,21 +388,21 @@ app.GeneralProcessSpecStep = (() => {
     };
 
     const Task_Init_List = (title, gridTbl, parentRow) => {
-        app.ui.TableWidget(gridTbl,
+        app.frm.TableWidget(gridTbl,
             {
                 detailFormatter: 'app.ui.GenericDetailFormatter',
                 columns: [
-                    app.ui.IntegerColumnWidget('TaskOrder', 'Orden', 'Orden en que se procesan la tarea.'),
-                    app.ui.StringColumnWidget('Name', 'Nombre', '',
+                    app.frm.IntegerColumnWidget('TaskOrder', 'Orden', 'Orden en que se procesan la tarea.'),
+                    app.frm.StringColumnWidget('Name', 'Nombre', '',
                         {
                             formatter: function (value, row, index, field) {
                                 return `<a class="edit" href="ProcessSpecTask?id=${row.Id}" title="Al hacer click permite editar la tarea">${value}</a>`;
                             }
                         }),
-                    app.ui.StringColumnWidget('Description', 'Descripción'),
-                    app.ui.StringColumnWidget('TypeDesc', 'Tipo'),
-                    app.ui.StringColumnWidget('ActionDesc', 'Acción'),
-                    app.ui.UpdateDateAndUserColumnWidget('UpdateDate')]
+                    app.frm.StringColumnWidget('Description', 'Descripción'),
+                    app.frm.StringColumnWidget('TypeDesc', 'Tipo'),
+                    app.frm.StringColumnWidget('ActionDesc', 'Acción'),
+                    app.frm.UpdateDateAndUserColumnWidget('UpdateDate')]
             });
 
         gridTbl.bootstrapTable('showLoading');
@@ -430,7 +430,7 @@ app.GeneralProcessSpecStep = (() => {
                 Refresh();
             }
 
-            app.ui.InitDataEntry(elements);
+            app.frm.InitDataEntry(elements);
 
         },
         New(row) {
