@@ -793,6 +793,9 @@ app.ViewerQuery = (function () {
                 case 'printid':
                     app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirSegunId/' + row.ID_REPORTE, false, 'Mapfre Certificado.pdf');
                     break;
+                case 'printCreditor':
+                    app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirAcreedor/' + row.NUM_POLIZA, false, 'Mapfre Certificado.pdf');
+                    break;
                 case 'printr':
                     let reportPath = 'Recibo';
                     if (row.TIP_SITUACION == 'CT') {

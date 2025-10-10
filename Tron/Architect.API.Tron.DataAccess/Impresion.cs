@@ -4,6 +4,7 @@ using Architect.Utilities.Helpers;
 using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Security.Cryptography;
 using System.Threading;
@@ -64,6 +65,21 @@ namespace Architect.API.Tron.DataAccess
                     .Execute(currentConnection, "Tron");
 
             string reportId = await ReportIdentify(currentConnection, Convert.ToString(num_recibo));
+            currentConnection.Close();
+            return reportId;
+        }
+
+        public static async Task<string> Acreedor(int cod_cia, string num_poliza)
+        {
+            IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
+            Database.Procedure("em_k_jrp_anexo_acreencia_mcr.p_lista")
+                    .AddParameter("p_cod_cia", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
+                    .AddParameter("p_num_poliza_grupo", Architect.DataFactory.Enumerations.DbType.String, 13, string.Empty)
+                    .AddParameter("p_num_poliza", Architect.DataFactory.Enumerations.DbType.String, 13, num_poliza)
+                    .AddParameter("p_id_fichero", Architect.DataFactory.Enumerations.DbType.String, 22, 0, ParameterDirection.Output)
+                    .Execute(currentConnection, "Tron");
+
+            string reportId = await ReportIdentify(currentConnection, num_poliza);
             currentConnection.Close();
             return reportId;
         }
