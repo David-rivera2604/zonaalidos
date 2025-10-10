@@ -1,14 +1,11 @@
-﻿using Architect.API.Core.Contracts.General;
-using Architect.API.Tron.Contracts.Comun;
+﻿using Architect.API.Tron.Contracts.Comun;
 using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -171,7 +168,8 @@ namespace Architect.API.Tron.Controllers
         public async Task<HttpResponseMessage> ImprimirPoliza([FromUri] string num_poliza, int num_riesgo = 1)
         {
 
-            try {
+            try
+            {
                 Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -211,7 +209,7 @@ namespace Architect.API.Tron.Controllers
                             break;
 
                     }
-                     ms = new MemoryStream(plantilla);
+                    ms = new MemoryStream(plantilla);
                 }
                 result.Content = new StreamContent(ms);
                 result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
@@ -222,7 +220,57 @@ namespace Architect.API.Tron.Controllers
                 result.Content.Headers.ContentLength = ms.Length;
                 return result;
             }
-            
+
+        }
+
+        /// <summary>
+        /// Descarga un certificado de un acreedor
+        /// </summary>
+        /// <param name="num_poliza"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ImprimirAcreedor/{num_poliza}")]
+        public async Task<HttpResponseMessage> ImprimirAcreedor([FromUri] string num_poliza)
+        {
+
+            try
+            {
+                Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                var bytes = await Business.Backoffice.Common.ImprimirAcreedor(num_poliza);
+                var dataStream = new MemoryStream(bytes);
+                result.Content = new StreamContent(dataStream);
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+                {
+                    FileName = "Mapfre Certificado.pdf"
+                };
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+                result.Content.Headers.ContentLength = dataStream.Length;
+                return result;
+            }
+
+            catch (Exception e)
+            {
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                byte[] plantilla = null;
+                MemoryStream ms;
+                using (WebClient client = new WebClient())
+                {
+
+                    plantilla = client.DownloadData(ConfigurationManager.AppSettings["Certificadospdf.Path"] + "PlantillaGenerica.pdf");
+                    ms = new MemoryStream(plantilla);
+                }
+                result.Content = new StreamContent(ms);
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+                {
+                    FileName = "Respuesta Certificado.pdf"
+                };
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+                result.Content.Headers.ContentLength = ms.Length;
+                return result;
+            }
+
         }
 
         /// <summary>
@@ -235,8 +283,8 @@ namespace Architect.API.Tron.Controllers
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var dataStream = new MemoryStream(Business.Backoffice.Common.ImprimirPoliza(reportId,
-                String.Format("ReportId {0} ", reportId)));
+            var dataStream = new MemoryStream(Business.Backoffice.Common.DownloadReport(reportId,
+                String.Format("ReportId {0} ", reportId), "ImprimirSegunId"));
             result.Content = new StreamContent(dataStream);
             result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
             {
@@ -318,7 +366,7 @@ namespace Architect.API.Tron.Controllers
             try
             {
                 Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-                
+
                 object result = null;
                 byte[] content = await Business.Backoffice.Common.ImprimirPoliza(num_poliza, num_riesgo);
 
@@ -333,7 +381,7 @@ namespace Architect.API.Tron.Controllers
             }
 
             catch (Exception e)
-            {                
+            {
                 return BadRequest(e.Message);
             }
 
