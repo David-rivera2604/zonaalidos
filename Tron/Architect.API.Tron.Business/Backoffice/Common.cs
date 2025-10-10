@@ -225,15 +225,34 @@ namespace Architect.API.Tron.Business.Backoffice
             }
             string reportId = await DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo);
 
-            return ImprimirPoliza(reportId,
-                String.Format("Póliza {0}, Riesgo {1}, ReportId {2} ", num_poliza, num_riesgo, reportId));
+            return DownloadReport(reportId, String.Format("Póliza {0}, Riesgo {1}, ReportId {2} ", num_poliza, num_riesgo, reportId), "ImprimirPoliza");
+                
+        }
+        /// <summary>
+        /// Descarga un certificado de un acreedor
+        /// </summary>
+        /// <param name="num_poliza"></param>
+        /// <returns></returns>
+        public static async Task<byte[]> ImprimirAcreedor(string num_poliza)
+        {
+            
+            string reportId = await DataAccess.Impresion.Acreedor(1, num_poliza);
+            return DownloadReport(reportId, String.Format("Póliza {0}, ReportId {1} ", num_poliza, reportId), "ImprimirAcreedor");
+
         }
 
-        public static byte[] ImprimirPoliza(string reportId, string verb)
+        /// <summary>
+        /// Descarga un reporte en PDF
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <param name="verb"></param>
+        /// <param name="typeReport"></param>
+        /// <returns></returns>
+        public static byte[] DownloadReport(string reportId,string verb, string typeReport)
         {
             byte[] result = null;
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
-                            ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"], reportId);
+                           ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"], reportId);
             using (WebClient client = new WebClient())
             {
                 result = client.DownloadData(id);
@@ -241,11 +260,10 @@ namespace Architect.API.Tron.Business.Backoffice
             if (result.Length < 200)
             {
                 string failDetail = System.Text.Encoding.Default.GetString(result);
-                Architect.Utilities.Log.ErrorLog("ImprimirPoliza", failDetail);
+                Architect.Utilities.Log.ErrorLog(typeReport, failDetail);
                 throw new Exception(failDetail);
             }
-            Utilities.Log.WarningLog("ImprimirPoliza", verb, "tron");
-
+            Utilities.Log.WarningLog(typeReport, verb, "tron");
             return result;
         }
 

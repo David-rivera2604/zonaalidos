@@ -23,7 +23,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                 filter = " AND TJ.NUM_POLIZA IN ('" + filter.Replace(",", "','") + "') ";
             }
 
-            Database.Select(@"
+            Database.Select($@"
 WITH CARDTOTOKEN AS (
 SELECT DISTINCT B.REASON,A99.MCA_FISICO, A99.TIP_DOCUM, A99.COD_DOCUM, A99.NOM_TERCERO, A99.NOM2_TERCERO, A99.APE1_TERCERO, A99.APE2_TERCERO, 
        A99.TLF_MOVIL, A31.TLF_NUMERO, A31.FAX_NUMERO,A31.EMAIL, A31.EMAIL_COM, A31.TXT_EMAIL,
