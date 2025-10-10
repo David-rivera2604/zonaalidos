@@ -408,6 +408,7 @@
     <Content Include="app\css\carnet.css" />
     <Content Include="app\css\Login.css" />
     <Content Include="app\img\ajax-loader.gif" />
+    <Content Include="app\js\core.frm.js" />
     <Content Include="app\js\core.ui.components.js" />
     <Content Include="app\js\core.ui.js" />
     <Content Include="app\js\core.js" />
@@ -1948,7 +1949,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57965</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8080/aliados/</IISUrl>
+          <IISUrl>http://localhost:8083/aliados/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

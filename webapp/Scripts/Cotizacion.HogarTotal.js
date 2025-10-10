@@ -215,6 +215,7 @@ app.HogarTotal = (function () {
             contrato: app.ui.GetDropDownNumericValue('#contrato'),
             subcontrato: app.ui.GetDropDownNumericValue('#subcontrato'),
             polizagrupo: setupData.polizagrupo,
+            numerodepiso: app.ui.GetNumericValue('#numerodepiso'),
             cod_agt: app.Cotizacion.AgentCode(),
             cod_cuadro_com: app.Cotizacion.CuadroCom()
         };
@@ -239,6 +240,7 @@ app.HogarTotal = (function () {
         $('#medidasdeseguridad').val(data.medidasdeseguridad);
         $('#descuento').val(data.descuento);
 
+        app.ui.SetNumericValue('#numerodepiso', data.numerodepiso);
         app.ui.SetNumericValue('#sAEdificio', data.sAEdificio);
         app.ui.SetNumericValue('#sAObjetosvaliosos', data.sAObjetosvaliosos);
         app.ui.SetNumericValue('#sADomocristalmarmolgranito', data.sADomocristalmarmolgranito);
@@ -333,7 +335,15 @@ app.HogarTotal = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-
+        new AutoNumeric('#numerodepiso', {
+            decimalCharacter: ',',
+            decimalCharacterAlternative: '.',
+            digitGroupSeparator: '.',
+            maximumValue: '9999',
+            minimumValue: '0',
+            decimalPlaces: '0',
+            emptyInputBehavior: 'null'
+        });
         $('#medidasdeseguridad').select2({ width: '100%', theme: 'bootstrap4' });
 
         $("#cotizar").appendTo("#GenericToolBar");
@@ -431,7 +441,8 @@ app.HogarTotal = (function () {
                 sADomocristalmarmolgranito: { required: true, Numeric: true },
                 sAGastosalquiler: { required: true, Numeric: true },
                 sAPerdidaderentas: { required: true, Numeric: true },
-                sARespcivil: { required: true, Numeric: true }
+                sARespcivil: { required: true, Numeric: true },
+                numerodepiso: { required: true, Numeric: true }
 
             },
             messages: {
@@ -443,7 +454,8 @@ app.HogarTotal = (function () {
                 sADomocristalmarmolgranito: { required: 'Debe indicar la suma asegurada para domo, cristal, mármol, granito', Numeric: 'Debe indicar la suma asegurada para domo, cristal, mármol, granito' },
                 sAGastosalquiler: { required: 'Debe indicar la suma asegurada para gastos de alquiler', Numeric: 'Debe indicar la suma asegurada para gastos de alquiler' },
                 sAPerdidaderentas: { required: 'Debe indicar la suma asegurada para pérdida de rentas', Numeric: 'Debe indicar la suma asegurada para pérdida de rentas' },
-                sARespcivil: { required: 'Debe indicar la suma asegurada para responsabilidad civil', Numeric: 'Debe indicar la suma asegurada para responsabilidad civil' }
+                sARespcivil: { required: 'Debe indicar la suma asegurada para responsabilidad civil', Numeric: 'Debe indicar la suma asegurada para responsabilidad civil' },
+                numerodepiso: { required: 'Debe indicar el número de piso', Numeric: 'Debe indicar el número de piso' }
             }
         });
     };

@@ -20,6 +20,9 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
         /// <remarks>
         /// tipo
         /// 0 Cédula Física Nacional
+        /// 2 Cédula Jurídica Gobierno Central
+        /// 3 Cédula Persona Jurídica Nacional
+        /// 4 Cédula Institución Autónoma
         /// 6 Documento Migratorio (DIMEX)
         /// 9 Pasaporte
         /// 12 DIDI (Identificación de Diplomáticos)
@@ -35,7 +38,7 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
                 var json = JsonConvert.SerializeObject(new { Identificacion = identificacion, CodigoTipoIdentificacion = tipo });
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
-                var response = await client.PostAsync("https://seguros-cloud.appspot.com/api/ins/svc/clientSearch", data).ConfigureAwait(false);
+                var response = await client.PostAsync("https://grupo-ins.com/api/ins/svc/clientSearch", data).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -166,6 +169,31 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
                                                          ex, "integrations");
             }
             return result;
+        }
+
+        public static string DocTypeConvert(int docType)
+        {
+            string instipo = "0";
+            switch (docType)
+            {
+                case 1:
+                    instipo = "0";
+                    break;
+                case 2:
+                    instipo = "6";
+                    break;
+                case 3:
+                    instipo = "9";
+                    break;
+                case 4:
+                    instipo = "3";
+                    break;
+                default:
+                    instipo = "0";
+                    break;
+            }
+
+            return instipo;
         }
     }
     public static class JObjectExtensions

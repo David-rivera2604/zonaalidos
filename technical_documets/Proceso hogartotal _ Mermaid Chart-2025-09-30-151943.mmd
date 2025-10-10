@@ -1,0 +1,19 @@
+sequenceDiagram
+    autonumber
+    actor Agente
+    Agente->>Aliados: Ingreso de datos básicos para el presupuesto
+    Aliados->>TRON: Cotizar: Envía datos para el cálculo del presupuesto
+    TRON-->>Aliados: Presupuesto calculado
+    Aliados-->>Agente: Presupuesto
+    Agente->>Aliados: Completar solicitud: 
+    Aliados-->>Agente: Habilita el ingreso de todos los datos
+    Agente->>Aliados: Guardar y enviar solicitud:
+    Aliados->>+DocuSign: Envió de certificado para su firma electrónica
+    Note right of DocuSign: Servicio de firma electrónica
+    DocuSign-->>-Aliados: Certificado firmado
+    Agente->>Aliados: Solicitud de emisión
+    Aliados-->>Agente: Habilita el ingreso documento requeridos
+    Agente->>Aliados: Emitir:
+    Aliados->>TRON: Complementa los datos variables del presupuesto
+    Aliados->>TRON: Solicita la emisión de la póliza
+    TRON-->>Aliados: Póliza emitida

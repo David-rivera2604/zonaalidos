@@ -209,7 +209,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_DES_BIEN", "0"));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "MCA_ACTUALIZA_VAL_REN", "N"));
-            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PISO", "0"));
+            datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "NUM_PISO", quoteInfo.numerodepiso.ToString()));
             datosVariables.Add(Util.DatoVariable(datosFijos, num_riesgo, "PCT_AJUSTE_GEN", quoteInfo.descuento.ToString()));
 
 

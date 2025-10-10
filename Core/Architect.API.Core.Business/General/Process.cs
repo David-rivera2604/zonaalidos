@@ -820,13 +820,17 @@ namespace Architect.API.Core.Business.General
                     }
                     templList = templList.Replace("{Roles}", string.Empty);
                 }
-                foreach (string entry in templList.Split(','))
+                if (!templList.Equals("{Roles}"))
                 {
-                    if (entry.IsNotEmpty() && !mailFullList.ContainsKey(entry))
+                    foreach (string entry in templList.Split(','))
                     {
-                        mailFullList.Add(entry, string.Empty);
+                        if (entry.IsNotEmpty() && !mailFullList.ContainsKey(entry))
+                        {
+                            mailFullList.Add(entry, string.Empty);
+                        }
                     }
                 }
+
             }
 
             if (mailFullList.Count > 0)

@@ -59,7 +59,7 @@ namespace Architect.API.Insurance.Controllers
             if (result == null)
             {
                 Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
-                Task<Contracts.Policy.Insured> ins = Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id);
+                Task<Contracts.Policy.Insured> ins = Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id.DocumentNumber(docType.ToString()), Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.DocTypeConvert(docType));
                 Task<Contracts.Policy.Insured> padron = Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
 
                 var tasks = new[] { tron, ins, padron };
@@ -142,6 +142,8 @@ namespace Architect.API.Insurance.Controllers
             }
             return Ok(result);
         }
+
+        
 
         /// <summary>
         /// Recupera la información de un cuestionario, asociado a la identificación de un asegurado.

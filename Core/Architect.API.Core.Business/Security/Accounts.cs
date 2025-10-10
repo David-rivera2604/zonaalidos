@@ -304,7 +304,7 @@ namespace Architect.API.Core.Business.Security
                             UserAgent = authenticationRequest.UserAgent
                         });
                     }
-                    else if (!developerMode && !bypass)
+                    else if (!bypass)
                     {
                         if (!authenticationRequest.EmployeeMode)
                         {

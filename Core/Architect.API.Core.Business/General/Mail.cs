@@ -188,8 +188,26 @@ namespace Architect.API.Core.Business.General
             }
             else
             {
-                subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), subject, context);
-                body = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), body, context);
+                try
+                {
+                    subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), subject, context);
+                }
+                catch (Exception ex)
+                {
+                    ex.Data?.Add("context", context);
+                    Architect.Utilities.Log.ErrorLog("SendMail", $"Ha ocurrido un error tratando de resolver el 'subject': {subject}", ex);
+                    return;
+                }
+                try
+                {
+                    body = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), body, context);
+                }
+                catch (Exception ex)
+                {
+                    ex.Data?.Add("context", context);
+                    Architect.Utilities.Log.ErrorLog("SendMail", $"Ha ocurrido un error tratando de resolver el 'body': {body}", ex);
+                    return;
+                }
 
             }
             if (testEmail.IsNotEmpty())
