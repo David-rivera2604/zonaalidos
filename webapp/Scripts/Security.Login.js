@@ -89,6 +89,8 @@ app.login = (function () {
                                 $('#ForgotMail').val(data.EMail);
                                 $('#login').addClass('d-none');
 
+                                modal.style.display = "block";
+
                                 $('#forgoCode').removeClass('d-none');
 
                                 $("#forgoCode h3").html('Su clave de acceso ha expirado, hemos enviado a su correo electrónico, un código de verificación');
