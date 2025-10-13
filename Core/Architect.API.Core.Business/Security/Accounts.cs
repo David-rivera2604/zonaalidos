@@ -26,11 +26,11 @@ namespace Architect.API.Core.Business.Security
 
             bool developerMode = Architect.Utilities.Helpers.Settings.StringValue("Working.Mode", "Development").Equals("Development", StringComparison.CurrentCultureIgnoreCase);
 
+            developerMode = false;
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse() { Settings = new List<SettingItem>() };
             Contracts.Security.UserMember user = null;
             List<Contracts.Security.RoleMember> rols = null;
             int companyId = 0;
-            bool bypass = false;
             bool accessAllowed = false;
             int tokenExpiresIn = 0;
             Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 1, IPAddress = authenticationRequest.IPAddress, UserName = authenticationRequest.Email, UserAgent = authenticationRequest.UserAgent };
@@ -79,11 +79,10 @@ namespace Architect.API.Core.Business.Security
                         (authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.UserName.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase) ||
                          authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.EMail.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase)))
                     {
-                        bypass = true;
                         accessAllowed = true;
                     }
 
-                    if (!authenticationRequest.EmployeeMode)
+                    if (!authenticationRequest.EmployeeMode && !accessAllowed)
                     {
                         //Desbloqueo automático
                         if (user.IsLockedOut && user.LockedOutDate < DateTime.Now)
@@ -100,17 +99,17 @@ namespace Architect.API.Core.Business.Security
                             });
                         }
 
-                        if (!bypass && user.RecordStatus != 1)
+                        if (user.RecordStatus != 1)
                         {
                             track.TraceType = 5;
                             result.Reason = "Usuario desactivado";
                         }
-                        else if (!bypass && user.IsLockedOut)
+                        else if (user.IsLockedOut)
                         {
                             track.TraceType = 6;
                             result.Reason = "Usuario bloqueado";
                         }
-                        else if (user.Password.Equals(".") || bypass ||
+                        else if (user.Password.Equals(".") ||
                                  user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
                         {
                             accessAllowed = true;
@@ -144,19 +143,19 @@ namespace Architect.API.Core.Business.Security
 
                     if (accessAllowed)
                     {
-                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
+                        tokenExpiresIn = Business.Settings.IntegerValue(0, "Security.Session.Timeout", 30);
                         track.TraceType = 2;
                         result.ExpiresIn = tokenExpiresIn;
                         result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
 
-                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Token.Timeout", (int)(tokenExpiresIn * 2.5));
+                        tokenExpiresIn = Business.Settings.IntegerValue(0, "Security.Token.Timeout", (int)(tokenExpiresIn * 2.5));
 
                         rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
                         result.Roles = rols.Select(x => x.Description).ToArray();
 
                         //Este bloque esta duplicado en la clase Architect.API.Core.Security.token
                         Contracts.Security.AgentInformation agentInfo = null;
-                        if (Utilities.Helpers.Settings.StringValue("Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
+                        if (Business.Settings.StringValue(0, "Security.Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
                         {
                             agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
                         }
@@ -213,10 +212,9 @@ namespace Architect.API.Core.Business.Security
                         user.IsLockedOut = false;
                         user.LockedOutDate = DateTime.MinValue;
                         user.FailedPasswordCount = 0;
-                        if (!bypass)
-                        {
-                            DataAccess.Security.UserMember.InternalUpdate(user);
-                        }
+
+                        DataAccess.Security.UserMember.InternalUpdate(user);
+
                         if (user.InitialNavigationCode.IsNotEmpty())
                         {
                             result.InitialPath = user.InitialNavigationCode;
@@ -285,12 +283,9 @@ namespace Architect.API.Core.Business.Security
 
                         }
 
-                        if (!developerMode && !bypass && !authenticationRequest.EmployeeMode)
+                        if (!developerMode && !authenticationRequest.EmployeeMode)
                         {
-                            //if (user.Password.Equals("."))
-                            //    result.MustChangePassword = true;
-                            //else
-                            result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
+                            result.MustChangePassword = (user.PasswordChangedDate.AddDays(Business.Settings.IntegerValue(0, "Security.Password.Expiration", 90)) <= DateTime.Today);
                         }
                         Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity()
                         {
@@ -303,8 +298,15 @@ namespace Architect.API.Core.Business.Security
                             IP = authenticationRequest.IPAddress,
                             UserAgent = authenticationRequest.UserAgent
                         });
+
+                        result.Need2FAOTP = Business.Settings.BoolValue(0, "Security.2FA.Enable", false);
+                        if (result.Need2FAOTP)
+                        {
+                            CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
+                        }
+
                     }
-                    else if (!bypass)
+                    else
                     {
                         if (!authenticationRequest.EmployeeMode)
                         {
@@ -339,10 +341,9 @@ namespace Architect.API.Core.Business.Security
                 }
             }
             track.Reason = result.Reason;
-            if (!bypass)
-            {
-                Business.Security.AuthenticationTrace.Create(track);
-            }
+
+            Business.Security.AuthenticationTrace.Create(track);
+
             if (result.MustChangePassword)
             {
                 CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
@@ -431,7 +432,7 @@ namespace Architect.API.Core.Business.Security
             user.LockedOutDate = DateTime.Now.AddMinutes(60);
             DataAccess.Security.UserMember.InternalUpdate(user);
 
-            General.Mail.SendByTemplate("Notify_OTP", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
+            // General.Mail.SendByTemplate("Notify_OTP", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
         }
 
         public static Core.Contracts.General.GenericResponse IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
