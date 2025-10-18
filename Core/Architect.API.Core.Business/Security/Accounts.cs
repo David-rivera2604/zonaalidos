@@ -11,22 +11,19 @@ namespace Architect.API.Core.Business.Security
 {
     public static class Accounts
     {
+
+        /// <summary>
+        /// objeto de clase Security.Token que almacena el usuario actual
+        /// </summary>
+        public static Contracts.Security.Token UserIdActual;
+
         /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
         /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
-        /// 
-
-        // objeto de clase Security.Token que almacena el usuario actual
-        public static Contracts.Security.Token UserIdActual;
-
         public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
         {
-
-            bool developerMode = Architect.Utilities.Helpers.Settings.StringValue("Working.Mode", "Development").Equals("Development", StringComparison.CurrentCultureIgnoreCase);
-
-            developerMode = false;
             Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse() { Settings = new List<SettingItem>() };
             Contracts.Security.UserMember user = null;
             List<Contracts.Security.RoleMember> rols = null;
@@ -283,7 +280,7 @@ namespace Architect.API.Core.Business.Security
 
                         }
 
-                        if (!developerMode && !authenticationRequest.EmployeeMode)
+                        if (!authenticationRequest.EmployeeMode)
                         {
                             result.MustChangePassword = (user.PasswordChangedDate.AddDays(Business.Settings.IntegerValue(0, "Security.Password.Expiration", 90)) <= DateTime.Today);
                         }
@@ -300,9 +297,9 @@ namespace Architect.API.Core.Business.Security
                         });
 
                         result.Need2FAOTP = Business.Settings.BoolValue(0, "Security.2FA.Enable", false);
-                        if (result.Need2FAOTP)
+                        if (!result.MustChangePassword && result.Need2FAOTP)
                         {
-                            CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
+                            CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user, "2FA");
                         }
 
                     }
@@ -346,13 +343,13 @@ namespace Architect.API.Core.Business.Security
 
             if (result.MustChangePassword)
             {
-                CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
+                CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user, "MustChangePassword");
             }
             return result;
         }
 
         /// <summary>
-        /// Metodo
+        /// Leer los colores disponibles
         /// </summary>
         public static List<Architect.API.Core.Contracts.Security.ColoresResponse> ReadColor()
         {
@@ -361,6 +358,7 @@ namespace Architect.API.Core.Business.Security
 
             return RespuestaData;
         }
+       
         /// <summary>
         /// Leer datos del inicio
         /// </summary>
@@ -371,6 +369,10 @@ namespace Architect.API.Core.Business.Security
 
             return DataInicio;
         }
+
+        /// <summary>
+        /// Obtiene la información de la compañía (tenant) basada en su nombre.
+        /// </summary>
         private static Core.Contracts.General.LookupValue TenantInformation(string tenant)
         {
             const int companyId = 0;
@@ -382,6 +384,9 @@ namespace Architect.API.Core.Business.Security
             return companyItem;
         }
 
+        /// <summary>
+        /// Envía un código OTP para restablecer la contraseña de un usuario.
+        /// </summary>
         public static Core.Contracts.General.GenericResponse SendOTP(Contracts.Security.ResetPasswordRequest resetRequest)
         {
             Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
@@ -409,7 +414,7 @@ namespace Architect.API.Core.Business.Security
                 if (user.IsNotEmpty())
                 {
                     track.UserId = user.UserId;
-                    CreateOTP(resetRequest, user);
+                    CreateOTP(resetRequest, user, "ResetPassword");
                     result.Successful = true;
                 }
                 else
@@ -423,7 +428,10 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
-        private static void CreateOTP(ResetPasswordRequest resetRequest, Contracts.Security.UserMember user)
+        /// <summary>
+        /// Crea un código OTP para restablecer la contraseña de un usuario.
+        /// </summary>
+        private static void CreateOTP(ResetPasswordRequest resetRequest, Contracts.Security.UserMember user, string mode)
         {
             Random random = new Random();
             user.OneTimePassword = random.Next(100000, 999999).ToString();
@@ -432,9 +440,14 @@ namespace Architect.API.Core.Business.Security
             user.LockedOutDate = DateTime.Now.AddMinutes(60);
             DataAccess.Security.UserMember.InternalUpdate(user);
 
-            // General.Mail.SendByTemplate("Notify_OTP", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
+            //General.Mail.SendByTemplate(mode == "2FA" ? "Notify_2FA" : "Notify_OTP", 
+            //    user.CompanyId, new { User = user, Request = resetRequest }, 
+            //    new Dictionary<string, string> { { user.EMail, string.Empty } });
         }
 
+        /// <summary> 
+        /// Valida el código OTP para restablecer la contraseña de un usuario o cuando se activa 2FA.
+        /// </summary>
         public static Core.Contracts.General.GenericResponse IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
         {
             Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
@@ -490,6 +503,9 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
+        /// <summary> 
+        /// Restablece la contraseña de un usuario.
+        /// </summary>
         public static Core.Contracts.General.GenericResponse ResetPassword(Contracts.Security.ResetPasswordRequest resetRequest)
         {
             Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
@@ -569,6 +585,9 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
+        /// <summary>
+        /// Cambia la contraseña de un usuario.
+        /// </summary>
         public static Core.Contracts.General.GenericResponse ChangePassword(int companyId, int userId, Contracts.Security.ResetPasswordRequest resetRequest)
         {
             Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
@@ -764,6 +783,7 @@ namespace Architect.API.Core.Business.Security
 
         /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.
+        /// </summary>
         public static async Task<Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad> Token(string clienteID, string secretID, string ipAddress, string userAgent)
         {
             Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad result = null;
@@ -805,6 +825,10 @@ namespace Architect.API.Core.Business.Security
 
             return result;
         }
+
+        /// <summary> 
+        /// Obtiene el perfil de un usuario.
+        /// </summary>
         public static Contracts.Security.UserMember Profile(int companyId, int userId)
         {
             Contracts.Security.UserMember result = null;
@@ -819,5 +843,6 @@ namespace Architect.API.Core.Business.Security
             }
             return result;
         }
+    
     }
 }

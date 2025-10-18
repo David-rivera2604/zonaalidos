@@ -38,5 +38,9 @@ namespace Architect.API.Core.Contracts.Security
         /// Dirección IP/Nombre de la maquina donde se hizo la solicitud.
         /// </summary>
         [IgnoreDataMember()] public string IPAddress { get; set; }
+        /// <summary>
+        /// Indica el modo de uso. 2FA para ingreso con doble factor de autenticación, en otros casos restaurar clave de acceso.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string Mode { get; set; }
     }
 }

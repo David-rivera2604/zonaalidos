@@ -110,7 +110,7 @@ app.login = (function () {
                             }
                         });
                 } else {
-                    app.core.Post(app.setting.apipath + 'v1/Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val() }))
+                    app.core.Post(app.setting.apipath + 'v1/Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val(), Mode: '2FA' }))
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Successful) {
                                 Authenticated(dataStage);
