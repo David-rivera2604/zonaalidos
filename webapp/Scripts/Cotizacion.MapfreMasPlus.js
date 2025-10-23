@@ -96,7 +96,6 @@ app.CotizacionMapfreMasPlus = (function () {
             'MM_MarcasVehiculos.cod_marca',
             'MM_ModelosVehiculos.cod_modelo',
             'UsoVehiculo.cod_uso_vehi',
-            'TRON_G1010031:DEDUC303_3017.DedudAutoSust',
             'TRON_G1010031:DEDUC303_3019.DedudAutoSustConnect'];
 
         setupData = JSON.parse(JSON.stringify(data));
@@ -270,7 +269,6 @@ app.CotizacionMapfreMasPlus = (function () {
             IMP_AUTO_CRI: app.ui.GetDropDownNumericValue('#IMP_AUTO_CRI'),
             DED_AUTO_CRI: app.ui.GetDropDownNumericValue('#DED_AUTO_CRI'),
             AutoSust: app.ui.GetDropDownNumericValue('#AutoSust'),
-            DedudAutoSust: app.ui.GetDropDownNumericValue('#DedudAutoSust'),
             DedudAutoSustConnect: app.ui.GetDropDownNumericValue('#DedudAutoSustConnect'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
@@ -755,7 +753,6 @@ app.CotizacionMapfreMasPlus = (function () {
                 IMP_AUTO_CRI: { required: true },
                 DED_AUTO_CRI: { required: true },
                 AutoSust: { required: true },
-                DedudAutoSust: { required: true },
                 DedudAutoSustConnect: { required: true },
                 contrato: { required: false },
                 subcontrato: { required: false }
@@ -793,7 +790,6 @@ app.CotizacionMapfreMasPlus = (function () {
                 DED_AUTO_CRI: { required: 'Debe indicar el deducible rotura de cristales' },
 
                 AutoSust: { required: 'Debe indicar el auto sustituto' },
-                DedudAutoSust: { required: 'Debe indicar el deducible para el auto sustituto' },
                 DedudAutoSustConnect: { required: 'Debe indicar el deducible para el auto sustituto connect' },
                 contrato: { required: 'Debe indicar el contrato' },
                 subcontrato: { required: 'Debe indicar el subcontrato' }
@@ -1306,13 +1302,6 @@ app.CotizacionMapfreMasPlus = (function () {
             app.ui.SetNumericValue('#IMP_AUTO_EQESP', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_EQESP', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_EQESP', 0);
-        }
-        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3017)) {
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSust', false);
-        }
-        else {
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSust', true);
-            app.ui.SetDropDownNumericValue('#DedudAutoSust', 0);
         }
 
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3019)) {

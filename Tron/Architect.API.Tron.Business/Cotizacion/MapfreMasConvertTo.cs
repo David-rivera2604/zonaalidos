@@ -90,13 +90,11 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 if (result.cod_tip_vehi == 5 || result.cod_tip_vehi == 17 || result.cod_tip_vehi == 18)
                 {
-                    result.p_mca_auto_sust = "N";
                     result.p_mca_auto_sust_connect = "N";
                 }
                 else
                 {
-                    result.p_mca_auto_sust = "S";
-                    result.p_ded_auto_sust = quoteInfo.DedudAutoSust.ToString();
+                   
                     result.p_mca_auto_sust_connect = "S";
                     result.p_ded_auto_sust_connect = quoteInfo.DedudAutoSustConnect.ToString();
                 }
