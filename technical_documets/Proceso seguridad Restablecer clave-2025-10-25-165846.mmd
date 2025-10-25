@@ -1,0 +1,48 @@
+sequenceDiagram
+    participant Usuario
+    participant Aliados
+    participant ServicioDeAliados
+    participant ServidorDeCorreo
+    
+    Usuario->>Aliados: Escribo mi Nombre y Clave (Vencida)
+    Aliados->>ServicioDeAliados: Envío datos para verificar
+    
+    activate ServicioDeAliados
+    
+    alt Credenciales Válidas PERO Vencidas
+        ServicioDeAliados->>ServicioDeAliados: Confirma que la clave ha expirado
+        ServicioDeAliados->>ServicioDeAliados: Genera Código Temporal (OTP)
+        
+        ServicioDeAliados->>ServidorDeCorreo: Enviar OTP a email del usuario
+        activate ServidorDeCorreo
+        ServidorDeCorreo-->>ServicioDeAliados: Confirmación de envío
+        deactivate ServidorDeCorreo
+        
+        ServicioDeAliados-->>Aliados: Informa clave vencida y solicita OTP
+        
+        Aliados->>Usuario: Informa vencimiento y pide Código OTP
+        Usuario->>Aliados: Ingreso el Código OTP
+        
+        Aliados->>ServicioDeAliados: Envío Código OTP para validar
+        
+        activate ServicioDeAliados
+        alt OTP Correcto
+            ServicioDeAliados-->>Aliados: OTP validado. Autoriza cambio de clave
+            
+            Aliados->>Usuario: Pide la Nueva Clave
+            Usuario->>Aliados: Ingresa Nueva Clave
+            Aliados->>ServicioDeAliados: Enviar Nueva Clave
+            
+            ServicioDeAliados->>ServicioDeAliados: Almacena y hashea la Nueva Clave
+            ServicioDeAliados-->>Aliados: Clave actualizada. Acceso concedido
+            
+        else OTP Incorrecto
+            ServicioDeAliados-->>Aliados: Informar que el código es incorrecto
+            Aliados->>Usuario: Mostrar error: "Código OTP incorrecto"
+        end
+        deactivate ServicioDeAliados
+        
+    else Clave Válida (No Vencida) o Inválida
+        ServicioDeAliados-->>Aliados: Procede con flujo estándar de Login o Fallo
+    end
+    deactivate ServicioDeAliados

@@ -1,0 +1,56 @@
+sequenceDiagram
+    participant Usuario
+    participant Aliados
+    participant ServicioDeAliados
+    participant ServidorDeCorreo
+
+    Usuario->>Aliados: Clic en "Olvidó su clave de acceso?"
+    Aliados->>Usuario: Pide Email
+    Usuario->>Aliados: Ingresa su Email
+
+    Aliados->>ServicioDeAliados: Solicitar OTP para restablecer clave
+    
+    activate ServicioDeAliados
+    ServicioDeAliados->>ServicioDeAliados: Genera OTP de Restablecimiento
+    ServicioDeAliados->>ServidorDeCorreo: Enviar OTP a email del usuario
+    
+    activate ServidorDeCorreo
+    ServidorDeCorreo-->>ServicioDeAliados: Confirmación de envío
+    deactivate ServidorDeCorreo
+    
+    ServicioDeAliados-->>Aliados: Solicitud de OTP
+    deactivate ServicioDeAliados 
+    
+    Aliados->>Usuario: Solicitar Código OTP
+    
+    Usuario->>Aliados: Ingreso el Código OTP
+    
+    Aliados->>ServicioDeAliados: Envío Código OTP para validar
+
+    activate ServicioDeAliados
+    alt OTP Correcto
+        ServicioDeAliados-->>Aliados: OTP validado. Autoriza cambio
+        
+        Aliados->>Usuario: Pide la Nueva Clave
+        Usuario->>Aliados: Ingresa Nueva Clave
+        Aliados->>ServicioDeAliados: Enviar Nueva Clave
+        
+        activate ServicioDeAliados
+        ServicioDeAliados->>ServicioDeAliados: Almacena y hashea la Nueva Clave
+        ServicioDeAliados->>ServidorDeCorreo: Notificación de Cambio de Clave Exitoso
+        
+        activate ServidorDeCorreo
+        ServidorDeCorreo-->>ServicioDeAliados: Confirmación de envío
+        deactivate ServidorDeCorreo
+        
+        ServicioDeAliados-->>Aliados: Clave cambiada exitosamente
+        deactivate ServicioDeAliados 
+        
+        Aliados->>Usuario: Notificación final y acceso
+        
+    else OTP Incorrecto
+        ServicioDeAliados-->>Aliados: Informar que el código es incorrecto
+        
+        Aliados->>Usuario: Mostrar error: "Código OTP incorrecto"
+    end
+    deactivate ServicioDeAliados

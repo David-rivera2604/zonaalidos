@@ -1,0 +1,52 @@
+sequenceDiagram
+    participant Usuario
+    participant Aliados
+    participant ServicioDeAliados
+    participant ServidorDeCorreo
+
+    Usuario->>Aliados: Ingreso de credenciales
+    Aliados->>ServicioDeAliados: Envío datos para verificar (Paso 1)
+    
+    activate ServicioDeAliados
+
+    alt Credenciales Válidas
+        ServicioDeAliados->>ServicioDeAliados: Genera Código Temporal (2FA)
+        ServicioDeAliados->>+ServidorDeCorreo: Enviar código a email del usuario
+        ServidorDeCorreo-->>-ServicioDeAliados: Confirmación de envío
+        
+        ServicioDeAliados-->>Aliados: Solicitud de Código 2FA
+        Aliados->>Usuario: Solicitar Código 2FA
+        
+        Usuario->>Aliados: Ingreso el Código 2FA
+        Aliados->>ServicioDeAliados: Envío Código 2FA para validar (Paso 2)
+        
+        activate ServicioDeAliados
+        alt Código 2FA Correcto
+            ServicioDeAliados->>ServicioDeAliados: Crea un pase de entrada
+            ServicioDeAliados-->>Aliados: Acceso concedido
+            Aliados->>Usuario: Pantalla inicial de Aliados
+        else Código 2FA Incorrecto
+            ServicioDeAliados-->>Aliados: Informar que el código es incorrecto
+            Aliados->>Usuario: Mostrar error: "Código 2FA incorrecto"
+        end
+        deactivate ServicioDeAliados 
+        
+    else Credenciales Inválidas
+        ServicioDeAliados->>+ServidorDeCorreo: Notificación de intento de acceso fallido
+        ServidorDeCorreo-->>-ServicioDeAliados: Confirmación de envío de notificación
+        
+        ServicioDeAliados->>ServicioDeAliados: Incrementa contador de intentos fallidos
+        
+        alt Intentos Fallidos >= 3
+            ServicioDeAliados->>ServicioDeAliados: Bloquea la cuenta por 3 a 10 min
+            ServicioDeAliados->>+ServidorDeCorreo: Notificación de bloqueo de cuenta
+            ServidorDeCorreo-->>-ServicioDeAliados: Confirmación de envío de bloqueo
+            ServicioDeAliados-->>Aliados: Cuenta bloqueada temporalmente
+            Aliados->>Usuario: Mostrar error: "Cuenta bloqueada. Intente de nuevo en 3-10 min."
+        else Intentos Fallidos < 3
+            ServicioDeAliados-->>Aliados: Informar que los datos no coinciden
+            Aliados->>Usuario: Mostrar error: "Datos incorrectos"
+        end
+    end
+    
+    deactivate ServicioDeAliados
