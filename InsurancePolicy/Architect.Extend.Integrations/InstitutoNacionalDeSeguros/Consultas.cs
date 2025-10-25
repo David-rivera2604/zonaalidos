@@ -165,7 +165,7 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
             {
                 ex.Data.Add("resultResponse", resultResponse);
                 Architect.Utilities.Log.ErrorLog("INS.PersonaPorIdentificacion",
-                                                         string.Format("Falla al tratar de consultar a identificación '{0}'", identificacion),
+                                                         string.Format("Falla al tratar de consultar a identificación '{0}' tipo '{2}'", identificacion, tipo),
                                                          ex, "integrations");
             }
             return result;
