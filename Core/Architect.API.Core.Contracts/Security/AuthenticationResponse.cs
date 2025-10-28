@@ -51,6 +51,11 @@ namespace Architect.API.Core.Contracts.Security
         /// </summary>
         public string EMail { get; set; }
 
+        /// <summary>
+        /// Indica que se necesita un segundo factor de autenticación (2FA) mediante OTP.
+        /// </summary>
+        public bool Need2FAOTP { get; set; }
+
         public List<SettingItem> Settings { get; set; }
     }
     public class SettingItem

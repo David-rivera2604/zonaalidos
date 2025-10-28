@@ -455,6 +455,7 @@ app.ui = (function () {
             $(name).text($(name).parent().find(name + 'Menu a[data-value=' + value + ']').text());
         },
         IsValid: function (formId, ignore, showResume, others) {
+            toastr.remove();
             if (ignore)
                 return true;
             else {
@@ -1519,6 +1520,7 @@ app.ui = (function () {
         NotifyClear: function (msg, title, settings) {
 
             toastr.remove();
+            //toastr.clear(); // Clears all toasts with animation
         },
         NewDateWidget: function (selector) {
             let settings = {

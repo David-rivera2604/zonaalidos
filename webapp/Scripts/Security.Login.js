@@ -7,6 +7,7 @@ var span = document.getElementsByClassName("close")[0];
 
 app.login = (function () {
 
+    let dataStage = null;
     let lasthref = '';
 
     let employeeMode = window.location.href.toLowerCase().endsWith("/mapfre");
@@ -48,64 +49,81 @@ app.login = (function () {
             $('#login').addClass('d-none');
         });
 
-        $('#Send').click(function () {
+        $('#reset').click(function (e) {
+            e.preventDefault();
+            $('#Tenant').prop("disabled", false);
+            $('#Username').prop("disabled", false);
+            $('.PasswordCls').removeClass('d-none');
+            $('.accessotpCls').addClass('d-none');
+            $('#Send').html('Iniciar');
+            $('#Send').prop("disabled", false);
+            $('#Password').val('');
+            $('#accessotp').val('');            
+            dataStage = null;
+        });
+
+        $('#Send').click(function (e) {
             if (app.ui.IsValid('#LoginEdtForm', false)) {
                 var status = 'validate';
                 $('#Send').prop("disabled", true);
                 $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...');
 
-                app.core.Post(app.setting.apipath + 'v1/Security/Authentication', JSON.stringify(InputToObject()))
-                    .done(function (data, textStatus, jqXHR) {
-                        if (data.Reason == null) {
-                            if (!data.MustChangePassword) {
-
-                                data.Settings?.forEach(item => {
-                                    localStorage.setItem(item.Key, item.Value);
-                                });
-                                localStorage.setItem('Username', data.UserName);
-                                localStorage.setItem('Tenant', data.Tenant);
-                                localStorage.setItem('Color1Tenant', data.Color1Tenant);
-                                localStorage.setItem('Color2Tenant', data.Color2Tenant);
-                                localStorage.setItem('Roles', JSON.stringify(data.Roles));
-
-                                var dta = new Date();
-                                localStorage.setItem('LastActivity', dta);
-                                var dt = new Date();
-                                dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
-                                localStorage.setItem('Expires', dt);
-
-                                localStorage.setItem('Token', data.Token);
-                                $('#Send').prop("disabled", true);
-                                $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
-                                status = 'redirect';
-                                if (app.login.lasthref == null) {
-                                    window.location.replace(app.setting.basepath + data.InitialPath);
+                if (dataStage == null) {
+                    app.core.Post(app.setting.apipath + 'v1/Security/Authentication', JSON.stringify(InputToObject()))
+                        .done(function (data, textStatus, jqXHR) {
+                            if (data.Reason == null) {
+                                if (!data.MustChangePassword) {
+                                    
+                                    if (data.Need2FAOTP) {
+                                        dataStage = data;
+                                        $('#Tenant').prop("disabled", true);
+                                        $('#Username').prop("disabled", true);
+                                        $('.PasswordCls').addClass('d-none');
+                                        $('.accessotpCls').removeClass('d-none');
+                                        $('#Send').html('Verificar el código');
+                                        $('#Send').prop("disabled", false);
+                                    }
+                                    else {
+                                        Authenticated(data);
+                                        status = 'redirect';
+                                    }
                                 } else {
-                                    window.location.replace(app.login.lasthref);
+
+                                    $('#ForgotMail').val(data.EMail);
+                                    $('#login').addClass('d-none');
+
+                                    modal.style.display = "block";
+
+                                    $('#forgoCode').removeClass('d-none');
+
+                                    $("#forgoCode h3").html('Su clave de acceso ha expirado, hemos enviado a su correo electrónico, un código de verificación');
+                                    $("#forgoCode p").html('Ingrese el código de verificación enviado a su correo electrónico registrado, para establecer su nueva clave de acceso');
                                 }
-                                
-                            } else {
-
-                                $('#ForgotMail').val(data.EMail);
-                                $('#login').addClass('d-none');
-
-                                $('#forgoCode').removeClass('d-none');
-
-                                $("#forgoCode h3").html('Su clave de acceso ha expirado, hemos enviado a su correo electrónico, un código de verificación');
-                                $("#forgoCode p").html('Ingrese el código de verificación enviado a su correo electrónico registrado, para establecer su nueva clave de acceso');
                             }
-                        }
-                        else
-                            toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
+                            else
+                                toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
 
-                    }).always(function () {
-                        if (status != 'redirect') {
-                            $('#Send').html('Iniciar');
-                            $('#Send').prop("disabled", false);
-                        }
-                    });
+                        }).always(function () {
+                            if (dataStage == null && status != 'redirect') {
+                                $('#Send').html('Iniciar');
+                                $('#Send').prop("disabled", false);
+                            }
+                        });
+                } else {
+                    app.core.Post(app.setting.apipath + 'v1/Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val(), Mode: '2FA' }))
+                        .done(function (data, textStatus, jqXHR) {
+                            if (data.Successful) {
+                                Authenticated(dataStage);
+                            }
+                            else {
+                                toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
+                                $('#Send').html('Verificar el código');
+                                $('#Send').prop("disabled", false);
+                            }
+                        });
+                }
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
         $('#ForgotSend').click(function () {
@@ -223,6 +241,9 @@ app.login = (function () {
                 Password: {
                     required: true,
                     minlength: 4
+                },
+                accessotp: {
+                    required: true
                 }
             },
             messages: {
@@ -236,6 +257,9 @@ app.login = (function () {
                 Password: {
                     required: 'Debe indicar la clave de acceso',
                     minlength: 'La clave de acceso debe tener por lo menos 4 caracteres'
+                },
+                accessotp: {
+                    required: 'Debe indicar el código de verificación'
                 }
             }
         });
@@ -332,6 +356,33 @@ app.login = (function () {
             EmployeeMode: employeeMode
         };
         return data;
+    };
+
+
+    function Authenticated(data) {
+        data.Settings?.forEach(item => {
+            localStorage.setItem(item.Key, item.Value);
+        });
+        localStorage.setItem('Username', data.UserName);
+        localStorage.setItem('Tenant', data.Tenant);
+        localStorage.setItem('Color1Tenant', data.Color1Tenant);
+        localStorage.setItem('Color2Tenant', data.Color2Tenant);
+        localStorage.setItem('Roles', JSON.stringify(data.Roles));
+
+        var dta = new Date();
+        localStorage.setItem('LastActivity', dta);
+        var dt = new Date();
+        dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
+        localStorage.setItem('Expires', dt);
+
+        localStorage.setItem('Token', data.Token);
+        $('#Send').prop("disabled", true);
+        $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');        
+        if (app.login.lasthref == null) {
+            window.location.replace(app.setting.basepath + data.InitialPath);
+        } else {
+            window.location.replace(app.login.lasthref);
+        }
     };
 
     return {

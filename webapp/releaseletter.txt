@@ -758,3 +758,8 @@
                    Aliados. Emisión Hogar 203. Se corrigue que al visualizar la modal para la carga de datos de la propiedad no aparece los campos del primer tab.
 1.6.151 09/10/2025 Aliados. Se corrigue falla cuando se intenta ingresar y la clave no es valida.
                    Pasarela. Tokenización. Ajuste en listado de tarjetas a tokenizar para que use la tabla NUM_TARJETA_MCR.
+1.6.152 25/10/2025 Aliados. Se habilita el segundo factor de autenticación para el ingreso al sistema, el mismo se habilita por medio de setting "Security.2FA.Enable".
+                   Aliados. Se agrega documentación en forma de diagramas de secuencia que explican los siguientes procesos:
+                          - Proceso de autenticación con 2FA.
+                          - Proceso de envío de correo para recuperación de contraseña.
+                          - Proceso de cambio de contraseña.

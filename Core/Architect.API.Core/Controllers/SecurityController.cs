@@ -121,7 +121,7 @@ namespace Architect.API.Core.Controllers
             resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
 
-            await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.SendOTP(resetRequest)).ConfigureAwait(false);
+            await Task.Run(() => result = Architect.API.Core.Business.Security.OTP.Send(resetRequest)).ConfigureAwait(false);
 
             return Ok(result);
         }
@@ -141,7 +141,7 @@ namespace Architect.API.Core.Controllers
             resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
 
-            await Task.Run(() => result = Architect.API.Core.Business.Security.Accounts.IsOTPValid(resetRequest)).ConfigureAwait(false);
+            await Task.Run(() => result = Architect.API.Core.Business.Security.OTP.IsValid(resetRequest)).ConfigureAwait(false);
 
             return Ok(result);
         }

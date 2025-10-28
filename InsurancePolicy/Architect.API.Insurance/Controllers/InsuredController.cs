@@ -97,44 +97,7 @@ namespace Architect.API.Insurance.Controllers
                 {
                     Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
                 }
-                //await Task.WhenAll(tron, ins, padron);
-                //if (tron.Status == TaskStatus.RanToCompletion)
-                //{
-                //    verbose += "->tron";
-                //    result = tron.Result;
-                //    LogHandler.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, result == null ? "no encontrado" : "encontrado"), "integrations");
-                //}
-                //if (result == null && ins.Status == TaskStatus.RanToCompletion)
-                //{
-                //    verbose += "->ins";
-                //    result = ins.Result;
-                //    LogHandler.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, result == null ? "no encontrado" : "encontrado"), "integrations");
-                //}
-                //if (result == null && padron.Status == TaskStatus.RanToCompletion)
-                //{
-                //    verbose += "->padron";
-                //    result = padron.Result;
-                //    LogHandler.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, result == null ? "no encontrado" : "encontrado"), "integrations");
-                //}
             }
-
-            //if (result == null)
-            //{
-            //    verbose += "->Tron";
-            //    result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id);
-            //}
-            //if (result == null)
-            //{
-            //    verbose += "->ins";
-            //    result = await Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id);
-            //}
-            //if (result == null)
-            //{
-            //    verbose += "->my";
-            //    result = await Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
-            //}
-
-            //LogHandler.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, result == null ? "no encontrado" : "encontrado"), "integrations");
 
             if (result != null)
             {
