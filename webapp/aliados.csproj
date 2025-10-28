@@ -1638,7 +1638,6 @@
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <Content Include="data\dummy.json" />
-    <Content Include="logs\borrame.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1869,6 +1868,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="assets\jquery-validation\dist\" />
     <Folder Include="files\" />
+    <Folder Include="logs\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
