@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Requests
 {
-    internal class PaymentLink
+    public class PaymentLink
     {
         /// <summary>
         /// Estructura que contiene la información de autenticación del sitio generada de acuerdo al WSSE UsernameToken Profile 1.1
@@ -58,7 +58,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Requests
         public Additional additional { get; set; }
 
     }
-    internal class Additional
+    public class Additional
     {
         public string name { get; set; }
     }

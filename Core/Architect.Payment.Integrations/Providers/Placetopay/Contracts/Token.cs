@@ -13,7 +13,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
     /// Para la entrada solo es necesario el token o el subtoken y el cvv si se trata de una operación donde el usuario está presente
     /// Para la salida si se devuelven todos los datos al tokenizar
     /// </summary>
-    internal class Token
+    public class Token
     {
         /// <summary>
         /// Código generado para identificar la tarjeta en el sistema

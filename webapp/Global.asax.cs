@@ -30,7 +30,7 @@ namespace aliados
             {
                 SchedulePollingInterval = TimeSpan.FromMinutes(1)
             };
-
+            GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
             yield return new BackgroundJobServer(options);
         }
 

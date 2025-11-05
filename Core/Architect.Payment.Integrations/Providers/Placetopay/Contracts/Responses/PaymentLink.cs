@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Responses
 {
-    internal class PaymentLink
+    public class PaymentLink
     {
         public Status status { get; set; }
         public string id { get; set; }

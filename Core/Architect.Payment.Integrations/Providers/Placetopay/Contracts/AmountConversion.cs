@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    internal class AmountConversion
+    public class AmountConversion
     {
         public Amount from { get; set; }
         public Amount to { get; set; }

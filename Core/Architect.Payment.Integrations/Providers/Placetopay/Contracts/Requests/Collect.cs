@@ -9,7 +9,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Requests
     /// <summary>
     /// Permite realizar cobros sin la intervención del usuario usando medios de pago previamente suscritos.
     /// </summary>
-    internal class Collect
+    public class Collect
     {
 
         /// <summary>

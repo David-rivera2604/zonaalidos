@@ -9,7 +9,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
     /// <summary>
     /// Estructura que contiene la información de la tarjeta.
     /// </summary>
-    internal class Card
+    public class Card
     {
         public string number { get; set; }
         public string expiration { get; set; }

@@ -9,7 +9,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
     /// <summary>
     /// Estructura que refleja la información de una persona involucrada en una transacción.
     /// </summary>
-    internal class Person
+    public class Person
     {
         public string name { get; set; }
         public string surname { get; set; }

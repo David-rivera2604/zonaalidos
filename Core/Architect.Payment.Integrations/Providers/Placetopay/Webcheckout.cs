@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay
 {
-    internal static class Webcheckout
+    public static class Webcheckout
     {
 
         public const string ST_PENDING = "PENDING";
@@ -210,7 +210,7 @@ namespace Architect.Payment.Integrations.Providers.Placetopay
             return result;
         }
 
-        internal static string IdentificationTypeConvert(string identificationType)
+        public static string IdentificationTypeConvert(string identificationType)
         {
             string type = string.Empty;
 

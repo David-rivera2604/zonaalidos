@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts.Responses
 {
-    internal class Tokenize
+    public class Tokenize
     {
         public Status status { get; set; }
         public string provider { get; set; }

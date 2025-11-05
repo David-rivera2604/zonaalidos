@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    internal class TransactionBase
+    public class TransactionBase
     {
 
         public Status status { get; set; }        

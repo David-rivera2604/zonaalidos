@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Architect.Payment.Integrations.Providers.Placetopay.Contracts
 {
-    internal class Amount
+    public class Amount
     {
         public string currency { get; set; }
         public double total { get; set; }
