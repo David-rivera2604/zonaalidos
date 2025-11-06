@@ -6,6 +6,7 @@ using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
+using Hangfire;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,8 @@ namespace Architect.API.Tron.Business.Backoffice
 
         /// <summary>
         /// Proceso 'Batch', que envía a cobro los recibos pendiente con cobro recurrente.
-        /// </summary>  
+        /// </summary>
+        [AutomaticRetry(Attempts = 0)]
         public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo, Contracts.Pagos.RecibosParaRecobro recibosParaRecobro = null)
         {
             int recordCount = 0;

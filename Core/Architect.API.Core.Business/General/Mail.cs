@@ -1,4 +1,5 @@
 ﻿using Architect.Utilities.Extensions;
+using Hangfire;
 using Newtonsoft.Json;
 using SmartFormat;
 using SmartFormat.Core.Settings;
@@ -18,7 +19,7 @@ namespace Architect.API.Core.Business.General
 {
     /// <summary>
     /// .
-    /// </summary>
+    /// </summary>    
     public static class Mail
     {
         //https://github.com/Antaris/RazorEngine
@@ -87,6 +88,7 @@ namespace Architect.API.Core.Business.General
 
         }
 
+        [AutomaticRetry(Attempts = 0)]
         public static void EnqueueSend(string mailServer, int companyId, int userId, int ownerId, string templateKey, Dictionary<string, string> toAddressList, string subject, string body, object entity, string[] attachments)
         {
 

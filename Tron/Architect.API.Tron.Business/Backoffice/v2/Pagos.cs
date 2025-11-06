@@ -13,6 +13,7 @@ using Architect.API.Tron.DataAccess.Pagos;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Utilities.Extensions;
+using Hangfire;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Digests;
@@ -30,6 +31,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Proceso 'Batch', que envía a cobro los recibos pendiente con cobro recurrente.
         /// </summary>
+        [AutomaticRetry(Attempts = 0)]
         public static int PendientesRecurrentesAlCobro(DateTime fec_efect_recibo, Contracts.Pagos.RecibosParaRecobro recibosParaRecobro = null)
         {
             int recordCount = 0;
@@ -134,13 +136,19 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     //client.Timeout = TimeSpan.FromSeconds(3);
                     client.DefaultRequestHeaders.Authorization = null;
 
+                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", "TRAZA: antes de envio a cobro", "payment");
+
                     List<Architect.Payment.Integrations.Contracts.InformationRequest> result = Architect.Payment.Integrations.Recurring.Request(provider, client, reciboReq);
+
+                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", "TRAZA: despues de envio a cobro", "payment");
 
                     if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
                     {
                         bool maxTry = false;
                         foreach (Architect.Payment.Integrations.Contracts.InformationRequest item in result)
                         {
+                            Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: inicio el procesado de la repuesta", item.description), "payment");
+
                             maxTry = false;
                             try
                             {
@@ -153,7 +161,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                                 if (item?.status != currentRecord?.ProviderStatus)
                                 {
+                                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: UpdateStatus paso 1 UpdateStatus", item.description), "payment");
                                     Architect.Payment.Integrations.Payment.UpdateStatus(currentRecord.UpdateUserCode, currentRecord, item);
+                                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: UpdateStatus fin paso 1 UpdateStatus", item.description), "payment");
                                 }
 
                                 // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
@@ -163,12 +173,14 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                     {
                                         item.OnlinePayment.AgentCode = 999999;
                                     }
+                                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: APPROVED paso 1 TronPayment", item.description), "payment");
                                     bool tronPayment = Backoffice.Pagos.TronPayment(item, item.OnlinePayment.AgentCode, "Placetopay", provider, false).Result;
-
+                                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: APPROVED paso fin 1 TronPayment", item.description), "payment");
                                     //Se establece que la proxima fecha para poder usar esta tarjeta seria desde el primero del proximo mes.
                                     DateTime nextCollectAttempt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1);
-
+                                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: APPROVED paso 2 UpdateRejectionCount", item.description), "payment");
                                     Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, 0, $"Último pago {DateTime.Now}", 1, nextCollectAttempt);
+                                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: APPROVED paso fin2 UpdateRejectionCount", item.description), "payment");
                                 }
                                 else if (item?.status == "FAILED")
                                 {
@@ -176,15 +188,18 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 }
                                 else if (item?.status == "REJECTED")
                                 {
+                                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: REJECTED paso 1", item.description), "payment");
                                     //NOTA:
                                     //     Se agrega de forma temporal el manejo de reintento bajo la condicion de FAILED
 
                                     int numberOfRetries = Tarjetas.RetrieveNumberOfRetries(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber);
+                                    Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: REJECTED fin paso 1", item.description), "payment");
 
                                     // Si ya se tiene dos rechazo quiere decir que el actual seria el tercero.
                                     if (numberOfRetries == 2)
                                     {
                                         maxTry = true;
+                                        Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: REJECTED paso 2", item.description), "payment");
                                     }
                                     else
                                     {
@@ -193,9 +208,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                         {
                                             numberOfRetries = 0;
                                         }
-
+                                        Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: REJECTED paso 3", item.description), "payment");
                                         // Se incrementa la cantidad de reintento fallidos 
                                         Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
+                                        Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: REJECTED fin paso 3", item.description), "payment");
                                     }
                                 }
                                 if (maxTry)
@@ -213,7 +229,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("FALLA: controlada para {0} - {1}", item.description, exi.Message), "payment");
                             }
 
-
+                            Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: fin del procesado de la repuesta", item.description), "payment");
                         }
 
                         EnviarReporteDeDomiciliacion(reciboReq);
