@@ -46,6 +46,9 @@ namespace aliados
 
             HangfireAspNet.Use(GetHangfireServers);
 
+            var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
+            var fechaCentroamerica = TimeZoneInfo.ConvertTime(DateTime.UtcNow, timeZone);
+
             if (!Architect.Utilities.Helpers.Settings.StringValue("Working.Mode", "Development").Equals("Development", StringComparison.CurrentCultureIgnoreCase))
             {
 
@@ -101,7 +104,7 @@ namespace aliados
                 if (Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.RecurringReceipts.ExecutionTime").IsNotEmpty())
                 {
                     RecurringJob.AddOrUpdate("Payment.Silice.RecurringReceipts",
-                        () => Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro(DateTime.Today, null),
+                        () => Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro(fechaCentroamerica, null),
                         Architect.Utilities.Helpers.Settings.StringValue("Payment.Silice.RecurringReceipts.ExecutionTime"));
                 }
 
