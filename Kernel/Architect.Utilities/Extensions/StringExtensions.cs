@@ -16,7 +16,6 @@ namespace Architect.Utilities.Extensions
     /// </summary>
     public static class StringExtensions
     {
-
         public static bool IsNumeric(this string value)
         {
             return value.All(char.IsNumber);
@@ -221,10 +220,34 @@ namespace Architect.Utilities.Extensions
             }
         }
 
+        /// <summary>
+        /// Deserializes a DataTable from a compressed JSON string.
+        /// </summary>
+        /// <param name="objectString">The compressed JSON string containing the serialized DataTable</param>
+        /// <returns>Deserialized DataTable object</returns>
         public static DataTable Deserialize(this string objectString)
         {
             string descompresString = objectString.DecompressString();
             return JsonConvert.DeserializeObject<DataTable>(descompresString, new DataTableConverter());
+        }
+
+        /// <summary>
+        /// Deserializes a JSON string to the specified type T.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize to</typeparam>
+        /// <param name="body">The JSON string to deserialize</param>
+        /// <param name="settings">Optional JSON serializer settings. If null, default settings will be used.</param>
+        /// <returns>Deserialized object of type T</returns>
+        public static T DeserializeJSON<T>(this string body, JsonSerializerSettings settings = null)
+        {
+            if (settings != null)
+            {
+                return JsonConvert.DeserializeObject<T>(body, settings);
+            }
+            else
+            {
+                return JsonConvert.DeserializeObject<T>(body);
+            }
         }
 
         public static string ReplaceIgnoreCase(this string originalString, string oldValue, string newValue)
@@ -391,19 +414,19 @@ namespace Architect.Utilities.Extensions
                         if (value.Length == 9)
                         {
                             value = string.Format("0{0}-{1}-{2}", value.Substring(0, 1),
-                                value.Substring(1, 4),
-                                value.Substring(5, 4));
+                               value.Substring(1, 4),
+                          value.Substring(5, 4));
                         }
                         break;
+
                     case 2:
                         if (value.Length == 12)
                         {
                             value = string.Format("{0}-{1}-{2}", value.Substring(0, 4),
-                                value.Substring(4, 6),
-                                value.Substring(10, 2));
+                        value.Substring(4, 6),
+                        value.Substring(10, 2));
                         }
                         break;
-
                 }
             }
 
@@ -426,6 +449,5 @@ namespace Architect.Utilities.Extensions
 
             return value.Trim();
         }
-
     }
 }
