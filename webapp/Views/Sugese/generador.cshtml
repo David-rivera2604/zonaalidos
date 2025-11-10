@@ -1,0 +1,168 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/cssCRUD")
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>Generador de archivos SUGESE</h5>
+
+        <div class="ibox-tools">
+            <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-wrench"></i></a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5">
+                        <i class="fa fa-clock-o"></i> Historial...
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="ibox-content">
+
+        <!-- Loader -->
+        <div class="sk-spinner sk-spinner-wave d-none" id="generalLoader">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+
+        <!-- Notificaciones -->
+        <div id="generalNotify"></div>
+
+        <!-- Formulario -->
+        <form id="SugeseGeneratorEdtForm" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
+            <fieldset>
+
+                <div class="form-row">
+
+                    <!-- Tipo de Modelo -->
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label for="ModelType" class="control-label">Tipo de modelo <span class="required-mark">*</span></label>
+                            <select id="ModelType" name="ModelType" class="form-control" required>
+                                <option value="">Seleccione un modelo...</option>
+
+                                <optgroup label="Modelos Financieros">
+                                    <option value="ModeloCuentaTecnicaFinanciera">Modelo Cuenta Técnica Financiera</option>
+                                    <option value="ModeloPrimasSiniestros">Modelo Primas y Siniestros</option>
+                                    <option value="ModeloRendimientoFinanciero">Modelo Rendimiento Financiero</option>
+                                    <option value="ModeloSituacionFinanciera">Modelo Situación Financiera</option>
+                                </optgroup>
+
+                                <optgroup label="Reportes Mensuales">
+                                    <option value="Bomberos">Aporte Bomberos</option>
+                                    <option value="Inversiones">Inversiones Financieras</option>
+                                    <option value="SaldosContables">Saldos Contables</option>
+                                    <option value="RUB">Pólizas (RUB)</option>
+                                    <option value="AportesINEC">Aportes INEC</option>
+                                </optgroup>
+
+                                <optgroup label="Reportes Trimestrales">
+                                    <option value="BalanceGeneral">Balance General</option>
+                                    <option value="Canales">Canales</option>
+                                    <option value="CuentasTecnicas">Cuentas Técnicas</option>
+                                    <option value="Patrimonio">Patrimonio</option>
+                                    <option value="Produccion">Producción</option>
+                                    <option value="Resultados">Estado de Resultados</option>
+                                    <option value="RunOff">Run-Off</option>
+                                </optgroup>
+                            </select>
+                            <div id="ModelType_validate"></div>
+                        </div>
+                    </div>
+
+                    <!-- Mes -->
+                    <div class="col-sm-6 col-md-2">
+                        <div class="form-group">
+                            <label for="Month" class="control-label">Mes <span class="required-mark">*</span></label>
+                            <select id="Month" name="Month" class="form-control" required>
+                                <option value="">Mes...</option>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                            <div id="Month_validate"></div>
+                        </div>
+                    </div>
+
+                    <!-- Año -->
+                    <div class="col-sm-6 col-md-2">
+                        <div class="form-group">
+                            <label for="Year" class="control-label">Año <span class="required-mark">*</span></label>
+                            <input id="Year" name="Year" type="number" class="form-control" min="2020" max="2099" placeholder="2024" required>
+                            <div id="Year_validate"></div>
+                        </div>
+                    </div>
+
+                    <!-- Archivo -->
+                    <div class="col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <label for="FileName" class="control-label">Archivo Excel <span class="required-mark">*</span></label>
+                            <div class="input-group">
+                                <input id="FileName" name="FileName" type="text" class="form-control" placeholder="Seleccione el archivo..." readonly required />
+                                <input id="Stored" type="hidden" />
+                                <input id="FileSize" type="hidden" />
+
+                                <div class="input-group-append">
+                                    <span class="btn btn-default fileinput-button" title="Seleccione un archivo Excel">
+                                        <span>Examinar...</span>
+                                        <input id="fileUpload" type="file" accept=".xlsx" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div id='FileName_validate'></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Mensaje informativo -->
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle"></i>
+                            Seleccione el tipo de modelo, periodo y archivo Excel a procesar para generar el archivo XML.
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+
+        <!-- Botón Guardar -->
+        <div class="col-md-12 mt-3">
+            <button id="SugeseGeneratorEdtFormSave" type="button"
+                    class="btn btn-primary float-right"
+                    data-doing="Generando archivo XML...">
+                Generar XML
+            </button>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/sugese.js")"></script>
+
+    <script>
+        $(function () {
+            app.SugeseGenerator.Init();
+        });
+    </script>
+}

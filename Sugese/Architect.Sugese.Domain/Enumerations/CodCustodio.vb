@@ -1,0 +1,37 @@
+'''<remarks/>
+<System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0"),
+ System.SerializableAttribute(),
+ System.Xml.Serialization.XmlTypeAttribute([Namespace]:="urn:cap:ties:invsugesetypes:v1")>
+Public Enum CodCustodio
+
+    '''<remarks/>
+    CBAC
+
+    '''<remarks/>
+    CBCT
+
+    '''<remarks/>
+    CBCR
+
+    '''<remarks/>
+    CDAVI
+
+    '''<remarks/>
+    <System.Xml.Serialization.XmlEnumAttribute("CIMP ")>
+    CIMP
+
+    '''<remarks/>
+    CLAF
+
+    '''<remarks/>
+    CBNCR
+
+    '''<remarks/>
+    CPOP
+
+    '''<remarks/>
+    CSCOT
+
+    '''<remarks/>
+    COTROS
+End Enum

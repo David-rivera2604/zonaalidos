@@ -1,0 +1,151 @@
+﻿using System;
+using System.Data;
+using System.IO;
+
+namespace Architect.Sugese.Manager
+{
+    public class Instance
+    {
+        public static Architect.Sugese.Domain.Result ProcesaArchivo(string modelo, int pediodoMensual, int pediodoTrimestral, int ano, string excelFileName, string internalFileName)
+        {
+            var result = new Architect.Sugese.Domain.Result
+            {
+                Success = false,
+                Code = 0,
+                Reason = string.Empty
+            };
+
+            string serverPath = System.Web.HttpContext.Current.Server.MapPath("../uploads");
+            string xmlFileName = string.Format("{0}\\{1}.xml", serverPath, modelo);
+            string xlsxFileName = string.Format("{0}\\{1}", serverPath, internalFileName);
+            string lastXlsxFileName = string.Format("{0}\\{1}.xlsx", serverPath, modelo);
+            DataTable excelProcessResult = null;
+
+            Architect.API.Core.Business.Common.RoleAuthorized("Sugese");
+
+            System.IO.File.Copy(xlsxFileName, lastXlsxFileName, true);
+
+            try
+            {
+                switch (modelo)
+                {
+                    // NIFF17
+                    case "NIFF17SaldosContables":
+                        excelProcessResult = Architect.Sugese.SaldosContables.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "NIIF17EstadisticasInternacionales":
+                        excelProcessResult = Architect.Sugese.EstadisticasInternacionales.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "NIFF17CuentaTecnicaFinanciera":
+                        excelProcessResult = Architect.Sugese.CuentaTecnicaFinanciera.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "NIFF17PrimasSiniestros":
+                        excelProcessResult = Architect.Sugese.PrimasSiniestros.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "NIFF17RendimientoFinanciero":
+                        excelProcessResult = Architect.Sugese.RendimientoFinanciero.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "NIFF17SituacionFinanciera":
+                        excelProcessResult = Architect.Sugese.SituacionFinanciera.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "ModeloCuentaTecnicaFinanciera":
+                        excelProcessResult = Architect.Sugese.CuentaTecnicaFinanciera.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "ModeloPrimasSiniestros":
+                        excelProcessResult = Architect.Sugese.PrimasSiniestros.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "ModeloRendimientoFinanciero":
+                        excelProcessResult = Architect.Sugese.RendimientoFinanciero.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "ModeloSituacionFinanciera":
+                        excelProcessResult = Architect.Sugese.SituacionFinanciera.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    // Mensuales
+                    case "Bomberos":
+                        excelProcessResult = Architect.Sugese.AporteBomberos.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "Inversiones":
+                        excelProcessResult = Architect.Sugese.InversionesFinancieras.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "SaldosContables":
+                        excelProcessResult = Architect.Sugese.SaldosContables.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "RUB":
+                        excelProcessResult = Architect.Sugese.Polizas.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "AportesINEC":
+                        excelProcessResult = Architect.Sugese.AportesINEC.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    case "PrimasSiniestros":
+                        excelProcessResult = Architect.Sugese.PrimasSiniestros.Application.Generate.Execute(xlsxFileName, xmlFileName, pediodoMensual, ano);
+                        break;
+
+                    // Trimestrales
+                    case "BalanceGeneral":
+                        excelProcessResult = Architect.Sugese.BalanceGeneral.Generate.Execute(xlsxFileName, xmlFileName, pediodoTrimestral, ano);
+                        break;
+
+                    case "Canales":
+                        excelProcessResult = Architect.Sugese.Canales.Generate.Execute(xlsxFileName, xmlFileName, pediodoTrimestral, ano);
+                        break;
+
+                    case "CuentasTecnicas":
+                        excelProcessResult = Architect.Sugese.CuentaTecnica.Generate.Execute(xlsxFileName, xmlFileName, pediodoTrimestral, ano);
+                        break;
+
+                    case "Patrimonio":
+                        excelProcessResult = Architect.Sugese.Patrimonio.Generate.Execute(xlsxFileName, xmlFileName, pediodoTrimestral, ano);
+                        break;
+
+                    case "Produccion":
+                        excelProcessResult = Architect.Sugese.Produccion.Generate.Execute(xlsxFileName, xmlFileName, pediodoTrimestral, ano);
+                        break;
+
+                    case "Resultados":
+                        excelProcessResult = Architect.Sugese.EstadoResultados.Generate.Execute(xlsxFileName, xmlFileName, pediodoTrimestral, ano);
+                        break;
+
+                    case "RunOff":
+                        excelProcessResult = Architect.Sugese.RunOff.Generate.Execute(xlsxFileName, xmlFileName, pediodoTrimestral, ano);
+                        break;
+                }
+
+                if (excelProcessResult != null && excelProcessResult.Rows.Count > 0)
+                {
+                    Utility.Helpers.XmlRespose.ExcelUpdateResult(lastXlsxFileName, excelProcessResult);
+                    result.Code = 100;
+                    result.Reason = string.Format("La validación del modelo ha generado {0} errores", excelProcessResult.Rows.Count);
+                }
+                else
+                {
+                    result.Success = true;
+                }
+
+                System.IO.File.Copy(xlsxFileName, string.Format("{0}\\{1}.{2}.{3}.{4}_{5}.xlsx", serverPath, modelo, ano, pediodoTrimestral, pediodoMensual, DateTime.Now.ToString("yyyyMMddhhmmss")), true);
+                API.Core.DataAccess.Extend.NavigationTrace.Track(string.Format("  Se proceso {0} el archivo {1} para el modelo {2}", result.Success ? "de forma exitosa" : "con errores", xlsxFileName, modelo));
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog("ProcesaArchivo", "Ha ocurrido un error al tratar de procesar el archivo excel", ex); 
+                API.Core.DataAccess.Extend.NavigationTrace.Track("  " + result.Reason);
+            }
+
+            return result;
+        }
+    }
+}
