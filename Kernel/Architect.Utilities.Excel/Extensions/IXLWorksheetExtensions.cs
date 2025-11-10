@@ -13,6 +13,7 @@ using Microsoft.VisualBasic;
 using Architect.Utilities.Excel.Exceptions;
 using ClosedXML.Excel;
 using System.Data;
+using Architect.Utilities.Extensions;
 
 namespace Architect.Utilities.Excel.Extensions
 {
@@ -21,7 +22,7 @@ namespace Architect.Utilities.Excel.Extensions
         public static string StringValue(this IXLWorksheet sheet, int rowNumber, string column, string verbose = "")
         {
             string result = string.Empty;
-            if (sheet.Cell(rowNumber, column).Value != null)
+            if (sheet.Cell(rowNumber, column).Value.IsNotEmpty())
             {
                 result = sheet.Cell(rowNumber, column).Value.ToString();
                 result = result.Trim();
@@ -32,7 +33,7 @@ namespace Architect.Utilities.Excel.Extensions
         public static string StringValue(this IXLWorksheet sheet, int rowNumber, int columnNumber)
         {
             string result = string.Empty;
-            if (sheet.Cell(rowNumber, columnNumber).Value != null)
+            if (sheet.Cell(rowNumber, columnNumber).Value.IsNotEmpty())
             {
                 result = sheet.Cell(rowNumber, columnNumber).Value.ToString();
                 result = result.Trim();
@@ -115,7 +116,7 @@ namespace Architect.Utilities.Excel.Extensions
         {
             try
             {
-                if (sheet.Cell(rowNumber, column).Value == null)
+                if (sheet.Cell(rowNumber, column).Value.IsEmpty())
                     return 0;
                 else
                 {
@@ -133,7 +134,7 @@ namespace Architect.Utilities.Excel.Extensions
         {
             try
             {
-                if (sheet.Cell(rowNumber, column).Value == null)
+                if (sheet.Cell(rowNumber, column).Value.IsEmpty())
                     return 0;
                 else
                 {
@@ -149,7 +150,7 @@ namespace Architect.Utilities.Excel.Extensions
 
         public static decimal DecimalValue(this IXLWorksheet sheet, int rowNumber, int columnNumber, string format)
         {
-            if (sheet.Cell(rowNumber, columnNumber).Value == null)
+            if (sheet.Cell(rowNumber, columnNumber).Value.IsEmpty())
                 return 0;
             else
             {
@@ -163,7 +164,7 @@ namespace Architect.Utilities.Excel.Extensions
             DateTime result = DateTime.MinValue;
             DateTime @internal;
 
-            if (sheet.Cell(rowNumber, column).Value != null && sheet.Cell(rowNumber, column).Value.ToString() != "")
+            if (sheet.Cell(rowNumber, column).Value.IsNotEmpty() && sheet.Cell(rowNumber, column).Value.ToString() != "")
             {
                 try
                 {
@@ -191,7 +192,7 @@ namespace Architect.Utilities.Excel.Extensions
             DateTime result = DateTime.MinValue;
             DateTime @internal;
 
-            if (sheet.Cell(rowNumber, columnNumber).Value != null)
+            if (sheet.Cell(rowNumber, columnNumber).Value.IsNotEmpty())
             {
                 try
                 {
@@ -221,7 +222,7 @@ namespace Architect.Utilities.Excel.Extensions
             {
                 string result = string.Empty;
 
-                if (sheet.Cell(rowNumber, column).Value == null)
+                if (sheet.Cell(rowNumber, column).Value.IsEmpty())
                     return 0.ToString(format, new System.Globalization.CultureInfo("en-US", false));
                 else
                 {
@@ -241,7 +242,7 @@ namespace Architect.Utilities.Excel.Extensions
             {
                 string result = string.Empty;
 
-                if (sheet.Cell(rowNumber, column).Value == null)
+                if (sheet.Cell(rowNumber, column).Value.IsEmpty())
                     return 0.ToString(format, new System.Globalization.CultureInfo("en-US", false));
                 else
                 {
@@ -261,7 +262,7 @@ namespace Architect.Utilities.Excel.Extensions
 
             try
             {
-                if (sheet.Cell(rowNumber, columnNumber).Value == null)
+                if (sheet.Cell(rowNumber, columnNumber).Value.IsEmpty())
                     return 0.ToString(format, new System.Globalization.CultureInfo("en-US", false));
                 else
                 {
@@ -279,7 +280,7 @@ namespace Architect.Utilities.Excel.Extensions
         {
             string result = string.Empty;
 
-            if (sheet.Cell(rowNumber, columnNumber).Value == null)
+            if (sheet.Cell(rowNumber, columnNumber).Value.IsEmpty())
             {
                 specified = false;
                 return 0.ToString(format, new System.Globalization.CultureInfo("en-US", false));
@@ -297,7 +298,7 @@ namespace Architect.Utilities.Excel.Extensions
             string result = string.Empty;
             DateTime @internal;
 
-            if (sheet.Cell(rowNumber, columnNumber).Value != null)
+            if (sheet.Cell(rowNumber, columnNumber).Value.IsNotEmpty())
             {
                 try
                 {
@@ -370,7 +371,7 @@ namespace Architect.Utilities.Excel.Extensions
             {
                 Type valueType = typeof(T);
                 T value = default(T);
-                if (sheet.Cell(rowNumber, columnNumber).Value != null)
+                if (sheet.Cell(rowNumber, columnNumber).Value.IsNotEmpty())
                 {
                     string x = sheet.Cell(rowNumber, columnNumber).Value.ToString();
                     value = (T)Enum.Parse(valueType, x);
@@ -398,7 +399,7 @@ namespace Architect.Utilities.Excel.Extensions
             {
                 string result = string.Empty;
 
-                if (sheet.Cell(rowNumber, column).Value == null)
+                if (sheet.Cell(rowNumber, column).Value.IsEmpty())
                 {
                     specified = true;
                     return 0.ToString(format, new System.Globalization.CultureInfo("en-US", false));
@@ -428,7 +429,7 @@ namespace Architect.Utilities.Excel.Extensions
             {
                 string result = string.Empty;
 
-                if (sheet.Cell(rowNumber, column).Value == null)
+                if (sheet.Cell(rowNumber, column).Value.IsEmpty())
                 {
                     specified = true;
                     return 0.ToString(format, new System.Globalization.CultureInfo("en-US", false));
@@ -461,7 +462,7 @@ namespace Architect.Utilities.Excel.Extensions
             {
                 string result = string.Empty;
 
-                if (sheet.Cell(rowNumber, column).Value == null)
+                if (sheet.Cell(rowNumber, column).Value.IsEmpty())
                 {
                     specified = true;
                     return 0.ToString(format, new System.Globalization.CultureInfo("en-US", false));
@@ -493,7 +494,7 @@ namespace Architect.Utilities.Excel.Extensions
         {
             try
             {
-                if (sheet.Cell(rowNumber, column).Value == null || sheet.Cell(rowNumber, column).Value.ToString() == string.Empty)
+                if (sheet.Cell(rowNumber, column).Value.IsEmpty() || sheet.Cell(rowNumber, column).Value.ToString() == string.Empty)
                     return 0;
                 else
                 {

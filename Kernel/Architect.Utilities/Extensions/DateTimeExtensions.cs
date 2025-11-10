@@ -14,6 +14,15 @@ namespace Architect.Utilities.Extensions
     /// </summary>
     public static class DateTimeExtensions
     {
+        /// <summary>
+        /// Returns the last day of the month of the provided date.
+        /// </summary>
+        /// <param name="value">The date.</param>
+        /// <returns>The last day of the month</returns>
+        public static DateTime LastDayOfMonth(this DateTime value)
+        {
+            return new DateTime(value.Year, value.Month, DateTime.DaysInMonth(value.Year, value.Month));
+        }
 
         /// <summary>
         /// Determines whether the specified string is null or empty.

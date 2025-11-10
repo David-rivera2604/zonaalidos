@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Architect.API.Core.Security;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace aliados.Controllers
 {
+    [IsConnected]
     public class CoreController : Controller
     {
         
