@@ -15,32 +15,11 @@ namespace Architect.Utilities
     {
         public static string Serialize(T current)
         {
-            return Serialize(current, false);
-        }
-
-        public static string Serialize(T current, bool withFormat)
-        {
             string serializedObj = null;
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             using (StringWriterWithEncoding writer = new StringWriterWithEncoding(Encoding.UTF8))
             {
-                if (withFormat)
-                {
-                    XmlWriterSettings settings = new XmlWriterSettings
-                    {
-                        Indent = true,
-                        IndentChars = "  ",
-                        Encoding = Encoding.UTF8
-                    };
-                    using (XmlWriter xmlWriter = XmlWriter.Create(writer, settings))
-                    {
-                        serializer.Serialize(xmlWriter, current);
-                    }
-                }
-                else
-                {
-                    serializer.Serialize(writer, current);
-                }
+                serializer.Serialize(writer, current);
                 serializedObj = writer.ToString();
             }
             return serializedObj;

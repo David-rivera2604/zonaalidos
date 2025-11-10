@@ -1,10 +1,8 @@
-﻿using Architect.API.Core.Security;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Web.Mvc;
 
 namespace aliados.Controllers
 {
-    [IsConnected]
     public class ViewerController : Controller
     {
         public ActionResult Index()
@@ -23,7 +21,7 @@ namespace aliados.Controllers
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
-     
+
         public ActionResult Viewer()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];

@@ -896,41 +896,6 @@ app.core = (function () {
         }
     };
 })();
-
-app.security = (function () {
-    return {
-        logout: function () {             
-                app.core.Post(app.setting.basepath + 'Security/Logout')
-                    .done(function (data) {
-                        if (data.success) {
-                            // Limpiar localStorage
-                            localStorage.removeItem('Token');
-                            localStorage.removeItem('Username');
-                            localStorage.removeItem('Tenant');
-                            localStorage.removeItem('Color1Tenant');
-                            localStorage.removeItem('Color2Tenant');
-                            localStorage.removeItem('Roles');
-                            localStorage.removeItem('Expires');
-                            localStorage.removeItem('LastActivity');
-                            localStorage.removeItem('Navegation');
-
-                            // Redirigir al login
-                            window.location.replace(app.setting.basepath + 'Security/Login');
-                        } else {
-                            toastr.error('Error al cerrar sesión', 'Error');
-                        }
-                    })
-                    .fail(function () {
-                        // Si falla la llamada al servidor, limpiar manualmente como fallback
-                        localStorage.clear();
-                        document.cookie = "AuthToken=; path=/; max-age=0";
-                        window.location.replace(app.setting.basepath + 'Security/Login');
-                    });
-            
-        }
-    }
-});
-
 $(document).ready(function () {
     moment.locale('es');
 });

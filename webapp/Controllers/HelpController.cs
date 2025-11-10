@@ -1,9 +1,7 @@
-﻿using Architect.API.Core.Security;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace aliados.Controllers
 {
-    [IsConnected]
     public class HelpController : Controller
     {
         public ActionResult Index()

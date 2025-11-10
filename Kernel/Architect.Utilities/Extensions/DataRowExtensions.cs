@@ -1,9 +1,8 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Data;
+
 using System.IO;
 using System.Xml.Linq;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Architect.Utilities.Extensions
 {
@@ -11,6 +10,7 @@ namespace Architect.Utilities.Extensions
     /// </summary>
     public static class DataRowExtensions
     {
+
         public static T Field<T>(this DataRow row, string columnName, T defaultValue)
         {
             if (row.IsNotNull(columnName))
@@ -75,7 +75,6 @@ namespace Architect.Utilities.Extensions
         {
             return value.Field<byte>(name, 0);
         }
-
         public static byte[] ByteArrayValue(this DataRow value, string name)
         {
             return value.Field<byte[]>(name, null);
@@ -151,75 +150,10 @@ namespace Architect.Utilities.Extensions
             return (value.StringValue(name) == "1");
         }
 
+
         public static bool IsNotNull(this DataRow value, string name)
         {
             return (value[name] != null && !value.IsNull(name));
-        }
-
-        public static object NumericValueWithFormatDefault(this DataRow value, string name, string format, object defaultValue, ref bool specified)
-        {
-            var result = defaultValue;
-            if (value.IsNotNull(name))
-            {
-                decimal @internal = value.NumericValue(name);
-                if (format.IsNotEmpty())
-                {
-                    result = @internal.ToString(format, new System.Globalization.CultureInfo("en-US", false));
-                }
-                else
-                {
-                    result = @internal;
-                }
-                specified = true;
-            }
-            else
-            {
-                specified = false;
-            }
-
-            return result;
-        }
-
-        public static string StringValueWithDefault(this DataRow value, string name, object defaultValue, ref bool specified)
-        {
-            string result = Conversions.ToString(defaultValue);
-            if (value.IsNotNull(name))
-            {
-                result = value.StringValue(name);
-                specified = true;
-            }
-            else
-            {
-                specified = false;
-            }
-
-            return result;
-        }
-
-        public static T EnumValue<T>(this DataRow value, string name, T enumType, ref bool specified, ref bool witherror)
-        {
-            T result = default;
-
-            if (value.IsNotNull(name))
-            {
-                try
-                {
-                    result = Conversions.ToGenericParameter<T>(Enum.Parse(enumType.GetType(), Conversions.ToString(value[name])));
-                    specified = true;
-                }
-                catch (ArgumentException ex)
-                {
-                    result = default;
-                    specified = false;
-                    witherror = true;
-                }
-            }
-            else
-            {
-                result = default;
-                specified = false;
-            }
-            return result;
         }
     }
 }

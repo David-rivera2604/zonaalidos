@@ -1,12 +1,10 @@
-﻿using Architect.API.Core.Security;
-using Microsoft.Ajax.Utilities;
+﻿using Microsoft.Ajax.Utilities;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace aliados.Controllers
 {
-    [IsConnected]
     public class HogarTotalController : Controller
     {
         public ActionResult Cotizacion()
