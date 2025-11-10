@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http.ExceptionHandling;
 
 namespace aliados.App_Start
@@ -20,12 +19,6 @@ namespace aliados.App_Start
         /// <returns></returns>
         public Task LogAsync(ExceptionLoggerContext context, CancellationToken cancellationToken)
         {
-            // Ignore HttpException with error code 0x800703E3 (The remote host closed the connection)
-            if (context.Exception is HttpException httpException && httpException.ErrorCode == unchecked((int)0x800703E3))
-            {
-                return Task.FromResult(true);
-            }
-
             string code = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.fffffff");
 
             Architect.Utilities.Log.ErrorLog("UnhandledExceptionLogger", "LogAsync", context.Exception, string.Empty, true, code);
