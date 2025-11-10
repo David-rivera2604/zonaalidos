@@ -1,9 +1,11 @@
 ﻿using Architect.API.Core.Contracts.General;
 using Architect.Utilities.Extensions;
 using FastMember;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Web;
 
 namespace Architect.API.Core.Business
 {
@@ -12,6 +14,55 @@ namespace Architect.API.Core.Business
     /// </summary>
     public static class Common
     {
+        public static void AdministratorAuthorized()
+        {
+            if (!IsAdministrator())
+            {
+                throw new UnauthorizedAccessException();
+            }
+        }
+
+        public static void RoleAuthorized(string role)
+        {
+            if (!Allowed(role))
+            {
+                throw new UnauthorizedAccessException();
+            }
+        }
+
+        public static bool IsAdministrator()
+        {
+            bool result = false;
+
+            if (HttpContext.Current?.Session != null &&
+                HttpContext.Current.Session["IsAdministrator"] != null)
+            {
+                if (Convert.ToBoolean(HttpContext.Current.Session["IsAdministrator"]))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        public static bool Allowed(string role)
+        {
+            bool result = false;
+
+            if (HttpContext.Current?.Session != null &&
+                HttpContext.Current.Session["RoleAllow"] != null)
+            {
+                string roleList = $",{HttpContext.Current.Session["RoleAllow"].ToString()},";
+                if (roleList.Contains($",{role},"))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Recupera múltiples lista de valores disponibles a partir de múltiples claves.
         /// </summary>
