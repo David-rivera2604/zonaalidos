@@ -132,6 +132,7 @@ namespace aliados.Controllers
         ///     });
         /// </code>
         /// </example>
+        [IsConnected]
         [HttpPost]
         public ActionResult Logout()
         {
@@ -174,6 +175,7 @@ namespace aliados.Controllers
         /// Muestra la vista de login para usuarios de Mapfre en modo empleado.
         /// </summary>
         /// <returns>Vista de Login configurada para modo empleado Mapfre.</returns>
+        [IsConnected]
         public ActionResult Mapfre()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -184,6 +186,7 @@ namespace aliados.Controllers
         /// Redirige a la página de login con el tenant "Carrofácil" preconfigurado.
         /// </summary>
         /// <returns>Redirección a la acción Login con tenant = "Carrofácil".</returns>
+        [IsConnected]
         public ActionResult Carrofácil()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -218,6 +221,7 @@ namespace aliados.Controllers
         /// Muestra la vista de administración de roles de miembros.
         /// </summary>
         /// <returns>Vista de RoleMember.</returns>
+        [IsConnected]
         public ActionResult RoleMember()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -228,6 +232,7 @@ namespace aliados.Controllers
         /// Muestra la vista de administración de roles (alias de RoleMember).
         /// </summary>
         /// <returns>Vista de RoleMember.</returns>
+        [IsConnected]
         public ActionResult Role()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -238,6 +243,7 @@ namespace aliados.Controllers
         /// Muestra la vista de navegación de roles de miembros para configurar permisos de acceso.
         /// </summary>
         /// <returns>Vista de RoleMemberNavigation.</returns>
+        [IsConnected]
         public ActionResult RoleMemberNavigation()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -248,6 +254,7 @@ namespace aliados.Controllers
         /// Muestra la vista de administración de usuarios miembros del sistema.
         /// </summary>
         /// <returns>Vista de UserMember.</returns>
+        [IsConnected]
         public ActionResult UserMember()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -258,6 +265,7 @@ namespace aliados.Controllers
         /// Muestra la vista de asignación de roles a usuarios miembros.
         /// </summary>
         /// <returns>Vista de UserRoleMember.</returns>
+        [IsConnected]
         public ActionResult UserRoleMember()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -281,7 +289,7 @@ namespace aliados.Controllers
         /// <summary>
         /// Muestra la vista de auto-registro para que nuevos usuarios puedan crear una cuenta.
         /// </summary>
-        /// <returns>Vista de Register.</returns>
+        /// <returns>Vista de Register.</returns> 
         public ActionResult Register()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -292,6 +300,7 @@ namespace aliados.Controllers
         /// Muestra la vista de integración del sistema.
         /// </summary>
         /// <returns>Vista de Integrate.</returns>
+        [IsConnected]
         public ActionResult Integrate()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
