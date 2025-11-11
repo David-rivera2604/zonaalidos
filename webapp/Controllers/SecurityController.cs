@@ -175,7 +175,6 @@ namespace aliados.Controllers
         /// Muestra la vista de login para usuarios de Mapfre en modo empleado.
         /// </summary>
         /// <returns>Vista de Login configurada para modo empleado Mapfre.</returns>
-        [IsConnected]
         public ActionResult Mapfre()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -186,7 +185,6 @@ namespace aliados.Controllers
         /// Redirige a la página de login con el tenant "Carrofácil" preconfigurado.
         /// </summary>
         /// <returns>Redirección a la acción Login con tenant = "Carrofácil".</returns>
-        [IsConnected]
         public ActionResult Carrofácil()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -300,7 +298,6 @@ namespace aliados.Controllers
         /// Muestra la vista de integración del sistema.
         /// </summary>
         /// <returns>Vista de Integrate.</returns>
-        [IsConnected]
         public ActionResult Integrate()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
