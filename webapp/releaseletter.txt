@@ -763,3 +763,5 @@
                           - Proceso de autenticación con 2FA.
                           - Proceso de envío de correo para recuperación de contraseña.
                           - Proceso de cambio de contraseña.
+1.6.153 29/10/2025 Trazabilidad. Adjuntos. Se truncan los nombres de archivos, Se ajusta  y valida el tamaño máximo del nombre del archivo a 255 caracteres, tambien se incrementa la descripción a 512.
+                   Trazabilidad. Panel. Se ajusta el valor de "Cantidad de días" para usar la misma función usando en los reportes, donde solo se concideran días hábiles.
