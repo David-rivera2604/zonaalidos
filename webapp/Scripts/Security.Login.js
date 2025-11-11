@@ -66,7 +66,7 @@ app.login = (function () {
                 $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...');
                 var inputData = InputToObject();
                 if (dataStage == null) {
-                    app.core.Post(app.setting.apipath + 'v1/Security/Authentication', JSON.stringify(inputData))
+                    app.core.Post(app.setting.basepath + 'Security/Authentication', JSON.stringify(inputData))
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Reason == null) {
                                 if (!data.MustChangePassword) {
@@ -80,7 +80,7 @@ app.login = (function () {
                                         $('#Send').prop("disabled", false);
                                     }
                                     else {
-                                        Authenticated(data, inputData);
+                                        Authenticated(data);
                                         status = 'redirect';
                                     }
                                 } else {
@@ -346,34 +346,30 @@ app.login = (function () {
         return data;
     };
 
-    function Authenticated(data, inputData) {
-        app.core.Post(app.setting.basepath + 'Security/LogIn', JSON.stringify(inputData))
-            .done(function (data, textStatus, jqXHR) {
-                data.Settings?.forEach(item => {
-                    localStorage.setItem(item.Key, item.Value);
-                });
+   function Authenticated(data) {
+        data.Settings?.forEach(item => {
+            localStorage.setItem(item.Key, item.Value);
+        });
+        localStorage.setItem('Username', data.UserName);
+        localStorage.setItem('Tenant', data.Tenant);
+        localStorage.setItem('Color1Tenant', data.Color1Tenant);
+        localStorage.setItem('Color2Tenant', data.Color2Tenant);
+        localStorage.setItem('Roles', JSON.stringify(data.Roles));
 
-                localStorage.setItem('Username', data.UserName);
-                localStorage.setItem('Tenant', data.Tenant);
-                localStorage.setItem('Color1Tenant', data.Color1Tenant);
-                localStorage.setItem('Color2Tenant', data.Color2Tenant);
-                localStorage.setItem('Roles', JSON.stringify(data.Roles));
+        var dta = new Date();
+        localStorage.setItem('LastActivity', dta);
+        var dt = new Date();
+        dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
+        localStorage.setItem('Expires', dt);
 
-                var dta = new Date();
-                localStorage.setItem('LastActivity', dta);
-                var dt = new Date();
-                dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
-                localStorage.setItem('Expires', dt);
-
-                localStorage.setItem('Token', data.Token);
-                $('#Send').prop("disabled", true);
-                $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
-                if (app.login.lasthref == null) {
-                    window.location.replace(app.setting.basepath + data.InitialPath);
-                } else {
-                    window.location.replace(app.login.lasthref);
-                }
-            })
+        localStorage.setItem('Token', data.Token);
+        $('#Send').prop("disabled", true);
+        $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
+        if (app.login.lasthref == null) {
+            window.location.replace(app.setting.basepath + data.InitialPath);
+        } else {
+            window.location.replace(app.login.lasthref);
+        }
     };
 
     return {
@@ -402,9 +398,8 @@ app.login = (function () {
             $('#Tenant').val(_tenant);
             if (employeeMode) {
                 $('#forgotlink').addClass('d-none');
-
             }
-        }        
+        }
     };
 })();
 $(document).ready(function () {

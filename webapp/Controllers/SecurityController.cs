@@ -93,11 +93,55 @@ namespace aliados.Controllers
                 Response.Cookies.Add(authCookie);
 
                 // ✅ Establecer el contexto del usuario inmediatamente
-                token.AssingedContext();
+                token.Assinged();
 
                 // ✅ Devolver responseItem tal cual, sin wrapper
                 return Json(responseItem, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public ActionResult Authentication(Architect.API.Core.Contracts.Security.AuthenticationRequest authenticationRequest)
+        {
+            ActionResult result = null;
+
+            if (authenticationRequest.IsEmpty())
+            {
+                Response.StatusCode = 400; // Bad Request
+                return Json(new { success = false, mensaje = "Debe indicar los datos" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                Architect.API.Core.Contracts.Security.AuthenticationResponse responseItem = null;
+                authenticationRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+                authenticationRequest.UserAgent = Request.UserAgent.ToString();
+                Architect.API.Core.Contracts.Security.Token token = new Architect.API.Core.Contracts.Security.Token();
+
+                responseItem = Architect.API.Core.Business.Security.Accounts.Authentication(authenticationRequest, ref token, true);
+
+                if (responseItem.Reason.IsNotEmpty())
+                {
+                    if (responseItem.Reason.Equals("No autorizado", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        Response.StatusCode = 401; // Unauthorized
+                        return Json(new { success = false, mensaje = responseItem.Reason }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        Response.StatusCode = 400; // Bad Request
+                        return Json(new { success = false, mensaje = responseItem.Reason }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+
+                    Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, responseItem, token));
+                    Response.StatusCode = 200;
+                    result = Json(responseItem, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -132,6 +176,7 @@ namespace aliados.Controllers
         ///     });
         /// </code>
         /// </example>
+        [IsConnected]
         [HttpPost]
         public ActionResult Logout()
         {
@@ -218,6 +263,7 @@ namespace aliados.Controllers
         /// Muestra la vista de administración de roles de miembros.
         /// </summary>
         /// <returns>Vista de RoleMember.</returns>
+        [IsConnected]
         public ActionResult RoleMember()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -228,6 +274,7 @@ namespace aliados.Controllers
         /// Muestra la vista de administración de roles (alias de RoleMember).
         /// </summary>
         /// <returns>Vista de RoleMember.</returns>
+        [IsConnected]
         public ActionResult Role()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -238,6 +285,7 @@ namespace aliados.Controllers
         /// Muestra la vista de navegación de roles de miembros para configurar permisos de acceso.
         /// </summary>
         /// <returns>Vista de RoleMemberNavigation.</returns>
+        [IsConnected]
         public ActionResult RoleMemberNavigation()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -248,6 +296,7 @@ namespace aliados.Controllers
         /// Muestra la vista de administración de usuarios miembros del sistema.
         /// </summary>
         /// <returns>Vista de UserMember.</returns>
+        [IsConnected]
         public ActionResult UserMember()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -258,6 +307,7 @@ namespace aliados.Controllers
         /// Muestra la vista de asignación de roles a usuarios miembros.
         /// </summary>
         /// <returns>Vista de UserRoleMember.</returns>
+        [IsConnected]
         public ActionResult UserRoleMember()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -281,7 +331,7 @@ namespace aliados.Controllers
         /// <summary>
         /// Muestra la vista de auto-registro para que nuevos usuarios puedan crear una cuenta.
         /// </summary>
-        /// <returns>Vista de Register.</returns>
+        /// <returns>Vista de Register.</returns> 
         public ActionResult Register()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];

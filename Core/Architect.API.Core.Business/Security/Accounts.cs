@@ -3,19 +3,66 @@ using Architect.API.Core.DataAccess.Security;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
+using Architect.API.Core.Security;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Architect.API.Core.Business.Security
 {
     public static class Accounts
     {
-
         /// <summary>
         /// objeto de clase Security.Token que almacena el usuario actual
         /// </summary>
         public static Contracts.Security.Token UserIdActual;
+
+        public static HttpCookie AssingedContext( HttpRequestBase request, AuthenticationResponse responseItem, Architect.API.Core.Contracts.Security.Token token)
+        {
+            var authCookie = new HttpCookie("AuthToken", responseItem.Token)
+            {
+                Expires = DateTime.Now.AddMinutes(responseItem.ExpiresIn),
+                HttpOnly = ShouldEnableHttpOnly(request),
+                Secure = request.IsSecureConnection,
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            };
+            token.Assinged();
+            return authCookie;
+        }
+
+        /// <summary>
+        /// Determines if HttpOnly should be enabled based on the request URL or environment
+        /// </summary>
+        private static bool ShouldEnableHttpOnly(HttpRequestBase request)
+        {
+            // Option 1: Based on host/domain
+            string host = request.Url.Host.ToLower();
+
+            // Disable HttpOnly only for specific development domains
+            if (host.Contains("localhost") || host.Contains("127.0.0.1"))
+            {
+                // For development, you might want HttpOnly = false for testing
+                return false;
+            }
+
+            // Option 2: Based on specific URL patterns
+            if (request.Url.AbsolutePath.Contains("/api/external"))
+            {
+                return false; // Disable for specific APIs that need JS access
+            }
+
+            // Option 3: Based on configuration setting
+            bool httpOnlyFromConfig = Business.Settings.BoolValue(0, "Security.Cookie.HttpOnly", true);
+            if (!httpOnlyFromConfig)
+            {
+                return false;
+            }
+
+            // Default: ALWAYS use HttpOnly = true for security (RECOMMENDED)
+            return true;
+        }
+
 
         /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.

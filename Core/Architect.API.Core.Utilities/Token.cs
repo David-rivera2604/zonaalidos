@@ -25,7 +25,7 @@ namespace Architect.API.Core.Security
         /// Usa EXACTAMENTE las propiedades definidas en Architect.API.Core.Contracts.Security.Token
         /// </summary>
         /// <param name="token">Información del token con todos los datos del usuario.</param>
-        public static void AssingedContext(this Contracts.Security.Token token)
+        public static void Assinged(this Contracts.Security.Token token)
         {
             if (token == null)
             {
