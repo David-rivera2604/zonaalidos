@@ -136,6 +136,9 @@ app.master = (function () {
     }
 
     function render_Ham_menu(data) {
+        if (data == null) {
+            return;
+        }       
         var Ham_menu = $('#MenuVertical');
 
         var mainMenuItems = data.filter(function (item) {
