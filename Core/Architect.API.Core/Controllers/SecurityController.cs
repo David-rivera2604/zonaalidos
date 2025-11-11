@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Security;
 using static System.Net.Mime.MediaTypeNames;
+using Architect.API.Core.Security;
 
 namespace Architect.API.Core.Controllers
 {
@@ -29,7 +31,7 @@ namespace Architect.API.Core.Controllers
         [Route("Authentication")]
         [AllowAnonymous]
         [ResponseType(typeof(Contracts.Security.AuthenticationResponse))]
-        public async Task<IHttpActionResult> Authentication([FromBody] Contracts.Security.AuthenticationRequest authenticationRequest)
+        public IHttpActionResult Authentication([FromBody] Contracts.Security.AuthenticationRequest authenticationRequest)
         {
             IHttpActionResult result = null;
 
@@ -44,7 +46,8 @@ namespace Architect.API.Core.Controllers
                 authenticationRequest.UserAgent = Request.Headers.UserAgent.ToString();
                 Architect.API.Core.Contracts.Security.Token token = new Contracts.Security.Token();
 
-                await Task.Run(() => responseItem = Business.Security.Accounts.Authentication(authenticationRequest, ref token, true)).ConfigureAwait(false);
+                // Llamada sincrónica - eliminar Task.Run para preservar HttpContext
+                responseItem = Business.Security.Accounts.Authentication(authenticationRequest, ref token, true);
 
                 if (responseItem.Reason.IsNotEmpty())
                 {
@@ -54,7 +57,7 @@ namespace Architect.API.Core.Controllers
                         result = BadRequest(responseItem.Reason);
                 }
                 else
-                {
+                { 
                     result = Ok(responseItem);
                 }
             }

@@ -1,4 +1,5 @@
-﻿using Architect.API.Core.DataAccess.Security;
+﻿using Architect.API.Core.Contracts.Security;
+using Architect.API.Core.DataAccess.Security;
 using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -7,7 +8,10 @@ using System.ComponentModel.Design;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.Security;
 
@@ -15,6 +19,111 @@ namespace Architect.API.Core.Security
 {
     public static class Token
     {
+        /// <summary>
+        /// Establece la identidad del usuario en el contexto actual (HttpContext.User y Thread.CurrentPrincipal).
+        /// Este método toma toda la información del token y la convierte en claims accesibles en el contexto.
+        /// Usa EXACTAMENTE las propiedades definidas en Architect.API.Core.Contracts.Security.Token
+        /// </summary>
+        /// <param name="token">Información del token con todos los datos del usuario.</param>
+        public static void AssingedContext(this Contracts.Security.Token token)
+        {
+            if (token == null)
+            {
+                throw new ArgumentNullException(nameof(token), "token no puede ser null");
+            }
+
+            // 2. ✅ CREAR COOKIE DE AUTENTICACIÓN (solo si HttpContext está disponible)
+            if (HttpContext.Current.IsNotEmpty()) 
+                FormsAuthentication.SetAuthCookie(token.UserId.ToString(), false);
+            
+
+            // Crear identidad con el UserId como nombre de identidad
+            var identity = new GenericIdentity(token.UserId.ToString());
+
+            // ====================================================================
+            // CLAIMS EXACTOS SEGÚN LA CLASE Token
+            // ====================================================================
+
+            // UserId
+            identity.AddClaim(new Claim("UserId", token.UserId.ToString()));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, token.UserId.ToString())); // Claim estándar
+
+            // CompanyId
+            identity.AddClaim(new Claim("CompanyId", token.CompanyId.ToString()));
+
+            // BranchOffice
+            identity.AddClaim(new Claim("BranchOffice", token.BranchOffice.ToString()));
+
+            // ManagerId
+            identity.AddClaim(new Claim("ManagerId", token.ManagerId.ToString()));
+
+            // SecurityLevel
+            identity.AddClaim(new Claim("SecurityLevel", token.SecurityLevel.ToString()));
+
+            // Roles
+            identity.AddClaim(new Claim("Roles", token.Roles ?? string.Empty));
+            identity.AddClaim(new Claim(ClaimTypes.Role, token.Roles ?? string.Empty)); // Claim estándar
+
+            // UserName
+            identity.AddClaim(new Claim("UserName", token.UserName ?? string.Empty));
+            identity.AddClaim(new Claim(ClaimTypes.Name, token.UserName ?? string.Empty)); // Claim estándar
+
+            // IdentificationType
+            identity.AddClaim(new Claim("IdentificationType", token.IdentificationType ?? string.Empty));
+
+            // Identification
+            identity.AddClaim(new Claim("Identification", token.Identification ?? string.Empty));
+
+            // AgentCode
+            identity.AddClaim(new Claim("AgentCode", token.AgentCode.ToString()));
+
+            // SubAgentCode
+            identity.AddClaim(new Claim("SubAgentCode", token.SubAgentCode.ToString()));
+
+            // Expires
+            identity.AddClaim(new Claim("Expires", token.Expires.ToString("O"))); // ISO 8601 format
+            identity.AddClaim(new Claim(ClaimTypes.Expiration, token.Expires.ToString("O"))); // Claim estándar
+
+            // ====================================================================
+            // SETTINGS ADICIONALES (configuraciones personalizadas por compañía)
+            // ====================================================================
+            if (token.Settings != null && token.Settings.Count > 0)
+            {
+                foreach (var item in token.Settings)
+                {
+                    if (!string.IsNullOrEmpty(item.Key) && item.Value != null)
+                    {
+                        // Agregar con prefijo "app." para identificar settings personalizados
+                        identity.AddClaim(new Claim($"app.{item.Key}", item.Value));
+                    }
+                }
+            }
+
+            // ====================================================================
+            // CREAR PRINCIPAL CON ROLES
+            // ====================================================================
+            string[] roles = string.IsNullOrEmpty(token.Roles)
+                ? new string[0]
+                : token.Roles.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(r => r.Trim())
+                            .ToArray();
+
+            IPrincipal principal = new GenericPrincipal(identity, roles);
+
+            // ====================================================================
+            // ✅ ASIGNAR AL CONTEXTO DEL THREAD ACTUAL
+            // ====================================================================
+            Thread.CurrentPrincipal = principal;
+
+            // ====================================================================
+            // ✅ ASIGNAR AL CONTEXTO HTTP (para controladores MVC y Web API)
+            // ====================================================================
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.User = principal;
+            }
+        }
+
         public static Contracts.Security.Token Info_V2()
         {
             Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0 };
@@ -24,7 +133,6 @@ namespace Architect.API.Core.Security
                 System.Security.Claims.ClaimsPrincipal user = (System.Security.Claims.ClaimsPrincipal)HttpContext.Current.User;
 
                 result = Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Deserialize(Architect.Utilities.Helpers.CryptSupport.DecryptString(user.Claims.FirstOrDefault(c => c.Type == "Body").Value).DecompressString());
-
             }
 
             return result;
@@ -50,11 +158,22 @@ namespace Architect.API.Core.Security
                 result.Identification = user.Claims.FirstOrDefault(c => c.Type == "Identification").Value;
                 result.UserName = user.Claims.FirstOrDefault(c => c.Type == "UserName").Value;
 
+                // Leer Expires desde los claims
+                var expiresClaim = user.Claims.FirstOrDefault(c => c.Type == "Expires" || c.Type == ClaimTypes.Expiration);
+                if (expiresClaim != null)
+                {
+                    DateTime expiresDate;
+                    if (DateTime.TryParse(expiresClaim.Value, out expiresDate))
+                    {
+                        result.Expires = expiresDate;
+                    }
+                }
+
                 foreach (var claim in user.Claims)
                 {
                     if (claim.Type.StartsWith("app.", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        result.Settings.Add(new Contracts.Security.SettingItem() { Key=  claim.Type.Substring(4), Value = claim.Value});
+                        result.Settings.Add(new Contracts.Security.SettingItem() { Key = claim.Type.Substring(4), Value = claim.Value });
                     }
                 }
             }

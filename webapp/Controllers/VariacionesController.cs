@@ -1,8 +1,10 @@
-﻿using System.Configuration;
+﻿using Architect.API.Core.Security;
+using System.Configuration;
 using System.Web.Mvc;
 
 namespace aliados.Controllers
 {
+    [IsConnected]
     public class VariacionesController : Controller
     {
         public ActionResult MapfreMas()
