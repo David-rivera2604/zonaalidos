@@ -206,7 +206,7 @@ namespace Architect.API.Core.Business.General
                 }
                 catch (Exception ex)
                 {
-                    ex.Data?.Add("context", context);
+                    //ex.Data?.Add("context", context);
                     Architect.Utilities.Log.ErrorLog("SendMail", $"Ha ocurrido un error tratando de resolver el 'body': {body}", ex);
                     return;
                 }
