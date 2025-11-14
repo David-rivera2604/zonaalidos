@@ -272,7 +272,7 @@ namespace Architect.API.Core.Business.Security
         /// </summary>
         internal static Contracts.Security.Token CreateTokenItem(
             Contracts.Security.UserMember user,
-            List<Contracts.Security.RoleMember> roles,
+            string[] roles,
             Contracts.Security.AgentInformation agentInfo,
             int tokenExpiresIn,
             string userName)
@@ -284,7 +284,7 @@ namespace Architect.API.Core.Business.Security
                 ManagerId = user.ManagerId,
                 SecurityLevel = user.SecurityLevel,
                 Expires = DateTime.Now.AddMinutes(tokenExpiresIn),
-                Roles = string.Join(",", roles.Select(x => x.Description)),
+                Roles = string.Join(",", roles ),
                 CompanyId = user.CompanyId,
                 AgentCode = agentInfo.cod_agt,
                 SubAgentCode = agentInfo.cod_sub_agt,

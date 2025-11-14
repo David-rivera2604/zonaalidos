@@ -66,7 +66,7 @@ app.login = (function () {
                 $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...');
                 var inputData = InputToObject();
                 if (dataStage == null) {
-                    app.core.Post(app.setting.basepath + 'Security/Authentication', JSON.stringify(inputData))
+                    app.core.Post(app.setting.basepath + 'Security/LogIn', JSON.stringify(inputData))
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Reason == null) {
                                 if (!data.MustChangePassword) {
@@ -104,10 +104,10 @@ app.login = (function () {
                             }
                         });
                 } else {
-                    app.core.Post(app.setting.apipath + 'v1/Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val(), Mode: '2FA' }))
+                    app.core.Post(app.setting.basepath + 'Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val(), Mode: '2FA' }))
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Successful) {
-                                Authenticated(dataStage);
+                                Authenticated(data.Context);
                             }
                             else {
                                 toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });

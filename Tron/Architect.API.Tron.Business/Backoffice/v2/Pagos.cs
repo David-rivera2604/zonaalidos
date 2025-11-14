@@ -42,7 +42,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             {
                 string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
                 string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
-                int limitCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.RecurringReceipts.Limit.Count", 5);
+                int limitCount = "Payment.Silice.RecurringReceipts.Limit.Count".IntegerValue(0, 5);
                 int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
                 string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
 
@@ -478,7 +478,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
             string prefix = Core.Business.Settings.StringValue(0, "EMail.Test");
-            int cardCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.Tokenize.Cantidad.Tarjetas", 50);
+            int cardCount =  "Payment.Silice.Tokenize.Cantidad.Tarjetas".IntegerValue(0, 50);
             string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
             string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.Tokenize.Filter.Policies", string.Empty);
 

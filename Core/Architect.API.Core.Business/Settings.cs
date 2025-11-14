@@ -6,10 +6,36 @@ using Architect.Utilities.Extensions;
 
 namespace Architect.API.Core.Business
 {
-
     public static class Settings
     {
+        public static bool BoolValue(this string settingName, int companyId, bool defaultValue = false)
+        {
+            string current = FindSetting(companyId, settingName);
+            if (current.IsEmpty())
+            {
+                return defaultValue;
+            }
+            else
+            {
+                return (current.ToLower() == "true" ||
+                        current.ToLower() == "verdadero" ||
+                        current.ToLower() == "yes" ||
+                        current.ToLower() == "si" ||
+                        current.ToLower() == "1");
+            }
+        }
 
+        public static int IntegerValue(this string settingName, int companyId,  int defaultValue = 0)
+        {
+            string result = FindSetting(companyId, settingName);
+            if (result == string.Empty)
+            {
+                result = defaultValue.ToString();
+            }
+            return Convert.ToInt32(result);
+        }
+
+        [Obsolete("Usar el nuevo que es un extencion", true)]
         public static bool BoolValue(int companyId, string settingName, bool defaultValue = false)
         {
             string current = FindSetting(companyId, settingName);
@@ -35,7 +61,6 @@ namespace Architect.API.Core.Business
                 result = FindSetting(companyId, baseSettingName) + servicePath;
             }
             return result;
-
         }
 
         public static string StringValue(int companyId, string settingName, string defaultValue = "")
@@ -46,9 +71,9 @@ namespace Architect.API.Core.Business
                 result = defaultValue;
             }
             return result;
-
         }
 
+        [Obsolete("Usar el nuevo que es un extencion", true)]
         public static int IntegerValue(int companyId, string settingName, int defaultValue = 0)
         {
             string result = FindSetting(companyId, settingName);
@@ -110,10 +135,7 @@ namespace Architect.API.Core.Business
                 result = new List<Contracts.General.Setting>();
             }
 
-
             return result;
         }
-
     }
-
 }

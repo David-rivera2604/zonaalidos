@@ -1,7 +1,10 @@
-﻿using Architect.API.Core.Security;
+﻿using Architect.API.Core.Business;
+using Architect.API.Core.Business.Security;
+using Architect.API.Core.Security;
 using Architect.Utilities.Extensions;
 using System;
 using System.Configuration;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -26,7 +29,7 @@ namespace aliados.Controllers
         /// <returns>
         /// Retorna un objeto JSON con la respuesta de autenticación:
         /// - Si las credenciales son incorrectas: retorna el objeto con Reason conteniendo el mensaje de error
-        /// - Si la autenticación es exitosa: retorna el objeto AuthenticationResponse con el token y datos del usuario
+        /// - Si la autenticación es exitosa: retorna el objeto Context con el token y datos del usuario
         /// </returns>
         /// <remarks>
         /// Este método realiza las siguientes operaciones:
@@ -35,7 +38,7 @@ namespace aliados.Controllers
         /// 3. Si es exitoso:
         ///    - Establece una cookie "AuthToken" con el token JWT
         ///    - Configura el contexto del usuario en el servidor mediante token.AssingedContext()
-        ///    - Retorna el objeto AuthenticationResponse directamente (sin wrapper)
+        ///    - Retorna el objeto Context directamente (sin wrapper)
         ///
         /// La cookie establecida permite que las navegaciones MVC subsecuentes puedan autenticar al usuario
         /// mediante el atributo [IsConnected] sin necesidad de enviar el token en headers.
@@ -58,50 +61,9 @@ namespace aliados.Controllers
         ///         }
         ///     });
         /// </code>
-        /// </example>
+        /// </example> 
         [HttpPost]
         public ActionResult LogIn(Architect.API.Core.Contracts.Security.AuthenticationRequest authenticationRequest)
-        {
-            if (authenticationRequest.IsEmpty())
-            {
-                return Json(new { success = false, mensaje = "Debe indicar los datos" }, JsonRequestBehavior.AllowGet);
-            }
-
-            Architect.API.Core.Contracts.Security.AuthenticationResponse responseItem = null;
-            authenticationRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
-            authenticationRequest.UserAgent = Request.UserAgent;
-            Architect.API.Core.Contracts.Security.Token token = new Architect.API.Core.Contracts.Security.Token();
-
-            // Llamada sincrónica - eliminar Task.Run para preservar HttpContext
-            responseItem = Architect.API.Core.Business.Security.Accounts.Authentication(authenticationRequest, ref token, true);
-
-            if (responseItem.Reason.IsNotEmpty())
-            {
-                return Json(responseItem, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                // ✅ Establecer la cookie con el token
-                var authCookie = new HttpCookie("AuthToken", responseItem.Token)
-                {
-                    Expires = DateTime.Now.AddMinutes(responseItem.ExpiresIn),
-                    HttpOnly = false, // false para que JavaScript pueda leerla si es necesario
-                    Secure = Request.IsSecureConnection, // true si es HTTPS
-                    SameSite = SameSiteMode.Lax,
-                    Path = "/"
-                };
-                Response.Cookies.Add(authCookie);
-
-                // ✅ Establecer el contexto del usuario inmediatamente
-                token.Assinged();
-
-                // ✅ Devolver responseItem tal cual, sin wrapper
-                return Json(responseItem, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult Authentication(Architect.API.Core.Contracts.Security.AuthenticationRequest authenticationRequest)
         {
             ActionResult result = null;
 
@@ -113,11 +75,13 @@ namespace aliados.Controllers
             else
             {
                 Architect.API.Core.Contracts.Security.AuthenticationResponse responseItem = null;
+
                 authenticationRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
                 authenticationRequest.UserAgent = Request.UserAgent.ToString();
-                Architect.API.Core.Contracts.Security.Token token = new Architect.API.Core.Contracts.Security.Token();
 
-                responseItem = Architect.API.Core.Business.Security.Accounts.Authentication(authenticationRequest, ref token, true);
+                var token = new Architect.API.Core.Contracts.Security.Token();
+
+                responseItem = authenticationRequest.Authentication(ref token, true);
 
                 if (responseItem.Reason.IsNotEmpty())
                 {
@@ -134,8 +98,9 @@ namespace aliados.Controllers
                 }
                 else
                 {
-
-                    Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, responseItem, token));
+                    var need2FAOTP = "Security.2FA.Enable".BoolValue(0, false);
+                    if(!need2FAOTP)
+                        Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, responseItem, token));
                     Response.StatusCode = 200;
                     result = Json(responseItem, JsonRequestBehavior.AllowGet);
                 }
@@ -143,6 +108,52 @@ namespace aliados.Controllers
 
             return result;
         }
+
+        /// <summary>
+        /// Valida un código OTP (One-Time Password) y establece el contexto de autenticación si es válido.
+        /// </summary>
+        /// <param name="resetRequest">Objeto que contiene el código OTP a validar y información del usuario.</param>
+        /// <returns>
+        /// Retorna un objeto JSON con la respuesta de validación:
+        /// - Si el OTP es válido: establece cookies de autenticación y retorna el contexto con Successful = true
+        /// - Si el OTP es inválido: retorna un objeto con Successful = false y el Reason del error
+        /// </returns>
+        /// <remarks>
+        /// Este método realiza las siguientes operaciones:
+        /// 1. Valida el código OTP proporcionado mediante el servicio OTP.IsValid()
+        /// 2. Si es válido:
+        ///    - Recupera el contexto de autenticación del caché usando el OTP como clave
+        ///    - Deserializa el objeto AOTPResponse almacenado en caché
+        ///    - Establece la cookie de autenticación mediante AssingedContext()
+        ///    - Configura el contexto del usuario en el servidor
+        /// 3. Retorna la respuesta GenericResponse con el resultado de la validación
+        ///
+        /// Este método es parte del flujo de autenticación de dos factores (2FA).
+        /// </remarks>
+        [HttpPost]
+        public async Task<ActionResult> IsOTPValid(Architect.API.Core.Contracts.Security.ResetPasswordRequest resetRequest)
+        {
+            ActionResult result = null;
+            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            Architect.API.Core.Contracts.Security.AOTPResponse body = null;
+
+            await Task.Run(() => body = Architect.API.Core.Business.Security.OTP.IsValid(resetRequest)).ConfigureAwait(false);
+
+            if (body.Successful)
+            {
+                var context = Architect.Utilities.SerializeHandler<Architect.API.Core.Contracts.Security.AOTPResponse>.DeserializeJSON((string)Architect.Utilities.Cache.GetItem(resetRequest.OTP));
+                body.Context  = context.Context;
+                body.Token = context.Token;
+                Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, body.Context, body.Token));
+            }
+
+            Response.StatusCode = 200;
+
+            result = Json(body, JsonRequestBehavior.AllowGet);
+
+            return result;      
+        }
+
 
         /// <summary>
         /// Cierra la sesión del usuario eliminando la cookie de autenticación y limpiando el contexto del servidor.
@@ -331,7 +342,7 @@ namespace aliados.Controllers
         /// <summary>
         /// Muestra la vista de auto-registro para que nuevos usuarios puedan crear una cuenta.
         /// </summary>
-        /// <returns>Vista de Register.</returns> 
+        /// <returns>Vista de Register.</returns>
         public ActionResult Register()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];

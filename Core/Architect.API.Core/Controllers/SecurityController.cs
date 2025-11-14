@@ -1,4 +1,6 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Core.Contracts.Security;
+using Architect.API.Core.Security;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
@@ -7,7 +9,6 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Security;
 using static System.Net.Mime.MediaTypeNames;
-using Architect.API.Core.Security;
 
 namespace Architect.API.Core.Controllers
 {
@@ -129,25 +130,32 @@ namespace Architect.API.Core.Controllers
             return Ok(result);
         }
 
-        /// <summary>
-        /// Verifica que un código temporal sea valido.
-        /// </summary>
-        /// <param name="resetRequest">Datos de la solicitud.</param>
-        /// <returns>Indicador si el codigo es valido o no.</returns>
-        [HttpPost]
-        [Route("IsOTPValid")]
-        [AllowAnonymous]
-        [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
-        {
-            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
-            Core.Contracts.General.GenericResponse result = null;
+        ///// <summary>
+        ///// Verifica que un código temporal sea valido.
+        ///// </summary>
+        ///// <param name="resetRequest">Datos de la solicitud.</param>
+        ///// <returns>Indicador si el codigo es valido o no.</returns>
+        //[HttpPost]
+        //[Route("IsOTPValid")]
+        //[AllowAnonymous]
+        //[ResponseType(typeof(Core.Contracts.General.GenericResponse))]
+        //[ApiExplorerSettings(IgnoreApi = true)]
+        //public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
+        //{
+        //    resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+        //    Core.Contracts.General.GenericResponse result = null;
 
-            await Task.Run(() => result = Architect.API.Core.Business.Security.OTP.IsValid(resetRequest)).ConfigureAwait(false);
+        //    await Task.Run(() => result = Architect.API.Core.Business.Security.OTP.IsValid(resetRequest)).ConfigureAwait(false);
 
-            return Ok(result);
-        }
+        //    if (result.Successful)
+        //    {
+        //        result.Context = Utilities.SerializeHandler<Contracts.Security.Context>.DeserializeJSON((string)Utilities.Cache.GetItem(resetRequest.OTP));
+        //        Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, responseItem, token));
+        //    }
+                
+
+        //    return Ok(result);
+        //}
 
         /// <summary>
         /// Permite restablecer una clave de acceso.
