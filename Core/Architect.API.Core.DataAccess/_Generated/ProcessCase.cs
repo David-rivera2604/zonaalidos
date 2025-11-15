@@ -104,10 +104,12 @@ namespace Architect.API.Core.DataAccess.General
         {
             Architect.API.Core.Contracts.General.ProcessCase result = null;
             //Agregado provisional Sebastian UserSend
-            Database.Select("SELECT Id, ProcessCase.CompanyId, Title, Description, Priority, InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, FlowId, ProcessCase.UserId, SLA, ProcessCase.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessCase.UpdateDate, UserSend, " + 
-                             "(SELECT ROUND(COALESCE(MAX(FINISHDATE), SYSDATE) - MIN(CREATED)) AS DAYS_DIFFERENCE FROM (SELECT ENTITYID, FINISHDATE, CREATED, ROW_NUMBER() OVER(PARTITION BY ENTITYID ORDER BY CREATED DESC) AS rn FROM processinstance WHERE ENTITYID = ProcessCase.Id AND COMPANYID = ProcessCase.CompanyId) WHERE rn = 1 GROUP BY ENTITYID) TotalDays " +
-                              "FROM ProcessCase LEFT JOIN UserMember um ON um.UserId = ProcessCase.UpdateUserCode " +
-                             "WHERE ProcessCase.Id=:Id AND ProcessCase.CompanyId=:CompanyId")
+            Database.Select(
+@"SELECT Id, pc.CompanyId, Title, Description, Priority, pc.InstanceId, CurrentStepId, Reference1, Reference2, Reference3, Reference4, Reference5, Reference6, Reference7, Reference8, Reference9, Reference10, ContactMainName, ContactMainEmail, Status, Label, SubStatus, SubLabel, pc.FlowId, pc.UserId, SLA, pc.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, pc.UpdateDate, UserSend, 
+         calcular_dias(p.STARTDATE, NVL(p.FINISHDATE, SYSDATE), 'S') TotalDays 
+    FROM ProcessCase pc LEFT JOIN UserMember um ON um.UserId = pc.UpdateUserCode 
+    JOIN PROCESSINSTANCE p ON p.INSTANCEID = pc.INSTANCEID AND p.COMPANYID = pc.CompanyId AND p.Flowid >0 AND p.Stepid=0 AND p.Taskid=0
+   WHERE pc.Id=:Id AND pc.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
@@ -139,7 +141,7 @@ namespace Architect.API.Core.DataAccess.General
                         }));
             return result;
         }
-  
+
         /// <summary>
         /// Recupera una lista de registros en la tabla ProcessCase.
         /// </summary>

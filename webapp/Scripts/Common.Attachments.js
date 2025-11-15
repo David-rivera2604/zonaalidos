@@ -386,6 +386,12 @@ app.Attachments = (function () {
             }
             message = message + 'El tamaño del archivo ' + name + 'es mayor a 30mb';
         }
+        if (name.length > 255) {
+            if (message != '') {
+                message = message & ', ';
+            }
+            message = message + 'El nombre del archivo debe ser menor a 255 caracteres';
+        }
         return message
     }
 
