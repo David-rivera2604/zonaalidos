@@ -21,6 +21,26 @@ namespace Architect.API.Core.Controllers
     public class SecurityController : ApiController
     {
         /// <summary>
+        /// Verifica que un código temporal sea valido.
+        /// </summary>
+        /// <param name="resetRequest">Datos de la solicitud.</param>
+        /// <returns>Indicador si el codigo es valido o no.</returns>
+        [HttpPost]
+        [Route("IsOTPValid")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
+        {
+            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            Architect.API.Core.Contracts.Security.AOTPResponse result = null;
+
+            await Task.Run(() => result = Architect.API.Core.Business.Security.OTP.IsValid(resetRequest)).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>

@@ -170,6 +170,7 @@ app.login = (function () {
 
                 app.core.Post(app.setting.apipath + 'v1/Security/ResetPassword', JSON.stringify({ Tenant: $('#Tenant').val(), EMail: $('#ForgotMail').val(), OTP: $('#forgoCodeMail').val(), Password: $('#SetPasswordMail').val(), PasswordConfirm: $('#SetPasswordMail2').val() }))
                     .done(function (data, textStatus, jqXHR) {
+                        $("#myModal").hide();
                         if (!data.Successful)
                             toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
                         else {
