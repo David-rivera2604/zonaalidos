@@ -1949,7 +1949,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57965</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:44341/aliados/</IISUrl>
+          <IISUrl>https://localhost:44341/aliados/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

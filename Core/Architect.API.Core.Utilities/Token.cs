@@ -293,7 +293,7 @@ namespace Architect.API.Core.Security
                 if (tokenValue.StartsWith("Bearer ", StringComparison.CurrentCultureIgnoreCase))
                     tokenValue = tokenValue.Substring(7);
 
-                if (tokenValue.IsNotEmpty() && tokenValue != "null")
+                if (tokenValue.IsNotEmpty() && tokenValue != "null" && tokenValue != "undefined")
                 {
                     if (Architect.Utilities.Helpers.Settings.StringValue("Token.Mode") != "JWT")
                     {
