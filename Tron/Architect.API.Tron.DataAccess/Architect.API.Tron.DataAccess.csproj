@@ -84,6 +84,7 @@
     <Compile Include="ControlesTecnicos.cs" />
     <Compile Include="CrearPresupuesto.cs" />
     <Compile Include="DatosVariables.cs" />
+    <Compile Include="G2000211.cs" />
     <Compile Include="LeerPoliza.cs" />
     <Compile Include="Batch\G2000510.cs" />
     <Compile Include="Batch\P2000020.cs" />
