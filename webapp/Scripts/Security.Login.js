@@ -347,7 +347,7 @@ app.login = (function () {
         return data;
     };
 
-   function Authenticated(data) {
+    function Authenticated(data) {
         data.Settings?.forEach(item => {
             localStorage.setItem(item.Key, item.Value);
         });

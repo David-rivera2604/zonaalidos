@@ -1,14 +1,12 @@
 ﻿using Architect.API.Core.Contracts.Security;
 using Architect.API.Core.DataAccess.Security;
 using Architect.API.Core.Security;
-using Architect.DataFactory;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Security;
 
 namespace Architect.API.Core.Business.Security
 {
@@ -64,14 +62,16 @@ namespace Architect.API.Core.Business.Security
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
         /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
+
         public static Contracts.Security.AuthenticationResponse Authentication(this Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
         {
             var result = new Contracts.Security.AuthenticationResponse { Settings = new List<SettingItem>() };
+
             var track = new Contracts.Security.AuthenticationTrace
             {
                 TraceType = 1,
                 IPAddress = authenticationRequest.IPAddress,
-                UserName = authenticationRequest.Email,
+                UserName = authenticationRequest.Email?.Trim(),
                 UserAgent = authenticationRequest.UserAgent
             };
 
@@ -83,28 +83,24 @@ namespace Architect.API.Core.Business.Security
             }
 
             // Obtener información del tenant
-            int companyId = 0;
-            if (!AccountSupport.TryGetCompanyId(authenticationRequest.Tenant, result, track, out companyId))
+            if (!AccountSupport.TryGetCompanyId(authenticationRequest.Tenant, result, track, out int companyId))
             {
                 Business.Security.AuthenticationTrace.Create(track);
                 return result;
             }
 
             // Recuperar usuario
-            track.UserName = authenticationRequest.Email.Trim();
             var user = AccountSupport.RetrieveUser(authenticationRequest.Email, companyId);
 
-            //Verifica si el usuario no está registrado
+            // Usuario no registrado
             if (user.IsEmpty())
             {
-                track.TraceType = 1;
-                result.Reason = "Usuario no registrado";
-                track.Reason = result.Reason;
+                result.Reason = track.Reason = "Usuario no registrado";
                 Business.Security.AuthenticationTrace.Create(track);
                 return result;
             }
 
-            // Actualizar tracking con datos de usuario
+            // Actualizar tracking
             track.UserId = user.UserId;
             track.UserName = user.UserName;
             result.EMail = user.EMail;
@@ -112,24 +108,37 @@ namespace Architect.API.Core.Business.Security
             // Validar credenciales
             var accessAllowed = AccountSupport.ValidateUserCredentials(authenticationRequest, user, result, track);
 
-            if (accessAllowed)
+            if (!accessAllowed)
+                AccountSupport.ProcessFailedAuthentication(authenticationRequest, user, result, track);
+            else
             {
-                result.Need2FAOTP = "Security.2FA.Enable".BoolValue(0, false); 
+                result.Need2FAOTP = "Security.2FA.Enable".BoolValue(0, false);
 
                 if (!result.Need2FAOTP)
                     ProcessSuccessfulAuthentication(authenticationRequest, user, result, ref token, firstInit, companyId, track);
                 else
                 {
-                    if (!result.MustChangePassword)
+                    if (!authenticationRequest.EmployeeMode)
+                        result.MustChangePassword = user.PasswordChangedDate.AddDays("Security.Password.Expiration".IntegerValue(0, 90)) <= DateTime.Today;
+
+                    if (result.MustChangePassword)
+                        ProcessSuccessfulAuthentication(authenticationRequest, user, result, ref token, firstInit, companyId, track);
+                    else
                     {
-                        var key = OTP.Create(new ResetPasswordRequest { Tenant = authenticationRequest.Tenant, EMail = user.EMail, IPAddress = authenticationRequest.IPAddress }, user, "2FA");
                         var roles = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
                         result.ExpiresIn = "Security.Session.Timeout".IntegerValue(0, 30);
-                        var tokenBody = TokenItem(user, roles.ToArrayOf(x=> x.Description), "Security.Token.Timeout".IntegerValue(0, (int)(result.ExpiresIn * 2.5)), user.UserName);
+
+                        var tokenBody = TokenItem(
+                            user,
+                            roles.ToArrayOf(x => x.Description),
+                            "Security.Token.Timeout".IntegerValue(0, (int)(result.ExpiresIn * 2.5)),
+                            user.UserName
+                        );
+
                         result.InitialPath = AccountSupport.DetermineInitialPath(user, roles, companyId);
                         result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenBody);
                         result.UserName = user.UserName;
-                        result.Roles = roles.ToArrayOf(c=> c.Description);
+                        result.Roles = roles.ToArrayOf(c => c.Description);
 
                         // Crear sesión
                         Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity
@@ -144,25 +153,31 @@ namespace Architect.API.Core.Business.Security
                             UserAgent = track.UserAgent
                         });
 
-                        Contracts.Security.AOTPResponse aOTPResponse = new Contracts.Security.AOTPResponse
-                        {
-                            Context = result,
-                            Token = tokenBody
-                        };
+                        var key = OTP.Create(
+                            new ResetPasswordRequest { Tenant = authenticationRequest.Tenant, EMail = user.EMail, IPAddress = authenticationRequest.IPAddress },
+                            user,
+                            "2FA"
+                        );
 
+                        var aOTPResponse = new Contracts.Security.AOTPResponse { Context = result, Token = tokenBody };
                         Utilities.Cache.SetItem(key, Utilities.SerializeHandler<Contracts.Security.AOTPResponse>.SerializeJSON(aOTPResponse, false));
                         result.Token = string.Empty;
                     }
                 }
             }
-            else
-                AccountSupport.ProcessFailedAuthentication(authenticationRequest, user, result, track);
 
+            // Finalizar tracking
             track.Reason = result.Reason;
             Business.Security.AuthenticationTrace.Create(track);
 
-            if (result.MustChangePassword && user != null)
-                OTP.Create(new ResetPasswordRequest { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user, "MustChangePassword");
+            if (result.MustChangePassword)
+            {
+                OTP.Create(
+                    new ResetPasswordRequest { Tenant = authenticationRequest.Tenant, EMail = user.EMail },
+                    user,
+                    "MustChangePassword"
+                );
+            }
 
             return result;
         }
@@ -182,7 +197,7 @@ namespace Architect.API.Core.Business.Security
             // Configurar información básica
             result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
 
-            // Obtener roles 
+            // Obtener roles
             ;
 
             var roles = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
@@ -207,11 +222,11 @@ namespace Architect.API.Core.Business.Security
             result.InitialPath = AccountSupport.DetermineInitialPath(user, roles, companyId);
 
             // Verificar si debe cambiar contraseña
-            if (!request.EmployeeMode)
-            {
-                var expirationDays = "Security.Password.Expiration".IntegerValue(0, 90);
-                result.MustChangePassword = user.PasswordChangedDate.AddDays(expirationDays) <= DateTime.Today;
-            }
+            //if (!request.EmployeeMode)
+            //{
+            //    var expirationDays = "Security.Password.Expiration".IntegerValue(0, 90);
+            //    result.MustChangePassword = user.PasswordChangedDate.AddDays(expirationDays) <= DateTime.Today;
+            //}
 
             // Crear sesión
             Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity
