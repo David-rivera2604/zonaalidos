@@ -494,7 +494,7 @@ Public Class Generate
     End Function
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of Canales.ModeloCanales).Serialize(_Canales, withFormat)
+        Return Utilities.SerializeHandler(Of Canales.ModeloCanales).Serialize(_Canales)
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)

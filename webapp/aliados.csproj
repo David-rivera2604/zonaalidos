@@ -895,6 +895,7 @@
     <Content Include="assets\js\bootstrap.js" />
     <Content Include="assets\js\bootstrap.min.js" />
     <Content Include="assets\js\inspinia.js" />
+    <Content Include="assets\js\jquery.fileupload.js" />
     <Content Include="assets\js\jquery.min.js" />
     <Content Include="assets\js\multimodal.js" />
     <Content Include="assets\js\plugins\autonumeric\autoNumeric.js" />
@@ -1156,6 +1157,11 @@
     <Content Include="assets\toastr\toastr.min.css" />
     <Content Include="assets\toastr\toastr.min.js" />
     <Content Include="favicon.ico" />
+    <Content Include="files\models\NIFF17CuentaTecnicaFinanciera.xml" />
+    <Content Include="files\models\NIFF17PrimasSiniestros.xml" />
+    <Content Include="files\models\NIFF17RendimientoFinanciero.xml" />
+    <Content Include="files\models\NIFF17SaldosContables.xml" />
+    <Content Include="files\models\NIFF17SituacionFinanciera.xml" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1640,6 +1646,9 @@
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <Content Include="data\dummy.json" />
+    <Content Include="files\models\BalanceGeneral.xlsx" />
+    <Content Include="files\models\Canales.xlsx" />
+    <Content Include="files\models\Otro.xlsx" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1870,7 +1879,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="assets\jquery-validation\dist\" />
-    <Folder Include="files\" />
     <Folder Include="logs\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -1882,6 +1890,10 @@
     <ProjectReference Include="..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
       <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
       <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Architect.API.Core.DataAccess\Architect.API.Core.DataAccess.csproj">
+      <Project>{ade9e68b-134e-0d88-34f0-07a5aad11285}</Project>
+      <Name>Architect.API.Core.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj">
       <Project>{3d406267-4a50-4e87-842a-553e3d222cf1}</Project>
@@ -1910,6 +1922,94 @@
     <ProjectReference Include="..\sicop\Architect.SICOP.Integrations\Architect.SICOP.Integrations.csproj">
       <Project>{9ddfbc75-0a39-4a36-9301-169bac63a801}</Project>
       <Name>Architect.SICOP.Integrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sicop\Architect.SICOP.WcfService\Architect.SICOP.WcfService.csproj">
+      <Project>{36b5ac9f-daa3-4d43-85f6-47b0389ab261}</Project>
+      <Name>Architect.SICOP.WcfService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.AporteBomberos\Architect.Sugese.AporteBomberos.vbproj">
+      <Project>{073e335e-1662-49e0-90e2-07d39639cc6c}</Project>
+      <Name>Architect.Sugese.AporteBomberos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.AportesINEC\Architect.Sugese.AportesINEC.vbproj">
+      <Project>{7a26f40e-4818-4109-a70f-c0d21c1eadbc}</Project>
+      <Name>Architect.Sugese.AportesINEC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.BalanceGeneral\Architect.Sugese.BalanceGeneral.vbproj">
+      <Project>{f8e0e0ca-ada5-49ff-9d32-ef2c40c6a6e7}</Project>
+      <Name>Architect.Sugese.BalanceGeneral</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.Canales\Architect.Sugese.Canales.vbproj">
+      <Project>{bf16885d-0347-48f9-b60c-76d734e80f35}</Project>
+      <Name>Architect.Sugese.Canales</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.CuentaTecnicaFinanciera\Architect.Sugese.CuentaTecnicaFinanciera.csproj">
+      <Project>{d864dd60-cfbd-4674-b578-dfffac4ed23e}</Project>
+      <Name>Architect.Sugese.CuentaTecnicaFinanciera</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.CuentaTecnica\Architect.Sugese.CuentaTecnica.vbproj">
+      <Project>{0d373cbe-4ff8-4c26-a61d-1fdb4a11b937}</Project>
+      <Name>Architect.Sugese.CuentaTecnica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.Domain\Architect.Sugese.Domain.vbproj">
+      <Project>{b4219ee3-b7c7-4414-acf1-5153379ce2a5}</Project>
+      <Name>Architect.Sugese.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.EstadisticasInternacionales\Architect.Sugese.EstadisticasInternacionales.csproj">
+      <Project>{10e303d4-c724-4b5f-80b9-fe9c66514a3b}</Project>
+      <Name>Architect.Sugese.EstadisticasInternacionales</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.EstadoResultados\Architect.Sugese.EstadoResultados.vbproj">
+      <Project>{bb5575b3-da18-44a0-8ee2-4dde1b66e276}</Project>
+      <Name>Architect.Sugese.EstadoResultados</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.InversionesFinancieras\Architect.Sugese.InversionesFinancieras.vbproj">
+      <Project>{554defa8-f453-4d20-820f-171b786e9e93}</Project>
+      <Name>Architect.Sugese.InversionesFinancieras</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.Manager\Architect.Sugese.Manager.csproj">
+      <Project>{46cf6614-ec81-4df7-9fc4-459c36ecfa08}</Project>
+      <Name>Architect.Sugese.Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.Patrimonio\Architect.Sugese.Patrimonio.vbproj">
+      <Project>{e327210a-4d67-4547-9661-dc3b07476ab8}</Project>
+      <Name>Architect.Sugese.Patrimonio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.Polizas\Architect.Sugese.Polizas.vbproj">
+      <Project>{fc1b0944-2362-4220-8b9e-012925275e76}</Project>
+      <Name>Architect.Sugese.Polizas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.PrimasSiniestros\Architect.Sugese.PrimasSiniestros.csproj">
+      <Project>{36a22778-5373-478c-9bd7-9729f96c7881}</Project>
+      <Name>Architect.Sugese.PrimasSiniestros</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.Produccion\Architect.Sugese.Produccion.vbproj">
+      <Project>{c32a9258-89aa-4be9-bfa8-a1308022f37f}</Project>
+      <Name>Architect.Sugese.Produccion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.RendimientoFinanciero\Architect.Sugese.RendimientoFinanciero.csproj">
+      <Project>{4ef0c050-d59b-49ae-ac57-f55e939839e2}</Project>
+      <Name>Architect.Sugese.RendimientoFinanciero</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.RunOff\Architect.Sugese.RunOff.vbproj">
+      <Project>{2b9a0ddc-7809-4006-9765-acdbf58125cd}</Project>
+      <Name>Architect.Sugese.RunOff</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.SaldosContables\Architect.Sugese.SaldosContables.csproj">
+      <Project>{1e0b56ad-6b69-4b28-b755-5151d4925506}</Project>
+      <Name>Architect.Sugese.SaldosContables</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.SituacionFinanciera\Architect.Sugese.SituacionFinanciera.csproj">
+      <Project>{f38f4960-c9ce-4c32-8c7e-595f93e9de24}</Project>
+      <Name>Architect.Sugese.SituacionFinanciera</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.Utility\Architect.Sugese.Utility.csproj">
+      <Project>{2156f352-204a-4030-9139-0a11317eb806}</Project>
+      <Name>Architect.Sugese.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sugese\Architect.Sugese.Validadores\Architect.Sugese.Validadores.csproj">
+      <Project>{c9e089e3-9dd2-47dc-ba03-97196104d62f}</Project>
+      <Name>Architect.Sugese.Validadores</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tron\Architect.API.Tron.Business\Architect.API.Tron.Business.csproj">
       <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>

@@ -62,7 +62,7 @@ Public Class Generate
     End Sub
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of RunOff.ModeloRunOff).Serialize(_RunOff, withFormat)
+        Return Utilities.SerializeHandler(Of RunOff.ModeloRunOff).Serialize(_RunOff)
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)

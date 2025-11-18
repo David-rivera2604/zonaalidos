@@ -32,7 +32,7 @@ Public Class Generate
     End Sub
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of Produccion.ModeloProduccion).Serialize(_Produccion, withFormat)
+        Return Utilities.SerializeHandler(Of Produccion.ModeloProduccion).Serialize(_Produccion)
     End Function
 
     Private Sub ModelInit()

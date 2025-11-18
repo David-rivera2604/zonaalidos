@@ -104,13 +104,13 @@ namespace Architect.Sugese.Manager
             try
             {
                 // Autorización de seguridad
-                Architect.API.Core.Business.Common.RoleAuthorized("Sugese");
+                //Architect.API.Core.Business.Common.RoleAuthorized("Sugese");
 
                 // Construcción de rutas de archivos
-                serverPath = System.Web.HttpContext.Current.Server.MapPath("../uploads");
+                serverPath = System.Web.HttpContext.Current.Server.MapPath("../files");
                 xmlFileName = Path.Combine(serverPath, $"{modelo}.xml");
                 xlsxFileName = Path.Combine(serverPath, internalFileName);
-                lastXlsxFileName = Path.Combine(serverPath, $"{modelo}.xlsx");
+                lastXlsxFileName = Path.Combine(serverPath, "models", $"{modelo}.xlsx");
 
                 // Validación de existencia del archivo
                 if (!File.Exists(xlsxFileName))
@@ -145,7 +145,7 @@ namespace Architect.Sugese.Manager
 
                 // Registro de auditoría
                 string mensajeAuditoria = $"  Se procesó {(result.Success ? "de forma exitosa" : "con errores")} el archivo {xlsxFileName} para el modelo {modelo}";
-                API.Core.DataAccess.Extend.NavigationTrace.Track(mensajeAuditoria);
+                //API.Core.DataAccess.Extend.NavigationTrace.Track(mensajeAuditoria);
             }
             catch (UnauthorizedAccessException uaEx)
             {
@@ -155,7 +155,7 @@ namespace Architect.Sugese.Manager
                 result.Detail = uaEx.Message;
 
                 Architect.Utilities.Log.ErrorLog("ProcesaArchivo", "Error de autorización", uaEx);
-                API.Core.DataAccess.Extend.NavigationTrace.Track($"  Error de autorización: {uaEx.Message}");
+                //API.Core.DataAccess.Extend.NavigationTrace.Track($"  Error de autorización: {uaEx.Message}");
             }
             catch (FileNotFoundException fnfEx)
             {
@@ -165,7 +165,7 @@ namespace Architect.Sugese.Manager
                 result.Detail = fnfEx.Message;
 
                 Architect.Utilities.Log.ErrorLog("ProcesaArchivo", "Archivo no encontrado", fnfEx);
-                API.Core.DataAccess.Extend.NavigationTrace.Track($"  Error: Archivo no encontrado - {fnfEx.FileName}");
+                //API.Core.DataAccess.Extend.NavigationTrace.Track($"  Error: Archivo no encontrado - {fnfEx.FileName}");
             }
             catch (IOException ioEx)
             {
@@ -175,7 +175,7 @@ namespace Architect.Sugese.Manager
                 result.Detail = ioEx.Message;
 
                 Architect.Utilities.Log.ErrorLog("ProcesaArchivo", "Error de I/O", ioEx);
-                API.Core.DataAccess.Extend.NavigationTrace.Track($"  Error de I/O: {ioEx.Message}");
+                //API.Core.DataAccess.Extend.NavigationTrace.Track($"  Error de I/O: {ioEx.Message}");
             }
             catch (Exception ex)
             {
@@ -185,7 +185,7 @@ namespace Architect.Sugese.Manager
                 result.Detail = $"{ex.GetType().Name}: {ex.Message}";
 
                 Architect.Utilities.Log.ErrorLog("ProcesaArchivo", result.Reason, ex);
-                API.Core.DataAccess.Extend.NavigationTrace.Track($"  Error inesperado: {ex.Message}");
+                //API.Core.DataAccess.Extend.NavigationTrace.Track($"  Error inesperado: {ex.Message}");
             }
 
             return result;

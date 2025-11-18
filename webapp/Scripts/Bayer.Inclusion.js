@@ -564,6 +564,10 @@ app.BayerInclusion = (function () {
             $('#fileUpload').click();
         });
 
+
+
+
+
         $('#fileUpload').on('change', function () {
             var index = 0;
             var arr = $('#fileUpload').prop('files');

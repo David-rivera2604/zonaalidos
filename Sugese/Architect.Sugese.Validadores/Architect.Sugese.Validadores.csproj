@@ -34,14 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClosedXML, Version=0.105.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ClosedXML.0.105.0\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    <Reference Include="ClosedXML, Version=0.96.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ClosedXML.0.96.0\lib\net46\ClosedXML.dll</HintPath>
     </Reference>
     <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
     </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=3.3.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DocumentFormat.OpenXml.3.3.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.20.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DocumentFormat.OpenXml.2.20.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="DocumentFormat.OpenXml.Framework, Version=3.3.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DocumentFormat.OpenXml.Framework.3.3.0\lib\net46\DocumentFormat.OpenXml.Framework.dll</HintPath>
@@ -54,6 +54,9 @@
     </Reference>
     <Reference Include="Humanizer, Version=2.14.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Humanizer.Core.2.14.1\lib\netstandard2.0\Humanizer.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony, Version=1.0.11.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Irony.NetCore.1.0.11\lib\net461\Irony.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.10\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -231,6 +234,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="XLParser, Version=1.5.2.0, Culture=neutral, PublicKeyToken=63397e1e46bb91b4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\XLParser.1.5.2\lib\net461\XLParser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Inspection.cs" />
@@ -252,22 +258,6 @@
     <ProjectReference Include="..\Architect.Sugese.Utility\Architect.Sugese.Utility.csproj">
       <Project>{2156f352-204a-4030-9139-0a11317eb806}</Project>
       <Name>Architect.Sugese.Utility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Architect.Common.Proxy\Architect.Common.Proxy.vbproj">
-      <Project>{6EF1E94F-7371-45A8-A6CC-8E0E28AB260F}</Project>
-      <Name>Architect.Common.Proxy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Architect.Common\Architect.Common.vbproj">
-      <Project>{7e7360b0-ea6a-4b93-852e-6f0ec759c02b}</Project>
-      <Name>Architect.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\mapfre.common\mapfre.common.vbproj">
-      <Project>{681ebcba-c5ba-41e6-8e1c-dd07da408722}</Project>
-      <Name>mapfre.common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\modelos.sugese\modelos.sugese.vbproj">
-      <Project>{f7f4d10c-bd86-4fc7-92ba-ccc11580b21c}</Project>
-      <Name>modelos.sugese</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

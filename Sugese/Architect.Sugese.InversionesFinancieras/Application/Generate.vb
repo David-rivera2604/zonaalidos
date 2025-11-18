@@ -235,7 +235,7 @@ Public Class Generate
     End Function
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of InversionesFinancieras.ModeloInversionesFinancieras).Serialize(_InversionesFinancieras, withFormat)
+        Return Utilities.SerializeHandler(Of InversionesFinancieras.ModeloInversionesFinancieras).Serialize(_InversionesFinancieras)
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)

@@ -112,7 +112,7 @@ Public Class Generate
     End Function
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of AporteBomberos.ModeloAporteBomberos).Serialize(_AporteBomberos, withFormat)
+        Return Utilities.SerializeHandler(Of AporteBomberos.ModeloAporteBomberos).Serialize(_AporteBomberos)
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)

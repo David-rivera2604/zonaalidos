@@ -1517,6 +1517,22 @@ app.ui = (function () {
 
             toastr.error(msg, title, settings);
         },
+        Loader: function (msg = "Cargando...", title = "", settings = {}) {
+            return toastr.info(
+                msg,
+                title,
+                Object.assign(
+                    {
+                        timeOut: 0,
+                        extendedTimeOut: 0,
+                        closeButton: false,
+                        tapToDismiss: false,
+                        allowHtml: true
+                    },
+                    settings
+                )
+            );
+        },
         NotifyClear: function (msg, title, settings) {
 
             toastr.remove();

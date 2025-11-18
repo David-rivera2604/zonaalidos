@@ -1,4 +1,5 @@
-﻿@{
+﻿<!-- Archivo corregido generador.cshtml alineado con Generador.js -->
+@{
     Layout = "~/Views/_Layout.cshtml";
 }
 
@@ -7,82 +8,58 @@
 <div class="ibox">
     <div class="ibox-title">
         <h5>Generador de archivos SUGESE</h5>
-
         <div class="ibox-tools">
             <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-wrench"></i></a>
-            <ul class="dropdown-menu dropdown-user">
-                <li>
-                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5">
-                        <i class="fa fa-clock-o"></i> Historial...
-                    </a>
-                </li>
-            </ul>
         </div>
     </div>
 
     <div class="ibox-content">
-
-        <!-- Loader -->
-        <div class="sk-spinner sk-spinner-wave d-none" id="generalLoader">
-            <div class="sk-rect1"></div>
-            <div class="sk-rect2"></div>
-            <div class="sk-rect3"></div>
-            <div class="sk-rect4"></div>
-            <div class="sk-rect5"></div>
-        </div>
-
-        <!-- Notificaciones -->
         <div id="generalNotify"></div>
 
-        <!-- Formulario -->
-        <form id="SugeseGeneratorEdtForm" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
+        <!-- 🔥 IMPORTANTE: El JS requiere un formulario con id="MainForm" -->
+        <form id="MainForm" class="form-horizontal" enctype="multipart/form-data">
             <fieldset>
-
                 <div class="form-row">
 
-                    <!-- Tipo de Modelo -->
+                    <!-- Modelo (JS usa #modelo) -->
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label for="ModelType" class="control-label">Tipo de modelo <span class="required-mark">*</span></label>
-                            <select id="ModelType" name="ModelType" class="form-control" required>
-                                <option value="">Seleccione un modelo...</option>
+                            <label for="modelo" class="control-label">Tipo de modelo *</label>
+                            <select id="modelo" name="modelo" class="form-control" required>
+                                <option value="">Seleccione…</option>
+                                <!-- Modelos generales -->
+                                <option value="Bomberos">Aporte bomberos</option>
+                                <option value="BalanceGeneral">Balance general</option>
+                                <option value="Patrimonio">Cambios de patrimonio</option>
+                                <option value="Canales">Canales de comercialización</option>
+                                <option value="Inversiones">Detalle de inversión</option>
+                                <option value="Resultados">Estado de resultados</option>
+                                <option value="RUB">Registro único de beneficiarios</option>
+                                <option value="Produccion">Producción y población asegurada</option>
+                                <option value="RunOff">Run off</option>
+                                <option value="AportesINEC">Aportes INEC</option>
+                                <option value="PrimasSiniestros">Primas y siniestros</option>
 
-                                <optgroup label="Modelos Financieros">
-                                    <option value="ModeloCuentaTecnicaFinanciera">Modelo Cuenta Técnica Financiera</option>
-                                    <option value="ModeloPrimasSiniestros">Modelo Primas y Siniestros</option>
-                                    <option value="ModeloRendimientoFinanciero">Modelo Rendimiento Financiero</option>
-                                    <option value="ModeloSituacionFinanciera">Modelo Situación Financiera</option>
-                                </optgroup>
+                                <!-- Opciones adicionales provenientes del primer select -->
+                                <option value="CuentasTecnicas">Cuentas técnicas</option>
+                                <option value="SaldosContables">Saldos contables</option>
 
-                                <optgroup label="Reportes Mensuales">
-                                    <option value="Bomberos">Aporte Bomberos</option>
-                                    <option value="Inversiones">Inversiones Financieras</option>
-                                    <option value="SaldosContables">Saldos Contables</option>
-                                    <option value="RUB">Pólizas (RUB)</option>
-                                    <option value="AportesINEC">Aportes INEC</option>
-                                </optgroup>
+                                <!-- NIIF 17 / NIFF 17 -->
+                                <option value="NIFF17SaldosContables">NIIF17 - Saldos contables</option>
+                                <option value="NIFF17CuentaTecnicaFinanciera">NIIF17 - Cuentas técnicas financiera</option>
+                                <option value="NIFF17RendimientoFinanciero">NIIF17 - Rendimiento financiero</option>
+                                <option value="NIFF17SituacionFinanciera">NIIF17 - Situación financiera</option>
 
-                                <optgroup label="Reportes Trimestrales">
-                                    <option value="BalanceGeneral">Balance General</option>
-                                    <option value="Canales">Canales</option>
-                                    <option value="CuentasTecnicas">Cuentas Técnicas</option>
-                                    <option value="Patrimonio">Patrimonio</option>
-                                    <option value="Produccion">Producción</option>
-                                    <option value="Resultados">Estado de Resultados</option>
-                                    <option value="RunOff">Run-Off</option>
-                                </optgroup>
                             </select>
-                            <div id="ModelType_validate"></div>
+                            <div id="modelo_validate"></div>
                         </div>
                     </div>
 
-                    <!-- Mes -->
-                    <div class="col-sm-6 col-md-2">
+                    <!-- Mes (JS usa #pediodo_mensual) -->
+                    <div class="col-sm-6 col-md-2" id="div_periodo_mensual">
                         <div class="form-group">
-                            <label for="Month" class="control-label">Mes <span class="required-mark">*</span></label>
-                            <select id="Month" name="Month" class="form-control" required>
-                                <option value="">Mes...</option>
+                            <label for="pediodo_mensual">Mes *</label>
+                            <select id="pediodo_mensual" name="pediodo_mensual" class="form-control">
                                 <option value="1">Enero</option>
                                 <option value="2">Febrero</option>
                                 <option value="3">Marzo</option>
@@ -96,73 +73,80 @@
                                 <option value="11">Noviembre</option>
                                 <option value="12">Diciembre</option>
                             </select>
-                            <div id="Month_validate"></div>
+                            <div id="pediodo_mensual_validate"></div>
                         </div>
                     </div>
 
-                    <!-- Año -->
+                    <!-- Trimestre (JS usa #pediodo_trimestral) -->
+                    <div class="col-sm-6 col-md-2" id="div_pediodo_trimestral">
+                        <div class="form-group">
+                            <label for="pediodo_trimestral">Trimestre *</label>
+                            <select id="pediodo_trimestral" name="pediodo_trimestral" class="form-control hidden">
+                                <option value="1">Trimestre 1</option>
+                                <option value="2">Trimestre 2</option>
+                                <option value="3">Trimestre 3</option>
+                                <option value="4">Trimestre 4</option>
+                            </select>
+                            <div id="pediodo_trimestral_validate"></div>
+                        </div>
+                    </div>
+
+                    <!-- Año (JS usa #ano) -->
                     <div class="col-sm-6 col-md-2">
                         <div class="form-group">
-                            <label for="Year" class="control-label">Año <span class="required-mark">*</span></label>
-                            <input id="Year" name="Year" type="number" class="form-control" min="2020" max="2099" placeholder="2024" required>
-                            <div id="Year_validate"></div>
+                            <label for="ano">Año *</label>
+                            <input id="ano" name="ano" type="number" class="form-control" />
+                            <div id="ano_validate"></div>
                         </div>
                     </div>
 
-                    <!-- Archivo -->
+                    <!-- Archivo (JS usa #fileUpload, #fileNameUpload, #fileServerNameUpload) -->
                     <div class="col-sm-12 col-md-4">
                         <div class="form-group">
-                            <label for="FileName" class="control-label">Archivo Excel <span class="required-mark">*</span></label>
+                            <label for="fileUpload">Archivo Excel *</label>
                             <div class="input-group">
-                                <input id="FileName" name="FileName" type="text" class="form-control" placeholder="Seleccione el archivo..." readonly required />
-                                <input id="Stored" type="hidden" />
-                                <input id="FileSize" type="hidden" />
+                                <input id="fileNameUpload" name="fileNameUpload" type="text" class="form-control" readonly />
+                                <input id="fileServerNameUpload" name="fileServerNameUpload" type="hidden" />
 
                                 <div class="input-group-append">
-                                    <span class="btn btn-default fileinput-button" title="Seleccione un archivo Excel">
-                                        <span>Examinar...</span>
-                                        <input id="fileUpload" type="file" accept=".xlsx" />
+                                    <span class="btn btn-default fileinput-button">
+                                        <span>Examinar…</span>
+                                        <input id="fileUpload" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                                                                                   application/vnd.ms-excel,
+                                                                                   text/csv" />
                                     </span>
                                 </div>
                             </div>
-                            <div id='FileName_validate'></div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Mensaje informativo -->
-                <div class="form-row">
-                    <div class="col-md-12">
-                        <div class="alert alert-info">
-                            <i class="fa fa-info-circle"></i>
-                            Seleccione el tipo de modelo, periodo y archivo Excel a procesar para generar el archivo XML.
+                            <div id="fileNameUpload_validate"></div>
                         </div>
                     </div>
                 </div>
-
             </fieldset>
         </form>
 
-        <!-- Botón Guardar -->
+        <!-- Botón procesar (JS usa #procesarArchivo) -->
         <div class="col-md-12 mt-3">
-            <button id="SugeseGeneratorEdtFormSave" type="button"
-                    class="btn btn-primary float-right"
-                    data-doing="Generando archivo XML...">
-                Generar XML
-            </button>
+            <button id="procesarArchivo" class="btn btn-primary float-right">Procesar Archivo</button>
         </div>
 
+        <!-- Alertas que usa el JS -->
+        <div id="alertSuccess" class="alert alert-success mt-3" style="display:none;">Archivo procesado correctamente.</div>
+        <div id="alertError" class="alert alert-danger mt-3" style="display:none;">Error procesando el archivo.</div>
+
+        <!-- Links dinámicos que el JS modifica -->
+        <div class="mt-3">
+            <a id="NewFile">Nuevo XLSX</a> ·
+            <a id="LastExcel">Último XLSX</a> ·
+            <a id="LastXml">Último XML</a> ·
+            <a id="xml">XML</a> ·
+            <a id="xml2">XML (2)</a> ·
+            <a id="excel">Excel generado</a>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
-    <script src="@Url.Content("~/Scripts/sugese.js")"></script>
-
-    <script>
-        $(function () {
-            app.SugeseGenerator.Init();
-        });
-    </script>
+    <script src="~/Scripts/Common.Attachments.js"></script>
+    <script src="~/Scripts/Sugese.js"></script>
 }

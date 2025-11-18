@@ -1,11 +1,9 @@
 ﻿var app = app || {};
 
 app.Attachments = (function () {
-
     let _data = null;
 
     function Attachment_List_Setup() {
-
         $('#AttachmentGridTbl').bootstrapTable({
             uniqueId: 'Id',
             classes: 'table table-bordered table-hover table-index clearTable',
@@ -173,7 +171,6 @@ app.Attachments = (function () {
                             });
                         }
                         $('#AttachmentGridTbl').bootstrapTable('hideLoading');
-
                     }
                 });
         });
@@ -197,7 +194,6 @@ app.Attachments = (function () {
                     }
                 });
         });
-
     }
 
     function Setup_Attachment_Validations() {
@@ -316,7 +312,6 @@ app.Attachments = (function () {
             return;
         }
         if ($(uploadCtrolId).valid()) {
-
             for (index = 0; index < arr.length; index++) {
                 message = ValidateFile(arr[index].name, arr[index].size, arr[index].type, message);
             }
@@ -400,7 +395,6 @@ app.Attachments = (function () {
             return;
         }
         if ($(uploadCtrolId).valid()) {
-
             for (index = 0; index < arr.length; index++) {
                 message = ValidateFile(arr[index].name, arr[index].size, arr[index].type, message);
             }
@@ -446,6 +440,7 @@ app.Attachments = (function () {
             callback([arr[0]], true);
         }
     }
+
     function ajaxErrorHandler(jqXHR, errorThrown) {
         switch (jqXHR.status) {
             case 400:
@@ -460,7 +455,6 @@ app.Attachments = (function () {
                             app.ui.ShowAlert('generalNotify', 'alert-danger', value);
                         }
                     });
-
                 }
                 else {
                     toastr.error(jqXHR.responseJSON.Message, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
@@ -507,8 +501,109 @@ app.Attachments = (function () {
                 } else {
                     console.info('%c Error ', 'color: white; background-color: #D33F49', jqXHR.status, ' - ', errorThrown);
                 }
-
         }
+    }
+
+    function fileUploadHandler(options = {}) {
+
+        const {
+            controlSelector,
+            controlName,   // <- NUEVO
+            done,
+            fail,
+            always
+        } = options;
+
+        if (typeof done !== "function") {
+            console.error("Error: 'done' es obligatorio y debe ser una función.");
+            return;
+        }
+
+        if (!controlSelector || $(controlSelector).length === 0) {
+            if (typeof fail === "function") fail(null, { error: "Selector inválido" });
+            if (typeof always === "function") always(null);
+            return;
+        }
+
+        $(controlSelector).on("change", function (e) {
+
+            if (!controlName || controlName.trim() === "") {
+                if (typeof fail === "function") fail(e, { error: "'controlName' vacío" });
+                if (typeof always === "function") always(e);
+                return;
+            }
+
+            let files = this.files;
+
+            // ====================================================
+            // VALIDAR PESO
+            // ====================================================
+            let msg = "";
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size >= 31457280) {
+                    if (msg !== "") msg += ", ";
+                    msg += `El tamaño del archivo ${files[i].name} es mayor a 30mb`;
+                }
+            }
+
+            if (msg !== "") {
+                if (typeof fail === "function") fail(e, { error: msg });
+                if (typeof always === "function") always(e);
+                return;
+            }
+
+            // ====================================================
+            // SUBIR ARCHIVO
+            // ====================================================
+            app.ui.ButtonDoing(controlSelector);
+
+            let data = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                data.append("files", files[i]);
+            }
+
+            uploadAjaxRequest(
+                data,
+                controlSelector,
+                function (response) {
+                    done(e, response);
+                },
+                function (err) {
+                    if (typeof fail === "function") fail(e, err);
+                },
+                function () {
+                    if (typeof always === "function") always(e);
+                }
+            );
+        });
+    }
+
+
+    function uploadAjaxRequest(formData, selector, done, fail, always) {
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: app.setting.apipath + 'v1/Common/Upload',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+            }
+        })
+            .done(function (response) {
+                if (typeof done === "function") done(response);
+            })
+            .fail(function (jqXHR) {
+                if (typeof fail === "function") fail(jqXHR);
+            })
+            .always(function () {
+                app.ui.ButtonDone(selector);
+                if (typeof always === "function") always();
+            });
     }
 
     return {
@@ -567,9 +662,11 @@ app.Attachments = (function () {
                         });
                     break;
             }
+        },
+        FileUpload: function (options) {
+            fileUploadHandler(options);
         }
     };
-
 })();
 window.Attachments_Events = {
     'click .event': function (e, value, row, index) {

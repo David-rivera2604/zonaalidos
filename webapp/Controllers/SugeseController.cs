@@ -18,15 +18,7 @@ namespace aliados.Controllers
         [HttpPost]
         public JsonResult ProcesaArchivo(string modelo, int pediodoMensual, int pediodoTrimestral, int ano, string excelFileName, string internalFileName)
         {
-            //var result = new Architect.Common.DataType.Result
-            //{
-            //    Success = false,
-            //    Code = 0,
-            //    Reason = string.Empty
-            //};
-            
-            return Json("");
-        }
-
+            return Json(Architect.Sugese.Manager.Instance.ProcesaArchivo(modelo, pediodoTrimestral, pediodoTrimestral, ano, excelFileName, internalFileName));
         }
     }
+}
