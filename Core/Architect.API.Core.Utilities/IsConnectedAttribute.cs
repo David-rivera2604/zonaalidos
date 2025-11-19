@@ -173,7 +173,7 @@ namespace Architect.API.Core.Security
             // ========================================================================
             // ✅ ESTABLECER EL CONTEXTO DEL USUARIO usando el extension method
             // ========================================================================
-            tokenInfo.AssingedContext();
+            tokenInfo.Assinged();
 
             // Refrescar sesión si hay referrer
             if (filterContext.HttpContext.Request.UrlReferrer != null)

@@ -59,7 +59,7 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Crea un código OTP para restablecer la contraseña de un usuario.
         /// </summary>
-        public static void Create(ResetPasswordRequest resetRequest, Contracts.Security.UserMember user, string mode)
+        public static string Create(ResetPasswordRequest resetRequest, Contracts.Security.UserMember user, string mode)
         {
             Random random = new Random();
             user.OneTimePassword = random.Next(100000, 999999).ToString();
@@ -86,14 +86,15 @@ namespace Architect.API.Core.Business.Security
             General.Mail.SendByTemplate(templateName,
                 user.CompanyId, new { User = user, Request = resetRequest },
                 new Dictionary<string, string> { { user.EMail, string.Empty } });
+            return user.OneTimePassword;
         }
 
         /// <summary> 
         /// Valida el código OTP para restablecer la contraseña de un usuario o cuando se activa 2FA.
         /// </summary>
-        public static Core.Contracts.General.GenericResponse IsValid(Contracts.Security.ResetPasswordRequest resetRequest)
+        public static Architect.API.Core.Contracts.Security.AOTPResponse IsValid(Contracts.Security.ResetPasswordRequest resetRequest)
         {
-            Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse() { Successful = false, Reason = string.Empty };
+            Architect.API.Core.Contracts.Security.AOTPResponse result = new Architect.API.Core.Contracts.Security.AOTPResponse() { Successful = false, Reason = string.Empty };
             int companyId = 0;
             Contracts.Security.AuthenticationTrace track = new Contracts.Security.AuthenticationTrace() { TraceType = 8, IPAddress = resetRequest.IPAddress };
             if (resetRequest.Tenant.IsEmpty())

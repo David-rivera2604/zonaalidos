@@ -1,4 +1,5 @@
-﻿using Architect.API.Tron.Contracts.Robots;
+﻿using Architect.API.Core.Business;
+using Architect.API.Tron.Contracts.Robots;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -26,7 +27,7 @@ namespace Architect.API.Tron.Business.Backoffice.Batch
 
             if (size == 0)
             {
-                size = Core.Business.Settings.IntegerValue(0, "Batch.SinPlaca.Cantidad.Vehiculos", 9);
+                size =  "Batch.SinPlaca.Cantidad.Vehiculos".IntegerValue(0 , 9);
             }
 
             List<object> vehiculos = new List<object>();

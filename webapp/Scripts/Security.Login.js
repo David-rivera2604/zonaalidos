@@ -66,7 +66,7 @@ app.login = (function () {
                 $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...');
                 var inputData = InputToObject();
                 if (dataStage == null) {
-                    app.core.Post(app.setting.apipath + 'v1/Security/Authentication', JSON.stringify(inputData))
+                    app.core.Post(app.setting.basepath + 'Security/LogIn', JSON.stringify(inputData))
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Reason == null) {
                                 if (!data.MustChangePassword) {
@@ -80,7 +80,7 @@ app.login = (function () {
                                         $('#Send').prop("disabled", false);
                                     }
                                     else {
-                                        Authenticated(data, inputData);
+                                        Authenticated(data);
                                         status = 'redirect';
                                     }
                                 } else {
@@ -104,10 +104,10 @@ app.login = (function () {
                             }
                         });
                 } else {
-                    app.core.Post(app.setting.apipath + 'v1/Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val(), Mode: '2FA' }))
+                    app.core.Post(app.setting.basepath + 'Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val(), Mode: '2FA' }))
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Successful) {
-                                Authenticated(dataStage);
+                                Authenticated(data.Context);
                             }
                             else {
                                 toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
@@ -170,6 +170,7 @@ app.login = (function () {
 
                 app.core.Post(app.setting.apipath + 'v1/Security/ResetPassword', JSON.stringify({ Tenant: $('#Tenant').val(), EMail: $('#ForgotMail').val(), OTP: $('#forgoCodeMail').val(), Password: $('#SetPasswordMail').val(), PasswordConfirm: $('#SetPasswordMail2').val() }))
                     .done(function (data, textStatus, jqXHR) {
+                        $("#myModal").hide();
                         if (!data.Successful)
                             toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
                         else {
@@ -346,34 +347,30 @@ app.login = (function () {
         return data;
     };
 
-    function Authenticated(data, inputData) {
-        app.core.Post(app.setting.basepath + 'Security/LogIn', JSON.stringify(inputData))
-            .done(function (data, textStatus, jqXHR) {
-                data.Settings?.forEach(item => {
-                    localStorage.setItem(item.Key, item.Value);
-                });
+    function Authenticated(data) {
+        data.Settings?.forEach(item => {
+            localStorage.setItem(item.Key, item.Value);
+        });
+        localStorage.setItem('Username', data.UserName);
+        localStorage.setItem('Tenant', data.Tenant);
+        localStorage.setItem('Color1Tenant', data.Color1Tenant);
+        localStorage.setItem('Color2Tenant', data.Color2Tenant);
+        localStorage.setItem('Roles', JSON.stringify(data.Roles));
 
-                localStorage.setItem('Username', data.UserName);
-                localStorage.setItem('Tenant', data.Tenant);
-                localStorage.setItem('Color1Tenant', data.Color1Tenant);
-                localStorage.setItem('Color2Tenant', data.Color2Tenant);
-                localStorage.setItem('Roles', JSON.stringify(data.Roles));
+        var dta = new Date();
+        localStorage.setItem('LastActivity', dta);
+        var dt = new Date();
+        dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
+        localStorage.setItem('Expires', dt);
 
-                var dta = new Date();
-                localStorage.setItem('LastActivity', dta);
-                var dt = new Date();
-                dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
-                localStorage.setItem('Expires', dt);
-
-                localStorage.setItem('Token', data.Token);
-                $('#Send').prop("disabled", true);
-                $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
-                if (app.login.lasthref == null) {
-                    window.location.replace(app.setting.basepath + data.InitialPath);
-                } else {
-                    window.location.replace(app.login.lasthref);
-                }
-            })
+        //localStorage.setItem('Token', data.Token);
+        $('#Send').prop("disabled", true);
+        $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
+        if (app.login.lasthref == null) {
+            window.location.replace(app.setting.basepath + data.InitialPath);
+        } else {
+            window.location.replace(app.login.lasthref);
+        }
     };
 
     return {
@@ -402,9 +399,8 @@ app.login = (function () {
             $('#Tenant').val(_tenant);
             if (employeeMode) {
                 $('#forgotlink').addClass('d-none');
-
             }
-        }        
+        }
     };
 })();
 $(document).ready(function () {

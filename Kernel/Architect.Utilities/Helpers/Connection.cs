@@ -15,7 +15,6 @@ namespace Architect.Utilities.Helpers
         /// <remarks></remarks>
         public static bool IsLocalIpAddress()
         {
-
             if ((HttpContext.Current != null))
             {
                 if ((HttpContext.Current.Request != null))
@@ -45,7 +44,6 @@ namespace Architect.Utilities.Helpers
             {
                 return false;
             }
-
         }
 
         /// <summary>
@@ -133,11 +131,9 @@ namespace Architect.Utilities.Helpers
             //}
             //catch
             //{
-                return GetIPRequest();
+            return GetIPRequest();
             //}
         }
-
-
 
         /// <summary>
         /// Trying to get the public IP
@@ -163,7 +159,6 @@ namespace Architect.Utilities.Helpers
             }
         }
 
-
         /// <summary>
         /// Get ip request.
         /// </summary>
@@ -179,7 +174,6 @@ namespace Architect.Utilities.Helpers
             string Result = string.Empty;
             if (System.Web.Hosting.HostingEnvironment.IsHosted)
             {
-
                 try
                 {
                     if (HttpContext.Current != null)
@@ -338,8 +332,6 @@ namespace Architect.Utilities.Helpers
         {
             string result = string.Empty;
 
-
-
             if (HttpContext.Current != null)
             {
                 if (HttpContext.Current.Request != null)
@@ -352,9 +344,7 @@ namespace Architect.Utilities.Helpers
             if (string.IsNullOrEmpty(result))
                 result = "127.0.0.1";
 
-
             return result;
         }
-
     }
 }

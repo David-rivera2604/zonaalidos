@@ -25,7 +25,7 @@ namespace Architect.API.Core.Security
         /// Usa EXACTAMENTE las propiedades definidas en Architect.API.Core.Contracts.Security.Token
         /// </summary>
         /// <param name="token">Información del token con todos los datos del usuario.</param>
-        public static void AssingedContext(this Contracts.Security.Token token)
+        public static void Assinged(this Contracts.Security.Token token)
         {
             if (token == null)
             {
@@ -293,7 +293,7 @@ namespace Architect.API.Core.Security
                 if (tokenValue.StartsWith("Bearer ", StringComparison.CurrentCultureIgnoreCase))
                     tokenValue = tokenValue.Substring(7);
 
-                if (tokenValue.IsNotEmpty() && tokenValue != "null")
+                if (tokenValue.IsNotEmpty() && tokenValue != "null" && tokenValue != "undefined")
                 {
                     if (Architect.Utilities.Helpers.Settings.StringValue("Token.Mode") != "JWT")
                     {
