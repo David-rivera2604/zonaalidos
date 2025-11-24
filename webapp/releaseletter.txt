@@ -772,3 +772,5 @@
                           - Agregar nuevo campo de vencimiento de la tarjeta desde la tabla boveda.
                           - Agregar el campo razón del rechazo.
                           - Solo debe salir último intento de cobro por recibo.
+                   Trazabilidad. Se hacen cambios al listado de casos por devolución de dinero (120.1).
+                          - Se agregar columna realizado por.

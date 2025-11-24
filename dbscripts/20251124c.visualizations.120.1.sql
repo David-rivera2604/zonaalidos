@@ -1,4 +1,4 @@
-INSERT INTO ALIADOS.VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION, ICON, ICONCLASS, VALUEFORMAT, ENTITYTYPE, RECORDSTATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE, SPECIFICATION, CONNECTIONNAME, STATEMENTTYPE, DIALOG, STATEMENTEXTEND, "KEY", JAVASCRIPTTOINCLUDE, "STATEMENT") VALUES(120, 1, 1, 'Lista de casos por devolución de dinero', 'Lista de casos por devolución de dinero', NULL, NULL, NULL, NULL, 1, 1, 1, TIMESTAMP '2025-05-28 19:56:10.000000', '{
+UPDATE ALIADOS.VISUALIZATIONS SET "TYPE"=1, CAPTION='Lista de casos por devolución de dinero', DESCRIPTION='Lista de casos por devolución de dinero', ICON=NULL, ICONCLASS=NULL, VALUEFORMAT=NULL, ENTITYTYPE=NULL, RECORDSTATUS=1, COMPANYID=1, UPDATEUSERCODE=1, UPDATEDATE=TIMESTAMP '2025-05-28 19:56:10.000000', SPECIFICATION='{
     "title": "Lista de casos por devolución de dinero",
     "table": {
         "pagination": true,
@@ -167,10 +167,10 @@ INSERT INTO ALIADOS.VISUALIZATIONS (ID, "SEQUENCE", "TYPE", CAPTION, DESCRIPTION
             }
         ]
     }
-}', 'Research', 1, '|título
+}', CONNECTIONNAME='Research', STATEMENTTYPE=1, DIALOG='|título
 |zona|4
  Finalizandos desde+|fecha|default=today;helptext=Fecha de finalización de la etapa de devolución en bancos
- Filtrar|Boton|class=btn-form btn-primary;click=app.ViewerQuery.Refresh(undefined, $(@_#RoleMemberGridTbl@_), 120, @_@_)', NULL, NULL, NULL, 'WITH FOCUS AS (
+ Filtrar|Boton|class=btn-form btn-primary;click=app.ViewerQuery.Refresh(undefined, $(@_#RoleMemberGridTbl@_), 120, @_@_)', STATEMENTEXTEND=NULL, "KEY"=NULL, JAVASCRIPTTOINCLUDE=NULL, "STATEMENT"='WITH FOCUS AS (
 SELECT PI.INSTANCEID, PF.NAME, PI.STARTDATE, PI.FINISHDATE, PI.USERID
   FROM aliados.PROCESSINSTANCE PI
   JOIN aliados.PROCESSSPECFLOW PF ON PF.COMPANYID = PI.COMPANYID AND PF.ID = PI.FLOWID AND PF.name IN ( ''DEVOLUCIÓN DE DINERO'', ''DEVOLUCIÓN DE DINERO - SAC'', ''DEVOLUCIÓN DE DINERO - COBROS'' )
@@ -189,4 +189,4 @@ SELECT PC.ID "Caso #", PINIT.STARTDATE "Inicio", F.STARTDATE "Inicio de la etapa
   LEFT JOIN aliados.LOOKUP LKCP ON LKCP.LOOKUPID = 62 AND LKCP.COMPANYID=0 AND LKCP.LANGUAGE=1 AND LKCP.CODE =PC.PRIORITY
   LEFT JOIN UserMember um ON um.UserId = F.USERID  
   WHERE PC.COMPANYID=100
-  ORDER BY PC.ID');
+  ORDER BY PC.ID' WHERE ID=120 AND "SEQUENCE"=1;
