@@ -774,3 +774,5 @@
                           - Solo debe salir último intento de cobro por recibo.
                    Trazabilidad. Se hacen cambios al listado de casos por devolución de dinero (120.1).
                           - Se agregar columna realizado por.
+                   Pasarela. Recobros. Se hacen cambios a la consulta de cobros rechazados (113).
+                          - Se deben mostrar todos los recibos pendientes del agente, adicional a los rechzados.
