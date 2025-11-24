@@ -768,3 +768,7 @@
                    Trazabilidad. Panel. Se ajusta el valor de "Cantidad de días" para usar la misma función usando en los reportes, donde solo se concideran días hábiles.
 1.6.155 18/11/2025 Aliados. Mejoras al proceso de autenticación con 2FA.
                           - Manejo seguro del token generado.
+1.6.156 24/11/2025 Pasarela. Evertec. Se hacen cambios al reporte de domiciliación (110) especificamente a la hoja 4 de domicializaciones denegadas del mes.
+                          - Agregar nuevo campo de vencimiento de la tarjeta desde la tabla boveda.
+                          - Agregar el campo razón del rechazo.
+                          - Solo debe salir último intento de cobro por recibo.
