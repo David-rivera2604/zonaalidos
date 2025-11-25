@@ -195,7 +195,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     if (resultQuoteInfo.num_poliza.IsNotEmpty())
                     {
-                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión HogarTotal", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.CompanyId, "Emisión HogarTotal", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
 
                         //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
                         Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
@@ -213,7 +213,7 @@ namespace Architect.API.Tron.Business.Emision
                         {
                             message = DataAccess.G2000211.DescripcionPorCodigo(1, codigoError);
                         }
-                        ChangeSet.Create(3000, Convert.ToInt32(quoteInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Emisión HogarTotal", message, tokenInfo.UserId, resultQuoteInfo);
+                        ChangeSet.Create(3000, Convert.ToInt64(quoteInfo.presupuesto), tokenInfo.CompanyId, "Emisión HogarTotal", message, tokenInfo.UserId, resultQuoteInfo);
                     }
                 }
                 catch (Exception ex)
