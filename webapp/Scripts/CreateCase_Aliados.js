@@ -102,7 +102,7 @@ app.CentralCase = (function () {
     }
 
     function Create(uidata, mode) {
-        uidata.CurrentToken = localStorage.getItem('Token');
+        uidata.CurrentToken = app.security().getCookie('Token');
         app.CentralCase.Post(app.setting.apipath + 'v1/ProcessCase', JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
                 toastr.success("El processcase '" + uidata.Title + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
@@ -283,7 +283,7 @@ function ajaxCall(type, url, data, success, token, Token_Al, AliadoTok, contentT
         data: data,
         beforeSend: function (xhr) {
             if (token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
             }
             else {
                 if (AliadoTok) {

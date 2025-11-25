@@ -776,3 +776,4 @@
                           - Se agregar columna realizado por.
                    Pasarela. Recobros. Se hacen cambios a la consulta de cobros rechazados (113).
                           - Se deben mostrar todos los recibos pendientes del agente, adicional a los rechzados.
+1.6.157 25/11/2025 Aliados. Se ajusta la forma de obtene rel token al momento de hacer cargas de archvos.

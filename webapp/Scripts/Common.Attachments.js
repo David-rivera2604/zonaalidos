@@ -350,7 +350,7 @@ app.Attachments = (function () {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + current);
                         }
                         else {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                         }
                     }
                 }).done(function (fileList) {
@@ -437,7 +437,7 @@ app.Attachments = (function () {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + current);
                         }
                         else {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                         }
                     }
                 }).done(function (fileList) {
