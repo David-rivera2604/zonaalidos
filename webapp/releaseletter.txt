@@ -777,7 +777,3 @@
                    Pasarela. Recobros. Se hacen cambios a la consulta de cobros rechazados (113).
                           - Se deben mostrar todos los recibos pendientes del agente, adicional a los rechzados.
 1.6.157 25/11/2025 Aliados. Se ajusta la forma de obtene rel token al momento de hacer cargas de archvos.
-1.6.158 25/11/2025 Aliados. Hogar (201). Ajuste en la emisión.
-                          - Se agregar el tratamiento de los errores por control técnico, para obtener la descripción de las tabla G2000211.
-                          - Se ajusta el cambio de estado de la propuesta en la tabla PolicyProposal de forma que se haga solo si no hay errores.
-                          - Se Ajusta la traza para que quede detalle de la falla en la emisión.
