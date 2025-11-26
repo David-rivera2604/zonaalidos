@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Architect.Sugese.CuentaTecnicaFinanciera.Application
 {
-    public  class Generate
+    public  class Generate : Architect.Sugese.Domain.GenerateBase
     {
         public static DataTable Execute(string excelFileName, string xmlFileName, int month, int year)
         {

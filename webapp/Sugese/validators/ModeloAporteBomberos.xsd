@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--Tipos-->
+
+  <!--string no vacio-->
+  <xs:simpleType name='TextoNoVacio'>
+    <xs:restriction base='xs:string'>
+      <xs:minLength value='1'/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <!--FECHA-->
+  <xs:simpleType name="Fecha">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="((2[0])\d{2})\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--PERIODICIDAD-->
+  <xs:simpleType name="Periodicidad">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="M"/>
+      <!--Mensual-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--CodMoneda-->
+  <xs:simpleType name='CodMoneda'>
+    <xs:restriction base='xs:nonNegativeInteger'>
+      <xs:enumeration value='1'/>
+      <!--Colón-->
+      <xs:enumeration value='2'/>
+      <!--Dólas EU-->
+      <xs:enumeration value='3'/>
+      <!--Colones y Dólares-->
+      <xs:enumeration value='4'/>
+      <!--REAL BRASILEÑO-->
+      <xs:enumeration value='5'/>
+      <!--PESO CHILENO-->
+      <xs:enumeration value='6'/>
+      <!--EURO-->
+      <xs:enumeration value='7'/>
+      <!--QUETZAL-->
+      <xs:enumeration value='8'/>
+      <!--LEMPIRA-->
+      <xs:enumeration value='9'/>
+      <!--NUEVO PESO MEXICANO-->
+      <xs:enumeration value='10'/>
+      <!--CORDOBA-->
+      <xs:enumeration value='11'/>
+      <!--YEN-->
+      <xs:enumeration value='12'/>
+      <!--ECU-->
+      <xs:enumeration value='13'/>
+      <!--UNIDADES DE DESARROLLO-->
+      <xs:enumeration value='14'/>
+      <!--DOLAR CANADIENSE-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--CodMonedaInt-->
+  <xs:simpleType name='CodMonedaInt'>
+    <xs:restriction base='xs:string'>    
+      <xs:enumeration value='CRC'/>   
+      <xs:enumeration value='USD'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--CODENTIDAD-->
+  <xs:simpleType name="CodEntidad">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="A\d{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <!--MONTO 2 decimales-->
+  <xs:simpleType name="Monto">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value='\d*\.\d{2}'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <!--MONTO positivo o No positivo con 2 decimales-->
+  <xs:simpleType name="MontoPositivoNegativo">
+    <xs:restriction base="xs:decimal">
+      <xs:pattern value='(-(\d*\.\d{2})+)|(-(\d)+)|0|0.00|((\d*\.\d{2})+)|((\d)+)'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Ramos-->
+  <xs:simpleType name="TipoRamo">
+    <xs:restriction base="xs:string">
+      <!--Automóvil-->
+      <xs:enumeration value='G01'/>
+      <!--Vehículos marítimos-->
+      <xs:enumeration value='G02'/>
+      <!--Aviación-->
+      <xs:enumeration value='G03'/>
+      <!--Vehículos ferroviarios-->
+      <xs:enumeration value='G04'/>
+      <!--Mercancías transportadas-->
+      <xs:enumeration value='G05'/>
+      <!--Incendio y líneas aliadas-->
+      <xs:enumeration value='G06'/>
+      <!--Otros daños a los bienes-->
+      <xs:enumeration value='G07'/>
+      <!--Responsabilidad civil-->
+      <xs:enumeration value='G08'/>
+      <!--Crédito-->
+      <xs:enumeration value='G09'/>
+      <!--Caución-->
+      <xs:enumeration value='G10'/>
+      <!--Pérdidas pecuniarias-->
+      <xs:enumeration value='G11'/>
+      <!--Agrícolas y pecuarios-->
+      <xs:enumeration value='G12'/>
+      <!--Seguro Obligatorio de Automóviles (SOA)-->
+      <xs:enumeration value='G17'/>
+      <!--Asistencias - Generales-->
+      <xs:enumeration value='G21'/>
+      <!--Misceláneos -->
+      <xs:enumeration value='G24'/>	  
+      <!--Vida-->
+      <xs:enumeration value='P14'/>
+      <!--Rentas-->
+      <xs:enumeration value='P15'/>
+      <!--Seguro Obligatorio de Riesgos del Trabajo (SRT)-->
+      <xs:enumeration value='P18'/>
+      <!--Accidentes-->
+      <xs:enumeration value='P19'/>
+      <!--Salud-->
+      <xs:enumeration value='P20'/>
+      <!--Asistencias - Personales-->
+      <xs:enumeration value='P22'/>
+      <!--Misceláneos-->
+      <xs:enumeration value='P25'/>	  
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Modelo-->
+  <xs:element name="ModeloAporteBomberos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NombreArchivo" type="TextoNoVacio" />
+              <xs:element name="Fecha" type="Fecha" />
+              <xs:element name="Periodo" type="Fecha" />
+              <xs:element name="Periodicidad" type="Periodicidad" />
+              <xs:element name="Moneda" type="CodMoneda" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="RamoAporteBomberos">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element  name="Polizas" minOccurs ="1" maxOccurs ="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="PrimasDirectas" type="MontoPositivoNegativo"  />
+                                <xs:element name="Pagar" type="MontoPositivoNegativo"  />
+                              </xs:sequence>
+                              <xs:attribute name="CodMoneda" type="CodMonedaInt" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="TipoRamo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="CodEntidad" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -8,7 +8,7 @@ using System.Data;
 
 namespace Architect.Sugese.EstadisticasInternacionales.Application
 {
-    public  class Generate
+    public  class Generate : Architect.Sugese.Domain.GenerateBase
     {
         public static DataTable Execute(string excelFileName, string xmlFileName, int month, int year)
         {

@@ -5,6 +5,7 @@ Imports Architect.Utilities.Extensions
 Imports ClosedXML.Excel
 
 Public Class Generate
+    Inherits Architect.Sugese.Domain.GenerateBase
 
     Private validateRamo(33) As Decimal
     Private validateLinea(33) As Decimal

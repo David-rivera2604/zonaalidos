@@ -6,7 +6,7 @@ Imports ClosedXML.Excel
 Imports SixLabors.Fonts
 
 Public Class Generate
-
+    Inherits Architect.Sugese.Domain.GenerateBase
     Public Sub LoadExcelInformation(excelFilename As String)
         Dim workbook As New XLWorkbook(excelFilename)
         Dim sheet As IXLWorksheet = Nothing

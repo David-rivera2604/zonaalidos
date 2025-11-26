@@ -5,6 +5,7 @@ Imports ClosedXML.Excel
 Imports Architect.Sugese.Domain
 
 Public Class Generate
+    Inherits Architect.Sugese.Domain.GenerateBase
 
     Private _AporteBomberos As New AporteBomberos.ModeloAporteBomberos
 

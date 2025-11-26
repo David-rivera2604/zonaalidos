@@ -159,7 +159,7 @@ app.generador = (function () {
                                     app.ui.Error(data.Reason);
                                 }
                                 else
-                                    app.ui.Error(data.d.Reason);
+                                    app.ui.Error(data.Reason);
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {

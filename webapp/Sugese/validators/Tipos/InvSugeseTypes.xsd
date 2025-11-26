@@ -1,0 +1,670 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:cap:ties:invsugesetypes:v1" xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:inv="urn:cap:ties:invsugesetypes:v1" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="Tipos/SugeseTypes.xsd"/>
+  
+  <xs:simpleType name="Calificadoras">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Entidad que emite la calificación de riesgo del instrumento y de la entidad.
+        
+        SP = Standard &amp; Poor’s Internacional
+        MO = Moody ’s Internacional
+        FI = FITCH Internacional
+        FN = FITCH Nacional
+        FA = FITCH Acciones
+        FF = FITCH Fondos Deuda
+        FV = FITCH Fondos Renta Variable
+        FL = FITCH Valores
+        FM = FITCH Fondos de Inversión Inmobiliarios
+        CR = Sociedad Calificadora de Riesgos
+        CA = Sociedad Calificadora de Riesgos (Acciones y Deuda)
+        CF = Sociedad Calificadora de Riesgos (Fondos de inversión)
+        FU = Fudeci
+        PA = Pacific
+        PP = Pacific (Acciones y Participaciones)
+        PE = Pacific (Otras emisiones)
+        OT = Otras
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value='SP'/>
+      <xs:enumeration value='MO'/>
+      <xs:enumeration value='FI'/>
+      <xs:enumeration value='FN'/>
+      <xs:enumeration value='FA'/>
+      <xs:enumeration value='FF'/>
+      <xs:enumeration value='FV'/>
+      <xs:enumeration value='FL'/>
+      <xs:enumeration value='FM'/>
+      <xs:enumeration value='CF'/>
+      <xs:enumeration value='CR'/>
+      <xs:enumeration value='CA'/>
+      <xs:enumeration value='FU'/>
+      <xs:enumeration value='PA'/>
+      <xs:enumeration value='PP'/>
+      <xs:enumeration value='PE'/>
+      <xs:enumeration value='OT'/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PlazoCalificacion">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Plazo de la calificación del instrumento.
+        CP = Corto Plazo
+        LP = Largo Plazp
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value='CP'/>
+      <xs:enumeration value='LP'/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name='CodTitulo'>
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Indica qué tipo de instrumento financiero se está describiendo en este reporte.
+        
+        DI = Deuda individual interés fijo o variable
+        DE = Deuda estandarizada interés fijo o variable
+        FI = Fondos de inversión cerrados
+        FA = Fondos de inversión abiertos
+        AC = Acciones
+        NE = Nota estructurada
+        IC = Instrumentos de cobertura
+        RE = Reportos
+        
+        En el caso de que el tipo de título sea DI: Deuda individual de interés fijo o variable, 
+        se aclara que se deben considerar en esta categoría los certificados de inversión o depósitos a plazo, 
+        títulos asociados a algún índice o tasa los cuales tiene un premio, etc.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base='xs:string'>
+      <xs:enumeration value='DI'/>
+      <xs:enumeration value='DE'/>
+      <xs:enumeration value='FI'/>
+      <xs:enumeration value='FA'/>
+      <xs:enumeration value='AC'/>
+      <xs:enumeration value='NE'/>
+      <xs:enumeration value='IC'/>
+      <xs:enumeration value='RE'/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PeriodicidadCupon">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Contiene la periodicidad del pago de cupón del título.
+        En el caso de inversiones en reportos RE, se debe incluir la periodicidad del título subyacente.
+        0 = Cero Cupón
+        1 = Anual
+        2 = Semestral
+        3 = Cuatrimestral
+        4 = Trimestral
+        5 = Bisemanal
+        6 = Mensual
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:enumeration value="0"/>
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="6"/>
+      <xs:enumeration value="12"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ProveedorPrecios">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Corresponde a los proveedores de precio del mercado.
+        PIPCA  =	Proveedor Integral de precios Centroamérica, S.A.
+        VALMER =  Valmer Costa Rica, S.A.
+        LATIN	 =  Latin Vector S.A.
+        BLOOMB = 	Bloomberg
+        OTROS  =	Otros proveedores de precios
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PIPCA"/>
+      <xs:enumeration value="LATIN"/>
+      <xs:enumeration value="VALMER"/>
+      <xs:enumeration value="BLOOMB"/>
+      <xs:enumeration value="OTROS"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CodCustodio">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Indica el código correspondiente a la entidad de custodia.
+        CBAC   =	 Banco BAC San José
+        CBCT   =	 Banco BCT
+        CBCR   =	 Banco de Costa Rica
+        CDAVI  =	 Banco Davivienda (Costa Rica)
+        CIMP   =	 Banco Improsa
+        CLAF   =	 Banco Lafise
+        CBNCR  =	 Banco BNCR
+        CPOP   =	 Banco Popular
+        CSCOT  =	 Scotiabank de Costa Rica
+        COTROS =	Otros Custodios
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CBAC"/>
+      <xs:enumeration value="CBCT"/>
+      <xs:enumeration value="CBCR"/>
+      <xs:enumeration value="CDAVI"/>
+      <xs:enumeration value="CIMP "/>
+      <xs:enumeration value="CLAF"/>
+      <xs:enumeration value="CBNCR"/>
+      <xs:enumeration value="CPOP"/>
+      <xs:enumeration value="CSCOT"/>
+      <xs:enumeration value="COTROS"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="FechaInversion">
+    <xs:annotation>
+      <xs:documentation>
+        Fórmato de fecha para inversiones.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="((0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(2[0]\d{2}))|()"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CodReferencia">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Identifica como única cada inversión realizada por la entidad supervisada, esto implica que todas las inversiones realizadas deberán contar con este código. Este código está compuesto por el código de la entidad asignado por la Superintendencia.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="res:TextoDeDoceCaracteres">
+      <xs:pattern value="^A[0-9]+$"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name='CodIsin'>
+    <xs:annotation>
+      <xs:documentation>
+        Fórmato para el código de ISIN que se suministra. Corresponde a la identificación de la emisión reportada. Si el instrumento posee código Isin, debe indicarse este código. En el caso de que el Código de Tipo de Título sea RE Reporto, lo anterior aplica para el instrumento subyacente.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="res:TextoDeDoceCaracteres">
+      <xs:pattern value="[A-Za-z0-9\$₡]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Calificaciones">
+    <xs:annotation>
+      <xs:documentation xml:lang="es-cr">
+        Corresponden a los valores aceptados para los campos.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base='xs:string'>
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AA+"/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AA-"/>
+      <xs:enumeration value="A+"/>
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="A-"/>
+      <xs:enumeration value="BBB+"/>
+      <xs:enumeration value="BBB"/>
+      <xs:enumeration value="BBB-"/>
+      <xs:enumeration value="BB+"/>
+      <xs:enumeration value="BB"/>
+      <xs:enumeration value="BB-"/>
+      <xs:enumeration value="B+"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="B-"/>
+      <xs:enumeration value="CCC+"/>
+      <xs:enumeration value="CCC"/>
+      <xs:enumeration value="CCC-"/>
+      <xs:enumeration value="CC"/>
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="D"/>
+      <xs:enumeration value="Aaa"/>
+      <xs:enumeration value="Aa1"/>
+      <xs:enumeration value="Aa2"/>
+      <xs:enumeration value="Aa3"/>
+      <xs:enumeration value="A1"/>
+      <xs:enumeration value="A2"/>
+      <xs:enumeration value="A3"/>
+      <xs:enumeration value="Baa1"/>
+      <xs:enumeration value="Baa2"/>
+      <xs:enumeration value="Baa3"/>
+      <xs:enumeration value="Ba1"/>
+      <xs:enumeration value="Ba2"/>
+      <xs:enumeration value="Ba3"/>
+      <xs:enumeration value="B1"/>
+      <xs:enumeration value="B2"/>
+      <xs:enumeration value="B3"/>
+      <xs:enumeration value="Caa1"/>
+      <xs:enumeration value="Caa2"/>
+      <xs:enumeration value="Caa3"/>
+      <xs:enumeration value="Ca1"/>
+      <xs:enumeration value="Ca2"/>
+      <xs:enumeration value="Ca3"/>
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AA+"/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AA-"/>
+      <xs:enumeration value="A+"/>
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="A-"/>
+      <xs:enumeration value="BBB+"/>
+      <xs:enumeration value="BBB"/>
+      <xs:enumeration value="BBB-"/>
+      <xs:enumeration value="BB+"/>
+      <xs:enumeration value="BB"/>
+      <xs:enumeration value="BB-"/>
+      <xs:enumeration value="B+"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="B-"/>
+      <xs:enumeration value="CCC+"/>
+      <xs:enumeration value="CCC"/>
+      <xs:enumeration value="CCC-"/>
+      <xs:enumeration value="CC"/>
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="DDD"/>
+      <xs:enumeration value="DD"/>
+      <xs:enumeration value="D"/>
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AA+"/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AA-"/>
+      <xs:enumeration value="A+"/>
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="A-"/>
+      <xs:enumeration value="BBB+"/>
+      <xs:enumeration value="BBB"/>
+      <xs:enumeration value="BBB-"/>
+      <xs:enumeration value="BB+"/>
+      <xs:enumeration value="BB"/>
+      <xs:enumeration value="BB-"/>
+      <xs:enumeration value="B+"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="B-"/>
+      <xs:enumeration value="CCC"/>
+      <xs:enumeration value="CC"/>
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="DDD"/>
+      <xs:enumeration value="DD"/>
+      <xs:enumeration value="D"/>
+      <xs:enumeration value="E"/>
+      <xs:enumeration value="AAA+ "/>
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AAA-"/>
+      <xs:enumeration value="AA+ "/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AA-"/>
+      <xs:enumeration value="A+"/>
+      <xs:enumeration value="A "/>
+      <xs:enumeration value="A-"/>
+      <xs:enumeration value="BBB+"/>
+      <xs:enumeration value="BBB"/>
+      <xs:enumeration value="BBB- "/>
+      <xs:enumeration value="BB+"/>
+      <xs:enumeration value="BB"/>
+      <xs:enumeration value="BB- "/>
+      <xs:enumeration value="B+"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="B-"/>
+      <xs:enumeration value="C+"/>
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="C-"/>
+      <xs:enumeration value="D"/>
+      <xs:enumeration value="E"/>
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AA+"/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AA-"/>
+      <xs:enumeration value="A+"/>
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="A-"/>
+      <xs:enumeration value="BBB+"/>
+      <xs:enumeration value="BBB"/>
+      <xs:enumeration value="BBB-"/>
+      <xs:enumeration value="BB+"/>
+      <xs:enumeration value="BB"/>
+      <xs:enumeration value="BB-"/>
+      <xs:enumeration value="B+"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="B-"/>
+      <xs:enumeration value="CCC"/>
+      <xs:enumeration value="aaa"/>
+      <xs:enumeration value="aa+"/>
+      <xs:enumeration value="aa"/>
+      <xs:enumeration value="aa-"/>
+      <xs:enumeration value="a+"/>
+      <xs:enumeration value="a"/>
+      <xs:enumeration value="a-"/>
+      <xs:enumeration value="bbb+"/>
+      <xs:enumeration value="bbb"/>
+      <xs:enumeration value="bbb-"/>
+      <xs:enumeration value="bb+"/>
+      <xs:enumeration value="bb"/>
+      <xs:enumeration value="bb-"/>
+      <xs:enumeration value="b+"/>
+      <xs:enumeration value="b"/>
+      <xs:enumeration value="b-"/>
+      <xs:enumeration value="CCC"/>
+      <xs:enumeration value="SCRAAA1"/>
+      <xs:enumeration value="SCRAAA2"/>
+      <xs:enumeration value="SCRAAA3"/>
+      <xs:enumeration value="SCRAAA4"/>
+      <xs:enumeration value="SCRAA1"/>
+      <xs:enumeration value="SCRAA+1"/>
+      <xs:enumeration value="SCRAA-1"/>
+      <xs:enumeration value="SCRAA2"/>
+      <xs:enumeration value="SCRAA+2"/>
+      <xs:enumeration value="SCRAA-2"/>
+      <xs:enumeration value="SCRAA3"/>
+      <xs:enumeration value="SCRAA+3"/>
+      <xs:enumeration value="SCRAA-3"/>
+      <xs:enumeration value="SCRAA4"/>
+      <xs:enumeration value="SCRAA+4"/>
+      <xs:enumeration value="SCRAA-4"/>
+      <xs:enumeration value="SCRA1"/>
+      <xs:enumeration value="SCRA+1"/>
+      <xs:enumeration value="SCRA-1"/>
+      <xs:enumeration value="SCRA2"/>
+      <xs:enumeration value="SCRA+2"/>
+      <xs:enumeration value="SCRA-2"/>
+      <xs:enumeration value="SCRA3"/>
+      <xs:enumeration value="SCRA+3"/>
+      <xs:enumeration value="SCRA-3"/>
+      <xs:enumeration value="SCRA4"/>
+      <xs:enumeration value="SCRA+4"/>
+      <xs:enumeration value="SCRA-4"/>
+      <xs:enumeration value="SCRBBB1"/>
+      <xs:enumeration value="SCRBBB+1"/>
+      <xs:enumeration value="SCRBBB-1"/>
+      <xs:enumeration value="SCRBBB2"/>
+      <xs:enumeration value="SCRBBB+2"/>
+      <xs:enumeration value="SCRBBB-2"/>
+      <xs:enumeration value="SCRBBB3"/>
+      <xs:enumeration value="SCRBBB+3"/>
+      <xs:enumeration value="SCRBBB-3"/>
+      <xs:enumeration value="SCRBBB4"/>
+      <xs:enumeration value="SCRBBB+4"/>
+      <xs:enumeration value="SCRBBB-4"/>
+      <xs:enumeration value="SCRBB1"/>
+      <xs:enumeration value="SCRBB+1"/>
+      <xs:enumeration value="SCRBB-1"/>
+      <xs:enumeration value="SCRBB2"/>
+      <xs:enumeration value="SCRBB+2"/>
+      <xs:enumeration value="SCRBB-2"/>
+      <xs:enumeration value="SCRBB3"/>
+      <xs:enumeration value="SCRBB+3"/>
+      <xs:enumeration value="SCRBB-3"/>
+      <xs:enumeration value="SCRBB4"/>
+      <xs:enumeration value="SCRBB+4"/>
+      <xs:enumeration value="SCRBB-4"/>
+      <xs:enumeration value="SCRB1"/>
+      <xs:enumeration value="SCRB+1"/>
+      <xs:enumeration value="SCRB-1"/>
+      <xs:enumeration value="SCRB2"/>
+      <xs:enumeration value="SCRB+2"/>
+      <xs:enumeration value="SCRB-2"/>
+      <xs:enumeration value="SCRB3"/>
+      <xs:enumeration value="SCRB+3"/>
+      <xs:enumeration value="SCRB-3"/>
+      <xs:enumeration value="SCRB4"/>
+      <xs:enumeration value="SCRB+4"/>
+      <xs:enumeration value="SCRB-4"/>
+      <xs:enumeration value="SCRC1"/>
+      <xs:enumeration value="SCRC+1"/>
+      <xs:enumeration value="SCRC-1"/>
+      <xs:enumeration value="SCRC2"/>
+      <xs:enumeration value="SCRC+2"/>
+      <xs:enumeration value="SCRC-2"/>
+      <xs:enumeration value="SCRC3"/>
+      <xs:enumeration value="SCRC+3"/>
+      <xs:enumeration value="SCRC-3"/>
+      <xs:enumeration value="SCRC4"/>
+      <xs:enumeration value="SCRC+4"/>
+      <xs:enumeration value="SCRC-4"/>
+      <xs:enumeration value="SCRD"/>
+      <xs:enumeration value="AAA+ "/>
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AAA-"/>
+      <xs:enumeration value="AA+ "/>
+      <xs:enumeration value="AA "/>
+      <xs:enumeration value="AA-"/>
+      <xs:enumeration value="A+"/>
+      <xs:enumeration value="A "/>
+      <xs:enumeration value="A-"/>
+      <xs:enumeration value="BBB+"/>
+      <xs:enumeration value="BBB"/>
+      <xs:enumeration value="BBB- "/>
+      <xs:enumeration value="BB+"/>
+      <xs:enumeration value="BB"/>
+      <xs:enumeration value="BB- "/>
+      <xs:enumeration value="B+"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="B-"/>
+      <xs:enumeration value="C+ "/>
+      <xs:enumeration value="C "/>
+      <xs:enumeration value="C- "/>
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AA+ "/>
+      <xs:enumeration value="AA "/>
+      <xs:enumeration value="AA-"/>
+      <xs:enumeration value="A+"/>
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="A-"/>
+      <xs:enumeration value="BBB+"/>
+      <xs:enumeration value="BBB"/>
+      <xs:enumeration value="BBB- "/>
+      <xs:enumeration value="BB+"/>
+      <xs:enumeration value="BB"/>
+      <xs:enumeration value="BB- "/>
+      <xs:enumeration value="B+"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="B-"/>
+      <xs:enumeration value="CCC"/>
+      <xs:enumeration value="DD"/>
+      <xs:enumeration value="DP"/>
+      <xs:enumeration value="FII1"/>
+      <xs:enumeration value="FII2"/>
+      <xs:enumeration value="FII2+"/>
+      <xs:enumeration value="FII2-"/>
+      <xs:enumeration value="FII3"/>
+      <xs:enumeration value="FII3+"/>
+      <xs:enumeration value="FII3-"/>
+      <xs:enumeration value="FII4"/>
+      <xs:enumeration value="FII4+"/>
+      <xs:enumeration value="FII4-"/>
+      <xs:enumeration value="FII5"/>
+      <xs:enumeration value="FII6"/>
+      <xs:enumeration value="A1+"/>
+      <xs:enumeration value="A1"/>
+      <xs:enumeration value="A2"/>
+      <xs:enumeration value="A3"/>
+      <xs:enumeration value="B "/>
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="D"/>
+      <xs:enumeration value="P1"/>
+      <xs:enumeration value="P2"/>
+      <xs:enumeration value="P3"/>
+      <xs:enumeration value="F1+"/>
+      <xs:enumeration value="F1-"/>
+      <xs:enumeration value="F1"/>
+      <xs:enumeration value="F2"/>
+      <xs:enumeration value="F3"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="D"/>
+      <xs:enumeration value="RD"/>
+      <xs:enumeration value="N1"/>
+      <xs:enumeration value="N2"/>
+      <xs:enumeration value="N3"/>
+      <xs:enumeration value="N4"/>
+      <xs:enumeration value="N5"/>
+      <xs:enumeration value="AAA"/>
+      <xs:enumeration value="AA+"/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AA-"/>
+      <xs:enumeration value="A+"/>
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="A-"/>
+      <xs:enumeration value="BBB+"/>
+      <xs:enumeration value="BBB"/>
+      <xs:enumeration value="BBB-"/>
+      <xs:enumeration value="BB+"/>
+      <xs:enumeration value="BB"/>
+      <xs:enumeration value="BB-"/>
+      <xs:enumeration value="B+"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="B-"/>
+      <xs:enumeration value="CCC"/>
+      <xs:enumeration value="aaa"/>
+      <xs:enumeration value="aa+"/>
+      <xs:enumeration value="aa"/>
+      <xs:enumeration value="aa-"/>
+      <xs:enumeration value="a+"/>
+      <xs:enumeration value="a"/>
+      <xs:enumeration value="a-"/>
+      <xs:enumeration value="bbb+"/>
+      <xs:enumeration value="bbb"/>
+      <xs:enumeration value="bbb-"/>
+      <xs:enumeration value="bb+"/>
+      <xs:enumeration value="bb"/>
+      <xs:enumeration value="bb-"/>
+      <xs:enumeration value="b+"/>
+      <xs:enumeration value="b"/>
+      <xs:enumeration value="b-"/>
+      <xs:enumeration value="CCC"/>
+      <xs:enumeration value="F1"/>
+      <xs:enumeration value="F1+"/>
+      <xs:enumeration value="F1-"/>
+      <xs:enumeration value="F2"/>
+      <xs:enumeration value="F3"/>
+      <xs:enumeration value="B"/>
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="D"/>
+      <xs:enumeration value="RD"/>
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="2+"/>
+      <xs:enumeration value="2-"/>
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="3+"/>
+      <xs:enumeration value="3-"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="4+"/>
+      <xs:enumeration value="4-"/>
+      <xs:enumeration value="5"/>
+      <xs:enumeration value="5+"/>
+      <xs:enumeration value="5-"/>
+      <xs:enumeration value="6"/>
+      <xs:enumeration value="7"/>
+      <xs:enumeration value="S"/>
+      <xs:enumeration value="E"/>
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="5"/>
+      <xs:enumeration value="I"/>
+      <xs:enumeration value="II"/>
+      <xs:enumeration value="III"/>
+      <xs:enumeration value="IV"/>
+      <xs:enumeration value="V"/>
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="3"/>
+      <xs:enumeration value="4"/>
+      <xs:enumeration value="5"/>
+      <xs:enumeration value="SCRAAA1"/>
+      <xs:enumeration value="SCRAAA2"/>
+      <xs:enumeration value="SCRAAA3"/>
+      <xs:enumeration value="SCRAAA4"/>
+      <xs:enumeration value="SCRAA1"/>
+      <xs:enumeration value="SCRAA+1"/>
+      <xs:enumeration value="SCRAA-1"/>
+      <xs:enumeration value="SCRAA2"/>
+      <xs:enumeration value="SCRAA+2"/>
+      <xs:enumeration value="SCRAA-2"/>
+      <xs:enumeration value="SCRAA3"/>
+      <xs:enumeration value="SCRAA+3"/>
+      <xs:enumeration value="SCRAA-3"/>
+      <xs:enumeration value="SCRAA4"/>
+      <xs:enumeration value="SCRAA+4"/>
+      <xs:enumeration value="SCRAA-4"/>
+      <xs:enumeration value="SCRA1"/>
+      <xs:enumeration value="SCRA+1"/>
+      <xs:enumeration value="SCRA-1"/>
+      <xs:enumeration value="SCRA2"/>
+      <xs:enumeration value="SCRA+2"/>
+      <xs:enumeration value="SCRA-2"/>
+      <xs:enumeration value="SCRA3"/>
+      <xs:enumeration value="SCRA+3"/>
+      <xs:enumeration value="SCRA-3"/>
+      <xs:enumeration value="SCRA4"/>
+      <xs:enumeration value="SCRA+4"/>
+      <xs:enumeration value="SCRA-4"/>
+      <xs:enumeration value="SCRBBB1"/>
+      <xs:enumeration value="SCRBBB+1"/>
+      <xs:enumeration value="SCRBBB-1"/>
+      <xs:enumeration value="SCRBBB2"/>
+      <xs:enumeration value="SCRBBB+2"/>
+      <xs:enumeration value="SCRBBB-2"/>
+      <xs:enumeration value="SCRBBB3"/>
+      <xs:enumeration value="SCRBBB+3"/>
+      <xs:enumeration value="SCRBBB-3"/>
+      <xs:enumeration value="SCRBBB4"/>
+      <xs:enumeration value="SCRBBB+4"/>
+      <xs:enumeration value="SCRBBB-4"/>
+      <xs:enumeration value="SCRBB1"/>
+      <xs:enumeration value="SCRBB+1"/>
+      <xs:enumeration value="SCRBB-1"/>
+      <xs:enumeration value="SCRBB2"/>
+      <xs:enumeration value="SCRBB+2"/>
+      <xs:enumeration value="SCRBB-2"/>
+      <xs:enumeration value="SCRBB3"/>
+      <xs:enumeration value="SCRBB+3"/>
+      <xs:enumeration value="SCRBB-3"/>
+      <xs:enumeration value="SCRBB4"/>
+      <xs:enumeration value="SCRBB+4"/>
+      <xs:enumeration value="SCRBB-4"/>
+      <xs:enumeration value="SCRB1"/>
+      <xs:enumeration value="SCRB+1"/>
+      <xs:enumeration value="SCRB-1"/>
+      <xs:enumeration value="SCRB2"/>
+      <xs:enumeration value="SCRB+2"/>
+      <xs:enumeration value="SCRB-2"/>
+      <xs:enumeration value="SCRB3"/>
+      <xs:enumeration value="SCRB+3"/>
+      <xs:enumeration value="SCRB-3"/>
+      <xs:enumeration value="SCRB4"/>
+      <xs:enumeration value="SCRB+4"/>
+      <xs:enumeration value="SCRB-4"/>
+      <xs:enumeration value="SCRC1"/>
+      <xs:enumeration value="SCRC+1"/>
+      <xs:enumeration value="SCRC-1"/>
+      <xs:enumeration value="SCRC2"/>
+      <xs:enumeration value="SCRC+2"/>
+      <xs:enumeration value="SCRC-2"/>
+      <xs:enumeration value="SCRC3"/>
+      <xs:enumeration value="SCRC+3"/>
+      <xs:enumeration value="SCRC-3"/>
+      <xs:enumeration value="SCRC4"/>
+      <xs:enumeration value="SCRC+4"/>
+      <xs:enumeration value="SCRC-4"/>
+      <xs:enumeration value="SCRD"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CodigoTipoValoracion">
+    <xs:annotation>
+      <xs:documentation xml:lang="es-cr">
+        Indica el tipo de valoración elegida por la entidad para el instrumento de acuerdo con la clasificación definidas en las NIIFs, según el modelo de negocio de la entidad.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CA"/>
+      <xs:enumeration value="RE"/>
+      <xs:enumeration value="RI"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

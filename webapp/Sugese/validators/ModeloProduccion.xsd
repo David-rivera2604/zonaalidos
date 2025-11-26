@@ -1,0 +1,61 @@
+﻿<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:dat="urn:cap:ties:datsugesetypes:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema"> 
+	<xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="Tipos/SugeseTypes.xsd"/>
+	<xs:import namespace="urn:cap:ties:datsugesetypes:v1" schemaLocation="Tipos/DatSugeseTypes.xsd"/>
+	<xs:include schemaLocation="Tipos/SugeseComplexTypes.xsd"/>
+
+	<xs:element name="ModeloProduccion">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Encabezado" type="EncabezadoTipo"/>
+				<xs:element name="Datos">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Modelo">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ProduccionPoblacionAsegurada">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element minOccurs="1" maxOccurs="unbounded" name="Ramo">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="PolizasEmitidas" type="res:EnteroPositivo" />
+																<xs:element name="PolizasAnuladasoCanceladas" type="res:EnteroPositivo" nillable="true"/>
+																<xs:element name="PolizasContratadas" type="res:EnteroPositivo" />
+																<xs:element name="DistribucionPolizas" type="res:MontoPositivo" />
+																<xs:element name="PolizasVencidas" type="res:EnteroPositivo" nillable="true"/>
+																<xs:element name="PolizasNoRenovadas" type="res:EnteroPositivo" nillable="true"/>
+																<xs:element name="TomadorFisicasJuridicas" type="res:EnteroPositivo" nillable="true"/>
+																<xs:element name="ColectivaModalidadContributiva" type="res:MontoPositivo" />
+																<xs:element name="ColectivaModalidadNoContributiva" type="res:MontoPositivo" />
+																<xs:element name="DistribucionMonedaNacional" type="res:MontoPositivo" nillable="true"/>
+																<xs:element name="DistribucionMonedaInternacional" type="res:MontoPositivo" nillable="true"/>
+															</xs:sequence>
+															<xs:attribute name="id" type="dat:TipoRamo" use="required" />
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="TotalPolizasEmitidas" type="res:EnteroPositivo" use="required" />
+												<xs:attribute name="TotalPolizasAnuladasoCanceladas" type="res:EnteroPositivo" use="required" />
+												<xs:attribute name="TotalPolizasContratadas" type="res:EnteroPositivo" use="required" />
+												<xs:attribute name="TotalDistribucionPolizas" type="res:MontoPositivo" use="required" />
+												<xs:attribute name="TotalPolizasVencidas" type="res:EnteroPositivo" use="required"/>
+												<xs:attribute name="TotalPolizasNoRenovadas" type="res:EnteroPositivo" use="required" />
+												<xs:attribute name="TotalTomadorFisicasJuridicas" type="res:EnteroPositivo" use="required" />
+												<xs:attribute name="TotalColectivaModalidadContributiva" type="res:MontoPositivo" use="required" />
+												<xs:attribute name="TotalColectivaModalidadNoContributiva" type="res:MontoPositivo" use="required" />
+												<xs:attribute name="TotalDistribucionMonedaNacional" type="res:MontoPositivo" use="required" />
+												<xs:attribute name="TotalDistribucionMonedaInternacional" type="res:MontoPositivo" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

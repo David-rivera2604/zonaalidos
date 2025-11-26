@@ -5,6 +5,7 @@ Imports Architect.Utilities.Extensions
 Imports ClosedXML.Excel
 
 Public Class Generate
+    Inherits Architect.Sugese.Domain.GenerateBase
 
     Private _Polizas As New ModeloPolizas
     Public Property Response As DataTable

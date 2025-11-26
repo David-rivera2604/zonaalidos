@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:dat="urn:cap:ties:datsugesetypes:v2">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="SugeseTypesNIIF17.xsd"/>
+  <xs:import namespace="urn:cap:ties:datsugesetypes:v2" schemaLocation="DatSugeseTypesV2NIIF17.xsd"/>
+  <xs:include schemaLocation="SugeseComplexTypesNIIF17.xsd"/>
+  <xs:element name="ModeloCuentaTecnicaFinanciera">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo"/>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="UtilidadPerdidaNetaAntesImpuestosParticipaciones">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ResultadoCuentaTecnicoFinanciera" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="ResultadoServicioSeguro">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="IngresosPorContratosSeguroNetosReaseguro">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="IngresosPorContratosSeguro">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="MargenServicioContractual">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="DesgloseMargenServicioContractual">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="SeguroDirecto" type="res:Monto" />
+                                                              <xs:element name="ReaseguroAceptado" type="res:Monto" />
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalMargenServicioContractual" type="res:Monto" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="CambiosAjustePorRiesgoEstimaciones">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="DesgloseCambiosAjustePorRiesgoEstimaciones">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="SeguroDirecto" type="res:Monto" />
+                                                              <xs:element name="ReaseguroAceptado" type="res:Monto" />
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalCambiosAjustePorRiesgoEstimaciones" type="res:Monto" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="PrimaGanada">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="DesglosePrimaGanada">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="SeguroDirecto" type="res:Monto" />
+                                                              <xs:element name="ReaseguroAceptado" type="res:Monto" />
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalPrimaGanada" type="res:Monto" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="TotalIngresosPorContratosSeguro" type="res:Monto" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="GastosPorContratosReaseguro">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="DesgloseGastosPorContratosReaseguro">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="CostosContratoReaseguro" type="res:Monto" />
+                                                        <xs:element name="CostoNetoServicioReaseguro" type="res:Monto" />
+                                                        <xs:element name="CambiosAjustePorRiesgoNoFinancieroYEstimaciones" type="res:Monto" />
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="TotalGastosPorContratosReaseguro" type="res:Monto" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="TotalIngresosPorContratosSeguroNetosReaseguro" type="res:Monto" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="GastosPorSiniestralidadNetosReaseguro">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="GastosPorSiniestralidadSeguro">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="GastosPorSiniestros">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="DesgloseGastosPorSiniestros">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="ContratosOnerosos" type="res:Monto" />
+                                                              <xs:element name="ContratosNoOnerosos" type="res:Monto" />
+                                                              <xs:element name="ImputablesSiniestros" type="res:Monto" />
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalGastosPorSiniestros" type="res:Monto" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="PerdidasContratosOnerosos" type="res:Monto" />
+                                                </xs:sequence>
+                                                <xs:attribute name="TotalGastosPorSiniestralidadSeguro" type="res:Monto" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="IngresosPorRecupSiniestralidadDeContratosReaseguro">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="RecuperacionesYComisionesRelacionadasConSiniestralidad">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="DesgloseRecuperacionesYComisionesRelacionadasConSiniestralidad">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="ComisionesReaseguroCedidoRelacSiniestralidad" type="res:Monto" />
+                                                              <xs:element name="RecuperacionesSiniestros" type="res:Monto" />
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalRecuperacionesYComisionesRelacionadasConSiniestralidad" type="res:Monto" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="CambiosAjustePorRiesgoNoFinancieroYEstimaciones" type="res:Monto" />
+                                                  <xs:element name="GananciaNetaServicioReaseguro" type="res:Monto" />
+                                                </xs:sequence>
+                                                <xs:attribute name="TotalIngresosPorRecupSiniestralidadDeContratosReaseguro" type="res:Monto" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="TotalGastosPorSiniestralidadNetosReaseguro" type="res:Monto" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="OtrosGastosOperativosAdminisYAdquisicion">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesgloseOtrosGastosOperativosAdminisYAdquisicion">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="GastosAdquisicionPorContratosSeguro" type="res:Monto" />
+                                                  <xs:element name="GastosAdquisicionPorContratosReaseguro" type="res:Monto" />
+                                                  <xs:element name="OtrosGastosRelacionadosConServicioSeguro" type="res:Monto" />
+                                                  <xs:element name="OtrosGastosRelacionadosConServicioReaseguro" type="res:Monto" />
+                                                  <xs:element name="ComisionesPorReaseguroCedidoNoRelacionadasConSiniestralidad" type="res:Monto" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="TotalOtrosGastosOperativosAdminisYAdquisicion" type="res:Monto" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="ProvisionRiesgoCatastrofico" type="res:Monto" />
+                                    </xs:sequence>
+                                    <xs:attribute name="TotalResultadoServicioSeguro" type="res:Monto" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="ResultadoFinancieroNeto">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="RetornoInversion">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesgloseRetornoInversion">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="IngresoPorInteresesActivosFinancieros" type="res:Monto" />
+                                                  <xs:element name="OtrosIngresosPorInversiones" type="res:Monto"/>
+                                                  <xs:element name="PerdidaNetaPorDeterioroActivosFinancieros" type="res:Monto"/>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="TotalRetornoInversion" type="res:Monto" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="IngresosPorContratosSegurosYContratosInversion">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesgloseIngresosPorContratosSegurosYContratosInversion">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="IngresosYGastosFinancierosNetosContratosSeguros" type="res:Monto"/>
+                                                  <xs:element name="IngresosYGastosFinancierosNetosContratosReaseguros" type="res:Monto"/>
+                                                  <xs:element name="MovimientoEnPasivosPorContratosInversion" type="res:Monto"/>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="TotalIngresosPorContratosSegurosYContratosInversion" type="res:Monto" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="TotalResultadoFinancieroNeto" type="res:Monto" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Lineas" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Linea" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="ResultadoCuentaTecnicoFinanciera_ln">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="ResultadoServicioSeguro_ln">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="IngresosPorContratosSeguroNetosReaseguro_ln">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="IngresosPorContratosSeguro_ln">
+                                                                <xs:complexType>
+                                                                  <xs:sequence>
+                                                                    <xs:element name="MargenServicioContractual_ln">
+                                                                      <xs:complexType>
+                                                                        <xs:sequence>
+                                                                          <xs:element name="DesgloseMargenServicioContractual_ln">
+                                                                            <xs:complexType>
+                                                                              <xs:sequence>
+                                                                                <xs:element name="SeguroDirecto_ln" type="res:Monto" />
+                                                                                <xs:element name="ReaseguroAceptado_ln" type="res:Monto" />
+                                                                              </xs:sequence>
+                                                                            </xs:complexType>
+                                                                          </xs:element>
+                                                                        </xs:sequence>
+                                                                        <xs:attribute name="TotalMargenServicioContractual_ln" type="res:Monto" use="required" />
+                                                                      </xs:complexType>
+                                                                    </xs:element>
+                                                                    <xs:element name="CambiosAjustePorRiesgoEstimaciones_ln">
+                                                                      <xs:complexType>
+                                                                        <xs:sequence>
+                                                                          <xs:element name="DesgloseCambiosAjustePorRiesgoEstimaciones_ln">
+                                                                            <xs:complexType>
+                                                                              <xs:sequence>
+                                                                                <xs:element name="SeguroDirecto_ln" type="res:Monto" />
+                                                                                <xs:element name="ReaseguroAceptado_ln" type="res:Monto" />
+                                                                              </xs:sequence>
+                                                                            </xs:complexType>
+                                                                          </xs:element>
+                                                                        </xs:sequence>
+                                                                        <xs:attribute name="TotalCambiosAjustePorRiesgoEstimaciones_ln" type="res:Monto" use="required" />
+                                                                      </xs:complexType>
+                                                                    </xs:element>
+                                                                    <xs:element name="PrimaGanada_ln">
+                                                                      <xs:complexType>
+                                                                        <xs:sequence>
+                                                                          <xs:element name="DesglosePrimaGanada_ln">
+                                                                            <xs:complexType>
+                                                                              <xs:sequence>
+                                                                                <xs:element name="SeguroDirecto_ln" type="res:Monto" />
+                                                                                <xs:element name="ReaseguroAceptado_ln" type="res:Monto" />
+                                                                              </xs:sequence>
+                                                                            </xs:complexType>
+                                                                          </xs:element>
+                                                                        </xs:sequence>
+                                                                        <xs:attribute name="TotalPrimaGanada_ln" type="res:Monto" use="required" />
+                                                                      </xs:complexType>
+                                                                    </xs:element>
+                                                                  </xs:sequence>
+                                                                  <xs:attribute name="TotalIngresosPorContratosSeguro_ln" type="res:Monto" use="required" />
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                              <xs:element name="GastosPorContratosReaseguro_ln">
+                                                                <xs:complexType>
+                                                                  <xs:sequence>
+                                                                    <xs:element name="DesgloseGastosPorContratosReaseguro_ln">
+                                                                      <xs:complexType>
+                                                                        <xs:sequence>
+                                                                          <xs:element name="CostosContratoReaseguro_ln" type="res:Monto" />
+                                                                          <xs:element name="CostoNetoServicioReaseguro_ln" type="res:Monto" />
+                                                                          <xs:element name="CambiosAjustePorRiesgoNoFinancieroYEstimaciones_ln" type="res:Monto" />
+                                                                        </xs:sequence>
+                                                                      </xs:complexType>
+                                                                    </xs:element>
+                                                                  </xs:sequence>
+                                                                  <xs:attribute name="TotalGastosPorContratosReaseguro_ln" type="res:Monto" use="required" />
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="TotalIngresosPorContratosSeguroNetosReaseguro_ln" type="res:Monto" use="required" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="GastosPorSiniestralidadNetosReaseguro_ln">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="GastosPorSiniestralidadSeguro_ln">
+                                                                <xs:complexType>
+                                                                  <xs:sequence>
+                                                                    <xs:element name="GastosPorSiniestros_ln">
+                                                                      <xs:complexType>
+                                                                        <xs:sequence>
+                                                                          <xs:element name="DesgloseGastosPorSiniestros_ln">
+                                                                            <xs:complexType>
+                                                                              <xs:sequence>
+                                                                                <xs:element name="ContratosOnerosos_ln" type="res:Monto" />
+                                                                                <xs:element name="ContratosNoOnerosos_ln" type="res:Monto" />
+                                                                                <xs:element name="ImputablesSiniestros_ln" type="res:Monto" />
+                                                                              </xs:sequence>
+                                                                            </xs:complexType>
+                                                                          </xs:element>
+                                                                        </xs:sequence>
+                                                                        <xs:attribute name="TotalGastosPorSiniestros_ln" type="res:Monto" use="required" />
+                                                                      </xs:complexType>
+                                                                    </xs:element>
+                                                                    <xs:element name="PerdidasContratosOnerosos_ln" type="res:Monto" />
+                                                                  </xs:sequence>
+                                                                  <xs:attribute name="TotalGastosPorSiniestralidadSeguro_ln" type="res:Monto" use="required" />
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                              <xs:element name="IngresosPorRecupSiniestralidadDeContratosReaseguro_ln">
+                                                                <xs:complexType>
+                                                                  <xs:sequence>
+                                                                    <xs:element name="RecuperacionesYComisionesRelacionadasConSiniestralidad_ln">
+                                                                      <xs:complexType>
+                                                                        <xs:sequence>
+                                                                          <xs:element name="DesgloseRecuperacionesYComisionesRelacionadasConSiniestralidad_ln">
+                                                                            <xs:complexType>
+                                                                              <xs:sequence>
+                                                                                <xs:element name="ComisionesReaseguroCedidoRelacSiniestralidad_ln" type="res:Monto" />
+                                                                                <xs:element name="RecuperacionesSiniestros_ln" type="res:Monto" />
+                                                                              </xs:sequence>
+                                                                            </xs:complexType>
+                                                                          </xs:element>
+                                                                        </xs:sequence>
+                                                                        <xs:attribute name="TotalRecuperacionesYComisionesRelacionadasConSiniestralidad_ln" type="res:Monto" use="required" />
+                                                                      </xs:complexType>
+                                                                    </xs:element>
+                                                                    <xs:element name="CambiosAjustePorRiesgoNoFinancieroYEstimaciones_ln" type="res:Monto" />
+                                                                    <xs:element name="GananciaNetaServicioReaseguro_ln" type="res:Monto" />
+                                                                  </xs:sequence>
+                                                                  <xs:attribute name="TotalIngresosPorRecupSiniestralidadDeContratosReaseguro_ln" type="res:Monto" use="required" />
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="TotalGastosPorSiniestralidadNetosReaseguro_ln" type="res:Monto" use="required" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="OtrosGastosOperativosAdminisYAdquisicion_ln">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="DesgloseOtrosGastosOperativosAdminisYAdquisicion_ln">
+                                                                <xs:complexType>
+                                                                  <xs:sequence>
+                                                                    <xs:element name="GastosAdquisicionPorContratosSeguro_ln" type="res:Monto" />
+                                                                    <xs:element name="GastosAdquisicionPorContratosReaseguro_ln" type="res:Monto" />
+                                                                    <xs:element name="OtrosGastosRelacionadosConServicioSeguro_ln" type="res:Monto" />
+                                                                    <xs:element name="OtrosGastosRelacionadosConServicioReaseguro_ln" type="res:Monto" />
+                                                                    <xs:element name="ComisionesPorReaseguroCedidoNoRelacionadasConSiniestralidad_ln" type="res:Monto" />
+                                                                  </xs:sequence>
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="TotalOtrosGastosOperativosAdminisYAdquisicion_ln" type="res:Monto" use="required" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="ProvisionRiesgoCatastrofico_ln" type="res:Monto" />
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalResultadoServicioSeguro_ln" type="res:Monto" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="ResultadoFinancieroNeto_ln">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="RetornoInversion_ln">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="DesgloseRetornoInversion_ln">
+                                                                <xs:complexType>
+                                                                  <xs:sequence>
+                                                                    <xs:element name="IngresoPorInteresesActivosFinancieros_ln" type="res:Monto" />
+                                                                    <xs:element name="OtrosIngresosPorInversiones_ln" type="res:Monto"/>
+                                                                    <xs:element name="PerdidaNetaPorDeterioroActivosFinancieros_ln" type="res:Monto"/>
+                                                                  </xs:sequence>
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="TotalRetornoInversion_ln" type="res:Monto" use="required" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="IngresosPorContratosSegurosYContratosInversion_ln">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="DesgloseIngresosPorContratosSegurosYContratosInversion_ln">
+                                                                <xs:complexType>
+                                                                  <xs:sequence>
+                                                                    <xs:element name="IngresosYGastosFinancierosNetosContratosSeguros_ln" type="res:Monto"/>
+                                                                    <xs:element name="IngresosYGastosFinancierosNetosContratosReaseguros_ln" type="res:Monto"/>
+                                                                    <xs:element name="MovimientoEnPasivosPorContratosInversion_ln" type="res:Monto"/>
+                                                                  </xs:sequence>
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="TotalIngresosPorContratosSegurosYContratosInversion_ln" type="res:Monto" use="required" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalResultadoFinancieroNeto_ln" type="res:Monto" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="TotalCuentaTecnicoFinanciera_ln" type="res:Monto" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="idLinea" type="dat:Linea" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="idRamo" type="dat:TipoRamo" use="required" />
+                              <xs:attribute name="TotalCuentaTecnicoFinanciera" type="res:Monto" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="ResultadoCuentaNoTecnica">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="IngresosFinancieros" type="res:Monto" />
+                                <xs:element name="GastosFinancieros" type="res:Monto"/>
+                                <xs:element name="OtrosIngresosNoTecnicos" type="res:Monto"/>
+                                <xs:element name="OtrosGastosNoTecnicos" type="res:Monto"/>
+                              </xs:sequence>
+                              <xs:attribute name="TotalCuentaNoTecnica" type="res:Monto" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalUtilidadPerdidaNetaAntesImpuestosParticipaciones" type="res:Monto" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
