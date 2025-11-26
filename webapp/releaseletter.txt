@@ -779,3 +779,7 @@
 1.6.157 25/11/2025 Aliados. Se ajusta la forma de obtene rel token al momento de hacer cargas de archvos.
 1.6.158 25/11/2025 Trazabilidad. Se hacen cambios al listado de casos por devolución de dinero (120.1).
                           - Se agrega la columna 'realizado por' la cual indica la fecha en que se completo la etapa 'APROBACIÓN DE CUMPLIMIENTO LEGAL'.
+1.6.159 25/11/2025 Aliados. Hogar (201). Ajuste en la emisión.
+                          - Se agregar el tratamiento de los errores por control técnico, para obtener la descripción de las tabla G2000211.
+                          - Se ajusta el cambio de estado de la propuesta en la tabla PolicyProposal de forma que se haga solo si no hay errores.
+                          - Se Ajusta la traza para que quede detalle de la falla en la emisión.
