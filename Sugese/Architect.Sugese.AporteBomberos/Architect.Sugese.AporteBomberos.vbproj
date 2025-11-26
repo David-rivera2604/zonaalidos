@@ -206,7 +206,7 @@
       <Name>Architect.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Architect.Sugese.Domain\Architect.Sugese.Domain.vbproj">
-      <Project>{B4219EE3-B7C7-4414-ACF1-5153379CE2A5}</Project>
+      <Project>{b4219ee3-b7c7-4414-acf1-5153379ce2a5}</Project>
       <Name>Architect.Sugese.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Architect.Sugese.Utility\Architect.Sugese.Utility.csproj">

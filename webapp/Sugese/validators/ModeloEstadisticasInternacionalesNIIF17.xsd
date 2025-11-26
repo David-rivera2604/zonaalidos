@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dat="urn:cap:ties:datsugesetypes:v2">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="SugeseTypesNIIF17.xsd"/>
+  <xs:include schemaLocation="SugeseComplexTypesNIIF17.xsd"/>
+  <xs:import namespace="urn:cap:ties:datsugesetypes:v2" schemaLocation="DatSugeseTypesV2NIIF17.xsd"/>
+  <xs:element name="ModeloEstadisticasInternacionales">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo"/>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Estadisticas">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Ramo" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Primas">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PorSeguroDirecto" type="res:Monto" />
+                                      <xs:element name="PorReaseguroAceptado" type="res:Monto" />
+                                    </xs:sequence>
+                                    <xs:attribute name="Total" type="res:Monto" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="PrimasCedidas">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PorSeguroDirecto" type="res:MontoPositivo" />
+                                      <xs:element name="PorReaseguroAceptado" type="res:MontoPositivo" />
+                                    </xs:sequence>
+                                    <xs:attribute name="Total" type="res:MontoPositivo" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Siniestralidad">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PorSeguroDirecto" type="res:MontoPositivo" />
+                                      <xs:element name="PorReaseguroAceptado" type="res:MontoPositivo" />
+                                    </xs:sequence>
+                                    <xs:attribute name="Total" type="res:MontoPositivo" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="GastosDeAquisicion">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PorSeguroDirecto" type="res:MontoPositivo" />
+                                      <xs:element name="PorReaseguroAceptado" type="res:MontoPositivo" />
+                                    </xs:sequence>
+                                    <xs:attribute name="Total" type="res:MontoPositivo" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="GastosDeAdministracion">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PorSeguroDirecto" type="res:MontoPositivo" />
+                                      <xs:element name="PorReaseguroAceptado" type="res:MontoPositivo" />
+                                    </xs:sequence>
+                                    <xs:attribute name="Total" type="res:MontoPositivo" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="PasivosPorContratoDeSeguroReaseguro" type="res:MontoPositivo" />
+                              </xs:sequence>
+                              <xs:attribute name="id" type="dat:TipoRamo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalDePrimas" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDePrimasPorSeguroDirecto" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDePrimasPorReaseguroAceptado" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDePrimasCedidas" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDePrimasCedidasPorSeguroDirecto" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDePrimasCedidasPorReaseguroAceptado" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeSiniestralidad" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeSiniestralidadPorSeguroDirecto" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeSiniestralidadPorReaseguroAceptado" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeGastosDeAdquisicion" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeGastosDeAdquisicionPorSeguroDirecto" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeGastosDeAdquisicionPorReaseguroAceptado" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeGastosDeAdministracion" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeGastosDeAdministracionPorSeguroDirecto" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalDeGastosDeAdministracionPorReaseguroAceptado" type="res:MontoPositivo" use="required" />
+                        <xs:attribute name="TotalPasivosContratosDeSegurosReaseguros" type="res:MontoPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

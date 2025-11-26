@@ -1399,6 +1399,9 @@ app.ui = (function () {
             else
                 window.location.href = app.setting.apipath + 'v1/Common/Download2?id=' + id;
         },
+        DownloadByName: function (path) { 
+            window.open(app.setting.apipath + 'v1/Common/DownloadByName?path=' + encodeURIComponent(path));            
+        },
         GetApi: function (url) {
             $('.sidebar-content').toggleClass('sk-loading');
             return app.core.Get(app.setting.apipath + url)

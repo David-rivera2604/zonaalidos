@@ -1,8 +1,9 @@
-﻿using System;
-using System.Data;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using System;
+using System.Data;
+using System.Globalization;
 
 namespace Architect.Utilities.Extensions
 {
@@ -129,19 +130,22 @@ namespace Architect.Utilities.Extensions
         {
             try
             {
-                if (string.IsNullOrEmpty(Conversions.ToString(sheet.Cell(rowNumber, column).Value)))                
-                    return 0.ToString(format, new System.Globalization.CultureInfo("en-US", false));                
-                else
-                {
-                    decimal value = Conversions.ToDecimal(sheet.Cell(rowNumber, column).Value);
-                    return value.ToString(format, new System.Globalization.CultureInfo("en-US", false));
-                }
+                var raw = sheet.Cell(rowNumber, column).Value;
+
+                if (raw == null || string.IsNullOrWhiteSpace(raw.ToString()))
+                    return 0m.ToString(format, new CultureInfo("en-US"));
+
+                // Fuerza la conversión usando cultura en-US
+                decimal value = Convert.ToDecimal(raw.ToString(), new CultureInfo("en-US"));
+
+                return value.ToString(format, new CultureInfo("en-US"));
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("{0}:{1} {2}", rowNumber, column, ex.Message), ex);
+                throw new Exception($"{rowNumber}:{column} {ex.Message}", ex);
             }
         }
+
 
         public static string FormatDecimalValue(this IXLWorksheet sheet, int rowNumber, string column, string format, DataTable message, string sheetName)
         {

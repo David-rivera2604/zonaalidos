@@ -1,4 +1,6 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Core.Business.General;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
@@ -7,13 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Architect.API.Core.Business.General;
-using System.Security.Cryptography;
 
 namespace Architect.API.Core.Controllers
 {
@@ -226,6 +227,73 @@ namespace Architect.API.Core.Controllers
             Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
             Architect.API.Core.Contracts.General.AttachmentItem result = Business.General.Attachment.RetrieveById(id);
             return Ok(result);
+        }
+
+        [Route("DownloadByName")]
+        [HttpGet]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public HttpResponseMessage DownloadByName([FromUri] string path)
+        {
+            // Validar parámetro
+            if (string.IsNullOrWhiteSpace(path))
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+
+            string fullPath = HttpContext.Current.Server.MapPath(path);
+
+            // Si NO existe, buscar fallback agregando el prefijo NIFF al nombre del archivo
+            if (!File.Exists(fullPath))
+            {
+                // Obtener la carpeta y el nombre del archivo
+                string directory = Path.GetDirectoryName(path);     // ~/Sugese/plantillas/
+                string filename = Path.GetFileName(path);           // AportesINEC.xlsx
+
+                // Crear el nombre alternativo
+                string fallbackName = "NIFF" + filename;
+
+                // Construir la ruta del fallback
+                string fallbackPath = HttpContext.Current.Server.MapPath(
+                    Path.Combine(directory, fallbackName)
+                );
+
+                // Si tampoco existe, retornar 404
+                if (!File.Exists(fallbackPath))
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                // Usar el archivo fallback
+                fullPath = fallbackPath;
+            }
+
+            // --- Descargar archivo aquí ---
+
+            // Leer archivo como bytes
+            byte[] fileBytes = File.ReadAllBytes(fullPath);
+
+            // Crear stream
+            var dataStream = new MemoryStream(fileBytes);
+
+            // Crear respuesta
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(dataStream)
+            };
+
+            // Determinar MIME
+            string mime = MimeMapping.GetMimeMapping(fullPath);
+
+            // Headers
+            response.Content.Headers.ContentDisposition =
+                new System.Net.Http.Headers.ContentDispositionHeaderValue("inline")
+                {
+                    FileName = Path.GetFileName(fullPath)
+                };
+
+            response.Content.Headers.ContentType =
+                new System.Net.Http.Headers.MediaTypeHeaderValue(mime);
+
+            response.Content.Headers.ContentLength = dataStream.Length;
+
+            return response;
         }
 
         [Route("Download2")]

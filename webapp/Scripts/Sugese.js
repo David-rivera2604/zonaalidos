@@ -1,65 +1,4 @@
-﻿//var app = app || {};
-
-//app.SugeseGenerator = {
-//    Init: function () {
-//        $("#SugeseGeneratorEdtFormSave").on("click", app.SugeseGenerator.Process);
-//        $("#fileUpload").on("change", app.SugeseGenerator.OnFileSelected);
-//    },
-
-//    OnFileSelected: function (e) {
-//        var file = e.target.files[0];
-//        if (!file) return;
-
-//        $("#FileName").val(file.name);
-//        $("#Stored").val(file.name);
-//        $("#FileSize").val(file.size);
-//    },
-
-//    Process: function () {
-//        // Validación rápida
-//        if (!$("#SugeseGeneratorEdtForm")[0].checkValidity()) {
-//            $("#SugeseGeneratorEdtForm")[0].reportValidity();
-//            return;
-//        }
-
-//        let formData = new FormData();
-//        let fileInput = $("#fileUpload")[0].files[0];
-
-//        // Parámetros enviados al servidor MVC
-//        formData.append("modelo", $("#ModelType").val());
-//        formData.append("pediodoMensual", $("#Month").val());
-//        formData.append("ano", $("#Year").val());
-//        formData.append("pediodoTrimestral", Math.ceil($("#Month").val() / 3));
-//        formData.append("excelFileName", fileInput);
-//        formData.append("fileName", $("#FileName").val());
-
-//        let toast;
-//        $.ajax({
-//            url: app.setting.basepath + "Sugese/ProcesaArchivo",
-//            type: "POST",
-//            contentType: false,
-//            processData: false,
-//            data: formData,
-//            beforeSend: function () {
-//                toast = app.ui.Loader("Procesando archivo, por favor espere...");
-//            },
-//            success: function (response) {
-//                if (response.Success) {
-//                    app.ui.Success("XML generado correctamente.");
-//                } else {
-//                    app.ui.Warning(response.Reason || "Se generaron errores.");
-//                }
-//            },
-//            error: function () {
-//                app.ui.Error("Error en la solicitud. Verifique la información.");
-//            },
-//            complete: function () {
-//                toastr.clear(toast);
-//            }
-//        });
-//    }
-//};
-
+﻿
 var app = app || {};
 app.generador = (function () {
     Init_Controls = function () {
@@ -91,17 +30,28 @@ app.generador = (function () {
         });
 
         $('#modelo').change(function () {
-            $("#NewFile").attr("href", 'download.ashx?t=1&m=' + $('#modelo').val());
-            $("#LastExcel").attr("href", 'download.ashx?t=2&m=' + $('#modelo').val());
-            $("#LastXml").attr("href", 'download.ashx?t=3&m=' + $('#modelo').val());
 
-            $("#xml").attr("href", 'download.ashx?t=3&m=' + $('#modelo').val());
+            let modelo = $('#modelo').val();
+
+            $("#NewFile").attr("href", '#');
+            $("#NewFile").attr("onclick", `app.ui.DownloadByName('~/Sugese/plantillas/${modelo}.xlsx')`);
+
+            $("#LastExcel").attr("href", '#');
+            $("#LastExcel").attr("onclick", `app.ui.DownloadByName('~/files/${modelo}.xlsx')`); 
+
+            $("#LastXml").attr("href", '#');
+            $("#LastXml").attr("onclick", `app.ui.DownloadByName('~/files/${modelo}.xml')`);
+
+            $("#xml").attr("href", '#');
+            $("#xml").attr("onclick", `app.ui.DownloadByName('~/files/${modelo}.xml')`);
             $("#xml").text($('#modelo').val() + '.xml');
-
-            $("#xml2").attr("href", 'download.ashx?t=3&m=' + $('#modelo').val());
+             
+            $("#xml2").attr("href", '#');
+            $("#xml2").attr("onclick", `app.ui.DownloadByName('~/files/${modelo}.xml')`);
             $("#xml2").text($('#modelo').val() + '.xml');
-
-            $("#excel").attr("href", 'download.ashx?t=2&m=' + $('#modelo').val());
+             
+            $("#excel").attr("href", '#');
+            $("#excel").attr("onclick", `app.ui.DownloadByName('~/files/${modelo}.xlsx')`); 
             $("#excel").text($('#modelo').val() + '.xlsx');
 
             switch ($('#modelo').val()) {
@@ -144,7 +94,7 @@ app.generador = (function () {
                         data: JSON.stringify({
                             modelo: $('#modelo').val(),
                             pediodoMensual: $('#pediodo_mensual').val(),
-                            pediodoTrimestral: $('#pediodo_trimestral').val(),
+                            pediodoTrimestral: $('#pediodo_trimestral').val() || 1, 
                             ano: $('#ano').val(),
                             excelFileName: $('#fileNameUpload').val(),
                             internalFileName: $('#fileServerNameUpload').val(),
@@ -159,7 +109,7 @@ app.generador = (function () {
                                     app.ui.Error(data.Reason);
                                 }
                                 else
-                                    app.ui.Error(data.d.Reason);
+                                    app.ui.Error(data.Reason);
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {

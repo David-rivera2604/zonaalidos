@@ -16,18 +16,35 @@
     <div class="ibox-content">
         <div id="generalNotify"></div>
 
-        <!-- 🔥 IMPORTANTE: El JS requiere un formulario con id="MainForm" -->
+        <div class='col-md-12 Title'>
+            <span>Datos para la generación</span>
+
+            <!-- Single button -->
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Descargar <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a id="NewFile" href="#">Una plantilla nueva</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a id="LastExcel" href="#">El último archivo Excel procesado</a></li>
+                    <li><a id="LastXml" href="#">El último archivo XML generado</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- IMPORTANTE: El JS requiere un formulario con id="MainForm" -->
         <form id="MainForm" class="form-horizontal" enctype="multipart/form-data">
             <fieldset>
                 <div class="form-row">
 
-                    <!-- Modelo (JS usa #modelo) -->
+                    <!-- Modelo -->
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group">
                             <label for="modelo" class="control-label">Tipo de modelo *</label>
                             <select id="modelo" name="modelo" class="form-control" required>
                                 <option value="">Seleccione…</option>
-                                <!-- Modelos generales -->
                                 <option value="Bomberos">Aporte bomberos</option>
                                 <option value="BalanceGeneral">Balance general</option>
                                 <option value="Patrimonio">Cambios de patrimonio</option>
@@ -39,23 +56,18 @@
                                 <option value="RunOff">Run off</option>
                                 <option value="AportesINEC">Aportes INEC</option>
                                 <option value="PrimasSiniestros">Primas y siniestros</option>
-
-                                <!-- Opciones adicionales provenientes del primer select -->
                                 <option value="CuentasTecnicas">Cuentas técnicas</option>
                                 <option value="SaldosContables">Saldos contables</option>
-
-                                <!-- NIIF 17 / NIFF 17 -->
                                 <option value="NIFF17SaldosContables">NIIF17 - Saldos contables</option>
                                 <option value="NIFF17CuentaTecnicaFinanciera">NIIF17 - Cuentas técnicas financiera</option>
                                 <option value="NIFF17RendimientoFinanciero">NIIF17 - Rendimiento financiero</option>
                                 <option value="NIFF17SituacionFinanciera">NIIF17 - Situación financiera</option>
-
                             </select>
                             <div id="modelo_validate"></div>
                         </div>
                     </div>
 
-                    <!-- Mes (JS usa #pediodo_mensual) -->
+                    <!-- Mes -->
                     <div class="col-sm-6 col-md-2" id="div_periodo_mensual">
                         <div class="form-group">
                             <label for="pediodo_mensual">Mes *</label>
@@ -77,7 +89,7 @@
                         </div>
                     </div>
 
-                    <!-- Trimestre (JS usa #pediodo_trimestral) -->
+                    <!-- Trimestre -->
                     <div class="col-sm-6 col-md-2" id="div_pediodo_trimestral">
                         <div class="form-group">
                             <label for="pediodo_trimestral">Trimestre *</label>
@@ -91,7 +103,7 @@
                         </div>
                     </div>
 
-                    <!-- Año (JS usa #ano) -->
+                    <!-- Año -->
                     <div class="col-sm-6 col-md-2">
                         <div class="form-group">
                             <label for="ano">Año *</label>
@@ -100,7 +112,7 @@
                         </div>
                     </div>
 
-                    <!-- Archivo (JS usa #fileUpload, #fileNameUpload, #fileServerNameUpload) -->
+                    <!-- Archivo -->
                     <div class="col-sm-12 col-md-4">
                         <div class="form-group">
                             <label for="fileUpload">Archivo Excel *</label>
@@ -108,40 +120,44 @@
                                 <input id="fileNameUpload" name="fileNameUpload" type="text" class="form-control" readonly />
                                 <input id="fileServerNameUpload" name="fileServerNameUpload" type="hidden" />
 
+                                <!-- AJUSTE ÚNICO AQUÍ -->
                                 <div class="input-group-append">
-                                    <span class="btn btn-default fileinput-button">
-                                        <span>Examinar…</span>
-                                        <input id="fileUpload" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
-                                                                                   application/vnd.ms-excel,
-                                                                                   text/csv" />
-                                    </span>
+                                    <label class="btn btn-default mb-0" style="cursor:pointer;">
+                                        Examinar…
+                                        <input id="fileUpload" type="file"
+                                               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                                                       application/vnd.ms-excel,
+                                                       text/csv"
+                                               style="display:none;" />
+                                    </label>
                                 </div>
                             </div>
                             <div id="fileNameUpload_validate"></div>
                         </div>
                     </div>
+
                 </div>
             </fieldset>
         </form>
 
-        <!-- Botón procesar (JS usa #procesarArchivo) -->
+        <!-- Botón procesar -->
         <div class="col-md-12 mt-3">
             <button id="procesarArchivo" class="btn btn-primary float-right">Procesar Archivo</button>
         </div>
 
-        <!-- Alertas que usa el JS -->
-        <div id="alertSuccess" class="alert alert-success mt-3" style="display:none;">Archivo procesado correctamente.</div>
-        <div id="alertError" class="alert alert-danger mt-3" style="display:none;">Error procesando el archivo.</div>
-
-        <!-- Links dinámicos que el JS modifica -->
-        <div class="mt-3">
-            <a id="NewFile">Nuevo XLSX</a> ·
-            <a id="LastExcel">Último XLSX</a> ·
-            <a id="LastXml">Último XML</a> ·
-            <a id="xml">XML</a> ·
-            <a id="xml2">XML (2)</a> ·
-            <a id="excel">Excel generado</a>
+        <!-- Alertas -->
+        <div id="alertSuccess" class="alert alert-success mt-3" style="display:none;">
+            <p class="text-center">
+                El archivo Excel fue procesado de forma <strong>exitosa</strong>, si desea descargar el xml generado por favor haga click sobre el siguiente enlace <a id="xml" href="#" class="alert-link">Bomberos.xml</a>.
+            </p>
         </div>
+
+        <div id="alertError" class="alert alert-danger mt-3" style="display:none;">
+            <p class="text-center">
+                El archivo excel fue procesado pero existen varias <strong>fallas</strong> de validación, el detalle de las fallas encontradas fueron agregadas como una hoja al archivo Excel procesado, si desea descargar el Excel con el detalle de las fallas por favor haga click sobre el siguiente enlace <a id="excel" href="#" class="alert-link">Bomberos.xlsx</a>, el archivo xml usado en las validaciones es <a id="xml2" href="#" class="alert-link">Bomberos.xml</a>.
+            </p>
+        </div>
+
     </div>
 </div>
 

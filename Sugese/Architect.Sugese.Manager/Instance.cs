@@ -110,7 +110,7 @@ namespace Architect.Sugese.Manager
                 serverPath = System.Web.HttpContext.Current.Server.MapPath("../files");
                 xmlFileName = Path.Combine(serverPath, $"{modelo}.xml");
                 xlsxFileName = Path.Combine(serverPath, internalFileName);
-                lastXlsxFileName = Path.Combine(serverPath, "models", $"{modelo}.xlsx");
+                lastXlsxFileName = Path.Combine(serverPath, $"{modelo}.xlsx");
 
                 // Validación de existencia del archivo
                 if (!File.Exists(xlsxFileName))
@@ -194,13 +194,7 @@ namespace Architect.Sugese.Manager
         /// <summary>
         /// Procesa el modelo específico utilizando el procesador correspondiente
         /// </summary>
-        private static DataTable ProcessModel(
-            string modelo,
-            string xlsxFileName,
-            string xmlFileName,
-            int periodoMensual,
-            int periodoTrimestral,
-            int ano)
+        private static DataTable ProcessModel(string modelo, string xlsxFileName, string xmlFileName, int periodoMensual, int periodoTrimestral, int ano)
         {
             if (!ModelProcessors.TryGetValue(modelo, out var processor))
             {

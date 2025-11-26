@@ -1157,11 +1157,6 @@
     <Content Include="assets\toastr\toastr.min.css" />
     <Content Include="assets\toastr\toastr.min.js" />
     <Content Include="favicon.ico" />
-    <Content Include="files\models\NIFF17CuentaTecnicaFinanciera.xml" />
-    <Content Include="files\models\NIFF17PrimasSiniestros.xml" />
-    <Content Include="files\models\NIFF17RendimientoFinanciero.xml" />
-    <Content Include="files\models\NIFF17SaldosContables.xml" />
-    <Content Include="files\models\NIFF17SituacionFinanciera.xml" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1646,9 +1641,6 @@
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <Content Include="data\dummy.json" />
-    <Content Include="files\models\BalanceGeneral.xlsx" />
-    <Content Include="files\models\Canales.xlsx" />
-    <Content Include="files\models\Otro.xlsx" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1867,6 +1859,24 @@
     <Content Include="Views\Variaciones\HogarTotalPlus.cshtml" />
     <Content Include="Views\Variaciones\Multirriesgo.cshtml" />
     <Content Include="Views\Sugese\generador.cshtml" />
+    <Content Include="Sugese\plantillas\AportesINEC.xlsx" />
+    <Content Include="Sugese\plantillas\Bomberos.xlsx" />
+    <Content Include="Sugese\plantillas\Canales.xlsx" />
+    <Content Include="Sugese\plantillas\CuentasTecnicas.xlsx" />
+    <Content Include="Sugese\plantillas\EstadoResultados.xlsx" />
+    <Content Include="Sugese\plantillas\Inversiones.ejemplo.xlsx" />
+    <Content Include="Sugese\plantillas\Inversiones.xlsx" />
+    <Content Include="Sugese\plantillas\NIFF17CuentaTecnicaFinanciera.xlsx" />
+    <Content Include="Sugese\plantillas\NIFF17EstadisticasInternacionales.xlsx" />
+    <Content Include="Sugese\plantillas\NIFF17PrimasSiniestros.xlsx" />
+    <Content Include="Sugese\plantillas\NIFF17RendimientoFinanciero.xlsx" />
+    <Content Include="Sugese\plantillas\NIFF17SaldosContables.xlsx" />
+    <Content Include="Sugese\plantillas\NIFF17SituacionFinanciera.xlsx" />
+    <Content Include="Sugese\plantillas\PrimasSiniestros.xlsx" />
+    <Content Include="Sugese\plantillas\Produccion.xlsx" />
+    <Content Include="Sugese\plantillas\RegistroUnicoBeneficiarios.xlsx" />
+    <Content Include="Sugese\plantillas\RunOff.xlsx" />
+    <Content Include="Sugese\plantillas\SaldosContables.xlsx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1879,8 +1889,10 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="assets\jquery-validation\dist\" />
+    <Folder Include="files\" />
     <Folder Include="logs\" />
     <Folder Include="Models\" />
+    <Folder Include="Sugese\validators\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">

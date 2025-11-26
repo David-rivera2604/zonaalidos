@@ -1,0 +1,1833 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:cap:ties:isosugesetypes:v1" xmlns:iso="urn:cap:ties:isosugesetypes:v1" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="PaisResidencia">
+    <xs:annotation>
+      <xs:documentation>
+        Códigos de los países de residencia según el  ISO 3166-1 alfa-3
+        Andorra =	AND
+        Emiratos Árabes Unidos = ARE
+        Afganistán = AFG
+        Antigua y Barbuda =	ATG
+        Anguila =	AIA
+        Albania =	ALB
+        Armenia =	ARM
+        Antillas Neerlandesas =	ANT
+        Angola = AGO
+        Antártida =	ATA
+        Argentina =	ARG
+        Samoa Americana =	ASM
+        Austria =	AUT
+        Australia =	AUS
+        Aruba =	ABW
+        Islas Áland =	ALA
+        Azerbaiyán = AZE
+        Bosnia y Herzegovina = BIH
+        Barbados = BRB
+        Bangladesh = BGD
+        Bélgica =	BEL
+        Burkina Faso = BFA
+        Bulgaria = BGR
+        Bahréin =	BHR
+        Burundi =	BDI
+        Benin =	BEN
+        San Bartolomé =	BLM
+        Bermudas = BMU
+        Brunéi = BRN
+        Bolivia =	BOL
+        Brasil = BRA
+        Bahamas = BHS
+        Bhután = BTN
+        Isla Bouvet =	BVT
+        Botsuana = BWA
+        Belarús =	BLR
+        Belice = BLZ
+        Canadá = CAN
+        Islas Cocos =	CCK
+        República Centro-Africana =	CAF
+        Congo =	COG
+        Suiza =	CHE
+        Costa de Marfil =	CIV
+        Islas Cook = COK
+        Chile =	CHL
+        Camerún =	CMR
+        China =	CHN
+        Colombia = COL
+        Costa Rica = CRI
+        Cuba = CUB
+        Cabo Verde = CPV
+        Islas Christmas = CXR
+        Chipre = CYP
+        República Checa =	CZE
+        Alemania = DEU
+        Yibuti = DJI
+        Dinamarca =	DNK
+        Domínica = DMA
+        República Dominicana = DOM
+        Argel	= DZA
+        Ecuador	= ECU
+        Estonia	= EST
+        Egipto = EGY
+        Sahara Occidental	= ESH
+        Eritrea	=ERI
+        España = ESP
+        Etiopía	= ETH
+        Finlandia	= FIN
+        Fiji = FJI
+        Islas Malvinas = KLK
+        Micronesia = FSM
+        Islas Faroe = FRO
+        Francia = FRA
+        Gabón = GAB
+        Reino Unido =	GBR
+        Granada	= GRD
+        Georgia	= GEO
+        Guayana Francesa = GUF
+        Guernsey = GGY
+        Ghana	= GHA
+        Gibraltar	= GIB
+        Groenlandia	= GRL
+        Gambia = GMB
+        Guinea = GIN
+        Guadalupe =	GLP
+        Guinea Ecuatorial	= GNQ
+        Grecia = GRC
+        Georgia del Sur e Islas Sandwich del Sur = SGS
+        Guatemala	= GTM
+        Guam = GUM
+        Guinea-Bissau =	GNB
+        Guayana	= GUY
+        Hong Kong	= HKG
+        Islas Heard y McDonald = HMD
+        Honduras = HND
+        Croacia = HRV
+        Haití	= HTI
+        Hungría	= HUN
+        Indonesia	= IDN
+        Irlanda	= IRL
+        Israel = ISR
+        Isla de Man =	IMN
+        India	= IND
+        Territorio Británico del Océano Índico = IOT
+        Irak = IRQ
+        Irán = IRN
+        Islandia = ISL
+        Italia = ITA
+        Jersey = JEY
+        Jamaica = JAM
+        Jordania = JOR
+        Japón = JPN
+        Kenia =	KEN
+        Kirguistán = KGZ
+        Camboya =	KHM
+        Kiribati = KIR
+        Comoros = COM
+        San Cristóbal y Nieves = KNA
+        Corea del Norte = PRK
+        Corea del Sur =	KOR
+        Kuwait = KWT
+        Islas Caimán = CYM
+        Kazajstán = KAZ
+        Laos = LAO
+        Líbano = LBN
+        Santa Lucía =	LCA
+        Liechtenstein =	LIE
+        Sri Lanka	= LKA
+        Liberia	= LBR
+        Lesotho	= LSO
+        Lituania = LTU
+        Luxemburgo = LUX
+        Letonia =	LVA
+        Libia =	LBY
+        Marruecos =	MAR
+        Mónaco = MCO
+        Moldova =	MDA
+        Montenegro = MNE
+        Madagascar = MDG
+        Islas Marshall = MHL
+        Macedonia =	MKD
+        Mali = MLI
+        Myanmar =	MMR
+        Mongolia = MNG
+        Macao = MAC
+        Martinica = MTQ
+        Mauritania = MRT
+        Montserrat = MSR
+        Malta	= MLT
+        Mauricio = MUS
+        Maldivas = MDV
+        Malawi = MWI
+        México = MEX
+        Malasia = MYS
+        Mozambique = MOZ
+        Namibia =	NAM
+        Nueva Caledonia = NCL
+        Níger =	NER
+        Islas Norkfolk = NFK
+        Nigeria	= NGA
+        Nicaragua	= NIC
+        Países Bajos = NLD
+        Noruega	= NOR
+        Nepal	= NPL
+        Nauru	= NRU
+        Niue = NIU
+        Nueva Zelanda	= NZL
+        Omán = OMN
+        Panamá = PAN
+        Perú = PER
+        Polinesia Francesa = PYF
+        Papúa Nueva Guinea = PNG
+        Filipinas = PHL
+        Pakistán = PAK
+        Polonia	= POL
+        San Pedro y Miquelón = SPM
+        Islas Pitcairn = PCN
+        Puerto Rico	= PRI
+        Palestina	= PSE
+        Portugal = PRT
+        Islas Palaos = PLW
+        Paraguay = PRY
+        Qatar	= QAT
+        Reunión	= REU
+        Rumanía	= ROU
+        Serbia y Montenegro	= SRB
+        Rusia	= RUS
+        Ruanda = RWA
+        Arabia Saudita = SAU
+        Islas Solomón	= SLB
+        Seychelles = SYC
+        Sudán	= SDN
+        Suecia = SWE
+        Singapur = SGP
+        Santa Elena =	SHN
+        Eslovenia	= SVN
+        Islas Svalbard y Jan Mayen = SJM
+        Eslovaquia = SVK
+        Sierra Leona = SLE
+        San Marino = SMR
+        Senegal	= SEN
+        Somalia	= SOM
+        Surinam	= SUR
+        Santo Tomé y Príncipe	= STP
+        El Salvador	= SLV
+        Siria	= SYR
+        Suazilandia	= SWZ
+        Islas Turcas y Caicos =	TCA
+        Chad = TCD
+        Territorios Australes Franceses	= ATF
+        Togo = TGO
+        Tailandia = THA
+        Tanzania = TZA
+        Tayikistán = TJK
+        Tokelau = TKL
+        Timor-Leste = TLS
+        Turkmenistán = TKM
+        Túnez = TUN
+        Tonga	= TON
+        Turquía	= TUR
+        Trinidad y Tobago	= TTO
+        Tuvalu = TUV
+        Taiwán = TWN
+        Ucrania	= UKR
+        Uganda = UGA
+        Estados Unidos de América	= USA
+        Uruguay	= URY
+        Uzbekistán = UZB
+        Ciudad del Vaticano	= VAT
+        San Vicente y las Granadinas = VCT
+        Venezuela	= VEN
+        Islas Vírgenes Británicas	= VGB
+        Islas Vírgenes de los Estados Unidos de América	= VIR
+        Vietnam	= VNM
+        Vanuatu	= VUT
+        Wallis y Futuna	= WLF
+        Samoa	= WSM
+        Yemen	= YEM
+        Mayotte	= MYT
+        Sudáfrica	= ZAF
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value='AND'/>
+      <xs:enumeration value='ARE'/>
+      <xs:enumeration value='AFG'/>
+      <xs:enumeration value='ATG'/>
+      <xs:enumeration value='AIA'/>
+      <xs:enumeration value='ALB'/>
+      <xs:enumeration value='ARM'/>
+      <xs:enumeration value='ANT'/>
+      <xs:enumeration value='AGO'/>
+      <xs:enumeration value='ATA'/>
+      <xs:enumeration value='ARG'/>
+      <xs:enumeration value='ASM'/>
+      <xs:enumeration value='AUT'/>
+      <xs:enumeration value='AUS'/>
+      <xs:enumeration value='ABW'/>
+      <xs:enumeration value='ALA'/>
+      <xs:enumeration value='AZE'/>
+      <xs:enumeration value='BIH'/>
+      <xs:enumeration value='BRB'/>
+      <xs:enumeration value='BGD'/>
+      <xs:enumeration value='BEL'/>
+      <xs:enumeration value='BFA'/>
+      <xs:enumeration value='BGR'/>
+      <xs:enumeration value='BHR'/>
+      <xs:enumeration value='BDI'/>
+      <xs:enumeration value='BEN'/>
+      <xs:enumeration value='BLM'/>
+      <xs:enumeration value='BMU'/>
+      <xs:enumeration value='BRN'/>
+      <xs:enumeration value='BOL'/>
+      <xs:enumeration value='BRA'/>
+      <xs:enumeration value='BHS'/>
+      <xs:enumeration value='BTN'/>
+      <xs:enumeration value='BVT'/>
+      <xs:enumeration value='BWA'/>
+      <xs:enumeration value='BLR'/>
+      <xs:enumeration value='BLZ'/>
+      <xs:enumeration value='CAN'/>
+      <xs:enumeration value='CCK'/>
+      <xs:enumeration value='CAF'/>
+      <xs:enumeration value='COG'/>
+      <xs:enumeration value='CHE'/>
+      <xs:enumeration value='CIV'/>
+      <xs:enumeration value='COK'/>
+      <xs:enumeration value='CHL'/>
+      <xs:enumeration value='CMR'/>
+      <xs:enumeration value='CHN'/>
+      <xs:enumeration value='COL'/>
+      <xs:enumeration value='CRI'/>
+      <xs:enumeration value='CUB'/>
+      <xs:enumeration value='CPV'/>
+      <xs:enumeration value='CXR'/>
+      <xs:enumeration value='CYP'/>
+      <xs:enumeration value='CZE'/>
+      <xs:enumeration value='DEU'/>
+      <xs:enumeration value='DJI'/>
+      <xs:enumeration value='DNK'/>
+      <xs:enumeration value='DMA'/>
+      <xs:enumeration value='DOM'/>
+      <xs:enumeration value='DZA'/>
+      <xs:enumeration value='ECU'/>
+      <xs:enumeration value='EST'/>
+      <xs:enumeration value='EGY'/>
+      <xs:enumeration value='ESH'/>
+      <xs:enumeration value='ERI'/>
+      <xs:enumeration value='ESP'/>
+      <xs:enumeration value='ETH'/>
+      <xs:enumeration value='FIN'/>
+      <xs:enumeration value='FJI'/>
+      <xs:enumeration value='KLK'/>
+      <xs:enumeration value='FSM'/>
+      <xs:enumeration value='FRO'/>
+      <xs:enumeration value='FRA'/>
+      <xs:enumeration value='GAB'/>
+      <xs:enumeration value='GBR'/>
+      <xs:enumeration value='GRD'/>
+      <xs:enumeration value='GEO'/>
+      <xs:enumeration value='GUF'/>
+      <xs:enumeration value='GGY'/>
+      <xs:enumeration value='GHA'/>
+      <xs:enumeration value='GIB'/>
+      <xs:enumeration value='GRL'/>
+      <xs:enumeration value='GMB'/>
+      <xs:enumeration value='GIN'/>
+      <xs:enumeration value='GLP'/>
+      <xs:enumeration value='GNQ'/>
+      <xs:enumeration value='GRC'/>
+      <xs:enumeration value='SGS'/>
+      <xs:enumeration value='GTM'/>
+      <xs:enumeration value='GUM'/>
+      <xs:enumeration value='GNB'/>
+      <xs:enumeration value='GUY'/>
+      <xs:enumeration value='HKG'/>
+      <xs:enumeration value='HMD'/>
+      <xs:enumeration value='HND'/>
+      <xs:enumeration value='HRV'/>
+      <xs:enumeration value='HTI'/>
+      <xs:enumeration value='HUN'/>
+      <xs:enumeration value='IDN'/>
+      <xs:enumeration value='IRL'/>
+      <xs:enumeration value='ISR'/>
+      <xs:enumeration value='IMN'/>
+      <xs:enumeration value='IND'/>
+      <xs:enumeration value='IOT'/>
+      <xs:enumeration value='IRQ'/>
+      <xs:enumeration value='IRN'/>
+      <xs:enumeration value='ISL'/>
+      <xs:enumeration value='ITA'/>
+      <xs:enumeration value='JEY'/>
+      <xs:enumeration value='JAM'/>
+      <xs:enumeration value='JOR'/>
+      <xs:enumeration value='JPN'/>
+      <xs:enumeration value='KEN'/>
+      <xs:enumeration value='KGZ'/>
+      <xs:enumeration value='KHM'/>
+      <xs:enumeration value='KIR'/>
+      <xs:enumeration value='COM'/>
+      <xs:enumeration value='KNA'/>
+      <xs:enumeration value='PRK'/>
+      <xs:enumeration value='KOR'/>
+      <xs:enumeration value='KWT'/>
+      <xs:enumeration value='CYM'/>
+      <xs:enumeration value='KAZ'/>
+      <xs:enumeration value='LAO'/>
+      <xs:enumeration value='LBN'/>
+      <xs:enumeration value='LCA'/>
+      <xs:enumeration value='LIE'/>
+      <xs:enumeration value='LKA'/>
+      <xs:enumeration value='LBR'/>
+      <xs:enumeration value='LSO'/>
+      <xs:enumeration value='LTU'/>
+      <xs:enumeration value='LUX'/>
+      <xs:enumeration value='LVA'/>
+      <xs:enumeration value='LBY'/>
+      <xs:enumeration value='MAR'/>
+      <xs:enumeration value='MCO'/>
+      <xs:enumeration value='MDA'/>
+      <xs:enumeration value='MNE'/>
+      <xs:enumeration value='MDG'/>
+      <xs:enumeration value='MHL'/>
+      <xs:enumeration value='MKD'/>
+      <xs:enumeration value='MLI'/>
+      <xs:enumeration value='MMR'/>
+      <xs:enumeration value='MNG'/>
+      <xs:enumeration value='MAC'/>
+      <xs:enumeration value='MTQ'/>
+      <xs:enumeration value='MRT'/>
+      <xs:enumeration value='MSR'/>
+      <xs:enumeration value='MLT'/>
+      <xs:enumeration value='MUS'/>
+      <xs:enumeration value='MDV'/>
+      <xs:enumeration value='MWI'/>
+      <xs:enumeration value='MEX'/>
+      <xs:enumeration value='MYS'/>
+      <xs:enumeration value='MOZ'/>
+      <xs:enumeration value='NAM'/>
+      <xs:enumeration value='NCL'/>
+      <xs:enumeration value='NER'/>
+      <xs:enumeration value='NFK'/>
+      <xs:enumeration value='NGA'/>
+      <xs:enumeration value='NIC'/>
+      <xs:enumeration value='NLD'/>
+      <xs:enumeration value='NOR'/>
+      <xs:enumeration value='NPL'/>
+      <xs:enumeration value='NRU'/>
+      <xs:enumeration value='NIU'/>
+      <xs:enumeration value='NZL'/>
+      <xs:enumeration value='OMN'/>
+      <xs:enumeration value='PAN'/>
+      <xs:enumeration value='PER'/>
+      <xs:enumeration value='PYF'/>
+      <xs:enumeration value='PNG'/>
+      <xs:enumeration value='PHL'/>
+      <xs:enumeration value='PAK'/>
+      <xs:enumeration value='POL'/>
+      <xs:enumeration value='SPM'/>
+      <xs:enumeration value='PCN'/>
+      <xs:enumeration value='PRI'/>
+      <xs:enumeration value='PSE'/>
+      <xs:enumeration value='PRT'/>
+      <xs:enumeration value='PLW'/>
+      <xs:enumeration value='PRY'/>
+      <xs:enumeration value='QAT'/>
+      <xs:enumeration value='REU'/>
+      <xs:enumeration value='ROU'/>
+      <xs:enumeration value='SRB'/>
+      <xs:enumeration value='RUS'/>
+      <xs:enumeration value='RWA'/>
+      <xs:enumeration value='SAU'/>
+      <xs:enumeration value='SLB'/>
+      <xs:enumeration value='SYC'/>
+      <xs:enumeration value='SDN'/>
+      <xs:enumeration value='SWE'/>
+      <xs:enumeration value='SGP'/>
+      <xs:enumeration value='SHN'/>
+      <xs:enumeration value='SVN'/>
+      <xs:enumeration value='SJM'/>
+      <xs:enumeration value='SVK'/>
+      <xs:enumeration value='SLE'/>
+      <xs:enumeration value='SMR'/>
+      <xs:enumeration value='SEN'/>
+      <xs:enumeration value='SOM'/>
+      <xs:enumeration value='SUR'/>
+      <xs:enumeration value='STP'/>
+      <xs:enumeration value='SLV'/>
+      <xs:enumeration value='SYR'/>
+      <xs:enumeration value='SWZ'/>
+      <xs:enumeration value='TCA'/>
+      <xs:enumeration value='TCD'/>
+      <xs:enumeration value='ATF'/>
+      <xs:enumeration value='TGO'/>
+      <xs:enumeration value='THA'/>
+      <xs:enumeration value='TZA'/>
+      <xs:enumeration value='TJK'/>
+      <xs:enumeration value='TKL'/>
+      <xs:enumeration value='TLS'/>
+      <xs:enumeration value='TKM'/>
+      <xs:enumeration value='TUN'/>
+      <xs:enumeration value='TON'/>
+      <xs:enumeration value='TUR'/>
+      <xs:enumeration value='TTO'/>
+      <xs:enumeration value='TUV'/>
+      <xs:enumeration value='TWN'/>
+      <xs:enumeration value='UKR'/>
+      <xs:enumeration value='UGA'/>
+      <xs:enumeration value='USA'/>
+      <xs:enumeration value='URY'/>
+      <xs:enumeration value='UZB'/>
+      <xs:enumeration value='VAT'/>
+      <xs:enumeration value='VCT'/>
+      <xs:enumeration value='VEN'/>
+      <xs:enumeration value='VGB'/>
+      <xs:enumeration value='VIR'/>
+      <xs:enumeration value='VNM'/>
+      <xs:enumeration value='VUT'/>
+      <xs:enumeration value='WLF'/>
+      <xs:enumeration value='WSM'/>
+      <xs:enumeration value='YEM'/>
+      <xs:enumeration value='MYT'/>
+      <xs:enumeration value='ZAF'/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name='CodMonedaInt'>
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Acrónimo de la moneda sumistrada en los modelos de información.
+        CRC = Colón Costarricense
+        USD = Dólares
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base='xs:string'>
+      <xs:enumeration value='AED'/>
+      <xs:enumeration value='AFN'/>
+      <xs:enumeration value='ALL'/>
+      <xs:enumeration value='AMD'/>
+      <xs:enumeration value='ANG'/>
+      <xs:enumeration value='AOA'/>
+      <xs:enumeration value='ARS'/>
+      <xs:enumeration value='AUD'/>
+      <xs:enumeration value='AWG'/>
+      <xs:enumeration value='AZN'/>
+      <xs:enumeration value='BAM'/>
+      <xs:enumeration value='BBD'/>
+      <xs:enumeration value='BDT'/>
+      <xs:enumeration value='BGN'/>
+      <xs:enumeration value='BHD'/>
+      <xs:enumeration value='BIF'/>
+      <xs:enumeration value='BMD'/>
+      <xs:enumeration value='BND'/>
+      <xs:enumeration value='BOB'/>
+      <xs:enumeration value='BOV'/>
+      <xs:enumeration value='BRL'/>
+      <xs:enumeration value='BSD'/>
+      <xs:enumeration value='BTN'/>
+      <xs:enumeration value='BWP'/>
+      <xs:enumeration value='BYR'/>
+      <xs:enumeration value='BZD'/>
+      <xs:enumeration value='CAD'/>
+      <xs:enumeration value='CDF'/>
+      <xs:enumeration value='CHE'/>
+      <xs:enumeration value='CHF'/>
+      <xs:enumeration value='CHW'/>
+      <xs:enumeration value='CLF'/>
+      <xs:enumeration value='CLP'/>
+      <xs:enumeration value='CNY'/>
+      <xs:enumeration value='COP'/>
+      <xs:enumeration value='COU'/>
+      <xs:enumeration value='CRC'/>
+      <xs:enumeration value='CUC'/>
+      <xs:enumeration value='CUP'/>
+      <xs:enumeration value='CVE'/>
+      <xs:enumeration value='CZK'/>
+      <xs:enumeration value='DJF'/>
+      <xs:enumeration value='DKK'/>
+      <xs:enumeration value='DOP'/>
+      <xs:enumeration value='DZD'/>
+      <xs:enumeration value='EEK'/>
+      <xs:enumeration value='EGP'/>
+      <xs:enumeration value='ERN'/>
+      <xs:enumeration value='ETB'/>
+      <xs:enumeration value='EUR'/>
+      <xs:enumeration value='FJD'/>
+      <xs:enumeration value='FKP'/>
+      <xs:enumeration value='GBP'/>
+      <xs:enumeration value='GEL'/>
+      <xs:enumeration value='GHS'/>
+      <xs:enumeration value='GIP'/>
+      <xs:enumeration value='GMD'/>
+      <xs:enumeration value='GNF'/>
+      <xs:enumeration value='GTQ'/>
+      <xs:enumeration value='GWP'/>
+      <xs:enumeration value='GYD'/>
+      <xs:enumeration value='HKD'/>
+      <xs:enumeration value='HNL'/>
+      <xs:enumeration value='HRK'/>
+      <xs:enumeration value='HTG'/>
+      <xs:enumeration value='HUF'/>
+      <xs:enumeration value='IDR'/>
+      <xs:enumeration value='ILS'/>
+      <xs:enumeration value='INR'/>
+      <xs:enumeration value='IQD'/>
+      <xs:enumeration value='IRR'/>
+      <xs:enumeration value='ISK'/>
+      <xs:enumeration value='JMD'/>
+      <xs:enumeration value='JOD'/>
+      <xs:enumeration value='JPY'/>
+      <xs:enumeration value='KES'/>
+      <xs:enumeration value='KGS'/>
+      <xs:enumeration value='KHR'/>
+      <xs:enumeration value='KMF'/>
+      <xs:enumeration value='KPW'/>
+      <xs:enumeration value='KRW'/>
+      <xs:enumeration value='KWD'/>
+      <xs:enumeration value='KYD'/>
+      <xs:enumeration value='KZT'/>
+      <xs:enumeration value='LAK'/>
+      <xs:enumeration value='LBP'/>
+      <xs:enumeration value='LKR'/>
+      <xs:enumeration value='LRD'/>
+      <xs:enumeration value='LSL'/>
+      <xs:enumeration value='LTL'/>
+      <xs:enumeration value='LVL'/>
+      <xs:enumeration value='LYD'/>
+      <xs:enumeration value='MAD'/>
+      <xs:enumeration value='MDL'/>
+      <xs:enumeration value='MGA'/>
+      <xs:enumeration value='MKD'/>
+      <xs:enumeration value='MMK'/>
+      <xs:enumeration value='MNT'/>
+      <xs:enumeration value='MOP'/>
+      <xs:enumeration value='MRO'/>
+      <xs:enumeration value='MUR'/>
+      <xs:enumeration value='MVR'/>
+      <xs:enumeration value='MWK'/>
+      <xs:enumeration value='MXN'/>
+      <xs:enumeration value='MXV'/>
+      <xs:enumeration value='MYR'/>
+      <xs:enumeration value='MZN'/>
+      <xs:enumeration value='NAD'/>
+      <xs:enumeration value='NGN'/>
+      <xs:enumeration value='NIO'/>
+      <xs:enumeration value='NOK'/>
+      <xs:enumeration value='NPR'/>
+      <xs:enumeration value='NZD'/>
+      <xs:enumeration value='OMR'/>
+      <xs:enumeration value='PAB'/>
+      <xs:enumeration value='PEN'/>
+      <xs:enumeration value='PGK'/>
+      <xs:enumeration value='PHP'/>
+      <xs:enumeration value='PKR'/>
+      <xs:enumeration value='PLN'/>
+      <xs:enumeration value='PYG'/>
+      <xs:enumeration value='QAR'/>
+      <xs:enumeration value='RON'/>
+      <xs:enumeration value='RSD'/>
+      <xs:enumeration value='RUB'/>
+      <xs:enumeration value='RWF'/>
+      <xs:enumeration value='SAR'/>
+      <xs:enumeration value='SBD'/>
+      <xs:enumeration value='SCR'/>
+      <xs:enumeration value='SDG'/>
+      <xs:enumeration value='SEK'/>
+      <xs:enumeration value='SGD'/>
+      <xs:enumeration value='SHP'/>
+      <xs:enumeration value='SLL'/>
+      <xs:enumeration value='SOS'/>
+      <xs:enumeration value='SRD'/>
+      <xs:enumeration value='STD'/>
+      <xs:enumeration value='SVC'/>
+      <xs:enumeration value='SYP'/>
+      <xs:enumeration value='SZL'/>
+      <xs:enumeration value='THB'/>
+      <xs:enumeration value='TJS'/>
+      <xs:enumeration value='TMT'/>
+      <xs:enumeration value='TND'/>
+      <xs:enumeration value='TOP'/>
+      <xs:enumeration value='TRY'/>
+      <xs:enumeration value='TTD'/>
+      <xs:enumeration value='TWD'/>
+      <xs:enumeration value='TZS'/>
+      <xs:enumeration value='UAH'/>
+      <xs:enumeration value='UDE'/>
+      <xs:enumeration value='UGX'/>
+      <xs:enumeration value='USD'/>
+      <xs:enumeration value='UYI'/>
+      <xs:enumeration value='UYU'/>
+      <xs:enumeration value='UZS'/>
+      <xs:enumeration value='VEF'/>
+      <xs:enumeration value='VND'/>
+      <xs:enumeration value='VUV'/>
+      <xs:enumeration value='WST'/>
+      <xs:enumeration value='XAF'/>
+      <xs:enumeration value='XCD'/>
+      <xs:enumeration value='XOF'/>
+      <xs:enumeration value='XPF'/>
+      <xs:enumeration value='YER'/>
+      <xs:enumeration value='ZAR'/>
+      <xs:enumeration value='ZMK'/>
+      <xs:enumeration value='ZWL'/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name='Canton'>
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Corresponde al código de cantones de Costa Rica.
+        101 = San José
+        102 = Escazú
+        103 = Desamparados
+        104 = Puriscal
+        105 = Tarrazú
+        106 = Aserrí
+        107 = Mora
+        108 = Goicoechea
+        109 = Santa Ana
+        110 = Alajuelita
+        111 = Vásquez de Coronado
+        112 = Acosta
+        113 = Tibás
+        114 = Moravia
+        115 = Montes de Oca
+        116 = Turrubares
+        117 = Dota
+        118 = Currridabat
+        119 = Pérez Zeledón
+        120 = León Cortés
+        201 = Alajuela
+        202 = San Ramón
+        203 = Grecia
+        204 = San Mateo
+        205 = Atenas
+        206 = Naranjo
+        207 = Palmares
+        208 = Poás
+        209 = Orotina
+        210 = San Carlos
+        211 = Alfaro Ruíz
+        212 = Valverde Vega
+        213 = Upala
+        214 = Los Chiles
+        215 = Guatuso
+        216 = Río Cuarto
+        301 = Cartago
+        302 = Paraíso
+        303 = La Unión
+        304 = Jiménez
+        305 = Turrialba
+        306 = Alvarado
+        307 = Oreamuno
+        308 = El Guarco
+        401 = Heredia
+        402 = Barva
+        403 = Santo Domingo
+        404 = Santa Bárbara
+        405 = San Rafael
+        406 = San Isidro
+        407 = Belén
+        408 = Flores
+        409 = San Pablo
+        410 = Sarapiquí
+        501 = Liberia
+        502 = Nicoya
+        503 = Santa Cruz
+        504 = Bagaces
+        505 = Carrillo
+        506 = Cañas
+        507 = Abangares
+        508 = Tilarán
+        509 = Nandayure
+        510 = La Cruz
+        511 = Hojancha
+        601 = Puntarenas
+        602 = Esparza
+        603 = Buenos Aires
+        604 = Montes de Oro
+        605 = Osa
+        606 = Aguirre
+        607 = Golfito
+        608 = Coto Brus
+        609 = Parrita
+        610 = Corredores
+        611 = Garabito
+        701 = Limón
+        702 = Pococí
+        703 = Siquirres
+        704 = Talamanca
+        705 = Matina
+        706 = Guácimo
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base='xs:integer'>
+      <xs:enumeration value='101'/>
+      <xs:enumeration value='102'/>
+      <xs:enumeration value='103'/>
+      <xs:enumeration value='104'/>
+      <xs:enumeration value='105'/>
+      <xs:enumeration value='106'/>
+      <xs:enumeration value='107'/>
+      <xs:enumeration value='108'/>
+      <xs:enumeration value='109'/>
+      <xs:enumeration value='110'/>
+      <xs:enumeration value='111'/>
+      <xs:enumeration value='112'/>
+      <xs:enumeration value='113'/>
+      <xs:enumeration value='114'/>
+      <xs:enumeration value='115'/>
+      <xs:enumeration value='116'/>
+      <xs:enumeration value='117'/>
+      <xs:enumeration value='118'/>
+      <xs:enumeration value='119'/>
+      <xs:enumeration value='120'/>
+      <xs:enumeration value='201'/>
+      <xs:enumeration value='202'/>
+      <xs:enumeration value='203'/>
+      <xs:enumeration value='204'/>
+      <xs:enumeration value='205'/>
+      <xs:enumeration value='206'/>
+      <xs:enumeration value='207'/>
+      <xs:enumeration value='208'/>
+      <xs:enumeration value='209'/>
+      <xs:enumeration value='210'/>
+      <xs:enumeration value='211'/>
+      <xs:enumeration value='212'/>
+      <xs:enumeration value='213'/>
+      <xs:enumeration value='214'/>
+      <xs:enumeration value='215'/>
+      <xs:enumeration value='216'/>
+      <xs:enumeration value='301'/>
+      <xs:enumeration value='302'/>
+      <xs:enumeration value='303'/>
+      <xs:enumeration value='304'/>
+      <xs:enumeration value='305'/>
+      <xs:enumeration value='306'/>
+      <xs:enumeration value='307'/>
+      <xs:enumeration value='308'/>
+      <xs:enumeration value='401'/>
+      <xs:enumeration value='402'/>
+      <xs:enumeration value='403'/>
+      <xs:enumeration value='404'/>
+      <xs:enumeration value='405'/>
+      <xs:enumeration value='406'/>
+      <xs:enumeration value='407'/>
+      <xs:enumeration value='408'/>
+      <xs:enumeration value='409'/>
+      <xs:enumeration value='410'/>
+      <xs:enumeration value='501'/>
+      <xs:enumeration value='502'/>
+      <xs:enumeration value='503'/>
+      <xs:enumeration value='504'/>
+      <xs:enumeration value='505'/>
+      <xs:enumeration value='506'/>
+      <xs:enumeration value='507'/>
+      <xs:enumeration value='508'/>
+      <xs:enumeration value='509'/>
+      <xs:enumeration value='510'/>
+      <xs:enumeration value='511'/>
+      <xs:enumeration value='601'/>
+      <xs:enumeration value='602'/>
+      <xs:enumeration value='603'/>
+      <xs:enumeration value='604'/>
+      <xs:enumeration value='605'/>
+      <xs:enumeration value='606'/>
+      <xs:enumeration value='607'/>
+      <xs:enumeration value='608'/>
+      <xs:enumeration value='609'/>
+      <xs:enumeration value='610'/>
+      <xs:enumeration value='611'/>
+      <xs:enumeration value='701'/>
+      <xs:enumeration value='702'/>
+      <xs:enumeration value='703'/>
+      <xs:enumeration value='704'/>
+      <xs:enumeration value='705'/>
+      <xs:enumeration value='706'/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Distritos">
+    <xs:annotation>
+      <xs:documentation xml:lang="es-cr">
+        10101	Carmen
+        10102	Merced
+        10103	Hospital
+        10104	Catedral
+        10105	Zapote
+        10106	San Francisco de Dos Ríos
+        10107	Uruca
+        10108	Mata Redonda
+        10109	Pavas
+        10110	Hatillo
+        10111	San Sebastián
+        10201	Escazú
+        10202	San Antonio
+        10203	San Rafael
+        10301	Desamparados
+        10302	San Miguel
+        10303	San Juan de Dios
+        10304	San Rafael Arriba
+        10305	San Antonio
+        10306	Frailes
+        10307	Patarrá
+        10308	San Cristóbal
+        10309	Rosario
+        10310	Damas
+        10311	San Rafael Abajo
+        10312	Gravilias
+        10313	Los Guido
+        10401	Santiago
+        10402	Mercedes Sur
+        10403	Barbacoas
+        10404	Grifo Alto
+        10405	San Rafael
+        10406	Candelarita
+        10407	Desamparaditos
+        10408	San Antonio
+        10409	Chires
+        10501	San Marcos
+        10502	San Lorenzo
+        10503	San Carlos
+        10601	Aserrí
+        10602	Tarbaca
+        10603	Vuelta de Jorco
+        10604	San Gabriel
+        10605	Legua
+        10606	Monterrey
+        10607	Salitrillos
+        10701	Colón
+        10702	Guayabo
+        10703	Tabarcia
+        10704	Piedras Negras
+        10705	Picagres
+        10706	Jaris
+        10707	Quitirrisí
+        10801	Guadalupe
+        10802	San Francisco
+        10803	Calle Blancos
+        10804	Mata de Plátano
+        10805	Ipís
+        10806	Rancho Redondo
+        10807	Purral
+        10901	Santa Ana
+        10902	Salitral
+        10903	Pozos
+        10904	Uruca
+        10905	Piedades
+        10906	Brasil
+        11001	Alajuelita
+        11002	San Josecito
+        11003	San Antonio
+        11004	Concepción
+        11005	San Felipe
+        11101	San Isidro
+        11102	San Rafael
+        11103	Dulce Nombre de Jesús
+        11104	Patalillo
+        11105	Cascajal
+        11201	San Ignacio
+        11202	Guaitíl
+        11203	Palmichal
+        11204	Cangrejal
+        11205	Sabanillas
+        11301	San Juan
+        11302	Cinco Esquinas
+        11303	Anselmo Llorente
+        11304	León XIII
+        11305	Colima
+        11401	San Vicente
+        11402	San Jerónimo
+        11403	La Trinidad
+        11501	San Pedro
+        11502	Sabanilla
+        11503	Mercedes
+        11504	San Rafael
+        11601	San Pablo
+        11602	San Pedro
+        11603	San Juan de Mata
+        11604	San Luis
+        11605	Carara
+        11701	Santa María
+        11702	Jardín
+        11703	Copey
+        11801	Curridabat
+        11802	Granadilla
+        11803	Sánchez
+        11804	Tirrases
+        11901	San Isidro de El General
+        11902	El General
+        11903	Daniel Flores
+        11904	Rivas
+        11905	San Pedro
+        11906	Platanares
+        11907	Pejibaye
+        11908	Cajón
+        11909	Barú
+        11910	Río Nuevo
+        11911	Páramo
+        11912	La Amistad
+        12001	San Pablo
+        12002	San Andrés
+        12003	Llano Bonito
+        12004	San Isidro
+        12005	Santa Cruz
+        12006	San Antonio
+        
+        20101	Alajuela
+        20102	San José
+        20103	Carrizal
+        20104	San Antonio
+        20105	Guácima
+        20106	San Isidro
+        20107	Sabanilla
+        20108	San Rafael
+        20109	Río Segundo
+        20110	Desamparados
+        20111	Turrúcares
+        20112	Tambor
+        20113	Garita
+        20114	Sarapiquí
+        20201	San Ramón
+        20202	Santiago
+        20203	San Juan
+        20204	Piedades Norte
+        20205	Piedades Sur
+        20206	San Rafael
+        20207	San Isidro
+        20208	Ángeles
+        20209	Alfaro
+        20210	Volio
+        20211	Concepción
+        20212	Zapotal
+        20213	Peñas Blancas
+        20214	San Lorenzo
+        20301	Grecia
+        20302	San Isidro
+        20303	San José
+        20304	San Roque
+        20305	Tacares
+        20307	Puente de Piedra
+        20308	Bolívar
+        20401	San Mateo
+        20402	Desmonte
+        20403	Jesús María
+        20404	Labrador
+        20501	Atenas
+        20502	Jesús
+        20503	Mercedes
+        20504	San Isidro
+        20505	Concepción
+        20506	San José
+        20507	Santa Eulalia
+        20508	Escobal
+        20601	Naranjo
+        20602	San Miguel
+        20603	San José
+        20604	Cirrí Sur
+        20605	San Jerónimo
+        20606	San Juan
+        20607	El Rosario
+        20608	Palmitos
+        20701	Palmares
+        20702	Zaragoza
+        20703	Buenas Aires
+        20704	Santiago
+        20705	Candelaria
+        20706	Esquipulas
+        20707	La Granja
+        20801	San Pedro
+        20802	San Juan
+        20803	San Rafael
+        20804	Carrillos
+        20805	Sabana Redonda
+        20901	Orotina
+        20902	El Mastate
+        20903	Hacienda Vieja
+        20904	Coyolar
+        20905	La Ceiba
+        21001	Quesada
+        21002	Florencia
+        21003	Buenavista
+        21004	Aguas Zarcas
+        21005	Venecia
+        21006	Pital
+        21007	La Fortuna
+        21008	La Tigra
+        21009	La Palmera
+        21010	Venado
+        21011	Cutris
+        21012	Monterrey
+        21013	Pocosol
+        21101	Zarcero
+        21102	Laguna
+        21103	Tapezco
+        21104	Guadalupe
+        21105	Palmira
+        21106	Zapote
+        21107	Brisas
+        21201	Sarchí Norte
+        21202	Sarchí Sur
+        21203	Toro Amarillo
+        21204	San Pedro
+        21205	Rodríguez
+        21301	Upala
+        21302	Aguas Claras
+        21303	San José o Pizote
+        21304	Bijagua
+        21305	Delicias
+        21306	Dos Ríos
+        21307	Yolillal
+        21308	Canalete
+        21401	Los Chiles
+        21402	Caño Negro
+        21403	El Amparo
+        21404	San Jorge
+        21501	San Rafael
+        21502	Buenavista
+        21503	Cote
+        21504	Katira
+        21601	Río Cuarto
+        21602	Santa Rita
+        21603	Santa Isabel
+        
+        30101	Oriental
+        30102	Occidental
+        30103	Carmen
+        30104	San Nicolás
+        30105	Aguacaliente o San Francisco
+        30106	Guadalupe o Arenilla
+        30107	Corralillo
+        30108	Tierra Blanca
+        30109	Dulce Nombre
+        30110	Llano Grande
+        30111	Quebradilla
+        30201	Paraíso
+        30202	Santiago
+        30203	Orosi
+        30204	Cachí
+        30205	Llanos de Santa Lucía
+        30301	Tres Ríos
+        30302	San Diego
+        30303	San Juan
+        30304	San Rafael
+        30305	Concepción
+        30306	Dulce Nombre
+        30307	San Ramón
+        30308	Río Azul
+        30401	Juan Viñas
+        30402	Tucurrique
+        30403	Pejibaye
+        30501	Turrialba
+        30502	La Suiza
+        30503	Peralta
+        30504	Santa Cruz
+        30505	Santa Teresita
+        30506	Pavones
+        30507	Tuis
+        30508	Tayutic
+        30509	Santa Rosa
+        30510	Tres Equis
+        30511	La Isabel
+        30512	El Chirripó
+        30601	Pacayas
+        30602	Cervantes
+        30603	Capellades
+        30701	San Rafael
+        30702	Cot
+        30703	Potrero Cerrado
+        30704	Cipreses
+        30705	Santa Rosa
+        30801	El Tejar
+        30802	San Isidro
+        30803	Tobosi
+        30804	Patio de Agua
+        
+        40101	Heredia
+        40102	Mercedes
+        40103	San Francisco
+        40104	Ulloa
+        40105	Varablanca
+        40201	Barva
+        40202	San Pedro
+        40203	San Pablo
+        40204	San Roque
+        40205	Santa Lucía
+        40206	San José de la Montaña
+        40301	Santo Domingo
+        40302	San Vicente
+        40303	San Miguel
+        40304	Paracito
+        40305	Santo Tomás
+        40306	Santa Rosa
+        40307	Tures
+        40308	Pará
+        40401	Santa Bárbara
+        40402	San Pedro
+        40403	San Juan
+        40404	Jesús
+        40405	Santo Domingo
+        40406	Purabá
+        40501	San Rafael
+        40502	San Josecito
+        40503	Santiago
+        40504	Los Ángeles
+        40505	Concepción
+        40601	San Isidro
+        40602	San José
+        40603	Concepción
+        40604	San Francisco
+        40701	San Antonio
+        40702	La Ribera
+        40703	La Asunción
+        40801	San Joaquín
+        40802	Barrantes
+        40803	Llorente
+        40901	San Pablo
+        40902	Rincón de Sabanilla
+        41001	Puerto Viejo
+        41002	La Virgen
+        41003	Las Horquetas
+        41004	Llanuras del Gaspar
+        41005	Cureña
+        
+        50101	Liberia
+        50102	Cañas Dulces
+        50103	Mayorga
+        50104	Nacascolo
+        50105	Curubandé
+        50201	Nicoya
+        50202	Mansión
+        50203	San Antonio
+        50204	Quebrada Honda
+        50205	Sámara
+        50206	Nosara
+        50207	Belén de Nosarita
+        50301	Santa Cruz
+        50302	Bolsón
+        50303	Veintisiete de Abril
+        50304	Tempate
+        50305	Cartagena
+        50306	Cuajiniquil
+        50307	Diriá
+        50308	Cabo Velas
+        50309	Tamarindo
+        50401	Bagaces
+        50402	La Fortuna
+        50403	Mogote
+        50404	Río Naranjo
+        50501	Filadelfia
+        50502	Palmira
+        50503	Sardinal
+        50504	Belén
+        50601	Cañas
+        50602	Palmira
+        50603	San Miguel
+        50604	Bebedero
+        50605	Porozal
+        50701	Las Juntas
+        50702	Sierra
+        50703	San Juan
+        50704	Colorado
+        50801	Tilarán
+        50802	Quebrada Grande
+        50803	Tronadora
+        50804	Santa Rosa
+        50805	Líbano
+        50806	Tierras Morenas
+        50807	Arenal
+        50901	Carmona
+        50902	Santa Rita
+        50903	Zapotal
+        50904	San Pablo
+        50905	Porvenir
+        50906	Bejuco
+        51001	La Cruz
+        51002	Santa Cecilia
+        51003	La Garita
+        51004	Santa Elena
+        51101	Hojancha
+        51102	Monte Romo
+        51103	Puerto Carrillo
+        51104	Huacas
+        51105	Matambú
+        
+        60101	Puntarenas
+        60102	Pitahaya
+        60103	Chomes
+        60104	Lepanto
+        60105	Paquera
+        60106	Manzanillo
+        60107	Guacimal
+        60108	Barranca
+        60109	Monte Verde
+        60110	Isla del Coco
+        60111	Cóbano
+        60112	Chacarita
+        60113	Chira
+        60114	Acapulco
+        60115	El Roble
+        60116	Arancibia
+        60201	Espíritu Santo
+        60202	San Juan Grande
+        60203	Macacona
+        60204	San Rafael
+        60205	San Jerónimo
+        60206	Caldera
+        60301	Buenos Aires
+        60302	Volcán
+        60303	Potrero Grande
+        60304	Boruca
+        60305	Pilas
+        60306	Colinas
+        60307	Chánguena
+        60308	Biolley
+        60309	Brunka
+        60401	Miramar
+        60402	La Unión
+        60403	San Isidro
+        60501	Puerto Cortés
+        60502	Palmar
+        60503	Sierpe
+        60504	Bahía Ballena
+        60505	Piedras Blancas
+        60506	Bahía Drake
+        60601	Quepos
+        60602	Savegre
+        60603	Naranjito
+        60701	Golfito
+        60702	Puerto Jiménez
+        60703	Guaycará
+        60704	Pavón
+        60801	San Vito
+        60802	Sabalito
+        60803	Aguabuena
+        60804	Limoncito
+        60805	Pittier
+        60806	Gutiérrez Braun
+        60901	Parrita
+        61001	Corredor
+        61002	La Cuesta
+        61003	Canoas
+        61004	Laurel
+        61101	Jacó
+        61102	Tárcoles
+        
+        70101	Limón
+        70102	Valle La Estrella
+        70103	Río Blanco
+        70104	Matama
+        70201	Guápiles
+        70202	Jiménez
+        70203	Rita
+        70204	Roxana
+        70205	Cariari
+        70206	Colorado
+        70207	La Colonia
+        70301	Siquirres
+        70302	Pacuarito
+        70303	Florida
+        70304	Germania
+        70305	El Cairo
+        70306	Alegría
+        70307	Reventazón
+        70401	Bratsi
+        70402	Sixaola
+        70403	Cahuita
+        70404	Telire
+        70501	Matima
+        70502	Batán
+        70503	Carrandí
+        70601	Guácimo
+        70602	Mercedes
+        70603	Pocora
+        70604	Río Jiménez
+        70605	Duacarí
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:integer">
+      <xs:enumeration value="10101" />
+      <xs:enumeration value="10102" />
+      <xs:enumeration value="10103" />
+      <xs:enumeration value="10104" />
+      <xs:enumeration value="10105" />
+      <xs:enumeration value="10106" />
+      <xs:enumeration value="10107" />
+      <xs:enumeration value="10108" />
+      <xs:enumeration value="10109" />
+      <xs:enumeration value="10110" />
+      <xs:enumeration value="10111" />
+      <xs:enumeration value="10201" />
+      <xs:enumeration value="10202" />
+      <xs:enumeration value="10203" />
+      <xs:enumeration value="10301" />
+      <xs:enumeration value="10302" />
+      <xs:enumeration value="10303" />
+      <xs:enumeration value="10304" />
+      <xs:enumeration value="10305" />
+      <xs:enumeration value="10306" />
+      <xs:enumeration value="10307" />
+      <xs:enumeration value="10308" />
+      <xs:enumeration value="10309" />
+      <xs:enumeration value="10310" />
+      <xs:enumeration value="10311" />
+      <xs:enumeration value="10312" />
+      <xs:enumeration value="10313" />
+      <xs:enumeration value="10401" />
+      <xs:enumeration value="10402" />
+      <xs:enumeration value="10403" />
+      <xs:enumeration value="10404" />
+      <xs:enumeration value="10405" />
+      <xs:enumeration value="10406" />
+      <xs:enumeration value="10407" />
+      <xs:enumeration value="10408" />
+      <xs:enumeration value="10409" />
+      <xs:enumeration value="10501" />
+      <xs:enumeration value="10502" />
+      <xs:enumeration value="10503" />
+      <xs:enumeration value="10601" />
+      <xs:enumeration value="10602" />
+      <xs:enumeration value="10603" />
+      <xs:enumeration value="10604" />
+      <xs:enumeration value="10605" />
+      <xs:enumeration value="10606" />
+      <xs:enumeration value="10607" />
+      <xs:enumeration value="10701" />
+      <xs:enumeration value="10702" />
+      <xs:enumeration value="10703" />
+      <xs:enumeration value="10704" />
+      <xs:enumeration value="10705" />
+      <xs:enumeration value="10706" />
+      <xs:enumeration value="10707" />
+      <xs:enumeration value="10801" />
+      <xs:enumeration value="10802" />
+      <xs:enumeration value="10803" />
+      <xs:enumeration value="10804" />
+      <xs:enumeration value="10805" />
+      <xs:enumeration value="10806" />
+      <xs:enumeration value="10807" />
+      <xs:enumeration value="10901" />
+      <xs:enumeration value="10902" />
+      <xs:enumeration value="10903" />
+      <xs:enumeration value="10904" />
+      <xs:enumeration value="10905" />
+      <xs:enumeration value="10906" />
+      <xs:enumeration value="11001" />
+      <xs:enumeration value="11002" />
+      <xs:enumeration value="11003" />
+      <xs:enumeration value="11004" />
+      <xs:enumeration value="11005" />
+      <xs:enumeration value="11101" />
+      <xs:enumeration value="11102" />
+      <xs:enumeration value="11103" />
+      <xs:enumeration value="11104" />
+      <xs:enumeration value="11105" />
+      <xs:enumeration value="11201" />
+      <xs:enumeration value="11202" />
+      <xs:enumeration value="11203" />
+      <xs:enumeration value="11204" />
+      <xs:enumeration value="11205" />
+      <xs:enumeration value="11301" />
+      <xs:enumeration value="11302" />
+      <xs:enumeration value="11303" />
+      <xs:enumeration value="11304" />
+      <xs:enumeration value="11305" />
+      <xs:enumeration value="11401" />
+      <xs:enumeration value="11402" />
+      <xs:enumeration value="11403" />
+      <xs:enumeration value="11501" />
+      <xs:enumeration value="11502" />
+      <xs:enumeration value="11503" />
+      <xs:enumeration value="11504" />
+      <xs:enumeration value="11601" />
+      <xs:enumeration value="11602" />
+      <xs:enumeration value="11603" />
+      <xs:enumeration value="11604" />
+      <xs:enumeration value="11605" />
+      <xs:enumeration value="11701" />
+      <xs:enumeration value="11702" />
+      <xs:enumeration value="11703" />
+      <xs:enumeration value="11801" />
+      <xs:enumeration value="11802" />
+      <xs:enumeration value="11803" />
+      <xs:enumeration value="11804" />
+      <xs:enumeration value="11901" />
+      <xs:enumeration value="11902" />
+      <xs:enumeration value="11903" />
+      <xs:enumeration value="11904" />
+      <xs:enumeration value="11905" />
+      <xs:enumeration value="11906" />
+      <xs:enumeration value="11907" />
+      <xs:enumeration value="11908" />
+      <xs:enumeration value="11909" />
+      <xs:enumeration value="11910" />
+      <xs:enumeration value="11911" />
+      <xs:enumeration value="11912" />
+      <xs:enumeration value="12001" />
+      <xs:enumeration value="12002" />
+      <xs:enumeration value="12003" />
+      <xs:enumeration value="12004" />
+      <xs:enumeration value="12005" />
+      <xs:enumeration value="12006" />
+      <xs:enumeration value="20101" />
+      <xs:enumeration value="20102" />
+      <xs:enumeration value="20103" />
+      <xs:enumeration value="20104" />
+      <xs:enumeration value="20105" />
+      <xs:enumeration value="20106" />
+      <xs:enumeration value="20107" />
+      <xs:enumeration value="20108" />
+      <xs:enumeration value="20109" />
+      <xs:enumeration value="20110" />
+      <xs:enumeration value="20111" />
+      <xs:enumeration value="20112" />
+      <xs:enumeration value="20113" />
+      <xs:enumeration value="20114" />
+      <xs:enumeration value="20201" />
+      <xs:enumeration value="20202" />
+      <xs:enumeration value="20203" />
+      <xs:enumeration value="20204" />
+      <xs:enumeration value="20205" />
+      <xs:enumeration value="20206" />
+      <xs:enumeration value="20207" />
+      <xs:enumeration value="20208" />
+      <xs:enumeration value="20209" />
+      <xs:enumeration value="20210" />
+      <xs:enumeration value="20211" />
+      <xs:enumeration value="20212" />
+      <xs:enumeration value="20213" />
+      <xs:enumeration value="20214" />
+      <xs:enumeration value="20301" />
+      <xs:enumeration value="20302" />
+      <xs:enumeration value="20303" />
+      <xs:enumeration value="20304" />
+      <xs:enumeration value="20305" />
+      <xs:enumeration value="20307" />
+      <xs:enumeration value="20308" />
+      <xs:enumeration value="20401" />
+      <xs:enumeration value="20402" />
+      <xs:enumeration value="20403" />
+      <xs:enumeration value="20404" />
+      <xs:enumeration value="20501" />
+      <xs:enumeration value="20502" />
+      <xs:enumeration value="20503" />
+      <xs:enumeration value="20504" />
+      <xs:enumeration value="20505" />
+      <xs:enumeration value="20506" />
+      <xs:enumeration value="20507" />
+      <xs:enumeration value="20508" />
+      <xs:enumeration value="20601" />
+      <xs:enumeration value="20602" />
+      <xs:enumeration value="20603" />
+      <xs:enumeration value="20604" />
+      <xs:enumeration value="20605" />
+      <xs:enumeration value="20606" />
+      <xs:enumeration value="20607" />
+      <xs:enumeration value="20608" />
+      <xs:enumeration value="20701" />
+      <xs:enumeration value="20702" />
+      <xs:enumeration value="20703" />
+      <xs:enumeration value="20704" />
+      <xs:enumeration value="20705" />
+      <xs:enumeration value="20706" />
+      <xs:enumeration value="20707" />
+      <xs:enumeration value="20801" />
+      <xs:enumeration value="20802" />
+      <xs:enumeration value="20803" />
+      <xs:enumeration value="20804" />
+      <xs:enumeration value="20805" />
+      <xs:enumeration value="20901" />
+      <xs:enumeration value="20902" />
+      <xs:enumeration value="20903" />
+      <xs:enumeration value="20904" />
+      <xs:enumeration value="20905" />
+      <xs:enumeration value="21001" />
+      <xs:enumeration value="21002" />
+      <xs:enumeration value="21003" />
+      <xs:enumeration value="21004" />
+      <xs:enumeration value="21005" />
+      <xs:enumeration value="21006" />
+      <xs:enumeration value="21007" />
+      <xs:enumeration value="21008" />
+      <xs:enumeration value="21009" />
+      <xs:enumeration value="21010" />
+      <xs:enumeration value="21011" />
+      <xs:enumeration value="21012" />
+      <xs:enumeration value="21013" />
+      <xs:enumeration value="21101" />
+      <xs:enumeration value="21102" />
+      <xs:enumeration value="21103" />
+      <xs:enumeration value="21104" />
+      <xs:enumeration value="21105" />
+      <xs:enumeration value="21106" />
+      <xs:enumeration value="21107" />
+      <xs:enumeration value="21201" />
+      <xs:enumeration value="21202" />
+      <xs:enumeration value="21203" />
+      <xs:enumeration value="21204" />
+      <xs:enumeration value="21205" />
+      <xs:enumeration value="21301" />
+      <xs:enumeration value="21302" />
+      <xs:enumeration value="21303" />
+      <xs:enumeration value="21304" />
+      <xs:enumeration value="21305" />
+      <xs:enumeration value="21306" />
+      <xs:enumeration value="21307" />
+      <xs:enumeration value="21308" />
+      <xs:enumeration value="21401" />
+      <xs:enumeration value="21402" />
+      <xs:enumeration value="21403" />
+      <xs:enumeration value="21404" />
+      <xs:enumeration value="21501" />
+      <xs:enumeration value="21502" />
+      <xs:enumeration value="21503" />
+      <xs:enumeration value="21504" />
+      <xs:enumeration value="21601" />
+      <xs:enumeration value="21602" />
+      <xs:enumeration value="21603" />
+      <xs:enumeration value="30101" />
+      <xs:enumeration value="30102" />
+      <xs:enumeration value="30103" />
+      <xs:enumeration value="30104" />
+      <xs:enumeration value="30105" />
+      <xs:enumeration value="30106" />
+      <xs:enumeration value="30107" />
+      <xs:enumeration value="30108" />
+      <xs:enumeration value="30109" />
+      <xs:enumeration value="30110" />
+      <xs:enumeration value="30111" />
+      <xs:enumeration value="30201" />
+      <xs:enumeration value="30202" />
+      <xs:enumeration value="30203" />
+      <xs:enumeration value="30204" />
+      <xs:enumeration value="30205" />
+      <xs:enumeration value="30301" />
+      <xs:enumeration value="30302" />
+      <xs:enumeration value="30303" />
+      <xs:enumeration value="30304" />
+      <xs:enumeration value="30305" />
+      <xs:enumeration value="30306" />
+      <xs:enumeration value="30307" />
+      <xs:enumeration value="30308" />
+      <xs:enumeration value="30401" />
+      <xs:enumeration value="30402" />
+      <xs:enumeration value="30403" />
+      <xs:enumeration value="30501" />
+      <xs:enumeration value="30502" />
+      <xs:enumeration value="30503" />
+      <xs:enumeration value="30504" />
+      <xs:enumeration value="30505" />
+      <xs:enumeration value="30506" />
+      <xs:enumeration value="30507" />
+      <xs:enumeration value="30508" />
+      <xs:enumeration value="30509" />
+      <xs:enumeration value="30510" />
+      <xs:enumeration value="30511" />
+      <xs:enumeration value="30512" />
+      <xs:enumeration value="30601" />
+      <xs:enumeration value="30602" />
+      <xs:enumeration value="30603" />
+      <xs:enumeration value="30701" />
+      <xs:enumeration value="30702" />
+      <xs:enumeration value="30703" />
+      <xs:enumeration value="30704" />
+      <xs:enumeration value="30705" />
+      <xs:enumeration value="30801" />
+      <xs:enumeration value="30802" />
+      <xs:enumeration value="30803" />
+      <xs:enumeration value="30804" />
+      <xs:enumeration value="40101" />
+      <xs:enumeration value="40102" />
+      <xs:enumeration value="40103" />
+      <xs:enumeration value="40104" />
+      <xs:enumeration value="40105" />
+      <xs:enumeration value="40201" />
+      <xs:enumeration value="40202" />
+      <xs:enumeration value="40203" />
+      <xs:enumeration value="40204" />
+      <xs:enumeration value="40205" />
+      <xs:enumeration value="40206" />
+      <xs:enumeration value="40301" />
+      <xs:enumeration value="40302" />
+      <xs:enumeration value="40303" />
+      <xs:enumeration value="40304" />
+      <xs:enumeration value="40305" />
+      <xs:enumeration value="40306" />
+      <xs:enumeration value="40307" />
+      <xs:enumeration value="40308" />
+      <xs:enumeration value="40401" />
+      <xs:enumeration value="40402" />
+      <xs:enumeration value="40403" />
+      <xs:enumeration value="40404" />
+      <xs:enumeration value="40405" />
+      <xs:enumeration value="40406" />
+      <xs:enumeration value="40501" />
+      <xs:enumeration value="40502" />
+      <xs:enumeration value="40503" />
+      <xs:enumeration value="40504" />
+      <xs:enumeration value="40505" />
+      <xs:enumeration value="40601" />
+      <xs:enumeration value="40602" />
+      <xs:enumeration value="40603" />
+      <xs:enumeration value="40604" />
+      <xs:enumeration value="40701" />
+      <xs:enumeration value="40702" />
+      <xs:enumeration value="40703" />
+      <xs:enumeration value="40801" />
+      <xs:enumeration value="40802" />
+      <xs:enumeration value="40803" />
+      <xs:enumeration value="40901" />
+      <xs:enumeration value="40902" />
+      <xs:enumeration value="41001" />
+      <xs:enumeration value="41002" />
+      <xs:enumeration value="41003" />
+      <xs:enumeration value="41004" />
+      <xs:enumeration value="41005" />
+      <xs:enumeration value="50101" />
+      <xs:enumeration value="50102" />
+      <xs:enumeration value="50103" />
+      <xs:enumeration value="50104" />
+      <xs:enumeration value="50105" />
+      <xs:enumeration value="50201" />
+      <xs:enumeration value="50202" />
+      <xs:enumeration value="50203" />
+      <xs:enumeration value="50204" />
+      <xs:enumeration value="50205" />
+      <xs:enumeration value="50206" />
+      <xs:enumeration value="50207" />
+      <xs:enumeration value="50301" />
+      <xs:enumeration value="50302" />
+      <xs:enumeration value="50303" />
+      <xs:enumeration value="50304" />
+      <xs:enumeration value="50305" />
+      <xs:enumeration value="50306" />
+      <xs:enumeration value="50307" />
+      <xs:enumeration value="50308" />
+      <xs:enumeration value="50309" />
+      <xs:enumeration value="50401" />
+      <xs:enumeration value="50402" />
+      <xs:enumeration value="50403" />
+      <xs:enumeration value="50404" />
+      <xs:enumeration value="50501" />
+      <xs:enumeration value="50502" />
+      <xs:enumeration value="50503" />
+      <xs:enumeration value="50504" />
+      <xs:enumeration value="50601" />
+      <xs:enumeration value="50602" />
+      <xs:enumeration value="50603" />
+      <xs:enumeration value="50604" />
+      <xs:enumeration value="50605" />
+      <xs:enumeration value="50701" />
+      <xs:enumeration value="50702" />
+      <xs:enumeration value="50703" />
+      <xs:enumeration value="50704" />
+      <xs:enumeration value="50801" />
+      <xs:enumeration value="50802" />
+      <xs:enumeration value="50803" />
+      <xs:enumeration value="50804" />
+      <xs:enumeration value="50805" />
+      <xs:enumeration value="50806" />
+      <xs:enumeration value="50807" />
+      <xs:enumeration value="50901" />
+      <xs:enumeration value="50902" />
+      <xs:enumeration value="50903" />
+      <xs:enumeration value="50904" />
+      <xs:enumeration value="50905" />
+      <xs:enumeration value="50906" />
+      <xs:enumeration value="51001" />
+      <xs:enumeration value="51002" />
+      <xs:enumeration value="51003" />
+      <xs:enumeration value="51004" />
+      <xs:enumeration value="51101" />
+      <xs:enumeration value="51102" />
+      <xs:enumeration value="51103" />
+      <xs:enumeration value="51104" />
+      <xs:enumeration value="51105" />
+      <xs:enumeration value="60101" />
+      <xs:enumeration value="60102" />
+      <xs:enumeration value="60103" />
+      <xs:enumeration value="60104" />
+      <xs:enumeration value="60105" />
+      <xs:enumeration value="60106" />
+      <xs:enumeration value="60107" />
+      <xs:enumeration value="60108" />
+      <xs:enumeration value="60109" />
+      <xs:enumeration value="60110" />
+      <xs:enumeration value="60111" />
+      <xs:enumeration value="60112" />
+      <xs:enumeration value="60113" />
+      <xs:enumeration value="60114" />
+      <xs:enumeration value="60115" />
+      <xs:enumeration value="60116" />
+      <xs:enumeration value="60201" />
+      <xs:enumeration value="60202" />
+      <xs:enumeration value="60203" />
+      <xs:enumeration value="60204" />
+      <xs:enumeration value="60205" />
+      <xs:enumeration value="60206" />
+      <xs:enumeration value="60301" />
+      <xs:enumeration value="60302" />
+      <xs:enumeration value="60303" />
+      <xs:enumeration value="60304" />
+      <xs:enumeration value="60305" />
+      <xs:enumeration value="60306" />
+      <xs:enumeration value="60307" />
+      <xs:enumeration value="60308" />
+      <xs:enumeration value="60309" />
+      <xs:enumeration value="60401" />
+      <xs:enumeration value="60402" />
+      <xs:enumeration value="60403" />
+      <xs:enumeration value="60501" />
+      <xs:enumeration value="60502" />
+      <xs:enumeration value="60503" />
+      <xs:enumeration value="60504" />
+      <xs:enumeration value="60505" />
+      <xs:enumeration value="60506" />
+      <xs:enumeration value="60601" />
+      <xs:enumeration value="60602" />
+      <xs:enumeration value="60603" />
+      <xs:enumeration value="60701" />
+      <xs:enumeration value="60702" />
+      <xs:enumeration value="60703" />
+      <xs:enumeration value="60704" />
+      <xs:enumeration value="60801" />
+      <xs:enumeration value="60802" />
+      <xs:enumeration value="60803" />
+      <xs:enumeration value="60804" />
+      <xs:enumeration value="60805" />
+      <xs:enumeration value="60806" />
+      <xs:enumeration value="60901" />
+      <xs:enumeration value="61001" />
+      <xs:enumeration value="61002" />
+      <xs:enumeration value="61003" />
+      <xs:enumeration value="61004" />
+      <xs:enumeration value="61101" />
+      <xs:enumeration value="61102" />
+      <xs:enumeration value="70101" />
+      <xs:enumeration value="70102" />
+      <xs:enumeration value="70103" />
+      <xs:enumeration value="70104" />
+      <xs:enumeration value="70201" />
+      <xs:enumeration value="70202" />
+      <xs:enumeration value="70203" />
+      <xs:enumeration value="70204" />
+      <xs:enumeration value="70205" />
+      <xs:enumeration value="70206" />
+      <xs:enumeration value="70207" />
+      <xs:enumeration value="70301" />
+      <xs:enumeration value="70302" />
+      <xs:enumeration value="70303" />
+      <xs:enumeration value="70304" />
+      <xs:enumeration value="70305" />
+      <xs:enumeration value="70306" />
+      <xs:enumeration value="70307" />
+      <xs:enumeration value="70401" />
+      <xs:enumeration value="70402" />
+      <xs:enumeration value="70403" />
+      <xs:enumeration value="70404" />
+      <xs:enumeration value="70501" />
+      <xs:enumeration value="70502" />
+      <xs:enumeration value="70503" />
+      <xs:enumeration value="70601" />
+      <xs:enumeration value="70602" />
+      <xs:enumeration value="70603" />
+      <xs:enumeration value="70604" />
+      <xs:enumeration value="70605" />
+    </xs:restriction>
+   </xs:simpleType>
+</xs:schema>
+

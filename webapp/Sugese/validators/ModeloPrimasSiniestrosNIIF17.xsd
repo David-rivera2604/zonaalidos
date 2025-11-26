@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:iso="urn:cap:ties:isosugesetypes:v1" xmlns:dat="urn:cap:ties:datsugesetypes:v2">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="SugeseTypesNIIF17.xsd"/>
+  <xs:import namespace="urn:cap:ties:isosugesetypes:v1" schemaLocation="IsoSugeseTypesNIIF17.xsd"/>
+  <xs:import namespace="urn:cap:ties:datsugesetypes:v2" schemaLocation="DatSugeseTypesV2NIIF17.xsd"/>
+  <xs:include schemaLocation="SugeseComplexTypesNIIF17.xsd"/>
+  <xs:element name="ModeloPrimasSiniestros">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo"/>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PrimasYSiniestralidad">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="SegurosPersonales" minOccurs="0" nillable="true">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Ramo" maxOccurs ="unbounded">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="IngresosPorPrimas" type="res:Monto" minOccurs="0" nillable="true" />
+                                      <xs:element name="Siniestralidad" type="res:Monto" minOccurs="0" nillable="true" />
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamo" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="SubtotalSegurosPersonalesIngresosPorPrimas" type="res:Monto" />
+                              <xs:attribute name="SubtotalSegurosPersonalesSiniestralidad" type="res:Monto" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="SegurosGenerales" minOccurs="0" nillable="true">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Ramo" maxOccurs ="unbounded">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="IngresosPorPrimas" type="res:Monto" minOccurs="0" nillable="true" />
+                                      <xs:element name="Siniestralidad" type="res:Monto" minOccurs="0" nillable="true" />
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamo" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="SubtotalSegurosGeneralesIngresosPorPrimas" type="res:Monto" />
+                              <xs:attribute name="SubtotalSegurosGeneralesSiniestralidad" type="res:Monto" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalIngresosPorPrimas" type="res:Monto" use="required" />
+                        <xs:attribute name="TotalSiniestralidad" type="res:Monto" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

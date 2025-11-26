@@ -7,6 +7,7 @@ Imports Architect.Sugese.Domain
 Imports Architect.Sugese.Utility
 
 Public Class Generate
+    Inherits Architect.Sugese.Domain.GenerateBase
 
     Private _InversionesFinancieras As New InversionesFinancieras.ModeloInversionesFinancieras
 

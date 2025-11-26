@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dat="urn:cap:ties:datsugesetypes:v1" xmlns:res="urn:cap:ties:ressugesetypes:v1" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="Tipos/SugeseTypes.xsd"/>
+  <xs:import namespace="urn:cap:ties:datsugesetypes:v1" schemaLocation="Tipos/DatSugeseTypes.xsd"/>
+  <xs:include schemaLocation="Tipos/SugeseComplexTypes.xsd"/>
+  <xs:element name="ModeloRunOff">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo"/>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Siniestros">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="PendInicioEjercicioPendCierrePeriodo">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="DesglosePendInicioEjercicioPendCierrePeriodoRamo">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="NumSiniestros" type="res:MontoPositivo"/>
+                                      <xs:element name="ImportePagadoComienzo" type="res:Monto"/>
+                                      <xs:element name="ProvisionComienzo" type="res:MontoPositivo"/>
+                                      <xs:element name="ImportePagadoPeriodo" type="res:Monto"/>
+                                      <xs:element name="ProvisionCierrePeriodo" type="res:MontoPositivo"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamo" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalNumSiniestros" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalImportePagadoComienzo" type="res:Monto" use="required"/>
+                              <xs:attribute name="TotalProvisionComienzo" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalImportePagadoPeriodo" type="res:Monto" use="required"/>
+                              <xs:attribute name="TotalProvisionCierrePeriodo" type="res:MontoPositivo" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="PendInicioEjercicioTermCierrePeriodo">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="DesglosePendInicioEjercicioTermCierrePeriodoRamo">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="NumSiniestrosConPago" type="res:MontoPositivo"/>
+                                      <xs:element name="NumSiniestrosSinPago" type="res:MontoPositivo"/>
+                                      <xs:element name="ImportePagadoComienzo" type="res:Monto"/>
+                                      <xs:element name="ProvisionComienzo" type="res:MontoPositivo"/>
+                                      <xs:element name="ImportePagadoPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamo" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalNumSiniestrosConPago" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalNumSiniestrosSinPago" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalImportePagadoComienzo" type="res:Monto" use="required"/>
+                              <xs:attribute name="TotalProvisionComienzo" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalImportePagadoPeriodo" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="OcurridosPeriodoPendientesCierrePeriodo">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="DesgloseOcurridosPeriodoPendientesCierrePeriodoRamo">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="NumSiniestros" type="res:MontoPositivo"/>
+                                      <xs:element name="ImportePagado" type="res:Monto"/>
+                                      <xs:element name="ProvisionCierre" type="res:MontoPositivo"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamo" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalNumSiniestros" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalImportePagado" type="res:Monto" use="required"/>
+                              <xs:attribute name="TotalProvisionCierre" type="res:MontoPositivo" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="OcurridosPeriodoTerminadosPeriodo">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="DesgloseOcurridosPeriodoTerminadosPeriodoRamo">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="NumSiniestrosConPago" type="res:MontoPositivo"/>
+                                      <xs:element name="NumSiniestrosSinPago" type="res:MontoPositivo"/>
+                                      <xs:element name="ImportePagado" type="res:Monto"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamo" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalNumSiniestrosConPago" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalNumSiniestrosSinPago" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalImportePagado" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="PendientesDeclaracion">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="DesglosePendientesDeclaracionRamo">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="ProvisionOYNRComienzoEjercicio" type="res:MontoPositivo"/>
+                                      <xs:element name="ProvisionOYNRResidualCierre" type="res:MontoPositivo"/>
+                                      <xs:element name="ProvisionOYNRCierrePeriodo" type="res:MontoPositivo"/>
+                                      <xs:element name="PendCierreNumSiniestros" type="res:MontoPositivo"/>
+                                      <xs:element name="PendCierreImportePagadoPeriodo" type="res:Monto"/>
+                                      <xs:element name="PendCierreProvisionCierre" type="res:MontoPositivo"/>
+                                      <xs:element name="TermPeriodoNumSiniestrosConPago" type="res:MontoPositivo"/>
+                                      <xs:element name="TermPeriodoNumSiniestrosSinPago" type="res:MontoPositivo"/>
+                                      <xs:element name="TermPeriodoImportePagado" type="res:Monto"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamo" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalProvisionOYNRComienzoPeriodo" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalProvisionOYNRResidualCierre" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalProvisionOYNRCierrePeriodo" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalPendCierreNumSiniestros" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalPendCierreImportePagadoPeriodo" type="res:Monto" use="required"/>
+                              <xs:attribute name="TotalPendCierreProvisionCierre" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalTermPeriodoNumSiniestrosConPago" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalTermPeriodoNumSiniestrosSinPago" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="TotalTermPeriodoImportePagado" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PrimasYProvisionPrimasNoDevengadas">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="DesglosePrimasYProvisionPrimasNoDevengadasRamo">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="PrimasEmitidas" type="res:MontoPositivo"/>
+                                <xs:element name="PrimasAnuladas" type="res:MontoPositivo"/>
+                                <xs:element name="PrimasNoRenovadas" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionComienzo" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionCierre" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                              <xs:attribute name="id" type="dat:TipoRamo" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPrimasEmitidas" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalPrimasAnuladas" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalPrimasNoRenovadas" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalProvisionComienzo" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalProvisionCierre" type="res:MontoPositivo" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PolizasPeriodo">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="DesglosePolizasPeriodoRamo">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="ExistentesInicio" type="res:MontoPositivo"/>
+                                <xs:element name="EmitidasPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="AnuladasPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="NoRenovadasPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="ExistentesCierre" type="res:MontoPositivo"/>
+                                <xs:element name="VencidasPeriodo" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                              <xs:attribute name="id" type="dat:TipoRamo" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalExistentesInicio" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalEmitidasPeriodo" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalAnuladasPeriodo" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalNoRenovadasPeriodo" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalExistentesCierre" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalVencidasPeriodo" type="res:MontoPositivo" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Suficiencia">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="1" name="AnnoActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Anno" type="res:Anno"/>
+                                <xs:element name="ImportePagado" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionFinalPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="RecobrosEfectuados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReportados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReabiertos" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosPendientes" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="1" name="AnnoActualMenosUno">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Anno" type="res:Anno"/>
+                                <xs:element name="ImportePagado" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionFinalPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="RecobrosEfectuados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReportados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReabiertos" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosPendientes" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="1" name="AnnoActualMenosDos">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Anno" type="res:Anno"/>
+                                <xs:element name="ImportePagado" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionFinalPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="RecobrosEfectuados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReportados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReabiertos" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosPendientes" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="1" name="AnnoActualMenosTres">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Anno" type="res:Anno"/>
+                                <xs:element name="ImportePagado" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionFinalPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="RecobrosEfectuados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReportados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReabiertos" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosPendientes" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="1" name="AnnoActualMenosCuatro">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Anno" type="res:Anno"/>
+                                <xs:element name="ImportePagado" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionFinalPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="RecobrosEfectuados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReportados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReabiertos" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosPendientes" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="1" name="AnnoActualMenosCinco">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Anno" type="res:Anno"/>
+                                <xs:element name="ImportePagado" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionFinalPeriodo" type="res:MontoPositivo"/>
+                                <xs:element name="RecobrosEfectuados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReportados" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosReabiertos" type="res:MontoPositivo"/>
+                                <xs:element name="NumSiniestrosPendientes" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ModeloEstadistico">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="DesgloseModeloEstadisticoPorRamo">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="AjusteModeloEstadistico" type="res:MontoPositivo"/>
+                                <xs:element name="ProvisionSiniestrosReportadosAlCierre" type="res:MontoPositivo"/>
+                              </xs:sequence>
+                              <xs:attribute name="id" type="dat:TipoRamo" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalAjusteModeloEstadistico" type="res:MontoPositivo" use="required"/>
+                        <xs:attribute name="TotalProvisionSiniestrosReportadosAlCierre" type="res:MontoPositivo" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

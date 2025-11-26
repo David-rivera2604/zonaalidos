@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="urn:cap:ties:datsugesetypes:v1" xmlns:dat="urn:cap:ties:datsugesetypes:v1" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="TipoRamoGenerales">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Código del tipo de ramo de seguros generales sumistradados en los modelos de información.
+        G01 = Automóvil
+        G02 = Vehículos marítimos
+        G03 = Aviación
+        G04 = Vehículos ferroviarios
+        G05 = Mercancías transportadas
+        G06 = Incendio y líneas aliadas
+        G07 = Otros daños a los bienes
+        G08 = Responsabilidad civil
+        G09 = Crédito
+        G10 = Caución
+        G11 = Pérdidas pecuniarias
+        G12 = Agrícolas y pecuarios
+        G17 = Seguro Obligatorio de Automóviles (SOA)
+        G21 = Asistencias - Generales
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value='G01'/>
+      <xs:enumeration value='G02'/>
+      <xs:enumeration value='G03'/>
+      <xs:enumeration value='G04'/>
+      <xs:enumeration value='G05'/>
+      <xs:enumeration value='G06'/>
+      <xs:enumeration value='G07'/>
+      <xs:enumeration value='G08'/>
+      <xs:enumeration value='G09'/>
+      <xs:enumeration value='G10'/>
+      <xs:enumeration value='G11'/>
+      <xs:enumeration value='G12'/>
+      <xs:enumeration value='G17'/>
+      <xs:enumeration value='G21'/>
+	  <xs:enumeration value='G24'/>	  
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TipoRamoPersonales">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Código del tipo de ramo de seguros personales sumistradados en los modelos de información.
+        P14 = Vida
+        P15 = Rentas
+        P18 = Seguro Obligatorio de Riesgos del Trabajo (SRT)
+        P19 = Accidentes
+        P20 = Salud
+        P22 = Asistencias - Personales
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value='P14'/>
+      <xs:enumeration value='P15'/>
+      <xs:enumeration value='P18'/>
+      <xs:enumeration value='P19'/>
+      <xs:enumeration value='P20'/>
+      <xs:enumeration value='P22'/>
+      <xs:enumeration value='P25'/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TipoRamo">
+    <xs:annotation>
+      <xs:documentation xml:lang="es">
+        Código del tipo de ramo sumistradado (Generales o Personales) en los modelos de información.
+        G01 = Automóvil
+        G02 = Vehículos marítimos
+        G03 = Aviación
+        G04 = Vehículos ferroviarios
+        G05 = Mercancías transportadas
+        G06 = Incendio y líneas aliadas
+        G07 = Otros daños a los bienes
+        G08 = Responsabilidad civil
+        G09 = Crédito
+        G10 = Caución
+        G11 = Pérdidas pecuniarias
+        G12 = Agrícolas y pecuarios
+        G17 = Seguro Obligatorio de Automóviles (SOA)
+        G21 = Asistencias - Generales
+        P14 = Vida
+        P15 = Rentas
+        P18 = Seguro Obligatorio de Riesgos del Trabajo (SRT)
+        P19 = Accidentes
+        P20 = Salud
+        P22 = Asistencias - Personales
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value='G01'/>
+      <xs:enumeration value='G02'/>
+      <xs:enumeration value='G03'/>
+      <xs:enumeration value='G04'/>
+      <xs:enumeration value='G05'/>
+      <xs:enumeration value='G06'/>
+      <xs:enumeration value='G07'/>
+      <xs:enumeration value='G08'/>
+      <xs:enumeration value='G09'/>
+      <xs:enumeration value='G10'/>
+      <xs:enumeration value='G11'/>
+      <xs:enumeration value='G12'/>
+      <xs:enumeration value='G17'/>
+      <xs:enumeration value='G21'/>
+      <xs:enumeration value='G24'/>	  
+      <xs:enumeration value='P14'/>
+      <xs:enumeration value='P15'/>
+      <xs:enumeration value='P18'/>
+      <xs:enumeration value='P19'/>
+      <xs:enumeration value='P20'/>
+      <xs:enumeration value='P22'/>
+      <xs:enumeration value='P25'/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Linea">
+    <xs:annotation>
+      <xs:documentation>
+        Códigos de las líneas de para el ramo G06 (Incendios)
+        G0668 = Incendio Industrial
+        G0669 = Incendio Comercial
+        G0670 = Incendio Hogar
+        G0671 = Incendio Catastrófico
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="G0668"/>
+      <xs:enumeration value="G0669"/>
+      <xs:enumeration value="G0670"/>
+      <xs:enumeration value="G0671"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Corredora">
+    <xs:annotation>
+      <xs:documentation>
+        Códigos equivalentes a las corredores de seguros.
+        SC09101 =	BCR Corredora de Seguros, S.A.
+        SC09102 =	BN Sociedad Corredora de Seguros, S.A.
+        SC10103 =	Avanto Correduría de Seguros, S.A.
+        SC10104 = UNICEN Corredora de Seguros S.A.
+        SC10105 =	CONFIA Sociedad Corredora de Seguros, S.A.
+        SC10106 =	UNITY Corredores de Seguros, S.A.
+        SC11107 = CRS Sociedad Corredora de Seguros S.A.
+        SC11108 = ASPROSE Corredora de Seguros  S.A.
+        SC11109 = Somit Corredores de Seguros, S.A (Antes Grupo AISFA)
+        SC11110 = IBG Corrduría de Seguros, S.A.
+        SC11111 = Comercial de Seguros Corredores de Seguros, S.A.
+        SC12112 = AF Corredora de  Seguros, S.A.
+        SC12113 = Correduria de Seguros Metropolitanos S.A.
+        SC12114 = Scotia Corredora de Seguros S.A.
+        SC12115 = Uniserse Correduría de Seguros S.A.
+        SC12116 = BAC Credomatic Corredora de Seguros, S.A.
+        SC13117 = Mutual Seguros Sociedad Corredora de Seguros, S.A.
+        SC13118 = CSS Corredores de Seguros, S.A.
+        SC14119 = Prisma Corredora de Seguros S.A..
+        SC14120 = Essential Corredora de Seguros S.A.
+        SC15121 = Protección Total Correduría de Seguros, S.A.
+        SC16122 = Corredora de Seguros Grupo Soluciones Integrales, S.A.
+        SC16123 = Prointel Corredores de Seguros S.A.
+        SC16124	= Sinergia Correduría de Seguros S.A.
+        SC16125	= Coopenae Correduría de Seguros s.a.
+        SC16126	= Davivienda Corredora de Seguros, S.A..
+        SC17127	= Innova Sociedad Corredora de Seguros, S.A.
+        SC17128	= Akros Corredores de Seguros S.A.
+        SC18129 = Improsa Corredora de Seguros S.A.
+        SC18130 = Martha Mora &amp; Corredores de Seguros, S.A.
+        SC18131 = Coopeservidores Corredora de Seguros, S.A.
+        SC19132 = Interseguros Corredora de Seguros S.A.
+		SC20133 = Popular Seguros Corredores de Seguros S.A.
+        SC21134 = Sociedad Purdy Corredora de Seguros S.A.		
+		SC21135 = Dinamica Corredora de Seguros, S.A.		
+		SC22136 = SOCIEDAD CORREDORA DE SEGUROS UNISEGUROS
+		SC23137 = DESYFIN CORREDORA DE SEGUROS S.A.
+		SC23138 = MONGE CORREDORA DE SEGUOS S.A.		
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SC09101"/>
+      <xs:enumeration value="SC09102"/>
+      <xs:enumeration value="SC10103"/>
+      <xs:enumeration value="SC10104"/>
+      <xs:enumeration value="SC10105"/>
+      <xs:enumeration value="SC10106"/>
+      <xs:enumeration value="SC11107"/>
+      <xs:enumeration value="SC11108"/>
+      <xs:enumeration value="SC11109"/>
+      <xs:enumeration value="SC11110"/>
+      <xs:enumeration value="SC11111"/>
+      <xs:enumeration value="SC12112"/>
+      <xs:enumeration value="SC12113"/>
+      <xs:enumeration value="SC12114"/>
+      <xs:enumeration value="SC12115"/>
+      <xs:enumeration value="SC12116"/>
+      <xs:enumeration value="SC13117"/>
+      <xs:enumeration value="SC13118"/>
+      <xs:enumeration value="SC14119"/>
+      <xs:enumeration value="SC14120"/>
+      <xs:enumeration value="SC15121"/>
+      <xs:enumeration value="SC16122"/>
+      <xs:enumeration value="SC16123"/>
+      <xs:enumeration value="SC16124"/>
+      <xs:enumeration value="SC16125"/>
+      <xs:enumeration value="SC16126"/>
+      <xs:enumeration value="SC17127"/>
+      <xs:enumeration value="SC17128"/>
+      <xs:enumeration value="SC18129"/>
+      <xs:enumeration value="SC18130"/>
+      <xs:enumeration value="SC18131"/>
+      <xs:enumeration value="SC19132"/>
+	  <xs:enumeration value="SC20133"/>
+      <xs:enumeration value="SC21134"/>	  
+	  <xs:enumeration value="SC21135"/>
+	  <xs:enumeration value="SC22136"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

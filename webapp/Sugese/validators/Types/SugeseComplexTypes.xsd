@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" xmlns:res="urn:cap:ties:ressugesetypes:v1" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="http://localhost/Sugese/Sugese.Ges.Cap.Aseguradora.SI/Esquemas/SugeseTypes.xsd"/>
+  
+  <xs:complexType name="EncabezadoTipo">
+    <xs:sequence>     
+      <xs:element name="NombreArchivo" type="res:TextoNoVacio" maxOccurs="1" nillable="false" minOccurs="1"/>
+      <xs:element name="Fecha" type="res:Fecha" maxOccurs="1" nillable="false" minOccurs="1"/>
+      <xs:element name="Periodo" type="res:Fecha" maxOccurs="1" nillable="false" minOccurs="1" />
+      <xs:element name="Periodicidad" type="res:Periodicidad" maxOccurs="1" nillable="false" minOccurs="1" />
+      <xs:element name="Moneda" type="res:CodMoneda" maxOccurs="1" nillable="false" minOccurs="1" />
+      <xs:element name="Prueba" type="xs:boolean" nillable="true" maxOccurs="1" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

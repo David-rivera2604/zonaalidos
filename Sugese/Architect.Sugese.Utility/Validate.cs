@@ -60,7 +60,7 @@ namespace Architect.Sugese.Utility
             var booksSettings = new XmlReaderSettings();
             var result = new List<string>();
 
-            booksSettings.Schemas.Add("", string.Format(@"{0}\sugese\validators\{1}.xsd", ConfigurationManager.AppSettings["Path.App"], xsdfilename));
+            booksSettings.Schemas.Add("", $@"{ConfigurationManager.AppSettings["Path.App"]}\sugese\validators\{xsdfilename}.xsd");
             booksSettings.ValidationType = ValidationType.Schema;
 
             // AddHandler booksSettings.ValidationEventHandler, AddressOf booksSettingsValidationEventHandler

@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data;
-using System.Configuration;
-using ClosedXML.Excel;
-using Architect.Sugese.Utility.Helpers;
+﻿using Architect.Sugese.SaldosContables.Domain;
 using Architect.Sugese.Utility;
-using Architect.Sugese.SaldosContables.Domain;
+using Architect.Sugese.Utility.Helpers;
+using ClosedXML.Excel;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 
 namespace Architect.Sugese.SaldosContables.Application
 {
-    public  class Generate
+    public class Generate : Architect.Sugese.Domain.GenerateBase
     {
         public static DataTable Execute(string excelFileName, string xmlFileName, int month, int year)
         {

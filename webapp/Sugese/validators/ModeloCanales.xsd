@@ -1,0 +1,565 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:dat="urn:cap:ties:datsugesetypes:v1" xmlns:iso="urn:cap:ties:isosugesetypes:v1" xmlns:res="urn:cap:ties:ressugesetypes:v1">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="tipos\SugeseTypes.xsd"/>
+  <xs:import namespace="urn:cap:ties:datsugesetypes:v1" schemaLocation="tipos\DatSugeseTypes.xsd"/>
+  <xs:import namespace="urn:cap:ties:isosugesetypes:v1" schemaLocation="tipos\IsoSugeseTypes.xsd"/>
+  <xs:include schemaLocation="tipos\SugeseComplexTypes.xsd"/>
+  
+  <xs:element name="ModeloCanales">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo" />
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PolizasContratadasSegPersonales" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesglosePolizasContratadasSegPersonales">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RamoPolizasContratadasSegPersonales">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PolizasContratadasSegPersonalesPorRamo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesglosePolizasContratadasSegPersonalesPorRamo">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocCorredoraSeg" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleNoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="ProveTransfronterizosSeg" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OfiEntAseguradora" type="res:EnteroPositivo" nillable="true" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="Total" type="res:EnteroPositivo" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamoPersonales" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalAgenSegNoVinculadoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalAgenSegNoVinculadosNoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegExclusiva" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegNoExclusiva" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocCorredoraSeg" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleNoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalProveTransfronterizosSeg" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOfiEntAseguradora" type="res:EnteroPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPolSegPersonales" type="res:EnteroPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PolizasContratadasSegGenerales" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesglosePolizasContratadasSegGenerales">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RamoPolizasContratadasSegGenerales">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PolizasContratadasSegGeneralesPorRamo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesglosePolizasContratadasSegGeneralesPorRamo">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocCorredoraSeg" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleNoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="ProveTransfronterizosSeg" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OfiEntAseguradora" type="res:EnteroPositivo" nillable="true" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="Total" type="res:EnteroPositivo" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamoGenerales" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalAgenSegNoVinculadoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalAgenSegNoVinculadosNoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegExclusiva" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegNoExclusiva" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocCorredoraSeg" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleNoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalProveTransfronterizosSeg" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOfiEntAseguradora" type="res:EnteroPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPolSegGenerales" type="res:EnteroPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PrimasPolizasContratadasSegPersonales" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesglosePrimasPolizasContratadasSegPersonales">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RamoPrimasPolizasContratadasSegPersonales">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PrimasPolizasContratadasSegPersonalesPorRamo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesglosePrimasPolizasContratadasSegPersonalesPorRamo">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocCorredoraSeg" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleNoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="ProveTransfronterizosSeg" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OfiEntAseguradora" type="res:MontoPositivo" nillable="true" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="Total" type="res:MontoPositivo" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamoPersonales" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalAgenSegNoVinculadoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalAgenSegNoVinculadosNoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegExclusiva" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegNoExclusiva" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocCorredoraSeg" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleNoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalProveTransfronterizosSeg" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOfiEntAseguradora" type="res:MontoPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPriSegPersonales" type="res:MontoPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PrimasPolizasContratadasSegGenerales" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesglosePrimasPolizasContratadasSegGenerales">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RamoPrimasPolizasContratadasSegGenerales">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PrimasPolizasContratadasSegGeneralesPorRamo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesglosePrimasPolizasContratadasSegGeneralesPorRamo">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocCorredoraSeg" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleNoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="ProveTransfronterizosSeg" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OfiEntAseguradora" type="res:MontoPositivo" nillable="true" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="Total" type="res:MontoPositivo" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamoGenerales" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalAgenSegNoVinculadoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalAgenSegNoVinculadosNoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegExclusiva" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegNoExclusiva" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocCorredoraSeg" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleNoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalProveTransfronterizosSeg" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOfiEntAseguradora" type="res:MontoPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPriSegGenerales" type="res:MontoPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PolizasContratadasNuevaProduccionSegPersonales" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesglosePolizasContratadasNuevaProduccionSegPersonales">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RamoPolizasContratadasNuevaProduccionSegPersonales">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PolizasContratadasNuevaProduccionSegPersonalesPorRamo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesglosePolizasContratadasNuevaProduccionSegPersonalesPorRamo">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocCorredoraSeg" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleNoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="ProveTransfronterizosSeg" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OfiEntAseguradora" type="res:EnteroPositivo" nillable="true" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="Total" type="res:EnteroPositivo" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamoPersonales" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalAgenSegNoVinculadoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalAgenSegNoVinculadosNoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegExclusiva" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegNoExclusiva" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocCorredoraSeg" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleNoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalProveTransfronterizosSeg" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOfiEntAseguradora" type="res:EnteroPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPolSegPersonales" type="res:EnteroPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PolizasContratadasNuevaProduccionSegGenerales" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesglosePolizasContratadasNuevaProduccionSegGenerales" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RamoPolizasContratadasNuevaProduccionSegGenerales">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PolizasContratadasNuevaProduccionSegGeneralesPorRamo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesglosePolizasContratadasNuevaProduccionSegGeneralesPorRamo">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocCorredoraSeg" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleNoExclusivo" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="ProveTransfronterizosSeg" type="res:EnteroPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OfiEntAseguradora" type="res:EnteroPositivo" nillable="true" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="Total" type="res:EnteroPositivo" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamoGenerales" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalAgenSegNoVinculadoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalAgenSegNoVinculadosNoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegExclusiva" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegNoExclusiva" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalSocCorredoraSeg" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleNoExclusivo" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalProveTransfronterizosSeg" type="res:EnteroPositivo" use="required" />
+                              <xs:attribute name="TotalOfiEntAseguradora" type="res:EnteroPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPolSegGenerales" type="res:EnteroPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PrimasPolizasContratadasSegPersonalesNuevaProduccion" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesglosePrimasPolizasContratadasSegPersonalesNuevaProduccion">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RamoPrimasPolizasContratadasSegPersonalesNuevaProduccion">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PrimasPolizasContratadasSegPersonalesNuevaProduccionPorRamo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesglosePrimasPolizasContratadasSegPersonalesNuevaProduccionPorRamo">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocCorredoraSeg" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleNoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="ProveTransfronterizosSeg" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OfiEntAseguradora" type="res:MontoPositivo" nillable="true" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="Total" type="res:MontoPositivo" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamoPersonales" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalAgenSegNoVinculadoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalAgenSegNoVinculadosNoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegExclusiva" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegNoExclusiva" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocCorredoraSeg" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleNoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalProveTransfronterizosSeg" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOfiEntAseguradora" type="res:MontoPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPriSegPersonales" type="res:MontoPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PrimasPolizasContratadasSegGeneralesNuevaProduccion" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesglosePrimasPolizasContratadasSegGeneralesNuevaProduccion">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RamoPrimasPolizasContratadasSegGeneralesNuevaProduccion">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="PrimasPolizasContratadasSegGeneralesNuevaProduccionPorRamo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="DesglosePrimasPolizasContratadasSegGeneralesNuevaProduccionPorRamo">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="SocCorredoraSeg" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OperSegAutoexpedibleNoExclusivo" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="ProveTransfronterizosSeg" type="res:MontoPositivo" nillable="true" />
+                                                  <xs:element minOccurs="0" name="OfiEntAseguradora" type="res:MontoPositivo" nillable="true" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="Total" type="res:MontoPositivo" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="dat:TipoRamoGenerales" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalAgenSegNoVinculadoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalAgenSegNoVinculadosNoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegExclusiva" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocAgenSegNoExclusiva" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalSocCorredoraSeg" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOperSegAutoexpedibleNoExclusivo" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalProveTransfronterizosSeg" type="res:MontoPositivo" use="required" />
+                              <xs:attribute name="TotalOfiEntAseguradora" type="res:MontoPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalPriSegGenerales" type="res:MontoPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OficinasAseguradoraNuevaProd">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DetalleOficina" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Domicilio" type="iso:Canton" />
+                                <xs:element name="NumEmpleados" type="res:EnteroPositivo" />
+                                <xs:element name="PrimasPolizasContratadasNuevaProd" type="res:MontoPositivo" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="AgenSegNoVinculadosSocAgenSeg" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="NumContratosAgenciasCierreAnno">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseNumContratosAgenciasCierreAnno">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element minOccurs="0" name="AgenSegNoVinculadosExclusivos" type="res:EnteroPositivo" nillable="true" />
+                                      <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivos" type="res:EnteroPositivo" nillable="true" />
+                                      <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                      <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:EnteroPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="NumAgenSocAportaronDuranteAnno">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseNumAgenSocAportaronDuranteAnno">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element minOccurs="0" name="AgenSegNoVinculadosExclusivos" type="res:EnteroPositivo" nillable="true" />
+                                      <xs:element minOccurs="0" name="AgenSegNoVinculadosNoExclusivos" type="res:EnteroPositivo" nillable="true" />
+                                      <xs:element minOccurs="0" name="SocAgenSegExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                      <xs:element minOccurs="0" name="SocAgenSegNoExclusiva" type="res:EnteroPositivo" nillable="true" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:EnteroPositivo" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SociedadesCorredorasSeg" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DetalleSocCorredora" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DenominacionSoc" type="res:TextoNoVacio" />
+                                <xs:element name="CodAutorizacion" type="dat:Corredora" />
+                                <xs:element name="DetalleSegurosGeneralesPorRamo" minOccurs="0" maxOccurs="1" nillable="true">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="RamoSegurosGenerales" maxOccurs="unbounded" minOccurs="1">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="MontoPrimasColocadas" type="res:MontoPositivo" minOccurs="1" maxOccurs="1"/>
+                                          </xs:sequence>
+                                          <xs:attribute name="id" type="dat:TipoRamoGenerales" use="required"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="TotalMontoPrimasColocadas" type="res:MontoPositivo" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="DetalleSegurosPersonalesPorRamo" minOccurs="0" maxOccurs="1" nillable="true">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="RamoSegurosPersonales" maxOccurs="unbounded" minOccurs="1">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="MontoPrimasColocadas" type="res:MontoPositivo" minOccurs="1" maxOccurs="1"/>
+                                          </xs:sequence>
+                                          <xs:attribute name="id" type="dat:TipoRamoPersonales" use="required"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="TotalMontoPrimasColocadas" type="res:MontoPositivo" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="NumSociedadesIncorporadas" type="res:EnteroPositivo" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SeguroObligatorioAutomoviles" nillable="true" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="PolizasPagadas" nillable="true">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="BancosPublicos" type="res:EnteroPositivo" nillable="true" />
+                                <xs:element name="BancosPrivados" type="res:EnteroPositivo" nillable="true" />
+                                <xs:element name="Cooperativas" type="res:EnteroPositivo" nillable="true" />
+                                <xs:element name="OtrasPersonasFisicas" type="res:EnteroPositivo" nillable="true" />
+                                <xs:element name="OtrasPersonasJuridicas" type="res:EnteroPositivo" nillable="true" />
+                                <xs:element name="OficinasEntidad" type="res:EnteroPositivo" nillable="true" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="MontoPrima" nillable="true">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="BancosPublicos" type="res:MontoPositivo" nillable="true" />
+                                <xs:element name="BancosPrivados" type="res:MontoPositivo" nillable="true" />
+                                <xs:element name="Cooperativas" type="res:MontoPositivo" nillable="true" />
+                                <xs:element name="OtrasPersonasFisicas" type="res:MontoPositivo" nillable="true" />
+                                <xs:element name="OtrasPersonasJuridicas" type="res:MontoPositivo" nillable="true" />
+                                <xs:element name="OficinasEntidad" type="res:MontoPositivo" nillable="true" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

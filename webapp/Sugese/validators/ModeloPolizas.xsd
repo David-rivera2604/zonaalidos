@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--Tipos-->
+  <!--string no vacio-->
+  <xs:simpleType name='TextoNoVacio'>
+    <xs:restriction base='xs:string'>
+      <xs:minLength value='5'/>
+      <xs:maxLength value='60'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Tipo de archivo xml-->
+  <xs:simpleType name='TipoArchivoType'>
+    <xs:restriction base='xs:integer'>
+      <!--Archivo xml completo-->
+      <xs:enumeration value='0'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Identificación-->
+  <!--
+  <xs:simpleType name='Identificacion'>
+    <xs:restriction base='xs:string'>
+      <xs:pattern value="(^(0[1-9]\-\d{4}-\d{4})$)|(^(1\d{11})$)|(^(5\d{11})$)|(^(2-\d{3}-\d{6})$)|(^(3-\d{3}-\d{6})$)|(^(4-\d{3}-\d{6})$)|(^(1\d{3}-\d+-\d)$)|(^(1\d{3})([^*?|%_¡!]{2,16})$)|(^([1-9]\d{0})(([a-zA-Z-0-9]+){5,25})$)" />
+    </xs:restriction>
+  </xs:simpleType>-->
+
+  <xs:simpleType name='Identificacion'>
+    <xs:restriction base='xs:string'>
+      <xs:minLength value='5'/>
+      <xs:maxLength value='60'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <!--Identificación sin cliente jurídico-->
+  <xs:simpleType name='IdentificacionSinJuridico'>
+    <xs:restriction base='xs:string'>
+      <xs:pattern value="(^(0[1-9]\-\d{4}-\d{4})$)|(^(1\d{11})$)|(^(5\d{11})$)|(^(1\d{3})([^*?|%_¡!]{2,16})$)|(^([1-9]\d{0})(([a-zA-Z-0-9]+){5,25})$)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Código de Producto-->
+  <xs:simpleType name='CodProducto'>
+    <xs:restriction base='xs:string'>
+      <xs:pattern value="(^[GP]((0[0-9])|(1[0-9])|(2[0-2]))-((0[0-9])|([1-5][0-9])|(6[0-7])|(LG)|(LP))-(A((0[1-9])|(1[0-3])))-\d{3}(-V[1-9](\d{1})?)?$)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Periodicidad-->
+  <xs:simpleType name="Periodicidad">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="D"/>
+      <!--Semanal-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Tipo de póliza-->
+  <xs:simpleType name='TipoPoliza'>
+    <xs:restriction base='xs:positiveInteger'>
+      <!--Individual-->
+      <xs:enumeration value='1'/>
+      <!--Colectiva-->
+      <xs:enumeration value='2'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Estado de póliza-->
+  <xs:simpleType name='EstadoPoliza'>
+    <xs:restriction base='xs:positiveInteger'>
+      <xs:enumeration value='1'/>
+      <!--Vigente-->
+      <xs:enumeration value='2'/>
+      <!--Cancelada-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Tipo de Identificación-->
+  <xs:simpleType name='TipoIdentificacion'>
+    <xs:restriction base='xs:positiveInteger'>
+      <xs:enumeration value='1'/>
+      <!--Cédula Fisica Nacional-->
+      <xs:enumeration value='2'/>
+      <!--Cédula Residencia-->
+      <xs:enumeration value='4'/>
+      <!--Cédula Jurídica-->
+      <xs:enumeration value='5'/>
+      <!--Gobierno Central-->
+      <xs:enumeration value='6'/>
+      <!--Institución Autónoma-->
+      <xs:enumeration value='7'/>
+      <!--Extrangejo No residente-->
+      <xs:enumeration value='8'/>
+      <!--DIMEX-->
+      <xs:enumeration value='10'/>
+      <!--DIDI-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Tipo de Identificación Fisicos-->
+  <xs:simpleType name='TipoIdentificacionFisicos'>
+    <xs:restriction base='xs:positiveInteger'>
+      <xs:enumeration value='1'/>
+      <!--Cédula Fisica Nacional-->
+      <xs:enumeration value='2'/>
+      <!--Cédula Residencia-->
+      <xs:enumeration value='7'/>
+      <!--Extrangejo No residente-->
+      <xs:enumeration value='8'/>
+      <!--DIMEX-->
+      <xs:enumeration value='10'/>
+      <!--DIDI-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Entidad Fuente-->
+  <xs:simpleType name="CodEntidad">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="A\d{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Nombre y Apellidos-->
+  <xs:simpleType name="Nombre">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Tipo de designación-->
+  <xs:simpleType name='TipodeDesignacion'>
+    <xs:restriction base='xs:positiveInteger'>
+      <xs:enumeration value='1'/>
+      <!--Normal-->
+      <xs:enumeration value='2'/>
+      <!--Genérica-->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Descripción-->
+  <xs:simpleType name="Descripcion">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="400"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Número de Póliza-->
+  <xs:simpleType name="NumeroPoliza">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="30"/>
+      <xs:minLength value='1'/>
+      <xs:pattern value="(^([a-zA-Z-0-9]+)$)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--Identificador Defunción-->
+  <xs:simpleType name='IdentificadorDefuncion'>
+    <xs:restriction base='xs:byte'>
+      <!--No definido-->
+      <xs:enumeration value='0'/>
+      <!--Vivo-->
+      <xs:enumeration value='1'/>
+      <!--Fallecido-->
+      <xs:enumeration value='2'/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="ModeloPolizas">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Parametros">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NombreArchivo" type="TextoNoVacio" />
+              <xs:element minOccurs="0" name="TipoArchivo" type="TipoArchivoType" />
+            </xs:sequence>
+          </xs:complexType> 
+        </xs:element>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="Poliza">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="TipoPoliza" type="TipoPoliza" />
+                          <xs:element minOccurs="0" name="MontoPoliza" />
+                          <xs:element minOccurs="0" name="CodMoneda" />
+                          <xs:element name="CodProducto" type="CodProducto" />
+                          <xs:element name="Tomador">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="TipoIdentificacionTomador" type="TipoIdentificacion" />
+                                <xs:element name="IdTomador" type="Identificacion" />
+                                <xs:element minOccurs="0" name="NombreTomador" type="Nombre" />
+                                <xs:element minOccurs="0" name="PrimerApellidoTomador" type="Nombre" />
+                                <xs:element minOccurs="0" name="SegundoApellidoTomador" type="Nombre" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="FecSuscripcion" type="xs:date" />
+                          <xs:element name="NumPoliza" type="NumeroPoliza" />
+                          <xs:element name="EstadoPoliza" type="EstadoPoliza" />
+                          <xs:element name="Asegurados">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Asegurado">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element minOccurs="0" name="SubNumPoliza" type="NumeroPoliza" />
+                                      <xs:element name="TipoIdentificacionAsegurado" type="TipoIdentificacionFisicos" />
+                                      <xs:element name="IdAsegurado" type="Identificacion" />
+                                      <xs:element minOccurs="0" name="NombreAsegurado" type="Nombre" />
+                                      <xs:element minOccurs="0" name="PrimerApellidoAsegurado" type="Nombre" />
+                                      <xs:element minOccurs="0" name="SegundoApellidoAsegurado" type="Nombre" />
+                                      <xs:element name="FecInclusion" type="xs:date" />
+                                      <xs:element name="IdentificadorDefuncion" type="IdentificadorDefuncion" />
+                                      <xs:element minOccurs="0" name="TipoAccionAsegurado" />
+                                      <xs:element name="Beneficiarios">
+                                        <xs:complexType mixed="true">
+                                          <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" name="Beneficiario">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="TipoDesignacion" type="TipodeDesignacion" />
+                                                  <xs:element minOccurs="0" name="Descripcion" type="Descripcion" />
+                                                  <xs:element minOccurs="0" name="TipoIdentificacionBeneficiario" type="TipoIdentificacion" />
+                                                  <xs:element minOccurs="0" name="IdBeneficiario" type="Identificacion" />
+                                                  <xs:element minOccurs="0" name="NombreBeneficiario" type="Nombre" />
+                                                  <xs:element minOccurs="0" name="PrimerApellidoBeneficiario" type="Nombre" />
+                                                  <xs:element minOccurs="0" name="SegundoApellidoBeneficiario" type="Nombre" />
+                                                  <xs:element minOccurs="0" name="Porcentaje"/>
+                                                  <xs:element minOccurs="0" name="TipoAccionBeneficiario" />
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="CodEntidad" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

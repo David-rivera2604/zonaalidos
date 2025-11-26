@@ -1,0 +1,448 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="Tipos/SugeseTypes.xsd"/>
+  <xs:include schemaLocation="Tipos/SugeseComplexTypes.xsd"/>
+  <xs:element name="ModeloEstadoResultados">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo"/>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CuentaResultadosTotal">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="UtilidadDespuesImpuestosAntesParticipaciones">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="UtilidadAntesImpuestosParticipaciones">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="UtilidadOperacionesSeguros">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="UtilidadBrutaOperacionesSegurosCtaTotal">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="IngresosCtaTotal">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="PrimasCtaTotal">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="DesglosePrimasCtaTotal">
+                                                            <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="NetasExtornosYAnulacionesSeguroDirecto" type="res:Monto"/>
+                                                            <xs:element name="NetasExtornosYAnulacionesReaseguroAceptado" type="res:Monto"/>
+                                                            </xs:sequence>
+                                                            </xs:complexType>
+                                                            </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="Total" type="res:Monto" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="ComisionesParticipacionesIngresosCtaTotal">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="DesgloseComisionesParticipacionesIngresosCtaTotal">
+                                                            <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="ComisionesParticipacionesReaseguroCedido" type="res:Monto"/>
+                                                            <xs:element name="ComisionesParticipacionesReaseguroRetrocedido" type="res:Monto"/>
+                                                            </xs:sequence>
+                                                            </xs:complexType>
+                                                            </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="Total" type="res:Monto" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="SiniestrosGastosReaseguroCedidoRetrocedidoCtaTotal">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="DesgloseSiniestrosGastosReaseguroCedidoRetrocedidoCtaTotal">
+                                                            <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="SiniestrosGastosRecuperadosReaseguroCedido" type="res:MontoPositivo"/>
+                                                            <xs:element name="SiniestrosGastosRecuperadosReaseguroRetrocedido" type="res:MontoPositivo"/>
+                                                            </xs:sequence>
+                                                            </xs:complexType>
+                                                            </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalIngresos" type="res:Monto" use="required"/>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="GastosCtaTotal">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="GastosPorPrestaciones">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="DesglosePrestacionesCtaTotal">
+                                                            <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="SiniestrosPagadosSeguroDirecto" type="res:Monto"/>
+                                                            <xs:element name="SiniestrosPagadosReaseguroAceptado" type="res:Monto"/>
+                                                            <xs:element name="BeneficiosExtornos" type="res:Monto"/>
+                                                            </xs:sequence>
+                                                            </xs:complexType>
+                                                            </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="Total" type="res:Monto" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="ComisionesParticipacionesGastosCtaTotal">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="DesgloseComisionesParticipacionesGastosCtaTotal">
+                                                            <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="GastoComisionesSeguroDirecto" type="res:Monto"/>
+                                                            <xs:element name="GastoComisionesParticipacionesReaseguroAceptado" type="res:Monto"/>
+                                                            </xs:sequence>
+                                                            </xs:complexType>
+                                                            </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="Total" type="res:Monto" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="GastosAdministracionTecnicos">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="DesgloseGastosAdministracionTecnicos">
+                                                            <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="GastosPersonal" type="res:MontoPositivo"/>
+                                                            <xs:element name="GastosServiciosExternos" type="res:MontoPositivo"/>
+                                                            <xs:element name="GastosMovilidad" type="res:MontoPositivo"/>
+                                                            <xs:element name="GastosInfraestructura" type="res:MontoPositivo"/>
+                                                            <xs:element name="GastosGenerales" type="res:MontoPositivo"/>
+                                                            </xs:sequence>
+                                                            </xs:complexType>
+                                                            </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="TotalGastosAdministracionTecnicos" type="res:MontoPositivo" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="PrimasCedidasReasegurosYFianzasCtaTotal">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="DesglosePrimasCedidasReasegurosYFianzasCtaTotal">
+                                                            <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="ReaseguroCedido" type="res:MontoPositivo"/>
+                                                            <xs:element name="ReaseguroRetrocedido" type="res:MontoPositivo"/>
+                                                            </xs:sequence>
+                                                            </xs:complexType>
+                                                            </xs:element>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalGastos" type="res:Monto" use="required"/>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="VariacionProvisionesTecnicas">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="IngresosAjustesCtaTotal">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="AjustesProvisionesTecnicas" type="res:MontoPositivo"/>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="GastosAjustesCtaTotal">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="AjustesProvisionesTecnicas" type="res:MontoPositivo"/>
+                                                            </xs:sequence>
+                                                            <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="TotalVariacionProvisionesTecnicas" type="res:Monto" use="required"/>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="TotalUtilidadBruta" type="res:Monto" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="SubtotalResultadoFinanciero">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="IngresosFinancieros">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="DesgloseIngresosFinancieros">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="Disponibilidades" type="res:MontoPositivo"/>
+                                                            <xs:element name="InversionesInstrumentosFinancieros" type="res:MontoPositivo"/>
+                                                            <xs:element name="ProductosCarteraCreditoVigente" type="res:MontoPositivo"/>
+                                                            <xs:element name="ProductosCarteraCreditosVencidaEnCobroJudicial" type="res:MontoPositivo"/>
+                                                            <xs:element name="CtasReciprocasInternas" type="res:MontoPositivo"/>
+                                                            <xs:element name="GananciasPosicionInstrumentosFinancierosDerivados" type="res:MontoPositivo"/>
+                                                            <xs:element name="GananciasDiferencialCambiarioYUnidadesDesarrollo" type="res:MontoPositivo"/>
+                                                            <xs:element name="OtrosIngresos" type="res:MontoPositivo"/>
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="GastosFinancieros">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="DesgloseGastosFinancieros">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                            <xs:element name="ObligacionesPublico" type="res:MontoPositivo"/>
+                                                            <!--xs:element name="ObligacionesBCCR" type="res:MontoPositivo" /-->
+                                                            <xs:element name="ObligEntidadesFinancierasYNoFinancieras" type="res:MontoPositivo">
+                                                            <xs:annotation>
+                                                            <xs:documentation>
+                                                                    Correccion de las cuentas por NIFF se cambia de ObligacionesEntidadesFinancieras a ObligEntidadesFinancierasYNoFinancieras
+                                                                  </xs:documentation>
+                                                            </xs:annotation>
+                                                            </xs:element>
+                                                            <xs:element name="CtasPagarDiversas" type="res:MontoPositivo"/>
+                                                            <xs:element name="CtasReciprocasInternas" type="res:MontoPositivo"/>
+                                                            <xs:element name="ObligacionesSubordinadasConvertiblesPreferentes" type="res:MontoPositivo"/>
+                                                            <xs:element name="PerdidasPosicionInstrumentosFinancierosDerivados" type="res:MontoPositivo"/>
+                                                            <xs:element name="PerdidasDiferencialCambiarioYUnidadesDesarrollo" type="res:MontoPositivo"/>
+                                                            <xs:element name="OtrosGastos" type="res:MontoPositivo"/>
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="TotalSubtotalResultadoFinanciero" type="res:Monto" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="TotalUtilidadOperSeguros" type="res:Monto" use="required"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="ResultadoOtrasOperaciones">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="IngresosRecuperacionActivosDisminucionEstimacionesProvisiones">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="DesgloseIngresosRecuperacionActivosDisminucionEstimacionesProvisiones">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="RecuperacionActivosFinancierosLiquidados" type="res:MontoPositivo"/>
+                                                        <xs:element name="CarteraCreditos" type="res:MontoPositivo"/>
+                                                        <xs:element name="InversionesInstrumentosFinancieros" type="res:MontoPositivo"/>
+                                                        <xs:element name="Provisiones" type="res:MontoPositivo"/>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="IngresosOperativosDiversos">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="DesgloseIngresosOperativosDiversos">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="ComisionesServicios" type="res:MontoPositivo"/>
+                                                        <xs:element name="BienesMantenidosVenta" type="res:MontoPositivo">
+                                                          <xs:annotation>
+                                                            <xs:documentation>
+                                                              Correccion de las cuentas por NIFF se cambia de BienesRealizables a BienesMantenidosVenta
+                                                            </xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:element>
+                                                        <xs:element name="ParticipacionesEnCapitalOtrasEmpresas" type="res:MontoPositivo"/>
+                                                        <!--xs:element name="CambioYArbitrajeDivisas" type="res:MontoPositivo" /-->
+                                                        <xs:element name="OtrosPartesRelacionadas" type="res:MontoPositivo"/>
+                                                        <xs:element name="OtrosIngresosOperativos" type="res:MontoPositivo"/>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="GastosEstimacionDeterioroActivos">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="DesgloseGastosEstimacionDeterioroActivos">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="CarteraCreditosCuentasComisionesCobrar" type="res:MontoPositivo"/>
+                                                        <xs:element name="InversionesInstrumentosFinancieros" type="res:MontoPositivo"/>
+                                                        <xs:element name="PropiedadesInversion" type="res:MontoPositivo">
+                                                          <xs:annotation>
+                                                            <xs:documentation>
+                                                              Correccion de las cuentas por NIFF se cambia de InversionesPropiedades a PropiedadesInversion
+                                                            </xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:element>
+                                                        <xs:element name="CargosBienesDiversos" type="res:MontoPositivo">
+                                                          <xs:annotation>
+                                                            <xs:documentation>
+                                                              Correccion de las cuentas por NIFF se agrega
+                                                            </xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="GastosOperativosDiversos">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="DesgloseGastosOperativosDiversos">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="ComisionesServicios" type="res:MontoPositivo"/>
+                                                        <xs:element name="BienesMantenidosVenta" type="res:MontoPositivo">
+                                                          <xs:annotation>
+                                                            <xs:documentation>
+                                                              Correccion de las cuentas por NIFF se cambia de BienesRealizables a BienesMantenidosVenta
+                                                            </xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:element>
+                                                        <xs:element name="ParticipacionCapitalOtrasEmpresas" type="res:MontoPositivo"/>
+                                                        <!--xs:element name="BienesDiversos" type="res:MontoPositivo" /-->
+                                                        <xs:element name="Provisiones" type="res:MontoPositivo"/>
+                                                        <!--xs:element name="BonificacionesComisionesFondosPensionVoluntario" type="res:MontoPositivo" />
+                                                        <xs:element name="CambioYArbitrajeDivisas" type="res:MontoPositivo" /-->
+                                                        <xs:element name="PartesRelacionadas" type="res:MontoPositivo"/>
+                                                        <xs:element name="OtrosGastosOperativos" type="res:MontoPositivo"/>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="Total" type="res:MontoPositivo" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="GastosAdministracion">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="DesgloseGastosAdministracion">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="Personal" type="res:MontoPositivo"/>
+                                                        <xs:element name="ServiciosExternos" type="res:MontoPositivo"/>
+                                                        <xs:element name="MovilidadYComunicaciones" type="res:MontoPositivo"/>
+                                                        <xs:element name="Infraestructura" type="res:MontoPositivo"/>
+                                                        <xs:element name="Generales" type="res:MontoPositivo"/>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="TotalGastosAdministracionNoTecnico" type="res:MontoPositivo" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="TotalResultadoOtrasOperaciones" type="res:Monto" use="required"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="TotalUtilidad" type="res:Monto" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="ImpuestosSobreUtilidad">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="DesgloseImpuestosSobreUtilidad">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="SobreRenta" type="res:MontoPositivo"/>
+                                            <xs:element name="DisminucionSobreRenta" type="res:MontoPositivo"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="Total" type="res:Monto" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalUtilidadDespuesImpuestosAntesParticipaciones" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="ParticipacionesLegalesUtilidad">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseParticipacionesLegalesUtilidad">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="LegalesSobreUtilidad" type="res:MontoPositivo"/>
+                                      <xs:element name="DisminucionLegalesSobreUtilidad" type="res:MontoPositivo"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalLegalesSobreUtilidad" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="UtilidadNetaPeriodo" type="res:Monto" use="required"/>
+                        <xs:attribute name="NoControladoras" type="res:Monto" use="required"/>
+                        <xs:attribute name="Controladora" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ResultadosIntegrales">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="OtrosResultadosIntegrales">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseOtrosResultadosIntegrales">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="SuperavitPropInmobiliarias" type="res:Monto"/>
+                                      <xs:element name="InvCambiosResultadoIntegral" type="res:Monto"/>
+                                      <xs:element name="InvRespaldoReservaLiquidez" type="res:Monto"/>
+                                      <xs:element name="InstrFinanRestringidos" type="res:Monto"/>
+                                      <xs:element name="InstrFinanCesacionPagosMorososLitigios" type="res:Monto"/>
+                                      <xs:element name="SuperavitOtrosActivos" type="res:Monto"/>
+                                      <xs:element name="InstrumentosDerivados" type="res:Monto"/>
+                                      <xs:element name="OtrosAjustes" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="TotalOtrosResultadosIntegrales" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalDelPeriodo" type="res:Monto" use="required"/>
+                        <xs:attribute name="NoControladoras" type="res:Monto" use="required"/>
+                        <xs:attribute name="Controladora" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

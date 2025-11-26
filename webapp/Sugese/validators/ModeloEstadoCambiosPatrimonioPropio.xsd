@@ -1,0 +1,915 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="Tipos/SugeseTypes.xsd"/>
+  <xs:include schemaLocation="Tipos/SugeseComplexTypes.xsd"/>
+  <xs:element name="ModeloEstadoCambiosPatrimonioPropio">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo"/>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Saldo1EneAnnoAnterior">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesgloseSaldoInicioAnno">
+                            <xs:complexType>
+                              <xs:attribute name="CapSocialEneAnterior" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="AportesNoCapitalizadosEneAnterior" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="AjustesEneAnterior" type="res:Monto" use="required"/>
+                              <xs:attribute name="ReservasEneAnterior" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="ResultadosPrincipioPeriodoEneAnterior" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="CambiosPoliticasContablesEneAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseCambiosPoliticasContablesEneAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="CorreccionErroresFundamentalesEneAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseCorreccionErroresFundamentalesEneAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalSaldo1EneAnnoAnterior" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SaldoCorregidoInicioAnnoAnterior">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesgloseSaldoCorregidoInicioAnnoAnterior">
+                            <xs:complexType>
+                              <xs:attribute name="CapSocialIniAnterior" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="AportesNoCapitalizadosIniAnterior" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="AjustesIniAnterior" type="res:Monto" use="required"/>
+                              <xs:attribute name="ReservasIniAnterior" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="ResultadosPrincipioPeriodoIniAnterior" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesConversionEstadosFinancierosIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesConversionEstadosFinancierosIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="ResultadosPeriodo1">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseResultadosPeriodo1">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="DividendosPeriodo0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseDividendosPeriodo0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="EstimacionesRiesgosActBancariaIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseEstimacionesRiesgosActBancariaIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="ReservasLegalesOtrasEstatutariasIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseReservasLegalesOtrasEstatutariasIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="CompraVentaAccionesTesoreriaIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseCompraVentaAccionesTesoreriaIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="EmisionAccionesIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseEmisionAccionesIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="CapitalPagadoAdicionalIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseCapitalPagadoAdicionalIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="SuperavitRevaPropiedadMobiliarioEquipoIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseSuperavitRevaPropiedadMobiliarioEquipoIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInversionesValRazCambiosResulIntegIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInversionesValRazCambiosResulIntegIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInstrumentosRestringidosIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInstrumentosRestringidosIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInstrumentosCesacionPagoIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInstrumentosCesacionPagoIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="SuperavitRevaOtrosActivos">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseSuperavitRevaOtrosActivos">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="OtrosCorregidosIniAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseOtrosIniAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalSaldoCorregidoInicioAnnoAnterior" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Saldo31DicAnnoAnterior">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesgloseSaldo31DicAnnoAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="CapSocialFinAnterior" type="res:MontoPositivo"/>
+                                <xs:element name="AportesNoCapitalizadosFinAnterior" type="res:MontoPositivo"/>
+                                <xs:element name="AjustesFinAnterior" type="res:Monto"/>
+                                <xs:element name="ReservasFinAnterior" type="res:MontoPositivo"/>
+                                <xs:element name="ResultadosPrincipioPeriodoFinAnterior" type="res:Monto"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AtribuidoParticipNoControlFinAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAtribuidoParticipNoControlFinAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AtribuidoControladoraFinAnterior">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAtribuidoControladoraFinAnterior">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalSaldo31DicAnnoAnterior" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Saldo1EneAnnoActual">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesgloseSaldo1EneAnnoActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="CapSocialEneActual" type="res:MontoPositivo"/>
+                                <xs:element name="AportesNoCapitalizadosEneActual" type="res:MontoPositivo"/>
+                                <xs:element name="AjustesEneActual" type="res:Monto"/>
+                                <xs:element name="ReservasEneActual" type="res:MontoPositivo"/>
+                                <xs:element name="ResultadosPrincipioPeriodoEneActual" type="res:Monto"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="CambiosPoliticasContablesEneActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseCambiosPoliticasContablesEneActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="CorreccionErroresFundamentalesEneActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseCorreccionErroresFundamentalesEneActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalSaldo1EneAnnoActual" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SaldoCorregidoInicioAnnoActual">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesgloseSaldoCorregidoInicioAnnoActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="CapSocial" type="res:MontoPositivo"/>
+                                <xs:element name="AportesNoCapitalizados" type="res:MontoPositivo"/>
+                                <xs:element name="Ajustes" type="res:Monto"/>
+                                <xs:element name="Reservas" type="res:MontoPositivo"/>
+                                <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="Total" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OriginadosAnnoActual">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesgloseOriginadosAnnoActual">
+                            <xs:complexType>
+                              <xs:attribute name="CapSocialOrigActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="AportesNoCapitalizadosOrigActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="AjustesOrigActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="ReservasOrigActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="ResultadosPrincipioPeriodoOrigActual" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesConversionEstadosFinancierosOrigActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesConversionEstadosFinancierosOrigActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInversionesValRazCambiosResulIntegOrigActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInversionesValRazCambiosResulIntegOrigActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInstrumentosRestringidosOrigActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInstrumentosRestringidosOrigActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInstrumentosCesacionPagoOrigActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInstrumentosCesacionPagoOrigActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="OtrosOriginadosAnnoActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseOtrosOrigActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalOriginadosAnnoActual" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="TranferenciasResultadosAnnoActual">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesgloseTranferenciasResultadosAnnoActual">
+                            <xs:complexType>
+                              <xs:attribute name="CapSocialTransfActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="AportesNoCapitalizadosTransfActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="AjustesTransfActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="ReservasTransfActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="ResultadosPrincipioPeriodoTransfActual" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInversionesValRazCambiosResulIntegTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInversionesValRazCambiosResulIntegTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInstrumentosRestringidosTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInstrumentosRestringidosTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AjustesValuacionInstrumentosCesacionPagoTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAjustesValuacionInstrumentosCesacionPagoTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="OtrosTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseOtrosTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="GananciaPerdidaNoReconocidaPeriodo2">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseGananciaPerdidaNoReconocidaPeriodo2">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="ResultadoPeriodo2">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseResultadoPeriodo2">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="ReservasLegalesOtrasEstatutariasTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseReservasLegalesOtrasEstatutariasTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="DividendosPeriodo1">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseDividendosPeriodo1">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="EstimacionesRiesgosActBancariaTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseEstimacionesRiesgosActBancariaTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="CompraVentaAccionesTesoreriaTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseCompraVentaAccionesTesoreriaTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="EmisionAccionesTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseEmisionAccionesTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="CapitalPagadoAdicionalTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseCapitalPagadoAdicionalTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="SuperavitRevaPropiedadMobiliarioEquipoTransfActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseSuperavitRevaPropiedadMobiliarioEquipoTransfActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="TransferenciaSuperavit">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseTransferenciaSuperavit">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="SuperavitRevaPropiedadMobiliarioEquipoNeto">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseSuperavitRevaPropiedadMobiliarioEquipoNeto">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalTranferenciasResultadosAnnoActual" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SaldoFinalAnnoActual">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="DesgloseSaldoFinalAnnoActual">
+                            <xs:complexType>
+                              <xs:attribute name="CapSocialFinActual" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="AportesNoCapitalizadosFinActual" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="AjustesFinActual" type="res:Monto" use="required"/>
+                              <xs:attribute name="ReservasFinActual" type="res:MontoPositivo" use="required"/>
+                              <xs:attribute name="ResultadosPrincipioPeriodoFinActual" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AtribuidoParticipNoControlFinActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAtribuidoParticipNoControlFinActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="AtribuidoControladoraFinActual">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="DesgloseAtribuidoControladoraFinActual">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="CapSocial" type="res:Monto"/>
+                                      <xs:element name="AportesNoCapitalizados" type="res:Monto"/>
+                                      <xs:element name="Ajustes" type="res:Monto"/>
+                                      <xs:element name="Reservas" type="res:Monto"/>
+                                      <xs:element name="ResultadosPrincipioPeriodo" type="res:Monto"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Total" type="res:Monto" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="TotalSaldoFinalAnnoActual" type="res:Monto" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

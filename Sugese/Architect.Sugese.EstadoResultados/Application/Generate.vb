@@ -8,6 +8,8 @@ Imports ClosedXML.Excel
 
 Public Class Generate
 
+    Inherits Architect.Sugese.Domain.GenerateBase
+
     Private _EstadoResultados As New EstadoResultados.ModeloEstadoResultados
 
     Public Property Response As DataTable

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:iso="urn:cap:ties:isosugesetypes:v1" xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:dat="urn:cap:ties:datsugesetypes:v1" xmlns:inv="urn:cap:ties:invsugesetypes:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="Tipos/SugeseTypes.xsd"/>
+  <xs:import namespace="urn:cap:ties:invsugesetypes:v1" schemaLocation="Tipos/InvSugeseTypes.xsd"/>
+  <xs:import namespace="urn:cap:ties:datsugesetypes:v1" schemaLocation="Tipos/DatSugeseTypes.xsd"/>
+  <xs:import namespace="urn:cap:ties:isosugesetypes:v1" schemaLocation="Tipos/IsoSugeseTypes.xsd"/>
+  <xs:include schemaLocation="Tipos/SugeseComplexTypes.xsd"/>
+  <xs:element name="ModeloInversionesFinancieras">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo"/>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="DetalleInversion">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="CodReferencia" type="inv:CodReferencia"/>
+                          <xs:element minOccurs="0" name="CodISIN" type="inv:CodIsin" nillable="true"/>
+                          <xs:element minOccurs="0" name="Ramo" type="dat:TipoRamo" nillable="true"/>
+                          <xs:element name="CodTitulo" type="inv:CodTitulo"/>
+                          <xs:element name="NemoEmisor" type="res:TextoDeUnoACincuentaCaracteres"/>
+                          <xs:element name="NemotInstrumento" type="res:TextoDeUnoACincuentaCaracteres"/>
+                          <xs:element name="FecAdquisicion" type="inv:FechaInversion"/>
+                          <xs:element minOccurs="0" name="FecVencimiento" type="inv:FechaInversion" nillable="true"/>
+                          <xs:element minOccurs="0" name="PeriodicidadCupon" type="inv:PeriodicidadCupon" nillable="true"/>
+                          <xs:element minOccurs="0" name="TasaFacial" type="res:MontoPositivoCeroNoIncluido" nillable="true"/>
+                          <xs:element name="PaisEmision" type="iso:PaisResidencia"/>
+                          <xs:element name="ValorFacial" type="res:MontoPositivoCeroNoIncluido"/>
+                          <xs:element name="CostoAdquisicion" type="res:MontoPositivo"/>
+                          <xs:element minOccurs="0" name="AmortizacionAcumulada" type="res:Monto" nillable="true"/>
+                          <xs:element minOccurs="0" name="ValorMercadoMonedaEmision" type="res:MontoPositivoCeroNoIncluido" nillable="true"/>
+                          <xs:element minOccurs="0" name="ValorMercadoColones" type="res:MontoPositivoCeroNoIncluido" nillable="true"/>
+                          <xs:element minOccurs="0" name="ResultadoValoracion" type="res:Monto" nillable="true"/>
+                          <xs:element minOccurs="0" name="Rendimiento" type="res:Monto" nillable="true"/>
+                          <xs:element minOccurs="0" name="ValorLibrosMonedaOriginal" type="res:MontoPositivoCeroNoIncluido" nillable="true"/>
+                          <xs:element minOccurs="0" name="ValorLibrosColones" type="res:MontoPositivoCeroNoIncluido" nillable="true"/>
+                          <xs:element minOccurs="0" name="Deterioro" type="res:MontoNegativo" nillable="true"/>
+                          <xs:element minOccurs="0" name="ProveedorPrecio" type="inv:ProveedorPrecios" nillable="true"/>
+                          <xs:element minOccurs="0" name="PrecioPorcentual" type="res:MontoPositivo" nillable="true"/>
+                          <xs:element minOccurs="0" name="PrecioNominal" type="res:MontoPositivo" nillable="true"/>
+                          <xs:element minOccurs="0" name="PrecioRendimiento" type="res:Monto" nillable="true"/>
+                          <xs:element minOccurs="0" name="Calificadora" type="inv:Calificadoras" nillable="true"/>
+                          <xs:element minOccurs="0" name="PlazoCalificacion" type="inv:PlazoCalificacion" nillable="true"/>
+                          <xs:element minOccurs="0" name="RiesgoEmisor" type="inv:Calificaciones" nillable="true"/>
+                          <xs:element minOccurs="0" name="RiesgoCreditoEmision" type="inv:Calificaciones" nillable="true"/>
+                          <xs:element minOccurs="0" name="CodCustodio" type="inv:CodCustodio" nillable="true"/>
+                          <xs:element minOccurs="0" name="NumCustodia" type="res:TextoNoVacioStr20" nillable="true"/>
+                        </xs:sequence>
+                        <xs:attribute name="CodMoneda" type="iso:CodMonedaInt" use="required"/>
+                        <xs:attribute name="CodTipoValoracion" type="inv:CodigoTipoValoracion" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

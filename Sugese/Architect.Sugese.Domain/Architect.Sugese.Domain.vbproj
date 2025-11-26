@@ -81,6 +81,7 @@
     <Compile Include="Enumerations\PlazoCalificacion.vb" />
     <Compile Include="Enumerations\ProveedorPrecios.vb" />
     <Compile Include="Enumerations\TipoRamo.vb" />
+    <Compile Include="GenerateBase.vb" />
     <Compile Include="IReport.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

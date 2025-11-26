@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<xs:schema attributeFormDefault="unqualified" xmlns:iso="urn:cap:ties:isosugesetypes:v1" xmlns:res="urn:cap:ties:ressugesetypes:v1" xmlns:dat="urn:cap:ties:datsugesetypes:v1" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import namespace="urn:cap:ties:ressugesetypes:v1" schemaLocation="Tipos/SugeseTypes.xsd"/>
+	<xs:import namespace="urn:cap:ties:datsugesetypes:v1" schemaLocation="Tipos/DatSugeseTypes.xsd"/>
+	<xs:import namespace="urn:cap:ties:isosugesetypes:v1" schemaLocation="Tipos/IsoSugeseTypes.xsd"/>
+	<xs:include schemaLocation="Tipos/SugeseComplexTypes.xsd"/>
+
+  <xs:element name="ModeloParitario">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Encabezado" type="EncabezadoTipo"/>
+        <xs:element name="Datos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Modelo">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Contratos">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="Contrato">
+                            <xs:complexType mixed="true">
+                              <xs:sequence>
+                                <xs:element name="NombreTomador" type="res:TextoNoVacioStr180"/>
+                                <xs:element name="TomadorCedulaJuridica" type="res:TextoNoVacioStr20"/>
+                                <xs:element name="MonedaContratacion" type="iso:CodMonedaInt" />
+                                <xs:element name="Temporalidad" type="res:TextoNoVacioStr20"/>
+                                <xs:element name="Ramo" type="dat:TipoRamo" />
+                                <xs:element name="MontoAsegurado" type="res:Monto" />
+                                <xs:element minOccurs="0" name="MontoPrimeraPerdida" type="res:MontoPositivo15digitos" nillable="true" />
+                                <xs:element minOccurs="0" name="Prioridad" type="res:MontoPositivo15digitos" nillable="true" />
+                                <xs:element minOccurs="0" name="MontoAseguradoRetenido" type="res:MontoPositivo15digitos" nillable="true" />
+                                <xs:element name="MontoPrimaComercial" type="res:Monto" />
+                                <xs:element name="MontoPrimaRetenida" type="res:Monto" />
+                                <xs:element name="Reaseguradoras">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element maxOccurs="unbounded" name="Reasegurador">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="CalificacionRiesgoReasegurador" type="res:TextoNoVacioStr15" />
+                                            <xs:element name="PrimaCedida" type="res:Monto" />
+                                          </xs:sequence>
+                                          <xs:attribute name="Nombre" type="res:TextoNoVacioStr180" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="NumeroContrato" type="res:TextoNoVacioStr20" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="EntidadFuente" type="res:CodEntidad" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
