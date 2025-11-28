@@ -149,7 +149,10 @@ namespace Architect.API.Tron.Business
 
             if (diasHabiles > 15)
             {
-                throw new Exception("No se permite emitir el presupuesto con 15 días hábiles de retroactividad.");
+                if (!tokenInfo.Roles.Contain("Purdy"))
+                {
+                    throw new Exception("No se permite emitir el presupuesto con 15 días hábiles de retroactividad.");
+                }
             }
 
             if (tokenInfo.Roles.Contain("PolizaGrupo"))

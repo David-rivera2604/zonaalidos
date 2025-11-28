@@ -10,11 +10,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using Architect.API.Core.Contracts;
-using Architect.WS.Integrations.wsWarranty4;
-using Architect.API.Tron.Contracts.Integraciones.PanamaAsistencia;
 using Architect.API.Core.Business.General;
-using Architect.API.Tron.Business.Models;
-using Architect.API.Insurance.Contracts.Bayer;
+using System.Text.RegularExpressions;
 
 namespace Architect.API.Tron.Business.Emision
 {
@@ -198,7 +195,7 @@ namespace Architect.API.Tron.Business.Emision
 
                     if (resultQuoteInfo.num_poliza.IsNotEmpty())
                     {
-                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión HogarTotal", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.CompanyId, "Emisión HogarTotal", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
 
                         //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
                         Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
@@ -207,6 +204,16 @@ namespace Architect.API.Tron.Business.Emision
 
                         resultQuoteInfo.Mensaje = null;
                         resultQuoteInfo.Error = null;
+                    }
+                    else if (resultQuoteInfo.Mensaje.IsNotEmpty())
+                    {
+                        string message = resultQuoteInfo.Mensaje;
+                        int codigoError = ExtraerCodigoError(message);
+                        if (codigoError > 0)
+                        {
+                            message = DataAccess.G2000211.DescripcionPorCodigo(1, codigoError);
+                        }
+                        ChangeSet.Create(3000, Convert.ToInt64(quoteInfo.presupuesto), tokenInfo.CompanyId, "Emisión HogarTotal", message, tokenInfo.UserId, resultQuoteInfo);
                     }
                 }
                 catch (Exception ex)
@@ -230,11 +237,18 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
                 }
-
-                DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
             }
             return resultQuoteInfo;
+        }
 
+        public static int ExtraerCodigoError(string texto)
+        {
+            var match = Regex.Match(texto, @"\[(\d+)\]");
+            if (match.Success && int.TryParse(match.Groups[1].Value, out int codigo))
+            {
+                return codigo;
+            }
+            return 0;
         }
 
         public static string ReEnviarSolicitudHT(string presupuesto, string correoenvio, Core.Contracts.Security.Token tokenInfo)

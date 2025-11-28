@@ -209,6 +209,16 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
                         resultQuoteInfo.Mensaje = null;
                         resultQuoteInfo.Error = null;
                     }
+                    else if (resultQuoteInfo.Mensaje.IsNotEmpty())
+                    {
+                        string message = resultQuoteInfo.Mensaje;
+                        int codigoError = Architect.API.Tron.Business.Emision.HogarTotal.ExtraerCodigoError(message);
+                        if (codigoError > 0)
+                        {
+                            message = DataAccess.G2000211.DescripcionPorCodigo(1, codigoError);
+                        }
+                        ChangeSet.Create(3000, System.Convert.ToInt32(quoteInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Emisión HogarTotal", message, tokenInfo.UserId, resultQuoteInfo);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -231,8 +241,6 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
                 {
                     Utilities.Log.ErrorLog("Issue.Compliance", "Fail send compliance information", ex);
                 }
-
-                DataAccess.PolicyProposal.Update_Status(resultQuoteInfo.presupuesto, resultQuoteInfo.num_poliza, tokenInfo.CompanyId, 10, tokenInfo.UserId);
             }
             return resultQuoteInfo;
 
