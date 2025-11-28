@@ -33,9 +33,8 @@ namespace Architect.API.Core.Security
             }
 
             // 2. ✅ CREAR COOKIE DE AUTENTICACIÓN (solo si HttpContext está disponible)
-            if (HttpContext.Current.IsNotEmpty()) 
+            if (HttpContext.Current.IsNotEmpty())
                 FormsAuthentication.SetAuthCookie(token.UserId.ToString(), false);
-            
 
             // Crear identidad con el UserId como nombre de identidad
             var identity = new GenericIdentity(token.UserId.ToString());
@@ -184,10 +183,19 @@ namespace Architect.API.Core.Security
                 {
                     result = AccessKeyInfo(HttpContext.Current.Request.Headers["_AccessKey_"]);
                 }
-                else if (HttpContext.Current.Request.Headers["Authorization"] != null)
+                else if (HttpContext.Current.Request.Headers["Authorization"] != null && !HttpContext.Current.Request.Headers["Authorization"].StartsWith("Bearer undefined"))
                 {
                     result = Info(HttpContext.Current.Request.Headers["Authorization"]);
                 }
+            }
+
+            var ck = HttpContext.Current?.Request?.Cookies["AuthToken"];
+
+            if (result.CompanyId == 0 &&
+                    ck.IsNotEmpty() &&
+                     ck.Value.IsNotEmpty())
+            {
+                result = Info(ck.Value);
             }
             return result;
         }
@@ -233,7 +241,6 @@ namespace Architect.API.Core.Security
             result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
             result.Expires = DateTime.Now.AddMinutes(Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30));
 
-
             //Este bloque esta duplicado en la clase account
             if (Utilities.Helpers.Settings.StringValue("Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
             {
@@ -259,14 +266,13 @@ namespace Architect.API.Core.Security
                 {
                     result.Settings.Add(new Architect.API.Core.Contracts.Security.SettingItem() { Key = item.Key, Value = item.Value });
                 }
-
             }
             return result;
         }
 
         public static Contracts.Security.Token AccessKeyInfo(string accessKey)
         {
-            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0, Settings= new List<Contracts.Security.SettingItem>() };
+            Contracts.Security.Token result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0, Settings = new List<Contracts.Security.SettingItem>() };
 
             if (accessKey.IsNotEmpty())
             {
@@ -327,7 +333,7 @@ namespace Architect.API.Core.Security
                 }
                 else
                 {
-                    result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0, Settings= new List<Contracts.Security.SettingItem>() };
+                    result = new Contracts.Security.Token() { CompanyId = 0, BranchOffice = 0, Roles = string.Empty, ManagerId = 0, SecurityLevel = 0, UserId = 0, Settings = new List<Contracts.Security.SettingItem>() };
                 }
             }
 

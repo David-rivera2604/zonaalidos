@@ -22,7 +22,7 @@ namespace Architect.API.Core.Business.Security
             var authCookie = new HttpCookie("AuthToken", responseItem.Token)
             {
                 Expires = DateTime.Now.AddMinutes(responseItem.ExpiresIn),
-                HttpOnly = ShouldEnableHttpOnly(request),
+                HttpOnly = true,
                 Secure = request.IsSecureConnection,
                 SameSite = SameSiteMode.Lax,
                 Path = "/"

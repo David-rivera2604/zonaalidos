@@ -343,6 +343,9 @@ app.Attachments = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
                         let current = localStorage.getItem('AlternateToken');
                         if (current != null && current != '' && current != 'null') {
@@ -350,7 +353,7 @@ app.Attachments = (function () {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + current);
                         }
                         else {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                         }
                     }
                 }).done(function (fileList) {
@@ -430,6 +433,9 @@ app.Attachments = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
                         let current = localStorage.getItem('AlternateToken');
                         if (current != null && current != '' && current != 'null') {
@@ -437,7 +443,7 @@ app.Attachments = (function () {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + current);
                         }
                         else {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                         }
                     }
                 }).done(function (fileList) {

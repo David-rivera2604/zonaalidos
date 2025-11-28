@@ -600,8 +600,11 @@ app.BayerInclusion = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                     }
                 }).done(function (data, textStatus, jqXHR) {
                     app.core.Get(app.setting.apipath + 'v1/Inclusion/VerifySignature?id=' + id + '&fileName=' + data[0].StoredFileName + '&size=' + data[0].Size + '&originalFileName=' + data[0].FileName)

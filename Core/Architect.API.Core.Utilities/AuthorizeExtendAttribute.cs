@@ -25,8 +25,7 @@ namespace Architect.API.Core.Security
         /// <param name="actionContext">Contexto.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-
-            if(actionContext.ControllerContext.Request.RequestUri.AbsolutePath.EndsWith("v1/Security/IsLive"))
+            if (actionContext.ControllerContext.Request.RequestUri.AbsolutePath.EndsWith("v1/Security/IsLive"))
             {
                 base.OnAuthorization(actionContext);
             }
@@ -40,29 +39,41 @@ namespace Architect.API.Core.Security
                 string authenticationToken = null;
 
                 bool skip = false;
+                var auth = actionContext.Request.Headers.Authorization;
+                var cookie = actionContext.Request.Headers.GetCookies("AuthToken").FirstOrDefault();
 
-                if (actionContext.Request.Headers.Authorization != null)
+                if (auth != null &&
+                        auth.Scheme == "Bearer" &&
+                            auth.Parameter.IsNotEmpty() &&
+                                auth.Parameter != "undefined")
                 {
                     try
                     {
                         authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
-                        if (authenticationToken == null) {
+                        if (authenticationToken == null)
+                        {
                             authenticationToken = actionContext.Request.Headers.Authorization.Scheme;
                         }
 
                         tokenInfo = Token.Info(authenticationToken);
                     }
-                    catch (Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException )
+                    catch (Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException)
                     {
                         actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { ReasonPhrase = "El token ha expirado" };
                     }
+                }
+                else if (cookie.IsNotEmpty() &&
+                            cookie["AuthToken"].Value.IsNotEmpty())
+                {
+                    authenticationToken = cookie["AuthToken"].Value;
+                    tokenInfo = Token.Info(authenticationToken);
                 }
                 else
                 {
                     authenticationToken = HttpContext.Current.Request.Headers["_AccessKey_"];
                     tokenInfo = Token.AccessKeyInfo(authenticationToken);
                     if (tokenInfo.UserId == 0)
-                    {                        
+                    {
                         actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         tokenInfo = null;
                     }
@@ -78,18 +89,16 @@ namespace Architect.API.Core.Security
 
                 if (tokenInfo != null)
                 {
-                    Contracts.Security.Activity session = Session.Get(authenticationToken); 
+                    Contracts.Security.Activity session = Session.Get(authenticationToken);
                     if (!skip && !actionContext.Request.RequestUri.LocalPath.EndsWith("/IsLive") && tokenInfo.Expires < DateTime.Now)
                     {
-                       
                         if (session.IsNotEmpty())
                         {
                             DateTime expDateTime = session.LastDateTime.AddMinutes(Convert.ToDouble(ConfigurationManager.AppSettings["Session.Timeout"]));
                             //En caso que la session halla expirado, es decir si el time del últimos respuesta mas la duración de session es
                             //if (DateTime.Now < expDateTime)
-                                
                         }
-                    } 
+                    }
                     if (!ValidationRole(tokenInfo, actionContext))
                     {
                         actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { ReasonPhrase = "El usuario no posee roles validos para consumir la operación" };
@@ -120,7 +129,7 @@ namespace Architect.API.Core.Security
                             HttpContext.Current.User = principal;
                         }
 
-                        if (!actionContext.Request.RequestUri.LocalPath.EndsWith("/IsLive") && actionContext.Request.Headers.Referrer!=null)
+                        if (!actionContext.Request.RequestUri.LocalPath.EndsWith("/IsLive") && actionContext.Request.Headers.Referrer != null)
                             Session.Refresh(authenticationToken, actionContext.Request.Headers.Referrer.AbsoluteUri);
                     }
                 }
@@ -138,7 +147,7 @@ namespace Architect.API.Core.Security
                     var rolesAuthorized = authorizeAttribute.Roles.ToLower().Split(',');
                     var rolesAsigned = tokenInfo.Roles.ToLower().Split(',');
                     var exist = rolesAuthorized.Intersect(rolesAsigned).ToList();
-                    if(exist.Count >0 )
+                    if (exist.Count > 0)
                     {
                         result = true;
                     }

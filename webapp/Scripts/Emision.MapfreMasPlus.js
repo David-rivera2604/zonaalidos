@@ -1233,8 +1233,11 @@ app.EmisionMapfreMasPlus = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                     }
                 }).done(function (data, textStatus, jqXHR) {
 
@@ -1287,8 +1290,11 @@ app.EmisionMapfreMasPlus = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                     }
                 }).done(function (data, textStatus, jqXHR) {
                     let oldId = rowDocumentosrequeridos.documentosrequeridosId;
