@@ -903,6 +903,7 @@ app.security = (function () {
      * @returns {string|null} El valor de la cookie o null si no existe.
      */
     function getCookie(name) {
+        return localStorage.getItem('Token');
         const nameEQ = name + "=";
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
