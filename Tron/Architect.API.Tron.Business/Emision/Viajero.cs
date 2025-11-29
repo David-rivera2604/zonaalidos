@@ -6,6 +6,7 @@ using System.Configuration;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+using System.Linq;
 
 
 namespace Architect.API.Tron.Business.Emision
@@ -149,6 +150,15 @@ namespace Architect.API.Tron.Business.Emision
                                                             Newtonsoft.Json.JsonConvert.SerializeObject(resultQuoteInfo), "ISSUE-R-" + resultQuoteInfo.num_poliza, resultQuoteInfo.num_poliza);
 
                     //resultQuoteInfo = Asistencia_Panama(quoteInfo, resultQuoteInfo, tokenInfo.Roles);
+
+                    if (tokenInfo.Roles.Contains("Scotiabank"))
+                    {
+                        Integraciones.FacturaElectronica.Generar(resultQuoteInfo.cod_ramo,
+                                                             result2.Recibos.FirstOrDefault(),
+                                                             result2.Calculado.Recibos.FirstOrDefault(),
+                                                             quoteInfo.terceros.FirstOrDefault(r => r.tipodetercero == 1)
+                                                             );
+                    }
                 }
             }
             catch (Exception ex)

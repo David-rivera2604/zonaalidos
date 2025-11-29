@@ -14,41 +14,41 @@ namespace Architect.GTI.Integrations.Application
     /// <summary>
     /// Constructor para crear instancias de DocumentoRequest con datos de ejemplo.
     /// </summary>
-    public class DocumentoRequestBuilder
+    public class DocumentoRequestHandler
     {
 
-        public static DocumentoRequest CrearEjemplo2()
+        /// <summary>
+        /// Envia un comprobante electrónico a Hacienda.
+        /// </summary>
+        public static DocumentoResponse CargarDocumento(FacturaRequest fact)
         {
-            // "Encabezado"."NumeroFactura": "18906329"
+            DocumentoRequest request = Convert_FacturaRequest_to_DocumentoRequest(fact);
 
-            // "Encabezado"."CodigoActividad": "660303"
-            // "Encabezado"."Sucursal": 1
-            // "Encabezado"."receptor"."CodInterno": "8002203"
-            // "Lineas"."Tipo": "S"
-            // "Lineas"."Codigo": "7132200000000"
-            // "Lineas"."CodTipo": [ 4 ]
-            // "Lineas"."CodProdServ": ["8"]
-            // "Lineas"."UnidadMedida": 24
-
-
-            FacturaRequest fact = new FacturaRequest
+            var session = API.Core.Business.Traza.TrackRequest.NewSession(new API.Core.Contracts.Security.Token(), "ApiCargaFactura/api/Documentos/CargarDocumento", request);
+            DocumentoResponse response = null;
+            try
             {
-                TipoIdent = 2,
-                Identificacion = "4000000019",
-                Nombre = "BANCO DE COSTA RICA",
-                Correo = "royner.acosta@mapfrecr.com",
-                Cantidad = 1,
-                PrecioUnitario = 25259.28,
-                Moneda = 2,
-                TipoCambio = 504.44,
-                TipoMedioPago = "2",
-                Descripcion = "Servicios de Salud comprendido en el Periodo 01/10/2025 - 31/10/2025, Poliza No. 1410100147",
-                NumeroFactura = "18906329",
-                FechaFactura = new DateTime(2025, 10, 31, 23, 50, 0),
-                FechaVencimiento = new DateTime(2025, 10, 1, 0, 0, 0)
-            };
+                RestClient client = new RestClient(Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.BaseURL", "https://pruebas.gticr.com/AplicacionFEPruebas/ApiCargaFactura/api"),
+                   $"CargarDocumento", true);
+                response = client.PostAsync<DocumentoRequest, DocumentoResponse>(
+                                  $"Documentos/CargarDocumento?pNumCuenta={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.NumCuenta", "3115")}&pUsuario={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.Usuario", "royner.acosta@mapfrecr.com")}&pClave={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.Clave", "Mapfre2024!")}",
+                                  request).Result;
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
 
+                session.ResponseStatus = 400;
+                session.ResponseText = ex.Message;
+            }
 
+            API.Core.Business.Traza.TrackRequest.CloseSession(session, response);
+
+            return response;
+        }
+
+        private static DocumentoRequest Convert_FacturaRequest_to_DocumentoRequest(FacturaRequest fact)
+        {
             DocumentoRequest request = CrearBase();
 
             // Mapeo de propiedades de FacturaRequest a DocumentoRequest
@@ -68,6 +68,8 @@ namespace Architect.GTI.Integrations.Application
 
             // Actualizar la primera línea del documento
             var linea = request.Documentos[0].Lineas[0];
+            linea.Codigo = fact.Codigo;
+            linea.CodProdServ[0] = fact.CodigoServicio;
             linea.Cantidad = fact.Cantidad;
             linea.PrecioUnitario = (int)fact.PrecioUnitario;
             linea.Descripcion = fact.Descripcion;
@@ -94,29 +96,6 @@ namespace Architect.GTI.Integrations.Application
 
 
             var json = JsonConvert.SerializeObject(request);
-
-
-
-            var session = API.Core.Business.Traza.TrackRequest.NewSession(new API.Core.Contracts.Security.Token(), "ApiCargaFactura/api/Documentos/CargarDocumento", request);
-            DocumentoResponse response = null;
-            try
-            {
-                RestClient client = new RestClient(Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.BaseURL", "https://pruebas.gticr.com/AplicacionFEPruebas/ApiCargaFactura/api"),
-                   $"CargarDocumento", true);
-                response = client.PostAsync<DocumentoRequest, DocumentoResponse>(
-                                  $"Documentos/CargarDocumento?pNumCuenta={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.NumCuenta", "3115")}&pUsuario={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.Usuario", "royner.acosta@mapfrecr.com")}&pClave={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.Clave", "Mapfre2024!")}",
-                                  request).Result;
-            }
-            catch (Exception ex)
-            {
-                Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
-
-                session.ResponseStatus = 400;
-                session.ResponseText = ex.Message;
-            }
-
-            API.Core.Business.Traza.TrackRequest.CloseSession(session, response);
-
             return request;
         }
 
@@ -125,7 +104,7 @@ namespace Architect.GTI.Integrations.Application
         /// Crea una instancia de DocumentoRequest con datos de ejemplo basados en MAPFRE Seguros Costa Rica S.A.
         /// </summary>
         /// <returns>Una instancia completa de DocumentoRequest.</returns>
-        public static DocumentoRequest CrearBase()
+        private static DocumentoRequest CrearBase()
         {
             return new DocumentoRequest
             {
@@ -181,9 +160,8 @@ namespace Architect.GTI.Integrations.Application
                                 Identificacion = "4000000019",
                                 Nombre = "BANCO DE COSTA RICA",
                                 Correo = "royner.acosta@mapfrecr.com",
-                                Copia = "",
-                                Destinatario = "",
-                                CodInterno = "8002203"
+                                Copia = string.Empty,
+                                Destinatario =string.Empty
                             }
                         },
                         Lineas = new[]
@@ -195,7 +173,7 @@ namespace Architect.GTI.Integrations.Application
                                 CodTipo = new[] { 4 },
                                 CodProdServ = new[] { "8" },
                                 UnidadMedida = 24,
-                                UnidadComercial = "",
+                                UnidadComercial =string.Empty,
                                 Cantidad = 1,
                                 PrecioUnitario = 24764,
                                 Descripcion = "Servicios de Salud comprendido en el Periodo 01/10/2025 - 31/10/2025, Poliza No. 1410100147",
@@ -240,19 +218,5 @@ namespace Architect.GTI.Integrations.Application
             };
         }
 
-        /// <summary>
-        /// Crea una instancia de DocumentoRequest personalizada.
-        /// </summary>
-        /// <param name="numCuenta">Número de cuenta GTI.</param>
-        /// <param name="documentos">Array de documentos a cargar.</param>
-        /// <returns>Una instancia de DocumentoRequest.</returns>
-        public static DocumentoRequest Crear(int numCuenta, Documento[] documentos)
-        {
-            return new DocumentoRequest
-            {
-                NumCuenta = numCuenta,
-                Documentos = documentos
-            };
-        }
     }
 }

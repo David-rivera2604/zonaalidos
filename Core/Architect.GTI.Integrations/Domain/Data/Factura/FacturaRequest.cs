@@ -37,6 +37,16 @@ namespace Architect.GTI.Integrations.Domain.Factura
 
 
         /// <summary>
+        /// Código del producto o servicio (CABYS).
+        /// </summary>
+        public string Codigo { get; set; }
+
+        /// <summary>
+        /// Códigos de producto o servicio (Código del RAMO TRON).
+        /// </summary>
+        public string CodigoServicio { get; set; }
+
+        /// <summary>
         /// Cantidad de unidades del producto o servicio.
         /// </summary>
         public int Cantidad { get; set; } = 1;
@@ -70,7 +80,7 @@ namespace Architect.GTI.Integrations.Domain.Factura
         /// </summary>
         public string Descripcion { get; set; }
         /// <summary>
-        /// Número de identificación del comprobante electrónico brindado por el cliente.
+        /// Número de identificación del comprobante electrónico brindado por el cliente (usualmente se usa el número de recibo de TRON). 
         /// </summary>
         public string NumeroFactura { get; set; }
 

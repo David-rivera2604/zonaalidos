@@ -42,9 +42,5 @@ namespace Architect.GTI.Integrations.Domain.CargarDocumento.Request
         /// </summary>
         public string Destinatario { get; set; }
 
-        /// <summary>
-        /// Código interno del receptor.
-        /// </summary>
-        public string CodInterno { get; set; }
     }
 }

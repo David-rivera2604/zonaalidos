@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\DocumentoRequestBuilder.cs" />
+    <Compile Include="Application\DocumentoRequestHandler.cs" />
     <Compile Include="Domain\Data\CargarDocumento\DocumentoResponse.cs" />
     <Compile Include="Domain\Data\CargarDocumento\Response\Respuesta.cs" />
     <Compile Include="Domain\Data\CargarDocumento\Request\Documento.cs" />
