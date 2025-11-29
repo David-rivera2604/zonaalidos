@@ -1266,7 +1266,8 @@
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
     <Content Include="Scripts\Extend.CobrosRechazados.js" />
     <Content Include="Scripts\Form.Ext.ExcludedPolicies.js" />
-    <Content Include="Scripts\Sugese.js" />
+    <Content Include="Scripts\Sugese.Send.js" />
+    <Content Include="Scripts\Sugese.Generador.js" />
     <Content Include="Scripts\Variaciones.Multirriesgo.js" />
     <Content Include="Scripts\Variaciones.HogarTotalPlus.js" />
     <Content Include="Scripts\Variaciones.HogarTotal.js" />
@@ -1877,6 +1878,7 @@
     <Content Include="Sugese\plantillas\RegistroUnicoBeneficiarios.xlsx" />
     <Content Include="Sugese\plantillas\RunOff.xlsx" />
     <Content Include="Sugese\plantillas\SaldosContables.xlsx" />
+    <Content Include="Views\Sugese\Envio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -240,5 +240,10 @@ namespace Architect.Sugese.Manager
                 Detail = string.Empty
             };
         }
+
+        public static object EnviarArchivo(string modelo, int periodoMensual, int ano, string xmlFileName, string internalFileName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
