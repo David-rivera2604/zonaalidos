@@ -129,6 +129,9 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Architect.Sugese.InversionesFinancieras", "Sugese\Architect.Sugese.InversionesFinancieras\Architect.Sugese.InversionesFinancieras.vbproj", "{554DEFA8-F453-4D20-820F-171B786E9E93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Sugese.Manager", "Sugese\Architect.Sugese.Manager\Architect.Sugese.Manager.csproj", "{46CF6614-EC81-4DF7-9FC4-459C36ECFA08}"
+	ProjectSection(ProjectDependencies) = postProject
+		{36B5AC9F-DAA3-4D43-85F6-47B0389AB261} = {36B5AC9F-DAA3-4D43-85F6-47B0389AB261}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Architect.Sugese.Patrimonio", "Sugese\Architect.Sugese.Patrimonio\Architect.Sugese.Patrimonio.vbproj", "{E327210A-4D67-4547-9661-DC3B07476AB8}"
 EndProject

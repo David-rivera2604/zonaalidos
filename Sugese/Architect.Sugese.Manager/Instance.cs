@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Reflection.Emit;
+using System.Web;
 
 namespace Architect.Sugese.Manager
 {
@@ -243,7 +245,41 @@ namespace Architect.Sugese.Manager
 
         public static object EnviarArchivo(string modelo, int periodoMensual, int ano, string xmlFileName, string internalFileName)
         {
-            throw new NotImplementedException();
+            var result = new Architect.Sugese.Domain.Result
+            {
+                Success = false,
+                Code = 0,
+                Reason = string.Empty
+            };
+
+            string serverPath = HttpContext.Current.Server.MapPath("../uploads");
+            xmlFileName = string.Format(@"{0}\{1}", serverPath, internalFileName);
+
+            try
+            {
+                result.Reason = (new Model()).Enviar(xmlFileName, modelo, ano, periodoMensual);
+
+                result.Success = (result.Reason.IfEmpty(string.Empty)
+                                                .ToUpper()
+                                                .Contains("<CODIGO>0</CODIGO>"));
+
+                //Architect.Core.DataAccess.NavigationTrace.Track(
+                //    "  Se proceso " +
+                //    (result.Success ? " de forma exitosa " : "con errores ") +
+                //    " el archivo " + excelFileName + " para el modelo " + modelo
+                //);
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Code = -999; 
+                result.Reason = "Ha ocurrido un error al tratar de procesar el archivo excel";
+                result.Detail = $"{ex.GetType().Name}: {ex.Message}"; 
+            }
+
+            //Architect.Common.Helpers.LogHandler.TraceLog("ProcesaArchivo result", result.Reason);
+
+            return result;
         }
     }
 }

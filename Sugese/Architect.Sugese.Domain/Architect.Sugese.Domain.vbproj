@@ -50,6 +50,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -82,6 +83,7 @@
     <Compile Include="Enumerations\ProveedorPrecios.vb" />
     <Compile Include="Enumerations\TipoRamo.vb" />
     <Compile Include="GenerateBase.vb" />
+    <Compile Include="IModel.vb" />
     <Compile Include="IReport.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

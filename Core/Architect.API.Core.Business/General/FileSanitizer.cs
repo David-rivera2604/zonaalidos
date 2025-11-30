@@ -17,12 +17,15 @@ namespace Architect.API.Core.Business.General
     {
         // Encabezados (Magic Numbers)
         private static readonly byte[] PdfHeader = { 0x25, 0x50, 0x44, 0x46 }; // %PDF
+
         private static readonly byte[] ZipHeader = { 0x50, 0x4B, 0x03, 0x04 }; // ZIP (DOCX, XLSX, PPTX)
         private static readonly byte[] XlsHeader = { 0xD0, 0xCF, 0x11, 0xE0 }; // XLS (OLE)
         private static readonly byte[] PngHeader = { 0x89, 0x50, 0x4E, 0x47 }; // PNG
+        private static readonly byte[] XmlHeader = { 0x3C, 0x3F, 0x78, 0x6D };
 
         // JPG puede tener distintos headers
         private static readonly byte[] JpgHeader1 = { 0xFF, 0xD8, 0xFF, 0xE0 }; // EXIF
+
         private static readonly byte[] JpgHeader2 = { 0xFF, 0xD8, 0xFF, 0xE1 }; // APP1 Canon
         private static readonly byte[] JpgHeader3 = { 0xFF, 0xD8, 0xFF, 0xE8 }; // SPIFF
 
@@ -65,8 +68,26 @@ namespace Architect.API.Core.Business.General
             // JSON
             { "application/json", (file, header) =>
                 IsValidJsonFile(file)
+            },
+            { "text/xml", (file, header) =>
+                header.SequenceEqual(XmlHeader) &&     IsValidXmlFile(file)
             }
         };
+
+        private static bool IsValidXmlFile(HttpPostedFile file)
+        {
+            try
+            {
+                file.InputStream.Position = 0;
+                var xml = new System.Xml.XmlDocument();
+                xml.Load(file.InputStream);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// Valida el tipo de archivo mediante su cabecera y estructura interna.
@@ -131,10 +152,8 @@ namespace Architect.API.Core.Business.General
 
                     if (name == typeOffice.ToLower())
                         hasDocumentXml = true;
-
                     else if (name == "[content_types].xml")
                         hasContentTypesXml = true;
-
                     else if (name == "_rels/.rels")
                         hasRelsFolder = true;
 

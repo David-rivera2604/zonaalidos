@@ -33,6 +33,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,8 +44,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\EnviarArchivoXML\CapturadorDeAseguradoras.wsdl" />
+    <None Include="Connected Services\EnviarArchivoXML\configuration91.svcinfo" />
+    <None Include="Connected Services\EnviarArchivoXML\configuration.svcinfo" />
+    <None Include="Connected Services\EnviarArchivoXML\EnviarArchivoXML.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\EnviarArchivoXML\EnviarArchivoXML1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\EnviarArchivoXML\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference1.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\EnviarArchivoXML\EnviarArchivoXML.disco" />
     <Content Include="Instance - Copy.txt" />
+    <Compile Include="Connected Services\EnviarArchivoXML\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\EnviarArchivoXML\Reference1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Instance.cs" />
+    <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\EnviarArchivoXML\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
