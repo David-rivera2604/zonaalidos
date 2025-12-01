@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using FastMember;
+﻿using FastMember;
 using Microsoft.VisualBasic.CompilerServices;
 using System;
-
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 
@@ -17,6 +13,11 @@ namespace Architect.Utilities.Extensions
     /// </summary>
     public static class ListExtensions
     {
+        public static TResult[] ToArrayOf<TSource, TResult>(this IEnumerable<TSource> source,     Func<TSource, TResult> selector)
+        {
+            return source.Select(selector).ToArray();
+        }
+
         public static List<T> WithItems<T>(this List<T> list, List<T> items)
         {
             list.AddRange(items);
