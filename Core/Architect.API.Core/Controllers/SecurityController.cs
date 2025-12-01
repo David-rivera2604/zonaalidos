@@ -1,10 +1,13 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Core.Contracts.Security;
+using Architect.API.Core.Security;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Security;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Architect.API.Core.Controllers
@@ -18,6 +21,26 @@ namespace Architect.API.Core.Controllers
     public class SecurityController : ApiController
     {
         /// <summary>
+        /// Verifica que un código temporal sea valido.
+        /// </summary>
+        /// <param name="resetRequest">Datos de la solicitud.</param>
+        /// <returns>Indicador si el codigo es valido o no.</returns>
+        [HttpPost]
+        [Route("IsOTPValid")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
+        {
+            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+            Architect.API.Core.Contracts.Security.AOTPResponse result = null;
+
+            await Task.Run(() => result = Architect.API.Core.Business.Security.OTP.IsValid(resetRequest)).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
@@ -29,7 +52,7 @@ namespace Architect.API.Core.Controllers
         [Route("Authentication")]
         [AllowAnonymous]
         [ResponseType(typeof(Contracts.Security.AuthenticationResponse))]
-        public async Task<IHttpActionResult> Authentication([FromBody] Contracts.Security.AuthenticationRequest authenticationRequest)
+        public IHttpActionResult Authentication([FromBody] Contracts.Security.AuthenticationRequest authenticationRequest)
         {
             IHttpActionResult result = null;
 
@@ -44,7 +67,8 @@ namespace Architect.API.Core.Controllers
                 authenticationRequest.UserAgent = Request.Headers.UserAgent.ToString();
                 Architect.API.Core.Contracts.Security.Token token = new Contracts.Security.Token();
 
-                await Task.Run(() => responseItem = Business.Security.Accounts.Authentication(authenticationRequest, ref token, true)).ConfigureAwait(false);
+                // Llamada sincrónica - eliminar Task.Run para preservar HttpContext
+                responseItem = Business.Security.Accounts.Authentication(authenticationRequest, ref token, true);
 
                 if (responseItem.Reason.IsNotEmpty())
                 {
@@ -54,7 +78,7 @@ namespace Architect.API.Core.Controllers
                         result = BadRequest(responseItem.Reason);
                 }
                 else
-                {
+                { 
                     result = Ok(responseItem);
                 }
             }
@@ -126,25 +150,32 @@ namespace Architect.API.Core.Controllers
             return Ok(result);
         }
 
-        /// <summary>
-        /// Verifica que un código temporal sea valido.
-        /// </summary>
-        /// <param name="resetRequest">Datos de la solicitud.</param>
-        /// <returns>Indicador si el codigo es valido o no.</returns>
-        [HttpPost]
-        [Route("IsOTPValid")]
-        [AllowAnonymous]
-        [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
-        {
-            resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
-            Core.Contracts.General.GenericResponse result = null;
+        ///// <summary>
+        ///// Verifica que un código temporal sea valido.
+        ///// </summary>
+        ///// <param name="resetRequest">Datos de la solicitud.</param>
+        ///// <returns>Indicador si el codigo es valido o no.</returns>
+        //[HttpPost]
+        //[Route("IsOTPValid")]
+        //[AllowAnonymous]
+        //[ResponseType(typeof(Core.Contracts.General.GenericResponse))]
+        //[ApiExplorerSettings(IgnoreApi = true)]
+        //public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
+        //{
+        //    resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
+        //    Core.Contracts.General.GenericResponse result = null;
 
-            await Task.Run(() => result = Architect.API.Core.Business.Security.OTP.IsValid(resetRequest)).ConfigureAwait(false);
+        //    await Task.Run(() => result = Architect.API.Core.Business.Security.OTP.IsValid(resetRequest)).ConfigureAwait(false);
 
-            return Ok(result);
-        }
+        //    if (result.Successful)
+        //    {
+        //        result.Context = Utilities.SerializeHandler<Contracts.Security.Context>.DeserializeJSON((string)Utilities.Cache.GetItem(resetRequest.OTP));
+        //        Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, responseItem, token));
+        //    }
+                
+
+        //    return Ok(result);
+        //}
 
         /// <summary>
         /// Permite restablecer una clave de acceso.

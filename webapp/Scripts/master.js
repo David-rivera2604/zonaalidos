@@ -136,6 +136,9 @@ app.master = (function () {
     }
 
     function render_Ham_menu(data) {
+        if (data == null) {
+            return;
+        }
         var Ham_menu = $('#MenuVertical');
 
         var mainMenuItems = data.filter(function (item) {
@@ -251,7 +254,7 @@ app.master = (function () {
     return {
         Init: function () {
             var name = localStorage.getItem('Tenant');
-            name = name.replace('á', 'a');
+            name = name == null ? '' : name.replace('á', 'a');
 
             if ($('#tenantLogo').length > 0) {
                 app.core.Get(app.setting.apipath + 'v1/Colors/GetColor')

@@ -49,6 +49,13 @@ String.prototype.supplant = function (o) {
 app.core = (function () {
 
     let lookupData = [];
+    
+    function getAuthToken() { 
+        token = app.security().getCookie('AuthToken');
+        if (token != null && token != '') {
+            return token;
+        } 
+    }
 
     function GetPDF(url, download, filename, callback) {
         let excel = false;
@@ -93,7 +100,7 @@ app.core = (function () {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                'Authorization': 'Bearer ' + getAuthToken()
             },
         }).then(response => {
             if (!response.ok) { throw response }
@@ -175,7 +182,7 @@ app.core = (function () {
                     cache: false,
                     timeout: 600000,
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
                     }
                 }).done(function (fileList) {
                     callback(fileList);
@@ -228,7 +235,7 @@ app.core = (function () {
                     cache: false,
                     timeout: 600000,
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
                     }
                 }).done(function (fileList) {
                     callback(fileList, false);
@@ -264,14 +271,7 @@ app.core = (function () {
             data: data,
             beforeSend: function (xhr) {
                 if (token) {
-                    let current = localStorage.getItem('AlternateToken');
-                    if (current != null && current != '' && current != 'null') {
-                        localStorage.removeItem('AlternateToken')
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + current);
-                    }
-                    else {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
-                    }
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
                 }
             }
         }).done(function (data, textStatus, jqXHR) {
@@ -620,7 +620,7 @@ app.core = (function () {
             method: method,
             headers: {
                 'Content-Type': data ? 'application/json; charset=utf-8' : {},
-                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                'Authorization': 'Bearer ' + getAuthToken()
             }
         }).then(response => {
             if (!response.ok) {
@@ -647,7 +647,7 @@ app.core = (function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                'Authorization': 'Bearer ' + getAuthToken()
             },
             responseType: 'arraybuffer'
         })
@@ -659,7 +659,7 @@ app.core = (function () {
                     return response.json();
                 }
             })
-            .catch(error => { // Manejo de errores adicionales 
+            .catch(error => { 
                 console.error('Error en la solicitud:', error);
             });
     };
@@ -866,11 +866,10 @@ app.core = (function () {
             return new Promise((resolve, reject) => {
                 return fetch(`${app.setting.entityapi}/${url}`, {
                     body: method === 'GET' ? null : JSON.stringify(data),
-
                     method: method,
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8',
-                        'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                        'Authorization': 'Bearer ' + getAuthToken()
                     }
                 }).then(response => {
                     if (!response.ok) {
@@ -896,6 +895,65 @@ app.core = (function () {
         }
     };
 })();
+
+app.security = (function () {
+    /**
+     * Obtiene el valor de una cookie por su nombre.
+     * @param {string} name - Nombre de la cookie a buscar.
+     * @returns {string|null} El valor de la cookie o null si no existe.
+     */
+    function getCookie(name) {
+        return localStorage.getItem('Token');
+        const nameEQ = name + "=";
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i];
+            while (cookie.charAt(0) === ' ') {
+                cookie = cookie.substring(1, cookie.length);
+            }
+            if (cookie.indexOf(nameEQ) === 0) {
+                return cookie.substring(nameEQ.length, cookie.length);
+            }
+        }
+        return null;
+    }
+
+    return {
+        getCookie: function(name) {
+            return getCookie(name);
+        },
+        logout: function () {             
+                app.core.Post(app.setting.basepath + 'Security/Logout')
+                    .done(function (data) {
+                        if (data.success) {
+                            // Limpiar localStorage
+                            localStorage.removeItem('Token');
+                            localStorage.removeItem('Username');
+                            localStorage.removeItem('Tenant');
+                            localStorage.removeItem('Color1Tenant');
+                            localStorage.removeItem('Color2Tenant');
+                            localStorage.removeItem('Roles');
+                            localStorage.removeItem('Expires');
+                            localStorage.removeItem('LastActivity');
+                            localStorage.removeItem('Navegation');
+
+                            // Redirigir al login
+                            window.location.replace(app.setting.basepath + 'Security/Login');
+                        } else {
+                            toastr.error('Error al cerrar sesión', 'Error');
+                        }
+                    })
+                    .fail(function () {
+                        // Si falla la llamada al servidor, limpiar manualmente como fallback
+                        localStorage.clear();
+                        document.cookie = "AuthToken=; path=/; max-age=0";
+                        window.location.replace(app.setting.basepath + 'Security/Login');
+                    });
+            
+        }
+    }
+});
+
 $(document).ready(function () {
     moment.locale('es');
 });

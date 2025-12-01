@@ -199,7 +199,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 if (resultInfo.presupuesto.IsNotEmpty())
                 {
-                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización Hogar Total", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt64(resultInfo.presupuesto), tokenInfo.CompanyId, "Cotización Hogar Total", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
                 }
 
                 //Architect.Common.Helpers.Serialize.SerializeToFile<Contracts.Cotizacion.HogarTotal>(resultQuoteInfo,

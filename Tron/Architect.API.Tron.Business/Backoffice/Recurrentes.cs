@@ -23,11 +23,10 @@ using System.Threading.Tasks;
 namespace Architect.API.Tron.Business.Backoffice
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class Recurrentes
     {
-
         /// <summary>
         /// Proceso 'Batch', que envía a cobro los recibos pendiente con cobro recurrente.
         /// </summary>
@@ -42,7 +41,7 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
                 string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
-                int limitCount = Core.Business.Settings.IntegerValue(0, "Payment.Silice.RecurringReceipts.Limit.Count", 5);
+                int limitCount = "Payment.Silice.RecurringReceipts.Limit.Count".IntegerValue(0, 5);
                 int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
                 string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
                 Payment.Integrations.Contracts.OnlinePayment track = null;
@@ -60,7 +59,6 @@ namespace Architect.API.Tron.Business.Backoffice
 
                 if (pendientes.Count > 0)
                 {
-
                     ReciboRequest reciboReq = new ReciboRequest()
                     {
                         procesoId = procesoId,
@@ -91,13 +89,12 @@ namespace Architect.API.Tron.Business.Backoffice
                             continue;
                         }
 
-                        // PASO 3: Se crea la traza del recibo a cobro (OnlinePayment).   
+                        // PASO 3: Se crea la traza del recibo a cobro (OnlinePayment).
                         track = CreaTraza_OnlinePayment(cod_cia, reciboReq.procesoId, newItem, pendiente);
                         newItem.ordenId = track.Id.ToString();
 
                         total += pendiente.IMP_RECIBO;
                         count++;
-                        
 
                         reciboReq.totalItems = count;
                         reciboReq.totalCompleto = total;
@@ -147,11 +144,9 @@ namespace Architect.API.Tron.Business.Backoffice
                             Utilities.Log.ErrorLog("Payment", "RecurrentesAlCobro", exi);
                             Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("FALLA: controlada para {0} - {1}", item.description, exi.Message), "payment");
                         }
-
                     }
                     EnviarReporteDeDomiciliacion(reciboReq);
                 }
-
             }
             catch (Exception ex)
             {
@@ -213,7 +208,7 @@ namespace Architect.API.Tron.Business.Backoffice
         }
 
         /// <summary>
-        /// PASO 3: Se crea la traza del recibo a cobro (OnlinePayment).  
+        /// PASO 3: Se crea la traza del recibo a cobro (OnlinePayment).
         /// </summary>
         private static Payment.Integrations.Contracts.OnlinePayment CreaTraza_OnlinePayment(int cod_cia, string procesoId, Architect.Payment.Integrations.Contracts.v2.Item newItem, Contracts.Pagos.Recibo pendiente)
         {
@@ -282,7 +277,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// PASO 5-A: Realiza el cobro a la tarjeta de un cliente
         /// </summary>
-        private async static Task<CollectTransaction> Collect(string payLoad)
+        private static async Task<CollectTransaction> Collect(string payLoad)
         {
             CollectTransaction collectResponse = null;
 
@@ -313,7 +308,6 @@ namespace Architect.API.Tron.Business.Backoffice
                         }
                     };
                 }
-
             }
             collectResponse.rawresponse = resultResponse;
             return collectResponse;
@@ -350,6 +344,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     infoItem.message = collectResponse.status.message;
 
                     break;
+
                 case "REJECTED":
                     infoItem.description = item.concepto;
                     infoItem.reference = collectResponse.reference;
@@ -358,11 +353,11 @@ namespace Architect.API.Tron.Business.Backoffice
                     infoItem.message = collectResponse.status.message;
                     infoItem.date = collectResponse.status.date;
                     break;
+
                 default:
                     infoItem.reference = item.ordenId;
                     infoItem.message = collectResponse.status.message;
                     break;
-
             }
 
             return infoItem;
@@ -405,7 +400,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     numberOfRetries = 0;
                 }
 
-                // Se incrementa la cantidad de reintento fallidos 
+                // Se incrementa la cantidad de reintento fallidos
                 Tarjetas.UpdateRejectionCount(track.PolicyId, track.DocumentType.DocumentType(), track.DocumentNumber, numberOfRetries + 1, item.reason);
             }
 
@@ -433,7 +428,5 @@ namespace Architect.API.Tron.Business.Backoffice
             Mail.SendByTemplate("Reporte_Domiciliacion", 0, 0, 0, null, null,
                                 new string[] { string.Format("{0};Reporte Domiciliación.xlsx", attachFileName) });
         }
-
     }
-
 }

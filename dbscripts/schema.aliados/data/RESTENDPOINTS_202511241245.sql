@@ -1,0 +1,892 @@
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (778,'Agents',1,'GET','Agentes',NULL,'SELECT',2,'SELECT cod_agt, a1332.cod_docum, nom_tercero || '' '' || ape1_tercero AS NombreCompleto, cod_agt sub_agt, a1332.email_com email
+  FROM a1001332 a1332 LEFT JOIN v1001390 v1390 ON a1332.cod_cia = v1390.cod_cia and a1332.tip_docum = v1390.tip_docum and a1332.cod_docum = v1390.cod_docum and a1332.cod_act_tercero = v1390.cod_act_tercero
+ WHERE a1332.cod_cia = 1
+   AND a1332.fec_validez <= SYSDATE   
+   AND ({filter:VARCHAR.100} IS NULL OR LOWER(nom_tercero) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(ape1_tercero) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(a1332.email_com) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(nom_tercero || '' '' || ape1_tercero) LIKE aliados.StringFilter({filter:VARCHAR.100}))   
+UNION
+SELECT cod_agt, a1337.cod_docum, nom_tercero || '' '' || ape1_tercero AS NombreCompleto, a1337.cod_emp_agt sub_agt, a1337.email_com email
+  FROM a1001337 a1337 LEFT JOIN v1001390 v1390 ON a1337.cod_cia = v1390.cod_cia and a1337.tip_docum = v1390.tip_docum and a1337.cod_docum = v1390.cod_docum and a1337.cod_act_tercero = v1390.cod_act_tercero
+ WHERE a1337.cod_cia = 1
+   AND a1337.fec_validez <= SYSDATE
+   AND ({filter:VARCHAR.100} IS NULL OR LOWER(nom_tercero) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(ape1_tercero) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(a1337.email_com) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(nom_tercero || '' '' || ape1_tercero) LIKE aliados.StringFilter({filter:VARCHAR.100})) 
+OFFSET {beginIndex:number.9:default.1}-1 ROWS FETCH NEXT ({endIndex:number.9:default.50}-{beginIndex:number.9:default.1}+1) ROWS ONLY',0,'Custom','Agents',0,NULL,'Soporte','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2025-11-14 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (400,'CarnetDigital',1,'GET','Recupera la informacion necesaria para la impresion del carnet digital para medical',NULL,'SELECT',2,'SELECT i.Id "Id", i.Empresa "Empresa", i.TieneDependientes "TieneDependientes", i.CantidadDeDependientes "CantidadDeDependientes", i.Finalizado "Finalizado", i.CodigoDeImpresion "CodigoDeImpresion", i.CantidadDeCanets "CantidadDeCanets", i.CantidadDeCertificados "CantidadDeCertificados", i.FechaDeRecibido "FechaDeRecibido", i.FechaDeEnvioAPanama "FechaDeEnvioAPanama", i.FechaDeEnvioACorredor "FechaDeEnvioACorredor", i.Tramite "Tramite", i.FechaEfectiva "FechaEfectiva", i.Clase "Clase", i.Nombre "Nombre", i.Apellido "Apellido", i.Cedula "Cedula", i.Observacines "Observacines", i.FechaDeEnvioDeLaObservacion "FechaDeEnvioDeLaObservacion", i.FechaNacimiento "FechaNacimiento", i.Sexo "Sexo", i.Estatus "Estatus", i.TipoDeIdentificacion "TipoDeIdentificacion", i.CorreoElectronico "CorreoElectronico", i.NroCuenta "NroCuenta", i.Plan "Plan", i.Certificado "Certificado", i.DeducibleConsumido "DeducibleConsumido", i.DeducibleMaximoVitalicio "DeducibleMaximoVitalicio", i.StopLost "StopLost", i.NumeroEmpleado "NumeroEmpleado", i.FechaSolicitudExclusion "FechaSolicitudExclusion",
+       c.CarnetDigital "CarnetDigital", c.Poliza "Poliza", c.Contratante "Contratante"
+  FROM Inclusiones i
+  LEFT JOIN Contratantes c ON c.id = i.empresa
+WHERE Cedula={app.cod_docum_clean:VARCHAR2.20:Required}
+',1,'Custom','Asegurado',1,NULL,'CarnetDigital','Medical',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (401,'CarnetDigital',2,'GET','Recupera la informacion necesaria para la impresion del carnet digital para medical',NULL,'SELECT',10,'SELECT Id "Id", Consecutivo "Consecutivo", TipoExtra "TipoExtra", IdentificacionExtra "IdentificacionExtra", NombreExtra "NombreExtra", ApellidoExtra "ApellidoExtra", EdadExtra "EdadExtra", ParentescoExtra "ParentescoExtra", FechaInclusionExtra "FechaInclusionExtra", FechaExclusionExtra "FechaExclusionExtra", ParticipacionExtra "ParticipacionExtra", TipoDeIdentificacionExtra "TipoDeIdentificacionExtra", PlanEx "PlanEx", DeducibleConsumidoEx "DeducibleConsumidoEx", DeducibleMaximoVitalicioEx "DeducibleMaximoVitalicioEx", StopLossEx "StopLossEx", FechaNacimientoEx "FechaNacimientoEx"
+  FROM InclusionesExtra
+ WHERE Id={dependency.Asegurado.Id:NUMBER.9:Required}',0,'Custom','Extras',1,NULL,'CarnetDigital','Medical',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (370,'Case',1,'GET','Lista','Lista de casos. Filtra por titulo, descripción, permite paginación por indice (beginIndex/endIndex).','SELECT',1,'SELECT * FROM (
+SELECT ID, COMPANYID, INSTANCEID, REFERENCE1, REFERENCE2, REFERENCE3, CONTACTMAINNAME, CONTACTMAINEMAIL, STATUS, LABEL, UPDATEUSERCODE, UPDATEDATE, TITLE, DESCRIPTION, FLOWID, USERID, REFERENCE4, REFERENCE5, SUBSTATUS, SUBLABEL, CURRENTSTEPID, PRIORITY, SLA, REFERENCE6, REFERENCE7, REFERENCE8, REFERENCE9, REFERENCE10, USERSEND, ROW_NUMBER() OVER (ORDER BY ID) RowNumber
+FROM PROCESSCASE
+WHERE {filter:VARCHAR.100} IS NULL OR (TITLE LIKE {filter:VARCHAR.100} OR DESCRIPTION LIKE {filter:VARCHAR.100}) )
+WHERE RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.50}',0,'Custom',NULL,0,NULL,'Case','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (371,'Case/{id}',1,'GET','Caso',NULL,'SELECT',1,'SELECT ID, COMPANYID, INSTANCEID, REFERENCE1, REFERENCE2, REFERENCE3, CONTACTMAINNAME, CONTACTMAINEMAIL, STATUS, LABEL, UPDATEUSERCODE, UPDATEDATE, TITLE, DESCRIPTION, FLOWID, USERID, REFERENCE4, REFERENCE5, SUBSTATUS, SUBLABEL, CURRENTSTEPID, PRIORITY, SLA, USERSEND, REFERENCE6, REFERENCE7, REFERENCE8, REFERENCE9, REFERENCE10
+ FROM PROCESSCASE
+WHERE ID = {ID:NUMBER.9:Required}',1,'Custom','Case',0,NULL,'Case','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (372,'Case/{id}',2,'GET','Proceso',NULL,'SELECT',1,'SELECT ACTIVITYID, INSTANCEID, COMPANYID, ENTITYTYPE, ENTITYID, FLOWID, STEPID, TASKID, CREATED, STARTDATE, FINISHDATE, USERID, COMMENTS, UPDATEUSERCODE, UPDATEDATE, DUEDATE, PREVIOUSACTIVITYID, CASEID, EARLYDUEDATE, LASTOVERDUENOTIFY 
+FROM PROCESSINSTANCE
+ WHERE INSTANCEID={dependency:Tree.Case.INSTANCEID:NUMBER.9:Required}
+ ORDER BY ACTIVITYID',0,'Custom','Process',0,NULL,'Case','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (100,'Claim/ASIGES',1,'GET','Siniestro por ASIGES',NULL,'SELECT',2,'SELECT a80.NUM_SINI, a80.NUM_EXP, a80.TXT_DANO_VEHI,
+       a900.COD_RAMO, a900.NUM_POLIZA, a900.NUM_SPTO, a900.NUM_APLI, a900.NUM_SPTO_APLI, a900.NUM_RIESGO, a900.FEC_DENU_SINI, a900.HORA_DENU_SINI, a900.FEC_SINI, a900.HORA_SINI,
+       a900.TIP_EST_SINI, G31A.NOM_VALOR NOM_TIP_EST_SINI,
+       a900.cod_causa_sini, a2159.COD_COB, a2159.NOM_COB, a900.COD_CAUSA_SINI, G200.NOM_CAUSA,
+       a1000.COD_MON, a400.NOM_MON,
+       a1000.TIP_EXP, a1000.TIP_EST_EXP,
+       a900.TIP_DOCUM_TOMADOR, a900.COD_DOCUM_TOMADOR, A1399T.NOM_TERCERO NOM_TOMADOR,  A1399T.APE1_TERCERO APE_TOMADOR, A1331T.EMAIL EMAIL_TOMADOR, A1331T.TLF_NUMERO TLF_NUMERO_TOMADOR,
+       a900.TIP_DOCUM_ASEG, a900.COD_DOCUM_ASEG, A1399A.NOM_TERCERO NOM_ASEG, A1399A.APE1_TERCERO APE_ASEG, A1331A.EMAIL EMAIL_ASEG, A1331A.TLF_NUMERO TLF_NUMERO_ASEG
+  from A7001080 a80
+  join a7000900 a900 on a900.NUM_SINI=a80.NUM_SINI
+  join A7001000 a1000 on a1000.NUM_SINI=a80.NUM_SINI AND a1000.NUM_EXP=a80.NUM_EXP
+  LEFT JOIN G1010031 G31A ON G31A.COD_CAMPO =''TIP_EST_SINI'' AND G31A.COD_VALOR = a900.TIP_EST_SINI AND G31A.COD_IDIOMA=''ES''
+  LEFT JOIN A1001399 A1399T ON A1399T.COD_CIA=a900.COD_CIA AND A1399T.TIP_DOCUM = a900.TIP_DOCUM_TOMADOR AND  A1399T.COD_DOCUM = a900.COD_DOCUM_TOMADOR
+  LEFT JOIN A1001331 A1331T ON A1331T.COD_CIA=a900.COD_CIA AND A1331T.TIP_DOCUM = a900.TIP_DOCUM_TOMADOR AND  A1331T.COD_DOCUM = a900.COD_DOCUM_TOMADOR
+  LEFT JOIN A1001399 A1399A ON A1399A.COD_CIA=a900.COD_CIA AND A1399A.TIP_DOCUM = a900.TIP_DOCUM_ASEG AND  A1399A.COD_DOCUM = a900.COD_DOCUM_ASEG
+  LEFT JOIN A1001331 A1331A ON A1331A.COD_CIA=a900.COD_CIA AND A1331A.TIP_DOCUM = a900.TIP_DOCUM_ASEG AND  A1331A.COD_DOCUM = a900.COD_DOCUM_ASEG
+  LEFT JOIN a1000400 a400 on a400.COD_MON = a1000.COD_MON
+  LEFT JOIN A1002150 a2159 on a2159.COD_CIA= a900.COD_CIA AND a2159.COD_RAMO= a900.COD_RAMO AND a2159.COD_MODALIDAD= a900.COD_MODALIDAD AND a2159.COD_COB= a900.cod_causa_sini
+  LEFT JOIN G7000200 G200 ON G200.COD_CIA = G200.COD_CIA AND G200.TIP_CAUSA = 1 AND G200.COD_CAUSA = a900.COD_CAUSA_SINI
+ where a80.COD_CIA= 1 AND a80.NUM_SINI={claim:NUMBER.15:Required} AND a80.NUM_EXP={exp:NUMBER.5:Required} AND a80.OBS = {code:varchar2.40:Required}',1,'Custom','General',1,NULL,'Siniestros','TRON',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (109,'Claim/ASIGES',2,'GET','Siniestro por ASIGES','Coberturas afectadas en el siniestro','SELECT',2,'SELECT DISTINCT h7.COD_COB, A2150.NOM_COB, A40.COD_FRANQUICIA, EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_NOM_FRANQUCIA(A40.COD_CIA, A40.COD_MON_CAPITAL, A40.COD_FRANQUICIA) NOM_FRANQUICIA
+  FROM A7001080 a80
+  JOIN a7000900 a900 on a900.NUM_SINI=a80.NUM_SINI
+  JOIN H7001200 h7 ON h7.COD_CIA= a80.COD_CIA AND h7.NUM_SINI = a80.NUM_SINI AND h7.TIP_EST_COB=''P'' AND h7.NUM_EXP=(SELECT MAX(h7b.NUM_EXP) FROM H7001200 h7b WHERE h7b.COD_CIA= a80.COD_CIA AND h7b.NUM_SINI = a80.NUM_SINI AND h7b.TIP_EST_COB=''P'' AND h7b.COD_COB IN (3004, 3005, 3009))
+LEFT JOIN A2000040 A40
+   ON A40.COD_CIA = a80.COD_CIA
+   AND A40.NUM_POLIZA = a900.NUM_POLIZA
+   AND A40.NUM_SPTO = 0
+   AND A40.MCA_BAJA_COB = ''N''
+   AND A40.MCA_BAJA_RIESGO = ''N''
+   AND A40.MCA_VIGENTE_APLI = ''S''
+   AND A40.COD_COB = h7.COD_COB
+ LEFT JOIN A1002150 A2150
+    ON A2150.COD_CIA = A40.COD_CIA
+   AND A2150.COD_RAMO = A40.COD_RAMO
+   AND A2150.COD_MODALIDAD = 99999
+   AND A2150.COD_COB = A40.COD_COB
+   AND A2150.FEC_VALIDEZ = (SELECT MAX(FEC_VALIDEZ) FROM A1002150 A10 WHERE A10.COD_CIA = A2150.COD_CIA AND A10.COD_RAMO = A2150.COD_RAMO AND A10.COD_MODALIDAD = A2150.COD_MODALIDAD AND A10.COD_COB = A2150.COD_COB AND A10.FEC_VALIDEZ <= SYSDATE)
+WHERE a80.COD_CIA= 1 AND a80.NUM_SINI={claim:NUMBER.15:Required} AND a80.OBS = {code:varchar2.40:Required}',0,'Custom','Coberturas',1,NULL,'Siniestros','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (108,'Claim/{id}/Story',1,'GET','Relato del siniestro',NULL,'SELECT',2,'SELECT TXT_RELATO FROM A7000971 WHERE COD_CIA=1 AND NUM_SINI={ID:NUMBER.15:Required}',1,'Custom',NULL,1,NULL,'Siniestros','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (110,'Client/{id}',1,'GET','Informacion de tercero',NULL,'SELECT',2,'SELECT a399.TIP_DOCUM, a399.COD_DOCUM, a399.NOM_TERCERO, a399.NOM2_TERCERO, a399.APE1_TERCERO, a399.APE2_TERCERO, a331.FEC_NACIMIENTO, a331.EMAIL
+	, a331.COD_ESTADO, a104.nom_estado
+	, a331.COD_PROV, a100.nom_prov
+	, a331.COD_LOCALIDAD, a102.nom_localidad
+	, a331.NOM_DOMICILIO1, a331.NOM_DOMICILIO2, a331.NOM_DOMICILIO3
+	, a331.TLF_NUMERO, a399.TLF_MOVIL
+	, a331.MCA_SEXO, a331.COD_EST_CIVIL, a399.MCA_FISICO
+	, a331.NOM_CONTACTO, a331.APELLIDO_CONTACTO, a331.TIP_DOCUM_CONTACTO, a331.COD_DOCUM_CONTACTO, a331.COD_NACIONALIDAD_CONTACTO
+    , a331.COD_ACT_TERCERO, a331.TIP_NACIONALIDAD, a331.COD_NACIONALIDAD 
+    , a331.TIP_DOMICILIO, a331.COD_POSTAL, a331.NUM_APARTADO 
+    , a331.TIP_CARGO, a331.TIP_ACT_ECONOMICA, a331.COD_OCUPACION
+    , a331.COD_PROFESION, g100.NOM_PROFESION, a331.OBS_ASEGURADO, a331.COD_GRP_TERCERO
+    , a331.NUM_BUSCA, a331.TIP_TARJETA, A21.NOM_TIP_TARJETA, a331.COD_TARJETA, A22.NOM_TARJETA, a331.NUM_TARJETA, a331.FEC_VCTO_TARJETA, a331.COD_COMPENSACION, a331.COD_CAUSA_INH_TRC       
+ FROM A1001399 a399
+ LEFT JOIN A1001331 a331 ON a331.COD_CIA=a399.COD_CIA AND a331.COD_CIA=a399.COD_CIA AND a331.COD_DOCUM=a399.COD_DOCUM
+ LEFT JOIN A1000104 a104 ON a104.cod_pais =a331.COD_PAIS AND a104.cod_estado=a331.COD_ESTADO AND a104.mca_inh = ''N''
+ LEFT JOIN a1000100 a100 ON a100.cod_pais = a331.COD_PAIS AND a100.cod_estado=a331.COD_ESTADO AND a100.COD_PROV=a331.COD_PROV AND a100.mca_inh = ''N''
+ LEFT JOIN A1000102 a102 ON a102.cod_pais = a331.COD_PAIS AND a102.COD_PROV=a331.COD_PROV  AND a102.cod_localidad=a331.COD_LOCALIDAD AND a102.mca_inh = ''N''
+ LEFT JOIN A5020021 A21 ON A21.TIP_TARJETA=a331.TIP_TARJETA
+ LEFT JOIN A5020022 A22 ON A22.COD_CIA=a399.COD_CIA AND A22.TIP_TARJETA=a331.TIP_TARJETA AND A22.COD_TARJETA=a331.COD_TARJETA
+ LEFT JOIN G1000100 g100 ON g100.COD_CIA=a399.COD_CIA AND g100.COD_PROFESION =a331.COD_PROFESION
+WHERE a399.COD_CIA=1 AND a399.COD_DOCUM={ID:VARCHAR2.20:Required}',1,'Custom','General',1,NULL,'Clentes','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (1,'DataSource',1,'POST','Recupera el proximo id disponible para la tabla DataSource',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM DataSource',1,'DataSource','Next',1,'Configurador','DataSource','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 17:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (3,'DataSource',1,'POST','Recupera el proximo id disponible para la tabla DataSource',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM DataSource',1,'DataSource','Next',1,'Configurador','DataSource','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 17:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (2,'DataSource/{id}',1,'DELETE','Elimina un registro de la tabla DataSource por medio de su clave',NULL,'DELETE',1,'DELETE DataSource WHERE ID={ID:NUMBER.9:Required}',0,'DataSource',NULL,1,'Configurador','DataSource','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:05',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (5,'DataSource/{id}',1,'PUT','Actualiza un registro de la tabla DataSource/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE DataSource SET Name={Name:VARCHAR2.80:Required}, ConnectioString={ConnectioString:VARCHAR2.1024:Required:Encrypted}, Provider={Provider:VARCHAR2.50:Required}, Encrypted={Encrypted:NUMBER.1}, CompanyID={CompanyID:NUMBER.5}, RecordStatus={RecordStatus:NUMBER.5}, UpdateUserCode={App.UserId}, UpdateDate={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'DataSource',NULL,1,'Configurador','DataSource','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:05',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (4,'DataSource/{id}',1,'GET','Recupera un registro de la tabla DataSource por medio de su clave',NULL,'SELECT',1,'SELECT ID "ID", Name "Name", ConnectioString "ConnectioString", Provider "Provider", Encrypted "Encrypted", CompanyID "CompanyID", RecordStatus "RecordStatus", UpdateUserCode "UpdateUserCode", UpdateDate "UpdateDate" FROM DataSource WHERE ID={ID:NUMBER.9:Required}',1,'DataSource',NULL,1,'Configurador','DataSource','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:05',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (402,'ElectronicWarranty',1,'POST','Crea una garantía electrónica. Recupera el próximo identificador interno disponible para las garantías electrónicas',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM ElectronicWarranty',1,'ElectronicWarranty','Next',1,NULL,'ElectronicWarranty','ElectronicWarranty',0,NULL,NULL,1,0,1821,TIMESTAMP'2024-04-30 10:42:33',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (403,'ElectronicWarranty',2,'POST','Crea una garantía electrónica',NULL,'INSERT',1,'INSERT INTO ElectronicWarranty (ID, Institution_identifier, Supplier_identifier, Guarantee_identifier, Guarantee_name, Institucion_notice_number, Notice_number, Cuenta_cliente, Guarantee_charge_person_name, Guarantee_charge_person_email, Guarantee_telephone_number, Guarantee_postal_code, Guarantee_address_line, Guarantee_number, Guarantee_sequencenumber, Guarantee_type_code, Guarantee_payment_code, Guarantee_amount, Moneda, Issue_date, Valid_period_date, Tipo_de_modification, Guarantee_contents, Confirmation, Msg_err, UpdateUserCode, UpdateDate, Supplier_Name) VALUES  ({dependency.Next.NEXTID:NUMBER.9:Required}, {Institution_identifier:VARCHAR2.10}, {Supplier_identifier:VARCHAR2.12}, {Guarantee_identifier:VARCHAR2.10}, {Guarantee_name:VARCHAR2.200}, {Institucion_notice_number:VARCHAR2.24}, {Notice_number:VARCHAR2.11}, {Cuenta_cliente:VARCHAR2.20}, {Guarantee_charge_person_name:VARCHAR2.200}, {Guarantee_charge_person_email:VARCHAR2.50}, {Guarantee_telephone_number:VARCHAR2.16}, {Guarantee_postal_code:VARCHAR2.5}, {Guarantee_address_line:VARCHAR2.200}, {Guarantee_number:VARCHAR2.14}, {Guarantee_sequencenumber:VARCHAR2.2}, {Guarantee_type_code:VARCHAR2.2}, {Guarantee_payment_code:VARCHAR2.2}, {Guarantee_amount:NUMBER.18}, {Moneda:VARCHAR2.3}, {Issue_date:DATE.0}, {Valid_period_date:DATE.0}, {Tipo_de_modification:VARCHAR2.2}, {Guarantee_contents:VARCHAR2.200}, {Confirmation:VARCHAR2.2}, {Msg_err:VARCHAR2.200}, {App.UserId}, {Const.Date.Now}, {Supplier_Name:VARCHAR2.200})',0,'ElectronicWarranty','CreateTrace',1,NULL,'ElectronicWarranty','ElectronicWarranty',0,NULL,NULL,1,0,1821,TIMESTAMP'2024-04-30 10:42:33',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (405,'ElectronicWarranty/Guarantee',1,'GET','Recupera una garantía electrónica por medio de número de garantía',NULL,'SELECT',1,'SELECT ID "ID", Institution_identifier "Institution_identifier", Supplier_identifier "Supplier_identifier", Guarantee_identifier "Guarantee_identifier", Guarantee_name "Guarantee_name", Institucion_notice_number "Institucion_notice_number", Notice_number "Notice_number", Cuenta_cliente "Cuenta_cliente", Guarantee_charge_person_name "Guarantee_charge_person_name", Guarantee_charge_person_email "Guarantee_charge_person_email", Guarantee_telephone_number "Guarantee_telephone_number", Guarantee_postal_code "Guarantee_postal_code", Guarantee_address_line "Guarantee_address_line", Guarantee_number "Guarantee_number", Guarantee_sequencenumber "Guarantee_sequencenumber", Guarantee_type_code "Guarantee_type_code", Guarantee_payment_code "Guarantee_payment_code", Guarantee_amount "Guarantee_amount", Moneda "Moneda", Issue_date "Issue_date", Valid_period_date "Valid_period_date", Tipo_de_modification "Tipo_de_modification", Guarantee_contents "Guarantee_contents", Confirmation "Confirmation", Msg_err "Msg_err", UpdateUserCode "UpdateUserCode", UpdateDate "UpdateDate", SUPPLIER_NAME "Supplier_name", EX_METODO "Ex_Metodo", EX_CODIGO_PROCESO "Ex_Codigo_Proceso", EX_FECHA_PROCESO "Ex_Fecha_Proceso", EX_AMOUNT "Ex_Amount", EX_CONTENTS "Ex_Contents", EX_CUENTA_CLIENTE "Ex_Cuenta_Cliente" FROM ElectronicWarranty P WHERE Guarantee_number={code:VARCHAR2.14:Required} AND P.Guarantee_sequencenumber = (SELECT max(Guarantee_sequencenumber) FROM ElectronicWarranty M WHERE M.Guarantee_number = P.Guarantee_number)',1,'ElectronicWarranty','Guarantee',1,NULL,'ElectronicWarranty','ElectronicWarranty',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-05-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (404,'ElectronicWarranty/Notify/{sid}',1,'PUT','Actualiza una garantía electrónica por medio de su identificador interna',NULL,'UPDATE',1,'UPDATE ElectronicWarranty SET Confirmation={Confirmation:VARCHAR2.2}, Msg_err={Msg_err:VARCHAR2.200}, UpdateUserCode={App.UserId}, UpdateDate={Const.Date.Now} 
+WHERE ID={SID:NUMBER.9:Required}',0,'ElectronicWarranty',NULL,1,NULL,'ElectronicWarranty','ElectronicWarranty',0,NULL,NULL,1,0,1821,TIMESTAMP'2024-04-30 10:42:33',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (406,'ElectronicWarranty/Release',1,'PUT','Actualiza una garantía electrónica por medio de su identificador interna',NULL,'UPDATE',1,'UPDATE ElectronicWarranty SET EX_METODO={Ex_Metodo:VARCHAR2.1}, RE_TRANSACTION_NUM={Transaction_num:VARCHAR2.25}, RE_CONTENTS={Execute_release_contents:VARCHAR2.200}, RE_FECHA_PROCESO={Date_time:DATE.0}, Confirmation={Confirmation:VARCHAR2.2}, Msg_err={Msg_err:VARCHAR2.200}, UpdateUserCode={App.UserId}, UpdateDate={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'ElectronicWarranty',NULL,1,NULL,'ElectronicWarranty','ElectronicWarranty',0,NULL,NULL,1,0,1821,TIMESTAMP'2024-04-30 10:42:33',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (407,'ElectronicWarranty/{id}',1,'PUT','Actualiza una garantía electrónica por medio de su identificador interna',NULL,'UPDATE',1,'UPDATE ElectronicWarranty
+   SET Institution_identifier={Institution_identifier:VARCHAR2.10}, Supplier_identifier={Supplier_identifier:VARCHAR2.12}, Guarantee_identifier={Guarantee_identifier:VARCHAR2.10}, Guarantee_name={Guarantee_name:VARCHAR2.200}, Institucion_notice_number={Institucion_notice_number:VARCHAR2.24}, Notice_number={Notice_number:VARCHAR2.11}, Cuenta_cliente={Cuenta_cliente:VARCHAR2.20}, Guarantee_charge_person_name={Guarantee_charge_person_name:VARCHAR2.200}, Guarantee_charge_person_email={Guarantee_charge_person_email:VARCHAR2.50}, Guarantee_telephone_number={Guarantee_telephone_number:VARCHAR2.16}, Guarantee_postal_code={Guarantee_postal_code:VARCHAR2.5}, Guarantee_address_line={Guarantee_address_line:VARCHAR2.200}, Guarantee_type_code={Guarantee_type_code:VARCHAR2.2}, Guarantee_payment_code={Guarantee_payment_code:VARCHAR2.2}, Guarantee_amount={Guarantee_amount:NUMBER.18}, Moneda={Moneda:VARCHAR2.3}, Issue_date={Issue_date:DATE.0}, Valid_period_date={Valid_period_date:DATE.0}, Tipo_de_modification={Tipo_de_modification:VARCHAR2.2}, Guarantee_contents={Guarantee_contents:VARCHAR2.200}, Confirmation=''99'', Msg_err=NULL, Supplier_Name={Supplier_Name:VARCHAR2.200}, UpdateUserCode={App.UserId}, UpdateDate={Const.Date.Now}
+ WHERE ID={ID:NUMBER.9:Required}',0,'ElectronicWarranty',NULL,1,NULL,'ElectronicWarranty','ElectronicWarranty',0,NULL,NULL,1,0,1821,TIMESTAMP'2024-04-30 10:42:33',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (320,'PlanDeTramitacion',1,'GET','Lista','Lista de planes de tramitación. Filtra por código del plan, nombre or abreviación, permite paginación por indice (beginIndex/endIndex).','SELECT',2,'SELECT * FROM (
+SELECT g00.COD_PLAN, g00.NOM_PLAN, g00.NOM_COR_PLAN, g00.MCA_INH, ROW_NUMBER() OVER (ORDER BY g00.COD_PLAN) RowNumber
+FROM G7500000 g00
+WHERE g00.COD_CIA=1 AND {filter:VARCHAR.100} IS NULL OR (COD_PLAN LIKE {filter:VARCHAR.100} OR NOM_PLAN LIKE {filter:VARCHAR.100} OR NOM_COR_PLAN LIKE {filter:VARCHAR.100}) )
+WHERE RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.50}',0,'Custom',NULL,0,NULL,'PlanDeTramitacion','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (321,'PlanDeTramitacion/{id}',1,'GET','Plan',NULL,'SELECT',2,'SELECT g00.COD_PLAN, g00.NOM_PLAN, g00.NOM_COR_PLAN, g00.MCA_INH FROM G7500000 g00 WHERE g00.COD_CIA=1 AND g00.COD_PLAN={ID:VARCHAR.4:Required}',1,'Custom','Plan',0,NULL,'PlanDeTramitacion','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (322,'PlanDeTramitacion/{id}',2,'GET','Niveles',NULL,'SELECT',2,' SELECT DISTINCT g10.COD_NIVEL, g10.NOM_NIVEL, g10.NOM_COR_NIVEL, g10.MCA_INH
+   FROM G7500040 g40
+   JOIN G7500010 g10 ON g10.COD_CIA=g40.COD_CIA AND g10.COD_NIVEL=g40.COD_NIVEL
+  WHERE g40.COD_PLAN={ID:VARCHAR.4:Required} ORDER BY g10.COD_NIVEL',0,'Custom','Niveles',0,NULL,'PlanDeTramitacion','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("niveles"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (323,'PlanDeTramitacion/{id}',3,'GET','Tramites',NULL,'SELECT',2,'   SELECT g40.NUM_SECU_TRAMITE, g40.COD_NIVEL, g10.NOM_COR_NIVEL, g40.COD_TRAMITE
+  		, g20.NOM_TRAMITE, g20.NOM_COR_TRAMITE, g20.OBS_HISTORICO, g20.NUM_DIAS_AGENDA, g20.OBS_AGENDA, g20.COD_TRAMITE_POSITIVO, g20.COD_TRAMITE_NEGATIVO, g20.MCA_INH, g20.NOM_PRG_PREVIO, g20.NOM_PRG_POSTERIOR, g20.MCA_TERM_AUT, g20.NOM_PRG_TERM_AUT, g20.MCA_EXP_TERM, g20.MCA_INSERTA_MANUAL, g20.NUM_DIAS_CONTROL, g20.MCA_MOD_FEC_CONTROL, g20.MCA_MOD_CUALQ_TRAMITADOR
+		, g40.MCA_TRAMITE_INICIAL 
+    FROM G7500040 g40
+    JOIN G7500010 g10 ON g10.COD_CIA=g40.COD_CIA AND g10.COD_NIVEL=g40.COD_NIVEL
+    JOIN G7500020 g20 ON g20.COD_CIA=g40.COD_CIA AND g20.COD_TRAMITE=g40.COD_TRAMITE
+   WHERE g40.COD_PLAN={ID:VARCHAR.4:Required}
+  ORDER BY g40.COD_NIVEL, g40.NUM_SECU_TRAMITE
+
+',0,'Custom','Tramites',0,NULL,'PlanDeTramitacion','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("tramites"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (600,'Policy/Active',1,'POST','Polizas activas','Lista Polizas activas','SELECT',2,'SELECT distinct     
+       a.cod_cia            ,    
+       a.num_poliza         ,           
+       b.num_riesgo         ,            
+       a.num_poliza_anterior,          
+       a.num_poliza_cliente ,          
+       a.num_poliza_grupo   ,           
+       a.num_contrato       ,            
+       a.num_subcontrato    ,          
+       a.fec_efec_poliza    ,           
+       a.fec_vcto_poliza    ,            
+       a.num_presupuesto    ,            
+       b.nom_certificado    ,          
+       a.tip_docum          ,           
+       a.cod_docum          ,            
+       em_k_Mapfre_Query_Contract_mcr.f_search_name_client(a.tip_docum, a.cod_docum) NOM_TOMADOR,          
+       em_k_Mapfre_Query_Contract_mcr.f_search_email_client(a.tip_docum, a.cod_docum) email,          
+       em_k_Mapfre_Query_Contract_mcr.f_search_phone_client(a.tip_docum, a.cod_docum) tlf_numero,          
+       a.num_spto           ,                  
+       a.num_apli           ,           
+       a.num_spto_apli      ,                
+       a.cod_ramo           ,                   
+       a.cod_agt            ,          
+       a60.tip_docum || '' '' || a60.cod_docum IDENTIFICACION,          
+       em_k_Mapfre_Query_Contract_mcr.f_search_name_client( a60.tip_docum, a60.cod_docum) NOM_COMPLETO,          
+       em_k_Mapfre_Query_Contract_mcr.f_search_email_client(a60.tip_docum, a60.cod_docum) email_aseg,          
+       em_k_Mapfre_Query_Contract_mcr.f_search_phone_client(a60.tip_docum, a60.cod_docum) tlf_numero_aseg,         
+       d.abr_ramo           ,
+       b.nom_riesgo || ''  '' ||em_k_Mapfre_Query_Contract_mcr.f_obtener_dato_variable(a.num_poliza,''COD_CHASSIS'') nom_riesgo,
+       a1402.nom_fracc_pago ,          
+       a60.tip_benef        ,          
+       (SELECT SUM(imp_recibo)           
+          FROM a2990700 r           
+         WHERE r.cod_cia = a.cod_cia AND r.num_poliza = a.num_poliza AND a.cod_agt = r.cod_agt) prima_total,          
+       em_k_Mapfre_Query_Contract_mcr.f_search_name_client_tip_benef(a.num_poliza,''8'') nom_acreedo          
+  FROM a2000030 a, a2000031 b,  a1001800 d, a2000060 a60,  a1001402 a1402       
+ WHERE a.cod_cia            = 1
+   AND a.cod_agt            = {app.agentcode} 
+   AND a.mca_spto_anulado   = ''N''   
+   AND a.mca_poliza_anulada = ''N''      
+   AND a.mca_provisional    = ''N''      
+   AND a.num_spto           = (SELECT MAX(num_spto)      
+                                 FROM a2000030 a20      
+                                WHERE a20.cod_cia          = a.cod_cia      
+                                  AND a20.num_poliza       = a.num_poliza      
+                                  AND a20.cod_agt          = a.cod_agt      
+                                  AND a20.mca_spto_anulado = ''N'')                                   
+   AND a.fec_emision  BETWEEN TO_DATE ({StartDate:DATE.0:Required}, ''DD/MM/YYYY'') AND TO_DATE({EndDate:DATE.0:Required},''DD/MM/YYYY'')      
+   AND b.cod_cia          = a.cod_cia      
+   AND b.num_poliza       = a.num_poliza      
+   AND b.mca_vigente      = ''S''      
+   AND b.mca_baja_riesgo  = ''N''      
+   AND b.num_spto  in (SELECT MAX(num_spto)      
+                         FROM a2000031 a31      
+                        WHERE a31.cod_cia          = b.cod_cia      
+                          AND a31.num_poliza       = b.num_poliza      
+                          AND a31.mca_vigente      = ''S'')      
+   AND d.cod_cia            = a.cod_cia      
+   AND d.cod_ramo           = a.cod_ramo      
+   AND a60.cod_cia          = a.cod_cia      
+   AND a60.num_poliza       = b.num_poliza      
+   AND a60.num_riesgo       = b.num_riesgo      
+   AND a60.mca_baja         = ''N''      
+   AND a60.mca_vigente      = ''S''      
+   AND a60.tip_benef        = 2      
+   AND a1402.cod_cia        = a.cod_cia      
+   AND a1402.cod_fracc_pago = a.cod_fracc_pago      
+ ORDER BY a.num_poliza',0,'Custom','General',0,NULL,'Polizas','TRON',0,NULL,NULL,1,0,254,TIMESTAMP'2025-09-30 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (601,'Policy/Cancelled',1,'GET','Polizas canceladas','Lista Polizas canceladas','SELECT',2,'SELECT c.cod_cia,
+       a.num_poliza,      
+       a.fec_efec_spto,      
+       c.tip_docum,      
+       c.cod_docum,      
+       c.nom_completo,             
+       d.abr_ramo      
+  FROM a2000030 a,
+       v1001390 c,
+       a1001800 d
+ WHERE a.cod_cia            = 1
+   AND a.cod_agt            = {app.agentcode}  
+   AND a.mca_spto_anulado   = ''N''    
+   AND a.mca_poliza_anulada = ''S''    
+   AND a.num_spto  IN (SELECT MAX(num_spto)    
+                         FROM a2000030 a20    
+                        WHERE a20.cod_cia    = a.cod_cia    
+                          AND a20.num_poliza = a.num_poliza)     
+   AND a.fec_efec_spto  BETWEEN TO_DATE ({StartDate:VARCHAR2.8:Required}, ''DDMMYYYY'') AND TO_DATE({EndDate:VARCHAR2.8:Required},''DDMMYYYY'')                                            
+   AND LOWER(txt_motivo_spto) NOT LIKE (''%anulacion cover col 2 indiv%'')    
+   AND a.cod_cia         = c.cod_cia    
+   AND a.tip_docum       = c.tip_docum    
+   AND a.cod_docum       = c.cod_docum    
+   AND c.cod_act_tercero = 1    
+   AND a.cod_cia         = d.cod_cia    
+   AND a.cod_ramo        = d.cod_ramo    
+ ORDER BY a.fec_efec_spto DESC;
+       ',0,'Custom','General',1,NULL,'Polizas','TRON',0,NULL,NULL,1,0,254,TIMESTAMP'2025-09-30 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (101,'Policy/{id}',1,'GET','Informacion de polizas',NULL,'SELECT',2,'SELECT a30.COD_RAMO, a30.FEC_EFEC_POLIZA, a30.FEC_VCTO_POLIZA,
+       a30.COD_MON, a400.NOM_MON, a30.cod_fracc_pago, a1402.nom_fracc_pago, a1800.NOM_RAMO, a30.NUM_POLIZA_GRUPO, a30.NUM_CONTRATO,
+       dc_k_consulta_web.f_situacion_pol(a30.mca_provisional, a30.mca_spto_tmp, a30.mca_poliza_anulada, a30.mca_spto_anulado, a30.tip_spto, a30.fec_vcto_poliza) valor_status
+  FROM A2000030 a30
+  LEFT JOIN a1000400 a400 on a400.COD_MON = a30.COD_MON AND a400.COD_CIA = a30.COD_CIA
+  LEFT JOIN a1001402 a1402 ON a1402.cod_cia = a30.cod_cia  and a1402.cod_fracc_pago = a30.cod_fracc_pago
+  LEFT JOIN a1001800 a1800 ON a1800.COD_CIA=a30.COD_CIA AND a1800.COD_RAMO = a30.COD_RAMO
+  WHERE a30.COD_CIA=1 AND a30.NUM_POLIZA={ID:VARCHAR2.13:Required} AND a30.NUM_SPTO = {NUM_SPTO:NUMBER.22:Required} AND a30.NUM_APLI = NVL({NUM_APLI:NUMBER.22:Required}, 0) AND a30.NUM_SPTO_APLI = NVL({NUM_SPTO_APLI:NUMBER.22:Required}, 0)',1,'Custom','FixedData',1,NULL,'Polizas','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (102,'Policy/{id}',2,'GET','Terceros de una poliza',NULL,'SELECT',2,'SELECT A60.NUM_RIESGO, A60.TIP_BENEF, G31.NOM_VALOR NOM_BENEF, A60.NUM_SECU,
+       A60.TIP_DOCUM, A60.COD_DOCUM, V90.NOM_COMPLETO,
+       A60.PCT_PARTICIPACION, A60.FEC_VCTO_CESION, A60.IMP_CESION, A60.NUM_PRESTAMO, A60.TIP_RELAC
+  FROM A2000060 A60
+  LEFT JOIN G1010031 G31 ON G31.COD_CIA= A60.COD_CIA  AND G31.COD_CAMPO = ''TIP_BENEF'' AND G31.COD_IDIOMA = ''ES'' AND A60.TIP_BENEF = G31.COD_VALOR
+  LEFT JOIN V1001390 V90 ON V90.TIP_DOCUM = A60.TIP_DOCUM AND V90.COD_DOCUM = A60.COD_DOCUM
+ WHERE a60.NUM_POLIZA={ID:VARCHAR2.13:Required} AND A60.MCA_BAJA = ''N'' AND A60.MCA_VIGENTE = ''S''
+ ORDER BY A60.TIP_BENEF',0,'Custom','ThirdParties',1,NULL,'Polizas','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (103,'Policy/{id}',3,'GET','Datos variable de una poliza',NULL,'SELECT',2,'SELECT A20.TIP_NIVEL, A20.COD_CAMPO, G10.NOM_CAMPO, A20.VAL_CAMPO, A20.VAL_COR_CAMPO, A20.NUM_SECU, A20.TXT_CAMPO
+  FROM A2000020 A20
+  LEFT JOIN G2000010 G10 ON A20.COD_CIA = G10.COD_CIA AND A20.COD_CAMPO = G10.COD_CAMPO
+ WHERE A20.NUM_POLIZA = CAST({ID:VARCHAR2.13:Required} AS VARCHAR2(13)) AND A20.COD_CIA = 1 AND A20.NUM_RIESGO={NUM_RIESGO:NUMBER.7:Required} AND A20.MCA_VIGENTE = ''S'' AND A20.MCA_BAJA_RIESGO = ''N'' AND A20.MCA_VIGENTE_APLI = ''S''
+ ORDER BY A20.TIP_NIVEL, A20.NUM_SECU',0,'Custom','VariableData',1,NULL,'Polizas','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (107,'Policy/{id}/AllPremiums',1,'GET','Recibos de una poliza',NULL,'SELECT',2,'SELECT NUM_RECIBO, FEC_EFEC_RECIBO, FEC_VCTO_RECIBO, TIP_SITUACION, a700.COD_MON,
+       SUM(IMP_RECIBO) IMP_RECIBO,
+       SUM(IMP_NETA) + SUM(IMP_RECARGO) IMP_NETA, -- se suma la prima neta mas el impuesto de bomberos
+       SUM(IMP_RECARGO) IMP_RECARGO,
+       SUM(IMP_IMPTOS) IMP_IMPTOS,
+       SUM(IMP_INTERES) IMP_INTERES
+  FROM A2990700 a700
+  JOIN a2000030 a30
+    ON a700.cod_cia       = a30.cod_cia
+   AND a700.num_spto      = a30.num_spto
+   AND a700.num_apli      = a30.num_apli
+   AND a700.num_poliza    = a30.num_poliza
+   AND a700.num_spto_apli = a30.num_spto_apli
+ WHERE a700.COD_CIA = 1
+   AND a700.NUM_POLIZA = {ID:VARCHAR2.13:Required}
+   AND a700.FEC_EFEC_RECIBO BETWEEN a30.FEC_EFEC_POLIZA AND a30.FEC_VCTO_POLIZA
+   AND IMP_RECIBO != 0
+ GROUP BY NUM_RECIBO, FEC_EFEC_RECIBO, FEC_VCTO_RECIBO, TIP_SITUACION, a700.COD_MON
+ ORDER BY FEC_EFEC_RECIBO',0,'Custom','Premiums',1,NULL,'Polizas','TRON',0,NULL,NULL,0,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (104,'Policy/{id}/Coverages',4,'GET','Coberturas de una poliza',NULL,'SELECT',2,'SELECT A40.COD_COB, A2150.NOM_COB, A40.SUMA_ASEG,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_IMP_PRIMA_COMERCIAL_POL(A40.COD_CIA, A40.NUM_POLIZA, A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO, A40.COD_COB, A40.COD_RAMO) IMP_ANUAL,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_IMP_IVA_POL(A40.COD_CIA, A40.NUM_POLIZA, A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO, A40.COD_COB, A40.COD_RAMO) IMP_IVA,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_IMP_RECARGO_FRACC_POL(A40.COD_CIA, A40.NUM_POLIZA, A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO, A40.COD_COB, A40.COD_RAMO) IMP_FRACC,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_IMP_PRIMA_TOTAL_POL(A40.COD_CIA, A40.NUM_POLIZA, A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO, A40.COD_COB, A40.COD_RAMO) IMP_TOTAL,
+       A40.COD_FRANQUICIA,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_NOM_FRANQUCIA(A40.COD_CIA, A40.COD_MON_CAPITAL, A40.COD_FRANQUICIA) NOM_FRANQUICIA
+  FROM A2000040 A40
+ LEFT JOIN A1002150 A2150
+    ON A2150.COD_CIA = A40.COD_CIA
+   AND A2150.COD_RAMO = A40.COD_RAMO
+   AND A2150.COD_MODALIDAD = 99999
+   AND A2150.COD_COB = A40.COD_COB
+   AND A2150.FEC_VALIDEZ = (SELECT MAX(FEC_VALIDEZ) FROM A1002150 A10 WHERE A10.COD_CIA = A2150.COD_CIA AND A10.COD_RAMO = A2150.COD_RAMO AND A10.COD_MODALIDAD = A2150.COD_MODALIDAD AND A10.COD_COB = A2150.COD_COB AND A10.FEC_VALIDEZ <= SYSDATE)
+ WHERE A40.COD_CIA = 1
+   AND A40.NUM_POLIZA = {ID:VARCHAR2.13:Required}
+   AND A40.NUM_SPTO = 0
+   AND A40.MCA_BAJA_COB = ''N''
+   AND A40.MCA_BAJA_RIESGO = ''N''
+   AND A40.MCA_VIGENTE_APLI = ''S''
+ ORDER BY A2150.NOM_COB',0,'Custom','Coverage',1,NULL,'Polizas','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (105,'Policy/{id}/Premiums',5,'GET','Recibos pendiente de una poliza',NULL,'SELECT',2,'SELECT COD_CIA, NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_CUOTA, NUM_RECIBO, TIP_RECIBO, FEC_EFEC_RECIBO, FEC_VCTO_RECIBO, TIP_GESTOR, COD_GESTOR, FEC_EMISION_SPTO, TIP_SITUACION, TIP_REMESA, FEC_REMESA, FEC_CTABLE, FEC_VALOR, COD_MON, VAL_CAMBIO, IMP_RECIBO, IMP_NETA, IMP_RECARGO, IMP_IMPTOS, IMP_BONI, IMP_COMIS, TIP_COASEGURO, COD_NIVEL3, COD_AGT, NUM_IMPRESION, CTRL_MOROSO, TXT_AUX1, TXT_AUX2, FEC_ACTU, IMP_TOTAL_COMIS, MCA_CA, MCA_CV, NUM_AVISO, TIP_DOCUM_PAGO, COD_DOCUM_PAGO, IMP_INTERES, IMP_IMPTOS_INTERES, NUM_MVTO_CV, MCA_DCTO_COMIS, FEC_VCTO_PAGO, NUM_MVTO_CA, MCA_DTO_IMPTO, MCA_DTO_RECARGO
+  FROM TRON2000.A2990700 a
+ WHERE a.NUM_POLIZA={ID:VARCHAR2.13:Required}
+   AND a.num_spto IN (select max(aa.num_spto) from a2000030 aa JOIN a2990700 t on t.cod_cia = aa.cod_cia and t.num_poliza = aa.num_poliza and t.num_spto = aa.num_spto and t.num_apli = aa.num_apli and t.num_spto_apli = aa.num_spto_apli and t.tip_situacion = ''EP'' where aa.cod_cia  = a.cod_cia and aa.num_poliza = a.NUM_POLIZA AND aa.mca_spto_anulado = ''N'')
+   AND num_recibo IN (select t.num_recibo from a2990700 t where t.cod_cia = a.cod_cia and t.num_poliza = a.num_poliza and t.num_spto = a.num_spto and t.num_apli = a.num_apli and t.num_spto_apli = a.num_spto_apli and t.tip_situacion = ''EP'')
+',0,'Custom','PendingPremiums',1,NULL,'Polizas','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (106,'Policy/{id}/Premiums',6,'GET','Recibos pagados de una poliza',NULL,'SELECT',2,'SELECT COD_CIA, NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_CUOTA, NUM_RECIBO, TIP_RECIBO, FEC_EFEC_RECIBO, FEC_VCTO_RECIBO, TIP_GESTOR, COD_GESTOR, FEC_EMISION_SPTO, TIP_SITUACION, TIP_REMESA, FEC_REMESA, FEC_CTABLE, FEC_VALOR, COD_MON, VAL_CAMBIO, IMP_RECIBO, IMP_NETA, IMP_RECARGO, IMP_IMPTOS, IMP_BONI, IMP_COMIS, TIP_COASEGURO, COD_NIVEL3, COD_AGT, NUM_IMPRESION, CTRL_MOROSO, TXT_AUX1, TXT_AUX2, FEC_ACTU, IMP_TOTAL_COMIS, MCA_CA, MCA_CV, NUM_AVISO, TIP_DOCUM_PAGO, COD_DOCUM_PAGO, IMP_INTERES, IMP_IMPTOS_INTERES, NUM_MVTO_CV, MCA_DCTO_COMIS, FEC_VCTO_PAGO, NUM_MVTO_CA, MCA_DTO_IMPTO, MCA_DTO_RECARGO
+  FROM TRON2000.A2990700 a
+ WHERE a.NUM_POLIZA={ID:VARCHAR2.13:Required}
+   AND a.num_spto IN (select max(aa.num_spto) from a2000030 aa JOIN a2990700 t on t.cod_cia = aa.cod_cia and t.num_poliza = aa.num_poliza and t.num_spto = aa.num_spto and t.num_apli = aa.num_apli and t.num_spto_apli = aa.num_spto_apli and t.tip_situacion = ''CT'' where aa.cod_cia  = a.cod_cia and aa.num_poliza = a.NUM_POLIZA AND aa.mca_spto_anulado = ''N'')
+   AND num_recibo IN (select t.num_recibo from a2990700 t where t.cod_cia = a.cod_cia and t.num_poliza = a.num_poliza and t.num_spto = a.num_spto and t.num_apli = a.num_apli and t.num_spto_apli = a.num_spto_apli and t.tip_situacion = ''CT'')',0,'Custom','PaidPremiums',1,NULL,'Polizas','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (111,'PolicyToCancel/{id}',1,'GET','Policy a cancelar',NULL,'SELECT',2,'SELECT  DISTINCT a30.cod_ramo, a30.num_contrato, a30.num_poliza_grupo, a30.cod_mon,
+        a30.fec_efec_poliza, a30.fec_vcto_poliza, a60.TIP_DOCUM, a60.COD_DOCUM, a1399.NOM_TERCERO, a1399.APE1_TERCERO,
+        A1331.MCA_SEXO, A1331.FEC_NACIMIENTO,  A1331.COD_NACIONALIDAD, A1331.COD_ESTADO, A1331.COD_PROV, A1331.COD_LOCALIDAD, A1331.NOM_DOMICILIO1,
+         F_PRIMA_TOTAL_MCR(a30.num_poliza) prima_total,
+         em_k_Mapfre_Query_Contract_mcr.f_obtener_dato_variable(a30.num_poliza,''COD_PLAN_AP'') COD_PLAN_AP,
+         em_k_Mapfre_Query_Contract_mcr.f_obtener_dato_variable(a30.num_poliza,''NUM_PRESTAMO'') NUM_PRESTAMO,
+         em_k_Mapfre_Query_Contract_mcr.f_obtener_dato_variable(a30.num_poliza,''IMP_PRIMA_INFORMADA'') IMP_PRIMA_INFORMADA,
+         em_k_Mapfre_Query_Contract_mcr.f_obtener_dato_variable(a30.num_poliza,''FEC_VCTO_PRESTAMO'') FEC_VCTO_PRESTAMO,
+         em_k_Mapfre_Query_Contract_mcr.f_obtener_dato_variable(a30.num_poliza,''MCA_COBRA_ASISTENCIA'') MCA_COBRA_ASISTENCIA
+  FROM a2000030 a30
+  LEFT JOIN a2000060 a60 ON a60.cod_cia = a30.cod_cia and a60.num_poliza = a30.num_poliza and a60.NUM_APLI = a30.NUM_APLI and a60.tip_benef = 2 and a60.mca_baja = ''N'' and a60.mca_vigente = ''S''
+  LEFT JOIN A1001399 a1399 ON  a1399.COD_CIA =a60.COD_CIA AND a1399.TIP_DOCUM=a60.TIP_DOCUM  AND a1399.COD_DOCUM=a60.COD_DOCUM
+  LEFT JOIN A1001331 a1331 ON  a1331.COD_CIA =a60.COD_CIA AND a1331.TIP_DOCUM=a60.TIP_DOCUM  AND a1331.COD_DOCUM=a60.COD_DOCUM
+  WHERE a30.cod_cia    = 1
+    AND a30.num_poliza = {ID:VARCHAR2.13:Required}
+    AND a30.num_spto   in (select max(a30last.num_spto) from a2000030 a30last where a30last.cod_cia  = a30.cod_cia and a30last.num_poliza = a30.num_poliza AND a30last.mca_spto_anulado = ''N'')',1,'Custom','General',1,NULL,'Clentes','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (350,'Poliza',1,'GET','Lista','Lista de pólizas. Filtra por número de póliza, por número de documento del tomado, permite paginación por indice (beginIndex/endIndex).','SELECT',2,'SELECT * FROM (
+SELECT NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, 
+       FEC_EMISION, COD_RAMO, FEC_EFEC_POLIZA, FEC_VCTO_POLIZA, 
+       FEC_EFEC_SPTO, FEC_VCTO_SPTO, TIP_DURACION, NUM_RIESGOS, COD_MON, COD_FRACC_PAGO, NUM_PRESUPUESTO,
+       NUM_CONTRATO, NUM_POLIZA_GRUPO, TIP_SPTO, TXT_MOTIVO_SPTO, 
+       TIP_DOCUM, COD_DOCUM, COD_AGT, MCA_POLIZA_ANULADA,
+       COD_USR, FEC_ACTU, ROW_NUMBER() OVER (ORDER BY NUM_POLIZA) RowNumber
+ FROM A2000030
+WHERE COD_CIA=1 AND {filter:VARCHAR.100} IS NULL OR (COD_DOCUM = {filter:VARCHAR.100} OR NUM_POLIZA LIKE {filter:VARCHAR.100} ))
+WHERE RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.50}',0,'Custom',NULL,0,NULL,'Poliza','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (351,'Poliza/{id}',1,'GET','General',NULL,'SELECT',2,'SELECT NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, FEC_VALIDEZ, FEC_EMISION, COD_SECTOR, COD_RAMO, FEC_EMISION_SPTO, FEC_EFEC_POLIZA, FEC_VCTO_POLIZA, FEC_EFEC_SPTO, FEC_VCTO_SPTO, TIP_DURACION, NUM_RIESGOS, COD_MON, COD_FRACC_PAGO, CANT_RENOVACIONES, NUM_RENOVACIONES, TIP_COASEGURO, NUM_PRESUPUESTO, NUM_POLIZA_ANTERIOR, NUM_POLIZA_CLIENTE, NUM_CONTRATO, NUM_POLIZA_GRUPO, NUM_SECU_GRUPO, COD_SPTO, SUB_COD_SPTO, COD_TIP_SPTO, TIP_SPTO, TXT_MOTIVO_SPTO, TIP_DOCUM, COD_DOCUM, COD_CUADRO_COM, COD_AGT, PCT_AGT, COD_ORG, COD_ASESOR, COD_NIVEL1, COD_NIVEL2, COD_NIVEL3, COD_COMPENSACION, TIP_GESTOR, COD_GESTOR, MCA_REGULARIZA, TIP_REGULARIZA, PCT_REGULARIZA, COD_INDICE, ANIOS_MAX_DURACION, MESES_MAX_DURACION, DIAS_MAX_DURACION, COD_AGT2, PCT_AGT2, COD_AGT3, PCT_AGT3, COD_AGT4, PCT_AGT4, DURACION_PAGO_PRIMA, COD_ENVIO, COD_EJECUTIVO, MCA_TOMADORES_ALT, MCA_REASEGURO_MANUAL, MCA_PRORRATA, MCA_PRIMA_MANUAL, MCA_PROVISIONAL, FEC_AUTORIZACION, MCA_POLIZA_ANULADA, MCA_SPTO_ANULADO, NUM_SPTO_ANULADO, FEC_SPTO_ANULADO, MCA_SPTO_TMP, MCA_DATOS_MINIMOS, MCA_IMPRESION, MCA_EXCLUSIVO, COD_USR, COD_NIVEL3_CAPTURA, FEC_ACTU, MCA_REASEGURO_MARCO, TIP_POLIZA_TR, NUM_POLIZA_SIGUIENTE, COD_DST_AGT, COD_CUADRO_COA, TIP_REA, NUM_SPTO_PUBLICO, VAL_MCA_INT, HORA_DESDE, NUM_SUBCONTRATO, COD_NEGOCIO, NUM_SECU_CTA_TAR, VAL_CAMBIO, FEC_VCTO_SPTO_PUBLICO, NUM_SPTO_GRP, COD_CANAL1, COD_CANAL2, COD_CANAL3, CNH_SQN_VAL, ADR_SQN_VAL 
+ FROM A2000030
+WHERE COD_CIA = 1 AND NUM_POLIZA = {ID:VARCHAR.13:Required}',1,'Custom','Fijos',0,NULL,'Poliza','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (352,'Poliza/{id}',2,'GET','Riesgos',NULL,'SELECT',2,'SELECT NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_RIESGO, TIP_SPTO, COD_MODALIDAD, NOM_RIESGO, FEC_EFEC_RIESGO, FEC_VCTO_RIESGO, MCA_BAJA_RIESGO, MCA_VIGENTE, MCA_EXCLUSIVO, COD_USR_EXCLUSIVO, NUM_CERTIFICADO, NOM_CERTIFICADO, TXT_ID_RIESGO 
+FROM A2000031
+WHERE COD_CIA = 1 AND NUM_POLIZA = {ID:VARCHAR.13:Required}',0,'Custom','Riesgos',0,NULL,'Poliza','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("riesgos"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (353,'Poliza/{id}',3,'GET','Terceros',NULL,'SELECT',2,'SELECT a60.NUM_RIESGO, a60.NUM_SECU, a60.TIP_DOCUM, a60.COD_DOCUM, V90.NOM_COMPLETO, a60.PCT_PARTICIPACION, a60.FEC_VCTO_CESION, a60.IMP_CESION, a60.NUM_PRESTAMO, a60.TIP_RELAC, a60.MCA_VIP,
+       a60.TIP_BENEF, G31.NOM_VALOR NOM_BENEF,
+       a60.NUM_POLIZA, a60.NUM_SPTO, a60.NUM_APLI, a60.NUM_SPTO_APLI, a60.MCA_PRINCIPAL, a60.MCA_CALCULO, a60.MCA_BAJA, a60.MCA_VIGENTE, a60.CNH_SQN_VAL, a60.ADR_SQN_VAL, a60.PCM_SQN_VAL
+  FROM A2000060 a60
+  LEFT JOIN G1010031 G31 ON G31.COD_CIA = a60.COD_CIA AND G31.COD_CAMPO = ''TIP_BENEF'' AND A60.TIP_BENEF = G31.COD_VALOR AND G31.COD_IDIOMA = ''ES''
+  LEFT JOIN V1001390 V90 ON V90.COD_CIA = a60.COD_CIA AND V90.TIP_DOCUM = A60.TIP_DOCUM AND V90.COD_DOCUM = A60.COD_DOCUM
+ WHERE a60.COD_CIA = 1 AND a60.NUM_POLIZA = {ID:VARCHAR.13:Required}',0,'Custom','Terceros',0,NULL,'Poliza','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("terceros"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (354,'Poliza/{id}',4,'GET','Ocurrencias',NULL,'SELECT',2,'SELECT COD_CIA, NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_RIESGO, NUM_PERIODO, COD_LISTA, NUM_OCURRENCIA, NUM_SECU, COD_CAMPO, VAL_CAMPO, TXT_CAMPO, MCA_BAJA_RIESGO, MCA_VIGENTE, MCA_VIGENTE_APLI, MCA_BAJA_OCURRENCIA, IMP_OCURRENCIA 
+FROM A2000025
+WHERE COD_CIA = 1 AND NUM_POLIZA = {ID:VARCHAR.13:Required}',0,'Custom','Ocurrencias',0,NULL,'Poliza','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("ocurrencias"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (355,'Poliza/{id}',5,'GET','DatosVariables',NULL,'SELECT',2,'SELECT COD_CIA, NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_RIESGO, NUM_PERIODO, TIP_NIVEL, COD_CAMPO, VAL_CAMPO, VAL_COR_CAMPO, NUM_SECU, TXT_CAMPO, MCA_BAJA_RIESGO, MCA_VIGENTE, MCA_VIGENTE_APLI, COD_RAMO, TIP_SUBNIVEL 
+FROM A2000020
+WHERE COD_CIA = 1 AND NUM_POLIZA = {ID:VARCHAR.13:Required}',0,'Custom','DatosVariables',0,NULL,'Poliza','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("datosvariables"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (356,'Poliza/{id}',6,'GET','DesgloseEconomico',NULL,'SELECT',2,'SELECT COD_CIA, NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_RIESGO, NUM_PERIODO, COD_COB, COD_DESGLOSE, COD_ECO, NUM_BLOQUE_ESTUDIO, IMP_ACUMULADO_ANUAL, IMP_SPTO, IMP_NO_CONSUMIDO, IMP_ANUAL, COD_RAMO 
+FROM A2100170
+WHERE COD_CIA = 1 AND NUM_POLIZA = {ID:VARCHAR.13:Required}',0,'Custom','DesgloseEconomico',0,NULL,'Poliza','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("desgloseeconomico"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (357,'Poliza/{id}',7,'GET','Coberturas',NULL,'SELECT',2,'SELECT a40.NUM_POLIZA , a40.NUM_SPTO, a40.NUM_APLI, a40.NUM_SPTO_APLI, a40.NUM_RIESGO, a40.NUM_PERIODO, a40.NUM_SECU, a40.COD_COB, a40.SUMA_ASEG, a40.IMP_UNIDAD, a40.PCT_PARTICIPACION, a40.COD_MON_CAPITAL, a40.SUMA_ASEG_BAJA_STRO, a40.SUMA_ASEG_SPTO, a40.TASA_COB, a40.COD_LIMITE, a40.SUMA_ASEG_SUP, a40.MCA_BAJA_RIESGO, a40.MCA_VIGENTE, a40.MCA_VIGENTE_APLI, a40.MCA_BAJA_COB, a40.COD_SECC_REAS, a40.IMP_AGR, a40.IMP_AGR_REL, a40.IMP_AGR_SPTO, a40.IMP_AGR_REL_SPTO, a40.MES_BASE_REGULARIZA, a40.ANIO_BASE_REGULARIZA, a40.PCT_ENFERMEDAD, a40.DURACION_PROFESION, a40.PCT_PROFESION, a40.DURACION_ENFERMEDAD, a40.VAL_FRANQUICIA_MIN, a40.VAL_FRANQUICIA_MAX, a40.COD_RAMO, a40.SUMA_ASEG_BAJA_STRO_ACC, a40.COD_MON_FRANQUICIA,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_IMP_PRIMA_COMERCIAL_POL(A40.COD_CIA, A40.NUM_POLIZA, A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO,A40.COD_COB, A40.COD_RAMO) IMP_ANUAL,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_IMP_IVA_POL(A40.COD_CIA, A40.NUM_POLIZA, A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO, A40.COD_COB, A40.COD_RAMO) IMP_IVA,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_IMP_RECARGO_FRACC_POL(A40.COD_CIA, A40.NUM_POLIZA, A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO, A40.COD_COB, A40.COD_RAMO) IMP_FRACC,
+       EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_IMP_PRIMA_TOTAL_POL(A40.COD_CIA, A40.NUM_POLIZA, A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO, A40.COD_COB, A40.COD_RAMO) IMP_TOTAL,
+       a40.COD_FRANQUICIA, EM_K_MAPFRE_BATCH_CONTRACT_MCR.F_NOM_FRANQUCIA(A40.COD_CIA, A40.COD_MON_CAPITAL, A40.COD_FRANQUICIA) NOM_FRANQUICIA
+FROM A2000040 a40
+WHERE a40.COD_CIA = 1 AND a40.NUM_POLIZA = {ID:VARCHAR.13:Required}
+ORDER BY A40.NUM_SPTO, A40.NUM_APLI, A40.NUM_SPTO_APLI, A40.NUM_RIESGO, a40.NUM_SECU',0,'Custom','Coberturas',0,NULL,'Poliza','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("coberturas"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (358,'Poliza/{id}',8,'GET','Recibos',NULL,'SELECT',2,'SELECT COD_CIA, NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_CUOTA, NUM_RECIBO, TIP_RECIBO, FEC_EFEC_RECIBO, FEC_VCTO_RECIBO, TIP_GESTOR, COD_GESTOR, FEC_EMISION_SPTO, TIP_SITUACION, TIP_REMESA, FEC_REMESA, FEC_CTABLE, FEC_VALOR, COD_MON, VAL_CAMBIO, IMP_RECIBO, IMP_NETA, IMP_RECARGO, IMP_IMPTOS, IMP_BONI, IMP_COMIS, TIP_COASEGURO, COD_NIVEL3, COD_AGT, NUM_IMPRESION, CTRL_MOROSO, TXT_AUX1, TXT_AUX2, FEC_ACTU, IMP_TOTAL_COMIS, MCA_CA, MCA_CV, NUM_AVISO, TIP_DOCUM_PAGO, COD_DOCUM_PAGO, IMP_INTERES, IMP_IMPTOS_INTERES, NUM_MVTO_CV, MCA_DCTO_COMIS, FEC_VCTO_PAGO, NUM_MVTO_CA, MCA_DTO_IMPTO, MCA_DTO_RECARGO 
+FROM A2990700
+WHERE COD_CIA = 1 AND NUM_POLIZA = {ID:VARCHAR.13:Required}',0,'Custom','Recibos',0,NULL,'Poliza','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("recibos"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (359,'Poliza/{id}',9,'GET','ControlesTecnicos',NULL,'SELECT',2,'SELECT COD_CIA, NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_RIESGO, COD_COB, COD_SECC_REAS, COD_SISTEMA, COD_NIVEL_SALTO, COD_ERROR, MCA_AUTORIZACION, FEC_AUTORIZACION, COD_USR_AUTORIZACION, OBS_AUTORIZACION, COD_SIST_AUT, TXT_ERROR_CT, OBS_ERROR 
+FROM A2000221
+WHERE COD_CIA = 1 AND NUM_POLIZA = {ID:VARCHAR.13:Required}',0,'Custom','ControlesTecnicos',0,NULL,'Poliza','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("controlestecnicos"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (380,'Process',1,'GET','Lista','Lista de procesos. Filtra por nombre, descripción, alias, permite paginación por indice (beginIndex/endIndex).','SELECT',1,'SELECT * FROM (
+SELECT ID, NAME, DESCRIPTION, ALIAS, STATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE, MAILSERVER, REFERENCECAPTION1, REFERENCECAPTION2, REFERENCECAPTION3, REFERENCECAPTION4, REFERENCECAPTION5, REFERENCELOOKUPLIST1, REFERENCELOOKUPLIST2, REFERENCELOOKUPLIST3, REFERENCELOOKUPLIST4, REFERENCELOOKUPLIST5, SLA, REFERENCEREQUIRED1, REFERENCETYPE1, REFERENCEREQUIRED2, REFERENCETYPE2, REFERENCEREQUIRED3, REFERENCETYPE3, REFERENCEREQUIRED4, REFERENCETYPE4, REFERENCEREQUIRED5, REFERENCETYPE5, REFERENCECAPTION6, REFERENCELOOKUPLIST6, REFERENCEREQUIRED6, REFERENCETYPE6, REFERENCECAPTION7, REFERENCELOOKUPLIST7, REFERENCEREQUIRED7, REFERENCETYPE7, REFERENCECAPTION8, REFERENCELOOKUPLIST8, REFERENCEREQUIRED8, REFERENCETYPE8, REFERENCECAPTION9, REFERENCELOOKUPLIST9, REFERENCEREQUIRED9, REFERENCETYPE9, REFERENCECAPTION10, REFERENCELOOKUPLIST10, REFERENCEREQUIRED10, REFERENCETYPE10, ROW_NUMBER() OVER (ORDER BY ID) RowNumber
+FROM PROCESSSPECFLOW
+WHERE {filter:VARCHAR.100} IS NULL OR (NAME LIKE {filter:VARCHAR.100} OR DESCRIPTION LIKE {filter:VARCHAR.100} OR ALIAS LIKE {filter:VARCHAR.100}) )
+WHERE RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.50}',0,'Custom','Process',0,NULL,'Process','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (381,'Process/{id}',1,'GET','Proceso',NULL,'SELECT',1,'SELECT ID, NAME, DESCRIPTION, ALIAS, STATUS, COMPANYID, UPDATEUSERCODE, UPDATEDATE, MAILSERVER, REFERENCECAPTION1, REFERENCECAPTION2, REFERENCECAPTION3, REFERENCECAPTION4, REFERENCECAPTION5, REFERENCELOOKUPLIST1, REFERENCELOOKUPLIST2, REFERENCELOOKUPLIST3, REFERENCELOOKUPLIST4, REFERENCELOOKUPLIST5, SLA, REFERENCEREQUIRED1, REFERENCETYPE1, REFERENCEREQUIRED2, REFERENCETYPE2, REFERENCEREQUIRED3, REFERENCETYPE3, REFERENCEREQUIRED4, REFERENCETYPE4, REFERENCEREQUIRED5, REFERENCETYPE5, REFERENCECAPTION6, REFERENCELOOKUPLIST6, REFERENCEREQUIRED6, REFERENCETYPE6, REFERENCECAPTION7, REFERENCELOOKUPLIST7, REFERENCEREQUIRED7, REFERENCETYPE7, REFERENCECAPTION8, REFERENCELOOKUPLIST8, REFERENCEREQUIRED8, REFERENCETYPE8, REFERENCECAPTION9, REFERENCELOOKUPLIST9, REFERENCEREQUIRED9, REFERENCETYPE9, REFERENCECAPTION10, REFERENCELOOKUPLIST10, REFERENCEREQUIRED10, REFERENCETYPE10
+  FROM PROCESSSPECFLOW
+ WHERE ID = {ID:NUMBER.9:Required}',1,'Custom','Process',0,NULL,'Process','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (382,'Process/{id}',2,'GET','Etapa',NULL,'SELECT',1,'SELECT FLOWID, ID, NAME, DESCRIPTION, SLATIMEOUT, STEPORDER, PRESCRIPT, POSTSCRIPT, COMPANYID, UPDATEUSERCODE, UPDATEDATE, PROCESSSTATUS, PROCESSLABEL, ENABLECOMMENT, PROGRESSMODE, SLA, MAILSERVER, MAILTOCONTACT, MAILTOCONTACTCUSTOM, MAILTOCONTACTTMPL, MAILTOSTEPRESPONSIBLE, MAILTOSTEPRESPONSIBLECUSTOM, MAILTOSTEPRESPONSIBLETMPL, MAILFORSLAEXPIRATION, MAILFORSLAEXPIRATIONCUSTOM, MAILFORSLAEXPIRATIONTMPL, "REFERENCES" 
+  FROM PROCESSSPECSTEP
+ WHERE FLOWID={dependency:Tree.Process.ID:NUMBER.9:Required}
+ ORDER BY STEPORDER',0,'Custom','Steps',0,NULL,'Process','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (383,'Process/{id}',3,'GET','Tareas',NULL,'SELECT',1,'SELECT STEPID, ID, NAME, DESCRIPTION, SLATIMEOUT, TASKORDER, "TYPE", "ACTION", PRESCRIPT, POSTSCRIPT, ISREQUIRED, COMPANYID, UPDATEUSERCODE, UPDATEDATE, ISSELECTED, SUBSTATUS, SUBLABEL
+  FROM ALIADOS.PROCESSSPECTASK
+ WHERE STEPID={dependency:Tree.Steps.ID:NUMBER.9:Required}
+ ORDER BY TASKORDER',0,'Custom','Tasks',0,NULL,'Process','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (500,'Profile',1,'GET','Lista',NULL,'SELECT',2,' SELECT DISTINCT a.num_poliza num_poliza, a.num_spto, y.nom_ramo, a.fec_efec_spto, a.fec_vcto_spto, dc_k_consulta_web.f_situacion_pol(a.mca_provisional, a.mca_spto_tmp, a.mca_poliza_anulada, a.mca_spto_anulado, a.tip_spto, a.fec_vcto_poliza) valor_status
+  FROM a2000030 a
+  JOIN a1001800 y ON y.cod_cia = a.cod_cia AND y.cod_ramo = a.cod_ramo
+ WHERE a.cod_cia = 1
+   AND a.tip_docum = CAST({tip_docum:VARCHAR.3:Required} AS VARCHAR2(3)) 
+   AND a.cod_docum = CAST({cod_docum:VARCHAR.20:Required} AS VARCHAR2(20)) 
+   AND a.num_spto = (SELECT MAX(num_spto) FROM a2000030 WHERE cod_cia = a.cod_cia AND num_poliza = a.num_poliza AND mca_spto_anulado = ''N'')
+   AND a.num_apli = (SELECT MAX(num_apli) FROM a2000030 WHERE cod_cia = a.cod_cia AND num_poliza = a.num_poliza AND num_spto = a.num_spto)
+   AND a.num_spto_apli = em_f_max_spto_apli_1_web(a.cod_cia, a.num_poliza, a.num_spto, a.num_apli, NULL)
+ORDER BY fec_efec_spto DESC',0,'Custom','Polizas',0,NULL,'Profile','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (501,'Profile',2,'GET','Lista',NULL,'SELECT',2,'SELECT DISTINCT   a.num_poliza, c.num_recibo, c.FEC_EFEC_RECIBO, c.FEC_VCTO_RECIBO, 
+         em_k_Mapfre_Query_Contract_mcr.f_obtener_total_recibo(a.cod_cia,c.num_recibo) imp_recibo,
+         a400.nom_mon,
+         DECODE(c.tip_situacion, ''CT'', ''COBRADO'',''RE'', ''REMESADO'', ''EP'', ''PENDIENTE'', c.tip_situacion) tip_situacion_desc         
+    FROM a2000030 a,
+         a2990700 c,
+         a1000400 a400
+   WHERE a.cod_cia  = 1
+      AND a.tip_docum = CAST({tip_docum:VARCHAR.3:Required} AS VARCHAR2(3))
+      AND a.cod_docum = CAST({cod_docum:VARCHAR.20:Required} AS VARCHAR2(20))
+     AND a.mca_spto_anulado = ''N''
+     AND a.mca_poliza_anulada = ''N''
+     AND a.mca_provisional = ''N''
+     --
+     AND c.cod_mon = a400.cod_mon
+     --
+     AND c.cod_cia  = a.cod_cia
+     AND c.num_spto  = a.num_spto
+     AND c.num_apli   = a.num_apli
+     AND c.num_poliza  = a.num_poliza
+     AND c.num_spto_apli = a.num_spto_apli
+     AND c.num_recibo > 0    
+   ORDER BY c.num_recibo',0,'Custom','Recibos',0,NULL,'Profile','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (502,'Profile',3,'GET','Lista',NULL,'SELECT',2,'  SELECT s.num_sini,
+         s.num_poliza,
+         s.fec_denu_sini,
+         s.FEC_SINI,
+         a.nom_ramo,
+         c.nom_valor
+    FROM a7000900 s,
+         a1001800 a,
+         a2000031 b,
+         g1010031 c
+   WHERE     s.cod_cia = 1
+         AND s.num_poliza IN (SELECT num_poliza
+                                FROM a2000030
+                               WHERE     cod_cia = s.cod_cia
+                                     AND tip_docum = CAST({tip_docum:VARCHAR.3:Required} AS VARCHAR2(3))
+                                     AND cod_docum = CAST({cod_docum:VARCHAR.20:Required} AS VARCHAR2(20)))
+         AND a.cod_cia = s.cod_cia
+         AND a.cod_ramo = s.cod_ramo
+         AND b.cod_cia = a.cod_cia
+         AND b.num_poliza = s.num_poliza
+         AND b.num_spto = s.num_spto_riesgo
+         AND b.num_riesgo = s.num_riesgo
+         AND c.cod_campo = ''TIP_EST_SINI''
+         AND c.cod_idioma = ''ES''
+         AND c.cod_valor = s.tip_est_sini
+ORDER BY s.fec_denu_sini',0,'Custom','Siniestros',0,NULL,'Profile','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (779,'Proposals',1,'GET','Presupuesto enviado para firma',NULL,'SELECT',2,'SELECT pp.PROPOSALID, e.DESCRIPTION STATUS, pp.POLICYID, pp.INSUREDID, pp.INSUREDNAME, pp.SUMMARY, pp.ISSUEDATE, DECODE(pp.SIGNINGTYPE, ''F'',''Firma aceptación digital'', ''M'', ''Firma manual'', ''D'', ''Aceptación digital'', pp.SIGNINGTYPE) SIGNINGTYPE, pp.PRIMARYEMAILADDRESS 
+       ,g.COD_ERROR , g.NOM_ERROR, a520.num_orden, a520.TXT_ERROR, CASE g210.TIP_RECHAZO WHEN 1 THEN ''Observación'' WHEN 2 THEN ''Rechazo'' WHEN 3 THEN ''Auditoria'' END TIP_RECHAZO
+  FROM ALIADOS.POLICYPROPOSAL pp
+  LEFT JOIN ALIADOS.LOOKUP E ON E.LOOKUPID=2050 AND E.LANGUAGE=1 AND E.CODE = pp.STATUS  
+  LEFT JOIN A2000520 a520 ON a520.NUM_POLIZA = pp.PROPOSALID
+  LEFT JOIN G2000211 g ON g.COD_ERROR = REGEXP_SUBSTR(a520.TXT_ERROR, ''\[(\d+)\]'',1,1,NULL,1)
+  LEFT JOIN G2000210 g210 ON g210.COD_ERROR = g.COD_ERROR
+ WHERE ({cod_agt:NUMBER.9:Required} IS NULL OR pp.AGENTCODE = {cod_agt:NUMBER.9:Required}) 
+   AND ({proposal:VARCHAR.13:Required} IS NULL OR pp.PROPOSALID = {proposal:VARCHAR.13:Required})
+   AND ({error:VARCHAR.1:Required} IS NULL OR a520.TXT_ERROR IS NOT NULL)
+ ORDER BY pp.ISSUEDATE DESC
+OFFSET {beginIndex:number.9:default.1}-1 ROWS FETCH NEXT ({endIndex:number.9:default.50}-{beginIndex:number.9:default.1}+1) ROWS ONLY',0,'Custom','Proposals',0,NULL,'Soporte','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2025-11-14 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (213,'PurdyPanelBalance',1,'POST','Recupera el pr?ximo id disponible para la tabla PurdyPanelBalance',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM PurdyPanelBalance',1,'PurdyPanelBalance','Next',1,'Administrativo','Balance','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (214,'PurdyPanelBalance',2,'POST','Crea un registro de PurdyPanelBalance',NULL,'INSERT',1,'INSERT INTO PurdyPanelBalance (ID, asiges, NUM_SINI, NUM_EXP, NUMERODESINIESTRO, TIPODEDOCUMENTO, NUMERODEDOCUMENTO, FECHA, RECEPTOR, MONTO, NCREPUESTO, OBSERVACION, UPDATEUSERCODE, UPDATEDATE) 
+     VALUES ({dependency.Next.NEXTID:NUMBER.9:Required}, {asiges:VARCHAR2.40}, {NUM_SINI:NUMBER.15:Required}, {NUM_EXP:NUMBER.5:Required}, {NUMERODESINIESTRO:VARCHAR2.20}, {TIPODEDOCUMENTO:NUMBER.5}, {NUMERODEDOCUMENTO:VARCHAR2.20}, {FECHA:DATE.0}, {RECEPTOR:VARCHAR2.100}, {MONTO:NUMBER.18}, {NCREPUESTO:NUMBER.18}, {OBSERVACION:VARCHAR2.200}, {App.UserId}, {Const.Date.Now})',0,'PurdyPanelBalance','Create',1,'Administrativo','Balance','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (215,'PurdyPanelBalance/ASIGES',1,'GET','Recupera los registros de balance por medio del codigo ASIGES',NULL,'SELECT',1,'SELECT ID, ASIGES, NUM_SINI, NUM_EXP, NUMERODESINIESTRO, TIPODEDOCUMENTO, NUMERODEDOCUMENTO, FECHA, RECEPTOR, MONTO, NCREPUESTO, OBSERVACION, UPDATEUSERCODE, UPDATEDATE 
+  FROM PurdyPanelBalance
+ WHERE NUM_SINI={claim:NUMBER.15:Required} AND NUM_EXP={exp:NUMBER.5:Required} AND asiges = {code:varchar2.40:Required}
+ ORDER BY ID',0,'PurdyPanelBalance',NULL,1,NULL,'Balance','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (216,'PurdyPanelBalance/{id}',1,'PUT','Actualiza un registro de la tabla PurdyPanelBalance/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE PurdyPanelBalance SET asiges={asiges:VARCHAR2.40}, NUMERODESINIESTRO={NUMERODESINIESTRO:VARCHAR2.20}, TIPODEDOCUMENTO={TIPODEDOCUMENTO:NUMBER.5}, NUMERODEDOCUMENTO={NUMERODEDOCUMENTO:VARCHAR2.20}, FECHA={FECHA:DATE.0}, RECEPTOR={RECEPTOR:VARCHAR2.100}, MONTO={MONTO:NUMBER.18,2}, NCREPUESTO={NCREPUESTO:NUMBER.18,2}, OBSERVACION={OBSERVACION:VARCHAR2.200}, UPDATEUSERCODE={App.UserId}, UPDATEDATE={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelBalance',NULL,1,'Administrativo','Balance','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (217,'PurdyPanelBalance/{id}',1,'DELETE','Elimina un registro de la tabla PurdyPanelBalance por medio de su clave',NULL,'DELETE',1,'DELETE PurdyPanelBalance WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelBalance',NULL,1,'Administrativo','Balance','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (205,'PurdyPanelDano',1,'POST','Recupera el proximo id disponible para la tabla PurdyPanelDano',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM PurdyPanelDano',1,'PurdyPanelDano','Next',1,'Avalúos','Daño','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (206,'PurdyPanelDano',2,'POST','Crea un registro de PurdyPanelDano',NULL,'INSERT',1,'INSERT INTO PurdyPanelDano (ID, asiges, NUM_SINI, NUM_EXP, taller, fechaenviodelavaluo, prerepuestos, prerepuestosiva, prerepuestostotal, premano, premanoiva, premanototal, preperdida, autorizaciondeusopoliza, fechaAutorizaciondeUsoPoliza, oT, asesorTaller, expediente, analistadeDanos, depreciacionyexclusiones, perdrepuesto, perdrepuestoiva, perdrepuestototal, perdmano, perdmanoiva, perdmanototal, perdida, severidaddelsiniestro, avaluoautorizado, fechaautorizacion, perdidatotal, tipodeperdidatotal, presentadanooculto, fechasolicitado, observaciones, danoocultomontoRepDanooculto, danoocultoiva, danoocultototal, danoocultomano, danoocultomanoiva, danoocultomanototal, otrosIIOtrosIIDanoculmanototal, prerepuestosdesc, tipocambio, deduciblecol, deducibledol, perdidatmonto, perdidatmontocol, perdidatmontodol, PERDREPUESTODESC, DANOOCULTODESC, CALC01,CALC02,CALC03,CALC04,CALC05,CALC06,CALC07,CALC08, UPDATEUSERCODE, UPDATEDATE)
+     VALUES ({dependency.Next.NEXTID:NUMBER.9:Required}, {asiges:VARCHAR2.40}, {NUM_SINI:NUMBER.15:Required}, {NUM_EXP:NUMBER.5:Required}, {taller:NUMBER.5}, {fechaenviodelavaluo:DATE.7}, {prerepuestos:NUMBER.18,2}, {prerepuestosiva:NUMBER.18,2}, {prerepuestostotal:NUMBER.18,2}, {premano:NUMBER.18,2}, {premanoiva:NUMBER.18,2}, {premanototal:NUMBER.18,2}, {preperdida:NUMBER.18,2}, {autorizaciondeusopoliza:NUMBER.1}, {fechaAutorizaciondeUsoPoliza:DATE.0}, {oT:NUMBER.6}, {asesorTaller:VARCHAR2.100}, {expediente:VARCHAR2.20}, {analistadeDanos:NUMBER.9}, {depreciacionyexclusiones:NUMBER.18,2}, {perdrepuesto:NUMBER.18,2}, {perdrepuestoiva:NUMBER.18,2}, {perdrepuestototal:NUMBER.18,2}, {perdmano:NUMBER.18,2}, {perdmanoiva:NUMBER.18,2}, {perdmanototal:NUMBER.18,2}, {perdida:NUMBER.18,2}, {severidaddelsiniestro:NUMBER.5}, {avaluoautorizado:NUMBER.1}, {fechaautorizacion:DATE.0}, {perdidatotal:NUMBER.1}, {tipodeperdidatotal:NUMBER.5}, {presentadanooculto:NUMBER.1}, {fechasolicitado:DATE.0}, {observaciones:VARCHAR2.200}, {danoocultomontoRepDanooculto:NUMBER.18,2}, {danoocultoiva:NUMBER.18,2}, {danoocultototal:NUMBER.18,2}, {danoocultomano:NUMBER.18,2}, {danoocultomanoiva:NUMBER.18,2}, {danoocultomanototal:NUMBER.18,2}, {otrosIIOtrosIIDanoculmanototal:NUMBER.18,2}, {prerepuestosdesc:NUMBER.18,2}, {tipocambio:NUMBER.7,2}, {deduciblecol:NUMBER.18,2}, {deducibledol:NUMBER.18,2}, {perdidatmonto:NUMBER.18,2}, {perdidatmontocol:NUMBER.18,2}, {perdidatmontodol:NUMBER.18,2}, {PERDREPUESTODESC:NUMBER.18,2}, {DANOOCULTODESC:NUMBER.18,2}, {CALC01:NUMBER.18,2},{CALC02:NUMBER.18,2},{CALC03:NUMBER.18,2},{CALC04:NUMBER.18,2},{CALC05:NUMBER.18,2},{CALC06:NUMBER.18,2},{CALC07:NUMBER.18,2},{CALC08:NUMBER.18,2}, {App.UserId}, {Const.Date.Now})',0,'PurdyPanelDano','Create',1,'Avalúos','Daño','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (207,'PurdyPanelDano/ASIGES',1,'GET','Recupera un dano por medio del codigo ASIGES',NULL,'SELECT',1,'SELECT ID, ASIGES, NUM_SINI, NUM_EXP, taller, fechaenviodelavaluo, prerepuestos, prerepuestosiva, prerepuestostotal, premano, premanoiva, premanototal, preperdida, autorizaciondeusopoliza, fechaAutorizaciondeUsoPoliza, oT, asesorTaller, expediente, analistadeDanos, depreciacionyexclusiones, perdrepuesto, perdrepuestoiva, perdrepuestototal, perdmano, perdmanoiva, perdmanototal, perdida, severidaddelsiniestro, avaluoautorizado, fechaautorizacion, perdidatotal, tipodeperdidatotal, presentadanooculto, fechasolicitado, observaciones, danoocultomontoRepDanooculto, danoocultoiva, danoocultototal, danoocultomano, danoocultomanoiva, danoocultomanototal, otrosIIOtrosIIDanoculmanototal, PREREPUESTOSDESC, TIPOCAMBIO, PERDIDATMONTO, PERDREPUESTODESC, DANOOCULTODESC, CALC01,CALC02,CALC03,CALC04,CALC05,CALC06,CALC07,CALC08, UPDATEUSERCODE, UPDATEDATE 
+  FROM PurdyPanelDano 
+ WHERE NUM_SINI={claim:NUMBER.15:Required} AND NUM_EXP={exp:NUMBER.5:Required} AND asiges = {code:varchar2.40:Required}',1,'PurdyPanelDano',NULL,1,NULL,'Danos','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (204,'PurdyPanelDano/{id}',1,'PUT','Actualiza un registro de la tabla PurdyPanelDano/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE PurdyPanelDano
+ SET asiges={asiges:VARCHAR2.40}, taller={taller:NUMBER.5}, fechaenviodelavaluo={fechaenviodelavaluo:DATE.0}, prerepuestos={prerepuestos:NUMBER.18,2}, prerepuestosiva={prerepuestosiva:NUMBER.18,2}, prerepuestostotal={prerepuestostotal:NUMBER.18,2}, premano={premano:NUMBER.18,2}, premanoiva={premanoiva:NUMBER.18,2}, premanototal={premanototal:NUMBER.18,2}, preperdida={preperdida:NUMBER.18,2}, autorizaciondeusopoliza={autorizaciondeusopoliza:NUMBER.1}, fechaAutorizaciondeUsoPoliza={fechaAutorizaciondeUsoPoliza:DATE.0}, oT={oT:NUMBER.6}, asesorTaller={asesorTaller:VARCHAR2.100}, expediente={expediente:VARCHAR2.20}, analistadeDanos={analistadeDanos:NUMBER.9}, depreciacionyexclusiones={depreciacionyexclusiones:NUMBER.18,2}, perdrepuesto={perdrepuesto:NUMBER.18,2}, perdrepuestoiva={perdrepuestoiva:NUMBER.18,2}, perdrepuestototal={perdrepuestototal:NUMBER.18,2}, perdmano={perdmano:NUMBER.18,2}, perdmanoiva={perdmanoiva:NUMBER.18,2}, perdmanototal={perdmanototal:NUMBER.18,2}, perdida={perdida:NUMBER.18,2}, severidaddelsiniestro={severidaddelsiniestro:NUMBER.5}, avaluoautorizado={avaluoautorizado:NUMBER.1}, fechaautorizacion={fechaautorizacion:DATE.0}, perdidatotal={perdidatotal:NUMBER.1}, tipodeperdidatotal={tipodeperdidatotal:NUMBER.5}, presentadanooculto={presentadanooculto:NUMBER.1}, fechasolicitado={fechasolicitado:DATE.0}, observaciones={observaciones:VARCHAR2.200}, danoocultomontoRepDanooculto={danoocultomontoRepDanooculto:NUMBER.18,2}, danoocultoiva={danoocultoiva:NUMBER.18,2}, danoocultototal={danoocultototal:NUMBER.18,2}, danoocultomano={danoocultomano:NUMBER.18,2}, danoocultomanoiva={danoocultomanoiva:NUMBER.18,2}, danoocultomanototal={danoocultomanototal:NUMBER.18,2}, otrosIIOtrosIIDanoculmanototal={otrosIIOtrosIIDanoculmanototal:NUMBER.18,2}, prerepuestosdesc={prerepuestosdesc:NUMBER.18,2}, tipocambio={tipocambio:NUMBER.7,2}, deduciblecol={deduciblecol:NUMBER.18,2}, deducibledol={deducibledol:NUMBER.18,2}, perdidatmonto={perdidatmonto:NUMBER.18,2}, perdidatmontocol={perdidatmontocol:NUMBER.18,2}, perdidatmontodol={perdidatmontodol:NUMBER.18,2}, PERDREPUESTODESC={PERDREPUESTODESC:NUMBER.18,2}, DANOOCULTODESC={DANOOCULTODESC:NUMBER.18,2}, CALC01={CALC01:NUMBER.18,2},CALC02={CALC02:NUMBER.18,2},CALC03={CALC03:NUMBER.18,2},CALC04={CALC04:NUMBER.18,2},CALC05={CALC05:NUMBER.18,2},CALC06={CALC06:NUMBER.18,2},CALC07={CALC07:NUMBER.18,2},CALC08={CALC08:NUMBER.18,2}, UPDATEUSERCODE={App.UserId}, UPDATEDATE={Const.Date.Now}
+ WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelDano',NULL,1,'Avalúos','Daño','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (227,'PurdyPanelDetalle',1,'POST','Recupera el proximo id disponible para la tabla PurdyPanelDetalle',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM PurdyPanelDetalle',1,'PurdyPanelDetalle','Next',1,'Legal;Administrativo','Detalle','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (223,'PurdyPanelDetalle',2,'POST','Crea un registro de PurdyPanelDetalle',NULL,'INSERT',1,'INSERT INTO PurdyPanelDetalle (ID, asiges, NUM_SINI, NUM_EXP, enviadoainvestigacion, fechaenviadoainvestigacion, requisitosporpresentarparareco, enviadoaacompanamientolega, fechaenviadoaacompanamientoLeg, fechadelevento, posiblesubrogacion, fechaidentificadocomoposiblesu, muertos, lesionados, lesionadosPosibleResultado, asesorlegal, estadoprocesal, recomendacionlegal, nombredeltercero, ceduladeltercero, telefonodeltercero, correodeltercero, placadetercerocontraparte, lugaraccidente, juzgado, expedientejudicial, fechasentencia, subrogacion, montoporrecuperar, montorecuperado, saldoporrecuperar, UPDATEUSERCODE, UPDATEDATE)
+     VALUES ({dependency.Next.NEXTID:NUMBER.9:Required}, {asiges:VARCHAR2.40}, {NUM_SINI:NUMBER.15:Required}, {NUM_EXP:NUMBER.5:Required}, {enviadoainvestigacion:NUMBER.1}, {fechaenviadoainvestigacion:DATE.0}, {requisitosporpresentarparareco:VARCHAR2.200}, {enviadoaacompanamientolega:NUMBER.1}, {fechaenviadoaacompanamientoLeg:DATE.0}, {fechadelevento:DATE.0}, {posiblesubrogacion:NUMBER.1}, {fechaidentificadocomoposiblesu:DATE.0}, {muertos:VARCHAR2.100}, {lesionados:VARCHAR2.100}, {lesionadosPosibleResultado:VARCHAR2.100}, {asesorlegal:VARCHAR2.100}, {estadoprocesal:VARCHAR2.100}, {recomendacionlegal:VARCHAR2.100}, {nombredeltercero:VARCHAR2.100}, {ceduladeltercero:VARCHAR2.20}, {telefonodeltercero:VARCHAR2.9}, {correodeltercero:VARCHAR2.80}, {placadetercerocontraparte:VARCHAR2.8}, {lugaraccidente:VARCHAR2.100}, {juzgado:NUMBER.5}, {expedientejudicial:VARCHAR2.100}, {fechasentencia:DATE.0}, {subrogacion:NUMBER.1}, {montoporrecuperar:NUMBER.18,2}, {montorecuperado:NUMBER.18,2}, {saldoporrecuperar:NUMBER.18,2}, {App.UserId}, {Const.Date.Now})',0,'PurdyPanelDetalle','Create',1,'Legal;Administrativo','Detalle','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (226,'PurdyPanelDetalle/ASIGES',1,'GET','Recupera un detalle por medio del codigo ASIGES',NULL,'SELECT',1,'SELECT ID "ID", asiges "asiges", NUM_SINI, NUM_EXP, enviadoainvestigacion "enviadoainvestigacion", fechaenviadoainvestigacion "fechaenviadoainvestigacion", requisitosporpresentarparareco "requisitosporpresentarparareco", enviadoaacompanamientolega "enviadoaacompanamientolega", fechaenviadoaacompanamientoLeg "fechaenviadoaacompanamientoLeg", fechadelevento "fechadelevento", posiblesubrogacion "posiblesubrogacion", fechaidentificadocomoposiblesu "fechaidentificadocomoposiblesu", muertos "muertos", lesionados "lesionados", lesionadosPosibleResultado "lesionadosPosibleResultado", asesorlegal "asesorlegal", estadoprocesal "estadoprocesal", recomendacionlegal "recomendacionlegal", nombredeltercero "nombredeltercero", ceduladeltercero "ceduladeltercero", telefonodeltercero "telefonodeltercero", correodeltercero "correodeltercero", placadetercerocontraparte "placadetercerocontraparte", lugaraccidente "lugaraccidente", juzgado "juzgado", expedientejudicial "expedientejudicial", fechasentencia "fechasentencia", subrogacion "subrogacion", montoporrecuperar "montoporrecuperar", montorecuperado "montorecuperado", saldoporrecuperar "saldoporrecuperar", UPDATEUSERCODE "UPDATEUSERCODE", UPDATEDATE "UPDATEDATE"
+ FROM PurdyPanelDetalle 
+WHERE NUM_SINI={claim:NUMBER.15:Required} AND NUM_EXP={exp:NUMBER.5:Required} AND asiges = {code:varchar2.40:Required}',0,'PurdyPanelDetalle',NULL,1,NULL,'Detalle','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (224,'PurdyPanelDetalle/{id}',1,'DELETE','Elimina un registro de la tabla PurdyPanelDetalle por medio de su clave',NULL,'DELETE',1,'DELETE PurdyPanelDetalle WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelDetalle',NULL,1,'Legal;Administrativo','Detalle','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (225,'PurdyPanelDetalle/{id}',1,'PUT','Actualiza un registro de la tabla PurdyPanelDetalle/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE PurdyPanelDetalle SET asiges={asiges:VARCHAR2.40}, enviadoainvestigacion={enviadoainvestigacion:NUMBER.1}, fechaenviadoainvestigacion={fechaenviadoainvestigacion:DATE.0}, requisitosporpresentarparareco={requisitosporpresentarparareco:VARCHAR2.200}, enviadoaacompanamientolega={enviadoaacompanamientolega:NUMBER.1}, fechaenviadoaacompanamientoLeg={fechaenviadoaacompanamientoLeg:DATE.0}, fechadelevento={fechadelevento:DATE.0}, posiblesubrogacion={posiblesubrogacion:NUMBER.1}, fechaidentificadocomoposiblesu={fechaidentificadocomoposiblesu:DATE.0}, muertos={muertos:VARCHAR2.100}, lesionados={lesionados:VARCHAR2.100}, lesionadosPosibleResultado={lesionadosPosibleResultado:VARCHAR2.100}, asesorlegal={asesorlegal:VARCHAR2.100}, estadoprocesal={estadoprocesal:VARCHAR2.100}, recomendacionlegal={recomendacionlegal:VARCHAR2.100}, nombredeltercero={nombredeltercero:VARCHAR2.100}, ceduladeltercero={ceduladeltercero:VARCHAR2.20}, telefonodeltercero={telefonodeltercero:VARCHAR2.9}, correodeltercero={correodeltercero:VARCHAR2.80}, placadetercerocontraparte={placadetercerocontraparte:VARCHAR2.8}, lugaraccidente={lugaraccidente:VARCHAR2.100}, juzgado={juzgado:NUMBER.5}, expedientejudicial={expedientejudicial:VARCHAR2.100}, fechasentencia={fechasentencia:DATE.0}, subrogacion={subrogacion:NUMBER.1}, montoporrecuperar={montoporrecuperar:NUMBER.18,2}, montorecuperado={montorecuperado:NUMBER.18,2}, saldoporrecuperar={saldoporrecuperar:NUMBER.18,2}, UPDATEUSERCODE={App.UserId}, UPDATEDATE={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelDetalle',NULL,1,'Legal;Administrativo','Detalle','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (200,'PurdyPanelEvento',1,'POST','Recupera el proximo id disponible para la tabla PurdyPanelEvento',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM PurdyPanelEvento',1,'PurdyPanelEvento','Next',1,'Reclamos','Evento','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (202,'PurdyPanelEvento',2,'POST','Crea un registro de PurdyPanelEvento',NULL,'INSERT',1,'INSERT INTO PurdyPanelEvento (ID, asiges, NUM_SINI, NUM_EXP, fechadelevento, analistareclamos, tipodeindemnizacion, motivonoProcede, detallenoprocede, detallesiniestro, tipodecobertura, categoriadesiniestro, posiblesubrogacion, fechaPosibleSubrogacion, enviadoaInvestigacion, fechaenviadoainvestigacion, enviadoaacompanamientoLegal, fechaenviadoacompaLegal, infraseguro, autorizaciondeusopoliza, fechaautorizaciondeusopoliza, analistagestora, empresa, primaanual, deducible, UPDATEUSERCODE, UPDATEDATE)
+ VALUES  ({dependency.Next.NEXTID:NUMBER.9:Required}, {asiges:VARCHAR2.40}, {NUM_SINI:NUMBER.15:Required}, {NUM_EXP:NUMBER.5:Required}, {fechadelevento:DATE.0}, {analistareclamos:NUMBER.9}, {tipodeindemnizacion:NUMBER.5}, {motivonoProcede:NUMBER.5}, {detallenoprocede:VARCHAR2.200}, {detallesiniestro:VARCHAR2.200}, {tipodecobertura:NUMBER.5}, {categoriadesiniestro:NUMBER.5}, {posiblesubrogacion:NUMBER.1}, {fechaPosibleSubrogacion:DATE.0}, {enviadoaInvestigacion:NUMBER.1}, {fechaenviadoainvestigacion:DATE.0}, {enviadoaacompanamientoLegal:NUMBER.1}, {fechaenviadoacompaLegal:DATE.0}, {infraseguro:NUMBER.1}, {autorizaciondeusopoliza:NUMBER.1}, {fechaautorizaciondeusopoliza:DATE.0}, {analistagestora:NUMBER.9}, {empresa:VARCHAR2.80}, {primaanual:NUMBER.18,2}, {deducible:NUMBER.18,2}, {app.userid}, {Const.Date.Now})',0,'PurdyPanelEvento','Create',1,'Reclamos','Evento','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (203,'PurdyPanelEvento/ASIGES',1,'GET','Recupera un evento por medio del codigo ASIGES',NULL,'SELECT',1,'SELECT ID, ASIGES, NUM_SINI, NUM_EXP, fechadelevento, analistareclamos, tipodeindemnizacion, motivonoProcede, detallenoprocede, detallesiniestro, tipodecobertura, categoriadesiniestro, posiblesubrogacion, fechaPosibleSubrogacion, enviadoaInvestigacion, fechaenviadoainvestigacion, enviadoaacompanamientoLegal, fechaenviadoacompaLegal, infraseguro, autorizaciondeusopoliza, fechaautorizaciondeusopoliza, nombredelchofer, telefonodelchofer, analistagestora, UPDATEUSERCODE, UPDATEDATE 
+  FROM PurdyPanelEvento 
+ WHERE NUM_SINI={claim:NUMBER.15:Required} AND NUM_EXP={exp:NUMBER.5:Required} AND asiges = {code:varchar2.40:Required}',1,'PurdyPanelEvento',NULL,1,NULL,'Evento','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (201,'PurdyPanelEvento/{id}',1,'PUT','Actualiza un registro de la tabla PurdyPanelEvento/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE PurdyPanelEvento
+ SET asiges={asiges:VARCHAR2.40}, fechadelevento={fechadelevento:DATE.0}, analistareclamos={analistareclamos:NUMBER.9}, tipodeindemnizacion={tipodeindemnizacion:NUMBER.5}, motivonoProcede={motivonoProcede:NUMBER.5}, detallenoprocede={detallenoprocede:VARCHAR2.200}, detallesiniestro={detallesiniestro:VARCHAR2.200}, tipodecobertura={tipodecobertura:NUMBER.5}, categoriadesiniestro={categoriadesiniestro:NUMBER.5}, posiblesubrogacion={posiblesubrogacion:NUMBER.1}, fechaPosibleSubrogacion={fechaPosibleSubrogacion:DATE.0}, enviadoaInvestigacion={enviadoaInvestigacion:NUMBER.1}, fechaenviadoainvestigacion={fechaenviadoainvestigacion:DATE.0}, enviadoaacompanamientoLegal={enviadoaacompanamientoLegal:NUMBER.1}, fechaenviadoacompaLegal={fechaenviadoacompaLegal:DATE.0}, infraseguro={infraseguro:NUMBER.1}, autorizaciondeusopoliza={autorizaciondeusopoliza:NUMBER.1}, fechaautorizaciondeusopoliza={fechaautorizaciondeusopoliza:DATE.0}, analistagestora={analistagestora:NUMBER.9}, empresa={empresa:VARCHAR2.80}, primaanual={primaanual:NUMBER.18,2}, deducible={deducible:NUMBER.18,2}, UPDATEUSERCODE={App.UserId}, UPDATEDATE={Const.Date.Now}
+ WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelEvento',NULL,1,'Reclamos','Evento','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (211,'PurdyPanelMontos',1,'POST','Recupera el proximo id disponible para la tabla PurdyPanelMontos',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM PurdyPanelMontos',1,'PurdyPanelMontos','Next',1,'Administrativo','Montos','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (209,'PurdyPanelMontos',2,'POST','Crea un registro de PurdyPanelMontos',NULL,'INSERT',1,'INSERT INTO PurdyPanelMontos (ID, asiges, NUM_SINI, NUM_EXP, MONTOINICIALPORINDEMNIZAR, MONTOINICIALPORINDEMNIZARREPUE, MONTOINICIALPORINDEMNIZARMANOD, MONTODANOOCULTOPORINDEMNIZAR, MONTODANOOCULTOPORINDEMNIZARRE, MONTODANOOCULTOPORINDEMNIZARMA, UPDATEUSERCODE, UPDATEDATE)
+     VALUES ({dependency.Next.NEXTID:NUMBER.9:Required}, {asiges:VARCHAR2.40}, {NUM_SINI:NUMBER.15:Required}, {NUM_EXP:NUMBER.5:Required}, {MONTOINICIALPORINDEMNIZAR:NUMBER.18,2}, {MONTOINICIALPORINDEMNIZARREPUE:NUMBER.18,2}, {MONTOINICIALPORINDEMNIZARMANOD:NUMBER.18,2}, {MONTODANOOCULTOPORINDEMNIZAR:NUMBER.18,2}, {MONTODANOOCULTOPORINDEMNIZARRE:NUMBER.18,2}, {MONTODANOOCULTOPORINDEMNIZARMA:NUMBER.18,2}, {App.UserId}, {Const.Date.Now})',0,'PurdyPanelMontos','Create',1,'Administrativo','Montos','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (210,'PurdyPanelMontos/ASIGES',1,'GET','Recupera los montos por medio del codigo ASIGES',NULL,'SELECT',1,'SELECT ID, ASIGES, NUM_SINI, NUM_EXP, MONTOINICIALPORINDEMNIZAR, MONTOINICIALPORINDEMNIZARREPUE, MONTOINICIALPORINDEMNIZARMANOD, MONTODANOOCULTOPORINDEMNIZAR, MONTODANOOCULTOPORINDEMNIZARRE, MONTODANOOCULTOPORINDEMNIZARMA, UPDATEUSERCODE, UPDATEDATE 
+  FROM PurdyPanelMontos
+ WHERE NUM_SINI={claim:NUMBER.15:Required} AND NUM_EXP={exp:NUMBER.5:Required} AND asiges = {code:varchar2.40:Required}',0,'PurdyPanelMontos',NULL,1,NULL,'Montos','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (208,'PurdyPanelMontos/{id}',1,'PUT','Actualiza un registro de la tabla PurdyPanelMontos/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE PurdyPanelMontos SET asiges={asiges:VARCHAR2.40}, MONTOINICIALPORINDEMNIZAR={MONTOINICIALPORINDEMNIZAR:NUMBER.18,2}, MONTOINICIALPORINDEMNIZARREPUE={MONTOINICIALPORINDEMNIZARREPUE:NUMBER.18,2}, MONTOINICIALPORINDEMNIZARMANOD={MONTOINICIALPORINDEMNIZARMANOD:NUMBER.18,2}, MONTODANOOCULTOPORINDEMNIZAR={MONTODANOOCULTOPORINDEMNIZAR:NUMBER.18,2}, MONTODANOOCULTOPORINDEMNIZARRE={MONTODANOOCULTOPORINDEMNIZARRE:NUMBER.18,2}, MONTODANOOCULTOPORINDEMNIZARMA={MONTODANOOCULTOPORINDEMNIZARMA:NUMBER.18,2}, UPDATEUSERCODE={App.UserId}, UPDATEDATE={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelMontos',NULL,1,'Administrativo','Montos','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (212,'PurdyPanelMontos/{id}',1,'DELETE','Elimina un registro de la tabla PurdyPanelMontos por medio de su clave',NULL,'DELETE',1,'DELETE PurdyPanelMontos WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelMontos',NULL,1,'Administrativo','Montos','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (228,'PurdyPanelOtros',1,'POST','Recupera el proximo id disponible para la tabla PurdyPanelOtros',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM PurdyPanelEvento',1,'Custom','Next',1,NULL,'Otros','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (229,'PurdyPanelOtros',2,'POST','Crea un registro de PurdyPanelOtros',NULL,'INSERT',1,'INSERT INTO PurdyPanelEvento (ID, asiges, NUM_SINI, NUM_EXP, nombredelchofer, telefonodelchofer, UPDATEUSERCODE, UPDATEDATE)
+     VALUES ({dependency.Next.NEXTID:NUMBER.9:Required}, {asiges:VARCHAR2.40}, {NUM_SINI:NUMBER.15:Required}, {NUM_EXP:NUMBER.5:Required}, {nombredelchofer:VARCHAR2.100}, {telefonodelchofer:VARCHAR2.9}, {App.UserId}, {Const.Date.Now})',0,'Custom','Create',1,NULL,'Otros','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (230,'PurdyPanelOtros/{id}',1,'PUT','Actualiza un registro de la tabla PurdyPanelOtros por medio de su clave',NULL,'UPDATE',1,'UPDATE PurdyPanelEvento SET  nombredelchofer={nombredelchofer:VARCHAR2.100}, telefonodelchofer={telefonodelchofer:VARCHAR2.9}, UPDATEUSERCODE={App.UserId}, UPDATEDATE={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'Custom',NULL,1,NULL,'Otros','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (218,'PurdyPanelRecuperacion',1,'POST','Recupera el proximo id disponible para la tabla PurdyPanelRecuperacion',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM PurdyPanelRecuperacion',1,'PurdyPanelRecuperacion','Next',1,'Administrativo','Recuperacion','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (221,'PurdyPanelRecuperacion',2,'POST','Crea un registro de PurdyPanelRecuperacion',NULL,'INSERT',1,'INSERT INTO PurdyPanelRecuperacion (ID, asiges, NUM_SINI, NUM_EXP, numerodesiniestro, tipodedocumento, numerodedocumento, fecharecupera, receptor, montorecupera, observacion, UPDATEUSERCODE, UPDATEDATE)
+     VALUES ({dependency.Next.NEXTID:NUMBER.9:Required}, {asiges:VARCHAR2.40}, {NUM_SINI:NUMBER.15:Required}, {NUM_EXP:NUMBER.5:Required}, {numerodesiniestro:VARCHAR2.20}, {tipodedocumento:NUMBER.5}, {numerodedocumento:VARCHAR2.20}, {fecharecupera:DATE.0}, {receptor:VARCHAR2.100}, {montorecupera:NUMBER.18,2}, {observacion:VARCHAR2.200}, {App.UserId}, {Const.Date.Now})',0,'PurdyPanelRecuperacion','Create',1,'Administrativo','Recuperación','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (222,'PurdyPanelRecuperacion/ASIGES',1,'GET','Recupera una recuperacion por medio del codigo ASIGES',NULL,'SELECT',1,'SELECT ID "ID", asiges "asiges", NUM_SINI, NUM_EXP, numerodesiniestro "numerodesiniestro", tipodedocumento "tipodedocumento", numerodedocumento "numerodedocumento", fecharecupera "fecharecupera", receptor "receptor", montorecupera "montorecupera", observacion "observacion", UPDATEUSERCODE, "UPDATEUSERCODE", UPDATEDATE, "UPDATEDATE" 
+  FROM PurdyPanelRecuperacion
+ WHERE NUM_SINI={claim:NUMBER.15:Required} AND NUM_EXP={exp:NUMBER.5:Required} AND asiges = {code:varchar2.40:Required}',0,'PurdyPanelRecuperacion',NULL,1,NULL,'Recuperacion','PurdyPanel',0,NULL,NULL,1,0,10509,TIMESTAMP'2025-03-26 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (219,'PurdyPanelRecuperacion/{id}',1,'DELETE','Elimina un registro de la tabla PurdyPanelRecuperacion por medio de su clave',NULL,'DELETE',1,'DELETE PurdyPanelRecuperacion WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelRecuperacion',NULL,1,'Administrativo','Recuperación','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (220,'PurdyPanelRecuperacion/{id}',1,'PUT','Actualiza un registro de la tabla PurdyPanelRecuperacion/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE PurdyPanelRecuperacion SET asiges={asiges:VARCHAR2.40}, numerodesiniestro={numerodesiniestro:VARCHAR2.20}, tipodedocumento={tipodedocumento:NUMBER.5}, numerodedocumento={numerodedocumento:VARCHAR2.20}, fecharecupera={fecharecupera:DATE.0}, receptor={receptor:VARCHAR2.100}, montorecupera={montorecupera:NUMBER.18,2}, observacion={observacion:VARCHAR2.200}, UPDATEUSERCODE={App.UserId}, UPDATEDATE={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'PurdyPanelRecuperacion',NULL,1,'Administrativo','Recuperación','PurdyPanel',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (80,'Queries/Proveedores/{sid}',1,'GET','Consulta de Proveedores por codigo de actividad',NULL,'SELECT',2,'SELECT DISTINCT
+       TIPO_IDENTIFICACION,
+       IDENTIFICACION,
+       NOMBRE,
+       AREA,
+       PAIS,
+       PROVINCIA,
+       CANTON,
+       TELEFONO,
+       CORREO
+FROM (
+    SELECT a.TIP_DOCUM AS TIPO_IDENTIFICACION,
+           a.COD_DOCUM AS IDENTIFICACION,
+           b.nom_alias AS NOMBRE,
+           TRIM(REGEXP_SUBSTR(a.obs_tercero, ''[^;]+'', 1, LEVEL)) AS AREA,
+           NVL(c.NOM_PAIS, ''NO REGISTRADO'') AS PAIS,
+           NVL(d.NOM_ESTADO, ''NO REGISTRADO'') AS PROVINCIA,
+           NVL(e.NOM_PROV, ''NO REGISTRADO'') AS CANTON,
+           NVL(a.TLF_NUMERO_COM, ''NO REGISTRADO'') AS TELEFONO,
+           NVL(a.EMAIL_COM,''NO REGISTRADO'') AS CORREO
+      FROM A1001300 a
+     INNER JOIN A1001399 b
+        ON a.COD_CIA = b.COD_CIA
+       AND a.TIP_DOCUM = b.TIP_DOCUM
+       AND a.COD_DOCUM = b.COD_DOCUM
+     LEFT JOIN A1000101 c
+        ON a.COD_PAIS = c.COD_PAIS
+     LEFT JOIN A1000104 d
+        ON c.COD_PAIS = d.COD_PAIS
+       AND a.COD_ESTADO = d.COD_ESTADO
+     LEFT JOIN A1000100 e
+        ON d.COD_PAIS = e.COD_PAIS
+       AND d.COD_ESTADO = e.COD_ESTADO
+       AND a.COD_PROV = e.COD_PROV
+     WHERE a.COD_CIA = 1
+       AND a.COD_ACT_TERCERO = {sid:NUMBER.4:Required} 
+       AND a.MCA_INH = ''N''
+       AND A.FEC_VALIDEZ = (SELECT MAX(FEC_VALIDEZ)
+                              FROM A1001300 x
+                             WHERE x.COD_CIA = 1
+                               AND x.TIP_DOCUM = A.TIP_DOCUM
+                               AND x.COD_DOCUM = A.COD_DOCUM
+                               AND x.MCA_INH = ''N'')
+    CONNECT BY REGEXP_SUBSTR(a.obs_tercero, ''[^;]+'', 1, LEVEL) IS NOT NULL
+       AND PRIOR a.COD_DOCUM = a.COD_DOCUM
+       AND PRIOR SYS_GUID() IS NOT NULL
+       AND PRIOR a.ROWID IS NOT NULL
+)
+ORDER BY AREA',0,'Queries','Proveedores',1,NULL,'Queries','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2025-09-02 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (231,'QuoteSetting',1,'GET','Opciones por rol para las cotizaciones',NULL,'SELECT',1,'SELECT ROLENAME "Role", FIELDNAME "Field", FIELDTYPE "Type", FIELDVALUE "Value", DISABLE "Disable", ALLOWEDVALUES "AllowedValues", VALUESTOREMOVE "ValuesToRemove", VISIBLE "Visible" FROM QUOTESETTING WHERE QUOTE={code:varchar2.80:Required} AND COMPANYID={App.CompanyId} ORDER BY ROLENAME, FIELDORDER',0,'Custom',NULL,1,NULL,'Cotizaciones','Cotizaciones',0,NULL,NULL,1,0,6329,TIMESTAMP'2023-06-13 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (340,'Ramo',1,'GET','Lista','Lista de ramos. Filtra por número de ramo, nombre or abreviación, permite paginación por indice (beginIndex/endIndex).','SELECT',2,'SELECT * FROM (
+SELECT COD_RAMO, NOM_RAMO, ABR_RAMO, COD_SECTOR, COD_SUBSECTOR,
+      COD_USR, FEC_ACTU, ROW_NUMBER() OVER (ORDER BY COD_RAMO) RowNumber
+FROM A1001800
+WHERE COD_CIA=1 AND {filter:VARCHAR.100} IS NULL OR (COD_RAMO LIKE {filter:VARCHAR.100} OR NOM_RAMO LIKE {filter:VARCHAR.100} OR ABR_RAMO LIKE {filter:VARCHAR.100}) )
+WHERE RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.50}',0,'Custom',NULL,0,NULL,'Ramo','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (341,'Ramo/{id}',1,'GET','General',NULL,'SELECT',2,'SELECT COD_RAMO, NOM_RAMO, ABR_RAMO, COD_SECTOR, COD_SUBSECTOR, MCA_CLAUSULA, MCA_ANEXO, MCA_PRORRATA, MCA_CAMBIA_PRORRATA, MCA_RIESGOS, MCA_PERIODOS, MCA_RECIBO_POR_PERIODO, MCA_EMISION, MCA_CAMBIO_NIVEL_3, MCA_CALCULA_FRACC_PAGO, MCA_SPTO_EN_PLAN_PAGO, MCA_CAMBIO_PLAN_PAGO, MCA_CERTIFICADOS, MCA_INH, MCA_COMIS_COA_EXT, MCA_365_DIAS, MCA_OBLIGA_PRESUPUESTO, MCA_AUTORIZA_PRESUPUESTO, MCA_CAMBIO_NUM_POLIZA, MCA_CAMBIO_NUM_POLIZA_APLI, MCA_VAL_STRO_EN_SPTO, MCA_REMESA_RECIBO, MCA_RECIBO_MANUAL, MCA_COMIS_MANUAL, MCA_BUSCA_INSP_EMISION, MCA_EMISION_SIN_RECIBO, MCA_REUTILIZA_PRESUPUESTO, MCA_REUTILIZA_DECLARACION, MCA_APLICA_AT_EN_RIESGO, TIP_COASEGURO_PERMITIDO, MCA_CUADRO_COASEGURO_OBL, TIP_PRIMAS_MANUALES, NUM_AGT, NUM_RIESGOS_TRASPASO_DIRECTO, NUM_RIESGOS_IMPRESION, NOM_PRG_RIESGO, TIP_FORMACION_MODALIDAD, COD_USR, FEC_ACTU, NOM_PRG_BUSCA_INSP_EMISION, COD_TRATAMIENTO, COD_TRATAMIENTO_SINI, COD_TRATAMIENTO_CTABLE, NOM_PRG_EMISION_SIN_RECIBO, COD_PROCESO, COD_PROCESO_P, COD_PROCESO_R, COD_EST_DV_POLIZA, COD_EST_RIESGO, COD_EST_MODALIDAD, COD_EST_ACCESORIOS, COD_EST_PLAN_PAGO, COD_EST_INSPEC, NOM_PRG_COEF_COB, NOM_PRG_BUSCA_INSP, NOM_PRG_EXCLUYE_INSP, TIP_DST_COMIS, NOM_PRG_DST_COMIS, NOM_PRG_REMESA_RECIBO, MCA_MOD_ORG_ASE, MCA_MOD_COM_CUOTA_INTERV, MCA_RECHAZO_SUSP_A_TODOS, MCA_RECALCULA_COMIS, MCA_REGISTRA_HORA, TIP_REA_PERMITIDO, MCA_TASA_MANUAL, MCA_DES_POR_RIESGO_BATCH, MCA_MOTIVOS_SPTO, TIP_ACCESO_COM, MCA_RECHAZA_SUSPENDE_APLI, NOM_PRG_SPTO_PLAN_PAGO, MCA_CT_EN_ANULACION_SPTOS, MCA_CUENTA_2902_TMP, MCA_RESPETA_DIA_VCTO, TIP_FORMACION_IMAGEN, MCA_ERROR_AVISO_STRO, MCA_VAL_STRO_TERM_EN_SPTO, MCA_ERROR_AVISO_STRO_TERM, MCA_ANEXO_RIES, MCA_REGENERA_SPTOS_CT, NOM_PRG_COBRO_RECIBO, MCA_MODIFICA_CAMBIO, NOM_PRG_VALIDA_CAMBIO, MCA_VAL_FEC_EMISION_ESTANDAR, NOM_PRG_VAL_FEC_EMI_ESTANDAR, MCA_TIP_ANEXO, MCA_CAUCION, MCA_COMIS_CARTERA, MCA_GESTION_FONDO, MCA_CAL_IMP_COB, MCA_REA_EXTERNO, MCA_CREA_ERROR_EMI, MCA_CREA_ERROR_SIN, MCA_COPIA_ANEXOS_DESDE_PPTO, MCA_MULTI_IDIOMA_ANEXO, MCA_PSYPD, NOM_PRG_PSYPD, MCA_APLICA_MARCAS, NUM_ANIOS_MARCAS, MCA_ANTIFRAUDE_SINI, MCA_ANTIFRAUDE_EMISION, MCA_REA_EXT_DIFERIDO 
+FROM TRON2000.A1001800
+ WHERE COD_CIA=1 AND COD_RAMO={ID:NUMBER.3:Required}',1,'Custom','General',0,NULL,'Ramo','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (342,'Ramo/{id}',2,'GET','Coberturas',NULL,'SELECT',2,'SELECT NUM_SECU, COD_COB, NOM_COB, COD_MON_CAPITAL, COD_MODALIDAD, MCA_UNIDAD, IMP_UNIDAD, MCA_TIP_CAPITAL, COD_COB_RELACIONADA, PCT_PARTICIPACION, MCA_PCT_PARTICIPACION_VARIABLE, NOM_PRG_PRE_COB, COD_AGRUP_COB_1, COD_AGRUP_COB_2, COD_AGRUP_COB_3, COD_AGRUP_COB_4, COD_RAMO_CTABLE, COEF_INVENTARIO, MCA_IMP_OBLIGATORIA, MCA_ACCESORIOS, MCA_FRANQUICIA, MCA_BONI, MCA_SOBRE_TASAS, MCA_COMIS_NPR, MCA_COMIS_CAR, MCA_OBLIGATORIO, MCA_INH, MCA_MOD_SUMA_ASEG, MCA_BAJA_SUMA_ASEG_STRO, MCA_REASEGURO, MCA_FINANCIABLE, MCA_INSPEC, MCA_NUEVO_CAPITAL, TIP_REGULARIZA, TIP_REGULARIZA_ESP, PCT_REGULARIZA_ESP, COD_INDICE, NOM_PRG_REGULARIZA_ESP, COD_MON_TARIFA, TIP_CALCULO_COB, TASA_CALCULO, IMP_CALCULO, NOM_TABLA_CALCULO, TIP_TABLA_CALCULO, NOM_CAMPO_TABLA_CALCULO, NOM_PRG_CALCULO, NOM_TABLA_CORRECTORA, NOM_CAMPO_TABLA_CORRECTORA, TIP_CALCULO_AUX, COD_CALCULO_AUX, NOM_CALCULO_AUX, TIP_PRIMA_MINIMA, IMP_PRIMA_MINIMA, NOM_TABLA_PRIMA_MINIMA, NOM_CAMPO_TABLA_PRIMA_MINIMA, NOM_PRG_PRIMA_MINIMA, TIP_ACT_AUM_NO_MOD, NOM_PRG_AUM_NO_MOD, TIP_ACT_AUM_SI_MOD, NOM_PRG_AUM_SI_MOD, TIP_ACT_BAJ_NO_MOD, NOM_PRG_BAJ_NO_MOD, TIP_ACT_BAJ_SI_MOD, NOM_PRG_BAJ_SI_MOD, TIP_ACT_MAN_NO_MOD, NOM_PRG_MAN_NO_MOD, TIP_ACT_MAN_SI_MOD, NOM_PRG_MAN_SI_MOD, MCA_VALIDACION_PRIMA, MCA_VALIDACION_SUMA_ASEG, NOM_PRG_VALIDACION, NOM_PRG_PRE_FRANQUICIA, FEC_VALIDEZ, NOM_PRG_VALIDACION_PRIMA, SUMA_ASEG, MCA_COD_MON_FRANQUICIA_ALT, COD_USR, FEC_ACTU 
+ FROM A1002150
+ WHERE COD_CIA=1 AND COD_RAMO={ID:NUMBER.15:Required} ORDER BY NUM_SECU',0,'Custom','Coberturas',0,NULL,'Ramo','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("coberturas"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (345,'Ramo/{id}',3,'GET','Desglose',NULL,'SELECT',2,'SELECT DISTINCT g180.COD_DESGLOSE, g180.NUM_SECU,
+       g170.NOM_DESGLOSE, g170.NOM_COR_DESGLOSE, g170.TIP_AMBITO, g170.MCA_ESTUDIO, g170.TIP_BASE_CALCULO, g170.TIP_CALCULO, g170.TASA_CALCULO, g170.IMP_CALCULO, g170.NOM_PRG_CALCULO, g170.MCA_DEVUELVE, g170.MCA_APLICA_PRORRATA, g170.MCA_CALCULO_AUTOMATICO, g170.COD_ECO, g170.MCA_DEPOSITA_CALCULO_C0, g170.MCA_DEPOSITA_CALCULO_C1, g170.MCA_DEPOSITA_CALCULO_C2, g170.MCA_DEPOSITA_CALCULO_C3, g170.MCA_DEPOSITA_CALCULO_C4, g170.MCA_DEPOSITA_CALCULO_C5, g170.MCA_DEPOSITA_CALCULO_C6, g170.MCA_DEPOSITA_CALCULO_C7, g170.MCA_DEPOSITA_CALCULO_C8, g170.MCA_DEPOSITA_CALCULO_C9, g170.MCA_DEPOSITA_CALCULO_R0, g170.MCA_DEPOSITA_CALCULO_R1, g170.MCA_DEPOSITA_CALCULO_R2, g170.MCA_DEPOSITA_CALCULO_R3, g170.MCA_DEPOSITA_CALCULO_R4, g170.MCA_DEPOSITA_CALCULO_P0, g170.MCA_DEPOSITA_CALCULO_P1, g170.MCA_DEPOSITA_CALCULO_P2, g170.MCA_DEPOSITA_CALCULO_P3, g170.MCA_DEPOSITA_CALCULO_P4, g170.MCA_DEPOSITA_CALCULO_T0, g170.MCA_DEPOSITA_CALCULO_T1, g170.MCA_DEPOSITA_CALCULO_T2, g170.MCA_DEPOSITA_CALCULO_T3, g170.MCA_DEPOSITA_CALCULO_T4, g170.COD_USR, g170.FEC_ACTU, g170.FEC_VALIDEZ, g170.NOM_PRG_NO_CONSUMIDO
+FROM G2000180 g180
+ LEFT JOIN G2000170 g170 ON g170.COD_CIA=g180.COD_CIA AND g170.COD_DESGLOSE=g180.COD_DESGLOSE
+WHERE g180.COD_CIA=1 AND g180.COD_RAMO={ID:NUMBER.15:Required} 
+ORDER BY g180.NUM_SECU',0,'Custom','Desglose',0,NULL,'Ramo','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("desglose"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (343,'Ramo/{id}',4,'GET','Desglose por cobertura',NULL,'SELECT',2,'SELECT g180.COD_MODALIDAD, g180.COD_COB, g180.NUM_SECU, g180.COD_DESGLOSE, g170.NOM_DESGLOSE, g180.NUM_BLOQUE_ESTUDIO, g180.TIP_APLICACION, g180.FEC_VALIDEZ, g180.COD_USR, g180.FEC_ACTU
+-- g170.NOM_COR_DESGLOSE, g170.TIP_AMBITO, g170.MCA_ESTUDIO, g170.TIP_BASE_CALCULO, g170.TIP_CALCULO, g170.TASA_CALCULO, g170.IMP_CALCULO, g170.NOM_PRG_CALCULO, g170.MCA_DEVUELVE, g170.MCA_APLICA_PRORRATA, g170.MCA_CALCULO_AUTOMATICO, g170.COD_ECO, g170.MCA_DEPOSITA_CALCULO_C0, g170.MCA_DEPOSITA_CALCULO_C1, g170.MCA_DEPOSITA_CALCULO_C2, g170.MCA_DEPOSITA_CALCULO_C3, g170.MCA_DEPOSITA_CALCULO_C4, g170.MCA_DEPOSITA_CALCULO_C5, g170.MCA_DEPOSITA_CALCULO_C6, g170.MCA_DEPOSITA_CALCULO_C7, g170.MCA_DEPOSITA_CALCULO_C8, g170.MCA_DEPOSITA_CALCULO_C9, g170.MCA_DEPOSITA_CALCULO_R0, g170.MCA_DEPOSITA_CALCULO_R1, g170.MCA_DEPOSITA_CALCULO_R2, g170.MCA_DEPOSITA_CALCULO_R3, g170.MCA_DEPOSITA_CALCULO_R4, g170.MCA_DEPOSITA_CALCULO_P0, g170.MCA_DEPOSITA_CALCULO_P1, g170.MCA_DEPOSITA_CALCULO_P2, g170.MCA_DEPOSITA_CALCULO_P3, g170.MCA_DEPOSITA_CALCULO_P4, g170.MCA_DEPOSITA_CALCULO_T0, g170.MCA_DEPOSITA_CALCULO_T1, g170.MCA_DEPOSITA_CALCULO_T2, g170.MCA_DEPOSITA_CALCULO_T3, g170.MCA_DEPOSITA_CALCULO_T4, g170.FEC_VALIDEZ, g170.NOM_PRG_NO_CONSUMIDO, g170.NUM_DECIMALES, g170.MCA_DOBLE_EJECUCION, g170.COD_USR, g170.FEC_ACTU
+  FROM G2000180 g180
+  LEFT JOIN G2000170 g170 ON g170.COD_CIA =g180.COD_CIA AND g170.COD_DESGLOSE = g180.COD_DESGLOSE 
+ WHERE g180.COD_CIA=1 AND g180.COD_RAMO={ID:NUMBER.15:Required} ORDER BY g180.NUM_SECU',0,'Custom','DesglosePorCobertura',0,NULL,'Ramo','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("desgloseporcobertura"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (344,'Ramo/{id}',5,'GET','Datos variables',NULL,'SELECT',2,'SELECT COD_MODALIDAD, g20.COD_COB, g20.COD_AGR, g20.FEC_VALIDEZ, g20.TIP_NIVEL, g20.NUM_SECU, g20.COD_CAMPO, g20.MCA_INH, g20.MCA_VISIBLE, g20.MCA_OBLIGATORIO, g20.MCA_VALIDA_SI_NULL, g20.MCA_MODALIDAD, g20.MCA_CALCULO, g20.MCA_PRESUPUESTO, g20.MCA_SINI, g20.MCA_UNICO, g20.MCA_INSPEC, g20.MCA_BUSCA_INSP, g20.MCA_BUSCA_POR_IGUAL_INSP, g20.MCA_SOLICITA_EN_COPIA, g20.MCA_GRABA_RECHAZO, g20.MCA_SUMA_ASEG, g20.MCA_VALIDACION, g20.MCA_VALIDACION_CIA, g20.TIP_REGULARIZA, g20.TIP_REGULARIZA_ESP, g20.PCT_REGULARIZA_ESP, g20.COD_INDICE, g20.NOM_PRG_REGULARIZA_ESP, g20.NOM_PRG_PRE_CAMPO, g20.VAL_DEFECTO, g20.NOM_TABLA_VAL_DEFECTO, g20.NOM_CAMPO_TABLA_VAL_DEFECTO, g20.NOM_PGM_HELP, g20.NOM_TABLA_VALIDA, g20.COD_VERSION, g20.NOM_GLOBAL_PGM_HELP, g20.NOM_PRG_CAMPO, g20.COD_LISTA, g20.COD_TRANSPORTES, g20.NUM_SECU_INSP, g20.MCA_CASE_SENSITIVE, g20.COD_PANEL, g20.TIP_SUBNIVEL, g20.TIP_DATO_FONDO, g20.MCA_VLD_ONLINE, g20.MCA_EXPORTAR_REA_EXT, g20.COD_USR, g20.FEC_ACTU,
+       g10.COD_MODULO, g10.COD_TEXTO, g10.NOM_CAMPO, g10.TIP_CAMPO, g10.LNG_CAMPO, g10.COD_SISTEMA, g10.MCA_INH, g10.MCA_SINI, g10.MCA_OBLIGATORIO, g10.MCA_VALIDACION, g10.NOM_PRG_PRE_CAMPO, g10.NOM_PRG_CAMPO, g10.VAL_DEFECTO, g10.NOM_PGM_HELP, g10.COD_VERSION, g10.NOM_GLOBAL_PGM_HELP, g10.NOM_TABLA_VALIDA
+ FROM G2000020 g20
+ LEFT JOIN G2000010 g10 ON g10.COD_CAMPO = g20.COD_CAMPO
+ WHERE g20.COD_CIA=1 AND g20.COD_RAMO={ID:NUMBER.15:Required} ORDER BY g20.NUM_SECU',0,'Custom','DatosVariables',0,NULL,'Ramo','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("datosvariables"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (346,'Ramo/{id}',6,'GET','ControlesTecnicos',NULL,'SELECT',2,'SELECT COD_SISTEMA, COD_SECTOR, COD_SUBSECTOR, COD_NIVEL1, COD_NIVEL2, COD_NIVEL3, COD_NIVEL_SALTO, NOM_PRG, NUM_MENU_OPCION, NUM_OPCION, COD_EST, COD_USR, FEC_ACTU
+  FROM G2000200 g200
+ WHERE g200.COD_CIA=1 AND g200.COD_RAMO={ID:NUMBER.15:Required} ORDER BY COD_NIVEL1, COD_NIVEL2, COD_NIVEL3
+',0,'Custom','ControlesTecnicos',0,NULL,'Ramo','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("controlestecnicos"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (602,'Receipt/Paid/{StartDate}/{EndDate}',1,'GET','Recibos de pago','Recibos de pago','SELECT',2,'SELECT a.cod_cia,
+       a.num_poliza,      
+       a.num_poliza_anterior,      
+       a.num_poliza_cliente,      
+       a.num_poliza_grupo,      
+       a.num_contrato,      
+       a.num_subcontrato,      
+       a.fec_efec_poliza,      
+       a.fec_vcto_poliza,      
+       a.num_presupuesto,      
+       a.tip_docum,      
+       a.cod_docum,      
+       1 num_spto,      
+       a.num_apli,      
+       a.num_spto_apli,      
+       a.cod_ramo,      
+       a.cod_agt,      
+       substr(d.nom_completo, 0, 8) nom_completo,      
+       SUM(c.imp_recibo) imp_recibo,      
+       SUM(c.imp_comis)  imp_comis,      
+       a.tip_gestor,      
+       c.fec_efec_recibo fec_vcto_recibo,      
+       c.tip_situacion,      
+       c.num_recibo,      
+       c.fec_valor,      
+       a.tip_docum || ''-'' || a.cod_docum key,      
+       d.nom_completo nom_completo2,      
+       c.fec_efec_recibo fec_efec_recibo2,      
+       c.fec_vcto_recibo fec_vcto_recibo2,      
+       DECODE(c.tip_situacion,''RE'', ''REMESADO'', ''EP'', ''PENDIENTE'') tip_situacion_desc,      
+       DECODE(c.tip_gestor,  ''AG'', ''VENTANILLA'', ''BA'', ''CUENTA'', ''TA'', ''TARJETA'') tip_gestor_desc,      
+       a1331.tlf_numero,      
+       a1331.tlf_numero_com,      
+       a1331.fax_numero,      
+       a1331.fax_numero_com,      
+       nvl(upper(a1331.email),''***'') email,      
+       nom_domicilio1,      
+       nom_domicilio2,      
+       nom_domicilio3,      
+       a400.cod_mon_iso nom_mon,      
+       c.tip_gestor  tip_gestor_recibo      
+  FROM a2000030 a, v1001390 d, a1001331 a1331, a1000400 a400
+ WHERE a.cod_cia             = {app.P_COD_CIA}
+   AND a.cod_agt             = {app.P_COD_AGT}  
+   AND a.mca_poliza_anulada  = ''N''  
+   AND a.num_spto = ( SELECT MAX(a230.num_spto)      
+                        FROM a2000030 a230      
+                       WHERE a230.cod_cia    = a.cod_cia      
+                         AND a230.num_poliza = a.num_poliza )      
+   AND a.cod_cia         = d.cod_cia      
+   AND a.tip_docum       = d.tip_docum      
+   AND a.cod_docum       = d.cod_docum      
+   AND d.COD_ACT_TERCERO = 1      
+   AND a1331.tip_docum   = d.tip_docum      
+   AND a1331.cod_docum   = d.cod_docum      
+   AND c.cod_mon         = a400.cod_mon      
+   AND c.cod_cia         = a.cod_cia      
+   AND c.num_spto       <= a.num_spto      
+   AND c.num_apli        = a.num_apli      
+   AND c.num_poliza      = a.num_poliza      
+   AND c.num_spto_apli   = a.num_spto_apli      
+   AND c.tip_situacion  in (''RE'',''EP'')      
+   AND TRUNC(c.fec_ctable) BETWEEN TO_DATE (''{StartDate:VARCHAR2.8:Required}'',''DDMMYYYY'') AND TO_DATE (''{EndDate:VARCHAR2.8:Required}'',''DDMMYYYY'')      
+ GROUP BY a.cod_cia, a.num_poliza, a.num_poliza_anterior,
+          a.num_poliza_cliente, a.num_poliza_grupo, a.num_contrato,    
+          a.num_subcontrato,    a.fec_efec_poliza,  a.fec_vcto_poliza,    
+          a.num_presupuesto,    a.tip_docum,        a.cod_docum,    
+          1,           a.num_apli,         a.num_spto_apli,    
+          a.cod_ramo,           a.cod_agt,    
+          substr(d.nom_completo, 0, 8) ,    
+          a.tip_gestor,  c.fec_efec_recibo ,    
+          c.tip_situacion,  c.num_recibo,    
+          c.fec_valor,    
+          a.tip_docum || ''-'' || a.cod_docum,    
+          d.nom_completo,    
+          c.fec_efec_recibo ,  c.fec_vcto_recibo ,    
+          DECODE(c.tip_situacion, ''RE'', ''REMESADO'', ''EP'', ''PENDIENTE'') ,    
+          DECODE(c.tip_gestor, ''AG'', ''VENTANILLA'', ''BA'', ''CUENTA'', ''TA'', ''TARJETA'') ,    
+          a1331.tlf_numero,    
+          a1331.tlf_numero_com,    
+          a1331.fax_numero,    
+          a1331.fax_numero_com,    
+          nvl(upper(a1331.email),''***'') ,    
+          nom_domicilio1,    
+          nom_domicilio2,    
+          nom_domicilio3,    
+          a400.cod_mon_iso,    
+          c.tip_gestor    
+ ORDER BY c.fec_efec_recibo;',0,'Custom','General',1,NULL,'Recibos','TRON',0,NULL,NULL,1,0,254,TIMESTAMP'2025-09-30 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (603,'Receipt/Pending/{StartDate}/{EndDate}',1,'GET','Recibos pendientes','Recibos pendientes','SELECT',2,'SELECT a30.cod_cia,
+       a30.num_poliza,   
+       a30.fec_efec_poliza,   
+       a30.fec_vcto_poliza,   
+       a30.tip_gestor,   
+       a301.cod_mon,   
+       a1400.nom_mon,   
+       a1400.cod_mon_iso,   
+       a30.cod_ramo,   
+       a1800.nom_ramo,   
+       a1800.abr_ramo,   
+       v1390.nom_tercero,   
+       v1390.ape1_tercero,   
+       v1390.ape2_tercero,   
+       v1390.nom_completo,   
+       a301.num_recibo,   
+       a301.fec_efec_recibo,   
+       a301.fec_vcto_recibo,   
+       a301.tip_situacion,   
+       a301.fec_situacion,   
+       a301.cod_usr,   
+       a301.fec_actu,   
+       a301.num_bloque_tes,   
+       a301.tip_cobro,   
+       g0031.nom_valor nom_tip_cobro,   
+       a301.cod_agt,   
+       v13902.nom_completo nom_agente,   
+       a301.val_cambio,   
+       SUM(a301.imp_recibo)   imp_recibo,   
+       SUM(a301.imp_neta)   + SUM(imp_recargo)  imp_neta,    
+       SUM(a301.imp_recargo) imp_recargo,   
+       SUM(a301.imp_imptos)   imp_imptos,   
+       SUM(a301.imp_interes) imp_interes   
+  FROM a5020301 a301
+     LEFT JOIN a2000030 a30
+       ON a301.cod_cia       = a30.cod_cia
+      AND a301.num_spto      = a30.num_spto
+      AND a301.num_apli      = a30.num_apli
+      AND a301.num_poliza    = a30.num_poliza
+      AND a301.num_spto_apli = a30.num_spto_apli
+      AND a301.fec_efec_recibo BETWEEN TO_DATE (''{StartDate:VARCHAR2.8:Required}'',''DDMMYYYY'') AND TO_DATE (''{EndDate:VARCHAR2.8:Required}'',''DDMMYYYY'') 
+     LEFT JOIN v1001390 v1390
+       ON v1390.cod_cia         = a30.cod_cia
+      AND v1390.tip_docum       = a30.tip_docum
+      AND v1390.cod_docum       = a30.cod_docum
+      AND v1390.COD_ACT_TERCERO = 1
+     LEFT JOIN v1001390 v13902
+       ON v13902.cod_cia         = a30.cod_cia
+      AND v13902.cod_tercero     = a30.cod_agt
+      AND v13902.COD_ACT_TERCERO = 2
+     LEFT JOIN a1001800 a1800
+       ON a1800.cod_cia  = a30.cod_cia
+      AND a1800.cod_ramo = a30.cod_ramo
+     LEFT JOIN a1000400 a1400
+       ON a301.cod_mon = a1400.cod_mon
+     LEFT JOIN g1010031 g0031
+       ON  a301.tip_cobro  = g0031.cod_valor
+      AND g0031.cod_campo  = ''TIP_COBRO''
+      AND g0031.cod_idioma = ''ES''
+    WHERE a301.cod_cia       = {app.P_COD_CIA}
+      AND a301.cod_agt       = {app.P_COD_AGT}
+      AND a301.fec_situacion BETWEEN TO_DATE (''{StartDate:VARCHAR2.8:Required}'',''DDMMYYYY'') AND TO_DATE (''{EndDate:VARCHAR2.8:Required}'',''DDMMYYYY'') 
+      AND a301.tip_situacion = ''CT''
+      AND a301.tip_cobro NOT IN (6, 7)
+      AND a301.num_mvto      = (SELECT MAX(z.num_mvto)
+                                  FROM  a5020301 z
+                                 WHERE  z.cod_cia    = a301.cod_cia
+                                   AND  z.num_poliza = a301.num_poliza
+                                   AND  z.num_recibo = a301.num_recibo)
+    GROUP BY a30.cod_cia,
+             a30.num_poliza,
+             a30.fec_efec_poliza,
+             a30.fec_vcto_poliza,
+             a30.tip_gestor,
+             a301.cod_mon,
+             a1400.nom_mon,
+             a1400.cod_mon_iso,
+             a30.cod_ramo,
+             a1800.nom_ramo,
+             a1800.abr_ramo,
+             v1390.nom_tercero,
+             v1390.ape1_tercero,
+             v1390.ape2_tercero,
+             v1390.nom_completo,
+             a301.num_recibo,
+             a301.fec_efec_recibo,
+             a301.fec_vcto_recibo,
+             a301.tip_situacion,
+             a301.fec_situacion,
+             a301.cod_usr,
+             a301.fec_actu,
+             a301.num_bloque_tes,
+             a301.tip_cobro,
+             g0031.nom_valor,
+             a301.cod_agt,
+             v13902.nom_completo,
+             a301.val_cambio
+    HAVING SUM(a301.imp_recibo) > 0;',0,'Custom','General',1,NULL,'Recibos','TRON',0,NULL,NULL,1,0,254,TIMESTAMP'2025-09-30 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (15,'RestEndPoints',1,'POST','Recupera el proximo id disponible para la tabla RestEndPoints',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM RestEndPoints',1,'RestEndPoints','Next',1,'Configurador','RestEndPoints','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (16,'RestEndPoints',1,'GET','Recupera todos los registros de la tabla RestEndPoints de forma paginada',NULL,'SELECT',1,'SELECT * FROM (SELECT ID "ID", Path "Path", Sequence "Sequence", Verb "Verb", Summary "Summary", Description "Description", StatementType "StatementType", DataSource "DataSource", Statement "Statement", OneRecord "OneRecord", Source "Source", CompanyID "CompanyID", Alias "Alias", Roles "Roles", AuthorizationRequired "AuthorizationRequired", ControllerName "ControllerName", AppName "AppName", PreCondition "PreCondition", Validations "Validations", RecordStatus "RecordStatus", UpdateUserCode "UpdateUserCode", UpdateDate "UpdateDate", ROW_NUMBER() OVER (ORDER BY ID DESC) RowNumber  FROM RestEndPoints) WHERE RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.2147483647}',0,'RestEndPoints',NULL,1,'Configurador','RestEndPoints','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (17,'RestEndPoints',2,'POST','Crea un registro de RestEndPoints',NULL,'INSERT',1,'INSERT INTO RestEndPoints (ID, Path, Sequence, Verb, Summary, Description, StatementType, DataSource, Statement, OneRecord, Source, CompanyID, Alias, Roles, AuthorizationRequired, ControllerName, AppName, PreCondition, Validations, RecordStatus, UpdateUserCode, UpdateDate) VALUES  ({dependency.Next.NEXTID:NUMBER.9:Required}, {Path:VARCHAR2.512:Required}, {Sequence:NUMBER.2:Required}, {Verb:VARCHAR2.8:Required}, {Summary:VARCHAR2.120}, {Description:VARCHAR2.512}, {StatementType:VARCHAR2.20}, {DataSource:NUMBER.5}, {Statement:VARCHAR2.4000}, {OneRecord:NUMBER.1}, {Source:VARCHAR2.120}, {CompanyID:NUMBER.5}, {Alias:VARCHAR2.512}, {Roles:VARCHAR2.256}, {AuthorizationRequired:NUMBER.1}, {ControllerName:VARCHAR2.52}, {AppName:VARCHAR2.52}, {PreCondition:VARCHAR2.1024}, {Validations:VARCHAR2.4000}, {RecordStatus:NUMBER.5}, {App.UserId}, {Const.Date.Now})',0,'RestEndPoints','Create',1,'Configurador','RestEndPoints','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (12,'RestEndPoints/{id}',1,'PUT','Actualiza un registro de la tabla RestEndPoints/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE RestEndPoints SET Path={Path:VARCHAR2.512:Required}, Sequence={Sequence:NUMBER.2:Required}, Verb={Verb:VARCHAR2.8:Required}, Summary={Summary:VARCHAR2.120}, Description={Description:VARCHAR2.512}, StatementType={StatementType:VARCHAR2.20}, DataSource={DataSource:NUMBER.5}, Statement={Statement:VARCHAR2.4000}, OneRecord={OneRecord:NUMBER.1}, Source={Source:VARCHAR2.120}, CompanyID={CompanyID:NUMBER.5}, Alias={Alias:VARCHAR2.512}, Roles={Roles:VARCHAR2.256}, AuthorizationRequired={AuthorizationRequired:NUMBER.1}, ControllerName={ControllerName:VARCHAR2.52}, AppName={AppName:VARCHAR2.52}, PreCondition={PreCondition:VARCHAR2.1024}, Validations={Validations:VARCHAR2.4000}, RecordStatus={RecordStatus:NUMBER.5}, UpdateUserCode={App.UserId}, UpdateDate={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'RestEndPoints',NULL,1,'Configurador','RestEndPoints','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (14,'RestEndPoints/{id}',1,'DELETE','Elimina un registro de la tabla RestEndPoints por medio de su clave',NULL,'DELETE',1,'DELETE RestEndPoints WHERE ID={ID:NUMBER.9:Required}',0,'RestEndPoints',NULL,1,'Configurador','RestEndPoints','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (13,'RestEndPoints/{id}',1,'GET','Recupera un registro de la tabla RestEndPoints por medio de su clave',NULL,'SELECT',1,'SELECT ID "ID", Path "Path", Sequence "Sequence", Verb "Verb", Summary "Summary", Description "Description", StatementType "StatementType", DataSource "DataSource", Statement "Statement", OneRecord "OneRecord", Source "Source", CompanyID "CompanyID", Alias "Alias", Roles "Roles", AuthorizationRequired "AuthorizationRequired", ControllerName "ControllerName", AppName "AppName", PreCondition "PreCondition", Validations "Validations", RecordStatus "RecordStatus", UpdateUserCode "UpdateUserCode", UpdateDate "UpdateDate" FROM RestEndPoints WHERE ID={ID:NUMBER.9:Required}',1,'RestEndPoints',NULL,1,'Configurador','RestEndPoints','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (390,'Risk',1,'GET','Lista','Lista de procesos. Filtra por número de poliza, comentario, anotación, permite paginación por indice (beginIndex/endIndex).','SELECT',1,'SELECT * FROM (
+SELECT ID, COMPANYID, ORIGINTYPE, LINEOFBUSINESSCODE, PRODUCTCODE, POLICYID, CURRENCY, MODULECODE, PAYMENTFREQUENCY, ISSUEDATE, EFFECTIVEDATE, ENDINGDATE, INSUREDAMOUNT, ANNUALPREMIUM, MONTHLYPREMIUM, SURCHARGE, STATUS, CANCELLATIONDATE, REASONFORSTATUS, CERTIFICATEID, COMMENTS, CUSTOMDATA, UPDATEUSERCODE, UPDATEDATE, REFERENCE, BRANCHOFFICE, EXECUTIVEUSERCODE, ANNOTATION, INSUREDAMOUNTCOMPLEMENT, INSUREDAMOUNTBASE, HASDIGITALSIGNATURE, SUBSIDIARY, MAINPOLICYID, ROW_NUMBER() OVER (ORDER BY ID) RowNumber
+FROM RISK
+WHERE {filter:VARCHAR.100} IS NULL OR (COMMENTS LIKE {filter:VARCHAR.100} OR ANNOTATION LIKE {filter:VARCHAR.100} OR POLICYID LIKE {filter:VARCHAR.100}) )
+WHERE RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.50}',0,'Custom','Risks',0,NULL,'Risk','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (391,'Risk/{id}',1,'GET','Poliza',NULL,'SELECT',1,'SELECT ID, COMPANYID, ORIGINTYPE, LINEOFBUSINESSCODE, PRODUCTCODE, POLICYID, CURRENCY, MODULECODE, PAYMENTFREQUENCY, ISSUEDATE, EFFECTIVEDATE, ENDINGDATE, INSUREDAMOUNT, ANNUALPREMIUM, MONTHLYPREMIUM, SURCHARGE, STATUS, CANCELLATIONDATE, REASONFORSTATUS, CERTIFICATEID, COMMENTS, CUSTOMDATA, UPDATEUSERCODE, UPDATEDATE, REFERENCE, BRANCHOFFICE, EXECUTIVEUSERCODE, ANNOTATION, INSUREDAMOUNTCOMPLEMENT, INSUREDAMOUNTBASE, HASDIGITALSIGNATURE, SUBSIDIARY, MAINPOLICYID 
+  FROM RISK
+ WHERE POLICYID={ID:NUMBER.9:Required}',1,'Custom','Risk',0,NULL,'Risk','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (392,'Risk/{id}',2,'GET','Roles',NULL,'SELECT',1,'SELECT rr.ROLEID, rr.COMPANYID, rr.POLICYID, rr."TYPE", DECODE(rr."TYPE",2,''Asegurado'',90, ''Dependiente'', 100,''Beneficiario'') TYPEDESC, rr.DOCUMENTTYPE, LKDTY.DESCRIPTION DOCUMENTTYPEDesc, rr.DOCUMENTNUMBER, rr.FIRSTNAME, rr.MIDDLENAME, rr.LASTNAME, rr.SECONDLASTNAME, rr.BIRTHDATE, 
+       rr.GENDER, LKGE.DESCRIPTION GenderDesc, rr.CIVILSTATUS, LKCE.DESCRIPTION CIVILSTATUSDesc, rr.HEIGHT, rr.WEIGHT, rr.BLOODPRESSURESYSTOLIC, rr.BLOODPRESSUREDIASTOLIC, rr.OCCUPATION, rr.RETIREMENTMODALITY, rr.RETIREMENTCAUSE, rr.COUNTRYOFNATIONALITY, rr.COUNTRYOFBIRTH, rr.CLIENTTYPE, 
+	   rr.RELATIONSHIP, LKRE.DESCRIPTION RELATIONSHIPDESC, rr.PARTICIPATIONRATE, rr.PRIMARYEMAILADDRESS, rr.TYPEOFADDRESS, 
+	   rr.PROVINCE, LKPV.DESCRIPTION ProvinceDesc, rr.CANTON, LKCT.DESCRIPTION CantonDesc, rr.DISTRICT, LKDT.DESCRIPTION DistrictDesc, rr.ADDRESSDETAIL, rr.PHONETYPE, LKPT.DESCRIPTION PHONETYPEDesc, rr.PHONENUMBER, rr.BANKACCOUNT, rr.INCLUSIONDATE, rr.EXCLUSIONDATE, rr.AGEATINCLUSION, rr.CUSTOMDATA, rr.UPDATEUSERCODE, rr.UPDATEDATE, rr.REFERENCE, rr.SECONDARYPHONETYPE, rr.SECONDARYPHONENUMBER 
+ FROM RISKROLES rr
+  LEFT JOIN LOOKUP LKGE ON LKGE.LOOKUPID = 2101 AND LKGE.LANGUAGE=1 AND LKGE.CODE = rr.Gender
+  LEFT JOIN LOOKUP LKPV ON LKPV.LOOKUPID = 1001 AND LKPV.LANGUAGE=1 AND LKPV.CODE = rr.Province
+  LEFT JOIN LOOKUP LKCT ON LKCT.LOOKUPID = 1002 AND LKCT.LANGUAGE=1 AND LKCT.CODE = rr.Canton
+  LEFT JOIN LOOKUP LKDT ON LKDT.LOOKUPID = 1003 AND LKDT.LANGUAGE=1 AND LKDT.CODE = rr.District
+  LEFT JOIN LOOKUP LKRE ON LKRE.LOOKUPID = 2108 AND LKRE.LANGUAGE=1 AND LKRE.CODE = rr.RELATIONSHIP
+  LEFT JOIN LOOKUP LKCE ON LKCE.LOOKUPID = 2103 AND LKCE.LANGUAGE=1 AND LKCE.CODE = rr.CIVILSTATUS
+  LEFT JOIN LOOKUP LKDTY ON LKDTY.LOOKUPID = 2100 AND LKDTY.LANGUAGE=1 AND LKDTY.CODE = rr.DOCUMENTTYPE  
+  LEFT JOIN LOOKUP LKPT ON LKPT.LOOKUPID = 2109 AND LKPT.LANGUAGE=1 AND LKPT.CODE = rr.PHONETYPE
+ WHERE POLICYID={dependency:Tree.Risk.ID:NUMBER.9:Required}
+ ORDER BY rr."TYPE"',0,'Risk','Roles',0,NULL,'Risk','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (6,'Settings',1,'POST','Recupera el proximo id disponible para la tabla Settings',NULL,'SELECT',1,'SELECT NVL(MAX(ID),0)+1 AS NextId FROM Settings',1,'Settings','Next',1,'Configurador','Settings','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (10,'Settings',1,'GET','Recupera todos los registros de la tabla Settings de forma paginada',NULL,'SELECT',1,'SELECT * FROM (SELECT ID "ID", Key "Key", Value "Value", CompanyID "CompanyID", RecordStatus "RecordStatus", UpdateUserCode "UpdateUserCode", UpdateDate "UpdateDate", ROW_NUMBER() OVER (ORDER BY ID DESC) RowNumber  FROM Settings) WHERE RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.2147483647}',0,'Settings',NULL,1,'Configurador','Settings','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (7,'Settings',2,'POST','Crea un registro de Settings',NULL,'INSERT',1,'INSERT INTO Settings (ID, Key, Value, CompanyID, RecordStatus, UpdateUserCode, UpdateDate) VALUES  ({dependency.Next.NEXTID:NUMBER.9:Required}, {Key:VARCHAR2.80:Required}, {Value:VARCHAR2.80:Required}, {CompanyID:NUMBER.5}, {RecordStatus:NUMBER.5}, {App.UserId}, {Const.Date.Now})',0,'Settings','Create',1,'Configurador','Settings','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (8,'Settings/{id}',1,'PUT','Actualiza un registro de la tabla Settings/{id} por medio de su clave',NULL,'UPDATE',1,'UPDATE Settings SET Key={Key:VARCHAR2.80:Required}, Value={Value:VARCHAR2.80:Required}, CompanyID={CompanyID:NUMBER.5}, RecordStatus={RecordStatus:NUMBER.5}, UpdateUserCode={App.UserId}, UpdateDate={Const.Date.Now} WHERE ID={ID:NUMBER.9:Required}',0,'Settings',NULL,1,'Configurador','Settings','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (9,'Settings/{id}',1,'GET','Recupera un registro de la tabla Settings por medio de su clave',NULL,'SELECT',1,'SELECT ID "ID", Key "Key", Value "Value", CompanyID "CompanyID", RecordStatus "RecordStatus", UpdateUserCode "UpdateUserCode", UpdateDate "UpdateDate" FROM Settings WHERE ID={ID:NUMBER.9:Required}',1,'Settings',NULL,1,'Configurador','Settings','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (11,'Settings/{id}',1,'DELETE','Elimina un registro de la tabla Settings por medio de su clave',NULL,'DELETE',1,'DELETE Settings WHERE ID={ID:NUMBER.9:Required}',0,'Settings',NULL,1,'Configurador','Settings','DataApiBuilder',0,NULL,NULL,1,0,1821,TIMESTAMP'2023-07-14 11:18:06',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (300,'Siniestro',1,'GET','Lista','Lista de siniestros. Filtra por siniestro, póliza, nombre or apellidos del tomando, permite paginación por indice (beginIndex/endIndex).','SELECT',2,'SELECT a900.*, em_f_nom_riesgo_web (a900.cod_cia, a900.num_poliza, a900.num_spto, a900.num_riesgo) nom_riesgo, G31A.NOM_VALOR NOM_TIP_EST_SINI, G200.NOM_CAUSA, a1800.NOM_RAMO, 
+ A1399A.NOM_TERCERO NOM_ASEG,  A1399A.APE1_TERCERO APE_ASEG, A1331.EMAIL EMAIL_ASEG, G31B.NOM_VALOR NOM_TIP_RELACION
+FROM (
+SELECT a900.NUM_SINI,a900.COD_CIA, a900.TIP_EST_SINI, a900.COD_AGT, a900.num_spto, a900.FEC_DENU_SINI, a900.HORA_DENU_SINI, a900.FEC_SINI, a900.HORA_SINI, a900.COD_CAUSA_SINI,  a900.FEC_TERM_SINI, a900.FEC_REAP_SINI, a900.MCA_CULPABLE,a900.TIP_APERTURA,
+       a900.COD_RAMO,  a900.NUM_POLIZA, a900.NUM_RIESGO,       
+       a900.TIP_DOCUM_TOMADOR, a900.COD_DOCUM_TOMADOR,
+       a900.TIP_DOCUM_ASEG, a900.COD_DOCUM_ASEG,
+       a900.TIP_DOCUM_CONTACTO, a900.COD_DOCUM_CONTACTO, a900.NOM_CONTACTO, a900.APE_CONTACTO, a900.TEL_PAIS_CONTACTO, a900.TEL_ZONA_CONTACTO, a900.TEL_NUMERO_CONTACTO, a900.EMAIL_CONTACTO, a900.TIP_RELACION,
+       A1399T.NOM_TERCERO NOM_TOMADOR,  A1399T.APE1_TERCERO APE_TOMADOR
+       , ROW_NUMBER() OVER (ORDER BY a900.NUM_SINI DESC) RowNumber  
+  FROM a7000900 a900
+  LEFT JOIN A1001399 A1399T ON A1399T.COD_CIA=a900.COD_CIA AND A1399T.TIP_DOCUM = a900.TIP_DOCUM_TOMADOR AND  A1399T.COD_DOCUM = a900.COD_DOCUM_TOMADOR
+  WHERE a900.COD_CIA=1 AND ({filter:VARCHAR.100} IS NULL OR (a900.NUM_SINI LIKE {filter:VARCHAR.100} OR a900.NUM_POLIZA LIKE {filter:VARCHAR.100} OR A1399T.NOM_TERCERO LIKE {filter:VARCHAR.100} OR A1399T.APE1_TERCERO LIKE {filter:VARCHAR.100}))    ) a900
+  LEFT JOIN G1010031 G31A ON G31A.COD_CAMPO =''TIP_EST_SINI'' AND G31A.COD_VALOR = a900.TIP_EST_SINI AND G31A.COD_IDIOMA=''ES''
+  LEFT JOIN G1010031 G31B ON G31B.COD_CAMPO =''TIP_RELACION'' AND G31B.COD_VALOR = a900.TIP_RELACION AND G31B.COD_IDIOMA=''ES''  
+  LEFT JOIN A1001399 A1399A ON A1399A.COD_CIA=a900.COD_CIA AND A1399A.TIP_DOCUM = a900.TIP_DOCUM_ASEG AND  A1399A.COD_DOCUM = a900.COD_DOCUM_ASEG
+  LEFT JOIN A1001331 A1331 ON A1331.COD_CIA=a900.COD_CIA AND A1331.TIP_DOCUM = a900.TIP_DOCUM_ASEG AND  A1331.COD_DOCUM = a900.COD_DOCUM_ASEG  
+  LEFT JOIN a1001800 a1800 ON a1800.COD_CIA=a900.COD_CIA AND a1800.COD_RAMO = a900.COD_RAMO
+  LEFT JOIN G7000200 G200 ON G200.COD_CIA = a900.COD_CIA AND G200.TIP_CAUSA = 1 AND G200.COD_CAUSA = a900.COD_CAUSA_SINI  
+ WHERE a900.RowNumber BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.50}',0,'Custom','Siniestros',0,NULL,'Siniestro','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (450,'Siniestro/Apertura',1,'POST','Apertura automatica de los siniestros de PURDY',NULL,'PROCEDURE',2,'ts_p_apertura_purdy_mcr {num_poliza:VARCHAR2.13:Required} {fec_sini:DATE.0:Required} {fec_denu_sini:DATE.0:Required} {cod_causa:NUMBER.4:Required} {cod_consecuencia:NUMBER.5:Required} {txt_relato:VARCHAR2.2000:Required} {obs_relato:VARCHAR2.100:Required} {des_danos:VARCHAR2.2000:Required} {cod_usr:VARCHAR2.8:Required} {txt_error:VARCHAR2.200:direction.Output} {num_sini:NUMBER.15:direction.Output}',1,'Custom','Siniestro',0,NULL,'Siniestros','Siniestros',0,NULL,NULL,1,0,1821,TIMESTAMP'2024-04-30 10:42:33',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (301,'Siniestro/{id}',1,'GET','Siniestro',NULL,'SELECT',2,'SELECT  NUM_SINI, COD_SECTOR, COD_RAMO, COD_MODALIDAD, COD_MON, NUM_POLIZA_GRUPO, NUM_POLIZA, NUM_SPTO, NUM_APLI, NUM_SPTO_APLI, NUM_RIESGO, NUM_PERIODO, NUM_SINI_GRUPO, TIP_COASEGURO, COD_AGT, COD_NIVEL1, COD_NIVEL2, COD_NIVEL3, TIP_DOCUM_ASEG, COD_DOCUM_ASEG, TIP_DOCUM_TOMADOR, COD_DOCUM_TOMADOR, MCA_PROVISIONAL, FEC_AUTORIZACION, MCA_EXCLUSIVO, COD_SUPERVISOR, COD_NIVEL1_CAPTURA, COD_NIVEL2_CAPTURA, COD_NIVEL3_CAPTURA, TIP_EST_SINI, FEC_TERM_SINI, FEC_REAP_SINI, FEC_MODI_SINI, FEC_PROC_SINI, FEC_SINI, HORA_SINI, FEC_DENU_SINI, COD_CAUSA_SINI, COD_EVENTO, NOM_CONTACTO, APE_CONTACTO, TEL_PAIS_CONTACTO, TEL_ZONA_CONTACTO, TEL_NUMERO_CONTACTO, NUM_SPTO_RIESGO, MCA_CULPABLE, NUM_SINI_REF, TIP_APERTURA, TIP_DOCUM_CONTACTO, COD_DOCUM_CONTACTO, TIP_RELACION, EMAIL_CONTACTO, NUM_POLIZA_CLIENTE, NUM_CONTRATO, HORA_DENU_SINI, COD_USR_EXCLUSIVO, TIP_POLIZA_STRO, IMP_VAL_INI_SINI, MCA_APER_NWT, COD_USR, FEC_ACTU
+  FROM A7000900
+ WHERE COD_CIA=1 AND NUM_SINI={ID:NUMBER.15:Required}',1,'Siniestro','Siniestro',0,NULL,'Siniestro','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (302,'Siniestro/{id}',2,'GET','Expedientes',NULL,'SELECT',2,'SELECT NUM_EXP, TIP_EXP, TIP_EST_EXP, COD_SECTOR, COD_RAMO, MCA_EXP_RECOBRO, MCA_RECOBRO, TIP_EST_RECOBRO, NUM_EXP_AFEC, TIP_EXP_AFEC, TIP_EST_AFEC, MCA_JUICIO, TIP_EST_JUICIO, FEC_APER_EXP, FEC_TERM_EXP, FEC_MODI_EXP, FEC_REAP_EXP, FEC_ULT_LIQ, MCA_PROVISIONAL, FEC_AUTORIZACION, TIP_DOCUM, COD_DOCUM, NOMBRE, APELLIDOS, COD_MON, IMP_VAL_INICIAL, MCA_RVA_MANUAL, IMP_VAL, IMP_LIQ, IMP_PAG, IMP_VAL_NETO, IMP_LIQ_NETO, IMP_PAG_NETO, PCT_COA, IMP_RVA_3112, FEC_RVA_3112, COD_SUPERVISOR, COD_TRAMITADOR, MCA_CALCULA_RVA, COD_NIVEL1, COD_NIVEL2, COD_NIVEL3, TIP_APERTURA, FEC_DENU_EXP, FEC_AVISO_EXP, MCA_APER_NWT, COD_USR, FEC_ACTU
+  FROM A7001000
+ WHERE COD_CIA=1 AND NUM_SINI={ID:NUMBER.15:Required} ORDER BY NUM_EXP',0,'Siniestro','Expedientes',0,NULL,'Siniestro','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("expedientes"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (303,'Siniestro/{id}',3,'GET','Relato',NULL,'SELECT',2,'SELECT TXT_RELATO, OBS_RELATO, DES_DANOS, COD_USR, FEC_ACTU
+FROM A7000971
+WHERE COD_CIA=1 AND NUM_SINI={ID:NUMBER.15:Required}',1,'Siniestro','Relato',0,NULL,'Siniestro','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("relato"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (304,'Siniestro/{id}',4,'GET','Liquidacion',NULL,'SELECT',2,'SELECT NUM_EXP, NUM_LIQ, COD_ACT_TERCERO, NUM_ORD_PAGO, COD_SECTOR, COD_RAMO, TIP_DOCUM, COD_DOCUM, COD_TERCERO, IMP_LIQ, IMP_LIQ_NETO, TIP_PAG_COA, IMP_IVA, COD_MON_LIQ, COD_MON_PAGO, VAL_CAMBIO, FEC_LIQ, FEC_EST_PAGO, FEC_PAGO, FEC_ANU_LIQ, COD_NIVEL3_PAGO, NUM_BLOQUE_TES, COD_AUTORIZA, MCA_PROVISIONAL, FEC_AUTORIZACION, OBS, VAL_CAMBIO_PAGO, TIP_BENEF, MCA_RECHAZADA, COD_NIVEL3_ENVIO, TIP_DOCTO, NUM_FRA, FEC_FRA, COD_ACT_EMI, TIP_DOCUM_EMI, COD_DOCUM_EMI, IMP_LIQ_FRA, IMP_LIQ_FRA_NETO, IMP_IVA_FRA, COD_MON_FRA, NUM_LIQ_REF, TIP_LIQUIDACION, TIP_APERTURA, FEC_RECEP_FRA, COD_TERCERO_EMI, COD_USR, FEC_ACTU
+  FROM A3001700
+ WHERE COD_CIA=1 AND NUM_SINI={ID:NUMBER.15:Required} ORDER BY NUM_EXP',0,'Siniestro','Liquidacion',0,NULL,'Siniestro','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("liquidacion"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (305,'Siniestro/{id}',5,'GET','DesgloseLiquidacion',NULL,'SELECT',2,'SELECT NUM_EXP, NUM_LIQ, COD_CIA_COA, COD_COB, COD_CTO_RVA, COD_CTO_COB_PAG, IMP_LIQ, IMP_IVA, TIP_LIQ, MCA_ANULA, MCA_IVA_SINI, TIP_IVA, COD_IMPTO, PCT_IMPTO, TIP_IMPTO, IMP_LIQ_FRA, IMP_IVA_FRA, COD_USR, FEC_ACTU
+FROM A3001800
+WHERE COD_CIA=1 AND NUM_SINI ={ID:NUMBER.15:Required} ORDER BY NUM_EXP',0,'Siniestro','DesgloseLiquidacion',0,NULL,'Siniestro','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("desgloseliquidacion"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (306,'Siniestro/{id}',6,'GET','ControlesTecnicos',NULL,'SELECT',2,'SELECT a200.NUM_EXP, a200.NUM_LIQ, a200.COD_SISTEMA, a200.COD_NIVEL_SALTO, a200.COD_EST, a200.COD_ERROR, a211.NOM_ERROR, a200.MCA_AUTORIZACION, a200.OBS_AUTORIZACION, a200.COD_USR_AUTORIZACION, a200.FEC_AUTORIZACION, a200.NUM_SECU, a200.COD_SIST_AUT, a200.OBS_ERROR, a200.COD_USR, a200.FEC_ACTU
+FROM A2000220 a200
+LEFT JOIN g2000211 a211 ON a211.cod_cia = a200.cod_cia AND a211.cod_error = a200.cod_error AND a211.cod_idioma = ''ES'' 
+WHERE a200.COD_CIA=1 AND a200.NUM_SINI={ID:NUMBER.15:Required} ORDER BY NUM_EXP',0,'Siniestro','ControlesTecnicos',0,NULL,'Siniestro','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("controlestecnicos"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (307,'Siniestro/{id}',7,'GET','MovimientosEconomicos',NULL,'SELECT',2,'SELECT NUM_EXP, TIP_MVTO, SUB_TIP_MVTO, COD_RAMO, COD_MODALIDAD, COD_CIA_COA, COD_COB, COD_CTO_RVA, TIP_EST_COB, NUM_MVTO, FEC_MVTO, IMP_VAL, IMP_MVTO_VAL, IMP_LIQ, IMP_MVTO_LIQ, IMP_PAG, IMP_MVTO_PAG, COD_MON, NUM_LIQ, MCA_PROVISIONAL, COD_USR, FEC_ACTU
+FROM H7001200
+WHERE COD_CIA=1 AND NUM_SINI={ID:NUMBER.15:Required} ORDER BY NUM_EXP',0,'Siniestro','MovimientosEconomicos',0,NULL,'Siniestro','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("movimientoseconomicos"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (308,'Siniestro/{id}',7,'GET','PlanTramitacion',NULL,'SELECT',2,'SELECT a75.NUM_SINI, a75.NUM_EXP, a75.COD_PLAN, g75.NOM_PLAN, a75.COD_NIVEL, g7510.NOM_NIVEL, a75.COD_TRAMITE, g7520.NOM_TRAMITE, a75.TIP_TRAMITE, g31a.NOM_VALOR NOM_TIP_TRAMITE
+     , a75.TIP_EST_TRAMITE, g31c.NOM_VALOR NOM_TIP_EST_TRAMITE, a75.OBS_TRAMITE, a75.COD_TEXTO, a75.FEC_INICIO, a75.FEC_FIN
+     , a75.COD_TRAMITADOR
+     , a75.COD_PGM, a75.NUM_SECU, a75.SUB_TIP_TRAMITE, g31a.NOM_VALOR NOM_SUB_TIP_TRAMITE, a75.NUM_INSP, a75.NUM_LIQ, a75.MCA_PRIVADO, a75.OBS_FINALIZACION, a75.REF_COD_TEXTO, a75.COD_REF1, a75.COD_REF2, a75.COD_EST, a75.NUM_JUICIO, a75.COD_INVENTARIO, a75.NUM_FACTURA, a75.COD_PRM, a75.NUM_PRM, a75.NUM_ORDEN_REPARACION, a75.MCA_OPER_NWT, a75.COD_FRD_IDN_VAL, a75.COD_ICC_VAL, a75.COD_USR, a75.FEC_ACTU     
+  FROM A7500000 a75
+  LEFT JOIN G7500000 g75 ON g75.COD_CIA=a75.COD_CIA AND g75.COD_PLAN =a75.COD_PLAN
+  LEFT JOIN G7500010 g7510 ON g7510.COD_CIA=a75.COD_CIA AND g7510.COD_NIVEL =a75.COD_NIVEL
+  LEFT JOIN G7500020 g7520 ON g7520.COD_CIA=a75.COD_CIA AND g7520.COD_TRAMITE =a75.COD_TRAMITE
+  LEFT JOIN G1010031 g31a ON g31a.COD_CIA=a75.COD_CIA AND g31a.COD_CAMPO=''TIP_TRAMITE'' AND g31a.COD_VALOR=a75.TIP_TRAMITE AND g31a.COD_IDIOMA=''ES''
+  LEFT JOIN G1010031 g31b ON g31b.COD_CIA=a75.COD_CIA AND g31b.COD_CAMPO=''SUB_TIP_TRAMITE'' AND g31b.COD_VALOR=a75.SUB_TIP_TRAMITE AND g31b.COD_IDIOMA=''ES''
+  LEFT JOIN G1010031 g31c ON g31c.COD_CIA=a75.COD_CIA AND g31c.COD_CAMPO=''TIP_ESTADO_TRAMITE'' AND g31c.COD_VALOR=a75.TIP_EST_TRAMITE AND g31c.COD_IDIOMA=''ES''
+ WHERE a75.COD_CIA=1 AND a75.NUM_SINI={ID:NUMBER.15:Required}
+ ORDER BY a75.NUM_EXP, a75.COD_NIVEL, a75.COD_PLAN',0,'Siniestro','PlanTramitacion',0,NULL,'Siniestro','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("plantramitacion"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (330,'Tercero',1,'GET','Lista','Lista de terceros. Filtra por número de documento, nombre or apellidos del tercero, permite paginación por indice (beginIndex/endIndex).','SELECT',2,'SELECT * FROM (
+SELECT TIP_DOCUM, COD_DOCUM, MCA_FISICO, APE1_TERCERO, APE2_TERCERO, NOM_TERCERO, COD_SOC_GL, TLF_MOVIL, NOM_ALIAS, NOM2_TERCERO, TIP_SUFIJO_NOMBRE, TIP_PREFIJO_NOMBRE, IDN_THP_VAL, MCA_PERS_EXP_POLITICA, FEC_EMISION_DOCUM, FEC_CADUCIDAD_DOCUM, COD_PAIS_DOCUM, MCA_DOCUM_COMPROBADO, FEC_DOCUM_COMPROBADO, OBS_METODO_COMPROBADO, COD_VERIFICADOR_DOCUM, COD_REG_FISCAL, MCA_CUENTA_PROPIA, COD_USR, FEC_ACTU, ROW_NUMBER() OVER (ORDER BY TIP_DOCUM, COD_DOCUM) RowNumber
+FROM A1001399
+WHERE {filter:VARCHAR.100} IS NULL OR (COD_DOCUM = {filter:VARCHAR.100} OR NOM_TERCERO LIKE {filter:VARCHAR.100} OR APE1_TERCERO LIKE {filter:VARCHAR.100}) )
+WHERE RowNumber  BETWEEN {beginIndex:number.9:default.1} AND {endIndex:number.9:default.50}',0,'Custom',NULL,0,NULL,'Tercero','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (335,'Tercero/Telefono/{sid}',1,'GET','Tercero',NULL,'SELECT',2,'SELECT TRIM(INITCAP(TRIM(A99.NOM_TERCERO)) || '' '' ||  INITCAP(TRIM(A99.NOM2_TERCERO))) || '' '' || TRIM(INITCAP(TRIM(A99.APE1_TERCERO)) || '' '' || INITCAP(TRIM(A99.APE2_TERCERO))) NOMBRECOMPLETO, 
+       INITCAP(TRIM(A99.NOM_TERCERO)) || '' '' || INITCAP(TRIM(A99.APE1_TERCERO)) NOMBRECORTO, 
+       A31.TIP_DOCUM, A31.COD_DOCUM, INITCAP(TRIM(A99.NOM_TERCERO)) NOM_TERCERO, INITCAP(TRIM(A99.NOM2_TERCERO)) NOM2_TERCERO, INITCAP(TRIM(A99.APE1_TERCERO)) APE1_TERCERO, INITCAP(TRIM(A99.APE2_TERCERO)) APE2_TERCERO,   A99.TLF_MOVIL,  A31.TLF_NUMERO, A31.TLF_MOVIL
+  FROM A1001331 A31
+  JOIN A1001399 A99 ON  A99.COD_CIA =A31.COD_CIA  AND A99.TIP_DOCUM = A31.TIP_DOCUM AND A99.COD_DOCUM = A31.COD_DOCUM 
+ WHERE A31.COD_CIA=1 AND (A99.TLF_MOVIL={SID:VARCHAR.20:Required} OR A31.TLF_NUMERO={SID:VARCHAR.20:Required} OR A31.TLF_MOVIL={SID:VARCHAR.20:Required})
+ FETCH FIRST 1 ROWS ONLY
+',1,'Custom','Fijo',0,NULL,'Tercero','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (331,'Tercero/{id}',1,'GET','Fijo',NULL,'SELECT',2,'SELECT TRIM(INITCAP(TRIM(A99.NOM_TERCERO)) || '' '' ||  INITCAP(TRIM(A99.NOM2_TERCERO))) || '' '' || TRIM(INITCAP(TRIM(A99.APE1_TERCERO)) || '' '' || INITCAP(TRIM(A99.APE2_TERCERO))) NOMBRECOMPLETO, 
+       INITCAP(TRIM(A99.NOM_TERCERO)) || '' '' || INITCAP(TRIM(A99.APE1_TERCERO)) NOMBRECORTO, A99.TIP_DOCUM, A99.COD_DOCUM, A99.MCA_FISICO, A99.APE1_TERCERO, A99.APE2_TERCERO, A99.NOM_TERCERO, A99.COD_SOC_GL, A99.TLF_MOVIL, A99.NOM_ALIAS, A99.NOM2_TERCERO, A99.TIP_SUFIJO_NOMBRE, A99.TIP_PREFIJO_NOMBRE, A99.IDN_THP_VAL, A99.MCA_PERS_EXP_POLITICA, A99.FEC_EMISION_DOCUM, A99.FEC_CADUCIDAD_DOCUM, A99.COD_PAIS_DOCUM, A99.MCA_DOCUM_COMPROBADO, A99.FEC_DOCUM_COMPROBADO, A99.OBS_METODO_COMPROBADO, A99.COD_VERIFICADOR_DOCUM, A99.COD_REG_FISCAL, A99.MCA_CUENTA_PROPIA, A99.COD_USR, A99.FEC_ACTU
+FROM A1001399 A99
+WHERE A99.COD_CIA=1 AND A99.COD_DOCUM={ID:VARCHAR.20:Required}',1,'Custom','Fijo',0,NULL,'Tercero','TRON',0,NULL,NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (332,'Tercero/{id}',2,'GET','General',NULL,'SELECT',2,'SELECT TIP_DOCUM, COD_DOCUM, COD_ACT_TERCERO, TIP_NACIONALIDAD, COD_NACIONALIDAD, TIP_DOMICILIO, NOM_DOMICILIO1, NOM_DOMICILIO2, NOM_DOMICILIO3, NOM_LOCALIDAD, COD_PAIS, COD_PROV, COD_POSTAL, NUM_APARTADO, TLF_PAIS, TLF_ZONA, TLF_NUMERO, FAX_NUMERO, EMAIL, TIP_DOMICILIO_COM, NOM_DOMICILIO1_COM, NOM_DOMICILIO2_COM, NOM_DOMICILIO3_COM, NOM_LOCALIDAD_COM, COD_PAIS_COM, COD_PROV_COM, COD_POSTAL_COM, TLF_PAIS_COM, TLF_ZONA_COM, TLF_NUMERO_COM, FAX_NUMERO_COM, EMAIL_COM, TXT_ETIQUETA1, TXT_ETIQUETA2, TXT_ETIQUETA3, TXT_ETIQUETA4, TXT_ETIQUETA5, NOM_CONTACTO, TIP_CARGO, TIP_ACT_ECONOMICA, COD_ENTIDAD, COD_OFICINA, CTA_CTE, CTA_DC, FEC_NACIMIENTO, FEC_CARNET_CON, COD_OCUPACION, COD_EST_CIVIL, COD_PROFESION, MCA_SEXO, COD_CALIDAD, COD_IDIOMA, OBS_ASEGURADO, COD_GRP_TERCERO, TXT_AUX1, TXT_AUX2, TXT_AUX3, TXT_AUX4, TXT_AUX5, TXT_AUX6, TXT_AUX7, TXT_AUX8, TXT_AUX9, COD_USR, FEC_ACTU, TLF_MOVIL, NUM_BUSCA, TIP_ETIQUETA, COD_ESTADO, COD_ESTADO_COM, TXT_EMAIL, NUM_APARTADO_COM, COD_PAIS_ETIQUETA, COD_ESTADO_ETIQUETA, COD_PROV_ETIQUETA, COD_POSTAL_ETIQUETA, NUM_APARTADO_ETIQUETA, COD_LOCALIDAD, TIP_TARJETA, COD_TARJETA, NUM_TARJETA, COD_LOCALIDAD_COM, COD_LOCALIDAD_ETIQUETA, NOM_LOCALIDAD_ETIQUETA, FEC_VCTO_TARJETA, COD_COMPENSACION, COD_CLASE_BENEF, COD_CAUSA_INH_TRC, MCA_INH, NUM_CARNET_CON, COD_SITU_CARNET_CON, ATR_DOMICILIO1, ATR_DOMICILIO2, ATR_DOMICILIO3, ATR_DOMICILIO4, ATR_DOMICILIO5, ANX_DOMICILIO, EXT_COD_POSTAL, TLF_EXTENSION, NOM_EMPRESA_COM, ATR_DOMICILIO1_COM, ATR_DOMICILIO2_COM, ATR_DOMICILIO3_COM, ATR_DOMICILIO4_COM, ATR_DOMICILIO5_COM, ANX_DOMICILIO_COM, EXT_COD_POSTAL_COM, TLF_EXTENSION_COM, EXT_COD_POSTAL_ETIQUETA, COD_EXP_CARNET_CON, NOM_TITULAR_CTA, APELLIDO_CONTACTO, TIP_DOCUM_CONTACTO, COD_DOCUM_CONTACTO, COD_NACIONALIDAD_CONTACTO, NUM_HIJOS, TIP_RATING, TXT_LONGITUD, TXT_LATITUD, COD_NIVEL3_REF, FEC_ALTA, FEC_EMI_DOCUM, FEC_CADUC_DOCUM, COD_EXP_DOCUM, MCA_ROBINSON, VAL_ZON_EXP_LIC_CON, COD_TIP_SOC, TIP_DOCUM_REPRESENTANTE_LEGAL, COD_DOCUM_REPRESENTANTE_LEGAL, COD_GRP_EMPRESARIAL, COD_ESTUDIOS, COD_TITULACION, FEC_FALLECIMIENTO, COD_ZONA_HORARIA, MCA_VIP, NUM_EMPLEADOS, IMP_FACTURACION, PCT_DISCAPACIDAD, MCA_PLAN_FIDELIZACION, NUM_PTO_PLAN_FIDELIZACION, MCA_DOMICILIO_COMPROBADO, MCA_DOMICILIO_COM_COMPROBADO, MCA_DOMICILIO_ETIQ_COMPROBADO, TXT_LATITUD_DOMICILIO_COM, TXT_LONGITUD_DOMICILIO_COM, TXT_LATITUD_DOMICILIO_ETIQUETA, TXT_LONGITUD_DOMICILIO_ETIQUET, MCA_TLF_NUMERO_COMPROBADO, MCA_FAX_NUMERO_COMPROBADO, MCA_EMAIL_COMPROBADO, MCA_TLF_NUMERO_COM_COMPROBADO, MCA_FAX_NUMERO_COM_COMPROBADO, MCA_EMAIL_COM_COMPROBADO, MCA_TLF_MOVIL_COMPROBADO, MCA_BUSCA_COMPROBADO, MCA_TXT_EMAIL_COMPROBADO, COD_ACT_ECONOMICA, COD_PAIS_NACIMIENTO, COD_ESTADO_NACIMIENTO, COD_PROV_NACIMIENTO, COD_LOCALIDAD_NACIMIENTO, TXT_FOLIO_REGISTRAL, COD_CATEGORIA_CLIENTE, NUM_DIA_PAGO, FEC_CONSTITUCION, COD_MON_INGRESO_MENSUAL, MCA_PRIMAS_MAYOR_LIM, TXT_APELLIDO_CASADO, FEC_DESDE_RESIDENCIA_PAIS, NOM_EMPRESA_TRABAJO, IMP_INGRESO_MENSUAL, MCA_OBL_FISCAL_OTROS_PAISES, COD_PERFIL_FINAN_ACT_PPAL, COD_PERFIL_FINAN_OTRAS_ACT, TXT_AVISO_OPERACIONES 
+  FROM A1001331
+ WHERE COD_CIA=1 AND COD_DOCUM={ID:VARCHAR.20:Required}',1,'Custom','General',0,NULL,'Tercero','TRON',0,'parameters.ContainsKey("include") && ( (string)parameters["include"]=="*" || ((string)parameters["include"]).ToLower().Contains("general"))',NULL,1,0,6329,TIMESTAMP'2024-06-21 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (777,'Users',1,'GET','Usuarios',NULL,'SELECT',1,'SELECT u.USERID, C.DESCRIPTION Tenant, u.USERNAME, u.IDENTIFICATIONTYPE, u.IDENTIFICATION, u.FIRSTNAME || '' '' || u.LASTNAME FULLNAME, u.LOGINDATE, u.EMAIL, u.PHONENUMBER, u.BIRTHDATE, E.DESCRIPTION RECORDSTATUS
+  FROM USERMEMBER u
+  LEFT JOIN LOOKUP C ON C.LOOKUPID=4 AND C.LANGUAGE=1 AND C.CODE = u.COMPANYID
+  LEFT JOIN LOOKUP E ON E.LOOKUPID=1 AND E.LANGUAGE=1 AND E.CODE = u.RECORDSTATUS
+ WHERE ({filter:VARCHAR.100} IS NULL OR LOWER(u.FIRSTNAME) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(u.LASTNAME) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(u.EMAIL) LIKE aliados.StringFilter({filter:VARCHAR.100}) OR LOWER(FIRSTNAME || '' '' || LASTNAME) LIKE aliados.StringFilter({filter:VARCHAR.100}))
+   AND ( {tenant:VARCHAR.100} IS NULL OR LOWER(C.DESCRIPTION) = LOWER({tenant:VARCHAR.100}))
+ ORDER BY u.FIRSTNAME, u.LASTNAME
+OFFSET {beginIndex:number.9:default.1}-1 ROWS FETCH NEXT ({endIndex:number.9:default.50}-{beginIndex:number.9:default.1}+1) ROWS ONLY',0,'Custom','Users',0,NULL,'Soporte','Aliados',0,NULL,NULL,1,0,6329,TIMESTAMP'2025-11-14 00:00:00',NULL,NULL);
+INSERT INTO RESTENDPOINTS (ID,"PATH","SEQUENCE",VERB,SUMMARY,DESCRIPTION,STATEMENTTYPE,DATASOURCE,"STATEMENT",ONERECORD,"SOURCE",ALIAS,AUTHORIZATIONREQUIRED,ROLES,CONTROLLERNAME,APPNAME,TRACED,PRECONDITION,VALIDATIONS,RECORDSTATUS,COMPANYID,UPDATEUSERCODE,UPDATEDATE,PRECALL,POSTCALL) VALUES (46,'XElectronicWarranty/Guarantee',2,'GET','Recupera una garantía electrónica por medio de número de garantía',NULL,'SELECT',1,'SELECT Guarantee_sequencenumber "Guarantee_sequencenumber", Guarantee_amount "Guarantee_amount", Moneda "Moneda",  Valid_period_date "Valid_period_date", DECODE(Tipo_de_modification, ''01'',''Ampliaci?n de plazo'',''02'',''Ampliaci?n de monto'',''03'',''Pr?rroga de plazo y monto'') "Tipo_de_modificationDesc", UpdateDate "UpdateDate"
+FROM ElectronicWarranty P WHERE Guarantee_number={code:VARCHAR2.14:Required} ORDER BY Guarantee_sequencenumber DESC',0,'ElectronicWarranty','History',0,NULL,NULL,NULL,0,NULL,NULL,1,0,6329,TIMESTAMP'2024-05-13 00:00:00',NULL,NULL);

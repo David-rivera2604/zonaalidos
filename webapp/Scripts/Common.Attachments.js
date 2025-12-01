@@ -345,7 +345,7 @@ app.Attachments = (function () {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + current);
                         }
                         else {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                         }
                     }
                 }).done(function (fileList) {
@@ -380,6 +380,12 @@ app.Attachments = (function () {
                 message = message & ', ';
             }
             message = message + 'El tamaño del archivo ' + name + 'es mayor a 30mb';
+        }
+        if (name.length > 255) {
+            if (message != '') {
+                message = message & ', ';
+            }
+            message = message + 'El nombre del archivo debe ser menor a 255 caracteres';
         }
         return message
     }
@@ -425,7 +431,7 @@ app.Attachments = (function () {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + current);
                         }
                         else {
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                         }
                     }
                 }).done(function (fileList) {

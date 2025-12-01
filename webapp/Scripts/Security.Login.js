@@ -1,12 +1,10 @@
 ﻿var app = app || {};
 
-
 var btn = document.getElementById("forgotlink");
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
 app.login = (function () {
-
     let dataStage = null;
     let lasthref = '';
 
@@ -15,7 +13,6 @@ app.login = (function () {
     function Init_Controls() {
         app.login.lasthref = localStorage.getItem('lasthref');
         localStorage.removeItem('lasthref');
-
     };
 
     function Init_Lookups() {
@@ -58,7 +55,7 @@ app.login = (function () {
             $('#Send').html('Iniciar');
             $('#Send').prop("disabled", false);
             $('#Password').val('');
-            $('#accessotp').val('');            
+            $('#accessotp').val('');
             dataStage = null;
         });
 
@@ -67,13 +64,12 @@ app.login = (function () {
                 var status = 'validate';
                 $('#Send').prop("disabled", true);
                 $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...');
-
+                var inputData = InputToObject();
                 if (dataStage == null) {
-                    app.core.Post(app.setting.apipath + 'v1/Security/Authentication', JSON.stringify(InputToObject()))
+                    app.core.Post(app.setting.basepath + 'Security/LogIn', JSON.stringify(inputData))
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Reason == null) {
                                 if (!data.MustChangePassword) {
-                                    
                                     if (data.Need2FAOTP) {
                                         dataStage = data;
                                         $('#Tenant').prop("disabled", true);
@@ -88,7 +84,6 @@ app.login = (function () {
                                         status = 'redirect';
                                     }
                                 } else {
-
                                     $('#ForgotMail').val(data.EMail);
                                     $('#login').addClass('d-none');
 
@@ -102,7 +97,6 @@ app.login = (function () {
                             }
                             else
                                 toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
-
                         }).always(function () {
                             if (dataStage == null && status != 'redirect') {
                                 $('#Send').html('Iniciar');
@@ -110,10 +104,10 @@ app.login = (function () {
                             }
                         });
                 } else {
-                    app.core.Post(app.setting.apipath + 'v1/Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val(), Mode: '2FA' }))
+                    app.core.Post(app.setting.basepath + 'Security/IsOTPValid', JSON.stringify({ Tenant: dataStage.Tenant, EMail: dataStage.EMail, OTP: $('#accessotp').val(), Mode: '2FA' }))
                         .done(function (data, textStatus, jqXHR) {
                             if (data.Successful) {
-                                Authenticated(dataStage);
+                                Authenticated(data.Context);
                             }
                             else {
                                 toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
@@ -129,7 +123,6 @@ app.login = (function () {
         $('#ForgotSend').click(function () {
             event.preventDefault();
             if (app.ui.IsValid('#ForgotEdtForm', false)) {
-
                 $('#ForgotSend').prop("disabled", true);
                 $('#ForgotSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...');
 
@@ -141,7 +134,6 @@ app.login = (function () {
                             $('#forgo').addClass('d-none');
                             $('#forgoCode').removeClass('d-none');
                         }
-
                     }).always(function () {
                         $('#ForgotSend').html('Continuar');
                         $('#ForgotSend').prop("disabled", false);
@@ -152,7 +144,6 @@ app.login = (function () {
         $('#forgoCodeSend').click(function () {
             event.preventDefault();
             if (app.ui.IsValid('#forgoCodeEdtForm', false)) {
-
                 $('#forgoCodeSend').prop("disabled", true);
                 $('#forgoCodeSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...');
 
@@ -168,7 +159,6 @@ app.login = (function () {
                         $('#forgoCodeSend').html('Continuar');
                         $('#forgoCodeSend').prop("disabled", false);
                     });
-
             }
         });
 
@@ -180,6 +170,7 @@ app.login = (function () {
 
                 app.core.Post(app.setting.apipath + 'v1/Security/ResetPassword', JSON.stringify({ Tenant: $('#Tenant').val(), EMail: $('#ForgotMail').val(), OTP: $('#forgoCodeMail').val(), Password: $('#SetPasswordMail').val(), PasswordConfirm: $('#SetPasswordMail2').val() }))
                     .done(function (data, textStatus, jqXHR) {
+                        $("#myModal").hide();
                         if (!data.Successful)
                             toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
                         else {
@@ -187,8 +178,6 @@ app.login = (function () {
                             $('#SetPassword').addClass('d-none');
                             $('#login').removeClass('d-none');
                         }
-
-
                     }).always(function () {
                         $('#SetPasswordSend').html('Cambiar clave de acceso');
                         $('#SetPasswordSend').prop("disabled", false);
@@ -358,7 +347,6 @@ app.login = (function () {
         return data;
     };
 
-
     function Authenticated(data) {
         data.Settings?.forEach(item => {
             localStorage.setItem(item.Key, item.Value);
@@ -368,7 +356,6 @@ app.login = (function () {
         localStorage.setItem('Color1Tenant', data.Color1Tenant);
         localStorage.setItem('Color2Tenant', data.Color2Tenant);
         localStorage.setItem('Roles', JSON.stringify(data.Roles));
-
         var dta = new Date();
         localStorage.setItem('LastActivity', dta);
         var dt = new Date();
@@ -377,7 +364,7 @@ app.login = (function () {
 
         localStorage.setItem('Token', data.Token);
         $('#Send').prop("disabled", true);
-        $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');        
+        $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
         if (app.login.lasthref == null) {
             window.location.replace(app.setting.basepath + data.InitialPath);
         } else {
@@ -411,7 +398,6 @@ app.login = (function () {
             $('#Tenant').val(_tenant);
             if (employeeMode) {
                 $('#forgotlink').addClass('d-none');
-
             }
         }
     };
@@ -432,5 +418,4 @@ $(document).ready(function () {
             modal.style.display = "none";
         }
     });
-
 });

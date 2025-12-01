@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Architect.API.Core.Business;
 using Architect.API.Core.Business.General;
 using Architect.API.Tron.Contracts.Pagos;
 using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
@@ -9,6 +6,10 @@ using Architect.Payment.Integrations.Contracts;
 using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using static iTextSharp.text.pdf.PdfDocument;
 
 namespace Architect.API.Tron.Business.Backoffice
@@ -136,7 +137,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         public async static Task Notificacion(Architect.Payment.Integrations.Contracts.NotifyRequest notify)
         {
-            if (Core.Business.Settings.BoolValue(0, "Payment.Placetopay.Notify.Enabled", true))
+            if ("Payment.Placetopay.Notify.Enabled".BoolValue(0, true))
             {
                 Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(notify.requestId));
                 if (currentRecord != null)
@@ -156,7 +157,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// </summary>
         public async static Task<Dictionary<string, object>> CrearSesionCore(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, int agentCode, bool widget, bool onlyInfo = false, string email = "")
         {
-            if (!Core.Business.Settings.BoolValue(0, "Payment.Placetopay.Enabled", true))
+            if (!"Payment.Placetopay.Enabled".BoolValue(0, true))
             {
                 return new Dictionary<string, object>() { { "session", new Architect.Payment.Integrations.Contracts.SessionInformation()
                         {
