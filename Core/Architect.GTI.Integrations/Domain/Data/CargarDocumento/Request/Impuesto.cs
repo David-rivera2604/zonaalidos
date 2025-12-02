@@ -23,6 +23,6 @@ namespace Architect.GTI.Integrations.Domain.CargarDocumento.Request
         /// <summary>
         /// Monto calculado del impuesto.
         /// </summary>
-        public float MontoImp { get; set; }
+        public double MontoImp { get; set; }
     }
 }

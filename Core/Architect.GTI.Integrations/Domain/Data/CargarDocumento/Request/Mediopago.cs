@@ -13,6 +13,6 @@ namespace Architect.GTI.Integrations.Domain.CargarDocumento.Request
         /// <summary>
         /// Monto total pagado con este medio de pago.
         /// </summary>
-        public float TotalMedioPago { get; set; }
+        public double TotalMedioPago { get; set; }
     }
 }

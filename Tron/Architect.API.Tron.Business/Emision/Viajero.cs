@@ -137,7 +137,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 if (resultQuoteInfo.num_poliza.IsNotEmpty())
                 {
-                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultQuoteInfo.num_poliza.Substring(4)), tokenInfo.CompanyId, "Emisión Seguro de Viaje", "Póliza #" + resultQuoteInfo.num_poliza, tokenInfo.UserId, resultQuoteInfo);
+                    Core.Business.General.ChangeSet.Create(3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.CompanyId, "Emisión Seguro de Viaje", $"Póliza #{resultQuoteInfo.num_poliza}, desde el presupuesto #{quoteInfo.presupuesto}", tokenInfo.UserId, resultQuoteInfo);
 
                     //Se cambian los adjuntos creados al número de presupuesto al número de póliza generado
                     Core.Business.General.Attachment.ChangeEntityId(tokenInfo.CompanyId, 3000, Convert.ToInt64(resultQuoteInfo.presupuesto), 3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.UserId);
@@ -151,14 +151,29 @@ namespace Architect.API.Tron.Business.Emision
 
                     //resultQuoteInfo = Asistencia_Panama(quoteInfo, resultQuoteInfo, tokenInfo.Roles);
 
+                    //(r => r.tipodetercero == 1)
                     if (tokenInfo.Roles.Contains("Scotiabank"))
                     {
-                        Integraciones.FacturaElectronica.Generar(resultQuoteInfo.cod_ramo,
-                                                             result2.Recibos.FirstOrDefault(),
-                                                             result2.Calculado.Recibos.FirstOrDefault(),
-                                                             quoteInfo.terceros.FirstOrDefault(r => r.tipodetercero == 1)
-                                                             );
+                        bool enviado = Integraciones.FacturaElectronica.Generar
+                                                        (tokenInfo.CompanyId,
+                                                         441,
+                                                         resultQuoteInfo.num_poliza, resultQuoteInfo.cod_mon,
+                                                         result2.Calculado.Recibos.FirstOrDefault(),
+                                                         quoteInfo.terceros.FirstOrDefault());
+
+                        if (enviado)
+                        {
+                            ChangeSet.Create(3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.CompanyId, "Emisión Seguro de Viaje",
+                                enviado? $"Póliza #{resultQuoteInfo.num_poliza}, factura electrónica enviada"
+                                       : $"Póliza #{resultQuoteInfo.num_poliza}, falló el envio de la factura electrónica", tokenInfo.UserId, resultQuoteInfo);
+                        }
+                        else { }
                     }
+                }
+                else if (resultQuoteInfo.Mensaje.IsNotEmpty())
+                {
+                    string message = resultQuoteInfo.Mensaje;
+                    ChangeSet.Create(3000, Convert.ToInt64(quoteInfo.presupuesto), tokenInfo.CompanyId, "Emisión Seguro de Viaje", message, tokenInfo.UserId, resultQuoteInfo);
                 }
             }
             catch (Exception ex)
