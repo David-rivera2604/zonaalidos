@@ -66,24 +66,24 @@ namespace Architect.GTI.Integrations.Application
             receptor.Nombre = fact.Nombre;
             receptor.Correo = fact.Correo;
 
+            // Recalcular totales basados en la nueva información
+            double totalComprobante = fact.PrecioTotal;
+            double impuesto = fact.Impuesto;
+            double precioUnitario = Math.Round(fact.PrecioTotal - fact.Impuesto, 2);
+
             // Actualizar la primera línea del documento
             var linea = request.Documentos[0].Lineas[0];
             linea.Codigo = fact.Codigo;
             linea.CodProdServ[0] = fact.CodigoServicio;
             linea.Cantidad = fact.Cantidad;
-            linea.PrecioUnitario = fact.PrecioUnitario;
+            linea.PrecioUnitario = precioUnitario;
             linea.Descripcion = fact.Descripcion;
 
-            // Recalcular totales basados en la nueva información
-            double totalVenta = fact.PrecioUnitario;
-            double impuesto = fact.Impuesto; 
-            double totalComprobante = fact.PrecioTotal;
-
             var totales = request.Documentos[0].Totales;
-            totales.TotalServGravado = totalVenta;
-            totales.TotalGravado = totalVenta;
-            totales.TotalVenta = totalVenta;
-            totales.TotalVentaNeta = totalVenta;
+            totales.TotalServGravado = precioUnitario;
+            totales.TotalGravado = precioUnitario;
+            totales.TotalVenta = precioUnitario;
+            totales.TotalVentaNeta = precioUnitario;
             totales.TotalImpuesto = impuesto;
             totales.TotalComprobante = totalComprobante;
 
@@ -134,7 +134,7 @@ namespace Architect.GTI.Integrations.Application
                             CodigoActividad = "660303",
                             ImpRenta = 1,
                             NombComercial = "BANCO DE COSTA RICA",
-                            CantDeci = 4,
+                            CantDeci = 2,
                             TipoDoc = 1,
                             SituacionEnvio = 1,
                             Sucursal = 1,

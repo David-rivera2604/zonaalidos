@@ -161,13 +161,10 @@ namespace Architect.API.Tron.Business.Emision
                                                          result2.Calculado.Recibos.FirstOrDefault(),
                                                          quoteInfo.terceros.FirstOrDefault());
 
-                        if (enviado)
-                        {
+
                             ChangeSet.Create(3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.CompanyId, "Emisión Seguro de Viaje",
                                 enviado? $"Póliza #{resultQuoteInfo.num_poliza}, factura electrónica enviada"
                                        : $"Póliza #{resultQuoteInfo.num_poliza}, falló el envio de la factura electrónica", tokenInfo.UserId, resultQuoteInfo);
-                        }
-                        else { }
                     }
                 }
                 else if (resultQuoteInfo.Mensaje.IsNotEmpty())
