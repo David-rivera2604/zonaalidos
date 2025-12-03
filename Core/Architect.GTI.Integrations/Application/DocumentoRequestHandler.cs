@@ -47,6 +47,21 @@ namespace Architect.GTI.Integrations.Application
             return response;
         }
 
+        /// <summary>
+        /// Convierte un objeto FacturaRequest en un DocumentoRequest para el envío a GTI.
+        /// </summary>
+        /// <param name="fact">Objeto FacturaRequest con los datos de la factura a procesar.</param>
+        /// <returns>DocumentoRequest con la estructura completa requerida por el API de GTI.</returns>
+        /// <remarks>
+        /// Este método toma una plantilla base de DocumentoRequest y actualiza sus propiedades con los valores
+        /// proporcionados en el FacturaRequest. Se actualizan los siguientes elementos:
+        /// - Encabezado: Tipo de cambio, moneda, número de factura, fechas
+        /// - Receptor: Identificación, nombre y correo del cliente
+        /// - Líneas: Detalles del producto/servicio, código, descripción, precio e impuestos
+        /// - Totales: Cálculo de montos gravados, impuestos y total del comprobante
+        /// - Medio de pago: Tipo y total del medio de pago
+        /// Los cálculos de precio unitario se realizan restando el impuesto del precio total.
+        /// </remarks>
         private static DocumentoRequest Convert_FacturaRequest_to_DocumentoRequest(FacturaRequest fact)
         {
             DocumentoRequest request = CrearBase();
@@ -98,7 +113,6 @@ namespace Architect.GTI.Integrations.Application
             var json = JsonConvert.SerializeObject(request);
             return request;
         }
-
 
         /// <summary>
         /// Crea una instancia de DocumentoRequest con datos de ejemplo basados en MAPFRE Seguros Costa Rica S.A.
