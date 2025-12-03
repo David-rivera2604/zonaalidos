@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/><style>
+table {border: medium solid #6495ed;border-collapse: collapse;width: 100%;} th{font-family: monospace;border: thin solid #6495ed;padding: 5px;background-color: #D0E3FA;}th{text-align: left;}td{font-family: sans-serif;border: thin solid #6495ed;padding: 5px;text-align: center;}.odd{background:#e8edff;}img{padding:5px; border:solid; border-color: #dddddd #aaaaaa #aaaaaa #dddddd; border-width: 1px 2px 2px 1px; background-color:white;}</style>
+</head>
+<body>
+<table><tr><th colspan="10"><pre><code>SELECT * FROM settings ORDER BY key</code></pre></th></tr><tr><th>ID</th><th>KEY</th><th>VALUE</th><th>RECORDSTATUS</th><th>COMPANYID</th><th>UPDATEUSERCODE</th><th>UPDATEDATE</th><th>LOCALSTORAGEENABLED</th><th>TOKENENABLED</th><th>DESCRIPTION</th></tr><tr class="odd"><td>8</td><td>EMail.Test</td><td>&nbsp;</td><td>1</td><td>0</td><td>1</td><td>2025-01-30 00:00:00.000</td><td>0</td><td>0</td><td>Permite indicar un correo de forma que cualquier correo enviado por aliados usara el valor indicado</td></tr>
+<tr><td>15</td><td>Payment.Placetopay.Enabled</td><td>true</td><td>1</td><td>0</td><td>6,329</td><td>0205-09-13 00:00:00.000</td><td>0</td><td>0</td><td>Permite activar o desactivar la pasarela de pago</td></tr>
+<tr class="odd"><td>16</td><td>Payment.Placetopay.Enabled</td><td>true</td><td>1</td><td>0</td><td>6,329</td><td>2025-09-14 15:14:47.000</td><td>0</td><td>0</td><td>Permite activar o desactivar la pasarela de pago</td></tr>
+<tr><td>3</td><td>Payment.Silice.Init.Timeout.Minutes</td><td>10</td><td>1</td><td>0</td><td>6,329</td><td>2024-08-22 00:00:00.000</td><td>0</td><td>1</td><td>Tiempo m?ximo para que el pago de un recibo se procesado, depues de los minutos indicados si el recibo no cambia del estado inicial, la sesi?n es cancelada.</td></tr>
+<tr class="odd"><td>4</td><td>Payment.Silice.RecurringReceipts.Filter.Policies</td><td>3032510110245</td><td>1</td><td>0</td><td>6,329</td><td>2024-11-05 00:00:00.000</td><td>0</td><td>1</td><td>Polizas a cobrar por recurrencia</td></tr>
+<tr><td>13</td><td>Payment.Silice.RecurringReceipts.Limit.Count</td><td>10</td><td>1</td><td>0</td><td>6,329</td><td>2024-08-22 00:00:00.000</td><td>0</td><td>0</td><td>Polizas a cobrar por recurrencia</td></tr>
+<tr class="odd"><td>9</td><td>Payment.Silice.Tokenize.Cantidad.Tarjetas</td><td>5</td><td>1</td><td>0</td><td>1</td><td>2025-01-30 00:00:00.000</td><td>0</td><td>0</td><td>Indica la cantidad de tarjetas a ser procesar en la extracción para tokenización</td></tr>
+<tr><td>17</td><td>Security.2FA.Enable</td><td>true</td><td>1</td><td>0</td><td>6,329</td><td>2025-10-28 00:00:00.000</td><td>0</td><td>0</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18</td><td>Security.Tenant.Tron.Agent.Information</td><td>2,12,13</td><td>1</td><td>0</td><td>6,329</td><td>2025-10-28 00:00:00.000</td><td>0</td><td>0</td><td>Indica en cuales tenant se debe cargar la información de agente TRON</td></tr>
+<tr><td>1</td><td>Tenant.Settings.Payment.Provider</td><td>Evertec</td><td>1</td><td>0</td><td>6,329</td><td>2024-08-22 00:00:00.000</td><td>1</td><td>1</td><td>Indica cual el proveedor de pago (Evertec o Silice)</td></tr>
+<tr class="odd"><td>2</td><td>Tenant.Settings.Payment.Provider</td><td>Silice</td><td>1</td><td>99</td><td>6,329</td><td>2024-08-22 00:00:00.000</td><td>1</td><td>1</td><td>Indica cual el proveedor de pago (Evertec o Silice)</td></tr>
+<tr><td>11</td><td>aliados.api.report.url</td><td>&nbsp;</td><td>1</td><td>0</td><td>6,329</td><td>2024-08-22 00:00:00.000</td><td>0</td><td>0</td><td>Indica la ruta completa del servicio de reporte en caso de estar vacio se usara el setting aliados.api.url.base m?s '/AliadoServReports'</td></tr>
+<tr class="odd"><td>10</td><td>aliados.api.url.base</td><td>https://appqa.mapfrecr.com/</td><td>1</td><td>0</td><td>6,329</td><td>2024-08-22 00:00:00.000</td><td>0</td><td>0</td><td>Indica la ruta base usada para la los servicios ejemplo https://appqa.mapfrecr.com/</td></tr>
+<tr><td>12</td><td>aliados.app.path.temp</td><td>C:\aliados\webapp\files\</td><td>1</td><td>0</td><td>6,329</td><td>2024-08-22 00:00:00.000</td><td>0</td><td>0</td><td>Ruta fisica en el servidor donde se generan archivos de forma temporal, el contenido de esta ruta puede ser borrado en horarios de mantenimiento.</td></tr>
+</table></body></html>

@@ -2,8 +2,8 @@
 
 // CONSERVAR DEL ORIGINAL DESDE AQUI
 app.setting = {
-    apibase: 'http://localhost:8080',
-    apipath: 'http://localhost:8080/aliados/api/',
+    apibase: 'https://localhost:44341',
+    apipath: 'https://localhost:44341/aliados/api/',
     basepath: '/Aliados/',
     viewpath: 'http://localhost:8080/aliados/',
     entityapi: 'https://appqa.mapfrecr.com/datapides/api/entity',
@@ -49,6 +49,13 @@ String.prototype.supplant = function (o) {
 app.core = (function () {
 
     let lookupData = [];
+    
+    function getAuthToken() { 
+        token = app.security().getCookie('AuthToken');
+        if (token != null && token != '') {
+            return token;
+        } 
+    }
 
     function GetPDF(url, download, filename, callback) {
         let excel = false;
@@ -93,7 +100,7 @@ app.core = (function () {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                'Authorization': 'Bearer ' + getAuthToken()
             },
         }).then(response => {
             if (!response.ok) { throw response }
@@ -270,58 +277,6 @@ app.core = (function () {
         return msg;
     }
 
-    function UpLoadFileEx(formId, uploadCtrolId, entityType, entityId, documentType, description, callback) {
-        if (app.ui.IsValid(formId, false, true)) {
-            let index = 0;
-            let arr = $(uploadCtrolId + 'UploadModal').prop('files');
-            let message = '';
-            let elementInstance = $(formId).validate();
-
-            for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
-            }
-            if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
-            }
-            else {
-                app.ui.ButtonDoing(uploadCtrolId);
-                var fileData = new FormData();
-                fileData.append('EntityType', entityType);
-                fileData.append('EntityId', entityId);
-                fileData.append('DocumentType', documentType);
-                fileData.append('Description', description);
-                for (index = 0; index < arr.length; index++) {
-                    fileData.append('files', arr[index]);
-                }
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: app.setting.apipath + 'v1/Common/Upload',
-                    data: fileData,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    timeout: 600000,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
-                    }
-                }).done(function (fileList) {
-                    callback(fileList);
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    ajaxErrorHandler(jqXHR, errorThrown);
-                }).always(function () {
-                    app.ui.ButtonDone(uploadCtrolId)
-                });
-            }
-        }
-    }
-
-
     function ajaxCall(type, url, data, success, token, contentType) {
         var dataType = 'json';
 
@@ -343,14 +298,7 @@ app.core = (function () {
             data: data,
             beforeSend: function (xhr) {
                 if (token) {
-                    let current = localStorage.getItem('AlternateToken');
-                    if (current != null && current != '' && current != 'null') {
-                        localStorage.removeItem('AlternateToken')
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + current);
-                    }
-                    else {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
-                    }
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
                 }
             }
         }).done(function (data, textStatus, jqXHR) {
@@ -699,7 +647,7 @@ app.core = (function () {
             method: method,
             headers: {
                 'Content-Type': data ? 'application/json; charset=utf-8' : {},
-                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                'Authorization': 'Bearer ' + getAuthToken()
             }
         }).then(response => {
             if (!response.ok) {
@@ -726,7 +674,7 @@ app.core = (function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                'Authorization': 'Bearer ' + getAuthToken()
             },
             responseType: 'arraybuffer'
         })
@@ -738,7 +686,7 @@ app.core = (function () {
                     return response.json();
                 }
             })
-            .catch(error => { // Manejo de errores adicionales 
+            .catch(error => { 
                 console.error('Error en la solicitud:', error);
             });
     };
@@ -948,11 +896,10 @@ app.core = (function () {
             return new Promise((resolve, reject) => {
                 return fetch(`${app.setting.entityapi}/${url}`, {
                     body: method === 'GET' ? null : JSON.stringify(data),
-
                     method: method,
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8',
-                        'Authorization': 'Bearer ' + localStorage.getItem('Token')
+                        'Authorization': 'Bearer ' + getAuthToken()
                     }
                 }).then(response => {
                     if (!response.ok) {
@@ -980,21 +927,42 @@ app.core = (function () {
 })();
 
 app.security = (function () {
+    /**
+     * Obtiene el valor de una cookie por su nombre.
+     * @param {string} name - Nombre de la cookie a buscar.
+     * @returns {string|null} El valor de la cookie o null si no existe.
+     */
+    function getCookie(name) {
+        return localStorage.getItem('Token');
+        const nameEQ = name + "=";
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i];
+            while (cookie.charAt(0) === ' ') {
+                cookie = cookie.substring(1, cookie.length);
+            }
+            if (cookie.indexOf(nameEQ) === 0) {
+                return cookie.substring(nameEQ.length, cookie.length);
+            }
+        }
+        return null;
+    }
+
     return {
-        logout: function () {
-            app.core.Post(app.setting.basepath + 'Security/Logout')
-                .done(function (data) {
-                    if (data.success) {
-                        // Limpiar localStorage
-                        localStorage.removeItem('Token');
-                        localStorage.removeItem('Username');
-                        localStorage.removeItem('Tenant');
-                        localStorage.removeItem('Color1Tenant');
-                        localStorage.removeItem('Color2Tenant');
-                        localStorage.removeItem('Roles');
-                        localStorage.removeItem('Expires');
-                        localStorage.removeItem('LastActivity');
-                        localStorage.removeItem('Navegation');
+        logout: function () {             
+                app.core.Post(app.setting.basepath + 'Security/Logout')
+                    .done(function (data) {
+                        if (data.success) {
+                            // Limpiar localStorage
+                            localStorage.removeItem('Token');
+                            localStorage.removeItem('Username');
+                            localStorage.removeItem('Tenant');
+                            localStorage.removeItem('Color1Tenant');
+                            localStorage.removeItem('Color2Tenant');
+                            localStorage.removeItem('Roles');
+                            localStorage.removeItem('Expires');
+                            localStorage.removeItem('LastActivity');
+                            localStorage.removeItem('Navegation');
 
                         // Redirigir al login
                         window.location.replace(app.setting.basepath + 'Security/Login');

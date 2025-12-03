@@ -1,36 +1,78 @@
 ﻿using Architect.API.Core.Contracts.Security;
 using Architect.API.Core.DataAccess.Security;
+using Architect.API.Core.Security;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Architect.API.Core.Business.Security
 {
     public static class Accounts
     {
-
         /// <summary>
         /// objeto de clase Security.Token que almacena el usuario actual
         /// </summary>
         public static Contracts.Security.Token UserIdActual;
+
+        public static HttpCookie AssingedContext(HttpRequestBase request, AuthenticationResponse responseItem, Architect.API.Core.Contracts.Security.Token token)
+        {
+            var authCookie = new HttpCookie("AuthToken", responseItem.Token)
+            {
+                Expires = DateTime.Now.AddMinutes(responseItem.ExpiresIn),
+                HttpOnly = true,
+                Secure = request.IsSecureConnection,
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            };
+            token.Assinged();
+            return authCookie;
+        }
+
+        /// <summary>
+        /// Determines if HttpOnly should be enabled based on the request URL or environment
+        /// </summary>
+        private static bool ShouldEnableHttpOnly(HttpRequestBase request)
+        {
+            // Option 1: Based on host/domain
+            string host = request.Url.Host.ToLower();
+
+            // Disable HttpOnly only for specific development domains
+            if (host.Contains("localhost") || host.Contains("127.0.0.1"))
+                // For development, you might want HttpOnly = false for testing
+                return false;
+
+            // Option 2: Based on specific URL patterns
+            if (request.Url.AbsolutePath.Contains("/api/external"))
+                return false; // Disable for specific APIs that need JS access
+
+            // Option 3: Based on configuration setting
+            bool httpOnlyFromConfig = "Security.Cookie.HttpOnly".BoolValue(0, true);
+            if (!httpOnlyFromConfig)
+                return false;
+
+            // Default: ALWAYS use HttpOnly = true for security (RECOMMENDED)
+            return true;
+        }
 
         /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
         /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
-        public static Contracts.Security.AuthenticationResponse Authentication(Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
+
+        public static Contracts.Security.AuthenticationResponse Authentication(this Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
         {
             var result = new Contracts.Security.AuthenticationResponse { Settings = new List<SettingItem>() };
-            var track = new Contracts.Security.AuthenticationTrace 
-            { 
-                TraceType = 1, 
-                IPAddress = authenticationRequest.IPAddress, 
-                UserName = authenticationRequest.Email, 
-                UserAgent = authenticationRequest.UserAgent 
+
+            var track = new Contracts.Security.AuthenticationTrace
+            {
+                TraceType = 1,
+                IPAddress = authenticationRequest.IPAddress,
+                UserName = authenticationRequest.Email?.Trim(),
+                UserAgent = authenticationRequest.UserAgent
             };
 
             // Validar request inicial
@@ -41,28 +83,24 @@ namespace Architect.API.Core.Business.Security
             }
 
             // Obtener información del tenant
-            int companyId = 0;
-            if (!AccountSupport.TryGetCompanyId(authenticationRequest.Tenant, result, track, out companyId))
+            if (!AccountSupport.TryGetCompanyId(authenticationRequest.Tenant, result, track, out int companyId))
             {
                 Business.Security.AuthenticationTrace.Create(track);
                 return result;
             }
 
             // Recuperar usuario
-            track.UserName = authenticationRequest.Email.Trim();
             var user = AccountSupport.RetrieveUser(authenticationRequest.Email, companyId);
 
-            //Verifica si el usuario no está registrado
+            // Usuario no registrado
             if (user.IsEmpty())
             {
-                track.TraceType = 1;
-                result.Reason = "Usuario no registrado";
-                track.Reason = result.Reason;
+                result.Reason = track.Reason = "Usuario no registrado";
                 Business.Security.AuthenticationTrace.Create(track);
                 return result;
             }
 
-            // Actualizar tracking con datos de usuario
+            // Actualizar tracking
             track.UserId = user.UserId;
             track.UserName = user.UserName;
             result.EMail = user.EMail;
@@ -70,23 +108,75 @@ namespace Architect.API.Core.Business.Security
             // Validar credenciales
             var accessAllowed = AccountSupport.ValidateUserCredentials(authenticationRequest, user, result, track);
 
-            if (accessAllowed)
-            {
-                // Autenticación exitosa
-                ProcessSuccessfulAuthentication(authenticationRequest, user, result, ref token, firstInit, companyId, track);
-            }
+            if (!accessAllowed)
+                AccountSupport.ProcessFailedAuthentication(authenticationRequest, user, result, track);
             else
             {
-                // Autenticación fallida
-                AccountSupport.ProcessFailedAuthentication(authenticationRequest, user, result, track);
+                result.Need2FAOTP = "Security.2FA.Enable".BoolValue(0, false);
+
+                if (!result.Need2FAOTP)
+                    ProcessSuccessfulAuthentication(authenticationRequest, user, result, ref token, firstInit, companyId, track);
+                else
+                {
+                    if (!authenticationRequest.EmployeeMode)
+                        result.MustChangePassword = user.PasswordChangedDate.AddDays("Security.Password.Expiration".IntegerValue(0, 90)) <= DateTime.Today;
+
+                    if (result.MustChangePassword)
+                        ProcessSuccessfulAuthentication(authenticationRequest, user, result, ref token, firstInit, companyId, track);
+                    else
+                    {
+                        var roles = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
+                        result.ExpiresIn = "Security.Session.Timeout".IntegerValue(0, 30);
+
+                        var tokenBody = TokenItem(
+                            user,
+                            roles.ToArrayOf(x => x.Description),
+                            "Security.Token.Timeout".IntegerValue(0, (int)(result.ExpiresIn * 2.5)),
+                            user.UserName
+                        );
+
+                        result.InitialPath = AccountSupport.DetermineInitialPath(user, roles, companyId);
+                        result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenBody);
+                        result.UserName = user.UserName;
+                        result.Roles = roles.ToArrayOf(c => c.Description);
+
+                        // Crear sesión
+                        Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity
+                        {
+                            Token = result.Token,
+                            CompanyId = user.CompanyId,
+                            CompanyName = result.Tenant,
+                            UserId = user.UserId,
+                            UserName = user.UserName,
+                            EMail = user.EMail,
+                            IP = track.IPAddress,
+                            UserAgent = track.UserAgent
+                        });
+
+                        var key = OTP.Create(
+                            new ResetPasswordRequest { Tenant = authenticationRequest.Tenant, EMail = user.EMail, IPAddress = authenticationRequest.IPAddress },
+                            user,
+                            "2FA"
+                        );
+
+                        var aOTPResponse = new Contracts.Security.AOTPResponse { Context = result, Token = tokenBody };
+                        Utilities.Cache.SetItem(key, Utilities.SerializeHandler<Contracts.Security.AOTPResponse>.SerializeJSON(aOTPResponse, false));
+                        result.Token = string.Empty;
+                    }
+                }
             }
 
+            // Finalizar tracking
             track.Reason = result.Reason;
             Business.Security.AuthenticationTrace.Create(track);
 
-            if (result.MustChangePassword && user != null)
+            if (result.MustChangePassword)
             {
-                OTP.Create(new ResetPasswordRequest { Tenant = authenticationRequest.Tenant, EMail = user.EMail }, user, "MustChangePassword");
+                OTP.Create(
+                    new ResetPasswordRequest { Tenant = authenticationRequest.Tenant, EMail = user.EMail },
+                    user,
+                    "MustChangePassword"
+                );
             }
 
             return result;
@@ -95,44 +185,35 @@ namespace Architect.API.Core.Business.Security
         /// <summary>
         /// Procesa una autenticación exitosa.
         /// </summary>
-        private static void ProcessSuccessfulAuthentication(
-            Contracts.Security.AuthenticationRequest request, 
-            Contracts.Security.UserMember user, 
-            Contracts.Security.AuthenticationResponse result, 
-            ref Contracts.Security.Token token, 
-            bool firstInit, 
-            int companyId,
-            Contracts.Security.AuthenticationTrace track)
+        private static void ProcessSuccessfulAuthentication(Contracts.Security.AuthenticationRequest request, Contracts.Security.UserMember user, Contracts.Security.AuthenticationResponse result,
+            ref Contracts.Security.Token token, bool firstInit, int companyId, Contracts.Security.AuthenticationTrace track)
         {
             track.TraceType = 2;
-            
+
             // Configurar tiempos de expiración
-            var sessionTimeout = Business.Settings.IntegerValue(0, "Security.Session.Timeout", 30);
-            result.ExpiresIn = sessionTimeout;
-            var tokenExpiresIn = Business.Settings.IntegerValue(0, "Security.Token.Timeout", (int)(sessionTimeout * 2.5));
+            result.ExpiresIn = "Security.Session.Timeout".IntegerValue(0, 30);
+            var tokenExpiresIn = "Security.Token.Timeout".IntegerValue(0, (int)(result.ExpiresIn * 2.5));
 
             // Configurar información básica
             result.UserName = string.Format("{0} {1}", user.FirstName, user.LastName).Trim();
 
             // Obtener roles
+            ;
+
             var roles = DataAccess.Security.UserRoleMember.RetrieveLookByUserId(user.UserId, user.CompanyId);
-            result.Roles = roles.Select(x => x.Description).ToArray();
+            result.Roles = roles.ToArrayOf(x => x.Description);
 
             // Crear token
-            var agentInfo = AccountSupport.GetAgentInformation(user);
-            var tokenItem = AccountSupport.CreateTokenItem(user, roles, agentInfo, tokenExpiresIn, result.UserName);
-            token = tokenItem;
+            token = TokenItem(user, result.Roles, tokenExpiresIn, result.UserName);
 
             if (firstInit)
-            {
-                UserIdActual = tokenItem;
-            }
+                UserIdActual = token;
 
             // Configurar settings
-            AccountSupport.ApplySettings(user.CompanyId, result, tokenItem);
+            AccountSupport.ApplySettings(user.CompanyId, result, token);
 
             // Generar token de acceso
-            result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(tokenItem);
+            result.Token = Architect.API.Core.Security.Accounts.GeneratorToken(token);
 
             // Actualizar usuario
             AccountSupport.UpdateUserOnSuccessfulLogin(user);
@@ -141,11 +222,11 @@ namespace Architect.API.Core.Business.Security
             result.InitialPath = AccountSupport.DetermineInitialPath(user, roles, companyId);
 
             // Verificar si debe cambiar contraseña
-            if (!request.EmployeeMode)
-            {
-                var expirationDays = Business.Settings.IntegerValue(0, "Security.Password.Expiration", 90);
-                result.MustChangePassword = user.PasswordChangedDate.AddDays(expirationDays) <= DateTime.Today;
-            }
+            //if (!request.EmployeeMode)
+            //{
+            //    var expirationDays = "Security.Password.Expiration".IntegerValue(0, 90);
+            //    result.MustChangePassword = user.PasswordChangedDate.AddDays(expirationDays) <= DateTime.Today;
+            //}
 
             // Crear sesión
             Architect.API.Core.Security.Session.Create(new Contracts.Security.Activity
@@ -160,12 +241,29 @@ namespace Architect.API.Core.Business.Security
                 UserAgent = request.UserAgent
             });
 
-            // Verificar 2FA
-            result.Need2FAOTP = Business.Settings.BoolValue(0, "Security.2FA.Enable", false);
-            if (!result.MustChangePassword && result.Need2FAOTP)
-            {
-                OTP.Create(new ResetPasswordRequest { Tenant = request.Tenant, EMail = user.EMail, IPAddress = request.IPAddress }, user, "2FA");
-            }
+            //// Verificar 2FA
+            //result.Need2FAOTP = "Security.2FA.Enable".BoolValue(0, false);
+            //if (!result.MustChangePassword && result.Need2FAOTP)
+            //{
+            //    OTP.Create(new ResetPasswordRequest { Tenant = request.Tenant, EMail = user.EMail, IPAddress = request.IPAddress }, user, "2FA");
+            //}
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="roles"></param>
+        /// <param name="tokenExpiresIn"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public static Contracts.Security.Token TokenItem(Contracts.Security.UserMember user, string[] roles, int tokenExpiresIn, string userName)
+        {
+            Contracts.Security.Token result = new Contracts.Security.Token();
+            var agentInfo = AccountSupport.GetAgentInformation(user);
+            var tokenItem = AccountSupport.CreateTokenItem(user, roles, agentInfo, tokenExpiresIn, userName);
+            result = tokenItem;
+            return result;
         }
 
         /// <summary>
@@ -173,24 +271,22 @@ namespace Architect.API.Core.Business.Security
         /// </summary>
         public static List<Architect.API.Core.Contracts.Security.ColoresResponse> ReadColor()
         {
-
             List<Architect.API.Core.Contracts.Security.ColoresResponse> RespuestaData = Architect.API.Core.DataAccess.General.ColorKey.RetrieveAllColors();
 
             return RespuestaData;
         }
-       
+
         /// <summary>
         /// Leer datos del inicio
         /// </summary>
         public static Architect.API.Core.Contracts.Security.ClientesInicioResponse ReadInicio(Core.Contracts.Security.Token tokenInfo)
         {
-
             Architect.API.Core.Contracts.Security.ClientesInicioResponse DataInicio = Architect.API.Core.DataAccess.General.ProcessData.RetrieveInicio(tokenInfo.CompanyId);
 
             return DataInicio;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Restablece la contraseña de un usuario.
         /// </summary>
         public static Core.Contracts.General.GenericResponse ResetPassword(Contracts.Security.ResetPasswordRequest resetRequest)
@@ -458,11 +554,10 @@ namespace Architect.API.Core.Business.Security
                 Architect.Utilities.Log.ErrorLog(ex);
             }
 
-
             return result;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Obtiene el perfil de un usuario.
         /// </summary>
         public static Contracts.Security.UserMember Profile(int companyId, int userId)
@@ -479,6 +574,5 @@ namespace Architect.API.Core.Business.Security
             }
             return result;
         }
-    
     }
 }

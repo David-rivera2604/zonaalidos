@@ -78,6 +78,7 @@
     <Compile Include="General\RuleContext.cs" />
     <Compile Include="General\ProcessSpecFlow.cs" />
     <Compile Include="General\ProcessSpecStep.cs" />
+    <Compile Include="Security\AOTPResponse.cs" />
     <Compile Include="Security\ClientInformation.cs" />
     <Compile Include="Security\AgentInformation.cs" />
     <Compile Include="Security\ColoresResponse.cs" />

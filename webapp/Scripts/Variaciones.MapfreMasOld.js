@@ -3648,7 +3648,7 @@ app.EmisionMapfreMas = (function () {
                 cache: false,
                 timeout: 600000,
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                 }
             }).done(function (data, textStatus, jqXHR) {
                 if (data.length > 0) {
@@ -3704,7 +3704,7 @@ app.EmisionMapfreMas = (function () {
                 cache: false,
                 timeout: 600000,
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                 }
             }).done(function (data, textStatus, jqXHR) {
                 if (data.length > 0) {
@@ -3831,7 +3831,7 @@ app.EmisionMapfreMas = (function () {
                     cache: false,
                     timeout: 600000,
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                     }
                 }).done(function (data, textStatus, jqXHR) {
 
@@ -3885,7 +3885,7 @@ app.EmisionMapfreMas = (function () {
                     cache: false,
                     timeout: 600000,
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                     }
                 }).done(function (data, textStatus, jqXHR) {
 
@@ -3939,7 +3939,7 @@ app.EmisionMapfreMas = (function () {
                     cache: false,
                     timeout: 600000,
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                     }
                 }).done(function (data, textStatus, jqXHR) {
                     let oldId = rowDocumentosrequeridos.documentosrequeridosId;
