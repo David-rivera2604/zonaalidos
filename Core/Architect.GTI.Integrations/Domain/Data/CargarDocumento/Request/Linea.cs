@@ -43,7 +43,7 @@ namespace Architect.GTI.Integrations.Domain.CargarDocumento.Request
         /// <summary>
         /// Precio unitario del producto o servicio.
         /// </summary>
-        public int PrecioUnitario { get; set; }
+        public double PrecioUnitario { get; set; }
 
         /// <summary>
         /// Descripción detallada del producto o servicio.

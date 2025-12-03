@@ -21,7 +21,7 @@ namespace Architect.API.Tron.DataAccess
    WHERE COD_MON = :COD_MON
 ORDER BY FEC_CAMBIO DESC FETCH FIRST 1 ROWS ONLY")
                         .AddParameter("COD_MON", DbType.Decimal, 5, codigoMoneda)
-                        .QueryScalar<double>(connection, "Tron");
+                        .QueryScalar<decimal>(connection, "Tron");
         }
     }
 }

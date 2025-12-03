@@ -20,11 +20,11 @@ namespace Architect.GTI.Integrations.Application
         /// <summary>
         /// Envia un comprobante electrónico a Hacienda.
         /// </summary>
-        public static DocumentoResponse CargarDocumento(FacturaRequest fact)
+        public static DocumentoResponse CargarDocumento(int companyId, FacturaRequest fact)
         {
             DocumentoRequest request = Convert_FacturaRequest_to_DocumentoRequest(fact);
 
-            var session = API.Core.Business.Traza.TrackRequest.NewSession(new API.Core.Contracts.Security.Token(), "ApiCargaFactura/api/Documentos/CargarDocumento", request);
+            var session = API.Core.Business.Traza.TrackRequest.NewSession(new API.Core.Contracts.Security.Token() { CompanyId = companyId }, "ApiCargaFactura/api/Documentos/CargarDocumento", request);
             DocumentoResponse response = null;
             try
             {
@@ -71,13 +71,13 @@ namespace Architect.GTI.Integrations.Application
             linea.Codigo = fact.Codigo;
             linea.CodProdServ[0] = fact.CodigoServicio;
             linea.Cantidad = fact.Cantidad;
-            linea.PrecioUnitario = (int)fact.PrecioUnitario;
+            linea.PrecioUnitario = fact.PrecioUnitario;
             linea.Descripcion = fact.Descripcion;
 
             // Recalcular totales basados en la nueva información
-            int totalVenta = fact.Cantidad * (int)fact.PrecioUnitario;
-            float impuesto = totalVenta * 0.02f; // 2% de impuesto según el ejemplo
-            float totalComprobante = totalVenta + impuesto;
+            double totalVenta = fact.PrecioUnitario;
+            double impuesto = fact.Impuesto; 
+            double totalComprobante = fact.PrecioTotal;
 
             var totales = request.Documentos[0].Totales;
             totales.TotalServGravado = totalVenta;

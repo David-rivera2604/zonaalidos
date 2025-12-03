@@ -57,6 +57,16 @@ namespace Architect.GTI.Integrations.Domain.Factura
         public double PrecioUnitario { get; set; }
 
         /// <summary>
+        /// Impuesto del producto o servicio.
+        /// </summary>
+        public double Impuesto { get; set; }
+
+        /// <summary>
+        /// Precio total del producto o servicio.
+        /// </summary>
+        public double PrecioTotal { get; set; }
+
+        /// <summary>
         /// Divisa en la que está hecha la factura.
         /// Campo requerido para todos los tipos de documentos.
         /// Valores válidos: 1 - Colones, 2 - US Dollar.

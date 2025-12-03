@@ -25,6 +25,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 result = new Contracts.Cotizacion.Viajero()
                 {
                     cod_mon = COD_MON,
+                    cod_ramo = COD_RAMO,
                     cod_fracc_pago = 101,
                     fec_efec_poliza = DateTime.Today,
                     fec_vcto_poliza = DateTime.Today,
@@ -125,7 +126,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                     if (resultInfo.presupuesto.IsNotEmpty())
                     {
-                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt32(resultInfo.presupuesto.Substring(4)), tokenInfo.CompanyId, "Cotización Seguro de Viaje", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
+                        Core.Business.General.ChangeSet.Create(3000, Convert.ToInt64(resultInfo.presupuesto), tokenInfo.CompanyId, "Cotización Seguro de Viaje", "Presupuesto #" + resultInfo.presupuesto, tokenInfo.UserId, resultInfo);
                     }
 
                 }
