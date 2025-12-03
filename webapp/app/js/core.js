@@ -949,6 +949,9 @@ app.security = (function () {
     }
 
     return {
+        getCookie: function (name) {
+            return getCookie(name);
+        },
         logout: function () {             
                 app.core.Post(app.setting.basepath + 'Security/Logout')
                     .done(function (data) {
