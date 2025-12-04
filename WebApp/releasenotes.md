@@ -1,5 +1,26 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.161 - 04/12/2025
+
+### Aliados - Seguridad: 2FA, manejo de claves de acceso
+
+#### Funcionalidades implementadas:
+
+- ✅ Se habilita el manejo de cuentas de servicio en modo 2FA. Las cuentas de servicio solo pueden ser usadas en el API.
+- ✅ Se cambia el mantenimiento de usuario para habilitar la configuración de cuentas de servicio.
+- ✅ La clave de acceso no se almacena; en su lugar se obtiene un hash, lo cual es la forma correcta de manejarlas.
+- ✅ Se hacen mejoras en el manejo de autenticación en modo 2FA.
+
+#### Nuevos Settings
+
+Nuevos settings (tabla `settings`) para controlar la autenticación 2FA:
+
+| Setting | Descripción |
+|---------|-------------|
+| `Security.2FA.Mode` | Modo de uso de 2FA. none=deshabilitado, full=habilitado, user=según nuevo indicador de los usuarios |
+| `Security.2FA.Enable` | Debe ser eliminado ya que no se utiliza |
+
+---
 ## Versión 1.6.160 - 03/12/2025
 
 ### Aliados - Viajero: Envío de facturas electrónicas
@@ -22,3 +43,4 @@ Nuevos settings (tabla `settings`) para controlar el envío de la factura electr
 | `Integration.GTI.ApiCargaFactura.Clave` | Clave para el servicio de GTI |
 
 ---
+
