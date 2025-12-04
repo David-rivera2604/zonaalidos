@@ -25,14 +25,14 @@ namespace Architect.API.Core.DataAccess.Security
             {
                 usermemberItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO UserMember (UserId, CompanyId, UserName, EMail, Password, OldPassword, IdentificationType, Identification, FirstName, LastName, BirthDate, FailedPasswordCount, SecurityLevel, IsLockedOut, LockedOutDate, PasswordChangedDate, OneTimePassword, LoginDate, ManagerId, AccessKey, BranchOffice, Reference, Position, PhoneNumber, SalesChannel, InitialNavigationCode, CustomData, RecordStatus, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:UserId, :CompanyId, :UserName, :EMail, :Password, :OldPassword, :IdentificationType, :Identification, :FirstName, :LastName, :BirthDate, :FailedPasswordCount, :SecurityLevel, :IsLockedOut, :LockedOutDate, :PasswordChangedDate, :OneTimePassword, :LoginDate, :ManagerId, :AccessKey, :BranchOffice, :Reference, :Position, :PhoneNumber, :SalesChannel, :InitialNavigationCode, :CustomData, :RecordStatus, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO UserMember (UserId, CompanyId, UserName, EMail, Password, OldPassword, IdentificationType, Identification, FirstName, LastName, BirthDate, FailedPasswordCount, SecurityLevel, IsLockedOut, LockedOutDate, PasswordChangedDate, OneTimePassword, LoginDate, ManagerId, AccessKey, BranchOffice, Reference, Position, PhoneNumber, SalesChannel, InitialNavigationCode, CustomData, RecordStatus, IsService, Is2FAEnabled, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:UserId, :CompanyId, :UserName, :EMail, :Password, :OldPassword, :IdentificationType, :Identification, :FirstName, :LastName, :BirthDate, :FailedPasswordCount, :SecurityLevel, :IsLockedOut, :LockedOutDate, :PasswordChangedDate, :OneTimePassword, :LoginDate, :ManagerId, :AccessKey, :BranchOffice, :Reference, :Position, :PhoneNumber, :SalesChannel, :InitialNavigationCode, :CustomData, :RecordStatus, :IsService, :Is2FAEnabled, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("UserId", DbType.Decimal, 9, usermemberItem.UserId)
                             .AddParameter("CompanyId", DbType.Decimal, 5, usermemberItem.CompanyId)
                             .AddParameter("UserName", DbType.AnsiString, 35, usermemberItem.UserName)
                             .AddParameter("EMail", DbType.AnsiString, 120, usermemberItem.EMail)
-                            .AddParameter("Password", DbType.AnsiString, 255, usermemberItem.Password)
-                            .AddParameter("OldPassword", DbType.AnsiString, 255, usermemberItem.OldPassword)
+                            .AddParameter("Password", DbType.AnsiString, 500, usermemberItem.Password)
+                            .AddParameter("OldPassword", DbType.AnsiString, 500, usermemberItem.OldPassword)
                             .AddParameter("IdentificationType", DbType.Decimal, 3, usermemberItem.IdentificationType)
                             .AddParameter("Identification", DbType.AnsiString, 20, usermemberItem.Identification)
                             .AddParameter("FirstName", DbType.AnsiString, 35, usermemberItem.FirstName)
@@ -55,6 +55,9 @@ namespace Architect.API.Core.DataAccess.Security
                             .AddParameter("InitialNavigationCode", DbType.AnsiStringFixedLength, 8, usermemberItem.InitialNavigationCode)
                             .AddParameter("CustomData", DbType.AnsiString, 2000, usermemberItem.CustomData)
                             .AddParameter("RecordStatus", DbType.Decimal, 5, usermemberItem.RecordStatus)
+                            .AddParameter("IsService", DbType.Decimal, 1, usermemberItem.IsService ? 1 : 0)
+                            .AddParameter("Is2FAEnabled", DbType.Decimal, 1, usermemberItem.Is2FAEnabled ? 1 : 0)
+                            
                             .AddParameter("UpdateUserCode", DbType.Decimal, 9, usermemberItem.UpdateUserCode)
                             .AddParameter("UpdateDate", DbType.DateTime, 0, usermemberItem.UpdateDate)
                             .Execute(connection, "Research");
@@ -98,7 +101,7 @@ namespace Architect.API.Core.DataAccess.Security
         public static Architect.API.Core.Contracts.Security.UserMember Retrieve(int userid, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.Security.UserMember result = null;
-            Database.Select("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate " +
+            Database.Select("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.IsService, UserMember.Is2FAEnabled, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate " +
                               "FROM UserMember LEFT JOIN UserMember um ON um.UserId = UserMember.UpdateUserCode " +
                              "WHERE UserMember.UserId=:UserId AND UserMember.CompanyId=:CompanyId")
                         .AddParameter("UserId", DbType.Decimal, 9, userid)
@@ -121,7 +124,7 @@ namespace Architect.API.Core.DataAccess.Security
         public static List<Architect.API.Core.Contracts.Security.UserMember> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.Security.UserMember> result = new List<Architect.API.Core.Contracts.Security.UserMember>();
-            Database.Select("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate " +
+            Database.Select("SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.IsService, UserMember.Is2FAEnabled, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate " +
                               "FROM UserMember LEFT JOIN UserMember um ON um.UserId = UserMember.UpdateUserCode " +
                              "WHERE UserMember.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -155,7 +158,7 @@ namespace Architect.API.Core.DataAccess.Security
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate " +
+                            "SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.IsService, UserMember.Is2FAEnabled, UserMember.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, UserMember.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY UserMember.UserId DESC) RowNumber " +
                               "FROM UserMember LEFT JOIN UserMember um ON um.UserId = UserMember.UpdateUserCode " +
                              "WHERE UserMember.CompanyId=:CompanyId" + filter +
@@ -184,11 +187,11 @@ namespace Architect.API.Core.DataAccess.Security
             if (filter.IsNotEmpty())
             {
                 string condition = string.Empty;
-                if (filter.IndexOf("|")>-1)
+                if (filter.IndexOf("|") > -1)
                 {
-                    condition = filter.Substring( filter.IndexOf("|"));
+                    condition = filter.Substring(filter.IndexOf("|"));
                     filter = filter.Substring(0, filter.IndexOf("|"));
-                }			
+                }
                 if (includeWhere)
                 {
                     result = " WHERE ";
@@ -209,7 +212,7 @@ namespace Architect.API.Core.DataAccess.Security
                 if (condition.IsNotEmpty())
                 {
                     result += Database.FilterFactory(condition, "UserMember");
-                }				
+                }
             }
             return result;
         }
@@ -240,13 +243,13 @@ namespace Architect.API.Core.DataAccess.Security
                 usermemberItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE UserMember " +
-                                      "SET CompanyId=:CompanyId, UserName=:UserName, EMail=:EMail, Password=:Password, OldPassword=:OldPassword, IdentificationType=:IdentificationType, Identification=:Identification, FirstName=:FirstName, LastName=:LastName, BirthDate=:BirthDate, FailedPasswordCount=:FailedPasswordCount, SecurityLevel=:SecurityLevel, IsLockedOut=:IsLockedOut, LockedOutDate=:LockedOutDate, PasswordChangedDate=:PasswordChangedDate, OneTimePassword=:OneTimePassword, LoginDate=:LoginDate, ManagerId=:ManagerId, AccessKey=:AccessKey, BranchOffice=:BranchOffice, Reference=:Reference, Position=:Position, PhoneNumber=:PhoneNumber, SalesChannel=:SalesChannel, InitialNavigationCode=:InitialNavigationCode, CustomData=:CustomData, RecordStatus=:RecordStatus, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET CompanyId=:CompanyId, UserName=:UserName, EMail=:EMail, Password=:Password, OldPassword=:OldPassword, IdentificationType=:IdentificationType, Identification=:Identification, FirstName=:FirstName, LastName=:LastName, BirthDate=:BirthDate, FailedPasswordCount=:FailedPasswordCount, SecurityLevel=:SecurityLevel, IsLockedOut=:IsLockedOut, LockedOutDate=:LockedOutDate, PasswordChangedDate=:PasswordChangedDate, OneTimePassword=:OneTimePassword, LoginDate=:LoginDate, ManagerId=:ManagerId, AccessKey=:AccessKey, BranchOffice=:BranchOffice, Reference=:Reference, Position=:Position, PhoneNumber=:PhoneNumber, SalesChannel=:SalesChannel, InitialNavigationCode=:InitialNavigationCode, CustomData=:CustomData, RecordStatus=:RecordStatus, IsService=:IsService, Is2FAEnabled=:Is2FAEnabled, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE UserId=:UserId")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, usermemberItem.CompanyId)
                                 .AddParameter("UserName", DbType.AnsiString, 35, usermemberItem.UserName)
                                 .AddParameter("EMail", DbType.AnsiString, 120, usermemberItem.EMail)
-                                .AddParameter("Password", DbType.AnsiString, 255, usermemberItem.Password)
-                                .AddParameter("OldPassword", DbType.AnsiString, 255, usermemberItem.OldPassword)
+                                .AddParameter("Password", DbType.AnsiString, 500, usermemberItem.Password)
+                                .AddParameter("OldPassword", DbType.AnsiString, 500, usermemberItem.OldPassword)
                                 .AddParameter("IdentificationType", DbType.Decimal, 3, usermemberItem.IdentificationType)
                                 .AddParameter("Identification", DbType.AnsiString, 20, usermemberItem.Identification)
                                 .AddParameter("FirstName", DbType.AnsiString, 35, usermemberItem.FirstName)
@@ -269,6 +272,8 @@ namespace Architect.API.Core.DataAccess.Security
                                 .AddParameter("InitialNavigationCode", DbType.AnsiStringFixedLength, 8, usermemberItem.InitialNavigationCode)
                                 .AddParameter("CustomData", DbType.AnsiString, 2000, usermemberItem.CustomData)
                                 .AddParameter("RecordStatus", DbType.Decimal, 5, usermemberItem.RecordStatus)
+                                .AddParameter("IsService", DbType.Decimal, 1, usermemberItem.IsService ? 1 : 0)
+                                .AddParameter("Is2FAEnabled", DbType.Decimal, 1, usermemberItem.Is2FAEnabled ? 1 : 0)
                                 .AddParameter("UpdateUserCode", DbType.Decimal, 9, usermemberItem.UpdateUserCode)
                                 .AddParameter("UpdateDate", DbType.DateTime, 0, usermemberItem.UpdateDate)
                                 .AddParameter("UserId", DbType.Decimal, 9, usermemberItem.UserId)
@@ -430,6 +435,8 @@ namespace Architect.API.Core.DataAccess.Security
             item.FailedPasswordCount = reader.IntegerValue("FailedPasswordCount");
             item.SecurityLevel = reader.IntegerValue("SecurityLevel");
             item.IsLockedOut = reader.IntegerValue("IsLockedOut") == 1;
+            item.IsService = reader.IntegerValue("IsService") == 1;
+            item.Is2FAEnabled = reader.IntegerValue("Is2FAEnabled") == 1;
             item.LockedOutDate = reader.DateTimeValue("LockedOutDate");
             item.PasswordChangedDate = reader.DateTimeValue("PasswordChangedDate");
             item.OneTimePassword = reader.StringValue("OneTimePassword");
@@ -472,7 +479,7 @@ LEFT JOIN ROLEMEMBER rm ON rm.RoleId = urm.RoleId
 group by urm.USERID
 order by urm.USERID
 )
-SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.UpdateUserCode, UserMember.UpdateDate, um.FirstName || ' ' || um.LastName AS UpdateUserName, roleinfo.RoleList 
+SELECT UserMember.UserId, UserMember.CompanyId, UserMember.UserName, UserMember.EMail, UserMember.Password, UserMember.OldPassword, UserMember.IdentificationType, UserMember.Identification, UserMember.FirstName, UserMember.LastName, UserMember.BirthDate, UserMember.FailedPasswordCount, UserMember.SecurityLevel, UserMember.IsLockedOut, UserMember.LockedOutDate, UserMember.PasswordChangedDate, UserMember.OneTimePassword, UserMember.LoginDate, UserMember.ManagerId, UserMember.AccessKey, UserMember.BranchOffice, UserMember.Reference, UserMember.Position, UserMember.PhoneNumber, UserMember.SalesChannel, UserMember.InitialNavigationCode, UserMember.CustomData, UserMember.RecordStatus, UserMember.IsService, UserMember.Is2FAEnabled, UserMember.UpdateUserCode, UserMember.UpdateDate, um.FirstName || ' ' || um.LastName AS UpdateUserName, roleinfo.RoleList 
 FROM UserMember 
 LEFT JOIN UserMember um ON um.UserId = UserMember.UpdateUserCode  
 LEFT JOIN roleinfo ON roleinfo.USERID = UserMember.UserId  
@@ -483,9 +490,9 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
                 .AddParameter("SecurityLevel", DbType.Decimal, 3, securitylevel)
                 .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                 {
-                     item = DataReaderToUserMember(reader);
-                     item.RoleList = reader.StringValue("RoleList");
-                     result.Add(item);
+                    item = DataReaderToUserMember(reader);
+                    item.RoleList = reader.StringValue("RoleList");
+                    result.Add(item);
                 }));
             return result;
         }
@@ -529,7 +536,7 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
         public static Architect.API.Core.Contracts.Security.UserMember RetrieveByEMail(string email, int companyid, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.Security.UserMember result = null;
-            Database.Select("SELECT UserId, UserName, EMail, Password, OldPassword, FirstName, LastName, FailedPasswordCount, SecurityLevel, IsLockedOut, LockedOutDate, OneTimePassword, PasswordChangedDate, ManagerId, RecordStatus, CompanyId, LoginDate, BranchOffice, IdentificationType, Identification, InitialNavigationCode FROM UserMember WHERE LOWER(EMail)=:EMail AND CompanyId=:CompanyId")
+            Database.Select("SELECT UserId, UserName, EMail, Password, OldPassword, FirstName, LastName, FailedPasswordCount, SecurityLevel, IsLockedOut, LockedOutDate, OneTimePassword, PasswordChangedDate, ManagerId, RecordStatus, CompanyId, LoginDate, BranchOffice, IdentificationType, Identification, InitialNavigationCode, IsService, Is2FAEnabled FROM UserMember WHERE LOWER(EMail)=:EMail AND CompanyId=:CompanyId")
                 .AddParameter("EMail", DbType.AnsiString, 120, email)
                 .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
                 .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
@@ -545,7 +552,7 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
                         LastName = reader.StringValue("LastName"),
                         FailedPasswordCount = reader.IntegerValue("FailedPasswordCount"),
                         SecurityLevel = reader.IntegerValue("SecurityLevel"),
-                        IsLockedOut = reader.IntegerValue("IsLockedOut") == 1,
+                        IsLockedOut = reader.BooleanValue("IsLockedOut"),
                         LockedOutDate = reader.DateTimeValue("LockedOutDate"),
                         OneTimePassword = reader.StringValue("OneTimePassword"),
                         PasswordChangedDate = reader.DateTimeValue("PasswordChangedDate"),
@@ -556,7 +563,9 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
                         BranchOffice = reader.IntegerValue("BranchOffice"),
                         IdentificationType = reader.IntegerValue("IdentificationType"),
                         Identification = reader.StringValue("Identification"),
-                        InitialNavigationCode = reader.StringValue("InitialNavigationCode")
+                        InitialNavigationCode = reader.StringValue("InitialNavigationCode"),
+                        IsService = reader.BooleanValue("IsService"),
+                        Is2FAEnabled = reader.BooleanValue("Is2FAEnabled")
                     };
                 }));
             return result;
@@ -572,7 +581,7 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
         public static Architect.API.Core.Contracts.Security.UserMember RetrieveByUserName(string username, int companyid, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.Security.UserMember result = null;
-            Database.Select("SELECT UserId, UserName, EMail, Password, OldPassword, FirstName, LastName, FailedPasswordCount, SecurityLevel, IsLockedOut, LockedOutDate, OneTimePassword, PasswordChangedDate, ManagerId, RecordStatus, CompanyId, LoginDate, BranchOffice, IdentificationType, Identification, InitialNavigationCode FROM UserMember WHERE LOWER(UserName)=:UserName AND CompanyId=:CompanyId")
+            Database.Select("SELECT UserId, UserName, EMail, Password, OldPassword, FirstName, LastName, FailedPasswordCount, SecurityLevel, IsLockedOut, LockedOutDate, OneTimePassword, PasswordChangedDate, ManagerId, RecordStatus, CompanyId, LoginDate, BranchOffice, IdentificationType, Identification, InitialNavigationCode, IsService, Is2FAEnabled FROM UserMember WHERE LOWER(UserName)=:UserName AND CompanyId=:CompanyId")
                 .AddParameter("UserName", DbType.AnsiString, 35, username)
                 .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
                 .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
@@ -588,7 +597,7 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
                         LastName = reader.StringValue("LastName"),
                         FailedPasswordCount = reader.IntegerValue("FailedPasswordCount"),
                         SecurityLevel = reader.IntegerValue("SecurityLevel"),
-                        IsLockedOut = reader.IntegerValue("IsLockedOut") == 1,
+                        IsLockedOut = reader.BooleanValue("IsLockedOut"),
                         LockedOutDate = reader.DateTimeValue("LockedOutDate"),
                         OneTimePassword = reader.StringValue("OneTimePassword"),
                         PasswordChangedDate = reader.DateTimeValue("PasswordChangedDate"),
@@ -599,7 +608,9 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
                         BranchOffice = reader.IntegerValue("BranchOffice"),
                         IdentificationType = reader.IntegerValue("IdentificationType"),
                         Identification = reader.StringValue("Identification"),
-                        InitialNavigationCode = reader.StringValue("InitialNavigationCode")
+                        InitialNavigationCode = reader.StringValue("InitialNavigationCode"),
+                        IsService = reader.BooleanValue("IsService"),
+                        Is2FAEnabled = reader.BooleanValue("Is2FAEnabled")
                     };
                 }));
             return result;
@@ -614,7 +625,7 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
         public static Architect.API.Core.Contracts.Security.UserMember RetrieveByAccessKey(string accesskey, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.Security.UserMember result = null;
-            Database.Select("SELECT UserId, UserName, EMail, Password, OldPassword, FirstName, LastName, FailedPasswordCount, SecurityLevel, IsLockedOut, LockedOutDate, OneTimePassword, PasswordChangedDate, ManagerId, RecordStatus, CompanyId, LoginDate, BranchOffice, IdentificationType, Identification, InitialNavigationCode FROM UserMember WHERE AccessKey=:AccessKey")
+            Database.Select("SELECT UserId, UserName, EMail, Password, OldPassword, FirstName, LastName, FailedPasswordCount, SecurityLevel, IsLockedOut, LockedOutDate, OneTimePassword, PasswordChangedDate, ManagerId, RecordStatus, CompanyId, LoginDate, BranchOffice, IdentificationType, Identification, InitialNavigationCode, IsService, Is2FAEnabled FROM UserMember WHERE AccessKey=:AccessKey")
                 .AddParameter("AccessKey", DbType.AnsiString, 20, accesskey)
                 .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                 {
@@ -640,7 +651,9 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
                         BranchOffice = reader.IntegerValue("BranchOffice"),
                         IdentificationType = reader.IntegerValue("IdentificationType"),
                         Identification = reader.StringValue("Identification"),
-                        InitialNavigationCode = reader.StringValue("InitialNavigationCode")
+                        InitialNavigationCode = reader.StringValue("InitialNavigationCode"),
+                        IsService = reader.BooleanValue("IsService"),
+                        Is2FAEnabled = reader.BooleanValue("Is2FAEnabled")
                     };
                 }));
             return result;
@@ -655,11 +668,11 @@ WHERE UserMember.CompanyId=:CompanyId AND UserMember.SecurityLevel<=:SecurityLev
         public static int InternalUpdate(Architect.API.Core.Contracts.Security.UserMember usermemberItem, IDbConnection connection = null)
         {
             return Database.Update("UPDATE UserMember SET Password=:Password, OldPassword=:OldPassword, FailedPasswordCount=:FailedPasswordCount, SecurityLevel=:SecurityLevel, IsLockedOut=:IsLockedOut, LockedOutDate=:LockedOutDate, PasswordChangedDate=:PasswordChangedDate, OneTimePassword=:OneTimePassword, LoginDate=:LoginDate WHERE UserId=:UserId AND CompanyId=:CompanyId")
-                .AddParameter("Password", DbType.AnsiString, 255, usermemberItem.Password)
-                .AddParameter("OldPassword", DbType.AnsiString, 255, usermemberItem.OldPassword)
+                .AddParameter("Password", DbType.AnsiString, 500, usermemberItem.Password)
+                .AddParameter("OldPassword", DbType.AnsiString, 500, usermemberItem.OldPassword)
                 .AddParameter("FailedPasswordCount", DbType.Decimal, 3, usermemberItem.FailedPasswordCount)
                 .AddParameter("SecurityLevel", DbType.Decimal, 3, usermemberItem.SecurityLevel)
-                .AddParameter("IsLockedOut", DbType.Decimal, 1, usermemberItem.IsLockedOut? 1 : 0)
+                .AddParameter("IsLockedOut", DbType.Decimal, 1, usermemberItem.IsLockedOut ? 1 : 0)
                 .AddParameter("LockedOutDate", DbType.DateTime, 9, usermemberItem.LockedOutDate)
                 .AddParameter("PasswordChangedDate", DbType.DateTime, 9, usermemberItem.PasswordChangedDate)
                 .AddParameter("OneTimePassword", DbType.AnsiStringFixedLength, 6, usermemberItem.OneTimePassword)
