@@ -1471,111 +1471,37 @@ app.EmisionViajero = (function () {
     function documentosrequeridos_controls_Events() {
 
         $('#fileUploadModal').on('change', function () {
-            var index = 0;
-            var arr = $('#fileUploadModal').prop('files');
-            var message = '';
-
-            for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
-            }
-            if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
-            }
-            else {
-                app.ui.ButtonDoing('#fileUploadModal');
-                var data = new FormData();
-                data.append('EntityType', 3000);
-                data.append('EntityId', setupData.presupuesto);
-                data.append('DocumentType', 99);
-                data.append('Description', arr[0]);
-                for (index = 0; index < arr.length; index++) {
-                    data.append('files', arr[index]);
-                }
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: app.setting.apipath + 'v1/Common/Upload',
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    timeout: 600000,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
-                    }
-                }).done(function (data, textStatus, jqXHR) {
-
+            app.core.FileUpload({
+                uploadCtrolId: '#fileUploadModal',
+                entityType: 3000,
+                entityId: setupData.presupuesto,
+                documentType: 99,
+                callback: function (data) {
                     $('#DNombre').val(data[0].FileName);
                     $('#DStored').val(data[0].StoredFileName);
                     $('#DTamano').val(data[0].Size);
                     $('#DDescripcion').val(app.ui.StringCapitalizeFormatter(data[0].FileName.substring(0, data[0].FileName.indexOf('.'))));
                     $('#DDescripcion').select().focus()
-
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR : ", jqXHR);
-                }).always(function () {
-                    app.ui.ButtonDone('#fileUploadModal')
-                });
-            }
+                }
+            });
         });
 
         $('#fileUpload').on('change', function () {
-            var index = 0;
-            var arr = $('#fileUpload').prop('files');
-            var message = '';
-
-            for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
-            }
-            if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
-            }
-            else {
-                app.ui.ButtonDoing('#fileUpload');
-                var data = new FormData();
-                data.append('EntityType', 3000);
-                data.append('EntityId', setupData.presupuesto);
-                data.append('DocumentType', rowDocumentosrequeridos.documentosrequeridosId);
-                data.append('Description', rowDocumentosrequeridos.tipo);
-                for (index = 0; index < arr.length; index++) {
-                    data.append('files', arr[index]);
-                }
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: app.setting.apipath + 'v1/Common/Upload',
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    timeout: 600000,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
-                    }
-                }).done(function (data, textStatus, jqXHR) {
-
+            app.core.FileUpload({
+                uploadCtrolId: '#fileUpload',
+                entityType: 3000,
+                entityId: setupData.presupuesto,
+                documentType: rowDocumentosrequeridos.documentosrequeridosId,
+                description: rowDocumentosrequeridos.tipo,
+                callback: function (data) {
                     rowDocumentosrequeridos.DNombre = data[0].FileName;
                     rowDocumentosrequeridos.DStored = data[0].StoredFileName;
                     rowDocumentosrequeridos.DTamano = data[0].Size;
                     rowDocumentosrequeridos.DFecha = new Date();
                     $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: rowDocumentosrequeridos.documentosrequeridosId, row: rowDocumentosrequeridos });
 
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR : ", jqXHR);
-                }).always(function () {
-                    app.ui.ButtonDone('#fileUpload')
-                });
-            }
+                }
+            });
         });
 
     }

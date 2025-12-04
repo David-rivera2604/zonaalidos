@@ -170,6 +170,7 @@
     <Compile Include="General\DynamicSetting.cs" />
     <Compile Include="General\WhiteList.cs" />
     <Compile Include="Security\RoleMember.cs" />
+    <Compile Include="Traza\TrackRequest.cs" />
     <Compile Include="_Generated\ChangeInicio.cs" />
     <Compile Include="_Generated\CustomData.cs" />
     <Compile Include="_Generated\Lookup.cs" />
