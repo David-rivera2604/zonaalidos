@@ -1,6 +1,7 @@
 ﻿using Architect.API.Core.Contracts.Security;
 using Architect.API.Core.DataAccess.Security;
 using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -454,9 +455,52 @@ namespace Architect.API.Core.Business.Security
                 return false;
             }
 
-            // Validar contraseña
-            var encryptedPassword = Architect.Utilities.Helpers.CryptSupport.EncryptString(request.Password);
-            return user.Password.Equals(".") || user.Password.Equals(encryptedPassword, StringComparison.CurrentCultureIgnoreCase);
+            // Detectar formato del hash almacenado
+            if (IsLegacyPassword(user.Password))
+            {
+
+                string encryptedPassword = Architect.Utilities.Helpers.CryptSupport.EncryptString(request.Password);
+                string oldPassword = user.Password;
+
+
+                if ( user.Password.Equals(".") || user.Password.Equals(encryptedPassword, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    // Almacena el pasword en el nuevo formato
+                    user.Password = PasswordHasher.HashPassword(request.Password);
+                    DataAccess.Security.UserMember.InternalUpdate(user);
+
+                    return true;
+                }
+                else { 
+                    return false;
+                }
+            }
+            else
+            {
+
+
+
+                // ? Hash nuevo (PasswordHasher)
+                return user.Password.Equals(".") || PasswordHasher.VerifyPassword(request.Password, user.Password);
+            }
+        }
+
+        private static bool IsLegacyPassword(string hash)
+        {
+            if (string.Equals(hash, "."))
+                return true;
+
+            // CryptSupport genera hexadecimal (solo caracteres 0-9A-F)
+            // PasswordHasher genera Base64 (caracteres alfanuméricos + +/=)
+            if (string.IsNullOrEmpty(hash))
+                return false;
+
+            // Base64 siempre tiene '=' al final o caracteres no-hex
+            if (hash.Contains("+") || hash.Contains("/") || hash.Contains("="))
+                return false; // Es PasswordHasher (Base64)
+
+            // Si solo tiene caracteres hex, es legacy
+            return hash.All(c => "0123456789ABCDEFabcdef".Contains(c));
         }
 
         /// <summary>

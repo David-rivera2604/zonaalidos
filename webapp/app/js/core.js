@@ -145,110 +145,137 @@ app.core = (function () {
         });
     }
 
-    function UpLoadFileEx(formId, uploadCtrolId, entityType, entityId, documentType, description, callback) {
-        if (app.ui.IsValid(formId, false, true)) {
-            let index = 0;
-            let arr = $(uploadCtrolId + 'UploadModal').prop('files');
-            let message = '';
-            let elementInstance = $(formId).validate();
+    function FileUpLoad(options) {
+        // 1. Configuración
+        const conf = {
+            formId: null,
+            uploadCtrolId: '#fileUploadModal',
+            entityType: 0,
+            entityId: 0,
+            documentType: 99,
+            description: null,
+            callback: null
+        };
+        const fullconfig = { ...conf, ...options };
 
-            for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
-            }
-            if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
-            }
-            else {
-                app.ui.ButtonDoing(uploadCtrolId);
-                var fileData = new FormData();
-                fileData.append('EntityType', entityType);
-                fileData.append('EntityId', entityId);
-                fileData.append('DocumentType', documentType);
-                fileData.append('Description', description);
-                for (index = 0; index < arr.length; index++) {
-                    fileData.append('files', arr[index]);
-                }
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: app.setting.apipath + 'v1/Common/Upload',
-                    data: fileData,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    timeout: 600000,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
-                    }
-                }).done(function (fileList) {
-                    callback(fileList);
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    ajaxErrorHandler(jqXHR, errorThrown);
-                }).always(function () {
-                    app.ui.ButtonDone(uploadCtrolId)
-                });
-            }
-        }
-    }
+        // 2. Obtener archivos
+        const $fileInput = $(fullconfig.uploadCtrolId);
+        const fileList = $fileInput.prop('files'); // Esto es un FileList, no un Array
 
-    function UpLoadFile(formId, uploadCtrolId, callback) {
-        let index = 0;
-        let arr = $(uploadCtrolId).prop('files');
-        let message = '';
-        let elementInstance = $(formId).validate();
-        let isValid = !elementInstance.valid();
+        // Convertir a array para facilitar manejo (opcional pero recomendado)
+        const arr = Array.from(fileList);
 
-        if (arr.length == 0) {
+        if (arr.length === 0) {
             return;
         }
-        if ($(uploadCtrolId).valid()) {
 
-
-            for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
-            }
-            if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
-            }
-            else {
-                app.ui.ButtonDoing(uploadCtrolId);
-                var fileData = new FormData();
-                for (index = 0; index < arr.length; index++) {
-                    fileData.append('files', arr[index]);
-                }
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: app.setting.apipath + 'v1/Common/Upload',
-                    data: fileData,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    timeout: 600000,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
-                    }
-                }).done(function (fileList) {
-                    callback(fileList, false);
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    ajaxErrorHandler(jqXHR, errorThrown);
-                }).always(function () {
-                    app.ui.ButtonDone(uploadCtrolId)
-                });
-            }
-        } else {
-            callback([arr[0]], true);
+        // 3. Validar formulario general (si aplica)
+        if (fullconfig.formId != null && !app.ui.IsValid(fullconfig.formId, false, true)) {
+            return;
         }
+
+        // 4. Validar archivos (Tamaño y Tipo)
+        let message = '';
+        for (const file of arr) {
+            message = FileUpLoadValidate(file.name, file.size, file.type, message);
+        }
+
+        // 5. Manejo de Errores de archivo
+        if (message !== '') {
+            if (fullconfig.formId) {
+                const elementInstance = $(fullconfig.formId).validate();
+                // Aseguramos que showErrors exista (dependencia de jQuery Validate)
+                if (elementInstance) {
+                    elementInstance.showErrors({ 'FileName': message });
+                }
+            } else {
+                // Fallback por si no hay formId, para que el usuario sepa qué pasó
+                alert(message);
+            }
+            return;
+        }
+
+        // 6. Preparar envío
+        app.ui.ButtonDoing(fullconfig.uploadCtrolId);
+
+        const fileData = new FormData();
+        fileData.append('EntityType', fullconfig.entityType);
+        fileData.append('EntityId', fullconfig.entityId);
+        fileData.append('DocumentType', fullconfig.documentType);
+        if (fullconfig.description == null) {
+            fileData.append('Description', arr[0].name);
+        } else {
+            fileData.append('Description', fullconfig.description);
+        }
+        for (const file of arr) {
+            fileData.append('files', file);
+        }
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: app.setting.apipath + 'v1/Common/Upload',
+            data: fileData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
+            }
+        }).done(function (response) {
+            if (typeof fullconfig.callback === 'function') {
+                fullconfig.callback(response);
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            ajaxErrorHandler(jqXHR, errorThrown);
+        }).always(function () {
+            app.ui.ButtonDone(fullconfig.uploadCtrolId)
+        });
+    }
+
+    function FileUpLoadValidate(name, size, type, currentMessage) {
+        // Definir constantes para mejorar legibilidad
+        const KB = 1024;
+        const MB = 1024 * 1024;
+
+        // Límites
+        const MIN_SIZE_WORD_PDF = 13 * KB; // ~13KB
+        const MIN_SIZE_EXCEL = 9 * KB;     // ~9KB
+        const MAX_SIZE = 30 * MB;          // 30MB
+
+        // Tipos MIME
+        const TYPE_WORD = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        const TYPE_PDF = 'application/pdf';
+        const TYPE_EXCEL = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+        let msg = currentMessage;
+
+        // Helper para concatenar mensajes
+        const addMsg = (newText) => {
+            if (msg !== '') msg += ', ';
+            msg += newText;
+        };
+
+        // Validaciones
+        if ((type === TYPE_WORD || type === TYPE_PDF) && size < MIN_SIZE_WORD_PDF) {
+            addMsg('El tamaño del archivo ' + name + ' es menor a 13kb');
+        }
+
+        if (type === TYPE_EXCEL && size < MIN_SIZE_EXCEL) {
+            addMsg('El tamaño del archivo ' + name + ' es menor a 9kb');
+        }
+
+        if (size >= MAX_SIZE) {
+            // Corrección del operador & por +
+            addMsg('El tamaño del archivo ' + name + ' es mayor a 30mb');
+        }
+
+        if (name.length > 255) {
+            // Corrección del operador & por +
+            addMsg('El nombre del archivo debe ser menor a 255 caracteres');
+        }
+
+        return msg;
     }
 
     function ajaxCall(type, url, data, success, token, contentType) {
@@ -466,7 +493,7 @@ app.core = (function () {
                 url = '';
             }
             else {
-                url = url + (url.endsWith('=') ? parentValue : '' );
+                url = url + (url.endsWith('=') ? parentValue : '');
             }
 
             ajaxCall('GET', app.setting.apipath + path + '?key=' + lookupKey + '&parentId=' + parentValue + '&url=' + url, null,
@@ -718,8 +745,11 @@ app.core = (function () {
         GetPDF: function (url, download, filename, callback) {
             return GetPDF(url, download, filename, callback);
         },
-        UpLoadFile: function (formId, uploadCtrolId, callback) {
-            return UpLoadFile(formId, uploadCtrolId, callback);
+        FileUpLoad: function (options) {
+            return FileUpLoad(options);
+        },
+        FileUpLoadValidate: function (name, size, type, currentMessage) {
+            return FileUpLoadValidate(name, size, type, currentMessage);
         },
         UpLoadFileEx: function (formId, uploadCtrolId, entityType, entityId, documentType, description, callback) {
             return UpLoadFileEx(formId, uploadCtrolId, entityType, entityId, documentType, description, callback);
@@ -907,6 +937,7 @@ app.security = (function () {
      * @returns {string|null} El valor de la cookie o null si no existe.
      */
     function getCookie(name) {
+        return localStorage.getItem('Token');
         const nameEQ = name + "=";
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
@@ -922,7 +953,7 @@ app.security = (function () {
     }
 
     return {
-        getCookie: function(name) {
+        getCookie: function (name) {
             return getCookie(name);
         },
         logout: function () {             
@@ -940,19 +971,19 @@ app.security = (function () {
                             localStorage.removeItem('LastActivity');
                             localStorage.removeItem('Navegation');
 
-                            // Redirigir al login
-                            window.location.replace(app.setting.basepath + 'Security/Login');
-                        } else {
-                            toastr.error('Error al cerrar sesión', 'Error');
-                        }
-                    })
-                    .fail(function () {
-                        // Si falla la llamada al servidor, limpiar manualmente como fallback
-                        localStorage.clear();
-                        document.cookie = "AuthToken=; path=/; max-age=0";
+                        // Redirigir al login
                         window.location.replace(app.setting.basepath + 'Security/Login');
-                    });
-            
+                    } else {
+                        toastr.error('Error al cerrar sesión', 'Error');
+                    }
+                })
+                .fail(function () {
+                    // Si falla la llamada al servidor, limpiar manualmente como fallback
+                    localStorage.clear();
+                    document.cookie = "AuthToken=; path=/; max-age=0";
+                    window.location.replace(app.setting.basepath + 'Security/Login');
+                });
+
         }
     }
 });
