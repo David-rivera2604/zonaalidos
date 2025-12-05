@@ -82,7 +82,7 @@ namespace Architect.API.Insurance.Controllers
                         verbose += "->padron";
                     }
 
-                    if (ready.Result != null)
+                    if (ready.Status == TaskStatus.RanToCompletion && ready.Result != null)
                     {
                         result = ready.Result;
                         processingTasks.Clear();
@@ -106,7 +106,7 @@ namespace Architect.API.Insurance.Controllers
             return Ok(result);
         }
 
-        
+
 
         /// <summary>
         /// Recupera la información de un cuestionario, asociado a la identificación de un asegurado.

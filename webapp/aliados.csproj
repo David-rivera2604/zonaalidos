@@ -1855,6 +1855,7 @@
     <Content Include="Views\Variaciones\HogarTotal.cshtml" />
     <Content Include="Views\Variaciones\HogarTotalPlus.cshtml" />
     <Content Include="Views\Variaciones\Multirriesgo.cshtml" />
+    <Content Include="releasenotes.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

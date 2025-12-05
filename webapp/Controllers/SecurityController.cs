@@ -81,25 +81,24 @@ namespace aliados.Controllers
 
                 var token = new Architect.API.Core.Contracts.Security.Token();
 
-                responseItem = authenticationRequest.Authentication(ref token, true);
+                responseItem = authenticationRequest.Authentication(ref token, true, true);
 
                 if (responseItem.Reason.IsNotEmpty())
                 {
                     if (responseItem.Reason.Equals("No autorizado", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        Response.StatusCode = 401; // Unauthorized
-                        return Json(new { success = false, mensaje = responseItem.Reason }, JsonRequestBehavior.AllowGet);
+                        Response.StatusCode = 200; // Unauthorized
+                        return Json(new { success = false, Reason = responseItem.Reason }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        Response.StatusCode = 400; // Bad Request
-                        return Json(new { success = false, mensaje = responseItem.Reason }, JsonRequestBehavior.AllowGet);
+                        Response.StatusCode = 200; // Bad Request
+                        return Json(new { success = false, Reason = responseItem.Reason }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
                 {
-                    var need2FAOTP = "Security.2FA.Enable".BoolValue(0, false);
-                    if(!need2FAOTP)
+                    if(!responseItem.Need2FAOTP)
                         Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, responseItem, token));
                     Response.StatusCode = 200;
                     result = Json(responseItem, JsonRequestBehavior.AllowGet);

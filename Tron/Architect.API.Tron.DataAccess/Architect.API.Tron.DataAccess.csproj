@@ -71,8 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="A5029134_MCR.cs" />
     <Compile Include="A1000802.cs" />
     <Compile Include="A1001331.cs" />
+    <Compile Include="A1000500.cs" />
     <Compile Include="A2990700.cs" />
     <Compile Include="AvisoCobro.cs" />
     <Compile Include="Batch\A2000500.cs" />
