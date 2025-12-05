@@ -29,17 +29,17 @@ namespace Architect.GTI.Integrations.Application
             try
             {
                 RestClient client = new RestClient(Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.BaseURL", "https://pruebas.gticr.com/AplicacionFEPruebas/ApiCargaFactura/api"),
-                   $"CargarDocumento", true);
+                   $"CargarDocumento", true, TimeSpan.FromSeconds(200));
                 response = client.PostAsync<DocumentoRequest, DocumentoResponse>(
                                   $"Documentos/CargarDocumento?pNumCuenta={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.NumCuenta", "3115")}&pUsuario={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.Usuario", "royner.acosta@mapfrecr.com")}&pClave={Settings.StringValue(0, "Integration.GTI.ApiCargaFactura.Clave", "Mapfre2024!")}",
                                   request).Result;
             }
             catch (Exception ex)
             {
-                Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
+                string code =  Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
 
                 session.ResponseStatus = 400;
-                session.ResponseText = ex.Message;
+                session.ResponseText = $"{ex.Message} ({code})" ;
             }
 
             API.Core.Business.Traza.TrackRequest.CloseSession(session, response);

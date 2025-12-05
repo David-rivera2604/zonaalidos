@@ -67,6 +67,18 @@ namespace Architect.Utilities
             ThrowException = throwException;
         }
 
+        public RestClient(string baseUrl, string source, bool throwException, TimeSpan timeout)
+        {
+            _baseUrl = baseUrl;
+            _source = source;
+            //_httpClient = new HttpClient { BaseAddress = new Uri(_baseUrl) };
+            _httpClient = new HttpClient();
+            _httpClient.Timeout = timeout;
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            ThrowException = throwException;
+        }
+
         private async Task<TResponse> SendAsync<TRequest, TResponse>(HttpMethod method, string endpoint, TRequest data = default(TRequest))
         {
             string stringResponse = null;
