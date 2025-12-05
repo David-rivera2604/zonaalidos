@@ -1471,7 +1471,7 @@ app.EmisionViajero = (function () {
     function documentosrequeridos_controls_Events() {
 
         $('#fileUploadModal').on('change', function () {
-            app.core.FileUpload({
+            app.core.FileUpLoad({
                 uploadCtrolId: '#fileUploadModal',
                 entityType: 3000,
                 entityId: setupData.presupuesto,
@@ -1487,7 +1487,7 @@ app.EmisionViajero = (function () {
         });
 
         $('#fileUpload').on('change', function () {
-            app.core.FileUpload({
+            app.core.FileUpLoad({
                 uploadCtrolId: '#fileUpload',
                 entityType: 3000,
                 entityId: setupData.presupuesto,
