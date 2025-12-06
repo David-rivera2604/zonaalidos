@@ -197,7 +197,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\medical rename\aliados-1\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
+    <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
       <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
       <Name>Architect.DataFactory</Name>
     </ProjectReference>
