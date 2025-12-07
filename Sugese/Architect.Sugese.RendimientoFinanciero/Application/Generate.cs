@@ -1,4 +1,5 @@
-﻿using Architect.Sugese.Utility;
+﻿using Architect.API.Core.Business;
+using Architect.Sugese.Utility;
 using Architect.Sugese.Utility.Helpers;
 using ClosedXML.Excel;
 using System;
@@ -26,7 +27,7 @@ namespace Architect.Sugese.RendimientoFinanciero.Application
             {
                 Encabezado = new Domain.EncabezadoTipo()
                 {
-                    NombreArchivo = String.Format("{0}-ModeloRendimientoFinanciero", ConfigurationManager.AppSettings["sugese.entidadaseguradora"]),
+                    NombreArchivo = String.Format("{0}-ModeloRendimientoFinanciero", "sugese.entidadaseguradora".StringValue(0, "Mapfre Seguros Costa Rica S.A.")),
                     Fecha = DateTime.Today,
                     Periodo = period,
                     Periodicidad = Domain.Periodicidad.T,
@@ -36,7 +37,7 @@ namespace Architect.Sugese.RendimientoFinanciero.Application
                 {
                     Modelo = new Domain.ModeloRendimientoFinancieroDatosModelo()
                     {
-                        EntidadFuente = ConfigurationManager.AppSettings["sugese.codigoaseguradora"],
+                        EntidadFuente = "sugese.codigoaseguradora".StringValue(0, "A03"),
                         ResultadosIntegralesTotalesDelPeriodo = new Domain.ModeloRendimientoFinancieroDatosModeloResultadosIntegralesTotalesDelPeriodo()
                         {
                         },

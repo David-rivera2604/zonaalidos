@@ -2,6 +2,7 @@
 using Architect.API.Core.DataAccess.Security;
 using Architect.API.Core.Security;
 using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,38 +33,12 @@ namespace Architect.API.Core.Business.Security
         }
 
         /// <summary>
-        /// Determines if HttpOnly should be enabled based on the request URL or environment
-        /// </summary>
-        private static bool ShouldEnableHttpOnly(HttpRequestBase request)
-        {
-            // Option 1: Based on host/domain
-            string host = request.Url.Host.ToLower();
-
-            // Disable HttpOnly only for specific development domains
-            if (host.Contains("localhost") || host.Contains("127.0.0.1"))
-                // For development, you might want HttpOnly = false for testing
-                return false;
-
-            // Option 2: Based on specific URL patterns
-            if (request.Url.AbsolutePath.Contains("/api/external"))
-                return false; // Disable for specific APIs that need JS access
-
-            // Option 3: Based on configuration setting
-            bool httpOnlyFromConfig = "Security.Cookie.HttpOnly".BoolValue(0, true);
-            if (!httpOnlyFromConfig)
-                return false;
-
-            // Default: ALWAYS use HttpOnly = true for security (RECOMMENDED)
-            return true;
-        }
-
-        /// <summary>
         /// Permite autenticar un usuario por medio de sus credenciales.
         /// </summary>
         /// <param name="authenticationRequest">Credenciales de uso.</param>
         /// <returns>Contexto de autenticación incluyendo el token que identifica la sesión del usuario.</returns>
 
-        public static Contracts.Security.AuthenticationResponse Authentication(this Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false)
+        public static Contracts.Security.AuthenticationResponse Authentication(this Contracts.Security.AuthenticationRequest authenticationRequest, ref Contracts.Security.Token token, bool firstInit = false, bool fromAliados = false)
         {
             var result = new Contracts.Security.AuthenticationResponse { Settings = new List<SettingItem>() };
 
@@ -100,6 +75,14 @@ namespace Architect.API.Core.Business.Security
                 return result;
             }
 
+            // Las cuentas de servicio nopueden autenticarse desde Aliados
+            if (user.IsService & fromAliados)
+            {
+                result.Reason = track.Reason = "Las cuentas de servicio deben ser autenticadas desde el api";
+                Business.Security.AuthenticationTrace.Create(track);
+                return result;
+            }
+
             // Actualizar tracking
             track.UserId = user.UserId;
             track.UserName = user.UserName;
@@ -112,7 +95,30 @@ namespace Architect.API.Core.Business.Security
                 AccountSupport.ProcessFailedAuthentication(authenticationRequest, user, result, track);
             else
             {
-                result.Need2FAOTP = "Security.2FA.Enable".BoolValue(0, false);
+                string mode = "Security.2FA.Mode".StringValue(0, "none").ToLower();
+
+                // Si se trata de una cuenta de servicio no se usa 2FA
+                if (user.IsService)
+                {
+                    result.Need2FAOTP = false;
+                }
+                else
+                {
+                    switch (mode)
+                    {
+                        case "full":    // Forza el 2FA oara todos los usuarios.
+                            result.Need2FAOTP = true;
+                            break;
+
+                        case "user":    // Respeta lo indicado por cada usuario.
+                            result.Need2FAOTP = user.Is2FAEnabled;
+                            break;
+
+                        default:        // Modo de autenticación normal.
+                            result.Need2FAOTP = false;
+                            break;
+                    }
+                }
 
                 if (!result.Need2FAOTP)
                     ProcessSuccessfulAuthentication(authenticationRequest, user, result, ref token, firstInit, companyId, track);
@@ -207,7 +213,9 @@ namespace Architect.API.Core.Business.Security
             token = TokenItem(user, result.Roles, tokenExpiresIn, result.UserName);
 
             if (firstInit)
+            {
                 UserIdActual = token;
+            }
 
             // Configurar settings
             AccountSupport.ApplySettings(user.CompanyId, result, token);
@@ -240,13 +248,6 @@ namespace Architect.API.Core.Business.Security
                 IP = request.IPAddress,
                 UserAgent = request.UserAgent
             });
-
-            //// Verificar 2FA
-            //result.Need2FAOTP = "Security.2FA.Enable".BoolValue(0, false);
-            //if (!result.MustChangePassword && result.Need2FAOTP)
-            //{
-            //    OTP.Create(new ResetPasswordRequest { Tenant = request.Tenant, EMail = user.EMail, IPAddress = request.IPAddress }, user, "2FA");
-            //}
         }
 
         /// <summary>
@@ -323,24 +324,17 @@ namespace Architect.API.Core.Business.Security
                         {
                             if (resetRequest.Password.Equals(resetRequest.PasswordConfirm, StringComparison.CurrentCultureIgnoreCase))
                             {
-                                if (!user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(resetRequest.Password), StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    result.Successful = true;
+                                result.Successful = true;
 
-                                    user.OldPassword = user.Password;
-                                    user.Password = Architect.Utilities.Helpers.CryptSupport.EncryptString(resetRequest.Password);
-                                    user.OneTimePassword = string.Empty;
-                                    user.IsLockedOut = false;
-                                    user.LockedOutDate = DateTime.MinValue;
-                                    user.FailedPasswordCount = 0;
-                                    user.PasswordChangedDate = DateTime.Today;
-                                    DataAccess.Security.UserMember.InternalUpdate(user);
-                                    API.Core.Business.General.Mail.SendByTemplate("Notify_PasswordChange", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
-                                }
-                                else
-                                {
-                                    result.Reason = "La nueva clave de acceso no puede ser igual a la anterior";
-                                }
+                                user.OldPassword = user.Password;
+                                user.Password = PasswordHasher.HashPassword(resetRequest.Password);
+                                user.OneTimePassword = string.Empty;
+                                user.IsLockedOut = false;
+                                user.LockedOutDate = DateTime.MinValue;
+                                user.FailedPasswordCount = 0;
+                                user.PasswordChangedDate = DateTime.Today;
+                                DataAccess.Security.UserMember.InternalUpdate(user);
+                                API.Core.Business.General.Mail.SendByTemplate("Notify_PasswordChange", user.CompanyId, new { User = user, Request = resetRequest }, new Dictionary<string, string> { { user.EMail, string.Empty } });
                             }
                             else
                             {
@@ -386,12 +380,12 @@ namespace Architect.API.Core.Business.Security
 
                     if (resetRequest.Password.Equals(resetRequest.PasswordConfirm, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        if (!user.Password.Equals(Architect.Utilities.Helpers.CryptSupport.EncryptString(resetRequest.Password), StringComparison.CurrentCultureIgnoreCase))
+                        if (PasswordHasher.VerifyPassword(resetRequest.Current, user.Password))
                         {
                             result.Successful = true;
 
                             user.OldPassword = user.Password;
-                            user.Password = Architect.Utilities.Helpers.CryptSupport.EncryptString(resetRequest.Password);
+                            user.Password = PasswordHasher.HashPassword(resetRequest.Password);
                             user.OneTimePassword = string.Empty;
                             user.IsLockedOut = false;
                             user.LockedOutDate = DateTime.MinValue;

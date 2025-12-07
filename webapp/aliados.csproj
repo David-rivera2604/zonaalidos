@@ -1879,6 +1879,7 @@
     <Content Include="Sugese\plantillas\RunOff.xlsx" />
     <Content Include="Sugese\plantillas\SaldosContables.xlsx" />
     <Content Include="Views\Sugese\Envio.cshtml" />
+    <Content Include="releasenotes.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

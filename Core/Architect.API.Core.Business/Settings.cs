@@ -63,6 +63,18 @@ namespace Architect.API.Core.Business
             return result;
         }
 
+      
+        public static string StringValue(this string settingName, int companyId, string defaultValue = "")
+        {
+            string result = FindSetting(companyId, settingName);
+            if (result == string.Empty)
+            {
+                result = defaultValue;
+            }
+            return result;
+        }
+
+        [Obsolete("Usar el nuevo que es un extencion", true)]
         public static string StringValue(int companyId, string settingName, string defaultValue = "")
         {
             string result = FindSetting(companyId, settingName);

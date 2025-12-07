@@ -1,6 +1,7 @@
 ﻿using Architect.API.Core.Contracts.Security;
 using Architect.API.Core.DataAccess.Security;
 using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -11,7 +12,6 @@ namespace Architect.API.Core.Business.Security
 {
     public static class AccountSupport
     {
-
         /// <summary>
         /// Obtiene la información de la compañía (tenant) basada en su nombre.
         /// </summary>
@@ -57,12 +57,15 @@ namespace Architect.API.Core.Business.Security
                         case 512: //Clave correcta
                             response = 0;
                             break;
+
                         case 514: //AccountDisable (Normal_Account: 512 + AccountDisable: 2)
                             response = 5;
                             break;
+
                         case 528: //Lockout (Normal_Account: 512 + Lockout: 16)
                             response = 6;
                             break;
+
                         case 8389120: //PasswordExpired (Normal_Account: 512 + Password_Expired: 8388608)
                             response = 99;
                             break;
@@ -76,7 +79,6 @@ namespace Architect.API.Core.Business.Security
             }
             return response;
         }
-
 
         /// <summary>
         /// Actualiza el usuario tras un login exitoso.
@@ -230,7 +232,6 @@ namespace Architect.API.Core.Business.Security
                 new Dictionary<string, string> { { user.EMail, string.Empty } });
         }
 
-
         /// <summary>
         /// Obtiene la información del agente.
         /// </summary>
@@ -238,7 +239,7 @@ namespace Architect.API.Core.Business.Security
         {
             Contracts.Security.AgentInformation agentInfo = null;
 
-            if (Business.Settings.StringValue(0, "Security.Tenant.Tron.Agent.Information").Contain(user.CompanyId.ToString()))
+            if ("Security.Tenant.Tron.Agent.Information".StringValue(0).Contain(user.CompanyId.ToString()))
             {
                 agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
             }
@@ -284,7 +285,7 @@ namespace Architect.API.Core.Business.Security
                 ManagerId = user.ManagerId,
                 SecurityLevel = user.SecurityLevel,
                 Expires = DateTime.Now.AddMinutes(tokenExpiresIn),
-                Roles = string.Join(",", roles ),
+                Roles = string.Join(",", roles),
                 CompanyId = user.CompanyId,
                 AgentCode = agentInfo.cod_agt,
                 SubAgentCode = agentInfo.cod_sub_agt,
@@ -408,21 +409,26 @@ namespace Architect.API.Core.Business.Security
             {
                 case 0:
                     return true;
+
                 case 1:
                     track.TraceType = 1;
                     result.Reason = "Usuario no registrado";
                     return false;
+
                 case 5:
                     track.TraceType = 5;
                     result.Reason = "Usuario desactivado";
                     return false;
+
                 case 6:
                     track.TraceType = 6;
                     result.Reason = "Usuario bloqueado";
                     return false;
+
                 case 99:
                     result.MustChangePassword = true;
                     return false;
+
                 default:
                     return false;
             }
@@ -454,9 +460,48 @@ namespace Architect.API.Core.Business.Security
                 return false;
             }
 
-            // Validar contraseña
-            var encryptedPassword = Architect.Utilities.Helpers.CryptSupport.EncryptString(request.Password);
-            return user.Password.Equals(".") || user.Password.Equals(encryptedPassword, StringComparison.CurrentCultureIgnoreCase);
+            // Detectar formato del hash almacenado
+            if (IsLegacyPassword(user.Password))
+            {
+                string encryptedPassword = Architect.Utilities.Helpers.CryptSupport.EncryptString(request.Password);
+                string oldPassword = user.Password;
+
+                if (user.Password.Equals(".") || user.Password.Equals(encryptedPassword, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    // Almacena el pasword en el nuevo formato
+                    user.Password = PasswordHasher.HashPassword(request.Password);
+                    DataAccess.Security.UserMember.InternalUpdate(user);
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                // ? Hash nuevo (PasswordHasher)
+                return user.Password.Equals(".") || PasswordHasher.VerifyPassword(request.Password, user.Password);
+            }
+        }
+
+        private static bool IsLegacyPassword(string hash)
+        {
+            if (string.Equals(hash, "."))
+                return true;
+
+            // CryptSupport genera hexadecimal (solo caracteres 0-9A-F)
+            // PasswordHasher genera Base64 (caracteres alfanuméricos + +/=)
+            if (string.IsNullOrEmpty(hash))
+                return false;
+
+            // Base64 siempre tiene '=' al final o caracteres no-hex
+            if (hash.Contains("+") || hash.Contains("/") || hash.Contains("="))
+                return false; // Es PasswordHasher (Base64)
+
+            // Si solo tiene caracteres hex, es legacy
+            return hash.All(c => "0123456789ABCDEFabcdef".Contains(c));
         }
 
         /// <summary>
@@ -502,6 +547,5 @@ namespace Architect.API.Core.Business.Security
 
             return true;
         }
-
     }
 }

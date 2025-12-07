@@ -1,8 +1,6 @@
 ﻿using Architect.API.Core.Business;
 using Architect.API.Core.Business.General;
-using Architect.API.Insurance.Contracts.Bayer;
 using Architect.API.Tron.DataAccess.Pagos;
-using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
@@ -10,12 +8,7 @@ using Hangfire;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,8 +32,8 @@ namespace Architect.API.Tron.Business.Backoffice
             List<Contracts.Pagos.Recibo> pendientes;
             try
             {
-                string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
-                string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
+                string provider = "Tenant.Settings.Payment.Provider".StringValue(0);
+                string filter = "Payment.Silice.RecurringReceipts.Filter.Policies".StringValue(0, string.Empty);
                 int limitCount = "Payment.Silice.RecurringReceipts.Limit.Count".IntegerValue(0, 5);
                 int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
                 string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
@@ -423,7 +416,7 @@ namespace Architect.API.Tron.Business.Backoffice
         {
             string title = string.Empty;
             string attachFileName = Architect.Data.Source.Business.ExcelExport.GenerateFile("ReporteDomiciliacion", 0,
-                "id=ReporteDomiciliacion:processid=" + reciboReq.procesoId, new Core.Contracts.Security.Token(), ref title, Settings.StringValue(0, "aliados.app.path.temp") + "Reporte Domiciliación.xlsx");
+                "id=ReporteDomiciliacion:processid=" + reciboReq.procesoId, new Core.Contracts.Security.Token(), ref title, "aliados.app.path.temp".StringValue(0) + "Reporte Domiciliación.xlsx");
 
             Mail.SendByTemplate("Reporte_Domiciliacion", 0, 0, 0, null, null,
                                 new string[] { string.Format("{0};Reporte Domiciliación.xlsx", attachFileName) });

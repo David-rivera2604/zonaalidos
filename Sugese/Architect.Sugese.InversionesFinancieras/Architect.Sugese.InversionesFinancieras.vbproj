@@ -196,6 +196,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
+      <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>
+      <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">
       <Project>{011157f4-8e96-46fe-8ff6-2b36ae9f20c9}</Project>
       <Name>Architect.DataFactory</Name>

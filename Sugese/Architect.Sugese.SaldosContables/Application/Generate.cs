@@ -1,4 +1,5 @@
-﻿using Architect.Sugese.SaldosContables.Domain;
+﻿using Architect.API.Core.Business;
+using Architect.Sugese.SaldosContables.Domain;
 using Architect.Sugese.Utility;
 using Architect.Sugese.Utility.Helpers;
 using ClosedXML.Excel;
@@ -28,7 +29,7 @@ namespace Architect.Sugese.SaldosContables.Application
             {
                 Encabezado = new EncabezadoTipo()
                 {
-                    NombreArchivo = String.Format("{0}-ModeloSaldosContables", ConfigurationManager.AppSettings["sugese.entidadaseguradora"]),
+                    NombreArchivo = String.Format("{0}-ModeloSaldosContables", "sugese.entidadaseguradora".StringValue(0, "Mapfre Seguros Costa Rica S.A.")),
                     Fecha = DateTime.Today,
                     Periodo = period,
                     Periodicidad = Periodicidad.M,
@@ -38,7 +39,7 @@ namespace Architect.Sugese.SaldosContables.Application
                 {
                     Modelo = new ModeloSaldosContablesNIIF17DatosModelo()
                     {
-                        EntidadFuente = ConfigurationManager.AppSettings["sugese.codigoaseguradora"]
+                        EntidadFuente = "sugese.codigoaseguradora".StringValue(0, "A03")
                     }
                 }
             };

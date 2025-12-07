@@ -23,7 +23,7 @@ namespace Architect.API.Tron.Business.Backoffice.Batch
         /// </summary>  
         public static async Task RetrieveUnregisteredVehiclesAsync(int offset, int size)
         {
-            string dataapiUrlSetting = Core.Business.Settings.StringValue(0, "Aliados.URL.DataApi", "https://appqa.mapfrecr.com/datapides/api/entity");
+            string dataapiUrlSetting = "Aliados.URL.DataApi".StringValue(0, "https://appqa.mapfrecr.com/datapides/api/entity");
 
             if (size == 0)
             {
@@ -57,7 +57,7 @@ namespace Architect.API.Tron.Business.Backoffice.Batch
         /// </summary>
         public static async Task ProcessLicensePlateUpdateAsync(List<Contracts.Robots.CivilRegistrationRequest> vehicles)
         {
-            string dataapiUrlSetting = Core.Business.Settings.StringValue(0, "Aliados.URL.DataApi", "https://appqa.mapfrecr.com/datapides/api/entity");
+            string dataapiUrlSetting = "Aliados.URL.DataApi".StringValue(0, "https://appqa.mapfrecr.com/datapides/api/entity");
 
             foreach (var vehicleInf in vehicles)
             {
@@ -91,8 +91,8 @@ namespace Architect.API.Tron.Business.Backoffice.Batch
         /// </summary>
         private static async Task SubmitVehicleInfoQueryAsync(List<object> vehiculos)
         {
-            string callbackUrlSetting = Core.Business.Settings.StringValue(0, "Batch.SinPlaca.Callback", "https://webhook.site/041ed213-07ae-4584-af92-d6e6ed43ad0f");
-            string robotsUrlSetting = Core.Business.Settings.StringValue(0, "Aliados.URL.Robots", "https://appqa.mapfrecr.com/robots.registro.cr/api");
+            string callbackUrlSetting = "Batch.SinPlaca.Callback".StringValue(0, "https://webhook.site/041ed213-07ae-4584-af92-d6e6ed43ad0f");
+            string robotsUrlSetting = "Aliados.URL.Robots".StringValue(0, "https://appqa.mapfrecr.com/robots.registro.cr/api");
 
             var json = JsonConvert.SerializeObject(new { callbackUrl = callbackUrlSetting, queries = vehiculos });
             var data = new StringContent(json, Encoding.UTF8, "application/json");

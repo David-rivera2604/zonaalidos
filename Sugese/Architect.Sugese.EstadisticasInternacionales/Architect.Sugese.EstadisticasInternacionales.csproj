@@ -182,6 +182,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
+      <Project>{579105B3-776B-4094-A301-87A9C42962C5}</Project>
+      <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>

@@ -1,28 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Data;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Architect.API.Core.Business;
+﻿using Architect.API.Core.Business;
 using Architect.API.Core.Business.General;
-using Architect.API.Insurance.Contracts.Bayer;
 using Architect.API.Tron.DataAccess.Pagos;
-using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Utilities.Extensions;
 using Hangfire;
-using Microsoft.Win32;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Utilities.Net;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Backoffice.v2
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class Pagos
     {
@@ -40,8 +32,8 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             List<Contracts.Pagos.Recibo> pendientes;
             try
             {
-                string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
-                string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.RecurringReceipts.Filter.Policies", string.Empty);
+                string provider = "Tenant.Settings.Payment.Provider".StringValue(0);
+                string filter = "Payment.Silice.RecurringReceipts.Filter.Policies".StringValue(0, string.Empty);
                 int limitCount = "Payment.Silice.RecurringReceipts.Limit.Count".IntegerValue(0, 5);
                 int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
                 string prefix = Utilities.Helpers.Settings.StringValue("EMail.Test", string.Empty);
@@ -128,9 +120,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     reciboReq.totalItems = count;
                     reciboReq.totalCompleto = total;
 
-
                     //Utilities.Log.TraceLog("RecurringReceipts", JsonConvert.SerializeObject(reciboReq), "payment");
-
 
                     HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
                     //client.Timeout = TimeSpan.FromSeconds(3);
@@ -209,7 +199,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                             numberOfRetries = 0;
                                         }
                                         Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: REJECTED paso 3", item.description), "payment");
-                                        // Se incrementa la cantidad de reintento fallidos 
+                                        // Se incrementa la cantidad de reintento fallidos
                                         Tarjetas.UpdateRejectionCount(currentRecord.PolicyId, currentRecord.DocumentType.DocumentType(), currentRecord.DocumentNumber, numberOfRetries + 1, item.reason);
                                         Utilities.Log.TraceLog("Payment.RecurrentesAlCobro", string.Format("TRAZA:  {0}: REJECTED fin paso 3", item.description), "payment");
                                     }
@@ -234,7 +224,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                         EnviarReporteDeDomiciliacion(reciboReq);
                     }
-
                 }
             }
             catch (Exception ex)
@@ -251,7 +240,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, bool widget)
+        public static async Task<Payment.Integrations.Contracts.v2.PaymentInformation> CrearSesion(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, bool widget)
         {
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2 = null;
             int timeout = Core.Business.General.DynamicSetting.IntegerValue(tokenInfo, "Payment.Silice.Init.Timeout", 5);
@@ -277,7 +266,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 }
                 if (recibo != null)
                 {
-
                     Payment.Integrations.Contracts.PaymentInformation payInfo = new Payment.Integrations.Contracts.PaymentInformation()
                     {
                         FirstName = recibo.NOM_TERCERO,
@@ -292,7 +280,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         Currency = recibo.COD_MON.ToString(),
                         Amount = recibo.IMP_RECIBO
                     };
-
 
                     session = await Payment.Integrations.Payment.NewSessionV2(tokenInfo.CompanyId, tokenInfo.UserId, tokenInfo.AgentCode, payInfo, ipAddress, userAgent, widget);
 
@@ -346,13 +333,11 @@ namespace Architect.API.Tron.Business.Backoffice.v2
             return payInfov2;
         }
 
-
         /// <summary>
         /// Procesa y valida una notificación de pago.
         /// </summary>
-        public async static Task Webhook(Architect.Payment.Integrations.Contracts.v2.WebhookRequest webhookRequest)
+        public static async Task Webhook(Architect.Payment.Integrations.Contracts.v2.WebhookRequest webhookRequest)
         {
-
             Utilities.Log.TraceLog("Payment.Webhook", JsonConvert.SerializeObject(webhookRequest), "payment");
 
             Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveByRequestID(Convert.ToInt64(webhookRequest.ordenId));
@@ -371,7 +356,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     payerSurname = currentRecord.LastName,
                     paymentMethodName = null
                 };
-
 
                 if (result != null)
                 {
@@ -400,12 +384,12 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Permite el envio de un link de pago.
         /// </summary>
-        public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode, string email, int agentCode)
+        public static async Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, string mode, string email, int agentCode)
         {
             Payment.Integrations.Contracts.v2.PaymentInformation result = null;
             Payment.Integrations.Contracts.v2.PaymentInformation payInfov2;
 
-            string provider = Core.Business.Settings.StringValue(tokenInfo.CompanyId, "Tenant.Settings.Payment.Provider");
+            string provider = "Tenant.Settings.Payment.Provider".StringValue(tokenInfo.CompanyId);
             if (provider.Equals("Silice", StringComparison.CurrentCultureIgnoreCase) || mode.Equals("WhatsApp", StringComparison.CurrentCultureIgnoreCase))
             {
                 HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(3) };
@@ -418,8 +402,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
 
                 if (payInfov2 != null && payInfov2.Status != "FAIL")
                 {
-
-
                     payInfov2.urlReturn = payInfov2.urlWebhook;
                     payInfov2.urlReturn = "https://mapfre.cr";
 
@@ -436,6 +418,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         case "Correo":
                             payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroSendEmail(client, reciboId, payInfov2.emailCliente);
                             break;
+
                         case "WhatsApp":
                             payInfov2.Reason = await Architect.Payment.Integrations.Providers.Silice.Payment.CobroMensajeAutomata(client, reciboId, payInfov2.telefonoCliente);
                             break;
@@ -452,7 +435,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 status = "FAIL",
                                 reason = payInfov2.Reason
                             });
-
                     }
                 }
                 result = new Payment.Integrations.Contracts.v2.PaymentInformation() { Status = payInfov2.Status, Reason = payInfov2.Reason };
@@ -477,10 +459,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         {
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
-            string prefix = Core.Business.Settings.StringValue(0, "EMail.Test");
-            int cardCount =  "Payment.Silice.Tokenize.Cantidad.Tarjetas".IntegerValue(0, 50);
-            string provider = Core.Business.Settings.StringValue(0, "Tenant.Settings.Payment.Provider");
-            string filter = Core.Business.Settings.StringValue(0, "Payment.Silice.Tokenize.Filter.Policies", string.Empty);
+            string prefix =  "EMail.Test".StringValue(0);
+            int cardCount = "Payment.Silice.Tokenize.Cantidad.Tarjetas".IntegerValue(0, 50);
+            string provider = "Tenant.Settings.Payment.Provider".StringValue(0);
+            string filter = "Payment.Silice.Tokenize.Filter.Policies".StringValue(0, string.Empty);
 
             List<Contracts.Pagos.Tarjeta> pendientes = Architect.API.Tron.DataAccess.Pagos.Tarjetas.PendientesPorTokenizar(cod_cia, cardCount, string.IsNullOrEmpty(filter) ? num_poliza : filter);
 
@@ -529,7 +511,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 client.Timeout = TimeSpan.FromSeconds(10);
                 client.DefaultRequestHeaders.Authorization = null;
 
-
                 List<DatosTarjeta> result = Architect.Payment.Integrations.Tokenize.Request(provider, client, datosTajetas).Result;
 
                 foreach (DatosTarjeta tarjeta in result)
@@ -537,7 +518,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                     var data = pendientes.Where(r => r.NUM_TARJETA == tarjeta.key).FirstOrDefault();
                     if (tarjeta.token != string.Empty)
                     {
-
                         DataAccess.A1000802.Update(cod_cia, data.NUM_POLIZA, data.NUM_SPTO, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
                         DataAccess.Pagos.Num_Tarjeta_mcr.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
                         data.NUM_TARJETA = tarjeta.card;
@@ -553,7 +533,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         {
             string title = string.Empty;
             string attachFileName = Architect.Data.Source.Business.ExcelExport.GenerateFile("ReporteDomiciliacion", 0,
-                "id=ReporteDomiciliacion:processid=" + reciboReq.procesoId, new Core.Contracts.Security.Token(), ref title, Settings.StringValue(0, "aliados.app.path.temp") + "Reporte Domiciliación.xlsx");
+                "id=ReporteDomiciliacion:processid=" + reciboReq.procesoId, new Core.Contracts.Security.Token(), ref title, "aliados.app.path.temp".StringValue(0) + "Reporte Domiciliación.xlsx");
 
             Mail.SendByTemplate("Reporte_Domiciliacion", 0, 0, 0, null, null,
                                 new string[] { string.Format("{0};Reporte Domiciliación.xlsx", attachFileName) });
@@ -562,10 +542,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         /// <summary>
         /// Procesar el resultado del pago para los recibos con cobro recurrente.
         /// </summary>
-        public async static Task<string> RecurringReceipts(Payment.Integrations.Contracts.v2.ReciboResponse request)
+        public static async Task<string> RecurringReceipts(Payment.Integrations.Contracts.v2.ReciboResponse request)
         {
             string message = string.Empty;
-
 
             if (request.items != null)
             {
@@ -576,7 +555,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 int procesados = 0;
                 foreach (Payment.Integrations.Contracts.v2.ReciboResponseItem item in request.items)
                 {
-
                     Payment.Integrations.Contracts.OnlinePayment currentRecord = Payment.Integrations.Business.OnlinePayment.RetrieveById(cod_cia, Convert.ToInt32(item.ordenId));
 
                     num_recibo = Convert.ToInt32(currentRecord.BillNumber);
@@ -615,13 +593,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                             bool tronPayment = await Backoffice.Pagos.TronPayment(result, currentRecord.AgentCode, "RecurringReceipts", "Silice", false);
                         }
                     }
-
-
                 }
                 message += string.Format(", {0} recibos procesados", procesados);
             }
             return message;
         }
-
     }
 }

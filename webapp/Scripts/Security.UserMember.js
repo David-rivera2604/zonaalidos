@@ -368,10 +368,9 @@ app.SecurityUserMember = (function () {
             FailedPasswordCount: 0, //app.ui.GetNumericValue('#FailedPasswordCount'),
             SecurityLevel: app.ui.GetNumericValue('#SecurityLevel'),
             IsLockedOut: $('input:radio[name=IsLockedOut]:checked').val(),
-            // LockedOutDate: app.ui.GetDateValue('#LockedOutDate'),
-            // PasswordChangedDate: "0001-01-01T00:00:00", //app.ui.GetDateValue('#PasswordChangedDate'),
+            IsService: $('input:radio[name=IsService]:checked').val(),
+            Is2FAEnabled: $('input:radio[name=Is2FAEnabled]:checked').val(),
             OneTimePassword: "", //$('#OneTimePassword').val(),
-            //LoginDate: app.ui.GetDateValue('#LoginDate'),
             ManagerId: 0, //app.ui.GetNumericValue('#ManagerId'),
             AccessKey: $('#AccessKey').val(),
             BranchOffice: $('#BranchOffice').val(),
@@ -402,11 +401,10 @@ app.SecurityUserMember = (function () {
         //app.ui.SetNumericValue('#FailedPasswordCount', data.FailedPasswordCount);
         app.ui.SetNumericValue('#SecurityLevel', data.SecurityLevel);
         $('input:radio[name=IsLockedOut][value=' + data.IsLockedOut.toString() + ']').prop('checked', true);
-        //app.ui.SetDateValue('#LockedOutDate', data.LockedOutDate);
-        //app.ui.SetDateValue('#PasswordChangedDate', data.PasswordChangedDate);
+        $('input:radio[name=IsService][value=' + data.IsService.toString() + ']').prop('checked', true);
+        $('input:radio[name=Is2FAEnabled][value=' + data.Is2FAEnabled.toString() + ']').prop('checked', true);
+
         $('#OneTimePassword').val(data.OneTimePassword);
-        //app.ui.SetDateValue('#LoginDate', data.LoginDate);
-        //app.ui.SetNumericValue('#ManagerId', data.ManagerId);
         $('#AccessKey').val(data.AccessKey);
         $('#BranchOffice').val(data.BranchOffice);
         $('#Reference').val(data.Reference);
@@ -593,7 +591,7 @@ app.SecurityUserMember = (function () {
         New: function (row) {
             let newRow = {
                 UserId: 0, UserName: null, EMail: null, Password: null, OldPassword: null, FirstName: null, LastName: null,
-                FailedPasswordCount: 0, SecurityLevel: 0, IsLockedOut: null, LockedOutDate: null, PasswordChangedDate: null,
+                FailedPasswordCount: 0, SecurityLevel: 0, IsService: false, Is2FAEnabled: false, LockedOutDate: null, PasswordChangedDate: null,
                 OneTimePassword: null, LoginDate: null, ManagerId: 0, AccessKey: null, BranchOffice: null, Reference: null,
                 Position: null, PhoneNumber: null, SalesChannel: null, CustomData: null, RecordStatus: 1, BirthDate: null,
                 IsLockedOut: false, IdentificationType: 1, Identification: null

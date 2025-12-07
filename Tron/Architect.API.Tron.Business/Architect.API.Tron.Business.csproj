@@ -141,6 +141,7 @@
     <Compile Include="HogarTotal\Convert\QuoteToPresupuesto.cs" />
     <Compile Include="HogarTotal\Handler\Request.cs" />
     <Compile Include="Info.cs" />
+    <Compile Include="Integraciones\FacturaElectronica.cs" />
     <Compile Include="Multirriesgo\Common.cs" />
     <Compile Include="Multirriesgo\Handler\Compliance.cs" />
     <Compile Include="Multirriesgo\Handler\Request.cs" />
@@ -192,6 +193,10 @@
     <ProjectReference Include="..\..\Core\Architect.DocuSign.Integrations\Architect.DocuSign.Integrations.csproj">
       <Project>{41b3f1c8-fdb5-4db4-be61-6bf1576a09e7}</Project>
       <Name>Architect.DocuSign.Integrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Architect.GTI.Integrations\Architect.GTI.Integrations.csproj">
+      <Project>{4df77f2b-d314-4fb0-b086-6fbdfe8e00a1}</Project>
+      <Name>Architect.GTI.Integrations</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Architect.Payment.Integrations\Architect.Payment.Integrations.csproj">
       <Project>{4950c088-7a09-4e2b-b4de-d2381d0739c6}</Project>

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
+using Scriban.Functions;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Architect.Utilities.Extensions;
-using Scriban.Functions;
 
 namespace Architect.API.Core.Business.Security
 {
@@ -155,7 +156,7 @@ namespace Architect.API.Core.Business.Security
             if (item.Password != "XXXX")
             {
                 result.OldPassword = result.Password;
-                result.Password = Architect.Utilities.Helpers.CryptSupport.EncryptString(item.Password);
+                result.Password = PasswordHasher.HashPassword(item.Password);
             }
             result.FirstName = item.FirstName;
             result.LastName = item.LastName;
@@ -177,6 +178,9 @@ namespace Architect.API.Core.Business.Security
             //result.ManagerId = item.ManagerId;
             result.AccessKey = item.AccessKey;
 
+            result.IsService = item.IsService;
+            result.Is2FAEnabled = item.Is2FAEnabled;
+            
             result.BranchOffice = item.BranchOffice;
             result.Reference = item.Reference;
             result.Position = item.Position;

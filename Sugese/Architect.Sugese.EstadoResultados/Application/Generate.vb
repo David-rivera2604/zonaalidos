@@ -1,5 +1,6 @@
 ﻿Imports System.Configuration
 Imports System.Net.Http
+Imports Architect.API.Core.Business
 Imports Architect.Sugese.Domain
 Imports Architect.Sugese.Utility
 Imports Architect.Sugese.Utility.Helpers
@@ -22,7 +23,7 @@ Public Class Generate
     Public Sub New(periodo As Date)
         ModelInit()
         With _EstadoResultados.Encabezado
-            .NombreArchivo = String.Format("{0}-ModeloEstadoResultados", ConfigurationManager.AppSettings("sugese.entidadaseguradora"))
+            .NombreArchivo = String.Format("{0}-ModeloEstadoResultados", "sugese.codigoaseguradora".StringValue(0, "A03"))
             .Fecha = Today.ToString("yyyy-MM-dd")
             .Periodo = periodo.ToString("yyyy-MM-dd")
             .Periodicidad = EstadoResultados.Periodicidad.T

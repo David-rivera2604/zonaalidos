@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Architect.API.Core.Business;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -19,9 +20,9 @@ namespace Architect.Sugese.Utility
             var settings = new XsltSettings() { EnableScript = true };
             var xslArg = new XsltArgumentList();
             var xslt = new XslCompiledTransform();
-            string outputFilename = string.Format(@"{0}\temp\{1}.out.txt", ConfigurationManager.AppSettings["Path.App"], xslfilename);
+            string outputFilename = string.Format(@"{0}\temp\{1}.out.txt", "app.path".StringValue(0, "C:\\Aliados\\WebApp"), xslfilename);
             var result = new List<string>();
-            string xslFullFilename = string.Format(@"{0}\sugese\validators\{1}", ConfigurationManager.AppSettings["Path.App"], xslfilename);
+            string xslFullFilename = string.Format(@"{0}\sugese\validators\{1}", "app.path".StringValue(0, "C:\\Aliados\\WebApp"), xslfilename);
 
             if (File.Exists(xslFullFilename))
             {
@@ -56,11 +57,11 @@ namespace Architect.Sugese.Utility
 
         public static List<string> XsdValidate(string xsdfilename, string xmlfilename)
         {
-            string outputFilename = string.Format(@"{0}\temp\{1}.xsd.out.txt", ConfigurationManager.AppSettings["Path.App"], xsdfilename);
+            string outputFilename = string.Format(@"{0}\temp\{1}.xsd.out.txt", "app.path".StringValue(0, "C:\\Aliados\\WebApp"), xsdfilename);
             var booksSettings = new XmlReaderSettings();
             var result = new List<string>();
 
-            booksSettings.Schemas.Add("", $@"{ConfigurationManager.AppSettings["Path.App"]}\sugese\validators\{xsdfilename}.xsd");
+            booksSettings.Schemas.Add("", $@"{"app.path".StringValue(0, "C:\\Aliados\\WebApp")}\sugese\validators\{xsdfilename}.xsd");
             booksSettings.ValidationType = ValidationType.Schema;
 
             // AddHandler booksSettings.ValidationEventHandler, AddressOf booksSettingsValidationEventHandler

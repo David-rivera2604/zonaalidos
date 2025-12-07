@@ -41,7 +41,7 @@ namespace Architect.API.Core.Business.General
             if (!string.IsNullOrEmpty(report?.data))
             {
                 byte[] imageBytes = Convert.FromBase64String(report.data);
-                result = Settings.StringValue(companyId, "aliados.app.path.temp");
+                result =  "aliados.app.path.temp".StringValue(companyId);
                 if (!string.IsNullOrEmpty(outputFileName))
                 {
                     result += outputFileName + ".pdf";

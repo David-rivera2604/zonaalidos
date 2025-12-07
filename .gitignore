@@ -106,4 +106,6 @@ Thumbs.db
 /.vs/CopilotSnapshots
 /.vs/repos/v17/DocumentLayout.json
 /.vs/repos/v17/.wsuo
-/.vs/VSWorkspaceState.json
+/Core/Architect.GTI.Integrations/.vs/Architect.GTI.Integrations.csproj.dtbcache.json
+/Core/Architect.PDF.Integrations/Architect.PDF.Integrations.csproj.user
+/Sugese/Architect.Sugese.Utility/.vs/Architect.Sugese.Utility.csproj.dtbcache.json

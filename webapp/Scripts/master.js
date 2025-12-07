@@ -257,7 +257,7 @@ app.master = (function () {
             name = name == null ? '' : name.replace('á', 'a');
 
             if ($('#tenantLogo').length > 0) {
-                app.core.Get(app.setting.apipath + 'v1/Colors/GetColor')
+                app.core.Get(app.setting.apipath + 'v1/Colors/GetColor', undefined, undefined,  false )
                     .done(function (data, textStatus, jqXHR) {
                         ListaElementos = data;
                         var Tenant = localStorage.getItem("Tenant")
@@ -325,7 +325,7 @@ $(document).ready(function () {
 
 ///////////////////////////////////////NEW COLORS TENAT/////////////////////////////////
 
-app.core.Get(app.setting.apipath + 'v1/Colors/GetColor')
+app.core.Get(app.setting.apipath + 'v1/Colors/GetColor', undefined, undefined, false )
     .done(function (data, textStatus, jqXHR) {
         var ListaElementos = data;
         var Tenant = localStorage.getItem('Tenant')
@@ -343,7 +343,7 @@ app.core.Get(app.setting.apipath + 'v1/Colors/GetColor')
 
 ///////////////////////////////////////NEW INICIO/////////////////////////////////
 
-app.core.Get(app.setting.apipath + 'v1/Clientes/GetInicio')
+app.core.Get(app.setting.apipath + 'v1/Clientes/GetInicio', undefined, undefined, false )
     .done(function (data, textStatus, jqXHR) {
         objectlist = data;
 

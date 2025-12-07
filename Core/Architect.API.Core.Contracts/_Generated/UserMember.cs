@@ -162,6 +162,15 @@ namespace Architect.API.Core.Contracts.Security
         /// Respuesta TRON SubAgente
         /// </summary>
         [DataMember(), JsonProperty()] public string responseTronSubAgent { get; set; }
+        /// <summary>
+        /// Indica que es una cuenta de servicio.
+        /// </summary>
+        [DataMember(), JsonProperty()] public bool IsService { get; set; }
+        /// <summary>
+        /// Indica que está habilitada la autenticación de dos factores.
+        /// </summary>
+        [DataMember(), JsonProperty()] public bool Is2FAEnabled { get; set; } = true;
+
     }
 }
 

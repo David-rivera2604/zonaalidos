@@ -5,6 +5,7 @@ Imports ClosedXML.Excel
 Imports Architect.Sugese.Utility.Helpers
 Imports Architect.Sugese.Domain
 Imports Architect.Sugese.Utility
+Imports Architect.API.Core.Business
 
 Public Class Generate
     Inherits Architect.Sugese.Domain.GenerateBase
@@ -30,7 +31,7 @@ Public Class Generate
     Public Sub New(periodo As Date)
         ModelInit()
         With _InversionesFinancieras.Encabezado
-            .NombreArchivo = String.Format("{0}", ConfigurationManager.AppSettings("sugese.entidadaseguradora"))
+            .NombreArchivo = String.Format("{0}", "sugese.codigoaseguradora".StringValue(0, "A03"))
             .Fecha = Today.ToString("yyyy-MM-dd")
             .Periodo = periodo.ToString("yyyy-MM-dd")
             .Periodicidad = Periodicidad.M

@@ -1,4 +1,5 @@
 ﻿Imports System.Configuration
+Imports Architect.API.Core.Business
 Imports Architect.Sugese.Utility
 Imports Architect.Sugese.Utility.Helpers
 Imports Architect.Utilities.Extensions
@@ -21,7 +22,7 @@ Public Class Generate
     Public Sub New(periodo As Date, periodicidad As Canales.Periodicidad)
         ModelInit()
         With _Canales.Encabezado
-            .NombreArchivo = String.Format("{0}-ModeloCanales", ConfigurationManager.AppSettings("sugese.entidadaseguradora"))
+            .NombreArchivo = String.Format("{0}-ModeloCanales", "sugese.codigoaseguradora".StringValue(0, "A03"))
             .Fecha = Today.ToString("yyyy-MM-dd")
             .Periodo = periodo.ToString("yyyy-MM-dd")
             .Periodicidad = periodicidad

@@ -1,4 +1,5 @@
-﻿using Architect.Sugese.Utility;
+﻿using Architect.API.Core.Business;
+using Architect.Sugese.Utility;
 using Architect.Sugese.Utility.Helpers;
 using ClosedXML.Excel;
 using System;
@@ -26,7 +27,7 @@ namespace Architect.Sugese.EstadisticasInternacionales.Application
             {
                 Encabezado = new Domain.EncabezadoTipo()
                 {
-                    NombreArchivo = String.Format("{0}-ModeloEstadisticasInternacionales", ConfigurationManager.AppSettings["sugese.entidadaseguradora"]),
+                    NombreArchivo = String.Format("{0}-ModeloEstadisticasInternacionales", "sugese.entidadaseguradora".StringValue(0, "Mapfre Seguros Costa Rica S.A.")),
                     Fecha = DateTime.Today,
                     Periodo = period,
                     Periodicidad = Domain.Periodicidad.M,
@@ -36,7 +37,7 @@ namespace Architect.Sugese.EstadisticasInternacionales.Application
                 {
                     Modelo = new Domain.ModeloEstadisticasInternacionalesDatosModelo()
                     {
-                        EntidadFuente = ConfigurationManager.AppSettings["sugese.codigoaseguradora"],
+                        EntidadFuente = "sugese.codigoaseguradora".StringValue(0, "A03"),
                         Estadisticas = new Domain.ModeloEstadisticasInternacionalesDatosModeloEstadisticas()
                         {
                             TotalDePrimas = 0,

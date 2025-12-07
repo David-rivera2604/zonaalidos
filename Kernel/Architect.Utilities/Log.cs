@@ -630,9 +630,9 @@ namespace Architect.Utilities
         {
             ErrorLog(Helpers.Assembly.GetFrameProcessFullName(2), String.Empty, currentException, String.Empty);
         }
-        public static void ErrorLog(Exception currentException, string code)
+        public static string ErrorLog(Exception currentException, string code)
         {
-            ErrorLog(Helpers.Assembly.GetFrameProcessFullName(2), String.Empty, currentException, String.Empty, true, code);
+            return ErrorLog(Helpers.Assembly.GetFrameProcessFullName(2), String.Empty, currentException, String.Empty, true, code);
         }
 
 
@@ -690,7 +690,7 @@ namespace Architect.Utilities
         // '' <param name="Async"></param>
         // '' <param name="Code"></param>
         // '' <remarks></remarks>
-        public static void ErrorLog(string source, string entry, Exception currentException, string prefix, bool Async, string Code)
+        public static string ErrorLog(string source, string entry, Exception currentException, string prefix, bool Async, string Code)
         {
             string rootPath = GetPath();
             bool modeMultiThread = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["Architect.DataFactory.Log.MultiThread"].ToString());
@@ -808,6 +808,7 @@ namespace Architect.Utilities
             {
                 ErrorLogInternal(parameters);
             }
+            return Code;
         }
 
         private static Action<Object> ActionErrorLog = (object parameterContainer) =>

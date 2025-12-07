@@ -1,4 +1,5 @@
 ﻿Imports System.Configuration
+Imports Architect.API.Core.Business
 Imports Architect.Sugese.Domain
 Imports Architect.Sugese.Utility
 Imports Architect.Utilities.Extensions
@@ -13,7 +14,7 @@ Public Class Generate
         _AportesINEC = New Sugese.AportesINEC.ModeloAportesINEC
         _AportesINEC.Encabezado = New Sugese.AportesINEC.EncabezadoTipo() _
                 With {
-                    .NombreArchivo = String.Format("{0}-ModeloAportesINEC", ConfigurationManager.AppSettings("sugese.entidadaseguradora")),
+                    .NombreArchivo = String.Format("{0}-ModeloAportesINEC", "sugese.codigoaseguradora".StringValue(0, "A03")),
                     .Fecha = Today.ToString("yyyy-MM-dd"),
                     .Periodo = periodo.ToString("yyyy-MM-dd"),
                     .Periodicidad = Sugese.AportesINEC.Periodicidad.M,
