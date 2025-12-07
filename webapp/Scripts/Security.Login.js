@@ -362,7 +362,6 @@ app.login = (function () {
         dt.setMinutes(dt.getMinutes() + parseInt(data.ExpiresIn));
         localStorage.setItem('Expires', dt);
 
-        localStorage.setItem('Token', data.Token);
         $('#Send').prop("disabled", true);
         $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
         if (app.login.lasthref == null) {

@@ -2106,6 +2106,9 @@ app.EmisionMultirriesgo = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                     }
@@ -2160,6 +2163,9 @@ app.EmisionMultirriesgo = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                     }
