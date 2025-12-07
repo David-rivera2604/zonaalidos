@@ -159,12 +159,12 @@ namespace Architect.API.Tron.Business.Emision
                                                          441,
                                                          resultQuoteInfo.num_poliza, resultQuoteInfo.cod_mon,
                                                          result2.Calculado.Recibos.FirstOrDefault(),
-                                                         quoteInfo.terceros.FirstOrDefault());
+                                                         quoteInfo.terceros.Where(r => r.tipodetercero == 1).FirstOrDefault());
 
 
-                            ChangeSet.Create(3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.CompanyId, "Emisión Seguro de Viaje",
-                                enviado? $"Póliza #{resultQuoteInfo.num_poliza}, factura electrónica enviada"
-                                       : $"Póliza #{resultQuoteInfo.num_poliza}, falló el envio de la factura electrónica", tokenInfo.UserId, resultQuoteInfo);
+                        ChangeSet.Create(3000, Convert.ToInt64(resultQuoteInfo.num_poliza), tokenInfo.CompanyId, "Emisión Seguro de Viaje",
+                            enviado ? $"Póliza #{resultQuoteInfo.num_poliza}, factura electrónica enviada"
+                                   : $"Póliza #{resultQuoteInfo.num_poliza}, falló el envio de la factura electrónica", tokenInfo.UserId, resultQuoteInfo);
                     }
                 }
                 else if (resultQuoteInfo.Mensaje.IsNotEmpty())
