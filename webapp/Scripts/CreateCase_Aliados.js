@@ -281,6 +281,9 @@ function ajaxCall(type, url, data, success, token, Token_Al, AliadoTok, contentT
         async: true,
         cache: false,
         data: data,
+        xhrFields: {
+            withCredentials: true
+        },
         beforeSend: function (xhr) {
             if (token) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));

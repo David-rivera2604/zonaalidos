@@ -1,0 +1,100 @@
+{
+  "NumCuenta": 3115,
+  "Documentos": [
+    {
+      "Emisor": {
+        "TipoIdent": 2,
+        "Identificacion": "3101560179",
+        "Nombre": "MAPFRE Seguros Costa Rica S.A.",
+        "NombComercial": "MAPFRE Seguros Costa Rica S.A.",
+        "Provincia": 1,
+        "Canton": 15,
+        "Distrito": 1,
+        "Direccion": "San José Montes de Oca San Pedro (SJ) Oficentro Condal, Piso 1 y 7",
+        "AreaTelefono": 506,
+        "NumTelefono": 41040200,
+        "AreaFax": 506,
+        "NumFax": 41040200,
+        "Correo": "facturacionelectronica@mapfrecr.com"
+      },
+      "Encabezado": {
+        "CodigoActividad": "660303",
+        "ImpRenta": 1,
+        "NombComercial": "BANCO DE COSTA RICA",
+        "CantDeci": 4,
+        "TipoDoc": 1,
+        "SituacionEnvio": 1,
+        "Sucursal": 1,
+        "Terminal": 1,
+        "Moneda": 2,
+        "TipoCambio": 509.42,
+        "MedioPagos": [
+          {
+            "TipoMedioPago": "2",
+            "TotalMedioPago": 38.91
+          }
+        ],
+        "CondicionVenta": 1,
+        "NumeroFactura": "15814759",
+        "FechaFactura": "2025-12-01T00:00:00",
+        "NumOrdenCompra": null,
+        "FechaVencimiento": "2025-12-10T00:00:00",
+        "receptor": {
+          "TipoIdent": 1,
+          "Identificacion": "106000259",
+          "Nombre": "Macanao Yaguaritagua Islas",
+          "Correo": "royner.acosta@mapfrecr.com",
+          "Copia": "",
+          "Destinatario": ""
+        }
+      },
+      "Lineas": [
+        {
+          "Tipo": "S",
+          "Codigo": "7133700000000",
+          "CodTipo": [
+            4
+          ],
+          "CodProdServ": [
+            "441"
+          ],
+          "UnidadMedida": 24,
+          "UnidadComercial": "",
+          "Cantidad": 1,
+          "PrecioUnitario": 38.14,
+          "Descripcion": "MAPFRE: SEGURVIAJE. POLIZA #4412510112344, RECIBO #15814759 COMPRENDIDO EN EL PERIODO 01/12/2025 - 10/12/2025",
+          "Impuestos": [
+            {
+              "CodigoTarifa": 3,
+              "CodigoImp": 1,
+              "PorcentajeImp": 2,
+              "MontoImp": 0.77
+            }
+          ]
+        }
+      ],
+      "OtrosCargos": [],
+      "referencia": null,
+      "Totales": {
+        "TotalServGravado": 38.14,
+        "TotalServExento": 0.0,
+        "TotalServExonerado": 0.0,
+        "TotalMercaGravada": 0.0,
+        "TotalMercaExenta": 0.0,
+        "TotalMercaExonerada": 0.0,
+        "TotalGravado": 38.14,
+        "TotalExento": 0.0,
+        "TotalExonerado": 0.0,
+        "TotalIVADevuelto": 0.0,
+        "TotalVenta": 38.14,
+        "TotalDescuento": 0.0,
+        "TotalVentaNeta": 38.14,
+        "TotalImpuesto": 0.77,
+        "TotalComprobante": 38.91
+      },
+      "Extra": {
+        "EsVersion_4_4": true
+      }
+    }
+  ]
+}
