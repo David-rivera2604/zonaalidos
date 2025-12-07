@@ -98,6 +98,7 @@ app.core = (function () {
         fetch(url, {
             body: null,
             method: 'GET',
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'Authorization': 'Bearer ' + getAuthToken()
@@ -296,6 +297,9 @@ app.core = (function () {
             async: true,
             cache: false,
             data: data,
+            xhrFields: {
+                withCredentials: true  
+            },
             beforeSend: function (xhr) {
                 if (token) {
                     xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
@@ -717,8 +721,8 @@ app.core = (function () {
         URLValue: function (key, url) {
             return URLValue(key, url);
         },
-        Get: function (url, data, success) {
-            return ajaxCall('GET', url, data, success, true);
+        Get: function (url, data, success, token) {
+            return ajaxCall('GET', url, data, success, (typeof token === "undefined") ? true : token);
         },
         Send: function (mode, url, data, success) {
             return ajaxCall(mode, url, data, success, true);

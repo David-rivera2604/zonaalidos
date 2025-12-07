@@ -343,6 +343,9 @@ app.Attachments = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
                         let current = localStorage.getItem('AlternateToken');
                         if (current != null && current != '' && current != 'null') {
@@ -430,6 +433,9 @@ app.Attachments = (function () {
                     contentType: false,
                     cache: false,
                     timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     beforeSend: function (xhr) {
                         let current = localStorage.getItem('AlternateToken');
                         if (current != null && current != '' && current != 'null') {
