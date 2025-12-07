@@ -11,10 +11,11 @@
 
 Nuevos settings (tabla `settings`) para controlar la autenticación 2FA:
 
-| Setting | Descripción |
-|---------|-------------|
-| `sugese.codigoaseguradora` | Código de la entidad aseguradora |
-| `sugese.entidadaseguradora` | nombre de la entidad aseguradora |
+| Setting | Default | Descripción |
+|---------|-------------|-------------|
+| `app.path` | C:\Aliados\WebApp | Ruta fisica de la aplicación |
+| `sugese.codigoaseguradora` | A03 | Código de la entidad aseguradora |
+| `sugese.entidadaseguradora` | Mapfre Seguros Costa Rica S.A. | nombre de la entidad aseguradora |
 
 ---
 ## Versión 1.6.162 - 07/12/2025
