@@ -937,7 +937,6 @@ app.security = (function () {
      * @returns {string|null} El valor de la cookie o null si no existe.
      */
     function getCookie(name) {
-        return localStorage.getItem('Token');
         const nameEQ = name + "=";
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
@@ -963,7 +962,6 @@ app.security = (function () {
                             // Limpiar localStorage
                             localStorage.removeItem('Token');
                             localStorage.removeItem('Username');
-                            localStorage.removeItem('Tenant');
                             localStorage.removeItem('Color1Tenant');
                             localStorage.removeItem('Color2Tenant');
                             localStorage.removeItem('Roles');

@@ -1,5 +1,14 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.162 - 07/12/2025
+
+### Aliados - Seguridad: Cambios para poder usar el cookie en el request de apis, desde la aplicación la aplicacion web.
+
+#### Funcionalidades implementadas:
+
+- ✅ Se hacen cambios necesario para no necesitar almacenar el token en el localstore del browser.
+
+---
 ## Versión 1.6.161 - 04/12/2025
 
 ### Aliados - Seguridad: 2FA, manejo de claves de acceso
