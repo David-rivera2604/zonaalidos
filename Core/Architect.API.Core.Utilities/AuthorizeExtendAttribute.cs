@@ -45,7 +45,7 @@ namespace Architect.API.Core.Security
                 if (auth != null &&
                         auth.Scheme == "Bearer" &&
                             auth.Parameter.IsNotEmpty() &&
-                                auth.Parameter != "undefined")
+                                auth.Parameter != "undefined" && auth.Parameter != "null")
                 {
                     try
                     {
