@@ -35,8 +35,7 @@ namespace Architect.API.Tron.Business.Backoffice
             if (result.Length < 200)
             {
                 string failDetail = System.Text.Encoding.Default.GetString(result);
-                Architect.Utilities.Log.ErrorLog("ImprimirAvisoDetalle", failDetail);
-                throw new Exception(failDetail);
+                throw new Architect.Utilities.Exceptions.CustomException(failDetail);
             }
             return result;
         }
@@ -60,8 +59,7 @@ namespace Architect.API.Tron.Business.Backoffice
             if (result.Length < 200)
             {
                 string failDetail = System.Text.Encoding.Default.GetString(result);
-                Architect.Utilities.Log.ErrorLog("ImprimirAviso", failDetail);
-                throw new Exception(failDetail);
+                throw new Architect.Utilities.Exceptions.CustomException(failDetail);
             }
             return result;
         }
@@ -185,49 +183,67 @@ namespace Architect.API.Tron.Business.Backoffice
         public static async Task<byte[]> ImprimirPoliza(string num_poliza, int num_riesgo = 1)
         {
             string procedureName = string.Empty;
-            switch (num_poliza.Substring(0, 3))
-            {
-                case "201":
-                    procedureName = "em_k_jrp_cuadropoliza201_mcr.p_lista";
-                    break;
-                case "202":
-                    procedureName = "em_k_jrp_cuadropoliza202_mcr.p_lista";
-                    break;
-                case "204":
-                    procedureName = "em_k_jrp_cuadropoliza204_mcr.p_lista";
-                    break;
-                case "205":
-                    procedureName = "em_k_jrp_certificado_205_mcr.p_lista";
-                    break;
-                case "230":
-                    procedureName = "em_k_jrp_certificado_230_mcr.p_lista";
-                    break;
-                case "288":
-                    procedureName = "em_k_jrp_condiciones_288_mcr.p_lista";
-                    break;
-                case "300":
-                case "302":
-                    procedureName = "em_k_jrp_cuadro_poliza_301_mcr.p_lista";
-                    break;
-                case "441":
-                    procedureName = "em_k_jrp_condiciones_441_mcr.p_lista";
-                    break;
-                case "194":
-                    procedureName = "em_k_jrp_certificado_194_mcr.p_lista";
-                    break;
-                case "303":
-                    procedureName = "em_k_jrp_cuadro_poliza_303.p_lista";
-                    break;
-            }
-            if (procedureName.IsEmpty())
-            {
-                throw new Utilities.Exceptions.ApplicationException(string.Format("No se puede imprimir la póliza {0} del ramo {0}", num_poliza, num_poliza.Substring(0, 3)));
-            }
-            string reportId = await DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo);
+            string reportId = string.Empty;
+            byte[] report = null;  
 
-            return DownloadReport(reportId, String.Format("Póliza {0}, Riesgo {1}, ReportId {2} ", num_poliza, num_riesgo, reportId), "ImprimirPoliza");
-                
+            try
+            {
+                switch (num_poliza.Substring(0, 3))
+                {
+                    case "201":
+                        procedureName = "em_k_jrp_cuadropoliza201_mcr.p_lista";
+                        break;
+                    case "202":
+                        procedureName = "em_k_jrp_cuadropoliza202_mcr.p_lista";
+                        break;
+                    case "204":
+                        procedureName = "em_k_jrp_cuadropoliza204_mcr.p_lista";
+                        break;
+                    case "205":
+                        procedureName = "em_k_jrp_certificado_205_mcr.p_lista";
+                        break;
+                    case "230":
+                        procedureName = "em_k_jrp_certificado_230_mcr.p_lista";
+                        break;
+                    case "288":
+                        procedureName = "em_k_jrp_condiciones_288_mcr.p_lista";
+                        break;
+                    case "300":
+                    case "302":
+                        procedureName = "em_k_jrp_cuadro_poliza_301_mcr.p_lista";
+                        break;
+                    case "441":
+                        procedureName = "em_k_jrp_condiciones_441_mcr.p_lista";
+                        break;
+                    case "194":
+                        procedureName = "em_k_jrp_certificado_194_mcr.p_lista";
+                        break;
+                    case "303":
+                        procedureName = "em_k_jrp_cuadro_poliza_303.p_lista";
+                        break;
+                }
+                if (procedureName.IsEmpty())
+                {
+                    throw new Utilities.Exceptions.ApplicationException(string.Format("No se puede imprimir la póliza {0} del ramo {1}", num_poliza, num_poliza.Substring(0, 3)));
+                }
+                reportId = await DataAccess.Impresion.Poliza(1, num_poliza, procedureName, num_riesgo);
+
+                report = DownloadReport(reportId, String.Format("Póliza {0}, Riesgo {1}, ReportId {2} ", num_poliza, num_riesgo, reportId), "ImprimirPoliza");               
+            }
+            catch (Exception ex)
+            {
+                string message = "Ha ocurrido un error al tratar de imprimir el certificado";    
+
+                if (reportId.IsNotEmpty())
+                {
+                    message += string.Format(", ReportIdentify #{0}", reportId);
+                }
+
+                throw new Architect.Utilities.Exceptions.CustomException(message, ex);
+            }
+            return report;
         }
+
         /// <summary>
         /// Descarga un certificado de un acreedor
         /// </summary>
@@ -260,10 +276,8 @@ namespace Architect.API.Tron.Business.Backoffice
             if (result.Length < 200)
             {
                 string failDetail = System.Text.Encoding.Default.GetString(result);
-                Architect.Utilities.Log.ErrorLog(typeReport, failDetail);
-                throw new Exception(failDetail);
+                throw new Architect.Utilities.Exceptions.CustomException(failDetail);
             }
-            Utilities.Log.WarningLog(typeReport, verb, "tron");
             return result;
         }
 
@@ -295,8 +309,8 @@ namespace Architect.API.Tron.Business.Backoffice
 
             string reportId = await Architect.API.Tron.DataAccess.Impresion.Recibo(1, num_recibo);
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
-            ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-            reportId);
+                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+                                        reportId);
 
             using (WebClient client = new WebClient())
             {
@@ -305,8 +319,7 @@ namespace Architect.API.Tron.Business.Backoffice
             if (result.Length < 200)
             {
                 string failDetail = System.Text.Encoding.Default.GetString(result);
-                Architect.Utilities.Log.ErrorLog("ImprimirRecibo", failDetail);
-                throw new Exception(failDetail);
+                throw new Architect.Utilities.Exceptions.CustomException(failDetail);
             }
             return result;
         }
@@ -321,8 +334,8 @@ namespace Architect.API.Tron.Business.Backoffice
             string reportId = await Architect.API.Tron.DataAccess.Impresion.DepositoDePrima(1, num_recibo, cobradosHoy);
 
             string id = string.Format("{0}/servlet/mapfre.srv.SVJspool?otxtAccion=11&id={1}&format=pdf",
-            ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
-            reportId);
+                                        ConfigurationManager.AppSettings["Mapfre.Tron.RutaImpresion"],
+                                        reportId);
 
             using (WebClient client = new WebClient())
             {
@@ -331,8 +344,7 @@ namespace Architect.API.Tron.Business.Backoffice
             if (result.Length < 200)
             {
                 string failDetail = System.Text.Encoding.Default.GetString(result);
-                Architect.Utilities.Log.ErrorLog("DepositoDePrima", failDetail);
-                throw new Exception(failDetail);
+                throw new Architect.Utilities.Exceptions.CustomException(failDetail);
             }
             return result;
         }
