@@ -110,3 +110,7 @@ Thumbs.db
 /Core/Architect.PDF.Integrations/Architect.PDF.Integrations.csproj.user
 /Sugese/Architect.Sugese.Utility/.vs/Architect.Sugese.Utility.csproj.dtbcache.json
 /.vs/VSWorkspaceState.json
+*.md
+/webapp/Views/Tests
+/webapp/Controllers
+/webapp/app/components

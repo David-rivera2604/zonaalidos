@@ -47,41 +47,19 @@ String.prototype.supplant = function (o) {
 };
 
 app.core = (function () {
+    let inactiveSeconds = 0;
 
     let lookupData = [];
-    
-    function getAuthToken() { 
+
+    function getAuthToken() {
         token = app.security().getCookie('AuthToken');
         if (token != null && token != '') {
             return token;
-        } 
+        }
     }
 
     function GetPDF(url, download, filename, callback) {
         let excel = false;
-        //var req = new XMLHttpRequest();
-        //req.open("GET", url, true);
-        //req.responseType = "blob";
-        //req.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-        //req.setRequestHeader("Authorization", 'Bearer ' + localStorage.getItem('Token'));
-
-        //req.onload = function (event) {
-        //    var blob = req.response;
-        //    if (filename === null) {
-        //        filename = new Date() + ".pdf";
-        //    }
-        //    if (download) {
-        //        var link = document.createElement('a');
-        //        link.href = window.URL.createObjectURL(blob);
-        //        link.target = "_blank";
-        //        link.download = filename;
-        //        link.click();
-        //        link.remove()
-        //    } else {
-        //        window.open(window.URL.createObjectURL(blob));
-        //    }
-        //};
-        //req.send();
 
         if (url.startsWith('excel.')) {
             url = app.setting.apipath + 'v1/DataSource/excel?id=' + url.substring(6);
@@ -126,7 +104,6 @@ app.core = (function () {
             }
             if (excel)
                 $('.ibox-content').toggleClass('sk-loading');
-
         }).catch(function (error) {
             if (callback !== undefined && callback !== null) {
                 callback();
@@ -145,8 +122,7 @@ app.core = (function () {
         });
     }
 
-    function FileUpLoad(options) {
-        // 1. Configuración
+    function FileUpLoad(options = {}) {
         const conf = {
             formId: null,
             uploadCtrolId: '#fileUploadModal',
@@ -158,44 +134,36 @@ app.core = (function () {
         };
         const fullconfig = { ...conf, ...options };
 
-        // 2. Obtener archivos
         const $fileInput = $(fullconfig.uploadCtrolId);
-        const fileList = $fileInput.prop('files'); // Esto es un FileList, no un Array
+        const fileList = $fileInput.prop('files');
 
-        // Convertir a array para facilitar manejo (opcional pero recomendado)
         const arr = Array.from(fileList);
 
         if (arr.length === 0) {
             return;
         }
 
-        // 3. Validar formulario general (si aplica)
         if (fullconfig.formId != null && !app.ui.IsValid(fullconfig.formId, false, true)) {
             return;
         }
 
-        // 4. Validar archivos (Tamaño y Tipo)
         let message = '';
         for (const file of arr) {
             message = FileUpLoadValidate(file.name, file.size, file.type, message);
         }
 
-        // 5. Manejo de Errores de archivo
         if (message !== '') {
             if (fullconfig.formId) {
                 const elementInstance = $(fullconfig.formId).validate();
-                // Aseguramos que showErrors exista (dependencia de jQuery Validate)
                 if (elementInstance) {
                     elementInstance.showErrors({ 'FileName': message });
                 }
             } else {
-                // Fallback por si no hay formId, para que el usuario sepa qué pasó
                 alert(message);
             }
             return;
         }
 
-        // 6. Preparar envío
         app.ui.ButtonDoing(fullconfig.uploadCtrolId);
 
         const fileData = new FormData();
@@ -234,29 +202,24 @@ app.core = (function () {
     }
 
     function FileUpLoadValidate(name, size, type, currentMessage) {
-        // Definir constantes para mejorar legibilidad
         const KB = 1024;
         const MB = 1024 * 1024;
 
-        // Límites
-        const MIN_SIZE_WORD_PDF = 13 * KB; // ~13KB
-        const MIN_SIZE_EXCEL = 9 * KB;     // ~9KB
-        const MAX_SIZE = 30 * MB;          // 30MB
+        const MIN_SIZE_WORD_PDF = 13 * KB;
+        const MIN_SIZE_EXCEL = 9 * KB;
+        const MAX_SIZE = 30 * MB;
 
-        // Tipos MIME
         const TYPE_WORD = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
         const TYPE_PDF = 'application/pdf';
         const TYPE_EXCEL = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
         let msg = currentMessage;
 
-        // Helper para concatenar mensajes
         const addMsg = (newText) => {
             if (msg !== '') msg += ', ';
             msg += newText;
         };
 
-        // Validaciones
         if ((type === TYPE_WORD || type === TYPE_PDF) && size < MIN_SIZE_WORD_PDF) {
             addMsg('El tamaño del archivo ' + name + ' es menor a 13kb');
         }
@@ -266,12 +229,10 @@ app.core = (function () {
         }
 
         if (size >= MAX_SIZE) {
-            // Corrección del operador & por +
             addMsg('El tamaño del archivo ' + name + ' es mayor a 30mb');
         }
 
         if (name.length > 255) {
-            // Corrección del operador & por +
             addMsg('El nombre del archivo debe ser menor a 255 caracteres');
         }
 
@@ -298,7 +259,7 @@ app.core = (function () {
             cache: false,
             data: data,
             xhrFields: {
-                withCredentials: true  
+                withCredentials: true
             },
             beforeSend: function (xhr) {
                 if (token) {
@@ -321,10 +282,7 @@ app.core = (function () {
         }).fail(function (jqXHR, textStatus, errorThrown) {
             ajaxErrorHandler(jqXHR, errorThrown);
         }).always(function () {
-            //  alert('always');
         });
-        //app.core.ErrorHandler(jqXHR, textStatus, errorThrown);
-
     }
 
     function ajaxErrorHandler(jqXHR, errorThrown) {
@@ -341,7 +299,6 @@ app.core = (function () {
                             app.ui.ShowAlert('generalNotify', 'alert-danger', value);
                         }
                     });
-
                 }
                 else {
                     toastr.error(jqXHR.responseJSON.Message, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
@@ -372,10 +329,6 @@ app.core = (function () {
                 console.info(jqXHR.responseJSON.StackTrace);
                 console.groupEnd();
 
-                //console.log('%c Auth ', 'color: white; background-color: #2274A5', 'Login page rendered');
-                //console.log('%c GraphQL ', 'color: white; background-color: #95B46A', 'Get user details');
-                //console.log('%c Error ', 'color: white; background-color: #D33F49', 'Error getting user details');
-
                 break;
             default:
                 if (jqXHR.responseJSON !== undefined) {
@@ -388,7 +341,6 @@ app.core = (function () {
                 } else {
                     console.info('%c Error ', 'color: white; background-color: #D33F49', jqXHR.status, ' - ', errorThrown);
                 }
-
         }
     }
 
@@ -402,7 +354,6 @@ app.core = (function () {
         var selectedOptions;
 
         $.each(keys, function (index, value) {
-
             if (value.split('.')[0].startsWith('@')) {
                 selectCtrol.push(false);
                 onlyKeys.push(value.split('.')[0].substring(1));
@@ -441,7 +392,6 @@ app.core = (function () {
                 var key = '', ctrl = '';
 
                 $.each(data, function (index, values) {
-
                     let current = lookupData.filter(i => i.Key === values.Key)
                     if (current.length > 0) {
                         lookupData.splice(lookupData.indexOf(current[0]), 1);
@@ -472,11 +422,7 @@ app.core = (function () {
                         selectedOptions = $('#radio' + ctrlName[index]);
                         $.each(values.Lkp, function () {
                             selectedOptions.append('<div class="custom-control custom-radio custom-control-inline"><input type="radio" class="custom-control-input" id="' + ctrlName[index] + '_' + this['Code'] + '" name="' + ctrlName[index] + '" value="' + this['Code'] + '"><label class="custom-control-label" for="' + ctrlName[index] + '_' + this['Code'] + '">' + this['Description'] + '</label></div>');
-
-
                         });
-
-
                     }
                 });
                 if (callback !== undefined && callback !== null)
@@ -542,7 +488,6 @@ app.core = (function () {
     }
 
     function URLValues(url) {
-
         // get query string from url (optional) or window
         var queryString = url ? url.split('?')[1] : decodeURIComponent(window.location.search.slice(1));
 
@@ -551,7 +496,6 @@ app.core = (function () {
 
         // if query string exists
         if (queryString) {
-
             // stuff after # is not part of query string, so get rid of it
             queryString = queryString.split('#')[0];
 
@@ -572,7 +516,6 @@ app.core = (function () {
 
                 // if the paramName ends with square brackets, e.g. colors[] or colors[2]
                 if (paramName.match(/\[(\d+)?\]$/)) {
-
                     // create key if it doesn't exist
                     var key = paramName.replace(/\[(\d+)?\]/, '');
                     if (!obj[key]) obj[key] = [];
@@ -628,7 +571,6 @@ app.core = (function () {
                 });
                 ctrol.select2({ width: '100%', theme: 'bootstrap4' });
             }).always(function () {
-
             });
     }
 
@@ -690,12 +632,155 @@ app.core = (function () {
                     return response.json();
                 }
             })
-            .catch(error => { 
+            .catch(error => {
                 console.error('Error en la solicitud:', error);
             });
     };
 
+    function Initialize() {
+        if (app.login == undefined) {
+            let toastShown = false;
+            let sessionExpired = false;
+            let sessionExtended = false;
+            let wasInactive = false;
+
+            Logger.log("=== Session Monitor Initialized ===");
+            Logger.log("ExpiresIn: " + localStorage.getItem("ExpiresIn"));
+            Logger.log("Session.WarningTime: " + localStorage.getItem("Session.WarningTime"));
+
+            timerId = setInterval(() => {
+                inactiveSeconds++;
+                
+                const expiresInMin = parseInt(localStorage.getItem("ExpiresIn"));
+                const warningMin = parseInt(localStorage.getItem("Session.WarningTime"));
+                
+                if (isNaN(expiresInMin) || isNaN(warningMin)) {
+                    Logger.log("ERROR: Invalid session configuration - ExpiresIn: " + expiresInMin + ", WarningTime: " + warningMin);
+                    return;
+                }
+                
+                const showWarningAt = (expiresInMin - warningMin) * 60;
+                const remainingSeconds = (expiresInMin * 60) - inactiveSeconds;
+
+                Logger.log("Inactive: " + inactiveSeconds + "s | ShowWarningAt: " + showWarningAt + "s | Remaining: " + remainingSeconds + "s");
+
+                if (inactiveSeconds >= showWarningAt && !toastShown) {
+                    Logger.log(">>> SHOWING WARNING TOAST <<<");
+                    
+                    toastr.info(
+                        "Su sesión se cerrará en " + (remainingSeconds / 60) +
+                        " minutos, si desea mantenerla haga clic aquí",
+                        'Sesión', 
+                        {
+                            timeOut: 5000,
+                            closeButton: true,
+                            progressBar: true,
+                            onclick: function () {
+                                timeout_verify('?force=true');
+                            }
+                        }
+                    );
+
+                    toastShown = true;
+                    sessionExtended = false;
+                    wasInactive = true;
+                }
+
+                if (remainingSeconds <= 0 && !sessionExpired) {
+                    Logger.log(">>> SESSION EXPIRED <<<");
+                    localStorage.setItem('reason', 'session-expired');
+                    sessionExpired = true;
+                    app.security().logout();
+                    timeout_verify('');
+                }
+
+            }, 1000);
+
+            // Reset inactivity when activity is detected
+            function resetInactivity() {
+                Logger.log("User active");
+                
+                // Solo extender si:
+                // 1. Se mostró el toast (toastShown = true)
+                // 2. NO se ha extendido ya (sessionExtended = false)
+                // 3. El usuario ESTABA inactivo (wasInactive = true) - NUEVA CONDICIÓN
+                if (toastShown && !sessionExtended && wasInactive) {
+                    //extendSessionAutomatically();
+                    sessionExtended = true;
+                    wasInactive = false; // Resetear bandera de inactividad
+                }
+                
+                inactiveSeconds = 0;
+                toastShown = false;
+            }
+
+            // Nueva función para extender la sesión automáticamente
+            function extendSessionAutomatically() {
+                try {
+                    // Leer el tiempo de extensión desde localStorage (en minutos)
+                    const EXTENSION_MINUTES = parseInt(localStorage.getItem("Session.InactiveTime")) || 5;
+                    const currentExpiresIn = parseInt(localStorage.getItem("ExpiresIn")) || 30;
+                    const newExpiresIn = currentExpiresIn + EXTENSION_MINUTES;
+                    
+                    // Actualizar ExpiresIn en localStorage
+                    localStorage.setItem("ExpiresIn", newExpiresIn.toString());
+                    
+                    // Actualizar también la fecha de expiración si existe
+                    const currentExpires = localStorage.getItem("Expires");
+                    if (currentExpires) {
+                        const expiresDate = new Date(currentExpires);
+                        expiresDate.setMinutes(expiresDate.getMinutes() + EXTENSION_MINUTES);
+                        localStorage.setItem("Expires", expiresDate.toString());
+                    }
+                    
+                    Logger.log("Sesión extendida automáticamente por " + EXTENSION_MINUTES + " minutos");
+                    
+                    // Opcional: Mostrar notificación sutil al usuario
+                    if (typeof toastr !== 'undefined') {
+                        toastr.success(
+                            "Su sesión ha sido extendida " + EXTENSION_MINUTES + " minutos más",
+                            'Sesión Extendida',
+                            { timeOut: 3000, closeButton: false, progressBar: true }
+                        );
+                    }
+                } catch (error) {
+                    console.error("Error al extender sesión automáticamente:", error);
+                }
+            }
+
+            // Activity events
+            $(document).on("mousemove keydown click scroll touchstart", resetInactivity);
+        }
+    }
+
+    function timeout_verify(option) {
+        clearInterval(timerId);
+        app.core.Get(app.setting.apipath + 'v1/Security/IsLive' + option)
+            .done(function (data, textStatus, jqXHR) {
+                if (data <= 30) {
+                    localStorage.setItem('reason', 'session-expired');
+                    window.location.replace(app.setting.basepath + 'Security/Login');
+                } else if (data <= 90) {
+                    data = 60;
+                    var iinterval = parseInt(data) * 1000;
+                    toastr.info("Su sesión se cerrará en " + data + " segundos, si desea mantenerla haga clic aquí", 'Sesión', { timeOut: iinterval, closeButton: true, progressBar: true, onclick: function () { timeout_verify('?force=true'); } });
+                    token_timeout(iinterval);
+                }
+                else {
+                    var dt = new Date();
+                    var iinterval = (data + 10) * 1000;
+                    dt = new Date(dt.getTime() + iinterval);
+                    localStorage.setItem('Expires', dt);
+                    token_timeout(10000);
+                }
+            });
+    }
+
+
     return {
+        Initialize: function () {
+            return Initialize();
+        },
         ReplaceAll(string, search, replace) {
             return ReplaceAll(string, search, replace);
         },
@@ -810,7 +895,6 @@ app.core = (function () {
                 url = lurl;
             }
             if (url == '' && typeof app.Prototype != "undefined") {
-
                 if (typeof validate != "undefined" && validate) {
                     valid = app.Prototype.IsValid();
                 }
@@ -955,19 +1039,19 @@ app.security = (function () {
         getCookie: function (name) {
             return getCookie(name);
         },
-        logout: function () {             
-                app.core.Post(app.setting.basepath + 'Security/Logout')
-                    .done(function (data) {
-                        if (data.success) {
-                            // Limpiar localStorage
-                            localStorage.removeItem('Token');
-                            localStorage.removeItem('Username');
-                            localStorage.removeItem('Color1Tenant');
-                            localStorage.removeItem('Color2Tenant');
-                            localStorage.removeItem('Roles');
-                            localStorage.removeItem('Expires');
-                            localStorage.removeItem('LastActivity');
-                            localStorage.removeItem('Navegation');
+        logout: function () {
+            app.core.Post(app.setting.basepath + 'Security/Logout')
+                .done(function (data) {
+                    if (data.success) {
+                        // Limpiar localStorage
+                        localStorage.removeItem('Token');
+                        localStorage.removeItem('Username');
+                        localStorage.removeItem('Color1Tenant');
+                        localStorage.removeItem('Color2Tenant');
+                        localStorage.removeItem('Roles');
+                        localStorage.removeItem('Expires');
+                        localStorage.removeItem('LastActivity');
+                        localStorage.removeItem('Navegation');
 
                         // Redirigir al login
                         window.location.replace(app.setting.basepath + 'Security/Login');
@@ -981,11 +1065,32 @@ app.security = (function () {
                     document.cookie = "AuthToken=; path=/; max-age=0";
                     window.location.replace(app.setting.basepath + 'Security/Login');
                 });
-
         }
     }
 });
 
+window.Logger = {
+    canLog() {
+        const flag = sessionStorage.getItem("logEnabled");
+        return flag === 'true';
+    },
+
+    log(message) {
+        if (this.canLog()) {
+            console.log(message);
+        }
+    },
+
+    enable() {
+        sessionStorage.setItem("logEnabled", "false");
+    },
+
+    disable() {
+        sessionStorage.setItem("logEnabled", "true");
+    }
+};
+
 $(document).ready(function () {
+    app.core.Initialize();
     moment.locale('es');
 });

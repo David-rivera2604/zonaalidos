@@ -406,7 +406,7 @@ namespace Architect.API.Core.Business.General
                 stepReady++;
             }
 
-            result.Progress = stepCount <= stepReady ? 100 : 100 / stepCount * stepReady;
+            result.Progress = stepCount <= stepReady ? 100 : (int)( 100.0 / stepCount * stepReady);
 
 
             if (curentStep?.Step?.ProcessSpecStepRoles?.Count > 0)

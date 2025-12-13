@@ -391,13 +391,12 @@ app.login = (function () {
             $('#Username').focus();
             var reason = localStorage.getItem('reason');
             localStorage.removeItem('reason');
-            if (reason === 'session-expired') {
+            if (reason === 'session-expired')
                 $('.alert').removeClass('d-none');
-            }
+
             $('#Tenant').val(_tenant);
-            if (employeeMode) {
+            if (employeeMode)
                 $('#forgotlink').addClass('d-none');
-            }
         }
     };
 })();

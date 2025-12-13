@@ -204,52 +204,52 @@ app.master = (function () {
         Ham_menu.metisMenu();
     };
 
-    function token_timeout(interval) {
-        timerId = setInterval(function () {
-            var remaining = Date.parse(localStorage.getItem("Expires")) - new Date();
-            var stimeout = Math.floor(remaining / 1000);
-            //console.log(new Date());
-            //console.log(localStorage.getItem("Expires"));
-            //console.log(localStorage.getItem("LastActivity"));
-            //console.log(remaining);
-            //console.log(Math.floor(remaining / 1000));
-            if (Math.floor(remaining / 1000) <= 0) {
-                clearInterval(timerId);
-                localStorage.setItem('reason', 'session-expired');
-                window.location.replace(app.setting.basepath + 'Security/Login');
-            }
-            else if (stimeout <= 90) {
-                timeout_verify('');
-            }
-        }, interval);
-    };
+    //function token_timeout(interval) {
+    //    timerId = setInterval(function () {
+    //        var remaining = Date.parse(localStorage.getItem("Expires")) - new Date();
+    //        var stimeout = Math.floor(remaining / 1000);
+    //        //console.log(new Date());
+    //        //console.log(localStorage.getItem("Expires"));
+    //        //console.log(localStorage.getItem("LastActivity"));
+    //        //console.log(remaining);
+    //        //console.log(Math.floor(remaining / 1000));
+    //        if (Math.floor(remaining / 1000) <= 0) {
+    //            clearInterval(timerId);
+    //            localStorage.setItem('reason', 'session-expired');
+    //            window.location.replace(app.setting.basepath + 'Security/Login');
+    //        }
+    //        else if (stimeout <= 90) {
+    //            timeout_verify('');
+    //        }
+    //    }, interval);
+    //};
 
-    function timeout_verify(option) {
-        clearInterval(timerId);
-        app.core.Get(app.setting.apipath + 'v1/Security/IsLive' + option)
-            .done(function (data, textStatus, jqXHR) {
-                if (data <= 30) {
-                    localStorage.setItem('reason', 'session-expired');
-                    window.location.replace(app.setting.basepath + 'Security/Login');
-                } else if (data <= 90) {
-                    data = 60;
-                    var iinterval = parseInt(data) * 1000;
-                    toastr.info("Su sesión se cerrará en " + data + " segundos, si desea mantenerla haga clic aquí", 'Sesión', { timeOut: iinterval, closeButton: true, progressBar: true, onclick: function () { timeout_verify('?force=true'); } });
-                    token_timeout(iinterval);
-                }
-                else {
-                    //console.log("extender");
-                    //console.log(data);
-                    var dt = new Date();
-                    var iinterval = (data + 10) * 1000;
-                    //console.log(dt);
-                    dt = new Date(dt.getTime() + iinterval);
-                    //console.log(dt);
-                    localStorage.setItem('Expires', dt);
-                    token_timeout(10000);
-                }
-            });
-    };
+    //function timeout_verify(option) {
+    //    clearInterval(timerId);
+    //    app.core.Get(app.setting.apipath + 'v1/Security/IsLive' + option)
+    //        .done(function (data, textStatus, jqXHR) {
+    //            if (data <= 30) {
+    //                localStorage.setItem('reason', 'session-expired');
+    //                window.location.replace(app.setting.basepath + 'Security/Login');
+    //            } else if (data <= 90) {
+    //                data = 60;
+    //                var iinterval = parseInt(data) * 1000;
+    //                toastr.info("Su sesión se cerrará en " + data + " segundos, si desea mantenerla haga clic aquí", 'Sesión', { timeOut: iinterval, closeButton: true, progressBar: true, onclick: function () { timeout_verify('?force=true'); } });
+    //                token_timeout(iinterval);
+    //            }
+    //            else {
+    //                //console.log("extender");
+    //                //console.log(data);
+    //                var dt = new Date();
+    //                var iinterval = (data + 10) * 1000;
+    //                //console.log(dt);
+    //                dt = new Date(dt.getTime() + iinterval);
+    //                //console.log(dt);
+    //                localStorage.setItem('Expires', dt);
+    //                token_timeout(10000);
+    //            }
+    //        });
+    //};
 
     return {
         Init: function () {
@@ -278,7 +278,7 @@ app.master = (function () {
                 $('#TenantMaster').html(localStorage.getItem('Tenant'));
 
                 main_menu();
-                token_timeout(10000);
+                //token_timeout(10000);
 
                 activateActivityTracker();
 

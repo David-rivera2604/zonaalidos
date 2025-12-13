@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Architect.API.Core.Business.Security
 {
@@ -314,6 +313,8 @@ namespace Architect.API.Core.Business.Security
                     tokenItem.Settings.Add(new SettingItem { Key = item.Key, Value = item.Value });
                 }
             }
+            if (!result.Settings.Any(c => c.Key.Equals("ExpiresIn")))
+                result.Settings.Add(new SettingItem { Key = "ExpiresIn", Value = ("Security.Session.Timeout".IntegerValue(0, 30)).ToString()  });
         }
 
         /// <summary>
