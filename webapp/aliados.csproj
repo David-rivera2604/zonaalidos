@@ -1642,11 +1642,6 @@
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <Content Include="data\dummy.json" />
-    <Content Include="app\js\SESSION-AUTO-EXTEND-SUMMARY.md" />
-    <Content Include="app\js\SESSION-CONFIG-CHANGE.md" />
-    <Content Include="app\js\BUG-FIX-NaN-INACTIVE-SECONDS.md" />
-    <Content Include="app\js\WAS-INACTIVE-FLAG-IMPROVEMENT.md" />
-    <Content Include="app\js\DEBUG-SESSION-CONDITION-NEVER-TRUE.md" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
