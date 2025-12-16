@@ -672,12 +672,12 @@ app.core = (function () {
                         " minutos, si desea mantenerla haga clic aquí",
                         'Sesión', 
                         {
-                            timeOut: 5000,
+                            timeOut: 50000,
                             closeButton: true,
                             progressBar: true,
-                            onclick: function () {
-                                timeout_verify('?force=true');
-                            }
+                            //onclick: function () {
+                            //    //timeout_verify('?force=true');
+                            //}
                         }
                     );
 
@@ -690,24 +690,18 @@ app.core = (function () {
                     Logger.log(">>> SESSION EXPIRED <<<");
                     localStorage.setItem('reason', 'session-expired');
                     sessionExpired = true;
-                    app.security().logout();
                     timeout_verify('');
                 }
 
-            }, 1000);
+            }, 1000); 
 
-            // Reset inactivity when activity is detected
             function resetInactivity() {
                 Logger.log("User active");
-                
-                // Solo extender si:
-                // 1. Se mostró el toast (toastShown = true)
-                // 2. NO se ha extendido ya (sessionExtended = false)
-                // 3. El usuario ESTABA inactivo (wasInactive = true) - NUEVA CONDICIÓN
+                 
                 if (toastShown && !sessionExtended && wasInactive) {
                     //extendSessionAutomatically();
                     sessionExtended = true;
-                    wasInactive = false; // Resetear bandera de inactividad
+                    wasInactive = false;  
                 }
                 
                 inactiveSeconds = 0;
@@ -812,8 +806,8 @@ app.core = (function () {
         Send: function (mode, url, data, success) {
             return ajaxCall(mode, url, data, success, true);
         },
-        Post: function (url, data, success, contentType) {
-            return ajaxCall('POST', url, data, success, true, contentType);
+        Post: function (url, data, success, contentType, token) {
+            return ajaxCall('POST', url, data, success, (typeof token === "undefined") ? true : token, contentType);
         },
         Put: function (url, data, success) {
             return ajaxCall('PUT', url, data, success, true);
@@ -1040,7 +1034,7 @@ app.security = (function () {
             return getCookie(name);
         },
         logout: function () {
-            app.core.Post(app.setting.basepath + 'Security/Logout')
+            app.core.Post(app.setting.basepath + 'Security/Logout', undefined, undefined, false)
                 .done(function (data) {
                     if (data.success) {
                         // Limpiar localStorage
@@ -1071,7 +1065,7 @@ app.security = (function () {
 
 window.Logger = {
     canLog() {
-        const flag = sessionStorage.getItem("logEnabled");
+        const flag = sessionStorage.getItem("Log.Enabled");
         return flag === 'true';
     },
 
@@ -1082,11 +1076,11 @@ window.Logger = {
     },
 
     enable() {
-        sessionStorage.setItem("logEnabled", "false");
+        sessionStorage.setItem("Log.Enabled", "false");
     },
 
     disable() {
-        sessionStorage.setItem("logEnabled", "true");
+        sessionStorage.setItem("Log.Enabled", "true");
     }
 };
 

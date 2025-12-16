@@ -391,8 +391,10 @@ app.login = (function () {
             $('#Username').focus();
             var reason = localStorage.getItem('reason');
             localStorage.removeItem('reason');
-            if (reason === 'session-expired')
+            if (reason === 'session-expired') {
                 $('.alert').removeClass('d-none');
+                $('.alert').show();
+            }
 
             $('#Tenant').val(_tenant);
             if (employeeMode)
