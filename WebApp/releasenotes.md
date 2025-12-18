@@ -16,24 +16,8 @@ Implementación de nuevos parámetros de configuración (tabla `settings`) para 
 
 | Setting | Default | Descripción |
 |---------|---------|-------------|
-| `Session.WarningTime` | 2 | Minutos antes de expirar la sesión en los que se muestra la notificación emergente de advertencia al usuario. Si la sesión total es de 30 minutos y este valor es 2, el aviso aparecerá a los 28 minutos de inactividad. |
-| `Session.InactiveTime` | 3 | Minutos que se extiende automáticamente la sesión cuando el usuario muestra actividad (movimiento del mouse, clic, scroll, etc.) después de haber recibido la advertencia de inactividad. Esto permite que usuarios activos no tengan que hacer clic manualmente en la notificación de advertencia. |
-
-#### Ejemplos de configuración:
-
-**Configuración de Alta Seguridad (Sector Financiero):**
-```sql
--- Advertencia 2 minutos antes, extensión de 3 minutos
-Session.WarningTime = 2
-Session.InactiveTime = 3
-```
-
-**Configuración Estándar Corporativo:**
-```sql
--- Advertencia 5 minutos antes, extensión de 10 minutos
-Session.WarningTime = 5
-Session.InactiveTime = 10
-```
+| `Session.WarningTime` | 9 | Minutos antes de expirar la sesión en los que se muestra la notificación emergente de advertencia al usuario. Si la sesión total es de 30 minutos y este valor es 2, el aviso aparecerá a los 28 minutos de inactividad. |
+| `Session.InactiveTime` | 10 | Minutos que se extiende automáticamente la sesión cuando el usuario muestra actividad (movimiento del mouse, clic, scroll, etc.) después de haber recibido la advertencia de inactividad. Esto permite que usuarios activos no tengan que hacer clic manualmente en la notificación de advertencia. |
 
 #### Flujo de funcionamiento:
 
@@ -42,6 +26,9 @@ Session.InactiveTime = 10
 3. **Reactivación automática**: Si el usuario mueve el mouse o interactúa con el sistema, la sesión se extiende automáticamente por InactiveTime minutos
 4. **Expiración**: Si no hay actividad, la sesión expira y redirige al login
 
+#### Dependencias:
+
+1. 251218a.settings.new.sql
 ---
 
 ## Versión 1.6.163 - 07/12/2025
