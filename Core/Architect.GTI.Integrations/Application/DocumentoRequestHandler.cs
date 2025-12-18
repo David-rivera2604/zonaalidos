@@ -78,9 +78,14 @@ namespace Architect.GTI.Integrations.Application
             receptor.Correo = fact.Correo;
 
             // Recalcular totales basados en la nueva información
-            double totalComprobante = fact.PrecioTotal;
-            double impuesto = fact.Impuesto;
-            double precioUnitario = Math.Round(fact.PrecioTotal - fact.Impuesto, 2);
+            //double totalComprobante = fact.PrecioTotal;
+            //double impuesto = fact.Impuesto;
+            //double precioUnitario = Math.Round(fact.PrecioTotal - fact.Impuesto, 2);
+            double precioUnitario = Math.Round(fact.PrecioUnitario, 3);
+            double impuesto = Math.Round(precioUnitario * (request.Documentos[0].Lineas[0].Impuestos[0].PorcentajeImp / 100.0), 3);
+            double totalComprobante = Math.Round(precioUnitario + impuesto, 3);
+
+
 
             // Actualizar la primera línea del documento
             var linea = request.Documentos[0].Lineas[0];
@@ -143,7 +148,7 @@ namespace Architect.GTI.Integrations.Application
                             CodigoActividad = "660303",
                             ImpRenta = 1,
                             NombComercial = "BANCO DE COSTA RICA",
-                            CantDeci = 2,
+                            CantDeci = 3,
                             TipoDoc = 1,
                             SituacionEnvio = 1,
                             Sucursal = 1,
