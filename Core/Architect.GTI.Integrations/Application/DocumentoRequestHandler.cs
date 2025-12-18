@@ -122,7 +122,7 @@ namespace Architect.GTI.Integrations.Application
         {
             return new DocumentoRequest
             {
-                NumCuenta = 3115,
+                NumCuenta = Convert.ToInt32("Integration.GTI.ApiCargaFactura.NumCuenta".StringValue(0, "3115")),
                 Documentos = new[]
                 {
                     new Documento

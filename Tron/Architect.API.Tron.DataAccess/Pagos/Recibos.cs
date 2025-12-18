@@ -109,7 +109,7 @@ $@"SELECT C.NUM_RECIBO, C.FEC_EFEC_RECIBO, SUM(C.IMP_RECIBO) IMP_RECIBO, A400.CO
                             AND R.NUM_SPTO <= A.NUM_SPTO
                             AND R.NUM_APLI = A.NUM_APLI
                             AND R.NUM_SPTO_APLI = A.NUM_SPTO_APLI
-                            AND R.TIP_SITUACION IN ('RE','EP')
+                            AND R.TIP_SITUACION IN ('EP')
                             AND R.TIP_GESTOR IN ('TA')
                             AND TRUNC(R.FEC_EFEC_RECIBO) <= TRUNC(:fec_efect_recibo)
                             AND R.IMP_RECIBO > 0)
