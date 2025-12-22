@@ -68,11 +68,30 @@ namespace Architect.GTI.Integrations.Application
             encabezado.TipoCambio = fact.TipoCambio;
             encabezado.Moneda = fact.Moneda;
             encabezado.NumeroFactura = fact.NumeroFactura;
-            encabezado.FechaFactura = fact.FechaFactura;
+            encabezado.FechaFactura = DateTime.Now;
             encabezado.FechaVencimiento = fact.FechaVencimiento;
 
             var receptor = encabezado.receptor;
-            receptor.TipoIdent = fact.TipoIdent;
+            switch (fact.TipoIdent)
+            {
+                case 1:
+                    receptor.TipoIdent = 1;
+                    break;
+                case 2:
+                    receptor.TipoIdent = 3;
+                    break;
+                case 3:
+                    receptor.TipoIdent = 4;
+                    break;
+                case 4:
+                    receptor.TipoIdent = 2;
+                    break;
+                default:
+                    receptor.TipoIdent = fact.TipoIdent; 
+                    break;
+            }
+
+
             receptor.Identificacion = fact.Identificacion;
             receptor.Nombre = fact.Nombre;
             receptor.Correo = fact.Correo;
@@ -147,7 +166,7 @@ namespace Architect.GTI.Integrations.Application
                         {
                             CodigoActividad = "660303",
                             ImpRenta = 1,
-                            NombComercial = "BANCO DE COSTA RICA",
+                            NombComercial = "MAPFRE SEGUROS CR",
                             CantDeci = 3,
                             TipoDoc = 1,
                             SituacionEnvio = 1,
@@ -171,8 +190,8 @@ namespace Architect.GTI.Integrations.Application
                             receptor = new Receptor
                             {
                                 TipoIdent = 2,
-                                Identificacion = "4000000019",
-                                Nombre = "BANCO DE COSTA RICA",
+                                Identificacion = "999999999",
+                                Nombre = "MAPFRE SEGUROS CR",
                                 Correo = "royner.acosta@mapfrecr.com",
                                 Copia = string.Empty,
                                 Destinatario =string.Empty
