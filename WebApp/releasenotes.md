@@ -1,5 +1,14 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.165 - 30/12/2025
+
+### Aliados - SICOP : Se habilita traza en el llamado a los servicios de SICOP.
+
+#### Funcionalidades implementadas:
+
+- ✅ Se habilita traza por medio de la tabla TRACKREQUEST en el llamado a los servicios de SICOP.
+
+---
 ## Versión 1.6.164 - 17/12/2025
 
 ### Aliados - Security : Optimización del Control de Inactividad de Usuarios.
