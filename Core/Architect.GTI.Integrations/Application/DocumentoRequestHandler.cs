@@ -164,7 +164,7 @@ namespace Architect.GTI.Integrations.Application
                         },
                         Encabezado = new Encabezado
                         {
-                            CodigoActividad = "660303",
+                            CodigoActividad = "6512.0",
                             ImpRenta = 1,
                             NombComercial = "MAPFRE SEGUROS CR",
                             CantDeci = 3,
