@@ -434,7 +434,7 @@ body.mini-navbar .nav-header {
     }
 
 .Ilog {
-    color: #d81e05 !important;
+    color: #FF002D !important;
 }
 
 .lab_desi {
@@ -513,8 +513,8 @@ body.mini-navbar .nav-header {
 }
 
 .slidee {
-    --color: #d81e05;
-    --hover: #d81e05;
+    --color: #FF002D;
+    --hover: #FF002D;
 }
 
 .slideeCots:hover {
@@ -2849,8 +2849,8 @@ div.ham-menu {
 .clients-square .carousel-indicators .active {
     opacity: 1;
     height: 0.5rem !important;
-    background-color: #d81e05 !important;
-    background-color: #d81e05 !important;
+    background-color: #FF002D !important;
+    background-color: #FF002D !important;
 }
 
 .clients-square .carousel-indicators li {

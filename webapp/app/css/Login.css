@@ -30,7 +30,7 @@ form, button {
 }
 
 h1, h2, h3, h4, h5 {
-    color: #d81e05;
+    color: #FF002D;
     font-family: Open Sans, Arial, sans-serif;
 }
 
@@ -48,21 +48,21 @@ input[type="text"], input[type="password"], input[type="email"], button {
     input[type="text"]:focus,
     input[type="password"]:focus,
     input[type="email"]:focus {
-        border-color: #d81e05; /* Cambia el color del borde cuando el input está activo */
+        border-color: #FF002D; /* Cambia el color del borde cuando el input está activo */
         box-shadow: 0 0 5px rgba(49, 48, 48, 0.416); /* Añade un sombreado cuando está activo */
         outline: none; /* Elimina el contorno predeterminado cuando está activo */
     }
 
 button {
-    background-color: #d81e05;
+    background-color: #FF002D;
     color: white;
     border: none;
     cursor: pointer;
 }
 
     button:hover {
-        background-color: #d81e05;
-        border-color: #d81e05; /* Cambia el color del borde cuando el input está activo */
+        background-color: #FF002D;
+        border-color: #FF002D; /* Cambia el color del borde cuando el input está activo */
         box-shadow: 0 0 25px rgba(49, 48, 48, 0.416); /* Añade un sombreado cuando está activo */
     }
 
@@ -100,7 +100,7 @@ button {
 
     .close:hover,
     .close:focus {
-        color: #d81e05;
+        color: #FF002D;
         text-decoration: none;
         cursor: pointer;
     }
