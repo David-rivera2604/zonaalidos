@@ -27,7 +27,7 @@ namespace Architect.SICOP.Integrations.Controllers
             Contracts.SUPPLIER_INFO result = null;
             await Task.Run(() =>
             {
-                result = Business.InformacionProveedor.SupplierInfo(id);
+                result = Business.InformacionProveedor.SupplierInfo(id, tokenInfo.CompanyId);
             });
 
             return Ok(result);
@@ -41,7 +41,7 @@ namespace Architect.SICOP.Integrations.Controllers
             GurtResponseBean result = null;
             await Task.Run(() =>
             {
-                result = Business.NotificarGarantia.RcvGurtWService(request);
+                result = Business.NotificarGarantia.RcvGurtWService(request, tokenInfo.CompanyId);
             });
 
             return Created(string.Empty, result);
@@ -55,7 +55,7 @@ namespace Architect.SICOP.Integrations.Controllers
             ResultGurtWS.GurtResponseBean result = null;
             await Task.Run(() =>
             {
-                result = Business.NotificarLiberacion.ResultGurtWService(request);
+                result = Business.NotificarLiberacion.ResultGurtWService(request, tokenInfo.CompanyId);
             });
 
             return Created(string.Empty, result);

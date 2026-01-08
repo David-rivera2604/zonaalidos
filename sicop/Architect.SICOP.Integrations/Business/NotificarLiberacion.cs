@@ -16,27 +16,41 @@ namespace Architect.SICOP.Integrations.Business
     public class NotificarLiberacion
     {
 
-        static public ResultGurtWS.GurtResponseBean ResultGurtWService(ResultGurtBean request)
+        static public ResultGurtWS.GurtResponseBean ResultGurtWService(ResultGurtBean request, int companyId)
         {
             ResultGurtWS.GurtResponseBean result = null;
             resultGuaranteeResponse internalResult = null;
-            using (ResultGurtWServiceClient client = new ResultGurtWServiceClient())
+
+            var session = API.Core.Business.Traza.TrackRequest.NewSession(new API.Core.Contracts.Security.Token() { CompanyId = companyId }, "SICOP/ResultGurtWS/ResultGurtWService", request);
+            try
             {
-                internalResult = client.resultGuarantee(new resultGuaranteeRequest()
+                using (ResultGurtWServiceClient client = new ResultGurtWServiceClient())
                 {
-                    Body = new resultGuaranteeRequestBody()
+                    internalResult = client.resultGuarantee(new resultGuaranteeRequest()
                     {
-                        resultGurtBean = request
+                        Body = new resultGuaranteeRequestBody()
+                        {
+                            resultGurtBean = request
 
-                    }
-                });
-                client.Close();
+                        }
+                    });
+                    client.Close();
+                }
+                if (internalResult?.Body?.@return != null)
+                {
+
+                    result = internalResult.Body.@return;
+                }
             }
-            if (internalResult?.Body?.@return != null)
+            catch (Exception ex)
             {
+                string code = Architect.Utilities.Log.ErrorLog(ex, session.MessageId);
 
-                result = internalResult.Body.@return;
+                session.ResponseStatus = 500;
+                session.ResponseText = $"{ex.Message} ({code})";
             }
+            API.Core.Business.Traza.TrackRequest.CloseSession(session, internalResult);
+
             return result;
         }
 
