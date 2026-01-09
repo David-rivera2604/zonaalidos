@@ -389,11 +389,11 @@ body.mini-navbar .nav-header {
 
 #LoginEdtForm input {
     width: 100%;
-    height: 3em;
 }
 
 #LoginEdtForm {
     margin: -2%;
+	margin-bottom: 10px;
 }
 
 .wellcome-info {
@@ -1676,7 +1676,7 @@ a {
 }
 
 .form-horizontal {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .btn.disabled, .btn:disabled:hover {

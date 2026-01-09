@@ -10842,8 +10842,8 @@ a {
 }
 
 :root {
-    --mapfrered1: #c31f09;
-    --mapfrered2: #d81e05;
+    --mapfrered1: rgb(255, 0, 45);
+    --mapfrered2: rgb(255, 0, 45);
     --mapfregray1: #676a6c;
     --mapfregray2: #e7eaec;
 }

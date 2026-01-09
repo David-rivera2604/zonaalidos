@@ -1,12 +1,36 @@
-﻿body {
-    font-family: Open Sans, Arial, sans-serif;
-    background-image: url('../../images/background.jpg'); /* Ruta de tu imagen de fondo */
-    background-size: cover;
-    display: flex;
-    justify-content: center; /* Centramos horizontalmente */
-    align-items: center; /* Centramos verticalmente */
-    height: 100%; /* Hacemos que el cuerpo ocupe toda la altura de la ventana */
-    width: 100%;
+﻿/* Asegura que el body ocupe toda la altura visible */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Open Sans", Arial, sans-serif;
+
+  /* Imagen + overlay con transparencia */
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.20),   /* color/alpha del overlay (ajústalo) */
+      rgba(0, 0, 0, 0.20)
+    ),
+    url('../../images/background.jpg');
+
+  /* Si quieres ver la imagen completa: */
+  background-size: cover;
+  /* Si prefieres cubrir toda la pantalla (aunque recorte): */
+  /* background-size: cover; */
+
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #000;   /* color para las bandas con contain */
+
+  /* Centrar tu contenido */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100dvh;
+  width: 100%;
 }
 
 .logohorizontal {
