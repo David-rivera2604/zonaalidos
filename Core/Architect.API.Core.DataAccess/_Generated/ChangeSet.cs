@@ -36,8 +36,8 @@ namespace Architect.API.Core.DataAccess.General
                             .AddParameter("Id", DbType.Decimal, 9, 0, ParameterDirection.Output)
                             .Parameters;
 
-            int rows = Database.Insert("INSERT INTO ChangeSet (Id, CompanyId, EntityType, EntityId, Action, Summary, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES((SELECT NVL(MAX(Id),0)+1 FROM ChangeSet), :CompanyId, :EntityType, :EntityId, :Action, :Summary, :UpdateUserCode, :UpdateDate)" +
+            int rows = Database.Insert("INSERT INTO ChangeSet (CompanyId, EntityType, EntityId, Action, Summary, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:CompanyId, :EntityType, :EntityId, :Action, :Summary, :UpdateUserCode, :UpdateDate)" +
                                                  " RETURNING Id INTO :Id")
                             .AddParameter(parameters)
                             .Execute(connection, "Research");

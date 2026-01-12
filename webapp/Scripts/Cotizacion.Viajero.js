@@ -279,7 +279,7 @@ app.CotizacionViajero = (function () {
 
         });
 
-        $('#VisualizationsEdtFormSave').click(function () {
+        $('#VisualizationsEdtFormSave').click(function (e) {
 
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
                 app.ui.ButtonDoing('#VisualizationsEdtFormSave');
@@ -300,26 +300,26 @@ app.CotizacionViajero = (function () {
                         app.ui.ButtonDone('#VisualizationsEdtFormSave');
                     });
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#VisualizationsEdtFormCancel').click(function () {
+        $('#VisualizationsEdtFormCancel').click(function (e) {
             app.ui.ButtonDoing('#VisualizationsEdtFormCancel');
             setTimeout(() => { app.ui.ButtonDone('#VisualizationsEdtFormCancel'); }, 3000);
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#cotizar').click(function () {
+        $('#cotizar').click(function (e) {
 
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
                 app.ui.ButtonDoing('#cotizar');
                 Quote();
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#print').click(function () {
-            event.preventDefault();
+        $('#print').click(function (e) {
+            e.preventDefault();
             let data = MapInputToObject();
             data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
             data.presupuesto = quoteData.presupuesto;
@@ -327,8 +327,8 @@ app.CotizacionViajero = (function () {
             app.Cotizacion.Imprimir('SegurViaje', data);
         });
 
-        $('#emitir').click(function () {
-            event.preventDefault();
+        $('#emitir').click(function (e) {
+            e.preventDefault();
             window.location.replace(app.setting.basepath + 'emision/viajero?presupuesto=' + quoteData.presupuesto);
         });
 
@@ -374,8 +374,8 @@ app.CotizacionViajero = (function () {
                 fec_vcto_poliza: { required: 'Debe indicar el fin de vigencia' },
                 TIP_PLAN: { required: 'Debe indicar el plan' },
                 TIP_VIAJE: { required: 'Debe indicar el tipo de viaje' },
-                FEC_VIAJE: { required: 'Debe indicar el fecha de inicio del viaje' },
-                PAIS_ORIGEN: { required: 'Debe indicar el pais de origen' },
+                FEC_VIAJE: { required: 'Debe indicar la fecha de inicio del viaje' },
+                PAIS_ORIGEN: { required: 'Debe indicar el país de origen' },
                 DES_DESTINO: { required: 'Debe indicar el lugar de destino' },
                 COD_MODALIDAD: { required: 'Debe indicar la modalidad' },
                 cantidad_riesgos: { required: 'Debe indicar la cantidad de riesgos', Numeric: 'Debe indicar la cantidad de riesgos' },

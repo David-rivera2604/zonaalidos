@@ -162,10 +162,96 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// <param name="source">Datos de la póliza</param>
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns></returns>
-        private static List<Core.Contracts.General.Error> Validate(Contracts.Cotizacion.Viajero source, Core.Contracts.Security.Token tokenInfo)
+        public static List<Core.Contracts.General.Error> Validate(Contracts.Cotizacion.Viajero source, Core.Contracts.Security.Token tokenInfo)
         {
             const string group = "Viajero";
             List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
+
+            if (source.cod_mon.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "cod_mon", Message = "Debe indicar la moneda" });
+            }
+            if (source.cod_fracc_pago.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "cod_fracc_pago", Message = "Debe indicar el fraccionamiento de pago" });
+            }
+            if (source.fec_efec_poliza.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "fec_efec_poliza", Message = "Debe indicar el inicio de vigencia" });
+            }
+            if (source.fec_vcto_poliza.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "fec_vcto_poliza", Message = "Debe indicar el fin de vigencia" });
+            }
+            if (source.TIP_PLAN.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "TIP_PLAN", Message = "Debe indicar el plan" });
+            }
+            if (source.TIP_VIAJE.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "TIP_VIAJE", Message = "Debe indicar el tipo de viaje" });
+            }
+            if (source.FEC_VIAJE.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_VIAJE", Message = "Debe indicar la fecha de inicio del viaje" });
+            }
+
+            if (source.COD_PAIS_ORIGEN.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "COD_PAIS_ORIGEN", Message = "Debe indicar el país de origen" });
+            }
+            if (source.DES_DESTINO.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "DES_DESTINO", Message = "Debe indicar el lugar de destino" });
+            }
+            if (source.COD_MODALIDAD.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "COD_MODALIDAD", Message = "Debe indicar la modalidad" });
+            }
+            if (source.cantidad_riesgos.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "cantidad_riesgos", Message = "Debe indicar la cantidad de riesgos" });
+            }
+            if (source.cantidad_riesgos >= 1 && source.FEC_NACIMIENTO.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO", Message = "Debe indicar la fecha de nacimiento - Riesgo 1" });
+            }
+            if (source.cantidad_riesgos >= 2 && source.FEC_NACIMIENTO2.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO2", Message = "Debe indicar la fecha de nacimiento - Riesgo 2" });
+            }
+            if (source.cantidad_riesgos >= 3 && source.FEC_NACIMIENTO3.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO3", Message = "Debe indicar la fecha de nacimiento - Riesgo 3" });
+            }
+            if (source.cantidad_riesgos >= 4 && source.FEC_NACIMIENTO4.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO4", Message = "Debe indicar la fecha de nacimiento - Riesgo 4" });
+            }
+            if (source.cantidad_riesgos >= 5 && source.FEC_NACIMIENTO5.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO5", Message = "Debe indicar la fecha de nacimiento - Riesgo 5" });
+            }
+            if (source.cantidad_riesgos >= 6 && source.FEC_NACIMIENTO6.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO6", Message = "Debe indicar la fecha de nacimiento - Riesgo 6" });
+            }
+            if (source.cantidad_riesgos >= 7 && source.FEC_NACIMIENTO7.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO7", Message = "Debe indicar la fecha de nacimiento - Riesgo 7" });
+            }
+            if (source.cantidad_riesgos >= 8 && source.FEC_NACIMIENTO8.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO8", Message = "Debe indicar la fecha de nacimiento - Riesgo 8" });
+            }
+            if (source.cantidad_riesgos >= 9 && source.FEC_NACIMIENTO9.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO9", Message = "Debe indicar la fecha de nacimiento - Riesgo 9" });
+            }
+            if (source.cantidad_riesgos >= 10 && source.FEC_NACIMIENTO10.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "FEC_NACIMIENTO10", Message = "Debe indicar la fecha de nacimiento - Riesgo 10" });
+            }
 
             //Coberturas:
             if (!Rule_AtLeastOneCoverageSelected(source))

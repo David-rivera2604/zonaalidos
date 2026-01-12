@@ -4,6 +4,7 @@ using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,60 +33,75 @@ namespace Aliados.Monge.Application.Poliza.Ramos
 
                 Architect.API.Tron.Contracts.Cotizacion.Viajero quote = MapperBase(risk);
 
-                Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.CompanyId);
-                result2 = MapperTerceros(risk, result2);
+                List<Architect.API.Core.Contracts.General.Error> errors = Architect.API.Tron.Business.Cotizacion.Viajero.Validate(quote, tokenInfo);
 
-                result2.tip_docum = result2.Terceros.FirstOrDefault().tip_docum;
-                result2.cod_docum = result2.Terceros.FirstOrDefault().cod_docum;
-
-                result2 = Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Calcular(result2, 3, "Riesgo emitido desde ZA Web");
-                if (result2.DatosDelProceso.txt_error == "")
+                if (errors.Count == 0)
                 {
+                    Architect.API.Tron.Contracts.Presupuesto.DatoFijo result2 = ViajeroConvert.ToTron(quote, cod_ramo, tokenInfo.AgentCode, tokenInfo.UserName, tokenInfo.CompanyId);
+                    result2 = MapperTerceros(risk, result2);
 
-                    Architect.API.Tron.Contracts.Poliza.DatoFijo polizaEmitida = null;
-                    polizaEmitida = Architect.API.Tron.Business.Backoffice.Common.InformacionDePoliza(result2.DatosDelProceso.num_poliza_definitivo);
+                    result2.tip_docum = result2.Terceros.FirstOrDefault().tip_docum;
+                    result2.cod_docum = result2.Terceros.FirstOrDefault().cod_docum;
 
-                    ///Conviert el objeto risk del request a un objeto de la emisión
-                    Architect.API.Tron.Contracts.Emision.Viajero viajeroAliadosEmision = Newtonsoft.Json.JsonConvert.DeserializeObject<Architect.API.Tron.Contracts.Emision.Viajero>(Newtonsoft.Json.JsonConvert.SerializeObject(quote));
-
-                    viajeroAliadosEmision = Architect.API.Tron.Business.Emision.ViajeroConvertFrom.Quote(viajeroAliadosEmision, polizaEmitida);
-                    ConvertEmisionTercerto_ComunTercero(risk, viajeroAliadosEmision);
-
-                    Architect.API.Tron.Business.Emision.Viajero.Asistencia_Panama(viajeroAliadosEmision, viajeroAliadosEmision, tokenInfo.Roles);
-
-                    result = new Domain.Poliza.Emision.Respuesta()
+                    result2 = Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Calcular(result2, 3, "Riesgo emitido desde ZA Web");
+                    if (result2.DatosDelProceso.txt_error == "")
                     {
-                        message_status = 200,
-                        message_text = "Emisión exitosa",
-                        message_id = Guid.NewGuid().ToString(),
-                        document_id = risk.document_id,
-                        message_body = new Domain.Poliza.Emision.RespuestaDetalle()
+
+                        Architect.API.Tron.Contracts.Poliza.DatoFijo polizaEmitida = null;
+                        polizaEmitida = Architect.API.Tron.Business.Backoffice.Common.InformacionDePoliza(result2.DatosDelProceso.num_poliza_definitivo);
+
+                        ///Conviert el objeto risk del request a un objeto de la emisión
+                        Architect.API.Tron.Contracts.Emision.Viajero viajeroAliadosEmision = Newtonsoft.Json.JsonConvert.DeserializeObject<Architect.API.Tron.Contracts.Emision.Viajero>(Newtonsoft.Json.JsonConvert.SerializeObject(quote));
+
+                        viajeroAliadosEmision = Architect.API.Tron.Business.Emision.ViajeroConvertFrom.Quote(viajeroAliadosEmision, polizaEmitida);
+                        ConvertEmisionTercerto_ComunTercero(risk, viajeroAliadosEmision);
+
+                        Architect.API.Tron.Business.Emision.Viajero.Asistencia_Panama(viajeroAliadosEmision, viajeroAliadosEmision, tokenInfo.Roles);
+
+                        result = new Domain.Poliza.Emision.Respuesta()
                         {
-                            num_poliza = result2.DatosDelProceso.num_poliza_definitivo,
-                            num_certificado_phx = "",
-                            resumen = new Domain.Poliza.Emision.Resumen()
+                            message_status = 200,
+                            message_text = "Emisión exitosa",
+                            message_id = Guid.NewGuid().ToString(),
+                            document_id = risk.document_id,
+                            message_body = new Domain.Poliza.Emision.RespuestaDetalle()
                             {
-                                primaneta = polizaEmitida.Recibos.Sum(p => p.imp_neta) + polizaEmitida.Recibos.Sum(p => p.imp_recargo),
-                                iVA = polizaEmitida.Recibos.Sum(p => p.imp_imptos),
-                                recargoporfraccionamiento = polizaEmitida.Recibos.Sum(p => p.imp_interes),
-                                importetotal = polizaEmitida.Recibos.Sum(p => p.imp_recibo),
-                                cuotas = polizaEmitida.Recibos.Count
-                            },
-                            plandepago = new List<Domain.Poliza.Emision.Plandepago>()
-                        }
-                    };
-                    foreach (Architect.API.Tron.Contracts.Poliza.Recibo item in polizaEmitida.Recibos)
-                    {
-                        result.message_body.plandepago.Add(new Domain.Poliza.Emision.Plandepago()
+                                num_poliza = result2.DatosDelProceso.num_poliza_definitivo,
+                                num_certificado_phx = "",
+                                resumen = new Domain.Poliza.Emision.Resumen()
+                                {
+                                    primaneta = polizaEmitida.Recibos.Sum(p => p.imp_neta) + polizaEmitida.Recibos.Sum(p => p.imp_recargo),
+                                    iVA = polizaEmitida.Recibos.Sum(p => p.imp_imptos),
+                                    recargoporfraccionamiento = polizaEmitida.Recibos.Sum(p => p.imp_interes),
+                                    importetotal = polizaEmitida.Recibos.Sum(p => p.imp_recibo),
+                                    cuotas = polizaEmitida.Recibos.Count
+                                },
+                                plandepago = new List<Domain.Poliza.Emision.Plandepago>()
+                            }
+                        };
+                        foreach (Architect.API.Tron.Contracts.Poliza.Recibo item in polizaEmitida.Recibos)
                         {
-                            cuota = item.num_cuota,
-                            fechadesde = item.fec_efec_recibo,
-                            fechahasta = item.fec_vcto_recibo,
-                            primaneta = item.imp_neta + item.imp_recargo,
-                            iVA = item.imp_imptos,
-                            recargoporfraccionamiento = item.imp_interes,
-                            importetotal = item.imp_recibo
-                        });
+                            result.message_body.plandepago.Add(new Domain.Poliza.Emision.Plandepago()
+                            {
+                                cuota = item.num_cuota,
+                                fechadesde = item.fec_efec_recibo,
+                                fechahasta = item.fec_vcto_recibo,
+                                primaneta = item.imp_neta + item.imp_recargo,
+                                iVA = item.imp_imptos,
+                                recargoporfraccionamiento = item.imp_interes,
+                                importetotal = item.imp_recibo
+                            });
+                        }
+                    }
+                    else
+                    {
+                        result = new Domain.Poliza.Emision.Respuesta()
+                        {
+                            message_status = 400,
+                            message_text = result2.DatosDelProceso.txt_error,
+                            message_id = Guid.NewGuid().ToString(),
+                            document_id = risk.document_id
+                        };
                     }
                 }
                 else
@@ -93,7 +109,7 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                     result = new Domain.Poliza.Emision.Respuesta()
                     {
                         message_status = 400,
-                        message_text = result2.DatosDelProceso.txt_error,
+                        message_text = "Error(es) por validación. " + string.Join(", ", errors.Select(e => e.Message)),
                         message_id = Guid.NewGuid().ToString(),
                         document_id = risk.document_id
                     };

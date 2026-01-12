@@ -39,8 +39,8 @@ namespace Architect.API.Core.DataAccess.Security
                             .AddParameter("Id", DbType.Decimal, 9, 0, ParameterDirection.Output)
                             .Parameters;
 
-            int rows = Database.Insert("INSERT INTO AuthenticationTrace (Id, CompanyId, EffectDate, IPAddress, UserName, UserId, TraceType, Reason, UserAgent) " +
-                                       "VALUES((SELECT NVL(MAX(Id),0)+1 FROM AuthenticationTrace), :CompanyId, :EffectDate, :IPAddress, :UserName, :UserId, :TraceType, :Reason, :UserAgent) " +
+            int rows = Database.Insert("INSERT INTO AuthenticationTrace (CompanyId, EffectDate, IPAddress, UserName, UserId, TraceType, Reason, UserAgent) " +
+                                       "VALUES(:CompanyId, :EffectDate, :IPAddress, :UserName, :UserId, :TraceType, :Reason, :UserAgent) " +
                                        "RETURNING Id INTO :Id")
                                 .AddParameter(parameters)
                                 .Execute(connection, "Research");
