@@ -1,5 +1,19 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.166 - 14/01/2026
+
+### Aliados - Monge : Incidentes Reportados Noviembre - Diciembre.
+
+#### Funcionalidades implementadas:
+
+- ✅ Se ajusta la creación de registros en las tablas AuthenticationTrace y ChangeSet por medio de sequence propios de Oracle.
+- ✅ Se habilita validaciones para las cotizaciones de viajero.
+- ✅ Se agrega manejo de dos reintentos en caso de existir algun error en la emisión con una pausa de 0.5 segundos entre intento.
+
+- #### Dependencias:
+
+1. 260112a.AuthenticationTrace.ChangeSet.alter.sql
+---
 ## Versión 1.6.165 - 30/12/2025
 
 ### Aliados - SICOP : Se habilita traza en el llamado a los servicios de SICOP.
