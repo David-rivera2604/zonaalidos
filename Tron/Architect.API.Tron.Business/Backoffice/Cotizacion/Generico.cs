@@ -5,6 +5,7 @@ using System.Data;
 using Architect.API.Tron.Contracts.Presupuesto;
 using Architect.API.Tron.Contracts.Presupuesto.API;
 using System.Collections.Generic;
+using Architect.Utilities;
 
 namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 {
@@ -86,8 +87,12 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                 }
                 catch (Exception ex)
                 {
-
-                    throw new Architect.Utilities.Exceptions.CustomException(Backoffice.Emision.FormatoErrores.FormatearError(ex.Message), ex);
+                    if (quoteInfo.DatosDelProceso == null)
+                    {
+                        quoteInfo.DatosDelProceso = new Contracts.Batch.Proceso();
+                    }
+                    quoteInfo.DatosDelProceso.txt_error = Backoffice.Emision.FormatoErrores.FormatearError(ex.Message);
+                    Log.ErrorLog("CustomException", quoteInfo.DatosDelProceso.txt_error, ex);
                 }
                 //Actualiza_txt_campo(quoteInfo.num_poliza, datosVariable, currentConnection);
 

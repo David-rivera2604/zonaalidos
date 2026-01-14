@@ -162,7 +162,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         /// <param name="source">Datos de la póliza</param>
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <returns></returns>
-        public static List<Core.Contracts.General.Error> Validate(Contracts.Cotizacion.Viajero source, Core.Contracts.Security.Token tokenInfo)
+        public static List<Core.Contracts.General.Error> Validate(Contracts.Cotizacion.Viajero source, Core.Contracts.Security.Token tokenInfo, bool isService = false)
         {
             const string group = "Viajero";
             List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
@@ -254,7 +254,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             }
 
             //Coberturas:
-            if (!Rule_AtLeastOneCoverageSelected(source))
+            if (!isService && !Rule_AtLeastOneCoverageSelected(source))
             {
                 result.Add(new Core.Contracts.General.Error() { Group = "Table", Key = "coberturasTbl", Message = "Debe seleccionar al menos una cobertura" });
             }
