@@ -209,7 +209,10 @@
 	  <xs:enumeration value="SC21134"/>
 	  <xs:enumeration value="SC21135"/>
 	  <xs:enumeration value="SC22136"/>
-    </xs:restriction>
+      <xs:enumeration value="SC23137"/>
+	  <xs:enumeration value="SC23138"/>
+	  <xs:enumeration value="SC25139"/>
+	</xs:restriction>
   </xs:simpleType>
 </xs:schema>
 

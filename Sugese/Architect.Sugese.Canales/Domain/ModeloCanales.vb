@@ -4594,6 +4594,7 @@ Public Enum Corredora
     '''  MONGE CORREDORA DE SEGUOS S.A.
     ''' </summary>
     SC23138
+    SC25139
 End Enum
 
 '''<remarks/>
