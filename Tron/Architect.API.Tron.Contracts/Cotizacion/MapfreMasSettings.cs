@@ -68,5 +68,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// </summary>
         [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> DED_AUTO_CRI { get; set; }
 
+        [DataMember(), JsonProperty()] public List<Architect.API.Core.Contracts.General.LookupValue> COD_TIP_COM_VEHI { get; set; }
+
     }
 }

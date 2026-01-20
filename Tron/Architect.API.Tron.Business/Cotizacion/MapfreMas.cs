@@ -78,7 +78,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             List<string> keys = new List<string> {
                 "MM_ClaseVehiculos", "MM_Plan",
                 "MM_CAPITAL_RC", "MM_CAPITAL_GM", "MM_CAPITAL_AC", "MM_CAPITAL_GN", "MM_CAPITAL_AM", "MM_CAPITAL_ROTCRI",
-                "MM_DEDU_RC", "MM_DEDU_CV", "MM_DEDU_RA", "MM_DEDU_ROBO", "MM_DEDU_EE", "MM_DEDU_ROTCRI" };
+                "MM_DEDU_RC", "MM_DEDU_CV", "MM_DEDU_RA", "MM_DEDU_ROBO", "MM_DEDU_EE", "MM_DEDU_ROTCRI", "TRON_G2990006_ByMod:COD_TIP_COM_VEHI" };
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
                 keys.AddRange(new List<string> {
@@ -86,7 +86,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     "MM_DEDU_RC_G", "MM_DEDU_CV_G", "MM_DEDU_ROTCRI_G", "MM_DEDU_EE_G", "MM_DEDU_RA_G", "MM_DEDU_ROBO_G", "MM_POLIZA_GRUPO"});
             }
 
-            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}:cod_agt={cod_agt}";
+            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}:cod_agt={cod_agt}:cod_modalidad={99999}";
             List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
 
             // result.fec_vcto_poliza = DateTime.Today.AddYears(1);
@@ -477,6 +477,9 @@ namespace Architect.API.Tron.Business.Cotizacion
                         {
                             result.DED_AUTO_CRI = CleanEmptyValue(itemValues.Lkp);
                         }
+                        break;
+                    case "TRON_G2990006_ByMod:COD_TIP_COM_VEHI":
+                        result.COD_TIP_COM_VEHI = itemValues.Lkp;
                         break;
                 }
             }

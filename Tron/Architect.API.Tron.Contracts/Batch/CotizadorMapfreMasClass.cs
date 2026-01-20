@@ -363,7 +363,10 @@ namespace Architect.API.Tron.Contracts.Batch
         public int num_cuotas_gratis { get; set; } = 0;
 
         public string nombredelcontratante { get; set; }
-
+        /// <summary>
+        /// Tipo de combustion Vehiculo
+        /// </summary>
+        public int COD_TIP_COM_VEHI { get; set; } = 1;
 
     }
 }

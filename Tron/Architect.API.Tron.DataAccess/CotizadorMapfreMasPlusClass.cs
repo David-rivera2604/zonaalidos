@@ -82,6 +82,7 @@ namespace Architect.API.Tron.DataAccess
                 .AddParameter("P_MCA_CUOTAS_GRATIS", Architect.DataFactory.Enumerations.DbType.String, 2, p2000030Instance.mc_cuotas_gratis)
                 .AddParameter("P_NUM_CUOTAS_GRATIS", Architect.DataFactory.Enumerations.DbType.Int32, 3, p2000030Instance.num_cuotas_gratis)
                 .AddParameter("P_COD_CUADRO_COM", Architect.DataFactory.Enumerations.DbType.Int32, 3, p2000030Instance.cod_cuadro_com)
+                .AddParameter("P_COD_TIP_COM_VEHI", Architect.DataFactory.Enumerations.DbType.Int32, 3, p2000030Instance.COD_TIP_COM_VEHI)
                 .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
                 .Query(currentConnection, "Tron", new Action<IDataReader>((reader) =>
                 {

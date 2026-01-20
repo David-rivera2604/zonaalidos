@@ -1167,7 +1167,7 @@ app.CotizacionMapfreMasPlus = (function () {
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
 
                 app.ui.LookupLoad('cod_tip_vehi', settingData.cod_tip_vehi, true);
-
+                app.ui.LookupLoad('COD_TIP_COM_VEHI', settingData.COD_TIP_COM_VEHI, true);
                 app.ui.LookupLoad('COD_PLAN_AUTO', settingData.PLAN_AUTO, true);
                 app.ui.LookupLoad('IMP_AUTO_RC', settingData.IMP_AUTO_RC, true);
                 app.ui.DropDownDisabled('#IMP_AUTO_RC', settingData.IMP_AUTO_RC.length == 0);

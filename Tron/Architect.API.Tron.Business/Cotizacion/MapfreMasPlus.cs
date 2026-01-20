@@ -91,7 +91,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                 "TRON_DEDU_CONTR:DED_AUTO_ROB", "TRON_G1010031:DEDUC303_3006",
                 "TRON_DEDU_CONTR:DED_AUTO_EQESP", "TRON_G1010031:DEDUC303_3007",
                 "TRON_G2990019:IMP_AUTO_CRI", "TRON_TA301001EX:3009",
-                "TRON_DEDU_CONTR:DED_AUTO_CRI", "TRON_G1010031:DEDUC303_3009" };
+                "TRON_DEDU_CONTR:DED_AUTO_CRI", "TRON_G1010031:DEDUC303_3009",
+                "TRON_G2990006_ByMod:COD_TIP_COM_VEHI"};
 
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
             {
@@ -99,7 +100,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     "MM_POLIZA_GRUPO_303"});
             }
 
-            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}:cod_agt={cod_agt}";
+            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}:cod_agt={cod_agt}:cod_modalidad={99999}";
             List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
 
             //result.fec_vcto_poliza = DateTime.Today.AddYears(1);
@@ -535,6 +536,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                         break;
                     case "MM_CAPITAL_AM":
                         result.IMP_AUTO_MECA = CleanEmptyValue(itemValues.Lkp);
+                        break;
+
+                    case "TRON_G2990006_ByMod:COD_TIP_COM_VEHI":
+                        result.COD_TIP_COM_VEHI = itemValues.Lkp;
                         break;
 
 
