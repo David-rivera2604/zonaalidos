@@ -248,6 +248,7 @@ app.CotizacionMapfreMas = (function () {
             cod_tip_vehiDesc: $("#cod_tip_vehi option:selected").text(),
             cod_uso_vehi: app.ui.GetDropDownNumericValue('#cod_uso_vehi'),
             cod_uso_vehiDesc: $("#cod_uso_vehi option:selected").text(),
+            COD_TIP_COM_VEHI_DESC: $("#COD_TIP_COM_VEHI option:selected").text(),
             MCA_CERO_KM: app.ui.GetRadioNumericValue('MCA_CERO_KM'),
             MCA_AUTO_GPS: app.ui.GetRadioNumericValue('MCA_AUTO_GPS'),
             MCA_AUTO_GPS_CMS: app.ui.GetRadioNumericValue('MCA_AUTO_GPS_CMS'),
