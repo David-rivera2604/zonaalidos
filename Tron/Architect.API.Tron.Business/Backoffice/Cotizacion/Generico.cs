@@ -6,6 +6,7 @@ using Architect.API.Tron.Contracts.Presupuesto;
 using Architect.API.Tron.Contracts.Presupuesto.API;
 using System.Collections.Generic;
 using Architect.Utilities;
+using System.Threading.Tasks;
 
 namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 {
@@ -18,87 +19,102 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
         {
             List<Contracts.Presupuesto.DatoVariable> datosVariable = null;
 
-            using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
+            for (int tryIndex = 1; tryIndex <= 2; tryIndex++)
             {
-                Contracts.Batch.Proceso g2000510Instance = new Contracts.Batch.Proceso
-                {
-                    fec_tratamiento = DateTime.Today,
-                    num_orden = 0,
-                    tip_mvto_batch = tip_mvto_batch.ToString(),
-                    cod_cia = quoteInfo.cod_cia,
-                    txt_alias = txt_alias,
-                    tip_situ_filtro = 3.ToString(),
-                    nom_prg_excepcion = string.Empty,
-                    mca_recalcula_fecha = "N",
-                    tip_fecha_base = string.Empty,
-                    cod_usr = "COTIZWEB"
-                };
-
-                DataAccess.Batch.G2000510.Create(g2000510Instance, currentConnection);
-                quoteInfo.fec_tratamiento = g2000510Instance.fec_tratamiento;
-                quoteInfo.num_orden = g2000510Instance.num_orden;
-                quoteInfo.tip_mvto_batch = g2000510Instance.tip_mvto_batch;
-
-                // Por ser una cotización se crea con el tercero genérico
-                if (tip_mvto_batch == 8)
-                {
-                    quoteInfo.tip_docum = "CNA";
-                    quoteInfo.cod_docum = "999999999";
-                }
-                try
+                using (IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron"))
                 {
 
-
-                    DataAccess.CrearPresupuesto.PP_Insert_P2000030(quoteInfo, currentConnection);
-
-                    Crea_Riesgos(quoteInfo, currentConnection);
-
-                    Crea_DatosVariables(quoteInfo.num_poliza, quoteInfo.DatosVariables, currentConnection);
-                    datosVariable = quoteInfo.DatosVariables;
-
-                    Crea_Ocurrencias(quoteInfo, currentConnection);
-
-                    Crea_P170(quoteInfo, currentConnection);
-
-                    Crea_Terceros(quoteInfo, currentConnection);
-
-                    Crea_Coberturas(quoteInfo, currentConnection);
-
-                    Crea_P1331(quoteInfo, currentConnection);
-
-
-                    g2000510Instance = DataAccess.Batch.G2000510.Execute(g2000510Instance, currentConnection);
-                    if (g2000510Instance.txt_error.IsEmpty())
+                    try
                     {
+                        Contracts.Batch.Proceso g2000510Instance = new Contracts.Batch.Proceso
+                        {
+                            fec_tratamiento = DateTime.Today,
+                            num_orden = 0,
+                            tip_mvto_batch = tip_mvto_batch.ToString(),
+                            cod_cia = quoteInfo.cod_cia,
+                            txt_alias = txt_alias,
+                            tip_situ_filtro = 3.ToString(),
+                            nom_prg_excepcion = string.Empty,
+                            mca_recalcula_fecha = "N",
+                            tip_fecha_base = string.Empty,
+                            cod_usr = "COTIZWEB"
+                        };
+
+                        DataAccess.Batch.G2000510.Create(g2000510Instance, currentConnection);
+                        quoteInfo.fec_tratamiento = g2000510Instance.fec_tratamiento;
+                        quoteInfo.num_orden = g2000510Instance.num_orden;
+                        quoteInfo.tip_mvto_batch = g2000510Instance.tip_mvto_batch;
+
+                        // Por ser una cotización se crea con el tercero genérico
                         if (tip_mvto_batch == 8)
                         {
-                            quoteInfo = DataAccess.LeerPresupuesto.Presupuesto(quoteInfo.cod_cia, g2000510Instance.num_poliza_definitivo, 0, 0, 0, currentConnection, true, "onlyresult");
+                            quoteInfo.tip_docum = "CNA";
+                            quoteInfo.cod_docum = "999999999";
                         }
+
+                        DataAccess.CrearPresupuesto.PP_Insert_P2000030(quoteInfo, currentConnection);
+
+                        Crea_Riesgos(quoteInfo, currentConnection);
+
+                        Crea_DatosVariables(quoteInfo.num_poliza, quoteInfo.DatosVariables, currentConnection);
+                        datosVariable = quoteInfo.DatosVariables;
+
+                        Crea_Ocurrencias(quoteInfo, currentConnection);
+
+                        Crea_P170(quoteInfo, currentConnection);
+
+                        Crea_Terceros(quoteInfo, currentConnection);
+
+                        Crea_Coberturas(quoteInfo, currentConnection);
+
+                        Crea_P1331(quoteInfo, currentConnection);
+
+
+                        g2000510Instance = DataAccess.Batch.G2000510.Execute(g2000510Instance, currentConnection);
+                        if (g2000510Instance.txt_error.IsEmpty())
+                        {
+                            if (tip_mvto_batch == 8)
+                            {
+                                quoteInfo = DataAccess.LeerPresupuesto.Presupuesto(quoteInfo.cod_cia, g2000510Instance.num_poliza_definitivo, 0, 0, 0, currentConnection, true, "onlyresult");
+                            }
+                        }
+                        else
+                        {
+                            Utilities.Log.WarningLog("Cotizacion.Generico.txt_error", g2000510Instance.txt_error, "tron");
+                            Utilities.Log.WarningLog("Cotizacion.Generico.txt_ruta_error", g2000510Instance.txt_ruta_error, "tron");
+                        }
+
+                        quoteInfo.DatosDelProceso = g2000510Instance;
+
+
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Utilities.Log.WarningLog("Cotizacion.Generico.txt_error", g2000510Instance.txt_error, "tron");
-                        Utilities.Log.WarningLog("Cotizacion.Generico.txt_ruta_error", g2000510Instance.txt_ruta_error, "tron");
+                        if (quoteInfo.DatosDelProceso == null)
+                        {
+                            quoteInfo.DatosDelProceso = new Contracts.Batch.Proceso();
+                        }
+                        quoteInfo.DatosDelProceso.txt_error = Backoffice.Emision.FormatoErrores.FormatearError(ex.Message);
+                        Log.ErrorLog("CustomException", quoteInfo.DatosDelProceso.txt_error, ex);
                     }
+                    //Actualiza_txt_campo(quoteInfo.num_poliza, datosVariable, currentConnection);
 
-                    quoteInfo.DatosDelProceso = g2000510Instance;
-
+                    currentConnection.Close();
 
                 }
-                catch (Exception ex)
+                if (quoteInfo.DatosDelProceso.txt_error == "")
                 {
-                    if (quoteInfo.DatosDelProceso == null)
-                    {
-                        quoteInfo.DatosDelProceso = new Contracts.Batch.Proceso();
-                    }
-                    quoteInfo.DatosDelProceso.txt_error = Backoffice.Emision.FormatoErrores.FormatearError(ex.Message);
-                    Log.ErrorLog("CustomException", quoteInfo.DatosDelProceso.txt_error, ex);
+                    break;
                 }
-                //Actualiza_txt_campo(quoteInfo.num_poliza, datosVariable, currentConnection);
-
-                currentConnection.Close();
-
+                else
+                {
+                    if (tryIndex <= 2) { 
+                        //Se hace una demora de medio segun antes de volver a intentar la emisión
+                        Task.Delay(500);
+                    }
+                }
             }
+
             return quoteInfo;
         }
 
