@@ -1385,6 +1385,10 @@
     <Content Include="Scripts\Security.RoleMemberNavigation.js" />
     <Content Include="Scripts\Security.UserMember.js" />
     <Content Include="Scripts\Security.UserRoleMember.js" />
+    <Content Include="Sugese\validators\ModeloPolizas - Copy.xsl" />
+    <Content Include="Sugese\validators\ModeloPolizas.xsl" />
+    <Content Include="Sugese\validators\ValidacionesSaldosContables.xsl" />
+    <Content Include="Sugese\validators\XSL Saldos Contables.xslt" />
     <Content Include="Web.config" />
     <Content Include="widgets\pagoDirecto\assets\American-Express.png" />
     <Content Include="widgets\pagoDirecto\assets\background-card.svg" />
@@ -1880,6 +1884,120 @@
     <Content Include="Sugese\plantillas\SaldosContables.xlsx" />
     <Content Include="Views\Sugese\Envio.cshtml" />
     <Content Include="releasenotes.md" />
+    <None Include="Sugese\validators\DatSugeseTypesV2NIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloAporteBomberos.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloAportesINEC.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloBalanceGeneral.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloCanales.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloCuentaTecnica.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloCuentaTecnicaFinancieraNIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloEstadisticasInternacionalesNIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloEstadoCambiosPatrimonioPropio.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloEstadoResultados.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloInversionesFinancieras.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloParitario.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloPolizas.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloPrimasSiniestros.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloPrimasSiniestrosNIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloProduccion.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloRendimientoFinancieroNIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloRunOff.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloSaldosContables - Copy.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloSaldosContables.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloSaldosContablesNIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\ModeloSituacionFinancieraNIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\old_ModeloEstadoResultados.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\old_ModeloSaldosContables.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\SugeseComplexTypesNIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\SugeseTypesNIIF17.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Tipos\DatSugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Tipos\InvSugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Tipos\IsoSugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Tipos\MrtSugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Tipos\SugeseComplexTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Tipos\SugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Types\DatSugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Types\InvSugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Types\IsoSugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Types\MrtSugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Types\SugeseComplexTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Sugese\validators\Types\SugeseTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1895,7 +2013,6 @@
     <Folder Include="files\" />
     <Folder Include="logs\" />
     <Folder Include="Models\" />
-    <Folder Include="Sugese\validators\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">

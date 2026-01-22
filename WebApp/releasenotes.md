@@ -2,7 +2,7 @@
 
 ## Versión 1.6.166 - 14/01/2026
 
-### Aliados - Monge : Incidentes Reportados Noviembre - Diciembre.
+### Aliados - Monge: Incidentes Reportados Noviembre - Diciembre.
 
 #### Funcionalidades implementadas:
 
