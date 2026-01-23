@@ -5,7 +5,7 @@ app.setting = {
     apibase: 'https://localhost:44341',
     apipath: 'https://localhost:44341/aliados/api/',
     basepath: '/Aliados/',
-    viewpath: 'http://localhost:8080/aliados/',
+    viewpath: 'https://localhost:44341/aliados/',
     entityapi: 'https://appqa.mapfrecr.com/datapides/api/entity',
     reportapi: 'https://appqa.mapfrecr.com/aliadoservreports'
 };
@@ -52,6 +52,7 @@ app.core = (function () {
     let lookupData = [];
 
     function getAuthToken() {
+        return localStorage.getItem("Token");
         token = app.security().getCookie('AuthToken');
         if (token != null && token != '') {
             return token;
