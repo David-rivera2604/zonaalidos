@@ -355,6 +355,7 @@ app.login = (function () {
         localStorage.setItem('Tenant', data.Tenant);
         localStorage.setItem('Color1Tenant', data.Color1Tenant);
         localStorage.setItem('Color2Tenant', data.Color2Tenant);
+        localStorage.setItem('Token', data.Token);
         localStorage.setItem('Roles', JSON.stringify(data.Roles));
         var dta = new Date();
         localStorage.setItem('LastActivity', dta);
