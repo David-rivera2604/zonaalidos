@@ -263,8 +263,14 @@ app.core = (function () {
                 withCredentials: true
             },
             beforeSend: function (xhr) {
-                if (token) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
+                let at = localStorage.getItem("AlternateToken");
+                if (at != undefined) {
+                    localStorage.removeItem("AlternateToken");
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + at);
+                } else {
+                    if (token) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
+                    }
                 }
             }
         }).done(function (data, textStatus, jqXHR) {
@@ -1032,6 +1038,7 @@ app.security = (function () {
 
     return {
         getCookie: function (name) {
+            return localStorage.getItem("Token");
             return getCookie(name);
         },
         logout: function () {

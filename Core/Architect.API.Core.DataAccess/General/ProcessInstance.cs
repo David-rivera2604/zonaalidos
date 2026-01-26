@@ -111,7 +111,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessInstance> RetrieveByInstanceId(int instanceId, int companyId, IDbConnection connection = null)
         {
             List<Contracts.General.ProcessInstance> result = new List<Contracts.General.ProcessInstance>();
-            Database.Select("SELECT ActivityId, ProcessInstance.InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, ProcessInstance.FlowId, StepId, TaskId, Created, StartDate, EarlyDueDate, DueDate, FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, pc.SLA, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
+            Database.Select("SELECT ActivityId, ProcessInstance.InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, ProcessInstance.FlowId, StepId, TaskId, Created, ProcessInstance.StartDate, EarlyDueDate, ProcessInstance.DueDate, ProcessInstance.FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, pc.SLA, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
                               "FROM ProcessInstance " +
                               "LEFT JOIN UserMember um ON um.UserId = ProcessInstance.UserId " +
                               "LEFT JOIN ProcessCase pc ON pc.InstanceId = ProcessInstance.InstanceId " +

@@ -285,15 +285,21 @@ function ajaxCall(type, url, data, success, token, Token_Al, AliadoTok, contentT
             withCredentials: true
         },
         beforeSend: function (xhr) {
-            if (token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
-            }
-            else {
-                if (AliadoTok) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Ali);
+            let at = localStorage.getItem("AlternateToken");
+            if (at != undefined) {
+                localStorage.removeItem("AlternateToken");
+                xhr.setRequestHeader('Authorization', 'Bearer ' + at);
+            } else {
+                if (token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
                 }
                 else {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Al);
+                    if (AliadoTok) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Ali);
+                    }
+                    else {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Al);
+                    }
                 }
             }
         }
