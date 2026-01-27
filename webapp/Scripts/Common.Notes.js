@@ -11,7 +11,9 @@ app.Notes = (function () {
             let note = $('#newNote').val().trim();
             if (note != '') {
                 app.ui.ButtonDoing('#saveNote');
-                localStorage.setItem('AlternateToken', _data.AlternateToken);
+                if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
+                    localStorage.setItem('AlternateToken', _data.AlternateToken);
+                }
                 app.core.Post(app.setting.apipath + 'v1/Common/Note',
                     JSON.stringify({
                         Id: null,
@@ -36,7 +38,9 @@ app.Notes = (function () {
 
     }
     function Draw() {
-        localStorage.setItem('AlternateToken', _data.AlternateToken);
+        if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
+            localStorage.setItem('AlternateToken', _data.AlternateToken);
+        }
         app.core.Get(app.setting.apipath + `v1/Common/Notes?entityType=${_data.EntityType}&entityId=${_data.Id}`)
             .done(function (notes) {
                 let initial = '', info = '', last = '';
