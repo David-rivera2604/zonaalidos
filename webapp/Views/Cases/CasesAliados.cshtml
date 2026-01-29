@@ -2,6 +2,8 @@
     Layout = "~/Views/_Layout.cshtml";
 }
 @Styles.Render("~/Content/cssCRUD")
+<link href="~/assets/dropzone/css/dropzone.min.css" rel="stylesheet" />
+<link href="~/assets/animatecss/css/animate.min.css" rel="stylesheet" />
 <!-- ProcessCase -->
 <div class="ibox">
     <div class="ibox-title">
@@ -103,7 +105,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row d-none">
                                 <!-- Contacto -->
                                 <div class="col-lg-12">
                                     <h4 style="margin-bottom:20px"><i class="fa fa-users" aria-hidden="true"></i> Contacto</h4>
@@ -204,7 +206,7 @@
                                 </div>
                             </div>
                             <!-- Attachments Grid -->
-                            @Html.Partial("../Common/_attachments_grid")
+                            @Html.Partial("../Common/_attachments_grid_v2")
                             <div class="form-row">
                                 <div class='col-md-12' style="display: flex;justify-content: center;">
                                     <div class="modal-footer">
@@ -226,6 +228,8 @@
     @Scripts.Render("~/bundles/jsCRUD")
 
     <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
+    <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
+    <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
     <script src="@Url.Content("~/Scripts/CreateCase_Aliados.js")"></script>
 
     <script type="text/javascript">

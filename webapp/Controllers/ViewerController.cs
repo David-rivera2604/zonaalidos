@@ -62,7 +62,11 @@ namespace aliados.Controllers
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
-
+        public ActionResult Formio()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
         public ActionResult FormBuilder()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
@@ -72,6 +76,17 @@ namespace aliados.Controllers
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
+        }
+        public ActionResult Dashboard()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
+
+        public ActionResult crud()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View("crud");
         }
     }
 }

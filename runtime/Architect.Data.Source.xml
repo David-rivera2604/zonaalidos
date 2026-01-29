@@ -4,6 +4,53 @@
         <name>Architect.Data.Source</name>
     </assembly>
     <members>
+        <member name="T:Architect.Data.Source.Business.ExcelExport">
+            <summary>
+            Proporciona utilidades para exportar visualizaciones de datos a archivos Excel (.xlsx).
+            </summary>
+        </member>
+        <member name="M:Architect.Data.Source.Business.ExcelExport.GenerateStream(System.String,System.Int32,System.String,Architect.API.Core.Contracts.Security.Token,System.String@)">
+            <summary>
+            Genera un archivo Excel en memoria a partir de una o varias visualizaciones y lo retorna como un Stream.
+            </summary>
+            <param name="id">Identificador de la visualización o conjunto de visualizaciones.</param>
+            <param name="sequence">Secuencia específica de la visualización. Si es vacío, se exportan todas las visualizaciones asociadas al id.</param>
+            <param name="url">URL de contexto para la obtención de parámetros adicionales.</param>
+            <param name="tokenInfo">Token de seguridad del usuario actual.</param>
+            <param name="title">Referencia para devolver el título o caption de la primera visualización exportada.</param>
+            <returns>Stream con el contenido del archivo Excel generado, o null si no hay datos.</returns>
+        </member>
+        <member name="M:Architect.Data.Source.Business.ExcelExport.GenerateFile(System.String,System.Int32,System.String,Architect.API.Core.Contracts.Security.Token,System.String@,System.String)">
+            <summary>
+            Genera un archivo Excel a partir de una o varias visualizaciones y lo guarda en el sistema de archivos.
+            </summary>
+            <param name="id">Identificador de la visualización o conjunto de visualizaciones.</param>
+            <param name="sequence">Secuencia específica de la visualización. Si es vacío, se exportan todas las visualizaciones asociadas al id.</param>
+            <param name="url">URL de contexto para la obtención de parámetros adicionales.</param>
+            <param name="tokenInfo">Token de seguridad del usuario actual.</param>
+            <param name="title">Referencia para devolver el título o caption de la primera visualización exportada.</param>
+            <param name="filePath">Ruta completa donde se guardará el archivo Excel generado.</param>
+            <returns>Ruta del archivo generado, o null si no hay datos.</returns>
+        </member>
+        <member name="M:Architect.Data.Source.Business.ExcelExport.GetVisualizations(System.String,System.Int32)">
+            <summary>
+            Obtiene la lista de visualizaciones a exportar según el id y la secuencia.
+            Si la secuencia es proporcionada, retorna solo esa visualización; de lo contrario, retorna todas las asociadas al id.
+            </summary>
+            <param name="id">Identificador de la visualización o conjunto de visualizaciones.</param>
+            <param name="sequence">Secuencia específica de la visualización.</param>
+            <returns>Lista de visualizaciones a exportar.</returns>
+        </member>
+        <member name="M:Architect.Data.Source.Business.ExcelExport.CreateWorkbook(System.Collections.Generic.List{Architect.Data.Source.Contracts.Visualizations},System.String,Architect.API.Core.Contracts.Security.Token,System.String@)">
+            <summary>
+            Crea un libro de Excel (workbook) y agrega una hoja por cada visualización con los datos obtenidos.
+            </summary>
+            <param name="specs">Lista de visualizaciones a exportar.</param>
+            <param name="url">URL de contexto para la obtención de parámetros adicionales.</param>
+            <param name="tokenInfo">Token de seguridad del usuario actual.</param>
+            <param name="title">Referencia para devolver el título o caption de la primera visualización exportada.</param>
+            <returns>Instancia de XLWorkbook con las hojas y datos correspondientes.</returns>
+        </member>
         <member name="T:Architect.Data.Source.Business.Lookup">
             <summary>
             Logíca relacionada con la lista de valores disponible de la aplicación.
@@ -357,6 +404,13 @@
             Recupera una lista de registros en la tabla Visualizations.
             </summary>
             <param name="id">Identificación única del registro.</param>
+            <returns>Lista de instancias de Visualizations</returns>
+        </member>
+        <member name="M:Architect.Data.Source.DataAccess.Visualizations.RetrieveWithCache(System.String)">
+            <summary>
+            Recupera una lista de registros en la tabla Visualizations por medio del campo key.
+            </summary>
+            <param name="key">Identificación única del registro.</param>
             <returns>Lista de instancias de Visualizations</returns>
         </member>
     </members>

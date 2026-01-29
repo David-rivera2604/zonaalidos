@@ -144,6 +144,28 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         public string CustomStringKey { get; set; }
 
+        [DataMember(), JsonProperty()] public DateTime StartDate { get; set; }
+        [DataMember(), JsonProperty()] public DateTime DueDate { get; set; }
+        [DataMember(), JsonProperty()] public DateTime FinishDate { get; set; }
+        [DataMember(), JsonProperty()] public int Progress { get; set; }
+
+        /// <summary>
+        /// Usuario asignado a la etapa.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int UserAssigned { get; set; }
+        /// <summary>
+        /// Fecha en que se asignó el usuario a la etapa.
+        /// </summary>
+        [DataMember(), JsonProperty()] public DateTime UserAssignedDate { get; set; }
+
+        /// <summary>
+        /// Numero de la etapa actual del total
+        /// </summary>
+        [DataMember(), JsonProperty()] public int StepCurrent { get; set; }
+        /// <summary>
+        /// Numero total de etapas
+        /// </summary>
+        [DataMember(), JsonProperty()] public int StepTotal { get; set; }
     }
 }
 

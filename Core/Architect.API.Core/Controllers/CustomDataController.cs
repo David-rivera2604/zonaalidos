@@ -4,6 +4,7 @@ using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -86,6 +87,26 @@ namespace Architect.API.Core.Controllers
         }
 
 
+        [HttpGet]
+        [Route("{entityName}/{entityId}/View")]
+        [AllowAnonymous]
+        public HttpResponseMessage View([FromUri] string entityName, [FromUri] string entityId)
+        {
+            Contracts.General.CustomData data = Business.General.CustomData.RetrieveByEntity(entityName, entityId);
+
+            var response = new HttpResponseMessage();
+            if (data.IsEmpty())
+            {
+                response.StatusCode = HttpStatusCode.NotFound;
+            }
+            else
+            {
+                response.Content = new StringContent(data.Data);
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
+                response.StatusCode = HttpStatusCode.OK;
+            }
+            return response;
+        }
 
         /// <summary>
         /// Manejo general de los error de validación.

@@ -24,6 +24,7 @@ namespace Architect.API.Core.DataAccess.Security
                 userrolememberItem.UpdateDate = DateTime.Now;
             }
             return Database.Insert("UserRoleMember", ExecuteMode.CommandBuilder)
+                    .Column("Id", DbType.Decimal, 9, userrolememberItem.Id)
                     .Column("CompanyId", DbType.Decimal, 5, userrolememberItem.CompanyId)
                     .Column("UserId", DbType.Decimal, 9, userrolememberItem.UserId)
                     .Column("RoleId", DbType.Decimal, 9, userrolememberItem.RoleId)
@@ -129,6 +130,6 @@ namespace Architect.API.Core.DataAccess.Security
                         }));
             return result;
         }
- 
+
     }
 }

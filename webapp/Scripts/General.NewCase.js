@@ -2,6 +2,7 @@
 
 app.GeneralNewCase = (function () {
     let flowSpec = null;
+    let refFields = [];
 
     function Init_Controls() {
         new AutoNumeric('#SubStatus', {
@@ -12,11 +13,39 @@ app.GeneralNewCase = (function () {
             decimalPlaces: 0,
             emptyInputBehavior: 'null'
         });
+
+        $('#dropzone').fileUploader({
+            maxFilesize: 256,
+            done: function (responses) {
+                console.log('Init_Controls: Archivos subidos exitosamente:', responses);
+                //toastr.success('Archivos cargados correctamente', '', {
+                //    timeOut: 3000,
+                //    closeButton: true
+                //});
+            },
+            fail: function (error, file) {
+                console.error('Init_Controls: Error al subir archivo:', error, file);
+                //var errorMsg = typeof error === 'string' ? error :
+                //    (error.message || 'Error desconocido');
+                //toastr.error('Error al subir el archivo: ' + file.name + ' - ' + errorMsg, '', {
+                //    timeOut: 5000,
+                //    closeButton: true
+                //});
+            },
+            always: function (result) {
+                console.log('Init_Controls: Proceso de carga completado:', result);
+            }
+        });
+
+        console.log('Init_Controls: Dropzone inicializado correctamente');
     }
 
     function Event_Controls() {
+        $(".input-group.date, #ProcessCaseEdtForm :input").on('dp.change change', function (e) {
+            ApplyConditions();
+        });
 
-        $('#ProcessCaseEdtFormSave').click(function () {
+        $('#ProcessCaseEdtFormSave').click(function (e) {
             if (app.ui.IsValid('#ProcessCaseEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessCaseEdtFormSave');
                 var data = MapInputToObject();
@@ -25,11 +54,11 @@ app.GeneralNewCase = (function () {
                 else
                     Update(data);
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#ProcessCaseEdtFormCancel').click(function () {
-            event.preventDefault();
+        $('#ProcessCaseEdtFormCancel').click(function (e) {
+            e.preventDefault();
         });
 
         $('#FlowId').change(function () {
@@ -39,7 +68,19 @@ app.GeneralNewCase = (function () {
             app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId)
                 .done(function (data, textStatus, jqXHR) {
                     flowSpec = data;
-                    ReferenceHandler(data.ReferenceCaption1, data.ReferenceType1, data.ReferenceRequired1, data.ReferenceLookupList1, 'Reference1');
+                    refFields = [
+                        { id: '#Reference1', caption: data.ReferenceCaption1, type: data.ReferenceType1, required: data.ReferenceRequired1, lookup: data.ReferenceLookupList1, condition: data.ReferenceCondition1 },
+                        { id: '#Reference2', caption: data.ReferenceCaption2, type: data.ReferenceType2, required: data.ReferenceRequired2, lookup: data.ReferenceLookupList2, condition: data.ReferenceCondition2 },
+                        { id: '#Reference3', caption: data.ReferenceCaption3, type: data.ReferenceType3, required: data.ReferenceRequired3, lookup: data.ReferenceLookupList3, condition: data.ReferenceCondition3 },
+                        { id: '#Reference4', caption: data.ReferenceCaption4, type: data.ReferenceType4, required: data.ReferenceRequired4, lookup: data.ReferenceLookupList4, condition: data.ReferenceCondition4 },
+                        { id: '#Reference5', caption: data.ReferenceCaption5, type: data.ReferenceType5, required: data.ReferenceRequired5, lookup: data.ReferenceLookupList5, condition: data.ReferenceCondition5 },
+                        { id: '#Reference6', caption: data.ReferenceCaption6, type: data.ReferenceType6, required: data.ReferenceRequired6, lookup: data.ReferenceLookupList6, condition: data.ReferenceCondition6 },
+                        { id: '#Reference7', caption: data.ReferenceCaption7, type: data.ReferenceType7, required: data.ReferenceRequired7, lookup: data.ReferenceLookupList7, condition: data.ReferenceCondition7 },
+                        { id: '#Reference8', caption: data.ReferenceCaption8, type: data.ReferenceType8, required: data.ReferenceRequired8, lookup: data.ReferenceLookupList8, condition: data.ReferenceCondition8 },
+                        { id: '#Reference9', caption: data.ReferenceCaption9, type: data.ReferenceType9, required: data.ReferenceRequired9, lookup: data.ReferenceLookupList9, condition: data.ReferenceCondition9 },
+                        { id: '#Reference10', caption: data.ReferenceCaption10, type: data.ReferenceType10, required: data.ReferenceRequired10, lookup: data.ReferenceLookupList10, condition: data.ReferenceCondition10 }
+                    ];
+                    ReferenceHandler(data.ReferenceCaption1, data.ReferenceType1, data.ReferenceRequired1, data.ReferenceLookupList1, 'Reference1',);
                     ReferenceHandler(data.ReferenceCaption2, data.ReferenceType2, data.ReferenceRequired2, data.ReferenceLookupList2, 'Reference2');
                     ReferenceHandler(data.ReferenceCaption3, data.ReferenceType3, data.ReferenceRequired3, data.ReferenceLookupList3, 'Reference3');
                     ReferenceHandler(data.ReferenceCaption4, data.ReferenceType4, data.ReferenceRequired4, data.ReferenceLookupList4, 'Reference4');
@@ -49,26 +90,27 @@ app.GeneralNewCase = (function () {
                     ReferenceHandler(data.ReferenceCaption8, data.ReferenceType8, data.ReferenceRequired8, data.ReferenceLookupList8, 'Reference8');
                     ReferenceHandler(data.ReferenceCaption9, data.ReferenceType9, data.ReferenceRequired9, data.ReferenceLookupList9, 'Reference9');
                     ReferenceHandler(data.ReferenceCaption10, data.ReferenceType10, data.ReferenceRequired10, data.ReferenceLookupList10, 'Reference10');
+
+                    ApplyConditions();
                 });
         });
 
-        $('#UserId').change(function () {
-            let user = app.core.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.Code === $('#UserId').val())[0];
-            let finded = user != null;
+            $('#UserId').change(function () {
+                let user = app.core.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.Code === $('#UserId').val())[0];
+                let finded = user != null;
 
-            if (finded) {
-                $('#ContactMainName').val(user.Description);
-                $('#ContactMainEmail').val(user.EMAIL);
-            }
-            else {
-                $('#ContactMainName').val('');
-                $('#ContactMainEmail').val('');
-            }
-            $('#ContactMainName').prop("disabled", finded);
-            $('#ContactMainEmail').prop("disabled", finded);
-        });
-
-    }
+                if (finded) {
+                    $('#ContactMainName').val(user.Description);
+                    $('#ContactMainEmail').val(user.EMAIL);
+                }
+                else {
+                    $('#ContactMainName').val('');
+                    $('#ContactMainEmail').val('');
+                }
+                $('#ContactMainName').prop("disabled", finded);
+                $('#ContactMainEmail').prop("disabled", finded);
+            });
+        }
 
     function ReferenceHandler(caption, type, required, valueList, id) {
         if (caption != '') {
@@ -77,9 +119,12 @@ app.GeneralNewCase = (function () {
             else
                 $("label[for='" + id + "']").html(caption);
 
-            if (valueList == '')
+            if (valueList == '') {
                 $('#' + id).removeClass('d-none');
+                $('#' + id + 'List').addClass('d-none');
+            }
             else {
+                $('#' + id).addClass('d-none');
                 let selectedOptions = $('#' + id + 'List');
                 selectedOptions.removeClass('d-none');
                 selectedOptions.children().remove();
@@ -96,6 +141,33 @@ app.GeneralNewCase = (function () {
             $('#' + id + 'List').addClass('d-none');
             $('#' + id + 'List').val('');
         }
+    }
+
+    function ApplyConditions() {
+        let data = MapInputToObject();
+        data.roles = JSON.parse(localStorage.getItem('Roles'));
+        data.etapa = '';
+
+        refFields.forEach(function (field) {
+            if (field.condition) {
+                let mode = 'notvisible';
+                let condition = field.condition.trim();
+
+                if (condition.startsWith('ocultar:')) {
+                    mode = 'notvisible';
+                    condition = condition.replace('ocultar:', '').trim();
+                }
+
+                if (mode == 'notvisible') {
+                    let result = eval(condition);
+                    if (result) {
+                        $(field.id).parent().parent().addClass('d-none');
+                    } else {
+                        $(field.id).parent().parent().removeClass('d-none');
+                    }
+                }
+            }
+        });
     }
 
     function Create(uidata, mode) {
@@ -115,12 +187,14 @@ app.GeneralNewCase = (function () {
             });
     }
 
-    function MapInputToObject() {
+    function MapInputToObject() { 
+
         return {
             Id: parseInt(0 + $('#Id').val(), 10),
             Title: $('#Title').val(),
             Description: $('#Description').val(),
             Priority: $('#Priority').val(),
+            PriorityDesc: app.ui.GetDropDownSelectedText('#Priority'),
             InstanceId: parseInt(0 + $('#InstanceId').val(), 10),
             Reference1: $('#Reference1').val() + $('#Reference1List').val(),
             Reference2: $('#Reference2').val() + $('#Reference2List').val(),
@@ -141,7 +215,7 @@ app.GeneralNewCase = (function () {
             FlowId: $('#FlowId').val(),
             UserId: $('#UserId').val(),
             SLA: $('#SLA').val(),
-            Attachments: app.Attachments.Data()
+            Attachments: $('#dropzone').fileUploader('files')
         };
     }
 
@@ -359,7 +433,6 @@ app.GeneralNewCase = (function () {
                     DynamicRequired: ''
                 }
             }
-
         });
     }
 
@@ -374,8 +447,6 @@ app.GeneralNewCase = (function () {
             Init_Lookups();
             Event_Controls();
             Setup_Validations();
-
-            app.Attachments.Init({ EntityType: 1304, Id: 0, PostByEachRow: false });
         },
         New: function (row) {
             let newRow = { Id: 0, Title: null, Description: null, Priority: 4, InstanceId: 0, Reference1: null, Reference2: null, Reference3: null, Reference4: null, Reference5: null, Reference6: null, Reference7: null, Reference8: null, Reference9: null, Reference10: null, ContactMainName: null, ContactMainEmail: null, Status: 0, Label: null, SubStatus: 0, SubLabel: null, FlowId: null, UserId: null }

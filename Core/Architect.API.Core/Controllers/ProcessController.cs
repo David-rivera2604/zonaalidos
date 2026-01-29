@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Architect.Utilities.Extensions;
 using System.Web.Http.Description;
+using System.Linq;
 
 namespace Architect.API.Core.Controllers
 {
@@ -48,7 +49,7 @@ namespace Architect.API.Core.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
 
-            Contracts.General.ProcessInstance result = Business.General.Process.CreateInstance(instance, tokenInfo.UserId, tokenInfo.CompanyId);
+            Contracts.General.ProcessInstance result = Business.General.Process.CreateInstance(instance, tokenInfo.UserId, tokenInfo.CompanyId).First();
             return Ok(new { InstanceId = result.InstanceId, currentActivityId = result.ActivityId, currentActivityDesc = result.TaskDesc });
         }
 
@@ -118,6 +119,42 @@ namespace Architect.API.Core.Controllers
             Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
 
             return Ok(Business.General.Process.CaseComplement(caseId, tokenInfo));
+        }
+
+        [HttpPost]
+        [Route("Notify")]
+        public IHttpActionResult Notify([FromBody] Newtonsoft.Json.Linq.JObject payload)
+        {
+            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+
+            // Acceder a las propiedades del payload
+
+            int noteId = payload.TokenInt32Value("NoteId");
+            string note = payload.TokenStringValue("Note");
+            bool contactNotify = payload.TokenBoolValue("contactNotify");
+            bool responsibleNotify = payload.TokenBoolValue("responsibleNotify");
+            int instanceId = payload.TokenInt32Value("InstanceId");
+            string type = payload.TokenStringValue("Type");
+
+            Business.General.Process.SendNotification(noteId, note, contactNotify, responsibleNotify, instanceId, type, tokenInfo);
+
+            return Ok(new { success = true, message = "Notificación enviada correctamente" });
+        }
+
+        /// <summary>
+        /// fix data
+        /// </summary>
+        [HttpGet]
+        [Route("fix")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public IHttpActionResult fix([FromUri] bool apply = false)
+        {
+            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+
+            string result = Business.General.ProcessHelpers.FixData(apply);
+
+            return Ok(result);
         }
 
     }

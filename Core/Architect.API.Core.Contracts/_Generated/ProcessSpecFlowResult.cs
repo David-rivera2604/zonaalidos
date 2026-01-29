@@ -16,6 +16,11 @@ namespace Architect.API.Core.Contracts.General
         /// Lista de notificaciones resultado de las validaciones.
         /// </summary>
         public List<Core.Contracts.General.Error> Errors { get; set; }
+
+        /// <summary>
+        /// Lista de notificaciones resultado de las validaciones.
+        /// </summary>
+        public List<Core.Contracts.General.Error> Warnings { get; set; }
     }
 }
 

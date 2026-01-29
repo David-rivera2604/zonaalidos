@@ -2,6 +2,9 @@
     Layout = "~/Views/_Layout.cshtml";
 }
 @Styles.Render("~/Content/cssCRUD")
+<link href="~/assets/dropzone/css/dropzone.min.css" rel="stylesheet" />
+<link href="~/assets/animatecss/css/animate.min.css" rel="stylesheet" />
+
 <!-- ProcessCase -->
 <div class="ibox">
     <div class="ibox-title">
@@ -241,7 +244,7 @@
                                 </div>
                             </div>
                             <!-- Attachments Grid -->
-                            @Html.Partial("../Common/_attachments_grid")
+                            @Html.Partial("../Common/_attachments_grid_v2")
                             <div class="form-row">
                                 <div class='col-md-12'>
                                     <div class="modal-footer">
@@ -263,6 +266,8 @@
     @Scripts.Render("~/bundles/jsCRUD")
 
     <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
+    <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
+    <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
     <script src="@Url.Content("~/Scripts/General.NewCase.js")"></script>
 
     <script type="text/javascript">

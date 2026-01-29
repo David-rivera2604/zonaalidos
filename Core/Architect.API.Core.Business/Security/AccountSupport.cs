@@ -240,7 +240,22 @@ namespace Architect.API.Core.Business.Security
 
             if ("Security.Tenant.Tron.Agent.Information".StringValue(0).Contain(user.CompanyId.ToString()))
             {
-                agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
+                if ("Local.Agent".StringValue(0).Contain(user.EMail))
+                {
+                    agentInfo = new Contracts.Security.AgentInformation
+                    {
+                        cod_agt = 699,
+                        cod_sub_agt = 69981,
+                        info_agt = "Tron Agent Simulate (699)",
+                        tip_docum = "CNA",
+                        cod_docum = "999999999"
+                    };
+                    user.InitialNavigationCode= "Cases/CasesAliados";
+                }
+                else
+                {
+                    agentInfo = Tron.RetrieveAgentInformationByEmail(user.CompanyId, user.EMail);
+                }
             }
 
             if (agentInfo == null)
@@ -314,7 +329,7 @@ namespace Architect.API.Core.Business.Security
                 }
             }
             if (!result.Settings.Any(c => c.Key.Equals("ExpiresIn")))
-                result.Settings.Add(new SettingItem { Key = "ExpiresIn", Value = ("Security.Session.Timeout".IntegerValue(0, 30)).ToString()  });
+                result.Settings.Add(new SettingItem { Key = "ExpiresIn", Value = ("Security.Session.Timeout".IntegerValue(0, 30)).ToString() });
         }
 
         /// <summary>
@@ -467,7 +482,7 @@ namespace Architect.API.Core.Business.Security
                 string encryptedPassword = Architect.Utilities.Helpers.CryptSupport.EncryptString(request.Password);
                 string oldPassword = user.Password;
 
-                if (user.Password.Equals(".") || user.Password.Equals(encryptedPassword, StringComparison.CurrentCultureIgnoreCase))
+                if (user.OldPassword.Equals(".") || user.Password.Equals(encryptedPassword, StringComparison.CurrentCultureIgnoreCase))
                 {
                     // Almacena el pasword en el nuevo formato
                     user.Password = PasswordHasher.HashPassword(request.Password);
@@ -483,7 +498,7 @@ namespace Architect.API.Core.Business.Security
             else
             {
                 // ? Hash nuevo (PasswordHasher)
-                return user.Password.Equals(".") || PasswordHasher.VerifyPassword(request.Password, user.Password);
+                return user.OldPassword.Equals(".") || PasswordHasher.VerifyPassword(request.Password, user.Password);
             }
         }
 

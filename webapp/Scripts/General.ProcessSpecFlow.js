@@ -47,7 +47,7 @@ app.GeneralProcessSpecFlow = (function () {
                     halign: 'center',
                     events: 'ProcessSpecFlowGridTbl_Events',
                     formatter: function (value, row, index, field) {
-                        return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de los datos del process spec flow">' + value + '</a>';
+                        return '<a class="edit" href="javascript:void(0)" title="Al hacer click permite la edición de los datos del proceso">' + value + '</a>';
                     }
                 }, {
                     field: 'Description',
@@ -96,9 +96,9 @@ app.GeneralProcessSpecFlow = (function () {
                     widthUnit: "%",
                     events: 'ProcessSpecFlowGridTbl_Events',
                     formatter: function (value, row, index, field) {
-                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del process spec flow de la fila"> <i class="fa fa-pencil"></i> </button>' +
+                        return '<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del proceso de la fila"> <i class="fa fa-pencil"></i> </button>' +
                             '<button type="button" class="btn btn-sm btn-white diagram" title="Al hacer click permite ver un diagrama del proceso de la fila"> <i class="fa fa-sitemap"></i> </button>' +
-                            '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del process spec flow de la fila"> <i class="fa fa-close"></i> </button>';
+                            '<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar los datos del proceso de la fila"> <i class="fa fa-close"></i> </button>';
                     },
                     cellStyle: function (value, row, index) {
                         return {
@@ -328,12 +328,25 @@ app.GeneralProcessSpecFlow = (function () {
 
     }
 
+    function Warnings(warnings, processName) {
+        if (!warnings || warnings.length === 0) {
+            return ;
+        }
+
+        let warningMessages = "<b>El proceso '" + processName + "' tiene las siguentes observaciones:</b><ul>";
+        warnings.forEach(function(warning) {
+            warningMessages += '<li>' + warning.Message + '</li>';
+        });
+        warningMessages += '</ul>';
+        app.ui.ShowAlert('generalNotify', 'alert-warning', warningMessages);
+    }
+
 
 
     function Create(uidata, mode) {
         app.core.Post(app.setting.apipath + 'v1/ProcessSpecFlow', JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("El process spec flow '" + uidata.Name + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                toastr.success("El proceso '" + uidata.Name + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                 Refresh();
                 switch (mode) {
                     case 'Save':
@@ -365,7 +378,8 @@ app.GeneralProcessSpecFlow = (function () {
     function Update(uidata) {
         app.core.Put(app.setting.apipath + 'v1/ProcessSpecFlow/' + uidata.Id, JSON.stringify(uidata))
             .done(function (data, textStatus, jqXHR) {
-                toastr.success("El process spec flow '" + uidata.Name + "' fue modificado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                Warnings(data.Warnings, uidata.Name);
+                toastr.success("El proceso '" + uidata.Name + "' fue modificado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                 ViewMode();
                 Refresh();
             }).always(function () {
@@ -374,14 +388,14 @@ app.GeneralProcessSpecFlow = (function () {
     }
 
     function Delete(uidata) {
-        toastr.warning("Si está seguro de querer eliminar el process spec flow '" + uidata.Name + "' haga clic aquí", null,
+        toastr.warning("Si está seguro de querer eliminar el proceso '" + uidata.Name + "' haga clic aquí", null,
             {
                 timeOut: 5000, closeButton: true, progressBar: true,
                 onclick: function () {
                     $('.ibox-content').toggleClass('sk-loading');
                     app.core.Delete(app.setting.apipath + 'v1/ProcessSpecFlow/' + uidata.Id)
                         .done(function (data, textStatus, jqXHR) {
-                            toastr.success("El process spec flow '" + uidata.Name + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                            toastr.success("El proceso '" + uidata.Name + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                             ViewMode();
                             Refresh();
                         }).always(function () {
@@ -419,6 +433,7 @@ app.GeneralProcessSpecFlow = (function () {
             data['ReferenceType' + i] = $('#ReferenceType' + i).val();
             data['ReferenceRequired' + i] = $('#ReferenceRequired' + i).val();
             data['ReferenceLookupList' + i] = $('#ReferenceLookupList' + i).val();
+            data['ReferenceCondition' + i] = $('#ReferenceCondition' + i).val();
         }
 
         return data;
@@ -441,17 +456,8 @@ app.GeneralProcessSpecFlow = (function () {
             $('#ReferenceType' + i).val(data['ReferenceType' + i]);
             $('#ReferenceRequired' + i).val(data['ReferenceRequired' + i].toString());
             $('#ReferenceLookupList' + i).val(data['ReferenceLookupList' + i]);
+            $('#ReferenceCondition' + i).val(data['ReferenceCondition' + i]);
         }
-        //$('#ReferenceCaption1').val(data.ReferenceCaption1);
-        //$('#ReferenceLookupList1').val(data.ReferenceLookupList1);
-        //$('#ReferenceCaption2').val(data.ReferenceCaption2);
-        //$('#ReferenceLookupList2').val(data.ReferenceLookupList2);
-        //$('#ReferenceCaption3').val(data.ReferenceCaption3);
-        //$('#ReferenceLookupList3').val(data.ReferenceLookupList3);
-        //$('#ReferenceCaption4').val(data.ReferenceCaption4);
-        //$('#ReferenceLookupList4').val(data.ReferenceLookupList4);
-        //$('#ReferenceCaption5').val(data.ReferenceCaption5);
-        //$('#ReferenceLookupList5').val(data.ReferenceLookupList5);
         $('#Status').val(data.Status);
         app.ui.SetDropDownMultiValues('Roles', data.Roles);
         $('#SLA').val(data.SLA);
@@ -827,7 +833,7 @@ app.GeneralProcessSpecFlow = (function () {
             }
         },
         New: function (row) {
-            let newRow = { Id: 0, Name: null, Description: null, Alias: null, MailServer: 1, Status: 1, ReferenceCaption1: null, ReferenceType1: 1, ReferenceRequired1: 'false', ReferenceLookupList1: '', ReferenceCaption2: '', ReferenceType2: 1, ReferenceRequired2: 'false', ReferenceLookupList2: '', ReferenceCaption3: '', ReferenceType3: 1, ReferenceRequired3: 'false', ReferenceLookupList3: '', ReferenceCaption4: '', ReferenceType4: 1, ReferenceRequired4: 'false', ReferenceLookupList4: '', ReferenceCaption5: '', ReferenceType5: 1, ReferenceRequired5: 'false', ReferenceLookupList5: '', ReferenceCaption6: '', ReferenceType6: 1, ReferenceRequired6: 'false', ReferenceLookupList6: '', ReferenceCaption7: '', ReferenceType7: 1, ReferenceRequired7: 'false', ReferenceLookupList7: '', ReferenceCaption8: '', ReferenceType8: 1, ReferenceRequired8: 'false', ReferenceLookupList8: '', ReferenceCaption9: '', ReferenceType9: 1, ReferenceRequired9: 'false', ReferenceLookupList9: '', ReferenceCaption10: '', ReferenceType10: 1, ReferenceRequired10: 'false', ReferenceLookupList10: '' };
+            let newRow = { Id: 0, Name: null, Description: null, Alias: null, MailServer: 1, Status: 1, ReferenceCaption1: null, ReferenceType1: 1, ReferenceRequired1: 'false', ReferenceLookupList1: '', ReferenceCaption2: '', ReferenceType2: 1, ReferenceRequired2: 'false', ReferenceLookupList2: '', ReferenceCaption3: '', ReferenceType3: 1, ReferenceRequired3: 'false', ReferenceLookupList3: '', ReferenceCaption4: '', ReferenceType4: 1, ReferenceRequired4: 'false', ReferenceLookupList4: '', ReferenceCaption5: '', ReferenceType5: 1, ReferenceRequired5: 'false', ReferenceLookupList5: '', ReferenceCaption6: '', ReferenceType6: 1, ReferenceRequired6: 'false', ReferenceLookupList6: '', ReferenceCaption7: '', ReferenceType7: 1, ReferenceRequired7: 'false', ReferenceLookupList7: '', ReferenceCaption8: '', ReferenceType8: 1, ReferenceRequired8: 'false', ReferenceLookupList8: '', ReferenceCaption9: '', ReferenceType9: 1, ReferenceRequired9: 'false', ReferenceLookupList9: '', ReferenceCaption10: '', ReferenceType10: 1, ReferenceRequired10: 'false', ReferenceLookupList10: '', ReferenceCondition1: '', ReferenceCondition2: '', ReferenceCondition3: '', ReferenceCondition4: '', ReferenceCondition5: '', ReferenceCondition6: '', ReferenceCondition7: '', ReferenceCondition8: '', ReferenceCondition9: '', ReferenceCondition10: '' };
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;

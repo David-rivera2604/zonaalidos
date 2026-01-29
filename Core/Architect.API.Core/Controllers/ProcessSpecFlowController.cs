@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.API.Core.Contracts.General;
+using Architect.Utilities.Extensions;
 using Microsoft.Web.Http;
 using System.Collections.Generic;
 using System.IO;
@@ -168,7 +169,8 @@ namespace Architect.API.Core.Controllers
                     result = Ok(new
                     {
                         Id = updated.ProcessSpecFlow.Id,
-                        UpdateDate = updated.ProcessSpecFlow.UpdateDate
+                        UpdateDate = updated.ProcessSpecFlow.UpdateDate,
+                        Warnings = updated.Warnings
                     });
                 }
                 else
@@ -223,7 +225,8 @@ namespace Architect.API.Core.Controllers
             foreach (Contracts.General.Error errorItem in errors)
             {
                 //string.Format("{0}.{1}:{2}", s.Group, s.Key, s.Message)
-                ModelState.AddModelError(errorItem.Key, errorItem.Message);
+                //ModelState.AddModelError(errorItem.Key, errorItem.Message);
+                ModelState.AddModelError(string.Format("{0}.{1}", errorItem.Group, errorItem.Key), errorItem.Message);
             }
             return BadRequest(ModelState);
         }
@@ -293,7 +296,7 @@ namespace Architect.API.Core.Controllers
         [HttpPost]
         [Route("Import")]
         [Authorize]
-        public async Task<IHttpActionResult> Post([FromBody] Contracts.FileUploaded item)
+        public async Task<IHttpActionResult> Post([FromBody] FileUploaded item)
         {
             IHttpActionResult result = BadRequest();
             if (item.IsEmpty())

@@ -1,0 +1,141 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="ibox">
+    <div class="ibox-title">
+        <h5 id="formTitle"></h5>
+        <!-- Opciones -->
+        @*<div class="ibox-tools">
+                <a class="tool-filter">
+                    <i class="fa fa-filter" title="Visualiza el filtro avanzado..."></i>
+                </a>
+                <a class="tool-new">
+                    <i class="fa fa-plus" title="Crear un nuevo rol"></i>
+                </a>
+                <a class="fullscreen-link">
+                    <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+                </a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="Opciones adicionales...">
+                    <i class="fa fa-wrench"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo rol</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los roles</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                    </li>
+                </ul>
+            </div>*@
+    </div>
+    <div class="ibox-content render">
+        <div class="sk-spinner sk-spinner-wave">
+            <div class="sk-rect1"></div>
+            <div class="sk-rect2"></div>
+            <div class="sk-rect3"></div>
+            <div class="sk-rect4"></div>
+            <div class="sk-rect5"></div>
+        </div>
+        <div id="generalNotify">
+        </div>
+        <div id="formio"></div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+
+    <script src="@Url.Content("~/assets/formiojs/formio.embed.min.js")"></script>
+
+    <script type="text/javascript">
+        let _id = app.core.URLStringValue('id');
+
+        app.core.Get(app.setting.apipath + `v1/CustomData/${_id}/Render/Data`)
+            .done(function (data) {
+                //console.log(data);
+                const spec = JSON.parse(data);
+
+                spec.noAlerts = true;
+
+                $('#formTitle').html(spec.smart.caption);
+
+                Formio.createForm(document.getElementById('formio'), spec,
+                    {
+                        noAlerts: true,
+                        submitMessage: "", // Truco extra: vaciar el mensaje por defecto
+                        disableAlerts: true // Algunas versiones antiguas usan esta propiedad
+                    }
+                ).then(function (form) {
+
+                    app.core.GetView(app.setting.apipath + `v1/Clipboard/Retrieve`)
+                        .done(function (data) {
+                            const clipboard = data;
+                            // Default the submission.
+                            form.submission = {
+                                data: {
+                                    textArea: clipboard
+                                }
+                            };
+                        });
+
+                    // Everytime the form changes, this will fire.
+                    form.on('change', function (changed) {
+                        console.log('Form was changed', changed);
+                    });
+                    form.on('customEvent', function (event) {
+                        if (event.type === 'saveToClipboard') {
+                            // 1. Aquí validas
+                            // 2. Aquí envías los datos a tu API manualmente
+                            // 3. Aquí muestras TU propio mensaje (SweetAlert, Toast, etc.)
+                            console.log("Botón presionado, enviando datos...", event.data);
+
+                            Formio.fetch(app.setting.apipath + `v1/Clipboard/Share`, {
+                                body: event.data.textArea,
+                                headers: {
+                                    'content-type': 'text/html; charset=utf-8'
+                                },
+                                method: 'POST',
+                                mode: 'cors',
+                            })
+                                .then(function (response) {
+                                    response.json()
+                                })
+                        }
+                    });
+
+                    form.on('submit', function (submission) {
+
+                        console.log('Submission was made!', submission);
+                        return Formio.fetch(app.setting.apipath + `v1/Clipboard/Share`, {
+                            body: submission.data.textArea,
+                            headers: {
+                                'content-type': 'text/html; charset=utf-8'
+                            },
+                            method: 'POST',
+                            mode: 'cors',
+                        })
+                            .then(function (response) {
+                                form.emit('submitDone', submission)
+                                response.json()
+                            })
+                    });
+                });
+            });
+
+
+
+
+
+
+    </script>
+}

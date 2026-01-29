@@ -64,6 +64,13 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public string ProgressModeDesc { get; set; }
         [DataMember(), JsonProperty()] public int SLA { get; set; }
+
+        /// <summary>
+        /// Define la duración del SLO en minutos.
+        /// </summary>
+        [DataMember(), JsonProperty()]
+        public int SLODuration { get; set; }
+
         [DataMember(), JsonProperty()] public int MailServer { get; set; }
         [DataMember(), JsonProperty()] public string MailServerDesc { get; set; }
         /// <summary>

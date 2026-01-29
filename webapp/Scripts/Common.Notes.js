@@ -11,9 +11,6 @@ app.Notes = (function () {
             let note = $('#newNote').val().trim();
             if (note != '') {
                 app.ui.ButtonDoing('#saveNote');
-                if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
-                    localStorage.setItem('AlternateToken', _data.AlternateToken);
-                }
                 app.core.Post(app.setting.apipath + 'v1/Common/Note',
                     JSON.stringify({
                         Id: null,
@@ -23,10 +20,26 @@ app.Notes = (function () {
                         Private: false,
                         NoteOwnerId: 0,
                         ParentSequence: 0
-                    }))
+                    }), undefined, undefined, true, _data.AlternateToken)
                     .done(function (data, textStatus, jqXHR) {
+                        console.log("Nota", data);
+                        let note = $('#newNote').val();
+                        let contactNotify = $('#contactNotify').is(':checked');
+                        let responsibleNotify = $('#responsibleNotify').is(':checked');
+
                         $('#newNote').val('');
+                        $('#contactNotify').prop('checked', false);
+                        $('#responsibleNotify').prop('checked', false);
                         Draw();
+
+                        if ((contactNotify || responsibleNotify) && _data.CallbackDone !== undefined) {
+                            _data.CallbackDone({
+                                NoteId: data.Id,
+                                Note: note,
+                                contactNotify: contactNotify,
+                                responsibleNotify: responsibleNotify
+                            });
+                        }
                     }).always(function () {
                         app.ui.ButtonDone('#saveNote');
                     });
@@ -38,10 +51,7 @@ app.Notes = (function () {
 
     }
     function Draw() {
-        if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
-            localStorage.setItem('AlternateToken', _data.AlternateToken);
-        }
-        app.core.Get(app.setting.apipath + `v1/Common/Notes?entityType=${_data.EntityType}&entityId=${_data.Id}`)
+        app.core.Get(app.setting.apipath + `v1/Common/Notes?entityType=${_data.EntityType}&entityId=${_data.Id}`, undefined, undefined, true, _data.AlternateToken)
             .done(function (notes) {
                 let initial = '', info = '', last = '';
                 let noteList = $('.chat-activity-list');
@@ -66,17 +76,36 @@ app.Notes = (function () {
 
     return {
         //{ EntityType: 1304, Id: 0, AlternateToken:'' }
-        Init: function (data) {
+        Init: function (options) {
+
+            const conf = {
+                EntityType: 0,
+                Id: 0,
+                PostByEachRow: false,
+                ShowContactNotify: false,
+                ShowResponsibleNotify: false,
+                AlternateToken: undefined,
+                CallbackDone: undefined
+            };
+            const data = { ...conf, ...options };
+
             try {
-                if (data.AlternateToken === undefined) {
-                    data.AlternateToken = '';
+                if (data.AlternateToken === '') {
+                    data.AlternateToken = undefined;
                 }
                 if (_data == null) {
                     Event_Controls();
                 }
                 _data = data;
-                Draw();
 
+                if (data.ShowContactNotify) {
+                    $(".contactNotify").removeClass("d-none");
+                }
+                if (data.ShowResponsibleNotify) {
+                    $(".responsibleNotify").removeClass("d-none");
+                }
+
+                Draw();
             }
             catch (err) {
                 console.error("Error Init");

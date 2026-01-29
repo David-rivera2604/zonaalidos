@@ -1,15 +1,50 @@
 ﻿var app = app || {};
 
 app.GeneralCase = (function () {
-
     let _data = null;
     let _refDef = [];
     let _allowref = [];
     let _managerLinks = null;
     let _instance = null;
+    let refFields = [];
+    let _currentStep = null;
+
+    function ApplyConditions() {
+        if (_refDef.length > 0) {
+            let data = { roles: JSON.parse(localStorage.getItem('Roles')), etapa: _currentStep.Name, PriorityDesc: _data.PriorityDesc };
+            $.each(_refDef, function () {
+                data[this.id] = $(this.ctrl).val();
+            });
+
+            _refDef.forEach(function (rd) {
+                let field = refFields.find(r => r.id == rd.id);
+                if (field?.condition) {
+                    let mode = 'notvisible';
+                    let condition = field.condition.trim();
+
+                    if (condition.startsWith('ocultar:')) {
+                        mode = 'notvisible';
+                        condition = condition.replace('ocultar:', '').trim();
+                    }
+
+                    if (mode == 'notvisible') {
+                        let result = eval(condition);
+                        if (result) {
+                            $('#ReferenceCaption' + field.index).addClass('d-none');
+                            $(field.id).addClass('d-none');
+                            //$('#EReference' + field.index).parent().parent().addClass('d-none');
+                        } else {
+                            $('#ReferenceCaption' + field.index).removeClass('d-none');
+                            $(field.id).removeClass('d-none');
+                            //$('#EReference' + field.index).parent().parent().removeClass('d-none');
+                        }
+                    }
+                }
+            });
+        }
+    }
 
     function Event_Controls() {
-
         //$(".historyPanel").appendTo('.sidebar-content');
         //$('#right-sidebar').attr('style', 'width: 300px !important; right: -300px');
 
@@ -18,6 +53,30 @@ app.GeneralCase = (function () {
 
         $("#ReferencesEdtForm :input").change(function () {
             $('#ProcessStepAccept').prop("disabled", false);
+            ApplyConditions();
+        });
+
+        $('#dropzone').fileUploader({
+            maxFilesize: 256,
+            done: function (responses) {
+                //console.log('Init_Controls: Archivos subidos exitosamente:', responses);
+                //toastr.success('Archivos cargados correctamente', '', {
+                //    timeOut: 3000,
+                //    closeButton: true
+                //});
+            },
+            fail: function (error, file) {
+                //console.error('Init_Controls: Error al subir archivo:', error, file);
+                //var errorMsg = typeof error === 'string' ? error :
+                //    (error.message || 'Error desconocido');
+                //toastr.error('Error al subir el archivo: ' + file.name + ' - ' + errorMsg, '', {
+                //    timeOut: 5000,
+                //    closeButton: true
+                //});
+            },
+            always: function (result) {
+                console.log('Init_Controls: Proceso de carga completado:', result);
+            }
         });
 
         $('#ProcessStepAccept').click(function (e) {
@@ -31,29 +90,6 @@ app.GeneralCase = (function () {
             e.preventDefault();
             $('#right-sidebar').toggleClass('sidebar-open');
         });
-
-        $('#saveNote').click(function (e) {
-            e.preventDefault();
-
-            app.ui.ButtonDoing('#saveNote');
-            app.core.Post(app.setting.apipath + 'v1/Common/Note',
-                JSON.stringify({
-                    Id: null,
-                    EntityType: 1304,
-                    EntityId: _data.Id,
-                    Note: $('#newNote').val(),
-                    Private: false,
-                    NoteOwnerId: 0,
-                    ParentSequence: 0
-                }))
-                .done(function (data, textStatus, jqXHR) {
-                    $('#newNote').val('');
-                    NotasDraw(_data.Id);
-                }).always(function () {
-                    app.ui.ButtonDone('#saveNote');
-                });
-        });
-
 
         _managerLinks = app.ManagerLinks.Init({ ContainerOver: "page-wrapper > div.wrapper.wrapper-content.animated.fadeInRight > div > div.col-sm-12 > div", ContainerTab: "tabs", CantainerLinks: "ExternalLinks", Type: "Integrated" });
     }
@@ -74,7 +110,6 @@ app.GeneralCase = (function () {
     }
 
     function MapObjectToInput(data) {
-
         $('#ContactMainName').html(data.ContactMainName);
         $('#ContactMainEmail').html(data.ContactMainEmail);
 
@@ -87,7 +122,10 @@ app.GeneralCase = (function () {
         $('#StatusDesc').html(status);
         $('#StatusDesc').addClass('label-warning-light');
 
-        $('#Description').html(data.Description);
+        if (data.Description != '') {
+            $('.description-col').removeClass('d-none');
+            $('#Description').html(data.Description);
+        }
 
         $('#PriorityDesc').html(data.PriorityDesc);
 
@@ -101,6 +139,19 @@ app.GeneralCase = (function () {
             .done(function (dataFlow, textStatus, jqXHR) {
                 _refDef = [];
 
+                refFields = [
+                    { id: 'Reference1', index: 1, caption: dataFlow.ReferenceCaption1, type: dataFlow.ReferenceType1, required: dataFlow.ReferenceRequired1, lookup: dataFlow.ReferenceLookupList1, condition: dataFlow.ReferenceCondition1 },
+                    { id: 'Reference2', index: 2, caption: dataFlow.ReferenceCaption2, type: dataFlow.ReferenceType2, required: dataFlow.ReferenceRequired2, lookup: dataFlow.ReferenceLookupList2, condition: dataFlow.ReferenceCondition2 },
+                    { id: 'Reference3', index: 3, caption: dataFlow.ReferenceCaption3, type: dataFlow.ReferenceType3, required: dataFlow.ReferenceRequired3, lookup: dataFlow.ReferenceLookupList3, condition: dataFlow.ReferenceCondition3 },
+                    { id: 'Reference4', index: 4, caption: dataFlow.ReferenceCaption4, type: dataFlow.ReferenceType4, required: dataFlow.ReferenceRequired4, lookup: dataFlow.ReferenceLookupList4, condition: dataFlow.ReferenceCondition4 },
+                    { id: 'Reference5', index: 5, caption: dataFlow.ReferenceCaption5, type: dataFlow.ReferenceType5, required: dataFlow.ReferenceRequired5, lookup: dataFlow.ReferenceLookupList5, condition: dataFlow.ReferenceCondition5 },
+                    { id: 'Reference6', index: 6, caption: dataFlow.ReferenceCaption6, type: dataFlow.ReferenceType6, required: dataFlow.ReferenceRequired6, lookup: dataFlow.ReferenceLookupList6, condition: dataFlow.ReferenceCondition6 },
+                    { id: 'Reference7', index: 7, caption: dataFlow.ReferenceCaption7, type: dataFlow.ReferenceType7, required: dataFlow.ReferenceRequired7, lookup: dataFlow.ReferenceLookupList7, condition: dataFlow.ReferenceCondition7 },
+                    { id: 'Reference8', index: 8, caption: dataFlow.ReferenceCaption8, type: dataFlow.ReferenceType8, required: dataFlow.ReferenceRequired8, lookup: dataFlow.ReferenceLookupList8, condition: dataFlow.ReferenceCondition8 },
+                    { id: 'Reference9', index: 9, caption: dataFlow.ReferenceCaption9, type: dataFlow.ReferenceType9, required: dataFlow.ReferenceRequired9, lookup: dataFlow.ReferenceLookupList9, condition: dataFlow.ReferenceCondition9 },
+                    { id: 'Reference10', index: 10, caption: dataFlow.ReferenceCaption10, type: dataFlow.ReferenceType10, required: dataFlow.ReferenceRequired10, lookup: dataFlow.ReferenceLookupList10, condition: dataFlow.ReferenceCondition10 }
+                ];
+
                 for (let i = 1; i <= 10; i++) {
                     $(`#ReferenceCaption${i}`).html(dataFlow[`ReferenceCaption${i}`]);
                     $(`#Reference${i}`).html(_data[`#Reference${i}`] === '' ? '...' : _data[`Reference${i}`]);
@@ -113,6 +164,7 @@ app.GeneralCase = (function () {
                     ReferenceHandler(dataFlow[`ReferenceCaption${i}`], dataFlow[`ReferenceType${i}`], dataFlow[`ReferenceRequired${i}`], dataFlow[`ReferenceLookupList${i}`], `Reference${i}`, i);
                 });
 
+                ApplyConditions();
 
                 if (_allowref.length > 0) {
                     $('.references-section').removeClass('d-none');
@@ -122,8 +174,28 @@ app.GeneralCase = (function () {
 
                 $('#TotalDays').html(data.TotalDays);
 
-                NotasDraw(data.Id);
-                app.Attachments.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, showTitle: false });
+                app.Notes.Init({
+                    EntityType: 1304,
+                    Id: data.Id,
+                    PostByEachRow: true,
+                    ShowContactNotify: true,
+                    ShowResponsibleNotify: true,
+                    CallbackDone: function (noteNotify) {
+                        noteNotify.InstanceId = _data.InstanceId;
+                        noteNotify.Type = 'Note';
+
+                        console.log(noteNotify);
+                        Notify(noteNotify);
+                    }
+                });
+
+                app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=1304&entityId=${_data.Id}`)
+                    .done(function (dataItems) {
+                        $('#dropzone').fileUploader('load', dataItems, { EntityType: 1304, EntityId: data.Id, DocumentType: 1, Description : "General" }  );
+                    }).always(function () {
+                    });
+
+                //app.Attachments.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, showTitle: false });
 
                 _managerLinks.MapObjectToInput(data);
             });
@@ -139,9 +211,11 @@ app.GeneralCase = (function () {
             if (valueList == '') {
                 $('#E' + id).removeClass('d-none');
                 $('#E' + id).val(_data[id]);
+                $('#E' + id + 'List').addClass('d-none');
                 _refDef.push({ id: id, ctrl: '#E' + id });
             }
             else {
+                $('#E' + id).addClass('d-none');
                 let selectedOptions = $('#E' + id + 'List');
                 let value = _data[id].trim();
                 selectedOptions.removeClass('d-none');
@@ -161,30 +235,6 @@ app.GeneralCase = (function () {
             $('#E' + id + 'List').addClass('d-none');
             $('#E' + id + 'List').val('');
         }
-    }
-    function NotasDraw(entityId) {
-
-        app.core.Get(app.setting.apipath + 'v1/Common/Notes?entityType=1304&entityId=' + entityId)
-            .done(function (notes) {
-                let initial = '', info = '', last = '';
-                let noteList = $('.chat-activity-list');
-                noteList.html('');
-                notes.forEach(function (item, index) {
-
-                    initial = item.UpdateUserName.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '').toUpperCase();
-                    info = index % 2 === 0 ? 'success' : 'info';
-                    last = index === notes.length - 1 ? 'text-navy' : '';
-                    noteList.append(
-                        `<div class="chat-element"><a href="#" class="float-left"><span class="label label-${info}">${initial}</span></a>` +
-                        '<div class="media-body">' +
-                        `<small class="float-right ${last}">` + moment(item.UpdateDate).from() + '</small>' +
-                        `<p class="m-b-xs">${item.Note}</p>` +
-                        `<strong>${item.UpdateUserName} </strong><small class="text-muted"><i class="fa fa-clock-o"></i> ` + moment(item.UpdateDate).calendar() + ' - ' + moment(item.UpdateDate).format('DD/MM/YYYY') + '</small>' +
-                        '</div>' +
-                        '</div>');
-                });
-
-            });
     }
 
     function Setup_Validations() {
@@ -210,7 +260,6 @@ app.GeneralCase = (function () {
                     required: 'Debe indicar el proceso'
                 }
             }
-
         });
     }
 
@@ -219,216 +268,30 @@ app.GeneralCase = (function () {
         app.core.Get(app.setting.apipath + 'v1/ProcessCase/' + row.Id)
             .done(function (data, textStatus, jqXHR) {
                 _data = data;
-                MapObjectToInput(data);
+                _allowref = [];
+                app.processHandler.RefreshProcess(data.InstanceId, true,
+                    function (newData, ref, currentStep) {
+                        _instance = newData;
+                        MapObjectToInput(_data);
+                        _allowref = ref;
+                        _currentStep = currentStep;
+                    });
                 $('#Title').focus();
-                RefreshProcess(data.InstanceId);
             }).always(function () {
                 $('.ibox-content').toggleClass('sk-loading');
             });
     }
 
-    function Init_List_Process() {
-        $('#ProcessGridTbl').bootstrapTable({
-            uniqueId: 'ActivityId',
-            pagination: false,
-            //search: true,
-            //showRefresh: true,
-            smartDisplay: true,
-            //detailView: false,
-            //detailFormatter: 'app.ui.GenericDetailFormatter',
-            //headerStyle: function (column) {
-            //    return {
-            //        css: {
-            //            'background': 'lightsteelblue'
-            //        }
-            //    }
-            //},
-            rowStyle: function (row, index) {
-                return {
-                    css: {
-                        'vertical-align': 'top'
-                    }
-                }
-            },
-            columns: [
-                {
-                    field: 'Name',
-                    title: 'Etapa',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    //cellStyle: function (value, row, index) {
-                    //    return {
-                    //        css: {
-                    //            'background': 'lightsteelblue'
-                    //        }
-                    //    }
-                    //},
-                    formatter: function (value, row, index, field) {
-                        var result = '';
-                        var status = 'fa-check';
-                        var color = 'green';
-                        var styleTitle = 'font-weight: 600;';
-                        var title = 'Procesado';
-                        if (row.FinishDate === null || row.FinishDate === '0001-01-01T00:00:00') {
-                            status = 'fa-clock-o';
-                            color = 'yellowgreen';
-                            title = 'Etapa en progreso';
-                        }
-                        if (row.StartDate === null || row.StartDate === '0001-01-01T00:00:00') {
-                            status = 'fa-clock-o';
-                            color = 'gray';
-                            styleTitle = '';
-                            title = 'Etapa sin procesar';
-                            if (row.Wait === '') {
-                                status = 'fa-chain-broken';
-                                styleTitle = 'text-decoration: line-through;color: gray'
-                                title = 'Etapa no necesaria para el caso';
-                            }
-                        }
-                        result = `<i class="fa ${status}" aria-hidden="true" style="margin: 0px 8px 0px 5px;color: ${color};" title="${title}"></i>` + `<span style="${styleTitle}" title="${title}">` + value + '</span>';
-
-                        if (row.StartDate != null && row.StartDate != '0001-01-01T00:00:00') {
-                            result = result + '<div class="d-block d-sm-none" style="margin: 3px 20px 0px;">Inicio: ' + moment(row.StartDate).format('DD/MM/YYYY hh:mma');
-                            result = result + '</div>';
-                        }
-
-                        if (row.FinishDate != null && row.FinishDate != '0001-01-01T00:00:00') {
-                            result = result + '<div class="d-block d-sm-none" style="margin: 0 20px;">Completado: ' + moment(row.FinishDate).format('DD/MM/YYYY hh:mma');
-                            result = result + '</div>';
-                        }
-
-
-                        if (row.FinishDate != null && row.FinishDate != '0001-01-01T00:00:00') {
-                            result = result + '<div class="d-block d-sm-none" style="margin: 0 20px;">Realizado por: ' + row.UserName;
-                            result = result + '<small class="text-muted"> ' + moment(row.FinishDate).from() + '</small>';
-                            result = result + '</div>';
-                        }
-                        if (row.Comments != '') {
-                            result = result + '<div class="d-block d-sm-none" style="margin: 0 20px;">Comentario:<small class="text-muted" style="font-style: italic;"> ' + row.Comments + '</small></div>';
-                            result = result + '<div class="d-none d-sm-block" style="margin: 0 26px;"><small class="text-muted" style="font-style: italic;"> ' + row.Comments + '</small></div>';
-                        }
-                        result = result + `<div style="margin: 0 26px;"><small class="text-muted" id="compl_${row.StepId}"></small></div>`;
-                        return result;
-
-                    }
-                }, {
-                    field: 'StartDate',
-                    title: 'Inicio',
-                    class: 'd-none d-sm-table-cell',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.DateAndTimeFormatter'
-                }, {
-                    field: 'FinishDate',
-                    title: 'Completado',
-                    class: 'd-none d-sm-table-cell',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.DateAndTimeFormatter'
-                }, {
-                    field: 'FinishDate',
-                    title: 'Realizado por',
-                    class: 'd-none d-sm-table-cell',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    width: 15,
-                    widthUnit: '%',
-                    formatter: function (value, row, index, field) {
-                        if (value === null || value === '0001-01-01T00:00:00')
-                            return '';
-                        else
-                            return '<span title="' + moment(value).format('DD/MM/YYYY hh:mma') + '">' + row.UserName + ' <small class="text-muted"> ' + moment(value).from() + '</small></span>';
-                    }
-                }]
-            //, {
-            //    field: 'Comments',
-            //    title: 'Comentario',
-            //    sortable: false,
-            //    halign: 'center',
-            //    align: 'left',
-            //}]
-        });
-    }
-
-    async function RefreshProcess(instanceId) {
-        _allowref = [];
-        app.core.Get(app.setting.apipath + 'v1/Process/Instance/' + instanceId + '/3')
-            .done(function (data, textStatus, jqXHR) {
-                _instance = data;
-                if (data.Steps) {
-                    caseId = data.CaseId;
-
-                    $('#ProcessGridTbl').bootstrapTable('load', data.Steps);
-                    $('.tnotify').addClass('d-none');
-                    let current = data.Steps.filter(i => i.ActivityId === data.ActivityId);
-
-                    if (current.length > 0) {
-                        $('#StepDescription').html(current[0].Name);
-                        $('#CurrentStep').html(current[0].Name);
-
-                        if (current[0].References != null && current[0].References != '') {
-                            _allowref = JSON.parse(current[0].References);
-                        }
-                    }
-                    if (data.Tasks.length > 0) {
-                        $('#tasks').empty();
-                        $('#Annotation').val('');
-                        $('#ProcessStepAccept').prop("disabled", true);
-                        selectedOptions = $('#tasks');
-                        switch (current[0].ProgressMode) {
-                            case 1:
-                                $('.mode-simple').removeClass('d-none');
-                                $.each(data.Tasks, function () {
-                                    selectedOptions.append(
-                                        '<div class="custom-control custom-radio" title="' + this['Description'] + '">' +
-                                        '<input type="radio" class="custom-control-input" id="task_' + this['ActivityId'] + '" name="task" value="' + this['ActivityId'] + '" onchange="app.GeneralCase.Enable();">' +
-                                        '<label class="custom-control-label" for="task_' + this['ActivityId'] + '">' + this['Name'] + '</label>' +
-                                        '</div>');
-                                });
-                                break;
-                            case 2:
-                                $('.mode-simple').addClass('d-none');
-                                $.each(data.Tasks, function () {
-                                    selectedOptions.append(
-                                        '<div class="custom-control custom-checkbox" title="' + this['Description'] + '">' +
-                                        '<input type="checkbox" class="custom-control-input" id="task_' + this['ActivityId'] + '" name="task" value="' + this['ActivityId'] + '" ' + (this['FinishDate'] === null ? '' : 'checked') + ' onchange="app.GeneralCase.Checked(' + this['ActivityId'] + ');">' +
-                                        '<label class="custom-control-label" for="task_' + this['ActivityId'] + '">' + this['Name'] + '</label>' +
-                                        '</div>');
-                                });
-                                break;
-                        }
-
-                        $('#ChangeStage').removeClass('d-none');
-                        //$('#entry').removeClass('d-none');
-                        $('fieldset').prop("disabled", false);
-                        tasks = data.Tasks;
-                    }
-                    else {
-                        $('#ChangeStage').addClass('d-none');
-                        $('#tabs li:nth-child(2) a').tab('show');
-                        $('#tabs li:nth-child(1) a').addClass('d-none');
-                        if (current.length == 0) {
-                            $('#CurrentStep').html(data.Steps[data.Steps.length - 1].Name);
-                        }
-                    }
-
-                    $(".progress-bar").width(data.Progress + '%');
-                    $(".progress-bar").prop('title', data.Progress + '%');
-                    $(".progress-bar").html(data.Progress + '%');
-                } else {
-                    $('#ProcessGridTbl').bootstrapTable('load', []);
-                }
-            }).always(function () {
-                $('#ProcessGridTbl').bootstrapTable('hideLoading');
-            });
-    }
-
     function OptionSelected() {
         $('#ProcessStepAccept').prop("disabled", false);
+    }
+
+    function Notify(notify) {
+        app.core.Post(app.setting.apipath + `v1/Process/Notify`,
+            JSON.stringify(notify))
+            .done(function (data, textStatus, jqXHR) {
+            }).always(function () {
+            });
     }
 
     function TaskChecked(instanceId, activityId, comment, notify) {
@@ -453,7 +316,6 @@ app.GeneralCase = (function () {
                 } else {
                     EditMode({ Id: _data.Id });
                 }
-
             }).always(function () {
                 app.ui.ButtonDone('#ProcessStepAccept', false);
             });
@@ -461,7 +323,9 @@ app.GeneralCase = (function () {
 
     return {
         Init: function () {
-            Init_List_Process();
+            app.processHandler = new Process();
+
+            app.processHandler.Init_List_Process();
 
             Event_Controls();
             Setup_Validations();

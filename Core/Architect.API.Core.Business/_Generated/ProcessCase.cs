@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Architect.API.Core.Business.General
 {
@@ -12,32 +13,13 @@ namespace Architect.API.Core.Business.General
     {
 
         /// <summary>
-        /// Crea registro o actualiza un registro en la tabla ProcessCase.
-        /// </summary>
-        /// <param name="companyId">Identificación de la compañía propietaria.</param>
-        /// <param name="userId">Identificación del usuario.</param>
-        /// <param name="item">Instancia de ProcessCase</param>
-        /// <returns>Instancia de ProcessCase creada o actualizada.</returns>
-        public static Architect.API.Core.Contracts.General.ProcessCaseResult CreateOrUpdate(int companyId, int userId, Architect.API.Core.Contracts.General.ProcessCase item)
-        {
-            if (item.Id.IsEmpty() || Architect.API.Core.DataAccess.General.ProcessCase.Count(item.Id, companyId) == 0)
-            {
-                return Create(companyId, userId, item);
-            }
-            else
-            {
-                return Update(companyId, userId, item.Id, item);
-            }
-        }
-
-        /// <summary>
         /// Crea un registro en la tabla ProcessCase.
         /// </summary>
         /// <param name="companyId">Identificación de la compañía propietaria.</param>
         /// <param name="userId">Identificación del usuario.</param>
         /// <param name="item">Instancia de ProcessCase</param>
         /// <returns>Instancia de ProcessCase creada.</returns>
-        public static Architect.API.Core.Contracts.General.ProcessCaseResult Create(int companyId, int userId, Architect.API.Core.Contracts.General.ProcessCase item)
+        public static Architect.API.Core.Contracts.General.ProcessCaseResult Create(int companyId, Contracts.Security.Token tokenInfo, Architect.API.Core.Contracts.General.ProcessCase item)
         {
             Contracts.General.ProcessCase result = item;
             List<Contracts.General.Error> errors = ProcessCase.Validate(companyId, item, true, false);
@@ -49,8 +31,9 @@ namespace Architect.API.Core.Business.General
                     result.Id = DataAccess.General.ProcessCase.RetrieveLastKey() + 1;
                 }
                 result.CompanyId = companyId;
-                result.UpdateUserCode = userId;
+                result.UpdateUserCode = tokenInfo.UserId;
                 result.UpdateDate = DateTime.Now;
+                result.StartDate = DateTime.Now;
 
                 if (Architect.API.Core.DataAccess.General.ProcessCase.Create(result) > 0)
                 {
@@ -61,14 +44,14 @@ namespace Architect.API.Core.Business.General
                         {
                             attachment.EntityType = 1304;
                             attachment.EntityId = result.Id;
-                            Architect.API.Core.Business.General.Attachment.SyncUpBase(attachment, companyId, userId);
+                            Architect.API.Core.Business.General.Attachment.SyncUpBase(attachment, companyId, tokenInfo.UserId);
                         }
                     }
 
                     MapLookups(companyId, result);
-                    ChangeSet.Create(1304, result.Id, companyId, "Creación", string.Format("Se creó el processcase '{0}'", result.Title), userId, result);
+                    ChangeSet.Create(1304, result.Id, companyId, "Creación", string.Format("Se creó el processcase '{0}'", result.Title), tokenInfo.UserId, result);
 
-                    Process.CreateInstance(
+                    List<Contracts.General.ProcessInstance> instances = Process.CreateInstance(
                         new Contracts.General.CreateProcessInstance()
                         {
                             FlowId = result.FlowId,
@@ -83,7 +66,7 @@ namespace Architect.API.Core.Business.General
                             EntityType = 1304,
                             EntityId = result.Id,
                             SLA = result.SLA
-                        }, userId, companyId, result.Id);
+                        }, tokenInfo.UserId, companyId, result.Id);
                 }
             }
             return new Contracts.General.ProcessCaseResult() { ProcessCase = result, Errors = errors };
@@ -102,7 +85,7 @@ namespace Architect.API.Core.Business.General
             string currentFilter = string.Empty;
             if (filter == "CaseAliados")
             {
-                currentFilter = " AND ProcessCase.CustomNumericKey = " + agentCodeActual.ToString();
+                currentFilter = " AND pc.CustomNumericKey = " + agentCodeActual.ToString();
 
                 if (companyId == 2 || companyId == 12)
                 {
@@ -323,4 +306,6 @@ namespace Architect.API.Core.Business.General
         }
 
     }
+
+
 }

@@ -59,6 +59,16 @@ namespace Architect.API.Core.Contracts.General
         /// Last Over Due Notify
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime LastOverDueNotify { get; set; }
+
+        /// <summary>
+        /// Usuario asignado a la etapa.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int UserAssigned  { get; set; }
+        /// <summary>
+        /// Fecha en que se asignó el usuario a la etapa.
+        /// </summary>
+        [DataMember(), JsonProperty()] public DateTime UserAssignedDate { get; set; }
+
         /// <summary>
         /// Usuario que actualizo por última vez el registro.
         /// </summary>

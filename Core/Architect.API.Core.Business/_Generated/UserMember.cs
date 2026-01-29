@@ -312,6 +312,7 @@ namespace Architect.API.Core.Business.Security
                         toAdd.CompanyId = companyId;
                         toAdd.UpdateUserCode = userId;
                         toAdd.UpdateDate = DateTime.Now;
+                        toAdd.Id = DataAccess.Security.UserRoleMember.RetrieveLastKey() + 1;
 
                         //toAdd.RoleId = DataAccess.Security.UserRoleMember.RetrieveLastKey() + 1;
                         DataAccess.Security.UserRoleMember.CreateCustom(toAdd);

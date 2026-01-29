@@ -7,6 +7,7 @@ using System.Web.Http.Description;
 using Architect.API.Core.Business.Security;
 using Architect.API.Core.Contracts.Security;
 using System;
+using System.Web;
 
 
 
@@ -26,19 +27,28 @@ namespace Architect.API.Core.Controllers
         /// </summary>
         [HttpGet]
         [Route("Create")]
-        [AllowAnonymous]
 
         public async Task<IHttpActionResult> Create([FromUri] string Tenant)
         {
+            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
             IHttpActionResult result = null;
             string UserWebConfi = "Security.Users.Cases." + Tenant;
             string UserCreate = Architect.Utilities.Helpers.Settings.StringValue(UserWebConfi);
+            string currentToken = string.Empty;
             if (UserCreate == "")
             {
                 result = BadRequest("Necesita un encargado gestionado los casos");
             }
             else
             {
+
+                var ck = HttpContext.Current?.Request?.Cookies["AuthToken"];
+
+                if (ck.IsNotEmpty() && ck.Value.IsNotEmpty())
+                {
+                    currentToken = ck.Value;
+                }
+
                 string[] ListElement = UserCreate.Split(';');
 
 
@@ -68,7 +78,9 @@ namespace Architect.API.Core.Controllers
                     Token_Al TokenJs = new Token_Al()
                     {
                         TokenAliado = responseItem.Token,
-                        user = ListElement[1].ToLower()
+                        user = ListElement[1].ToLower(),
+                        CurrentUserId = tokenInfo.UserId,
+                        CurrentToken = currentToken
                     };
                     if (responseItem.Reason.IsNotEmpty())
                     {
@@ -100,6 +112,9 @@ namespace Architect.API.Core.Controllers
         /// </summary>
         public string TokenAliado { get; set; }
         public string user { get; set; }
+        public int CurrentUserId { get; set; }
+        public string CurrentToken { get; set; }
+        
 
     }
 }

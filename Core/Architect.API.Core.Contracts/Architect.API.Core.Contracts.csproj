@@ -53,6 +53,9 @@
     <Compile Include="General\Attachment_customers\Attachments_customer.cs" />
     <Compile Include="General\Attachment_customers\Attachment_customer.cs" />
     <Compile Include="General\CaseComplement.cs" />
+    <Compile Include="General\DownloadFileItem.cs" />
+    <Compile Include="General\FileToZipInfo.cs" />
+    <Compile Include="General\FileUploaded.cs" />
     <Compile Include="General\GenericResponse.cs" />
     <Compile Include="General\InstanceInformation.cs" />
     <Compile Include="General\CreateProcessInstance.cs" />

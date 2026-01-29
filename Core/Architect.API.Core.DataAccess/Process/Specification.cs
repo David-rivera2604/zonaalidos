@@ -1,4 +1,5 @@
 ﻿using Architect.Utilities.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -76,14 +77,48 @@ namespace Architect.API.Core.DataAccess.General.Process
                 }
             }
 
-            ProcessCase.Update(processInstance.First().CaseId, instanceId, current.Step.ProcessStatus, current.Step.ProcessLabel, 0, string.Empty, current.StepId, currentConnection);
+
+            Contracts.General.ProcessInstance instanceMain = processInstance.First();
+            //result.StartDate = instance.StartDate;
+            //result.FinishDate = instance.FinishDate;
+            //result.DueDate = instance.DueDate;
+            //result.UserAssigned = instance.UserAssigned;
+            //result.UserAssignedDate = instance.StartDate;
+            //result.Progress = instances.ProcessProgress();
+            //result.StepCurrent = instances.CurrentStepNumber();
+            //result.StepTotal = instances.NumberOfSteps();
+
+
+            ProcessCase.FirstUpdate(new Contracts.General.ProcessCase()
+            {
+                Id = instanceMain.CaseId,
+                InstanceId = instanceId,
+                Status = current.Step.ProcessStatus,
+                Label = current.Step.ProcessLabel,
+                SubStatus = 0,
+                SubLabel = string.Empty,
+                CurrentStepId = current.StepId,
+                UserAssigned = current.UserAssigned,
+                UserAssignedDate = current.UserAssignedDate,
+                StepCurrent = 1,
+                StepTotal = processInstance.NumberOfSteps(),
+                StartDate = instanceMain.StartDate,
+                DueDate = instanceMain.DueDate,
+                Progress = 0
+            }, currentConnection);
+
+
+            //ProcessCase.Update(processInstance.First().CaseId, instanceId, current.Step.ProcessStatus, current.Step.ProcessLabel, 0, string.Empty, current.StepId, currentConnection);
 
             currentConnection.Close();
 
             return processInstance;
         }
 
-        public static List<Contracts.General.ProcessInstance> UpdateInstance(List<Contracts.General.ProcessInstance> processInstance, Contracts.General.ProcessInstance currentTask)
+        /// <summary>
+        /// Se encarga de actualizar la informacion del proceso en ejecucion asi como en el caso.
+        /// </summary>
+        public static List<Contracts.General.ProcessInstance> UpdateInstance(List<Contracts.General.ProcessInstance> processInstance, Contracts.General.ProcessInstance currentTask, List<Contracts.General.ProcessInstance> fullInstance)
         {
             Contracts.General.ProcessInstance current = null;
             Contracts.General.ProcessInstance lastStep = null;
@@ -106,13 +141,30 @@ namespace Architect.API.Core.DataAccess.General.Process
                 current = lastStep;
             }
 
+
+            Contracts.General.ProcessInstance instanceMain = processInstance.First();
+
             if (current.IsEmpty())
             {
                 ProcessCase.Update(processInstance.First().CaseId, processInstance.First().InstanceId, 0, string.Empty, currentTask.Task.SubStatus, currentTask.Task.SubLabel, 0, currentConnection);
             }
             else
             {
-                ProcessCase.Update(processInstance.First().CaseId, processInstance.First().InstanceId, current.Step.ProcessStatus, current.Step.ProcessLabel, currentTask.Task.SubStatus, currentTask.Task.SubLabel, current.StepId, currentConnection);
+                ProcessCase.ProgressUpdate(new Contracts.General.ProcessCase()
+                {
+                    Id = instanceMain.CaseId,
+                    InstanceId = instanceMain.InstanceId,
+                    Status = current.Step.ProcessStatus,
+                    Label = current.Step.ProcessLabel,
+                    SubStatus = currentTask.Task.SubStatus,
+                    SubLabel = currentTask.Task.SubLabel,
+                    CurrentStepId = current.StepId,
+                    UserAssigned = current.UserAssigned,
+                    UserAssignedDate = current.UserAssignedDate,
+                    StepCurrent = fullInstance.CurrentStepNumber(current.StepId),
+                    Progress = fullInstance.ProcessProgress(),
+                    FinishDate = fullInstance.First().FinishDate
+                }, currentConnection);
             }
 
             currentConnection.Close();

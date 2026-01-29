@@ -7,6 +7,7 @@ using System.Web.Http.Description;
 using Architect.API.Core.Business.Security;
 using Architect.API.Core.Contracts.Security;
 using System;
+using System.ComponentModel.Design;
 
 namespace Architect.API.Core.Controllers
 {
@@ -43,10 +44,15 @@ namespace Architect.API.Core.Controllers
                 if (item.CurrentToken.IsNotEmpty())
                 {
                     Contracts.Security.Token currentTokenInfo = Security.Token.Info(item.CurrentToken);
+                    Contracts.Security.UserMember currentUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(currentTokenInfo.CompanyId, currentTokenInfo.UserId);
+
                     item.UserSend = currentTokenInfo.UserId;
                     item.CustomNumericKey = currentTokenInfo.AgentCode;
+                    item.UserId = 0;
+                    item.ContactMainName = currentUserInfo.FirstName.CompleteFullName(currentUserInfo.LastName);
+                    item.ContactMainEmail = currentUserInfo.EMail;
                 }
-                Architect.API.Core.Contracts.General.ProcessCaseResult created = Architect.API.Core.Business.General.ProcessCase.Create(tokenInfo.CompanyId, tokenInfo.UserId, item);
+                Architect.API.Core.Contracts.General.ProcessCaseResult created = Architect.API.Core.Business.General.ProcessCase.Create(tokenInfo.CompanyId, tokenInfo, item);
                 if (created.Errors.Count == 0)
                 {
                     result = Created(string.Format("{0}/{1}", Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.LastIndexOf("/")), created.ProcessCase.Id), new { Id = created.ProcessCase.Id, UpdateDate = created.ProcessCase.UpdateDate });
@@ -75,7 +81,7 @@ namespace Architect.API.Core.Controllers
             Contracts.Security.Token tokenInfo = Security.Token.Info();
             int agentCodeActual = tokenInfo.AgentCode;
 
-            List <Architect.API.Core.Contracts.General.ProcessCase> result = null;
+            List<Architect.API.Core.Contracts.General.ProcessCase> result = null;
 
             await Task.Run(() =>
             {

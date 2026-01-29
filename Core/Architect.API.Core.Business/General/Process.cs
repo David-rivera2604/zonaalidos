@@ -1,6 +1,7 @@
 ﻿using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -91,7 +92,7 @@ namespace Architect.API.Core.Business.General
             Contracts.General.InstanceInformation result = null;
             if (Architect.API.Core.DataAccess.General.ProcessInstance.CountByEntity(newInstance.EntityType, newInstance.EntityId, token.CompanyId) == 0)
             {
-                Contracts.General.ProcessInstance instance = CreateInstance(newInstance, token.UserId, token.CompanyId);
+                Contracts.General.ProcessInstance instance = CreateInstance(newInstance, token.UserId, token.CompanyId).First();
                 result = CurrentByInstance(instance.InstanceId, 3, token);
             }
             else
@@ -101,7 +102,7 @@ namespace Architect.API.Core.Business.General
             return result;
         }
 
-        public static Contracts.General.ProcessInstance CreateInstance(Contracts.General.CreateProcessInstance newInstance, int userId, int companyId, int caseId = 0)
+        public static List<Contracts.General.ProcessInstance> CreateInstance(Contracts.General.CreateProcessInstance newInstance, int userId, int companyId, int caseId = 0)
         {
             Contracts.General.ProcessSpecFlow spec = Specification(newInstance.FlowId, companyId, newInstance.SLA);
             List<Contracts.General.ProcessInstance> instance = new List<Contracts.General.ProcessInstance>();
@@ -177,6 +178,12 @@ namespace Architect.API.Core.Business.General
                         instance[instance.Count - 1].DueDate = current.AddHours(stepSource.SLALevels.Last().SLATimeOut);
                     }
                     currentStep = instance[instance.Count - 1];
+
+
+                    UserAssigned(currentStep);
+
+
+
                 }
 
                 if (stepSource.ProcessSpecTasks.IsNotEmpty())
@@ -221,7 +228,7 @@ namespace Architect.API.Core.Business.General
             Notify_ResponsibleProcess_Progress(caseId, currentStep, spec, companyId, userId);
 
 
-            return instanceCreated.First();
+            return instanceCreated;
         }
 
         public static Contracts.General.InstanceInformation CurrentByEntity(int entityType, long entityId, int level, Core.Contracts.Security.Token tokenInfo)
@@ -305,7 +312,7 @@ namespace Architect.API.Core.Business.General
             return Architect.API.Core.DataAccess.General.ProcessInstance.CountByEntity(entityType, entityId, companyId) > 0;
         }
 
-        private static Contracts.General.InstanceInformation CurrentStep(List<Contracts.General.ProcessInstance> instance, int level, Core.Contracts.Security.Token tokenInfo)
+        public static Contracts.General.InstanceInformation CurrentStep(List<Contracts.General.ProcessInstance> instance, int level, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.General.InstanceInformation result = null;
             int stepCount = instance.Count(i => i.StepId > 0 && i.TaskId == 0);
@@ -406,8 +413,7 @@ namespace Architect.API.Core.Business.General
                 stepReady++;
             }
 
-            result.Progress = stepCount <= stepReady ? 100 : (int)( 100.0 / stepCount * stepReady);
-
+            result.Progress = stepCount <= stepReady ? 100 : (int)(100.0 / stepCount * stepReady);
 
             if (curentStep?.Step?.ProcessSpecStepRoles?.Count > 0)
             {
@@ -624,7 +630,7 @@ namespace Architect.API.Core.Business.General
                         nextStep.Comments = checkedInformation.Comment;
                         nextStep.UpdateDate = DateTime.Now;
                         toUpdate.Add(nextStep);
-
+                        UserAssigned(nextStep);
                         foreach (Contracts.General.ProcessInstance nextSubTask in instance.Where(i => i.StepId == nextStep.StepId && i.TaskId > 0))
                         {
                             nextSubTask.StartDate = current;
@@ -656,6 +662,9 @@ namespace Architect.API.Core.Business.General
                         nextStep.PreviousActivityId = currentTask.ActivityId;
                         nextStep.Comments = checkedInformation.Comment;
                         nextStep.UpdateDate = DateTime.Now;
+
+                        UserAssigned(nextStep);
+
                         toUpdate.Add(nextStep);
                         foreach (Contracts.General.ProcessInstance nextSubTask in instance.Where(i => i.StepId == nextStep.StepId && i.TaskId > 0))
                         {
@@ -690,7 +699,7 @@ namespace Architect.API.Core.Business.General
                 currentFlow.UpdateDate = DateTime.Now;
                 toUpdate.Add(currentFlow);
             }
-            DataAccess.General.Process.Specification.UpdateInstance(toUpdate, currentTask);
+            DataAccess.General.Process.Specification.UpdateInstance(toUpdate, currentTask, instance);
 
             Contracts.General.ProcessSpecFlow spec = Specification(currentFlow.FlowId, currentFlow.CompanyId, currentFlow.SLA);
             List<string> attachments = new List<string>();
@@ -789,7 +798,7 @@ namespace Architect.API.Core.Business.General
                     procCase = Business.General.ProcessCase.RetrieveById(companyId, caseId);
                 }
 
-                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec}, mailFullList, attachments);
+                Mail.SendByTemplate(Common.LkpDescription(companyId, "MailServer", mailServer.ToString()), mailTemplate, companyId, userId, new { Case = procCase, Next = step, Spec = spec }, mailFullList, attachments);
             }
         }
 
@@ -973,5 +982,160 @@ namespace Architect.API.Core.Business.General
             return result;
         }
 
+        public static void SendNotification(int noteId, string note, bool contactNotify, bool responsibleNotify, int instanceId, string type, Core.Contracts.Security.Token tokenInfo)
+        {
+            try
+            {
+                // Obtener la instancia del proceso
+                List<Contracts.General.ProcessInstance> instance = InstanceRuntime(instanceId, tokenInfo.CompanyId);
+                if (instance == null || instance.Count == 0)
+                {
+                    Architect.Utilities.Log.ErrorLog("SendNotification", "No se encontró la instancia del proceso");
+                    return;
+                }
+
+                Contracts.General.ProcessInstance currentFlow = instance.First(i => i.FlowId > 0 && i.StepId == 0 && i.TaskId == 0);
+                Contracts.General.ProcessInstance currentStep = instance.FirstOrDefault(i => i.StepId > 0 && i.TaskId == 0 && i.StartDate > DateTime.MinValue && i.FinishDate == DateTime.MinValue);
+
+                if (currentStep == null)
+                {
+                    currentStep = instance.FirstOrDefault(i => i.StepId > 0 && i.TaskId == 0);
+                }
+
+                Contracts.General.ProcessSpecFlow spec = Specification(currentFlow.FlowId, tokenInfo.CompanyId, currentFlow.SLA);
+                Contracts.General.ProcessCase procCase = ProcessCase.RetrieveById(tokenInfo.CompanyId, currentFlow.CaseId);
+
+                // Preparar datos para el template del correo
+                var mailData = new
+                {
+                    Case = procCase,
+                    Note = note,
+                    NoteId = noteId,
+                    Current = currentStep,
+                    Spec = spec,
+                    Type = type
+                };
+
+                int mailServer = spec.MailServer;
+                if (currentStep?.Step?.MailServer > 1)
+                {
+                    mailServer = currentStep.Step.MailServer;
+                }
+
+                // Notificar al contacto
+                if (contactNotify && procCase?.ContactMainEmail.IsNotEmpty() == true)
+                {
+                    Dictionary<string, string> contactMailList = new Dictionary<string, string>
+                    {
+                        { procCase.ContactMainEmail, procCase.ContactMainName ?? string.Empty }
+                    };
+
+                    string contactMailTemplate = ConfigurationManager.AppSettings["Process.Mail.Contact.Note.Template"] ?? "Process.Mail.Contact.Notify.Template";
+
+                    Mail.SendByTemplate(
+                        Common.LkpDescription(tokenInfo.CompanyId, "MailServer", mailServer.ToString()),
+                        contactMailTemplate,
+                        tokenInfo.CompanyId,
+                        tokenInfo.UserId,
+                        mailData,
+                        contactMailList
+                    );
+                }
+
+                // Notificar a los responsables
+                if (responsibleNotify && currentStep?.Step != null)
+                {
+                    Dictionary<string, string> responsibleMailList = new Dictionary<string, string>();
+
+                    // Obtener correos de los roles asignados al step
+                    if (currentStep.Step.ProcessSpecStepRoles?.Count > 0)
+                    {
+                        foreach (Contracts.General.ProcessSpecStepRole stepRole in currentStep.Step.ProcessSpecStepRoles)
+                        {
+                            foreach (KeyValuePair<string, string> entry in Security.UserMember.EmailListByRolename(tokenInfo.CompanyId, stepRole.RoleName))
+                            {
+                                if (!responsibleMailList.ContainsKey(entry.Key))
+                                {
+                                    responsibleMailList.Add(entry.Key, entry.Value);
+                                }
+                            }
+                        }
+                    }
+
+                    // Agregar correos personalizados si existen
+                    if (currentStep.Step.MailToStepResponsibleCustom.IsNotEmpty())
+                    {
+                        foreach (string email in currentStep.Step.MailToStepResponsibleCustom.Split(','))
+                        {
+                            string cleanEmail = email.Trim();
+                            if (cleanEmail.IsNotEmpty() && !responsibleMailList.ContainsKey(cleanEmail))
+                            {
+                                responsibleMailList.Add(cleanEmail, string.Empty);
+                            }
+                        }
+                    }
+
+                    if (responsibleMailList.Count > 0)
+                    {
+                        string responsibleMailTemplate = ConfigurationManager.AppSettings["Process.Mail.Responsible.Note.Template"] ?? "Process.Mail.Responsible.Notify.Template";
+
+                        Mail.SendByTemplate(
+                            Common.LkpDescription(tokenInfo.CompanyId, "MailServer", mailServer.ToString()),
+                            responsibleMailTemplate,
+                            tokenInfo.CompanyId,
+                            tokenInfo.UserId,
+                            mailData,
+                            responsibleMailList
+                        );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Architect.Utilities.Log.ErrorLog("SendNotification", "Error enviando notificaciones", ex);
+                throw;
+            }
+        }
+
+        private static void UserAssigned(Contracts.General.ProcessInstance currentStep)
+        {
+            string rolename1 = string.Empty;
+            string rolename2 = string.Empty;
+            string rolename3 = string.Empty;
+
+            foreach (Contracts.General.ProcessSpecStepRole stepRole in currentStep.Step.ProcessSpecStepRoles)
+            {
+                if (rolename1 == string.Empty)
+                {
+                    rolename1 = stepRole.RoleName;
+                }
+                else if (rolename2 == string.Empty && stepRole.RoleName != rolename1)
+                {
+                    rolename2 = stepRole.RoleName;
+                }
+                else if (rolename3 == string.Empty && stepRole.RoleName != rolename1 && stepRole.RoleName != rolename2)
+                {
+                    rolename3 = stepRole.RoleName;
+                }
+            }
+
+            // Usuario asociados a los roles reposnsable con cantidad de tareas asignadas
+            List<Contracts.Security.UserMember> users = DataAccess.General.ProcessInstance.EmailInfoByRoleName(currentStep.CompanyId, rolename1, rolename2, rolename3);
+
+            // Asignación basada en el que este libre
+            if (users?.Count(i => i.FailedPasswordCount == 0) > 0)
+            {
+                Contracts.Security.UserMember user = users.Where(i => i.FailedPasswordCount == 0).First();
+                currentStep.UserAssigned = user.UserId;
+                currentStep.UserAssignedDate = currentStep.StartDate;
+            }
+            //Asiganación basado en el que tenga menos carga
+            else if (users?.Count > 0)
+            {
+                Contracts.Security.UserMember user = users.First();
+                currentStep.UserAssigned = user.UserId;
+                currentStep.UserAssignedDate = currentStep.StartDate;
+            }
+        }
     }
 }

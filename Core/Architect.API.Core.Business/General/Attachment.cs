@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
+using System.Linq;
+using Architect.Utilities.Helpers;
 
 namespace Architect.API.Core.Business.General
 {
@@ -96,7 +98,7 @@ namespace Architect.API.Core.Business.General
 
             if (attachment.FileContent.IsNotEmpty())
             {
-                attachment.FileContent = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], attachment.FileContent);
+                attachment.FileContent = Path.Combine("Attachments.Path".StringValue(), attachment.FileContent);
             }
             return SyncUp(attachment);
         }

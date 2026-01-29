@@ -56,6 +56,10 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         public string ReferenceLookupList1 { get; set; }
         /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 1.
+        /// </summary>
+        public string ReferenceCondition1 { get; set; }
+        /// <summary>
         /// Etiqueta asociada al campo de referencia 2.
         /// </summary>
         public string ReferenceCaption2 { get; set; }
@@ -75,6 +79,10 @@ namespace Architect.API.Core.Contracts.General
         /// Lista de valores posibles asociados al campo de referencia 2.
         /// </summary>
         public string ReferenceLookupList2 { get; set; }
+        /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 2.
+        /// </summary>
+        public string ReferenceCondition2 { get; set; }
         /// <summary>
         /// Etiqueta asociada al campo de referencia 3.
         /// </summary>
@@ -96,6 +104,10 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         public string ReferenceLookupList3 { get; set; }
         /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 3.
+        /// </summary>
+        public string ReferenceCondition3 { get; set; }
+        /// <summary>
         /// Etiqueta asociada al campo de referencia 4.
         /// </summary>
         public string ReferenceCaption4 { get; set; }
@@ -115,6 +127,10 @@ namespace Architect.API.Core.Contracts.General
         /// Lista de valores posibles asociados al campo de referencia 4.
         /// </summary>
         public string ReferenceLookupList4 { get; set; }
+        /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 4.
+        /// </summary>
+        public string ReferenceCondition4 { get; set; }
         /// <summary>
         /// Etiqueta asociada al campo de referencia 5.
         /// </summary>
@@ -136,6 +152,10 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         public string ReferenceLookupList5 { get; set; }
         /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 5.
+        /// </summary>
+        public string ReferenceCondition5 { get; set; }
+        /// <summary>
         /// Etiqueta asociada al campo de referencia 6.
         /// </summary>
         public string ReferenceCaption6 { get; set; }
@@ -155,6 +175,10 @@ namespace Architect.API.Core.Contracts.General
         /// Lista de valores posibles asociados al campo de referencia 6.
         /// </summary>
         public string ReferenceLookupList6 { get; set; }
+        /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 6.
+        /// </summary>
+        public string ReferenceCondition6 { get; set; }
         /// <summary>
         /// Etiqueta asociada al campo de referencia 7.
         /// </summary>
@@ -176,6 +200,10 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         public string ReferenceLookupList7 { get; set; }
         /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 7.
+        /// </summary>
+        public string ReferenceCondition7 { get; set; }
+        /// <summary>
         /// Etiqueta asociada al campo de referencia 8.
         /// </summary>
         public string ReferenceCaption8 { get; set; }
@@ -195,6 +223,10 @@ namespace Architect.API.Core.Contracts.General
         /// Lista de valores posibles asociados al campo de referencia 8.
         /// </summary>
         public string ReferenceLookupList8 { get; set; }
+        /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 8.
+        /// </summary>
+        public string ReferenceCondition8 { get; set; }
         /// <summary>
         /// Etiqueta asociada al campo de referencia 9.
         /// </summary>
@@ -216,6 +248,10 @@ namespace Architect.API.Core.Contracts.General
         /// </summary>
         public string ReferenceLookupList9 { get; set; }
         /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 9.
+        /// </summary>
+        public string ReferenceCondition9 { get; set; }
+        /// <summary>
         /// Etiqueta asociada al campo de referencia 10.
         /// </summary>
         public string ReferenceCaption10 { get; set; }
@@ -235,7 +271,17 @@ namespace Architect.API.Core.Contracts.General
         /// Lista de valores posibles asociados al campo de referencia 10.
         /// </summary>
         public string ReferenceLookupList10 { get; set; }
+        /// <summary>
+        /// Condición de tratamiento asociada al campo de referencia 10.
+        /// </summary>
+        public string ReferenceCondition10 { get; set; }
         public int SLA { get; set; }
+
+        /// <summary>
+        /// Duración del Acuerdo de Nivel de Servicio (SLA) en horas.
+        /// </summary>
+        public int SLADuration { get; set; }
+
         /// <summary>
         /// Estado (Activo/Inactivo)
         /// </summary>

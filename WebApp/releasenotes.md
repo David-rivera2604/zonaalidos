@@ -1,5 +1,31 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.167 - 29/01/2026
+
+### Aliados - Trazabilidad: Mejoras varias en la trazabilidad de la aplicación.	
+
+#### Funcionalidades implementadas:
+
+- ✅ Descarga masiva de documentos desde la pestaña de adjuntos.
+- ✅ Eliminar carga de un solo documento de la pestaña de adjuntos.
+- ✅ Carga de documentos con arrastre hacia la ventana de la plataforma.
+- ✅ Se requiere una alerta o una señal para identificar los nuevos casos cargados o movimientos recientes en la plataforma cada vez que cambie de etapa. Se habilita el agente como persona de contacto del caso de esta forma se pueden configurar las notificaciones.
+- ✅ Revisión de 84 procesos para determinar fallas de diseño, solo se encontraron 2 errores y 2 casos para mejora.
+- ✅ Apertura de rol para corredurías. Para cualquier tenant diferente al de mapfre se pasa los roles del usuario conectado de forma que la lista de procesos permitido se filtre usando lo roles del usuario, el nombre del rol debe exitir en el tenant mapfre para pode filtrarlo.
+- ✅ Ocultar la visualización de casos finalizados posterior a los 30 días para ver solo los pendientes o más recientes para Rol de Purdy /Agentes / Intermediarios, pero dejar en los reportes.
+- ✅ Colocar botón opcional en notas que permita decidir si el sistema debe enviar notificación al dejar mensajes nuevos al contacto que apertura el caso.
+- ✅ Habilitar para Rol de agentes y Rol de Purdy en la pestaña de seguimiento la vista de los comentarios colocados en seguimiento de etapas, fechas de la gestión y realizado por. Vista desde tenant aliados y purdy.
+- ✅ Abrir casilla para que los casos seleccionados con prioridad "reprocesos" se deba colocar de forma obligatoria el número de caso anterior. Se agrega la capacidad de poder hacer visible o no los campos de referencia con lo cual se puede agregar un par de campos y manejarlo por visibilidad.
+
+- #### Dependencias:
+
+1. 20251215a.process.alter.sql
+2. 20260106a.lookupmaster.69.sql
+3. 20260107a.process.alter.sql
+4. 20260112a.process.insight.sql
+
+---
+
 ## Versión 1.6.166 - 14/01/2026
 
 ### Aliados - Monge: Incidentes Reportados Noviembre - Diciembre.

@@ -10,6 +10,28 @@ app.EspecifiCase = (function () {
             EditMode({ CaseId: id });
         }
 
+        $('#dropzone').fileUploader({
+            maxFilesize: 256,
+            done: function (responses) {
+                console.log('Init_Controls: Archivos subidos exitosamente:', responses);
+                //toastr.success('Archivos cargados correctamente', '', {
+                //    timeOut: 3000,
+                //    closeButton: true
+                //});
+            },
+            fail: function (error, file) {
+                console.error('Init_Controls: Error al subir archivo:', error, file);
+                //var errorMsg = typeof error === 'string' ? error :
+                //    (error.message || 'Error desconocido');
+                //toastr.error('Error al subir el archivo: ' + file.name + ' - ' + errorMsg, '', {
+                //    timeOut: 5000,
+                //    closeButton: true
+                //});
+            },
+            always: function (result) {
+                console.log('Init_Controls: Proceso de carga completado:', result);
+            }
+        });
 
     }
     //funcion para la carga del titul y proceso
@@ -23,124 +45,50 @@ app.EspecifiCase = (function () {
         }
         $('#StatusDesc').html(status);
         $('#StatusDesc').addClass('label-warning-light');
+
+
+
     }
 
     //Carga de titulo y proceso de un caso en especifico 
     function EditMode(row) {
         $('.ibox-content').toggleClass('sk-loading');
-        app.CentralCase.Get(app.setting.apipath + 'v1/ProcessCase/' + row.CaseId, tokenAl, false)
+        app.core.Get(app.setting.apipath + 'v1/ProcessCase/' + row.CaseId, undefined, undefined, true, tokenAl)
             .done(function (data, textStatus, jqXHR) {
                 MapObjectToInput(data);
                 $('#Title').focus();
                 $("#ContenCase").addClass("d-none");
-                RefreshProcess(data.InstanceId);
+                _allowref = [];
+                app.processHandler.RefreshProcess(data.InstanceId, false,
+                    function (newData, ref, currentStep) {
+                        _instance = newData;
+                    }, tokenAl);
 
                 setTimeout(function () {
                     $("#ContenCase").removeClass("d-none");
                 }, 50)
                 $("#Cases_Info").removeClass("d-none");
 
-                app.Attachments.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, AlternateToken: tokenAl });
-                app.Notes.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, AlternateToken: tokenAl });
+                //app.Attachments.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, AlternateToken: tokenAl });
+
+                app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=1304&entityId=${data.Id}`, undefined, undefined, true, tokenAl)
+                    .done(function (dataItems) {
+                        $('#dropzone').fileUploader('load', dataItems, { EntityType: 1304, EntityId: data.Id, DocumentType: 1, Description: "General" }, tokenAl);
+                    }).always(function ()
+                    {
+                    });
+
+                app.Notes.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, AlternateToken: tokenAl, showContactNotify: true, showResponsibleNotify: true });
             }).always(function () {
                 $('.ibox-content').toggleClass('sk-loading');
             });
     }
-    //Configuracion y diseño de la tabla de cada Caso unico
-    function Init_List_Process() {
-        $('#ProcessGridTbl').bootstrapTable({
-            uniqueId: 'ActivityId',
-            pagination: false,
-            smartDisplay: true,
-            rowStyle: function (row, index) {
-                return {
-                    css: {
-                        'vertical-align': 'top'
-                    }
-                }
-            },
-            columns: [
-                {
-                    field: 'Name',
-                    title: 'Etapa',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: function (value, row, index, field) {
-                        var result = '';
-                        var status = 'fa-check';
-                        var color = 'green';
-                        var styleTitle = 'font-weight: 600;';
-                        var title = 'Procesado';
-                        if (row.FinishDate === null || row.FinishDate === '0001-01-01T00:00:00') {
-                            status = 'fa-clock-o';
-                            color = 'yellowgreen';
-                            title = 'Etapa en progreso';
-                        }
-                        if (row.StartDate === null || row.StartDate === '0001-01-01T00:00:00') {
-                            status = 'fa-clock-o';
-                            color = 'gray';
-                            styleTitle = '';
-                            title = 'Etapa sin procesar';
-                            if (row.Wait === '') {
-                                status = 'fa-chain-broken';
-                                styleTitle = 'text-decoration: line-through;color: gray'
-                                title = 'Etapa no necesaria para el caso';
-                            }
-                        }
-                        result = `<i class="fa ${status}" aria-hidden="true" style="margin: 0px 8px 0px 5px;color: ${color};" title="${title}"></i>` + `<span style="${styleTitle}" title="${title}">` + value + '</span>';
 
-                        if (row.FinishDate != null && row.FinishDate != '0001-01-01T00:00:00') {
-                            result = result + '<div class="d-block d-sm-none" style="margin: 0 20px;">Completado: ' + moment(row.FinishDate).format('DD/MM/YYYY hh:mma');
-                            result = result + '</div>';
-                        }
-
-                        result = result + `<div style="margin: 0 26px;"><small class="text-muted" id="compl_${row.StepId}"></small></div>`;
-                        return result;
-
-                    }
-                }, {
-                    field: 'FinishDate',
-                    title: 'Completado',
-                    class: 'd-none d-sm-table-cell',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.DateAndTimeFormatter'
-                },]
-        });
-    }
-
-    //Funcion para toda la carga de la informacion de tabla, estado, y progreso de un caso en especifico
-    async function RefreshProcess(instanceId) {
-
-        app.CentralCase.Get(app.setting.apipath + 'v1/Process/Instance/' + instanceId + '/3', tokenAl, false)
-            .done(function (data, textStatus, jqXHR) {
-                _instance = data;
-                if (data.Steps) {
-                    caseId = data.CaseId;
-
-                    $('#ProcessGridTbl').bootstrapTable('load', data.Steps);
-
-                    let current = data.Steps.filter(i => i.ActivityId === data.ActivityId);
-
-                    if (current.length > 0) {
-                        $('#CurrentStep').html(current[0].Name);
-                    }
-
-                    $(".progress-bar").width(data.Progress + '%');
-                    $(".progress-bar").prop('title', data.Progress + '%');
-                    $(".progress-bar").html(data.Progress + '%');
-                } else {
-                    $('#ProcessGridTbl').bootstrapTable('load', []);
-                }
-            }).always(function () {
-                $('#ProcessGridTbl').bootstrapTable('hideLoading');
-            });
-    }
     return {
         Init: function () {
-            Init_List_Process();
+            app.processHandler = new Process();
+
+            app.processHandler.Init_List_Process();
         },
         EditRow: function (row) {
             EditMode(row);
@@ -152,7 +100,6 @@ app.EspecifiCase = (function () {
 })();
 
 //Funciones para la carga de información y busqueda
-
 app.CaseInfo = (function () {
     return {
         Init: function ($el, xid, url, index) {
@@ -193,12 +140,19 @@ app.CaseInfo = (function () {
             })
             element.addClass("activo")
 
-
-
-
-            app.CentralCase.Get(app.setting.apipath + 'v1/Process/Instance/' + InstanceID + '/3', tokenAl, false)
+            app.core.Get(app.setting.apipath + 'v1/Process/Instance/' + InstanceID + '/3', undefined, undefined, true, tokenAl)
                 .done(function (data, textStatus, jqXHR) {
-                    app.Attachments.Init({ EntityType: 1304, Id: data.CaseId, PostByEachRow: true, AlternateToken: tokenAl });
+                    app.Attachments.Init({
+                        EntityType: 1304,
+                        Id: data.CaseId,
+                        PostByEachRow: true,
+                        AlternateToken: tokenAl,
+                        ShowContactNotify: true,
+                        ShowResponsibleNotify: true,
+                        CallbackDone: function (noteNotify) {
+                            console.log(noteNotify);
+                        }
+                    });
                     app.Notes.Init({ EntityType: 1304, Id: data.CaseId, PostByEachRow: true, AlternateToken: tokenAl });
                     app.EspecifiCase.EditRow(data);
 
@@ -251,9 +205,6 @@ app.CaseInfo = (function () {
         },
     };
 })();
-
-
-
 
 //Llamados para la funcion de busqueda
 

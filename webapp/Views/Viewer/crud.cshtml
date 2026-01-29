@@ -1,0 +1,393 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+
+<style>
+        /* --- AISLAMIENTO DE ESTILOS (SCOPING) ---
+            Todo el CSS está prefijado con .iso-crud para evitar conflictos
+            con la página donde se implemente.
+        */
+
+        .iso-crud {
+            /* Variables Locales */
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-body: #f3f4f6;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            /* Reset básico para el contenedor */
+            font-family: 'Inter', sans-serif !important;
+            color: var(--text-main);
+            background-color: var(--bg-body); /* Fondo local */
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            text-align: left;
+            font-size: 16px; /* Base size reset */
+        }
+
+            /* Forzar box-sizing en todos los elementos internos */
+            .iso-crud *, .iso-crud *::before, .iso-crud *::after {
+                box-sizing: border-box;
+            }
+
+            /* --- ESTILOS KPI --- */
+            .iso-crud .kpi-card {
+                background: white;
+                border-radius: 12px;
+                padding: 1.5rem;
+                box-shadow: var(--card-shadow);
+                border-left: 5px solid transparent;
+                transition: transform 0.2s;
+                height: 100%;
+                position: relative;
+                overflow: hidden;
+                margin-bottom: 0; /* Bootstrap fix */
+            }
+
+                .iso-crud .kpi-card:hover {
+                    transform: translateY(-3px);
+                }
+
+            .iso-crud .kpi-title {
+                font-size: 0.85rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: #6b7280;
+                margin-bottom: 0.5rem;
+                line-height: 1.2;
+            }
+
+            .iso-crud .kpi-value {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #111827;
+                line-height: 1.2;
+            }
+
+            .iso-crud .kpi-icon {
+                opacity: 0.1;
+                font-size: 3rem;
+                position: absolute;
+                right: 15px;
+                bottom: 10px;
+            }
+
+            .iso-crud .kpi-border-primary {
+                border-left-color: #4f46e5;
+            }
+
+            .iso-crud .kpi-text-primary {
+                color: #4f46e5 !important;
+            }
+
+            .iso-crud .kpi-border-success {
+                border-left-color: #10b981;
+            }
+
+            .iso-crud .kpi-text-success {
+                color: #10b981 !important;
+            }
+
+            .iso-crud .kpi-border-warning {
+                border-left-color: #f59e0b;
+            }
+
+            .iso-crud .kpi-text-warning {
+                color: #f59e0b !important;
+            }
+
+            .iso-crud .kpi-border-danger {
+                border-left-color: #ef4444;
+            }
+
+            .iso-crud .kpi-text-danger {
+                color: #ef4444 !important;
+            }
+
+            /* --- ESTILOS DE VISTAS --- */
+            .iso-crud .page-view {
+                display: none;
+                opacity: 0;
+            }
+
+                .iso-crud .page-view.active {
+                    display: block;
+                    opacity: 1;
+                    animation: isoFadeIn 0.4s ease-out forwards;
+                }
+
+            .iso-crud .table-view {
+                transition: opacity 0.3s;
+            }
+
+                .iso-crud .table-view.hidden {
+                    display: none;
+                }
+    @@keyframes
+        isoFadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        /* --- SIDEBAR (CORREGIDO) --- */
+    .iso-crud .side-panel {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: -100%;
+        width: 100%;
+        max-width: 100%;
+        background: #fff;
+        box-shadow: -10px 0 25px rgba(0,0,0,0.1);
+        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        height: 100vh;
+    }
+
+            .iso-crud .side-panel.is-open {
+                right: 0;
+            }
+
+            /* Área de contenido con scroll */
+            .iso-crud .side-panel > .flex-grow-1 {
+                overflow-y: auto;
+                min-height: 0; /* Crucial para flexbox */
+                padding: 1.5rem;
+            }
+
+        /* Footer fijo visualmente */
+        .iso-crud .side-panel-footer {
+            background-color: #fff;
+            border-top: 1px solid #e5e7eb;
+            flex-shrink: 0;
+            padding: 1.5rem;
+            text-align: right;
+            z-index: 10;
+        }
+
+        .iso-crud .panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(17, 24, 39, 0.6);
+            display: none;
+            z-index: 99998;
+            backdrop-filter: blur(4px);
+        }
+
+            .iso-crud .panel-overlay.is-open {
+                display: block;
+            }
+
+        /* --- UI GENÉRICA Y OVERRIDES DE BOOTSTRAP --- */
+        .iso-crud .main-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            background: white;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        /* Tabla protegida */
+        .iso-crud .table {
+            margin-bottom: 0;
+            background-color: transparent;
+        }
+
+            .iso-crud .table thead th {
+                border-top: none;
+                border-bottom: 1px solid #e5e7eb;
+                background-color: #f9fafb;
+                color: #6b7280;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                font-weight: 600;
+                padding: 1rem 1.5rem;
+                letter-spacing: 0.05em;
+            }
+
+            .iso-crud .table tbody td {
+                padding: 1rem 1.5rem;
+                vertical-align: middle;
+                border-top: 1px solid #f3f4f6;
+                color: var(--text-main);
+                font-size: 0.9rem;
+            }
+
+        .iso-crud .table-active, .iso-crud .table-hover tbody tr:hover {
+            background-color: #eff6ff !important;
+        }
+
+        /* Form Controls protegidos */
+        .iso-crud .form-control {
+            display: block;
+            width: 100%;
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            border: 1px solid #d1d5db;
+            background-color: #fff;
+            color: var(--text-main);
+            height: auto;
+            box-shadow: none;
+        }
+
+            .iso-crud .form-control:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+                outline: none;
+            }
+
+        /* Botones protegidos */
+        .iso-crud .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.5;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .iso-crud .btn-primary {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: white !important;
+        }
+
+            .iso-crud .btn-primary:hover {
+                background-color: var(--primary-hover) !important;
+            }
+
+        .iso-crud .btn-white {
+            background-color: #fff !important;
+            border: 1px solid #e5e7eb !important;
+            color: var(--text-main) !important;
+        }
+
+            .iso-crud .btn-white:hover {
+                background-color: #f9fafb !important;
+            }
+
+        .iso-crud .action-icon {
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+            .iso-crud .action-icon:hover {
+                background-color: #f3f4f6;
+                color: var(--primary-color);
+            }
+
+            .iso-crud .action-icon.text-danger:hover {
+                color: #dc2626 !important;
+                background-color: #fef2f2;
+            }
+
+        .iso-crud .btn-icon-only {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        .iso-crud .loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .iso-crud .loading .loader-overlay {
+            display: flex;
+        }
+
+        /* Fix Pagination */
+        .iso-crud .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .iso-crud .page-link {
+            position: relative;
+            display: block;
+            padding: 0.5rem 0.75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: var(--primary-color);
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+        }
+
+        .iso-crud .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .iso-crud .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            cursor: auto;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+</style>
+
+<div class="row22">
+    <!-- WRAPPER DE AISLAMIENTO (.iso-crud) -->
+    <div class="iso-crud">
+        <div class="container-fluid px-md-5 py-5">
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-xl-11">
+
+                    <!-- CRUD 1: PRODUCTOS -->
+                    <div id="crud-productos" class="mb-5"></div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Viewer.crud.js")"></script>
+    <script type="text/javascript">
+    </script>
+}

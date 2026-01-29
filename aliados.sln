@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36717.8 d17.14
+VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aliados", "webapp\aliados.csproj", "{5286E518-0785-46F3-A8EB-9924BC972AEE}"
 EndProject
@@ -72,35 +72,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.API.Core.Security", "Core\Architect.API.Core.Utilities\Architect.API.Core.Security.csproj", "{3D406267-4A50-4E87-842A-553E3D222CF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.Compliance.Integrations", "Core\Architect.Compliance.Integrations\Architect.Compliance.Integrations.csproj", "{1A9F7166-6C86-44A6-8920-CD52422A2044}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBScripts", "DBScripts", "{98C88292-F016-41B1-B540-9B7D063476D6}"
-	ProjectSection(SolutionItems) = preProject
-		dbscripts\230306.a.visualization.sql = dbscripts\230306.a.visualization.sql
-		dbscripts\230306.b.template.sql = dbscripts\230306.b.template.sql
-		dbscripts\230314.a.visualization.sql = dbscripts\230314.a.visualization.sql
-		dbscripts\230317.a.lookupmaster.sql = dbscripts\230317.a.lookupmaster.sql
-		dbscripts\230317.b.lookupmaster.sql = dbscripts\230317.b.lookupmaster.sql
-		dbscripts\230317.c.visualization.sql = dbscripts\230317.c.visualization.sql
-		dbscripts\230404.a.visualization.4004.sql = dbscripts\230404.a.visualization.4004.sql
-		dbscripts\230411.a.alter.flow.case.sql = dbscripts\230411.a.alter.flow.case.sql
-		dbscripts\230507.a.templates.sql = dbscripts\230507.a.templates.sql
-		dbscripts\230510.a.visualization.4003.sql = dbscripts\230510.a.visualization.4003.sql
-		dbscripts\230518a.visualization.sql = dbscripts\230518a.visualization.sql
-		dbscripts\230518b.visualization.sql = dbscripts\230518b.visualization.sql
-		dbscripts\230520a.template.sql = dbscripts\230520a.template.sql
-		dbscripts\230613.a.panel.purdy.sql = dbscripts\230613.a.panel.purdy.sql
-		dbscripts\230620.a.lookupmaster.mm_plan.sql = dbscripts\230620.a.lookupmaster.mm_plan.sql
-		dbscripts\230621.a.lookupmaster.mmplus.sql = dbscripts\230621.a.lookupmaster.mmplus.sql
-		dbscripts\230626.b.template.413.sql = dbscripts\230626.b.template.413.sql
-		dbscripts\2306260.a.lookup.2050.34.sql = dbscripts\2306260.a.lookup.2050.34.sql
-		dbscripts\230628.a.visualization.400.sql = dbscripts\230628.a.visualization.400.sql
-		dbscripts\230629aa.template.Notify_InclusionInMedical.sql = dbscripts\230629aa.template.Notify_InclusionInMedical.sql
-		dbscripts\230710a.visualization.333.sql = dbscripts\230710a.visualization.333.sql
-		dbscripts\230818a.visualization.sql = dbscripts\230818a.visualization.sql
-		dbscripts\230821a.visualization.42.sql = dbscripts\230821a.visualization.42.sql
-		dbscripts\230824a.lookup.6.sql = dbscripts\230824a.lookup.6.sql
-		dbscripts\240430a.SICOP.sql = dbscripts\240430a.SICOP.sql
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Architect.PDF.Integrations", "Core\Architect.PDF.Integrations\Architect.PDF.Integrations.csproj", "{68042445-0A60-4BED-A4A9-222A6BE98C3B}"
 EndProject

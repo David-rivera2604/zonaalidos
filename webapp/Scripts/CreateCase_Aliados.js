@@ -1,11 +1,10 @@
 ﻿var app = app || {};
-var lookupData;
 var Token_Ali;
 var aliUser = '';
+var _currentToken = '';
 
 app.CentralCase = (function () {
-
-
+    let refFields = [];
     function Init_Controls() {
         new AutoNumeric('#SubStatus', {
             decimalCharacter: ',',
@@ -15,9 +14,36 @@ app.CentralCase = (function () {
             decimalPlaces: 0,
             emptyInputBehavior: 'null'
         });
+
+        $('#dropzone').fileUploader({
+            maxFilesize: 256,
+            done: function (responses) {
+                console.log('Init_Controls: Archivos subidos exitosamente:', responses);
+                toastr.success('Archivos cargados correctamente', '', {
+                    timeOut: 3000,
+                    closeButton: true
+                });
+            },
+            fail: function (error, file) {
+                console.error('Init_Controls: Error al subir archivo:', error, file);
+                var errorMsg = typeof error === 'string' ? error :
+                    (error.message || 'Error desconocido');
+                toastr.error('Error al subir el archivo: ' + file.name + ' - ' + errorMsg, '', {
+                    timeOut: 5000,
+                    closeButton: true
+                });
+            },
+            always: function (result) {
+                console.log('Init_Controls: Proceso de carga completado:', result);
+            }
+        });
     }
 
     function Event_Controls() {
+
+        $(".input-group.date, #ProcessCaseEdtForm :input").on('dp.change change', function (e) {
+            ApplyConditions();
+        });
 
         $('#ProcessCaseEdtFormSave').click(function (e) {
             if (app.ui.IsValid('#ProcessCaseEdtForm', false)) {
@@ -37,15 +63,35 @@ app.CentralCase = (function () {
 
         $('#FlowId').change(function () {
             let flowId = $('#FlowId').val();
-            let sla = app.CentralCase.Data().lookups.filter(i => i.Key === 'ProcessByRolDetail')[0].Lkp.filter(l => l.Code === flowId + '')[0].SLA;
+            if (flowId == null) return;
+            let sla = app.core.Data().lookups.filter(i => i.Key === 'ProcessByRolInformed')[0].Lkp.filter(l => l.Code === flowId + '')[0].SLA;
             $('#SLA').val(sla);
-            app.CentralCase.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId, null, true)
+            app.core.Get(app.setting.apipath + 'v1/ProcessSpecFlow/' + flowId, undefined, undefined, true, Token_Ali)
                 .done(function (data, textStatus, jqXHR) {
-                    ReferenceHandler(data.ReferenceCaption1, data.ReferenceLookupList1, 'Reference1');
-                    ReferenceHandler(data.ReferenceCaption2, data.ReferenceLookupList2, 'Reference2');
-                    ReferenceHandler(data.ReferenceCaption3, data.ReferenceLookupList3, 'Reference3');
-                    ReferenceHandler(data.ReferenceCaption4, data.ReferenceLookupList4, 'Reference4');
-                    ReferenceHandler(data.ReferenceCaption5, data.ReferenceLookupList5, 'Reference5');
+
+                    refFields = [
+                        { id: '#Reference1', caption: data.ReferenceCaption1, type: data.ReferenceType1, required: data.ReferenceRequired1, lookup: data.ReferenceLookupList1, condition: data.ReferenceCondition1 },
+                        { id: '#Reference2', caption: data.ReferenceCaption2, type: data.ReferenceType2, required: data.ReferenceRequired2, lookup: data.ReferenceLookupList2, condition: data.ReferenceCondition2 },
+                        { id: '#Reference3', caption: data.ReferenceCaption3, type: data.ReferenceType3, required: data.ReferenceRequired3, lookup: data.ReferenceLookupList3, condition: data.ReferenceCondition3 },
+                        { id: '#Reference4', caption: data.ReferenceCaption4, type: data.ReferenceType4, required: data.ReferenceRequired4, lookup: data.ReferenceLookupList4, condition: data.ReferenceCondition4 },
+                        { id: '#Reference5', caption: data.ReferenceCaption5, type: data.ReferenceType5, required: data.ReferenceRequired5, lookup: data.ReferenceLookupList5, condition: data.ReferenceCondition5 },
+                        { id: '#Reference6', caption: data.ReferenceCaption6, type: data.ReferenceType6, required: data.ReferenceRequired6, lookup: data.ReferenceLookupList6, condition: data.ReferenceCondition6 },
+                        { id: '#Reference7', caption: data.ReferenceCaption7, type: data.ReferenceType7, required: data.ReferenceRequired7, lookup: data.ReferenceLookupList7, condition: data.ReferenceCondition7 },
+                        { id: '#Reference8', caption: data.ReferenceCaption8, type: data.ReferenceType8, required: data.ReferenceRequired8, lookup: data.ReferenceLookupList8, condition: data.ReferenceCondition8 },
+                        { id: '#Reference9', caption: data.ReferenceCaption9, type: data.ReferenceType9, required: data.ReferenceRequired9, lookup: data.ReferenceLookupList9, condition: data.ReferenceCondition9 },
+                        { id: '#Reference10', caption: data.ReferenceCaption10, type: data.ReferenceType10, required: data.ReferenceRequired10, lookup: data.ReferenceLookupList10, condition: data.ReferenceCondition10 }
+                    ];
+
+                    ReferenceHandler(data.ReferenceCaption1, data.ReferenceType1, data.ReferenceRequired1, data.ReferenceLookupList1, 'Reference1',);
+                    ReferenceHandler(data.ReferenceCaption2, data.ReferenceType2, data.ReferenceRequired2, data.ReferenceLookupList2, 'Reference2');
+                    ReferenceHandler(data.ReferenceCaption3, data.ReferenceType3, data.ReferenceRequired3, data.ReferenceLookupList3, 'Reference3');
+                    ReferenceHandler(data.ReferenceCaption4, data.ReferenceType4, data.ReferenceRequired4, data.ReferenceLookupList4, 'Reference4');
+                    ReferenceHandler(data.ReferenceCaption5, data.ReferenceType5, data.ReferenceRequired5, data.ReferenceLookupList5, 'Reference5');
+                    ReferenceHandler(data.ReferenceCaption6, data.ReferenceType6, data.ReferenceRequired6, data.ReferenceLookupList6, 'Reference6');
+                    ReferenceHandler(data.ReferenceCaption7, data.ReferenceType7, data.ReferenceRequired7, data.ReferenceLookupList7, 'Reference7');
+                    ReferenceHandler(data.ReferenceCaption8, data.ReferenceType8, data.ReferenceRequired8, data.ReferenceLookupList8, 'Reference8');
+                    ReferenceHandler(data.ReferenceCaption9, data.ReferenceType9, data.ReferenceRequired9, data.ReferenceLookupList9, 'Reference9');
+                    ReferenceHandler(data.ReferenceCaption10, data.ReferenceType10, data.ReferenceRequired10, data.ReferenceLookupList10, 'Reference10');
 
                     if (data.ReferenceCaption3 === 'INTERMEDIARIO') {
                         $('#Reference3').val(localStorage.getItem('Username'));
@@ -58,7 +104,7 @@ app.CentralCase = (function () {
         });
 
         $('#UserId').change(function () {
-            let user = app.CentralCase.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.Code === $('#UserId').val())[0];
+            let user = app.core.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.Code === $('#UserId').val())[0];
             let finded = user != null;
 
             if (finded) {
@@ -75,24 +121,31 @@ app.CentralCase = (function () {
 
     }
 
-    function ReferenceHandler(caption, valueList, id) {
+    function ReferenceHandler(caption, type, required, valueList, id) {
         if (caption != '') {
-            $("label[for='" + id + "']").text(caption);
-            if (valueList == '')
+            if (required)
+                $("label[for='" + id + "']").html(caption + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
+            else
+                $("label[for='" + id + "']").html(caption);
+
+            if (valueList == '') {
                 $('#' + id).removeClass('d-none');
+                $('#' + id + 'List').addClass('d-none');
+            }
             else {
+                $('#' + id).addClass('d-none');
                 let selectedOptions = $('#' + id + 'List');
                 selectedOptions.removeClass('d-none');
                 selectedOptions.children().remove();
 
                 selectedOptions.append($('<option selected />').val('').text(''));
                 $.each(valueList.split(';'), function () {
-                    selectedOptions.append($('<option />').val(this).text(this));
+                    selectedOptions.append($('<option />').val(this.trim()).text(this.trim()));
                 });
-
-
             }
             $('#' + id).parent().parent().removeClass('d-none');
+
+
         } else {
             $('#' + id).parent().parent().addClass('d-none');
             $('#' + id).addClass('d-none');
@@ -101,9 +154,36 @@ app.CentralCase = (function () {
         }
     }
 
+    function ApplyConditions() {
+        let data = MapInputToObject();
+        data.roles = JSON.parse(localStorage.getItem('Roles'));
+        data.etapa = '';
+
+        refFields.forEach(function (field) {
+            if (field.condition) {
+                let mode = 'notvisible';
+                let condition = field.condition.trim();
+
+                if (condition.startsWith('ocultar:')) {
+                    mode = 'notvisible';
+                    condition = condition.replace('ocultar:', '').trim();
+                }
+
+                if (mode == 'notvisible') {
+                    let result = eval(condition);
+                    if (result) {
+                        $(field.id).parent().parent().addClass('d-none');
+                    } else {
+                        $(field.id).parent().parent().removeClass('d-none');
+                    }
+                }
+            }
+        });
+    }
+
     function Create(uidata, mode) {
-        uidata.CurrentToken = app.security().getCookie('Token');
-        app.CentralCase.Post(app.setting.apipath + 'v1/ProcessCase', JSON.stringify(uidata))
+        uidata.CurrentToken = _currentToken;
+        app.core.Post(app.setting.apipath + 'v1/ProcessCase', JSON.stringify(uidata), undefined, undefined, true, Token_Ali)
             .done(function (data, textStatus, jqXHR) {
                 toastr.success("El processcase '" + uidata.Title + "' fue creado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                 window.location.replace("Seguimiento_Al?id=" + data.Id);
@@ -113,10 +193,11 @@ app.CentralCase = (function () {
     }
 
     function Init_Lookups() {
-        Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRolDetail.FlowId', 'ProcessByRol.FlowId', 'Users.UserId.', 'SLA.SLA.'],
+        let roleslist = JSON.parse(localStorage.getItem('Roles')).join();
+        app.core.Lookups(['CasePriority.Priority', 'ProcessStatus.Status', 'ProcessByRolInformed.FlowId', 'Users.UserId.', 'SLA.SLA.'],
             function () {
                 app.CentralCase.New();
-            }, undefined, "v1/Common/Lkps");
+            }, 'rolelist=' + roleslist, "v1/Common/Lkps", Token_Ali);
     }
 
     function MapInputToObject() {
@@ -125,6 +206,7 @@ app.CentralCase = (function () {
             Title: $('#Title').val(),
             Description: $('#Description').val(),
             Priority: $('#Priority').val(),
+            PriorityDesc: app.ui.GetDropDownSelectedText('#Priority'),
             InstanceId: parseInt(0 + $('#InstanceId').val(), 10),
             Reference1: $('#Reference1').val() + $('#Reference1List').val(),
             Reference2: $('#Reference2').val() + $('#Reference2List').val(),
@@ -140,7 +222,7 @@ app.CentralCase = (function () {
             FlowId: $('#FlowId').val(),
             UserId: $('#UserId').val(),
             SLA: $('#SLA').val(),
-            Attachments: app.Attachments.Data()
+            Attachments: $('#dropzone').fileUploader('files')
         };
     }
 
@@ -228,6 +310,7 @@ app.CentralCase = (function () {
                 .done(function (data, textStatus, jqXHR) {
                     Token_Ali = data.TokenAliado;
                     aliUser = data.user;
+                    _currentToken = data.CurrentToken;
                     Init_Lookups();
                     Init_Controls();
                     Event_Controls();
@@ -242,171 +325,13 @@ app.CentralCase = (function () {
                 newRow = row;
             }
             if (aliUser != null && aliUser != '') {
-                let user = app.CentralCase.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.IUSERNAME === aliUser)[0];
+                let user = app.core.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.IUSERNAME === aliUser)[0];
                 if (user != null) {
                     newRow.UserId = user.Code;
                 }
             }
             EditMode(newRow);
             $('#UserId').change();
-        },
-        Data: function () {
-            return { lookups: lookupData };
-        },
-        Get: function (url, TokenUse, AlTok, data, success) {
-            return ajaxCall('GET', url, data, success, false, TokenUse, AlTok);
-        },
-        Post: function (url, data) {
-            return ajaxCall('POST', url, data, undefined, false, Token_Ali, Token_Ali);
-        },
+        }
     };
 })();
-
-function ajaxCall(type, url, data, success, token, Token_Al, AliadoTok, contentType) {
-    var dataType = 'json';
-
-    if (contentType === undefined)
-        contentType = 'application/json; charset=utf-8'
-
-    if (contentType === 'text/html; charset=utf-8')
-        dataType = 'text';
-
-    if (data === undefined)
-        data = null;
-    return $.ajax({
-        url: url,
-        type: type,
-        contentType: contentType,
-        dataType: dataType,
-        async: true,
-        cache: false,
-        data: data,
-        xhrFields: {
-            withCredentials: true
-        },
-        beforeSend: function (xhr) {
-            let at = localStorage.getItem("AlternateToken");
-            if (at != undefined) {
-                localStorage.removeItem("AlternateToken");
-                xhr.setRequestHeader('Authorization', 'Bearer ' + at);
-            } else {
-                if (token) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
-                }
-                else {
-                    if (AliadoTok) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Ali);
-                    }
-                    else {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + Token_Al);
-                    }
-                }
-            }
-        }
-    }).done(function (data, textStatus, jqXHR) {
-
-        if (data != null && data.Success !== undefined) {
-            if (data.Success) {
-                toastr.success(data.Reason, '', { timeOut: 7000, closeButton: true, progressBar: true });
-            } else {
-                toastr.error(data.Reason, '', { timeOut: 7000, closeButton: true, progressBar: true });
-            }
-        }
-        if (data != null && data.Mensaje !== undefined && data.Mensaje !== null) {
-            toastr.info(data.Mensaje, '', { timeOut: 7000, closeButton: true, progressBar: true });
-        }
-        if (success !== undefined)
-            success(data);
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        ajaxErrorHandler(jqXHR, errorThrown);
-    }).always(function () {
-        //  alert('always');
-    });
-    //app.core.ErrorHandler(jqXHR, textStatus, errorThrown);
-
-}
-
-function Lookups(keys, callback, url, path) {
-    var onlyKeys = [];
-    var ctrls = [];
-    var ctrlName = [];
-    var emptyValues = [];
-    var selectCtrol = [];
-    var ctrl;
-    var selectedOptions;
-
-    $.each(keys, function (index, value) {
-
-        if (value.split('.')[0].startsWith('@')) {
-            selectCtrol.push(false);
-            onlyKeys.push(value.split('.')[0].substring(1));
-        }
-        else {
-            selectCtrol.push(true);
-            onlyKeys.push(value.split('.')[0]);
-        }
-
-        if (value.split('.').length > 1)
-            ctrl = value.split('.')[1];
-        else
-            ctrl = value;
-
-        if (ctrl.startsWith('@'))
-            ctrl = ctrl.substring(1);
-
-        if (value.split('.').length > 2)
-            emptyValues.push(value.split('.')[2]);
-        else
-            emptyValues.push(null);
-
-        ctrlName.push(ctrl);
-        selectedOptions = $('select#' + ctrl);
-        ctrls.push(selectedOptions);
-        selectedOptions.children().remove();
-        selectedOptions.append($('<option />').val('0').text(' Cargando...'));
-    });
-
-    if (url === undefined) {
-        url = '';
-    }
-
-    ajaxCall('GET', app.setting.apipath + path + '?keys=' + onlyKeys.toString() + '&url=' + url, null,
-        function (data) {
-            var key = '', ctrl = '';
-            lookupData = data;
-            $.each(data, function (index, values) {
-                selectedOptions = ctrls[index];
-                if (selectCtrol[index]) {
-                    selectedOptions.children().remove();
-                    if (emptyValues[index] !== null) {
-                        selectedOptions.append($('<option />').val(0).text(emptyValues[index]));
-                    }
-                    $.each(values.Lkp, function () {
-                        selectedOptions.append($('<option />').val(this['Code']).text(this['Description']));
-                    });
-                    if (selectedOptions.data("autoselect") === true) {
-                        selectedOptions.val($('select#' + ctrlName[index] + ' option:first').val());
-                        selectedOptions.trigger('change');
-                    } else {
-                        selectedOptions.val(-1);
-                    }
-                }
-                else {
-                    selectedOptions.replaceWith('<div id="radio' + ctrlName[index] + '"></div>');
-                    selectedOptions = $('#radio' + ctrlName[index]);
-                    $.each(values.Lkp, function () {
-                        selectedOptions.append('<div class="custom-control custom-radio custom-control-inline"><input type="radio" class="custom-control-input" id="' + ctrlName[index] + '_' + this['Code'] + '" name="' + ctrlName[index] + '" value="' + this['Code'] + '"><label class="custom-control-label" for="' + ctrlName[index] + '_' + this['Code'] + '">' + this['Description'] + '</label></div>');
-
-
-                    });
-
-
-                }
-            });
-            if (callback !== undefined && callback !== null)
-                callback();
-        }, false, undefined, true);
-};
-
-
-

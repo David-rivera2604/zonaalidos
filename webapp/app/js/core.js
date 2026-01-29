@@ -59,7 +59,7 @@ app.core = (function () {
         }
     }
 
-    function GetPDF(url, download, filename, callback) {
+    function GetPDF(url, download, filename, callback, alterToken = '') {
         let excel = false;
 
         if (url.startsWith('excel.')) {
@@ -80,7 +80,7 @@ app.core = (function () {
             credentials: "include",
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + getAuthToken()
+                'Authorization': 'Bearer ' + alterToken == '' ? getAuthToken() : alterToken
             },
         }).then(response => {
             if (!response.ok) { throw response }
@@ -240,7 +240,7 @@ app.core = (function () {
         return msg;
     }
 
-    function ajaxCall(type, url, data, success, token, contentType) {
+    function ajaxCall(type, url, data, success, token, contentType, alterToken) {
         var dataType = 'json';
 
         if (contentType === undefined)
@@ -263,13 +263,11 @@ app.core = (function () {
                 withCredentials: true
             },
             beforeSend: function (xhr) {
-                let at = localStorage.getItem("AlternateToken");
-                if (at != undefined) {
-                    localStorage.removeItem("AlternateToken");
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + at);
-                } else {
-                    if (token) {
+                if (token) {
+                    if (alterToken === undefined) {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
+                    } else {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + alterToken);
                     }
                 }
             }
@@ -351,7 +349,7 @@ app.core = (function () {
         }
     }
 
-    function Lookups(keys, callback, url, path) {
+    function Lookups(keys, callback, url, path, alterToken) {
         var onlyKeys = [];
         var ctrls = [];
         var ctrlName = [];
@@ -434,7 +432,7 @@ app.core = (function () {
                 });
                 if (callback !== undefined && callback !== null)
                     callback();
-            }, true);
+            }, true, undefined, alterToken);
     };
 
     function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path) {
@@ -657,15 +655,15 @@ app.core = (function () {
 
             timerId = setInterval(() => {
                 inactiveSeconds++;
-                
+
                 const expiresInMin = parseInt(localStorage.getItem("ExpiresIn"));
                 const warningMin = parseInt(localStorage.getItem("Session.WarningTime"));
-                
+
                 if (isNaN(expiresInMin) || isNaN(warningMin)) {
                     Logger.log("ERROR: Invalid session configuration - ExpiresIn: " + expiresInMin + ", WarningTime: " + warningMin);
                     return;
                 }
-                
+
                 const showWarningAt = (expiresInMin - warningMin) * 60;
                 const remainingSeconds = (expiresInMin * 60) - inactiveSeconds;
 
@@ -673,11 +671,11 @@ app.core = (function () {
 
                 if (inactiveSeconds >= showWarningAt && !toastShown) {
                     Logger.log(">>> SHOWING WARNING TOAST <<<");
-                    
+
                     toastr.info(
                         "Su sesión se cerrará en " + (remainingSeconds / 60) +
                         " minutos, si desea mantenerla haga clic aquí",
-                        'Sesión', 
+                        'Sesión',
                         {
                             timeOut: 50000,
                             closeButton: true,
@@ -700,17 +698,17 @@ app.core = (function () {
                     timeout_verify('');
                 }
 
-            }, 1000); 
+            }, 1000);
 
             function resetInactivity() {
                 Logger.log("User active");
-                 
+
                 if (toastShown && !sessionExtended && wasInactive) {
                     //extendSessionAutomatically();
                     sessionExtended = true;
-                    wasInactive = false;  
+                    wasInactive = false;
                 }
-                
+
                 inactiveSeconds = 0;
                 toastShown = false;
             }
@@ -722,10 +720,10 @@ app.core = (function () {
                     const EXTENSION_MINUTES = parseInt(localStorage.getItem("Session.InactiveTime")) || 5;
                     const currentExpiresIn = parseInt(localStorage.getItem("ExpiresIn")) || 30;
                     const newExpiresIn = currentExpiresIn + EXTENSION_MINUTES;
-                    
+
                     // Actualizar ExpiresIn en localStorage
                     localStorage.setItem("ExpiresIn", newExpiresIn.toString());
-                    
+
                     // Actualizar también la fecha de expiración si existe
                     const currentExpires = localStorage.getItem("Expires");
                     if (currentExpires) {
@@ -733,9 +731,9 @@ app.core = (function () {
                         expiresDate.setMinutes(expiresDate.getMinutes() + EXTENSION_MINUTES);
                         localStorage.setItem("Expires", expiresDate.toString());
                     }
-                    
+
                     Logger.log("Sesión extendida automáticamente por " + EXTENSION_MINUTES + " minutos");
-                    
+
                     // Opcional: Mostrar notificación sutil al usuario
                     if (typeof toastr !== 'undefined') {
                         toastr.success(
@@ -791,9 +789,9 @@ app.core = (function () {
         LoadLookup: function (url, key) {
             return LoadLookup(url, key);
         },
-        Lookups: function (keys, callback, url, path = 'v1/Common/Lkps') {
+        Lookups: function (keys, callback, url, path = 'v1/Common/Lkps', alterToken = undefined) {
             if (keys.length > 0)
-                return Lookups(keys, callback, url, path);
+                return Lookups(keys, callback, url, path, alterToken);
         },
         LookupDependency: function (parentId, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path = 'v1/Common/LkpChild') {
             return LookupDependency(parentId, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path);
@@ -807,20 +805,20 @@ app.core = (function () {
         URLValue: function (key, url) {
             return URLValue(key, url);
         },
-        Get: function (url, data, success, token) {
-            return ajaxCall('GET', url, data, success, (typeof token === "undefined") ? true : token);
+        Get: function (url, data, success, token, alterToken) {
+            return ajaxCall('GET', url, data, success, (typeof token === "undefined") ? true : token, undefined, alterToken);
         },
         Send: function (mode, url, data, success) {
             return ajaxCall(mode, url, data, success, true);
         },
-        Post: function (url, data, success, contentType, token) {
-            return ajaxCall('POST', url, data, success, (typeof token === "undefined") ? true : token, contentType);
+        Post: function (url, data, success, contentType, token, alterToken) {
+            return ajaxCall('POST', url, data, success, (typeof token === "undefined") ? true : token, contentType, alterToken);
         },
         Put: function (url, data, success) {
             return ajaxCall('PUT', url, data, success, true);
         },
-        Delete: function (url, data, success) {
-            return ajaxCall('DELETE', url, data, success, true);
+        Delete: function (url, data, success, alterToken) {
+            return ajaxCall('DELETE', url, data, success, true, undefined, alterToken);
         },
         GetExt: function (url, data, success) {
             return ajaxCall('GET', url, data, success, false);
@@ -828,8 +826,8 @@ app.core = (function () {
         GetView: function (url, data, success) {
             return ajaxCall('GET', url, data, success, true, 'text/html; charset=utf-8');
         },
-        GetPDF: function (url, download, filename, callback) {
-            return GetPDF(url, download, filename, callback);
+        GetPDF: function (url, download, filename, callback, alterToken = '') {
+            return GetPDF(url, download, filename, callback, alterToken);
         },
         FileUpLoad: function (options) {
             return FileUpLoad(options);
@@ -1073,7 +1071,7 @@ app.security = (function () {
 
 window.Logger = {
     canLog() {
-        const flag = sessionStorage.getItem("Log.Enabled");
+        const flag = sessionStorage.getItem("logger.enabled");
         return flag === 'true';
     },
 
@@ -1084,11 +1082,11 @@ window.Logger = {
     },
 
     enable() {
-        sessionStorage.setItem("Log.Enabled", "false");
+        sessionStorage.setItem("logger.enabled", "false");
     },
 
     disable() {
-        sessionStorage.setItem("Log.Enabled", "true");
+        sessionStorage.setItem("logger.enabled", "true");
     }
 };
 

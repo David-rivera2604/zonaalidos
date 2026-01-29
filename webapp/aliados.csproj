@@ -871,8 +871,6 @@
     <Content Include="assets\formiojs\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\formiojs\formio.builder.css" />
     <Content Include="assets\formiojs\formio.builder.min.css" />
-    <Content Include="assets\formiojs\formio.contrib.js" />
-    <Content Include="assets\formiojs\formio.contrib.min.js" />
     <Content Include="assets\formiojs\formio.embed.js" />
     <Content Include="assets\formiojs\formio.embed.min.js" />
     <Content Include="assets\formiojs\formio.form.css" />
@@ -1373,7 +1371,6 @@
     <Content Include="Scripts\policy.edit.js" />
     <Content Include="Scripts\Security.ChangePassword.js" />
     <Content Include="Scripts\policy.uploadloans.js" />
-    <Content Include="Scripts\Dashboard.Render.js" />
     <Content Include="Scripts\Security.Register.js" />
     <Content Include="Scripts\Variaciones.MapfreMas.js" />
     <Content Include="Scripts\Viewer.FormBuilder.js" />
@@ -1884,6 +1881,18 @@
     <Content Include="Sugese\plantillas\SaldosContables.xlsx" />
     <Content Include="Views\Sugese\Envio.cshtml" />
     <Content Include="releasenotes.md" />
+    <Content Include="Views\Viewer\Formio.cshtml" />
+    <Content Include="Views\Viewer\crud.cshtml" />
+    <Content Include="Scripts\Viewer.crud.js" />
+    <Content Include="Views\Viewer\Dashboard.cshtml" />
+    <Content Include="Views\Common\_attachments_grid_v2.cshtml" />
+	<Content Include="Scripts\Viewer.Dashboard.js" />
+	<Content Include="Scripts\Common.Process.js" />
+	    <Content Include="assets\dropzone\css\dropzone.min.css" />
+    <Content Include="assets\dropzone\js\dropzone.min.js" />
+	    <Content Include="app\js\file.uploader.js" />
+    <Content Include="assets\animatecss\animate.min.css" />
+	
     <None Include="Sugese\validators\DatSugeseTypesV2NIIF17.xsd">
       <SubType>Designer</SubType>
     </None>

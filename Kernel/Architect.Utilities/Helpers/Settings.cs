@@ -1,51 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Architect.Utilities.Extensions;
+using System;
 using System.Configuration;
-using Architect.Utilities.Extensions;
 
 namespace Architect.Utilities.Helpers
 {
     public static class Settings
     {
-
-        public static int IntegerValue(string settingName, int defaultValue = 0)
+        public static T GetValue<T>(this string settingName, T defaultValue = default(T))
         {
             string current = ConfigurationManager.AppSettings[settingName];
-            if (current.IsNotEmpty())
-            {
-                return Convert.ToInt32(current);
-            }
-            else
-                return defaultValue;
-        }
 
-        public static string StringValue(string settingName, string defaultValue = "")
-        {
-            string current = ConfigurationManager.AppSettings[settingName];
-            if (current.IsNotEmpty())
-            {
-                return current;
-            }
-            else
-                return defaultValue;
-        }
-
-        public static bool BoolValue(string settingName, bool defaultValue = false)
-        {
-            string current = StringValue(settingName, string.Empty);
             if (current.IsEmpty())
             {
                 return defaultValue;
             }
-            else { 
-                return (current.ToLower() == "true" ||
-                        current.ToLower() == "verdadero" ||
-                        current.ToLower() == "yes" ||
-                        current.ToLower() == "si");
+
+            try
+            {
+                Type targetType = typeof(T);
+
+                // Handle nullable types
+                Type underlyingType = Nullable.GetUnderlyingType(targetType) ?? targetType;
+
+                // Handle boolean type with special cases
+                if (underlyingType == typeof(bool))
+                {
+                    return (T)(object)ParseBoolValue(current);
+                }
+
+                // Handle other types using Convert.ChangeType
+                return (T)Convert.ChangeType(current, underlyingType);
             }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
+        public static int IntegerValue(this string settingName, int defaultValue = 0)
+        {
+            return settingName.GetValue(defaultValue);
+        }
+
+        public static string StringValue(this string settingName, string defaultValue = "")
+        {
+            return settingName.GetValue(defaultValue);
+        }
+
+        public static bool BoolValue(this string settingName, bool defaultValue = false)
+        {
+            return settingName.GetValue(defaultValue);
+        }
+
+        private static bool ParseBoolValue(string value)
+        {
+            if (value.IsEmpty())
+            {
+                return false;
+            }
+
+            string lowerValue = value.ToLower();
+            return lowerValue == "true" ||
+                   lowerValue == "verdadero" ||
+                   lowerValue == "yes" ||
+                   lowerValue == "si" ||
+                   lowerValue == "1";
         }
     }
 }

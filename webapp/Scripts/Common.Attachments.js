@@ -87,9 +87,6 @@ app.Attachments = (function () {
 
                 var row = Attachment_table_row('values');
                 if (_data.PostByEachRow) {
-                    if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
-                        localStorage.setItem('AlternateToken', _data.AlternateToken);
-                    }
                     app.core.Post(app.setting.apipath + 'v1/Common/Attachments',
                         JSON.stringify({
                             Id: row.Id,
@@ -100,7 +97,7 @@ app.Attachments = (function () {
                             FileName: row.FileName,
                             FileSize: row.FileSize,
                             FileContent: row.Stored
-                        }))
+                        }), undefined, undefined, true, _data.AlternateToken)
                         .done(function (data) {
                             AttachmentDraw();
                         }).always(function () {
@@ -246,10 +243,7 @@ app.Attachments = (function () {
     function AttachmentDraw() {
         $('#AttachmentGridTbl').bootstrapTable('showLoading');
         if (_data.Id != 0) {
-            if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
-                localStorage.setItem('AlternateToken', _data.AlternateToken);
-            }
-            app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=${_data.EntityType}&entityId=${_data.Id}`)
+            app.core.Get(app.setting.apipath + `v1/Common/Attachments?entityType=${_data.EntityType}&entityId=${_data.Id}`, undefined, undefined, true, _data.AlternateToken)
                 .done(function (data) {
                     $('#AttachmentGridTbl').bootstrapTable('load', data !== null ? data : []);
                 }).always(function () {
@@ -332,9 +326,6 @@ app.Attachments = (function () {
                 for (index = 0; index < arr.length; index++) {
                     fileData.append('files', arr[index]);
                 }
-                if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
-                    localStorage.setItem('AlternateToken', _data.AlternateToken);
-                }
                 $.ajax({
                     type: "POST",
                     enctype: 'multipart/form-data',
@@ -348,10 +339,8 @@ app.Attachments = (function () {
                         withCredentials: true
                     },
                     beforeSend: function (xhr) {
-                        let current = localStorage.getItem('AlternateToken');
-                        if (current != null && current != '' && current != 'null') {
-                            localStorage.removeItem('AlternateToken')
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + current);
+                        if (_data.AlternateToken != null && _data.AlternateToken != '' && _data.AlternateToken != 'null') {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + _data.AlternateToken);
                         }
                         else {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
@@ -423,9 +412,6 @@ app.Attachments = (function () {
                 for (index = 0; index < arr.length; index++) {
                     fileData.append('files', arr[index]);
                 }
-                if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
-                    localStorage.setItem('AlternateToken', _data.AlternateToken);
-                }
                 $.ajax({
                     type: "POST",
                     enctype: 'multipart/form-data',
@@ -439,10 +425,8 @@ app.Attachments = (function () {
                         withCredentials: true
                     },
                     beforeSend: function (xhr) {
-                        let current = localStorage.getItem('AlternateToken');
-                        if (current != null && current != '' && current != 'null') {
-                            localStorage.removeItem('AlternateToken')
-                            xhr.setRequestHeader('Authorization', 'Bearer ' + current);
+                        if (_data.AlternateToken != null && _data.AlternateToken != '' && _data.AlternateToken != 'null') {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + _data.AlternateToken);
                         }
                         else {
                             xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
@@ -611,7 +595,12 @@ app.Attachments = (function () {
             cache: false,
             timeout: 600000,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('Token'));
+                if (_data.AlternateToken != null && _data.AlternateToken != '' && _data.AlternateToken != 'null') {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + _data.AlternateToken);
+                }
+                else {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
+                }
             }
         })
             .done(function (response) {
@@ -669,10 +658,7 @@ app.Attachments = (function () {
                             timeOut: 5000, closeButton: true, progressBar: true,
                             onclick: function () {
                                 if (_data.PostByEachRow) {
-                                    if (_data.AlternateToken != undefined && _data.AlternateToken != undefined && _data.AlternateToken != '') {
-                                        localStorage.setItem('AlternateToken', _data.AlternateToken);
-                                    }
-                                    app.core.Delete(app.setting.apipath + `v1/Common/Attachments/${row.Id}`)
+                                    app.core.Delete(app.setting.apipath + `v1/Common/Attachments/${row.Id}`, undefined, undefined, _data.AlternateToken)
                                         .done(function (data, textStatus, jqXHR) {
                                             toastr.success("El adjunto '" + row.FileName + "' fue eliminado", "", { timeOut: 5000, closeButton: true, progressBar: true });
                                             AttachmentDraw();

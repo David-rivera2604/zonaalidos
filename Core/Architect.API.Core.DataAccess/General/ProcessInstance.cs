@@ -95,7 +95,7 @@ namespace Architect.API.Core.DataAccess.General
                                 StepId = reader.IntegerValue("StepId"),
                                 TaskId = reader.IntegerValue("TaskId"),
                                 Created = reader.DateTimeValue("Created"),
-                                StartDate = reader.DateTimeValue("StartDate"),                                
+                                StartDate = reader.DateTimeValue("StartDate"),
                                 DueDate = reader.DateTimeValue("DueDate"),
                                 EarlyDueDate = reader.DateTimeValue("EarlyDueDate"),
                                 FinishDate = reader.DateTimeValue("FinishDate"),
@@ -111,7 +111,7 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.ProcessInstance> RetrieveByInstanceId(int instanceId, int companyId, IDbConnection connection = null)
         {
             List<Contracts.General.ProcessInstance> result = new List<Contracts.General.ProcessInstance>();
-            Database.Select("SELECT ActivityId, ProcessInstance.InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, ProcessInstance.FlowId, StepId, TaskId, Created, ProcessInstance.StartDate, EarlyDueDate, ProcessInstance.DueDate, ProcessInstance.FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, pc.SLA, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate " +
+            Database.Select("SELECT ActivityId, ProcessInstance.InstanceId, CaseId, ProcessInstance.CompanyId, EntityType, EntityId, ProcessInstance.FlowId, StepId, TaskId, Created, ProcessInstance.StartDate, EarlyDueDate, ProcessInstance.DueDate, ProcessInstance.FinishDate, PreviousActivityId, ProcessInstance.UserId, Comments, pc.SLA, ProcessInstance.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, ProcessInstance.UpdateDate, ProcessInstance.UserAssigned, ProcessInstance.UserAssignedDate " +
                               "FROM ProcessInstance " +
                               "LEFT JOIN UserMember um ON um.UserId = ProcessInstance.UserId " +
                               "LEFT JOIN ProcessCase pc ON pc.InstanceId = ProcessInstance.InstanceId " +
@@ -133,7 +133,7 @@ namespace Architect.API.Core.DataAccess.General
                                 StepId = reader.IntegerValue("StepId"),
                                 TaskId = reader.IntegerValue("TaskId"),
                                 Created = reader.DateTimeValue("Created"),
-                                StartDate = reader.DateTimeValue("StartDate"),                                
+                                StartDate = reader.DateTimeValue("StartDate"),
                                 DueDate = reader.DateTimeValue("DueDate"),
                                 EarlyDueDate = reader.DateTimeValue("EarlyDueDate"),
                                 FinishDate = reader.DateTimeValue("FinishDate"),
@@ -141,7 +141,9 @@ namespace Architect.API.Core.DataAccess.General
                                 UserId = reader.IntegerValue("UserId"),
                                 UserName = reader.StringValue("UpdateUserName"),
                                 Comments = reader.StringValue("Comments"),
-                                SLA = reader.IntegerValue("SLA")
+                                SLA = reader.IntegerValue("SLA"),
+                                UserAssigned = reader.IntegerValue("UserAssigned"),
+                                UserAssignedDate = reader.DateTimeValue("UserAssignedDate")
                             });
                         }));
             return result;
@@ -174,6 +176,38 @@ namespace Architect.API.Core.DataAccess.General
                                 .AddParameter("CaseId", DbType.Decimal, 9, caseId)
                                 .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
                                 .Execute(connection, "Research");
+        }
+
+
+        public static List<Architect.API.Core.Contracts.Security.UserMember> EmailInfoByRoleName(int companyid, string rolename1, string rolename2, string rolename3, IDbConnection connection = null)
+        {
+            List<Architect.API.Core.Contracts.Security.UserMember> result = new List<Architect.API.Core.Contracts.Security.UserMember>();
+            Database.Select(
+@"SELECT UM.USERID, UM.FIRSTNAME || ' ' || UM.LASTNAME AS NOMBRE_USUARIO, UM.EMAIL, COUNT(PI.ACTIVITYID) AS TOTAL_TAREAS_PENDIENTES
+  FROM ALIADOS.ROLEMEMBER RM
+  JOIN ALIADOS.USERROLEMEMBER URM ON URM.COMPANYID = 100 AND RM.ROLEID = URM.ROLEID 
+  JOIN ALIADOS.USERMEMBER UM ON UM.COMPANYID = :CompanyId AND URM.USERID = UM.USERID 
+  LEFT JOIN ALIADOS.PROCESSINSTANCE PI ON PI.COMPANYID = :CompanyId AND UM.USERID = PI.USERASSIGNED AND PI.STEPID > 0 AND PI.TASKID = 0 AND PI.FINISHDATE IS NULL 
+ WHERE RM.COMPANYID = :CompanyId AND RM.ROLENAME IN (:Rolename1,:Rolename2,:Rolename3) 
+ GROUP BY UM.USERID, UM.FIRSTNAME, UM.LASTNAME, UM.EMAIL
+ ORDER BY TOTAL_TAREAS_PENDIENTES ASC, NOMBRE_USUARIO ASC")
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
+                .AddParameter("Rolename1", DbType.AnsiString, 255, rolename1)
+                .AddParameter("Rolename2", DbType.AnsiString, 255, rolename2)
+                .AddParameter("Rolename3", DbType.AnsiString, 255, rolename3)
+                .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
+                {
+                    result.Add(new Architect.API.Core.Contracts.Security.UserMember()
+                    {
+                        UserId = reader.IntegerValue("USERID"),
+                        FirstName = reader.StringValue("NOMBRE_USUARIO"),
+                        FailedPasswordCount = reader.IntegerValue("TOTAL_TAREAS_PENDIENTES"),
+                        EMail = reader.StringValue("EMail")
+                    });
+                }));
+            return result;
         }
 
     }

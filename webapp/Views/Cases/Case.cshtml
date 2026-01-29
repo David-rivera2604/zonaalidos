@@ -2,6 +2,8 @@
     Layout = "~/Views/_LayoutEx.cshtml";
 }
 @Styles.Render("~/Content/cssCRUD")
+<link href="~/assets/dropzone/css/dropzone.min.css" rel="stylesheet" />
+<link href="~/assets/animatecss/css/animate.min.css" rel="stylesheet" />
 
 <div class="row animated fadeInRight">
     <div class="col-sm-12">
@@ -36,7 +38,7 @@
             <div class="ibox-content ibox-heading">
 
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 d-none description-col">
                         <small class="stats-label">Descripción</small>
                         <p id="Description" class="fw-600"></p>
                     </div>
@@ -103,7 +105,7 @@
                         </div>
 
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md">
                         <div class="col">
                             <small class="stats-label">Progreso</small>
                             <div class="progress" style="margin: 0px 2px 3px 2px;">
@@ -229,7 +231,7 @@
                         <div role="tabpanel" id="Adjuntos" class="tab-pane">
                             <div class="panel-body">
                                 <!-- Attachments Grid -->
-                                @Html.Partial("../Common/_attachments_grid")
+                                @Html.Partial("../Common/_attachments_grid_v2")
                             </div>
                         </div>
 
@@ -282,7 +284,11 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Common.Process.js")"></script>
     <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
+    <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
+    <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.Notes.js")"></script>
     <script src="@Url.Content("~/Scripts/ManagerLinks.UI.js")"></script>
     <script src="@Url.Content("~/Scripts/General.Case.js")"></script>
     <script type="text/javascript">

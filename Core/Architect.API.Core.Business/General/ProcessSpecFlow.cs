@@ -16,6 +16,196 @@ namespace Architect.API.Core.Business.General
     /// </summary>
     public static partial class ProcessSpecFlow
     {
+        private const string ErrorGroup = "ProcessSpecFlow";
+        private const int ProcessStatusInicio = 1;
+        private const int ProcessStatusEnProgreso = 2;
+        private const int ProcessStatusFinalizado = 3;
+        private const int ProcessStatusIngresado = 4;
+        private const int ProcessStatusEnEspera = 5;
+        private const int ProcessStatusCerrado = 6;
+        private const int ProcessStatusAprobado = 7;
+        private const int ProcessStatusRechazado = 8;
+        private const int TaskTypeNavigation = 10;
+        private const int MinimumSteps = 3;
+
+        /// <summary>
+        /// Valida la estructura y configuración de un flujo de proceso.
+        /// </summary>
+        public static List<Core.Contracts.General.Error> ValidateEx(int companyId, Architect.API.Core.Contracts.General.ProcessSpecFlow source)
+        {
+            List<Core.Contracts.General.Error> errors = new List<Core.Contracts.General.Error>();
+
+            Contracts.General.ProcessSpecFlow spec = DataAccess.General.Process.Specification.Retrieve(source.Id, companyId, 0);
+
+            ValidateMinimumStepsCount(spec, errors);
+            ValidateInitialStepExists(spec, errors);
+            ValidateFinalStepExists(spec, errors);
+            ValidateActiveStepsHaveTasks(spec, errors);
+            
+            HashSet<int> referencedStepIds = BuildReferencedStepsSet(spec);
+            ValidateNonInitialStepsAreReferenced(spec, errors, referencedStepIds);
+            ValidateSingleTaskStepsDoNotCreateCycles(spec, errors);
+
+            return errors;
+        }
+
+        /// <summary>
+        /// Valida que el proceso tenga al menos tres etapas.
+        /// </summary>
+        private static void ValidateMinimumStepsCount(Contracts.General.ProcessSpecFlow spec, List<Core.Contracts.General.Error> errors)
+        {
+            if (spec.ProcessSpecSteps.Count < MinimumSteps)
+            {
+                errors.Add(new Core.Contracts.General.Error()
+                {
+                    Group = ErrorGroup,
+                    Key = "*",
+                    Message = "El proceso debe tener por lo menos tres pasos."
+                });
+            }
+        }
+
+        /// <summary>
+        /// Valida que exista al menos una etapa con estado inicial.
+        /// </summary>
+        private static void ValidateInitialStepExists(Contracts.General.ProcessSpecFlow spec, List<Core.Contracts.General.Error> errors)
+        {
+            bool hasInitialStep = spec.ProcessSpecSteps.Any(step => step.ProcessStatus == ProcessStatusInicio || step.ProcessStatus == ProcessStatusIngresado);
+            if (!hasInitialStep)
+            {
+                errors.Add(new Core.Contracts.General.Error()
+                {
+                    Group = ErrorGroup,
+                    Key = "*",
+                    Message = "El proceso debe tener por lo menos una etapa con estado 'Inicio' o 'Ingresado'."
+                });
+            }
+        }
+
+        /// <summary>
+        /// Valida que exista al menos una etapa con estado final.
+        /// </summary>
+        private static void ValidateFinalStepExists(Contracts.General.ProcessSpecFlow spec, List<Core.Contracts.General.Error> errors)
+        {
+            bool hasFinalStep = spec.ProcessSpecSteps.Any(step => 
+                step.ProcessStatus == ProcessStatusFinalizado || 
+                step.ProcessStatus == ProcessStatusCerrado || 
+                step.ProcessStatus == ProcessStatusAprobado || 
+                step.ProcessStatus == ProcessStatusRechazado);
+
+            if (!hasFinalStep)
+            {
+                errors.Add(new Core.Contracts.General.Error()
+                {
+                    Group = ErrorGroup,
+                    Key = "*",
+                    Message = "El proceso debe tener por lo menos una etapa con estado 'Finalizado', 'Cerrado', 'Aprobado' o 'Rechazado'."
+                });
+            }
+        }
+
+        /// <summary>
+        /// Valida que las etapas activas (En progreso o En espera) tengan al menos una tarea definida.
+        /// </summary>
+        private static void ValidateActiveStepsHaveTasks(Contracts.General.ProcessSpecFlow spec, List<Core.Contracts.General.Error> errors)
+        {
+            foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
+            {
+                bool isActiveStatus = step.ProcessStatus == ProcessStatusEnProgreso || step.ProcessStatus == ProcessStatusEnEspera;
+                bool hasNoTasks = step.ProcessSpecTasks == null || step.ProcessSpecTasks.Count == 0;
+
+                if (isActiveStatus && hasNoTasks)
+                {
+                    errors.Add(new Core.Contracts.General.Error()
+                    {
+                        Group = ErrorGroup,
+                        Key = "*",
+                        Message = string.Format("La etapa '{0}' con estado 'En progreso' o 'En espera' debe tener por lo menos una tarea definida.", step.Name)
+                    });
+                }
+            }
+        }
+
+        /// <summary>
+        /// Construye un conjunto con los identificadores de todas las etapas referenciadas por tareas de navegación.
+        /// </summary>
+        private static HashSet<int> BuildReferencedStepsSet(Contracts.General.ProcessSpecFlow spec)
+        {
+            HashSet<int> referencedStepIds = new HashSet<int>();
+
+            foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
+            {
+                if (step.ProcessSpecTasks != null)
+                {
+                    foreach (Contracts.General.ProcessSpecTask task in step.ProcessSpecTasks)
+                    {
+                        if (task.Type == TaskTypeNavigation && task.Action != "0")
+                        {
+                            int targetStepId;
+                            if (int.TryParse(task.Action, out targetStepId))
+                            {
+                                referencedStepIds.Add(targetStepId);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return referencedStepIds;
+        }
+
+        /// <summary>
+        /// Valida que todas las etapas no iniciales sean referenciadas por al menos una tarea.
+        /// </summary>
+        private static void ValidateNonInitialStepsAreReferenced(Contracts.General.ProcessSpecFlow spec, List<Core.Contracts.General.Error> errors, HashSet<int> referencedStepIds)
+        {
+            foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
+            {
+                bool isNonInitialStep = step.ProcessStatus != ProcessStatusInicio && step.ProcessStatus != ProcessStatusIngresado;
+                bool isNotReferenced = !referencedStepIds.Contains(step.Id);
+
+                if (isNonInitialStep && isNotReferenced)
+                {
+                    errors.Add(new Core.Contracts.General.Error()
+                    {
+                        Group = ErrorGroup,
+                        Key = "*",
+                        Message = string.Format("La etapa '{0}' no es llamada por ninguna tarea", step.Name)
+                    });
+                }
+            }
+        }
+
+        /// <summary>
+        /// Valida que las etapas con una sola tarea no creen ciclos infinitos al apuntar a sí mismas o a etapas anteriores.
+        /// </summary>
+        private static void ValidateSingleTaskStepsDoNotCreateCycles(Contracts.General.ProcessSpecFlow spec, List<Core.Contracts.General.Error> errors)
+        {
+            foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
+            {
+                if (step.ProcessSpecTasks != null && step.ProcessSpecTasks.Count == 1)
+                {
+                    Contracts.General.ProcessSpecTask task = step.ProcessSpecTasks[0];
+                    if (task.Type == TaskTypeNavigation && task.Action != "0")
+                    {
+                        int targetStepId;
+                        if (int.TryParse(task.Action, out targetStepId))
+                        {
+                            Contracts.General.ProcessSpecStep targetStep = spec.ProcessSpecSteps.FirstOrDefault(s => s.Id == targetStepId);
+                            if (targetStep != null && targetStep.StepOrder <= step.StepOrder)
+                            {
+                                errors.Add(new Core.Contracts.General.Error()
+                                {
+                                    Group = ErrorGroup,
+                                    Key = "*",
+                                    Message = string.Format("La etapa '{0}' tiene solo una tarea que apunta a la misma etapa o a una etapa superior en el orden, lo que puede generar un ciclo infinito.", step.Name)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         public static string Diagram(int companyId, int userId, int id, string diagramType)
         {

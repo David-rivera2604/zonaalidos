@@ -51,6 +51,7 @@ Thumbs.db
 # Build results
 [Bb]in/
 [Oo]bj/
+**/.vs/
 
 # NuGet Packages
 *.nupkg
@@ -113,4 +114,4 @@ Thumbs.db
 *.md
 /webapp/Views/Tests
 /webapp/Controllers
-/webapp/app/components
+/webapp/app/components 

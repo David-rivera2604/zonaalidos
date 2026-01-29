@@ -114,8 +114,48 @@ namespace Architect.API.Core.Business.General
 
             MapLookups(companyId, result);
 
+
+            result.ReferenceCondition1 = ConditionResolve(result.ReferenceCondition1, result);
+            result.ReferenceCondition2 = ConditionResolve(result.ReferenceCondition2, result);
+            result.ReferenceCondition3 = ConditionResolve(result.ReferenceCondition3, result);
+            result.ReferenceCondition4 = ConditionResolve(result.ReferenceCondition4, result);
+            result.ReferenceCondition5 = ConditionResolve(result.ReferenceCondition5, result);
+            result.ReferenceCondition6 = ConditionResolve(result.ReferenceCondition6, result);
+            result.ReferenceCondition7 = ConditionResolve(result.ReferenceCondition7, result);
+            result.ReferenceCondition8 = ConditionResolve(result.ReferenceCondition8, result);
+            result.ReferenceCondition9 = ConditionResolve(result.ReferenceCondition9, result);
+            result.ReferenceCondition10 = ConditionResolve(result.ReferenceCondition10, result);
+
+
             return result;
         }
+
+
+        public static string ConditionResolve(string condition, Architect.API.Core.Contracts.General.ProcessSpecFlow processSpecFlow)
+        {
+            string result = condition;
+
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption1 + "}", "data.Reference1");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption2 + "}", "data.Reference2");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption3 + "}", "data.Reference3");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption4 + "}", "data.Reference4");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption5 + "}", "data.Reference5");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption6 + "}", "data.Reference6");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption7 + "}", "data.Reference7");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption8 + "}", "data.Reference8");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption9 + "}", "data.Reference9");
+            result = result.Replace("{" + processSpecFlow.ReferenceCaption10 + "}", "data.Reference10");
+
+            result = result.Replace("{Prioridad}", "data.PriorityDesc");
+            result = result.Replace("{prioridad}", "data.PriorityDesc");
+            result = result.Replace("{Roles incluye}", "data.roles.includes");
+            result = result.Replace("{Roles no incluye}", "!data.roles.includes");
+            result = result.Replace(" igual a ", " == ");
+            result = result.Replace(" diferente de ", " != ");
+
+            return result;
+        }
+
 
         /// <summary>
         /// Actualiza un registro en la tabla ProcessSpecFlow por medio de su clave primaria.
@@ -129,9 +169,12 @@ namespace Architect.API.Core.Business.General
         {
             Architect.API.Core.Contracts.General.ProcessSpecFlow result = null;
             List<Contracts.General.Error> errors = Architect.API.Core.Business.General.ProcessSpecFlow.Validate(companyId, item, false, false);
+            List<Contracts.General.Error> warnings = null;
 
             if (errors.Count == 0)
             {
+                warnings = ProcessSpecFlow.ValidateEx(companyId, item);
+
                 result = item;
                 result.Id = id;
                 result.CompanyId = companyId;
@@ -148,7 +191,7 @@ namespace Architect.API.Core.Business.General
                     Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
             }
-            return new Architect.API.Core.Contracts.General.ProcessSpecFlowResult() { ProcessSpecFlow = result, Errors = errors };
+            return new Architect.API.Core.Contracts.General.ProcessSpecFlowResult() { ProcessSpecFlow = result, Errors = errors, Warnings = warnings };
         }
 
         /// <summary>
