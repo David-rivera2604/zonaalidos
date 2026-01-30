@@ -207,8 +207,15 @@ namespace Architect.API.Tron.Business.Cotizacion
                     case 34:
                     case 35:
                     case 36:
-                        cod_cobIncludeFilter += ",1063";
-                        cod_cobExcludeFilter = cod_cobExcludeFilter.Replace(",1063", string.Empty);
+                        if ((fec_validez.Year == 2026 && fec_validez.Month == 2 ) ||  fec_validez.Year > 2026)
+                        {
+                            cod_cobIncludeFilter += ",1063";
+                            cod_cobExcludeFilter = cod_cobExcludeFilter.Replace(",1063", string.Empty);
+                        }
+                        else
+                        {
+                            cod_cobIncludeFilter += ",3016";
+                        }
                         break;
                 }
 
