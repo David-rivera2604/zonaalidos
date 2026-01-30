@@ -1579,7 +1579,6 @@
     <Content Include="assets\tableExport.jquery.plugin\libs\html2canvas\LICENSE" />
     <Content Include="assets\tableExport.jquery.plugin\libs\js-xlsx\LICENSE" />
     <Content Include="assets\tableExport.jquery.plugin\libs\pdfmake\LICENSE" />
-    <Content Include="assets\formiojs\Changelog.md" />
     <Content Include="assets\formiojs\fonts\fontawesome-webfont.eot" />
     <Content Include="assets\formiojs\fonts\fontawesome-webfont.ttf" />
     <Content Include="assets\formiojs\fonts\fontawesome-webfont.woff" />
@@ -1886,13 +1885,12 @@
     <Content Include="Scripts\Viewer.crud.js" />
     <Content Include="Views\Viewer\Dashboard.cshtml" />
     <Content Include="Views\Common\_attachments_grid_v2.cshtml" />
-	<Content Include="Scripts\Viewer.Dashboard.js" />
-	<Content Include="Scripts\Common.Process.js" />
-	    <Content Include="assets\dropzone\css\dropzone.min.css" />
+    <Content Include="Scripts\Viewer.Dashboard.js" />
+    <Content Include="Scripts\Common.Process.js" />
+    <Content Include="assets\dropzone\css\dropzone.min.css" />
     <Content Include="assets\dropzone\js\dropzone.min.js" />
-	    <Content Include="app\js\file.uploader.js" />
+    <Content Include="app\js\file.uploader.js" />
     <Content Include="assets\animatecss\animate.min.css" />
-	
     <None Include="Sugese\validators\DatSugeseTypesV2NIIF17.xsd">
       <SubType>Designer</SubType>
     </None>
