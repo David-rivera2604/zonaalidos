@@ -1,5 +1,6 @@
 ﻿using Architect.API.Core.Contracts.Security;
 using Architect.Payment.Integrations.Contracts;
+
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -202,23 +203,20 @@ namespace Architect.API.Tron.Business.Cotizacion
                 List<Contracts.Ramo.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, cod_ramo, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
                 bool required;
                 cod_cobIncludeFilter = "3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012,1060";
-                switch (cod_plan_auto)
-                {
-                    case 34:
-                    case 35:
-                    case 36:
-                        if ((fec_validez.Year == 2026 && fec_validez.Month == 2 ) ||  fec_validez.Year > 2026)
-                        {
-                            cod_cobIncludeFilter += ",1063";
-                            cod_cobExcludeFilter = cod_cobExcludeFilter.Replace(",1063", string.Empty);
-                        }
-                        else
-                        {
-                            cod_cobIncludeFilter += ",3016";
-                        }
-                        break;
-                }
 
+                if (IsPlan(cod_plan_auto, new int[] { 34, 35, 36 }))
+                {
+                    fec_validez= fec_validez.AddDays(2);
+                    if (IsFromFeb2026(fec_validez))
+                    {
+                        cod_cobIncludeFilter += ",1063";
+                        cod_cobExcludeFilter = cod_cobExcludeFilter.Replace(",1063", string.Empty);
+                    }
+                    else if (IsPlan(cod_plan_auto, new int[] { 34, 35 }))
+                    {
+                        cod_cobIncludeFilter += ",3016";
+                    }
+                }
 
                 foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
@@ -238,7 +236,8 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             return coberturas;
         }
-
+        public static bool IsFromFeb2026(DateTime date) => date.Year > 2026 || (date.Year == 2026 && date.Month >= 2);
+        public static bool IsPlan(int cod_plan_auto, params int[] plans) => plans.Contains(cod_plan_auto);
         /// <summary>
         /// Realiza la validación de datos y cálculo necesarios para obtener una cotización o presupuesto de un producto de tipo Mapfre Más
         /// </summary>
