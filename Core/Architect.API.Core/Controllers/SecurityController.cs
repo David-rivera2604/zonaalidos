@@ -10,7 +10,7 @@ using System.Web.Http.Description;
 using System.Web.Security;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 {
     /// <summary>
     /// Acciones relacionas con la seguridad de la aplicación.
@@ -30,7 +30,7 @@ namespace Architect.API.Core.Controllers
         [AllowAnonymous]
         [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> IsOTPValid(Contracts.Security.ResetPasswordRequest resetRequest)
+        public async Task<IHttpActionResult> IsOTPValid(Core.Contracts.Security.ResetPasswordRequest resetRequest)
         {
             resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Architect.API.Core.Contracts.Security.AOTPResponse result = null;
@@ -51,8 +51,8 @@ namespace Architect.API.Core.Controllers
         [HttpPost]
         [Route("Authentication")]
         [AllowAnonymous]
-        [ResponseType(typeof(Contracts.Security.AuthenticationResponse))]
-        public IHttpActionResult Authentication([FromBody] Contracts.Security.AuthenticationRequest authenticationRequest)
+        [ResponseType(typeof(Core.Contracts.Security.AuthenticationResponse))]
+        public IHttpActionResult Authentication([FromBody] Core.Contracts.Security.AuthenticationRequest authenticationRequest)
         {
             IHttpActionResult result = null;
 
@@ -62,13 +62,13 @@ namespace Architect.API.Core.Controllers
             }
             else
             {
-                Contracts.Security.AuthenticationResponse responseItem = null;
+                Core.Contracts.Security.AuthenticationResponse responseItem = null;
                 authenticationRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
                 authenticationRequest.UserAgent = Request.Headers.UserAgent.ToString();
-                Architect.API.Core.Contracts.Security.Token token = new Contracts.Security.Token();
+                Architect.API.Core.Contracts.Security.Token token = new Core.Contracts.Security.Token();
 
                 // Llamada sincrónica - eliminar Task.Run para preservar HttpContext
-                responseItem = Business.Security.Accounts.Authentication(authenticationRequest, ref token, true);
+                responseItem = Core.Business.Security.Accounts.Authentication(authenticationRequest, ref token, true);
 
                 if (responseItem.Reason.IsNotEmpty())
                 {
@@ -98,9 +98,9 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult NavegationAllowed()
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            List<Architect.API.Core.Contracts.Security.NavAllowed> result = Business.Security.Navigation.RetrieveNavigationAllowed(tokenInfo.Roles, tokenInfo.CompanyId);
+            List<Architect.API.Core.Contracts.Security.NavAllowed> result = Core.Business.Security.Navigation.RetrieveNavigationAllowed(tokenInfo.Roles, tokenInfo.CompanyId);
 
             if (result.IsEmpty())
                 return NotFound();
@@ -120,12 +120,12 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult IsLive(bool force = false)
         {
-            string token = Security.Token.Value();
+            string token = Core.Security.Token.Value();
 
             if (force)
-                Security.Session.Refresh(token, Request.Headers.Referrer.AbsoluteUri);
+                Core.Security.Session.Refresh(token, Request.Headers.Referrer.AbsoluteUri);
 
-            int result = Business.Security.Navigation.IsLive(token);
+            int result = Core.Business.Security.Navigation.IsLive(token);
 
             return Ok(result);
         }
@@ -140,7 +140,7 @@ namespace Architect.API.Core.Controllers
         [AllowAnonymous]
         [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> SendOTP(Contracts.Security.ResetPasswordRequest resetRequest)
+        public async Task<IHttpActionResult> SendOTP(Core.Contracts.Security.ResetPasswordRequest resetRequest)
         {
             resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
@@ -187,7 +187,7 @@ namespace Architect.API.Core.Controllers
         [AllowAnonymous]
         [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> ResetPassword(Contracts.Security.ResetPasswordRequest resetRequest)
+        public async Task<IHttpActionResult> ResetPassword(Core.Contracts.Security.ResetPasswordRequest resetRequest)
         {
             resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
@@ -207,9 +207,9 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         [ResponseType(typeof(Core.Contracts.General.GenericResponse))]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> ChangePassword(Contracts.Security.ResetPasswordRequest resetRequest)
+        public async Task<IHttpActionResult> ChangePassword(Core.Contracts.Security.ResetPasswordRequest resetRequest)
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             resetRequest.IPAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             Core.Contracts.General.GenericResponse result = null;
 
@@ -227,7 +227,7 @@ namespace Architect.API.Core.Controllers
         [Route("Register")]
         [AllowAnonymous]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> Register([FromBody] Contracts.Security.Register registerRequest)
+        public async Task<IHttpActionResult> Register([FromBody] Core.Contracts.Security.Register registerRequest)
         {
             IHttpActionResult result = null;
             Core.Contracts.Security.UserMemberResult reponse = null;
@@ -247,7 +247,7 @@ namespace Architect.API.Core.Controllers
                 else
                 {
                     ModelState.Clear();
-                    foreach (Contracts.General.Error errorItem in reponse.Errors)
+                    foreach (Core.Contracts.General.Error errorItem in reponse.Errors)
                     {
                         ModelState.AddModelError(string.Format("{0}.{1}", "Register", errorItem.Key), errorItem.Message);
                     }
@@ -266,13 +266,13 @@ namespace Architect.API.Core.Controllers
         [HttpGet]
         [Route("Sessions")]
         [AllowAnonymous]
-        [ResponseType(typeof(List<Contracts.Security.Activity>))]
+        [ResponseType(typeof(List<Core.Contracts.Security.Activity>))]
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> Sessions([FromUri] string filter = "")
         {
-            List<Contracts.Security.Activity> result = null;
+            List<Core.Contracts.Security.Activity> result = null;
 
-            await Task.Run(() => result = Security.Session.Sessions(filter)).ConfigureAwait(false);
+            await Task.Run(() => result = Core.Security.Session.Sessions(filter)).ConfigureAwait(false);
 
             return Ok(result);
         }
@@ -284,13 +284,13 @@ namespace Architect.API.Core.Controllers
         [HttpGet]
         [Route("Sessions/{id}")]
         [AllowAnonymous]
-        [ResponseType(typeof(Contracts.Security.Activity))]
+        [ResponseType(typeof(Core.Contracts.Security.Activity))]
         [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IHttpActionResult> SessionById(int id)
         {
-            Contracts.Security.Activity result = null;
+            Core.Contracts.Security.Activity result = null;
 
-            await Task.Run(() => result = Security.Session.SessionById(id)).ConfigureAwait(false);
+            await Task.Run(() => result = Core.Security.Session.SessionById(id)).ConfigureAwait(false);
 
             return Ok(result);
         }
@@ -359,10 +359,10 @@ namespace Architect.API.Core.Controllers
         [Route("Profile")]
         public async Task<IHttpActionResult> Profile()
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
-            Contracts.Security.UserMember result = null;
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Core.Contracts.Security.UserMember result = null;
 
-            await Task.Run(() => result = Business.Security.Accounts.Profile(tokenInfo.CompanyId, tokenInfo.UserId)).ConfigureAwait(false);
+            await Task.Run(() => result = Core.Business.Security.Accounts.Profile(tokenInfo.CompanyId, tokenInfo.UserId)).ConfigureAwait(false);
 
             if (result != null)
             {
@@ -382,10 +382,10 @@ namespace Architect.API.Core.Controllers
         [Route("Agent")]
         public async Task<IHttpActionResult> Agent(string tip_docum, string cod_docum)
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             string result = string.Empty;
 
-            await Task.Run(() => result = Business.General.Tron.RetrieveAgentEMailByDocument(tip_docum.IdentificationType(), cod_docum)).ConfigureAwait(false);
+            await Task.Run(() => result = Core.Business.General.Tron.RetrieveAgentEMailByDocument(tip_docum.IdentificationType(), cod_docum)).ConfigureAwait(false);
 
             return Ok(new
             {

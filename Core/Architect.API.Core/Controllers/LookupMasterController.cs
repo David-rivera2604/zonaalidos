@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 {
     /// <summary>
     /// Acciones para manipular la tabla LookupMaster. Maestro de lista de valores disponibles.
@@ -31,7 +31,7 @@ namespace Architect.API.Core.Controllers
             {
                 return BadRequest("Debe indicar un lookup master");
             }
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 Architect.API.Core.Contracts.General.LookupMasterResult created = Architect.API.Core.Business.General.LookupMaster.Create(tokenInfo.CompanyId, tokenInfo.UserId, item);
@@ -59,7 +59,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get([FromUri] string filter = "", int beginIndex = 1, int endIndex = int.MaxValue)
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             List<Architect.API.Core.Contracts.General.LookupMaster> result = null;
 
@@ -88,7 +88,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Count([FromUri] string filter = "")
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             int result = 0;
 
             await Task.Run(() =>
@@ -108,7 +108,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetById([FromUri] int id)
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             IHttpActionResult result = null;
             Architect.API.Core.Contracts.General.LookupMaster data = null;
 
@@ -152,7 +152,7 @@ namespace Architect.API.Core.Controllers
                 return BadRequest("Debe indicar el identificador y una instancia de lookup master");
             }
 
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 item.LookupId = id;
@@ -190,7 +190,7 @@ namespace Architect.API.Core.Controllers
                 return BadRequest("Debe indicar el identificador del lookup master");
             }
 
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 Architect.API.Core.Contracts.General.LookupMasterResult deleted = Architect.API.Core.Business.General.LookupMaster.Delete(tokenInfo.CompanyId, tokenInfo.UserId, id);
@@ -211,10 +211,10 @@ namespace Architect.API.Core.Controllers
         /// </summary>
         /// <param name="errors">Lista de errores de validación.</param>
         /// <returns>Repuesta de tipo BadRequest con el detalle de los errores de validación.</returns>
-        private IHttpActionResult ErrorHandler(List<Contracts.General.Error> errors)
+        private IHttpActionResult ErrorHandler(List<Core.Contracts.General.Error> errors)
         {
             ModelState.Clear();
-            foreach (Contracts.General.Error errorItem in errors)
+            foreach (Core.Contracts.General.Error errorItem in errors)
             {
                 //string.Format("{0}.{1}:{2}", s.Group, s.Key, s.Message)
                 ModelState.AddModelError(errorItem.Key, errorItem.Message);

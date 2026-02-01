@@ -109,6 +109,14 @@
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Process\Architect.API.Process.Business\Architect.API.Process.Business.csproj">
+      <Project>{51210c08-ec92-4129-911e-75dec19b24a7}</Project>
+      <Name>Architect.API.Process.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Process\Architect.API.Process.Contracts\Architect.API.Process.Contracts.csproj">
+      <Project>{0ebcc10a-7cb8-496e-8ff5-67db50c44f84}</Project>
+      <Name>Architect.API.Process.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Architect.API.Tron.Business\Architect.API.Tron.Business.csproj">
       <Project>{6a906932-7049-4dbd-88f6-2b3f5b3b0f94}</Project>
       <Name>Architect.API.Tron.Business</Name>

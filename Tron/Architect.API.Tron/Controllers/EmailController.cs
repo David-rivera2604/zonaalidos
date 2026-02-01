@@ -76,7 +76,7 @@ namespace Architect.API.Tron.Controllers
                     FileContent = Path.Combine(ConfigurationManager.AppSettings["Attachments.Path"], fileinfo.Name)
                 });
 
-                Architect.API.Core.Contracts.General.ProcessCase Caso = new Architect.API.Core.Contracts.General.ProcessCase()
+                Architect.API.Process.Contracts.General.ProcessCase Caso = new Architect.API.Process.Contracts.General.ProcessCase()
                 {
                     Attachments = Files,
                     Reference1 = solicitud.Persona.Email,

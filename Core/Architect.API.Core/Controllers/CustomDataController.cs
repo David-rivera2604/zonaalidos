@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 {
     /// <summary>
     /// Acciones para manipular la tabla CustomData. Roles de seguridad.
@@ -35,7 +35,7 @@ namespace Architect.API.Core.Controllers
             {
                 return BadRequest("Debe indicar un rol");
             }
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 Architect.API.Core.Contracts.General.CustomDataResult created = Architect.API.Core.Business.General.CustomData.CreateOrUpdateByEntityType(tokenInfo.CompanyId, tokenInfo.UserId, item);
@@ -60,7 +60,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetById([FromUri] string entityName, [FromUri] string entityId)
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             IHttpActionResult result = null;
             Architect.API.Core.Contracts.General.CustomData data = null;
 
@@ -92,7 +92,7 @@ namespace Architect.API.Core.Controllers
         [AllowAnonymous]
         public HttpResponseMessage View([FromUri] string entityName, [FromUri] string entityId)
         {
-            Contracts.General.CustomData data = Business.General.CustomData.RetrieveByEntity(entityName, entityId);
+            Core.Contracts.General.CustomData data = Core.Business.General.CustomData.RetrieveByEntity(entityName, entityId);
 
             var response = new HttpResponseMessage();
             if (data.IsEmpty())
@@ -113,10 +113,10 @@ namespace Architect.API.Core.Controllers
         /// </summary>
         /// <param name="errors">Lista de errores de validación.</param>
         /// <returns>Repuesta de tipo BadRequest con el detalle de los errores de validación.</returns>
-        private IHttpActionResult ErrorHandler(List<Contracts.General.Error> errors)
+        private IHttpActionResult ErrorHandler(List<Core.Contracts.General.Error> errors)
         {
             ModelState.Clear();
-            foreach (Contracts.General.Error errorItem in errors)
+            foreach (Core.Contracts.General.Error errorItem in errors)
             {
                 ModelState.AddModelError(string.Format("{0}.{1}", errorItem.Group, errorItem.Key), errorItem.Message);
             }

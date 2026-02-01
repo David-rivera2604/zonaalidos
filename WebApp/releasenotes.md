@@ -1,5 +1,36 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.168 - 01/02/2026
+
+### Aliados - Procesos: Refactorización y Migración a Proyecto Independiente.
+
+#### Funcionalidades implementadas:
+
+- Se migra toda la funcionalidad de procesos desde el módulo Core hacia un nuevo proyecto independiente Process.
+- Se crea nueva estructura de proyectos para el manejo de procesos:
+  - Architect.API.Process.Business - Lógica de negocio
+  - Architect.API.Process.Contracts - Contratos y DTOs
+  - Architect.API.Process.DataAccess - Acceso a datos
+  - Architect.API.Process.WebApi - API Web independiente
+- Se eliminan del módulo Core todas las clases y controladores relacionados con procesos para mejorar la separación de responsabilidades.
+- Se actualiza la solución principal para incluir los nuevos proyectos de Process.
+- Se ajustan las referencias y dependencias entre proyectos para mantener la funcionalidad existente.
+
+#### Archivos migrados:
+
+- **Controladores migrados**: ProcessCaseController, ProcessController, ProcessSpecFlowController, ProcessSpecLinkController, ProcessSpecSLAController, ProcessSpecStepController, ProcessSpecTaskController
+- **Clases de acceso a datos migradas**: ProcessCase, ProcessHelpers, ProcessInstance, ProcessSpecFlow, ProcessSpecFlowRole, ProcessSpecLink, ProcessSpecSLALevel, ProcessSpecStep, ProcessSpecStepRole, ProcessSpecTask
+- **Contratos migrados**: Todos los contratos relacionados con procesos del módulo Core.Contracts
+
+#### Beneficios de la refactorización:
+
+1. **Separación de responsabilidades**: Los procesos ahora tienen su propio dominio independiente
+2. **Escalabilidad**: Facilita el mantenimiento y evolución independiente del módulo de procesos
+3. **Arquitectura modular**: Mejora la organización del código y reduce el acoplamiento
+4. **Despliegue independiente**: Permite desplegar cambios en procesos sin afectar el Core
+
+---
+
 ## Versión 1.6.167 - 29/01/2026
 
 ### Aliados - Trazabilidad: Mejoras varias en la trazabilidad de la aplicación.	

@@ -12,7 +12,7 @@ using System.Web;
 
 
 
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 {
     /// <summary>
     /// Gestion de procesos para la autenticacion del usuario gestor del Tenant.
@@ -30,7 +30,7 @@ namespace Architect.API.Core.Controllers
 
         public async Task<IHttpActionResult> Create([FromUri] string Tenant)
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             IHttpActionResult result = null;
             string UserWebConfi = "Security.Users.Cases." + Tenant;
             string UserCreate = Architect.Utilities.Helpers.Settings.StringValue(UserWebConfi);

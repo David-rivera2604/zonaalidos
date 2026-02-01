@@ -106,23 +106,12 @@
     <Compile Include="General\AttachmentEx.cs" />
     <Compile Include="General\Attachments.cs" />
     <Compile Include="General\ChangeSet.cs" />
-    <Compile Include="General\ProcessHelpers.cs" />
     <Compile Include="General\Setting.cs" />
     <Compile Include="General\CustomFields.cs" />
     <Compile Include="General\LookupCustom.cs" />
     <Compile Include="General\InternalTemplate.cs" />
     <Compile Include="General\Navigation.cs" />
     <Compile Include="General\Notes.cs" />
-    <Compile Include="General\ProcessCase.cs" />
-    <Compile Include="General\ProcessInstance.cs" />
-    <Compile Include="General\ProcessSpecFlow.cs" />
-    <Compile Include="General\ProcessSpecLink.cs" />
-    <Compile Include="General\ProcessSpecSLALevel.cs" />
-    <Compile Include="General\ProcessSpecStep.cs" />
-    <Compile Include="General\ProcessSpecFlowRole.cs" />
-    <Compile Include="General\ProcessSpecStepRole.cs" />
-    <Compile Include="General\ProcessSpecTask.cs" />
-    <Compile Include="Process\Specification.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -146,18 +135,7 @@
     <Compile Include="_Generated\Navigation.cs" />
     <Compile Include="_Generated\Notes.cs" />
     <Compile Include="_Generated\PaymentSettings.cs" />
-    <Compile Include="_Generated\ProcessCase.cs" />
-    <Compile Include="_Generated\ProcessCaseComplement.cs" />
     <Compile Include="_Generated\ProcessData.cs" />
-    <Compile Include="_Generated\ProcessInstance.cs" />
-    <Compile Include="_Generated\ProcessSpecFlow.cs" />
-    <Compile Include="_Generated\ProcessSpecFlowRole.cs" />
-    <Compile Include="_Generated\ProcessSpecLink.cs" />
-    <Compile Include="_Generated\ProcessSpecSLA.cs" />
-    <Compile Include="_Generated\ProcessSpecSLALevel.cs" />
-    <Compile Include="_Generated\ProcessSpecStep.cs" />
-    <Compile Include="_Generated\ProcessSpecStepRole.cs" />
-    <Compile Include="_Generated\ProcessSpecTask.cs" />
     <Compile Include="_Generated\RoleMember.cs" />
     <Compile Include="_Generated\RoleMemberNavigation.cs" />
     <Compile Include="_Generated\Rules.cs" />
@@ -195,6 +173,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Process\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

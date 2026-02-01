@@ -1,0 +1,14 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Runtime.Serialization;
+
+namespace Architect.API.Process.Contracts.General
+{
+
+    public partial class ProcessSpecFlowRole
+    {
+        [DataMember(), JsonProperty()] public string RoleName { get; set; }
+
+    }
+}
+

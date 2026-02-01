@@ -15,7 +15,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 
-namespace Architect.API.Core.Controllers.v2
+namespace Architect.API.Process.WebApi.Controllers.v2
 {
     [ApiVersion("2.0")]
     [Authorize]
@@ -48,7 +48,7 @@ namespace Architect.API.Core.Controllers.v2
                     return CreateErrorResponse(ERROR_NO_CONTEXT);
                 }
 
-                var tokenInfo = Security.Token.Info();
+                var tokenInfo = Core.Security.Token.Info();
                 var successResults = new List<object>();
                 var failedResults = new List<object>();
 
@@ -261,7 +261,7 @@ namespace Architect.API.Core.Controllers.v2
                 description = Path.GetFileNameWithoutExtension(uploadedFile.FileName);
             }
 
-            var attachment = new Contracts.General.Attachments
+            var attachment = new Core.Contracts.General.Attachments
             {
                 EntityType = Convert.ToInt32(form.Get(FORM_ENTITY_TYPE)),
                 EntityId = Convert.ToInt64(form.Get(FORM_ENTITY_ID)),
@@ -306,7 +306,7 @@ namespace Architect.API.Core.Controllers.v2
                 {
                     Utilities.Log.TraceLog("CommonController.Download", $"Descargando por Id: {id.Value}");
 
-                    var attachment = Business.General.Attachment.RetrieveById(id.Value);
+                    var attachment = Core.Business.General.Attachment.RetrieveById(id.Value);
 
                     if (attachment.IsEmpty())
                     {
@@ -489,7 +489,7 @@ namespace Architect.API.Core.Controllers.v2
                         {
                             Utilities.Log.TraceLog("CommonController.DownloadZipV2Internal", $"Procesando archivo desde BD: Id={item.Id.Value}");
 
-                            var attachment = Business.General.Attachment.RetrieveById(item.Id.Value);
+                            var attachment = Core.Business.General.Attachment.RetrieveById(item.Id.Value);
 
                             if (attachment.IsEmpty())
                             {

@@ -16,7 +16,7 @@ using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
 
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 {
     /// <summary>
     /// Acciones para obtener cualquier lista de valores disponible de la aplicación.
@@ -35,11 +35,11 @@ namespace Architect.API.Core.Controllers
         /// <returns>Lista de valores disponibles</returns>
         [HttpGet]
         [Route("LkpChild")]
-        public IQueryable<Contracts.General.LookupValue> LkpChild([FromUri] string key, [FromUri] int parentId, [FromUri] string url = "")
+        public IQueryable<Core.Contracts.General.LookupValue> LkpChild([FromUri] string key, [FromUri] int parentId, [FromUri] string url = "")
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            List<Contracts.General.LookupValue> values = Business.Common.LkpChild(key, parentId, url, tokenInfo);
+            List<Core.Contracts.General.LookupValue> values = Core.Business.Common.LkpChild(key, parentId, url, tokenInfo);
             return values.AsQueryable();
         }
 
@@ -52,11 +52,11 @@ namespace Architect.API.Core.Controllers
         [HttpGet]
         [Route("Lkps")]
         [Authorize]
-        public IQueryable<Contracts.General.LookupValues> Lkps([FromUri] string keys, [FromUri] string url = "")
+        public IQueryable<Core.Contracts.General.LookupValues> Lkps([FromUri] string keys, [FromUri] string url = "")
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            List<Contracts.General.LookupValues> values = Business.Common.Lkps(keys, url, tokenInfo);
+            List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(keys, url, tokenInfo);
             return values.AsQueryable();
         }
 
@@ -72,9 +72,9 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult ChangeSets([FromUri] int entityType, [FromUri] Int64 entityId = 0, string filter = "")
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            List<Contracts.General.ChangeSetView> result = Business.General.ChangeSet.RetrieveByEntity(entityType, entityId, tokenInfo.CompanyId, filter);
+            List<Core.Contracts.General.ChangeSetView> result = Core.Business.General.ChangeSet.RetrieveByEntity(entityType, entityId, tokenInfo.CompanyId, filter);
             if (result.IsEmpty())
                 return NotFound();
             else
@@ -93,8 +93,8 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult Attachments([FromUri] int entityType, [FromUri] Int64 entityId)
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
-            List<Contracts.General.AttachmentView> result = Business.General.Attachment.RetrieveByEntity(entityType, entityId, tokenInfo.CompanyId);
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            List<Core.Contracts.General.AttachmentView> result = Core.Business.General.Attachment.RetrieveByEntity(entityType, entityId, tokenInfo.CompanyId);
             if (result.IsEmpty())
                 return NotFound();
             else
@@ -105,14 +105,14 @@ namespace Architect.API.Core.Controllers
         [Route("Attachments")]
         [Authorize]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IHttpActionResult> Post([FromBody] Contracts.General.Attachments item)
+        public async Task<IHttpActionResult> Post([FromBody] Core.Contracts.General.Attachments item)
         {
             IHttpActionResult result = BadRequest();
             if (item.IsEmpty())
             {
                 return BadRequest("Debe indicar un adjunto");
             }
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 item = Architect.API.Core.Business.General.Attachment.SyncUpBase(item, tokenInfo.CompanyId, tokenInfo.UserId);
@@ -137,7 +137,7 @@ namespace Architect.API.Core.Controllers
                 return BadRequest("Debe indicar el identificador del adjunto");
             }
 
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 Architect.API.Core.Business.General.Attachment.Delete(id);
@@ -155,7 +155,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public HttpResponseMessage Upload()
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<dynamic> result = new List<dynamic>();
             var httpContext = HttpContext.Current;
             // Check for any uploaded file
@@ -180,7 +180,7 @@ namespace Architect.API.Core.Controllers
                                 httpContext.Request.Form?.Get("DocumentType") != null &&
                                 httpContext.Request.Form?.Get("Description") != null)
                             {
-                                Contracts.General.Attachments attachment = new Contracts.General.Attachments
+                                Core.Contracts.General.Attachments attachment = new Core.Contracts.General.Attachments
                                 {
                                     EntityType = Convert.ToInt32(httpContext.Request.Form?.Get("EntityType")),
                                     EntityId = Convert.ToInt64(httpContext.Request.Form?.Get("EntityId")),
@@ -224,8 +224,8 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult Download([FromUri] int id)
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
-            Architect.API.Core.Contracts.General.AttachmentItem result = Business.General.Attachment.RetrieveById(id);
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Architect.API.Core.Contracts.General.AttachmentItem result = Core.Business.General.Attachment.RetrieveById(id);
             return Ok(result);
         }
 
@@ -303,7 +303,7 @@ namespace Architect.API.Core.Controllers
         public HttpResponseMessage Download2([FromUri] int id)
         {
             //Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
-            Architect.API.Core.Contracts.General.AttachmentItem result2 = Business.General.Attachment.RetrieveById(id);
+            Architect.API.Core.Contracts.General.AttachmentItem result2 = Core.Business.General.Attachment.RetrieveById(id);
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             var dataStream = new MemoryStream(result2.Content);
@@ -338,9 +338,9 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult RenderCustomFields([FromUri] int entityType)
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            return Ok(Business.General.CustomFields.Render(entityType, tokenInfo.CompanyId));
+            return Ok(Core.Business.General.CustomFields.Render(entityType, tokenInfo.CompanyId));
         }
 
         [Route("Cache/{prefix?}")]
@@ -349,7 +349,7 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult Cache([FromUri] string prefix = "")
         {
-            return Ok(Business.Common.Cache(prefix));
+            return Ok(Core.Business.Common.Cache(prefix));
         }
 
         /// <summary>
@@ -364,8 +364,8 @@ namespace Architect.API.Core.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult Notes([FromUri] int entityType, [FromUri] Int64 entityId)
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
-            List<Contracts.General.Notes> result = Business.General.Notes.RetrieveByEntity(entityType, entityId, tokenInfo.CompanyId);
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            List<Core.Contracts.General.Notes> result = Core.Business.General.Notes.RetrieveByEntity(entityType, entityId, tokenInfo.CompanyId);
             if (result.IsEmpty())
                 return NotFound();
             else
@@ -388,7 +388,7 @@ namespace Architect.API.Core.Controllers
             {
                 return BadRequest("Debe indicar una nota");
             }
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 Architect.API.Core.Contracts.General.NotesResult created = Architect.API.Core.Business.General.Notes.CreateOrUpdate(tokenInfo.CompanyId, tokenInfo.UserId, item);
@@ -409,10 +409,10 @@ namespace Architect.API.Core.Controllers
         /// </summary>
         /// <param name="errors">Lista de errores de validación.</param>
         /// <returns>Repuesta de tipo BadRequest con el detalle de los errores de validación.</returns>
-        private IHttpActionResult ErrorHandler(List<Contracts.General.Error> errors)
+        private IHttpActionResult ErrorHandler(List<Core.Contracts.General.Error> errors)
         {
             ModelState.Clear();
-            foreach (Contracts.General.Error errorItem in errors)
+            foreach (Core.Contracts.General.Error errorItem in errors)
             {
                 //string.Format("{0}.{1}:{2}", s.Group, s.Key, s.Message)
                 ModelState.AddModelError(errorItem.Key, errorItem.Message);
@@ -438,7 +438,7 @@ namespace Architect.API.Core.Controllers
                 return BadRequest("Debe indicar todos los parámetros (to, subject, body)");
             }
 
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 Dictionary<string, string> receip = new Dictionary<string, string>();

@@ -1,9 +1,9 @@
-﻿using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.Utilities.Extensions;
+using Microsoft.Web.Http;
 
 namespace Architect.API.Core.Controllers
 {
@@ -240,6 +240,5 @@ namespace Architect.API.Core.Controllers
             }
             return BadRequest(ModelState);
         }
-
     }
 }

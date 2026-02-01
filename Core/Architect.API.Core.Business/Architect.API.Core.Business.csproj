@@ -151,7 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="General\CustomData.cs" />
-    <Compile Include="General\ProcessHelpers.cs" />
     <Compile Include="General\Tron.cs" />
     <Compile Include="Security\AccountSupport.cs" />
     <Compile Include="Security\OTP.cs" />
@@ -162,11 +161,6 @@
     <Compile Include="General\Attachment.cs" />
     <Compile Include="General\CustomFields.cs" />
     <Compile Include="General\LookupMaster.cs" />
-    <Compile Include="General\ProcessCase.cs" />
-    <Compile Include="General\ProcessSpecFlow.cs" />
-    <Compile Include="General\ProcessSpecSLALevel.cs" />
-    <Compile Include="General\ProcessSpecStep.cs" />
-    <Compile Include="General\ProcessSpecTask.cs" />
     <Compile Include="General\Report.cs" />
     <Compile Include="General\DynamicSetting.cs" />
     <Compile Include="General\WhiteList.cs" />
@@ -178,10 +172,8 @@
     <Compile Include="_Generated\ChangeColor.cs" />
     <Compile Include="_Generated\Notes.cs" />
     <Compile Include="_Generated\PaymentSettings.cs" />
-    <Compile Include="_Generated\ProcessCase.cs" />
     <Compile Include="General\Rules.cs" />
     <Compile Include="General\Mail.cs" />
-    <Compile Include="General\Process.cs" />
     <Compile Include="General\ChangeSet.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -192,13 +184,6 @@
     <Compile Include="Security\UserMember.cs" />
     <Compile Include="_Generated\LookupMaster.cs" />
     <Compile Include="_Generated\Navigation.cs" />
-    <Compile Include="_Generated\ProcessCaseComplement.cs" />
-    <Compile Include="_Generated\ProcessSpecFlow.cs" />
-    <Compile Include="_Generated\ProcessSpecLink.cs" />
-    <Compile Include="_Generated\ProcessSpecSLA.cs" />
-    <Compile Include="_Generated\ProcessSpecStep.cs" />
-    <Compile Include="_Generated\ProcessSpecStepRole.cs" />
-    <Compile Include="_Generated\ProcessSpecTask.cs" />
     <Compile Include="_Generated\RoleMember.cs" />
     <Compile Include="_Generated\RoleMemberNavigation.cs" />
     <Compile Include="_Generated\Template.cs" />

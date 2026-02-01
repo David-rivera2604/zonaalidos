@@ -10,7 +10,7 @@ using Architect.API.Core.Contracts;
 using Architect.API.Core.Business.Security;
 
 
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 
 {
     public class ClienteInicioController : ApiController
@@ -34,7 +34,7 @@ namespace Architect.API.Core.Controllers
 
                 await Task.Run(() => {
 
-                    inicio = Architect.API.Core.Business.Security.Accounts.ReadInicio(tokenInfo);
+                   // inicio = Architect.API.Core.Business.Security.Accounts.ReadInicio(tokenInfo);
                 
                 
                 })
