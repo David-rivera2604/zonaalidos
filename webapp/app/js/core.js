@@ -835,9 +835,6 @@ app.core = (function () {
         FileUpLoadValidate: function (name, size, type, currentMessage) {
             return FileUpLoadValidate(name, size, type, currentMessage);
         },
-        UpLoadFileEx: function (formId, uploadCtrolId, entityType, entityId, documentType, description, callback) {
-            return UpLoadFileEx(formId, uploadCtrolId, entityType, entityId, documentType, description, callback);
-        },
         ValidatorRemoteIsValid: function (validator, element, name) {
             var errors = {};
             errors[element.name] = validator.defaultMessage(element, name);
