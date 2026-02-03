@@ -74,13 +74,13 @@ app.core = (function () {
         if (filename.endsWith(".xlsx")) {
             blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;';
         }
+        let token = alterToken == '' ? getAuthToken() : alterToken;
         fetch(url, {
             body: null,
             method: 'GET',
-            credentials: "include",
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + alterToken == '' ? getAuthToken() : alterToken
+                'Authorization': 'Bearer ' + token
             },
         }).then(response => {
             if (!response.ok) { throw response }
