@@ -409,24 +409,24 @@ class DashboardManager {
 }
 
 async function myCustomDataProvider() {
-    const API_URL = 'https://appqa.mapfrecr.com/datapiprd/api/entity/process/insight';
+    const API_URL = `${app.setting.entityapi}/process/insight`;
 
     const FALLBACK_DATA = {
         "Casosporprocesoduracion2": [
             { "NOMBRE_PROCESO": "EMISIÓN RESPONSABILIDAD CIVIL", "CANTIDAD_CASOS": 1.0, "DURACION_MINIMA_DIAS": 4.94, "DURACION_PROMEDIO_DIAS": 4.94, "DURACION_MAXIMA_DIAS": 4.94 },
             { "NOMBRE_PROCESO": "DEVOLUCIÓN DE DINERO - COBROS", "CANTIDAD_CASOS": 2.0, "DURACION_MINIMA_DIAS": 3.76, "DURACION_PROMEDIO_DIAS": 4.77, "DURACION_MAXIMA_DIAS": 5.78 }
         ],
-        "Casoscreados": { "Casos Mes Actual": 431.0, "Casos Mes Anterior (MTD)": 500.0, "Variación %": "-13.8%" },
+        "Casoscreados": { "Casos Mes Actual": 0.0, "Casos Mes Anterior (MTD)": 0.0, "Variación %": "0.0%" },
         "Casosporproceso": [
             { "NOMBRE_PROCESO": "CONSULTAS GENERALES - SAC", "TOTAL_CREADOS": 89.0, "TOTAL_CERRADOS": 87.0 },
             { "NOMBRE_PROCESO": "APLICACIÓN DE PAGOS - TRANSFERENCIAS - VOUCHERS RA", "TOTAL_CREADOS": 57.0, "TOTAL_CERRADOS": 44.0 }
         ],
-        "Casoscerrados": { "Casos Cerrados Mes Actual": 342.0, "Casos Cerrados Mes Ant. (MTD)": 414.0, "Variación %": "-17.39%" },
-        "Casospormes": [{ "MES_NUMERO": 1.0, "TOTAL_CREADOS": 431.0, "TOTAL_CERRADOS": 226.0 }],
-        "Casospendientes": { "TOTAL_CASOS_PENDIENTES": 708.0 },
-        "Casosporfuente": [{ "COMPANIA_USUARIO": "Mapfre", "TOTAL_CASOS": 338.0 }, { "COMPANIA_USUARIO": "Aliados", "TOTAL_CASOS": 84.0 }],
-        "Casosporprioridad": [{ "PRIORIDAD": "Rapida", "CANTIDAD": 308.0 }, { "PRIORIDAD": "Intermedia", "CANTIDAD": 82.0 }],
-        "Casosvippendientes": { "PRIORIDAD": "VIP", "TOTAL_CASOS": 7.0 }
+        "Casoscerrados": { "Casos Cerrados Mes Actual": 0.0, "Casos Cerrados Mes Ant. (MTD)": 0.0, "Variación %": "0.00%" },
+        "Casospormes": [{ "MES_NUMERO": 1.0, "TOTAL_CREADOS": 0.0, "TOTAL_CERRADOS": 0.0 }],
+        "Casospendientes": { "TOTAL_CASOS_PENDIENTES": 0.0 },
+        "Casosporfuente": [{ "COMPANIA_USUARIO": "Mapfre", "TOTAL_CASOS": 0.0 }, { "COMPANIA_USUARIO": "Aliados", "TOTAL_CASOS": 0.0 }],
+        "Casosporprioridad": [{ "PRIORIDAD": "Rapida", "CANTIDAD": 0.0 }, { "PRIORIDAD": "Intermedia", "CANTIDAD": 0.0 }],
+        "Casosvippendientes": { "PRIORIDAD": "VIP", "TOTAL_CASOS": 0.0 }
     };
 
     try {
