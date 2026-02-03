@@ -56,6 +56,20 @@ app.Ex_Policy = (function () {
                         app.ViewerQuery.Refresh(undefined, $('#1GridTbl'), 300);
                     });
             }
+        },
+        FileUpLoad: function (entityId) {
+            app.core.FileUpLoad({
+                formId: '#DocumentUploadEdtForm',
+                uploadCtrolId: '#archivoUploadModal',
+                entityType: 3000,
+                entityId: entityId,
+                documentType: 99,
+                description: $('#descripcion').val(),
+                callback: function (fileList) {
+                    $('#9002 .close').click();
+                    app.ViewerQuery.Refresh(undefined, $('#6GridTbl'), 302, '', 6);
+                }
+            });
         }
     };
 })();
