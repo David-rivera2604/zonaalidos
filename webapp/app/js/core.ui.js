@@ -771,7 +771,7 @@ app.ui = (function () {
                             apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
                         }
 
-                        app.core.Get(apiUrl).done(function (data, textStatus, jqXHR) {
+                        app.core.Get(apiUrl, undefined, undefined, false).done(function (data, textStatus, jqXHR) {
                             if (data != null && data.FirstName !== null) {
                                 if (data.MiddleName === null) data.MiddleName = '';
                                 if (data.LastName === null) data.LastName = '';

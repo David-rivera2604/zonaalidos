@@ -45,12 +45,12 @@ app.SecurityRegister = (function () {
             app.ui.DocumentTypeHandler(this, '#identificacion', 'Identification');
         });
 
-        $('#RegisterEdtFormSave').click(function () {
+        $('#RegisterEdtFormSave').click(function (e) {
 
             if (app.ui.IsValid('#RegisterEdtForm', false)) {
                 app.ui.ButtonDoing('#RegisterEdtFormSave');
 
-                app.core.Post(app.setting.apipath + 'v1/Security/Register', JSON.stringify(MapInputToObject()))
+                app.core.Post(app.setting.apipath + 'v1/Security/Register', JSON.stringify(MapInputToObject()), undefined, undefined, false)
                     .done(function (data, textStatus, jqXHR) {
                         if (!data.Successful)
                             toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
@@ -65,18 +65,18 @@ app.SecurityRegister = (function () {
                         app.ui.ButtonDone('#RegisterEdtFormSave');
                     });
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#RegisterEdtFormCancel').click(function () {
+        $('#RegisterEdtFormCancel').click(function (e) {
             app.ui.ButtonDoing('#RegisterEdtFormCancel');
             window.location.replace("/aliados/Security/Login");
-            event.preventDefault();
+            e.preventDefault();
         });
-        $('#RegisterEdtFormContinue').click(function () {
+        $('#RegisterEdtFormContinue').click(function (e) {
             app.ui.ButtonDoing('#RegisterEdtFormContinue');
             window.location.replace("/aliados/Security/Login");
-            event.preventDefault();
+            e.preventDefault();
         });
 
     };
