@@ -1,13 +1,7 @@
-﻿using Microsoft.Web.Http;
-using System.Web.Http;
-using System;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Architect.Utilities.Extensions;
-using System.Web.Http.Description;
-using System.Diagnostics.Contracts;
-using Architect.API.Core.Contracts;
-using Architect.API.Core.Business.Security;
+using System.Web.Http;
+using Asp.Versioning;
 
 namespace aliados.Controllers
 {
@@ -16,7 +10,6 @@ namespace aliados.Controllers
     [RoutePrefix("api/v{version:apiVersion}/Colors")]
     public class ColorsController : ApiController
     {
-
         [HttpGet]
         [Route("GetColor")]
         [AllowAnonymous]
@@ -38,9 +31,7 @@ namespace aliados.Controllers
         [Authorize]
         public async Task<IHttpActionResult> PostColor([FromBody] Architect.API.Core.Contracts.Security.ColoresResponse item)
         {
-
             IHttpActionResult result = null;
-
 
             await Task.Run(() =>
             {
@@ -51,7 +42,5 @@ namespace aliados.Controllers
 
             return result;
         }
-
-
     }
 }

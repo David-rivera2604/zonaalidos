@@ -1,20 +1,18 @@
-﻿using Architect.API.Core.Business.General;
-using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
-using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.API.Core.Business.General;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
 namespace Architect.API.Process.WebApi.Controllers
 {
@@ -212,8 +210,6 @@ namespace Architect.API.Process.WebApi.Controllers
                     }
                 }
             }
-
-
 
             return Request.CreateResponse(HttpStatusCode.Created, result);
         }
@@ -450,6 +446,7 @@ namespace Architect.API.Process.WebApi.Controllers
             }).ConfigureAwait(false);
             return Ok(true);
         }
+
         /// <summary>
         /// Permite la consulta de una solicitud de firma
         /// </summary>
@@ -472,6 +469,5 @@ namespace Architect.API.Process.WebApi.Controllers
                 return InternalServerError();
             }
         }
-
     }
 }

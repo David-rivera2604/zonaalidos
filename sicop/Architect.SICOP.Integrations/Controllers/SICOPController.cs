@@ -1,12 +1,7 @@
-﻿using Architect.SICOP.Integrations.RcvGurtWS;
-using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
+using Architect.SICOP.Integrations.RcvGurtWS;
+using Asp.Versioning;
 
 namespace Architect.SICOP.Integrations.Controllers
 {
@@ -18,7 +13,6 @@ namespace Architect.SICOP.Integrations.Controllers
     [RoutePrefix("api/v{version:apiVersion}/SICOP")]
     public class SICOPController : ApiController
     {
-
         [HttpGet]
         [Route("InformacionProveedor")]
         public async Task<IHttpActionResult> InformacionProveedor([FromUri] string id)
@@ -60,9 +54,5 @@ namespace Architect.SICOP.Integrations.Controllers
 
             return Created(string.Empty, result);
         }
-
     }
 }
-
-
-

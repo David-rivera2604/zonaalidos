@@ -1,9 +1,9 @@
-﻿using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
 namespace Architect.API.Process.WebApi.Controllers
 {
@@ -152,7 +152,7 @@ namespace Architect.API.Process.WebApi.Controllers
                 return BadRequest("Debe indicar el identificador y una instancia de lookup");
             }
 
-            Core.Contracts.Security.Token tokenInfo = Core. Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Task.Run(() =>
             {
                 item.LookupId = id;
@@ -221,6 +221,5 @@ namespace Architect.API.Process.WebApi.Controllers
             }
             return BadRequest(ModelState);
         }
-
     }
 }

@@ -1,10 +1,4 @@
-﻿using Architect.API.Core.Business;
-using Architect.API.Core.Business.General;
-using Architect.API.Core.Contracts.General;
-using Architect.Utilities.Extensions;
-using Architect.Utilities.Helpers;
-using Microsoft.Web.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -14,6 +8,12 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
+using Architect.API.Core.Business;
+using Architect.API.Core.Business.General;
+using Architect.API.Core.Contracts.General;
+using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
+using Asp.Versioning;
 
 namespace Architect.API.Process.WebApi.Controllers.v2
 {

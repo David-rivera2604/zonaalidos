@@ -1,20 +1,15 @@
-﻿using Architect.API.Core.Business.General;
-using Architect.API.Core.Contracts;
-using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
+using System.Configuration;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Text.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Configuration;
-using System.Diagnostics.Contracts;
+using Architect.API.Core.Business.General;
+using Architect.API.Core.Contracts;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 using Newtonsoft.Json;
 
 namespace Architect.API.Insurance.Controllers
@@ -28,7 +23,6 @@ namespace Architect.API.Insurance.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class KycController : ApiController
     {
-
         /// <summary>
         /// Busqueda de información de Kyc Persona.
         /// </summary>
@@ -53,7 +47,6 @@ namespace Architect.API.Insurance.Controllers
             }
             if (result == null)
             {
-
             }
 
             return Ok(result);
@@ -83,7 +76,6 @@ namespace Architect.API.Insurance.Controllers
             }
             if (result == null)
             {
-
             }
 
             return Ok(result);
@@ -99,7 +91,6 @@ namespace Architect.API.Insurance.Controllers
             if (Utilities.Cache.Exist("ActividadesEconomicas_Aliados"))
             {
                 result = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Actividad_Economica>>(Architect.Utilities.Cache.GetItem("ActividadesEconomicas_Aliados").ToString());
-
             }
             else
             {
@@ -127,6 +118,5 @@ namespace Architect.API.Insurance.Controllers
     {
         public int CodigoActividadEconomica { get; set; }
         public string Descripcion { get; set; }
-
     }
 }

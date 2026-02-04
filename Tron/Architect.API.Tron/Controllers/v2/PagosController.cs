@@ -1,17 +1,10 @@
-﻿using Architect.Utilities.Extensions;
-using Architect.Payment.Integrations.Contracts.v2;
-using Microsoft.Web.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
+using Newtonsoft.Json;
 
 namespace Architect.API.Tron.Controllers.v2
 {
@@ -23,8 +16,6 @@ namespace Architect.API.Tron.Controllers.v2
     [RoutePrefix("api/v{version:apiVersion}/Pagos")]
     public class PagosController : ApiController
     {
-
-
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
@@ -138,9 +129,7 @@ namespace Architect.API.Tron.Controllers.v2
                 recordCount = Architect.API.Tron.Business.Backoffice.v2.Pagos.PendientesRecurrentesAlCobro(fec_efect_recibo);
             }).ConfigureAwait(false);
 
-
             return Ok(recordCount);
         }
-
     }
 }

@@ -1,14 +1,10 @@
-﻿using Architect.API.Core.Contracts.Security;
-using Architect.API.Core.Security;
-using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Security;
-using static System.Net.Mime.MediaTypeNames;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
 namespace Architect.API.Process.WebApi.Controllers
 {
@@ -78,14 +74,13 @@ namespace Architect.API.Process.WebApi.Controllers
                         result = BadRequest(responseItem.Reason);
                 }
                 else
-                { 
+                {
                     result = Ok(responseItem);
                 }
             }
 
             return result;
         }
-
 
         /// <summary>
         /// Navegación permitida según los roles asociados al usuario del token
@@ -172,7 +167,6 @@ namespace Architect.API.Process.WebApi.Controllers
         //        result.Context = Utilities.SerializeHandler<Contracts.Security.Context>.DeserializeJSON((string)Utilities.Cache.GetItem(resetRequest.OTP));
         //        Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, responseItem, token));
         //    }
-                
 
         //    return Ok(result);
         //}
@@ -253,7 +247,6 @@ namespace Architect.API.Process.WebApi.Controllers
                     }
                     result = BadRequest(ModelState);
                 }
-
             }
 
             return result;
@@ -295,7 +288,6 @@ namespace Architect.API.Process.WebApi.Controllers
             return Ok(result);
         }
 
-
         /// <summary>
         /// Permite validar las credenciales de acceso y generar un token que permite el consumo de las APIs.
         /// </summary>
@@ -323,8 +315,8 @@ namespace Architect.API.Process.WebApi.Controllers
             {
                 return Unauthorized();
             }
-
         }
+
         /// <summary>
         /// Permite validar las credenciales de acceso y generar un token que permite el consumo de las APIs.
         /// </summary>
@@ -352,7 +344,6 @@ namespace Architect.API.Process.WebApi.Controllers
             {
                 return Unauthorized();
             }
-
         }
 
         [HttpGet]
@@ -392,6 +383,5 @@ namespace Architect.API.Process.WebApi.Controllers
                 EMail = result
             });
         }
-
     }
 }

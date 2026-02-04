@@ -61,7 +61,9 @@
     <Compile Include="_Generated\ProcessSpecStepRole.cs" />
     <Compile Include="_Generated\ProcessSpecTask.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
       <Project>{579105b3-776b-4094-a301-87a9c42962c5}</Project>

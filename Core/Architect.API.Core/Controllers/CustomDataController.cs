@@ -1,13 +1,12 @@
-﻿using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
-using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
 namespace Architect.API.Process.WebApi.Controllers
 {
@@ -86,7 +85,6 @@ namespace Architect.API.Process.WebApi.Controllers
             return result;
         }
 
-
         [HttpGet]
         [Route("{entityName}/{entityId}/View")]
         [AllowAnonymous]
@@ -122,6 +120,5 @@ namespace Architect.API.Process.WebApi.Controllers
             }
             return BadRequest(ModelState);
         }
-
     }
 }

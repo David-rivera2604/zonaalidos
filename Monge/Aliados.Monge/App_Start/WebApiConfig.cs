@@ -1,11 +1,8 @@
-﻿using Microsoft.Web.Http.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Routing;
+using Asp.Versioning.Routing;
 
 namespace Aliados.Monge
 {
@@ -41,7 +38,6 @@ namespace Aliados.Monge
             );
 
             //config.Filters.Add(new Architect.API.Core.Security.AuthorizeExtendAttribute());
-
         }
     }
 }

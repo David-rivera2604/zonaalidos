@@ -1,9 +1,10 @@
-﻿using aliados.App_Start;
-using Microsoft.Web.Http.Routing;
-using System;
+﻿using System;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Routing;
+using aliados.App_Start;
+using Asp.Versioning;
+using Asp.Versioning.Routing;
 
 namespace aliados
 {
@@ -29,7 +30,16 @@ namespace aliados
 
             config.EnableCors();
 
-            config.AddApiVersioning();
+            // API Versioning
+            config.AddApiVersioning(options =>
+            {
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new QueryStringApiVersionReader("version"),
+                    new HeaderApiVersionReader("X-Version")
+                );
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+            });
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

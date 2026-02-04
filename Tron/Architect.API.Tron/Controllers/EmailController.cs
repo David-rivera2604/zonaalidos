@@ -1,26 +1,21 @@
-﻿using Architect.API.Core.Contracts;
-using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
+using System.Configuration;
+using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Architect.API.Tron.Business.DocumentGenerator;
-using Architect.API.Core.Contracts.Security;
-using System.Diagnostics.Contracts;
+using Architect.API.Core.Contracts;
 using Architect.API.Core.Contracts.General;
-using System;
+using Architect.API.Core.Contracts.Security;
+using Architect.API.Tron.Business.DocumentGenerator;
+using Asp.Versioning;
 using Newtonsoft.Json;
-using System.Net;
-using Architect.API.Core.Security;
-using System.IO;
-using System.Web;
-using System.Configuration;
-using System.Net.Mail;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -33,7 +28,6 @@ namespace Architect.API.Tron.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class EmailController : ApiController
     {
-
         /// <summary>
         /// Busqueda de información de Kyc Persona.
         /// </summary>
@@ -52,7 +46,6 @@ namespace Architect.API.Tron.Controllers
 
             try
             {
-
                 GeneratedPDF generated = new GeneratedPDF();
 
                 string newpdfname = generated.GeneratePDF(solicitud, tokenInfo);
@@ -101,7 +94,7 @@ namespace Architect.API.Tron.Controllers
                       new string[] { string.Format("{0};Solicitud {1}.pdf", newpdfname, solicitud.Seguro.title + " " + solicitud.Persona.Nombre + " " + thisHour + " " + thisDay) });
 
                 /*
-                Core.Business.General.Mail.SendEmail(new Dictionary<string, string>() { { data.Persona.Email, string.Empty } }, 
+                Core.Business.General.Mail.SendEmail(new Dictionary<string, string>() { { data.Persona.Email, string.Empty } },
                     "Solicitud Cotizacion", "Su solicitud sera tratada",
                         new string[] { });
 
@@ -112,13 +105,11 @@ namespace Architect.API.Tron.Controllers
                 */
 
                 TaskResult = 1;
-
             }
             catch (Exception e)
             {
                 TaskResult = 0;
             }
-
 
             if (TaskResult == 0)
             {
@@ -128,7 +119,6 @@ namespace Architect.API.Tron.Controllers
             {
                 return Ok(TaskResult);
             }
-
         }
 
         [HttpPost]
@@ -137,7 +127,6 @@ namespace Architect.API.Tron.Controllers
         [AllowAnonymous]
         public async Task<IHttpActionResult> SendforRol([FromBody] string message, [FromUri] string Rol = "")
         {
-
             Core.Contracts.Security.Token tokenInfo = Architect.API.Core.Security.Token.Info();
 
             List<UserMember> result = Core.Business.Security.UserMember
@@ -152,7 +141,6 @@ namespace Architect.API.Tron.Controllers
         [AllowAnonymous]
         public async Task<IHttpActionResult> SendReceipt([FromBody] Tron.Contracts.Emision.Viajero data)
         {
-
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             HttpResponseMessage response = new HttpResponseMessage();
 
@@ -180,9 +168,6 @@ namespace Architect.API.Tron.Controllers
             {
                 return Ok(lis);
             }
-
         }
-
     }
-
 }

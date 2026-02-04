@@ -1,12 +1,7 @@
-﻿using Microsoft.Web.Http;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
+using Asp.Versioning;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -18,7 +13,6 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/AvisoCobro")]
     public class AvisoCobroController : ApiController
     {
-
         /// <summary>
         /// Modifica un aviso de cobro para exluir recibos del mismo
         /// </summary>
@@ -86,6 +80,5 @@ namespace Architect.API.Tron.Controllers
 
             return Ok(result);
         }
-
     }
 }
