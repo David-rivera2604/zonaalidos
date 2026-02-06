@@ -1,11 +1,11 @@
-﻿using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 {
     /// <summary>
     /// Acciones relacionas con la seguridad de la aplicación.
@@ -20,9 +20,9 @@ namespace Architect.API.Core.Controllers
         [Route("post")]
         public async Task<IHttpActionResult> Post([FromBody] Architect.API.Core.Contracts.Security.UserMember item)
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            List<Contracts.General.Error> errors = null;
+            List<Core.Contracts.General.Error> errors = null;
             if (item.IsEmpty())
             {
                 return BadRequest("Debe indicar un usuario");
@@ -56,7 +56,7 @@ namespace Architect.API.Core.Controllers
                 else
                 {
                     ModelState.Clear();
-                    foreach (Contracts.General.Error errorItem in errors)
+                    foreach (Core.Contracts.General.Error errorItem in errors)
                     {
                         ModelState.AddModelError(string.Format("{0}.{1}", errorItem.Group, errorItem.Key),
                                                  errorItem.Message);
@@ -71,7 +71,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get(string filter = "", string recordStatus = "")
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             List<Architect.API.Core.Contracts.Security.UserMember> result = null;
 
@@ -92,7 +92,7 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetById(int id)
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             IHttpActionResult result = null;
             Architect.API.Core.Contracts.Security.UserMember data = null;
 
@@ -130,9 +130,9 @@ namespace Architect.API.Core.Controllers
             }
             else
             {
-                Contracts.Security.Token tokenInfo = Security.Token.Info();
+                Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-                List<Contracts.General.Error> errors = null;
+                List<Core.Contracts.General.Error> errors = null;
                 await Task.Run(() =>
                 {
                     if (item.SecurityLevel > tokenInfo.SecurityLevel)
@@ -154,7 +154,7 @@ namespace Architect.API.Core.Controllers
                 else
                 {
                     ModelState.Clear();
-                    foreach (Contracts.General.Error errorItem in errors)
+                    foreach (Core.Contracts.General.Error errorItem in errors)
                     {
                         ModelState.AddModelError(string.Format("{0}.{1}", errorItem.Group, errorItem.Key),
                                                  errorItem.Message);
@@ -176,7 +176,7 @@ namespace Architect.API.Core.Controllers
             }
             else
             {
-                Contracts.Security.Token tokenInfo = Security.Token.Info();
+                Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
                 bool deleted;
                 await Task.Run(() =>
                 {
@@ -187,12 +187,11 @@ namespace Architect.API.Core.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("sendcredentials")]
         public async Task<IHttpActionResult> SendCredentials([FromUri] int id)
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
             if (id.IsEmpty())
             {
@@ -206,10 +205,7 @@ namespace Architect.API.Core.Controllers
                 }).ConfigureAwait(false);
 
                 return Ok(new { });
-
-
             }
         }
-
     }
 }

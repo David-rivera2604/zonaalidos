@@ -1,18 +1,12 @@
-﻿using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Architect.API.Core.Business.Security;
-using Architect.API.Core.Contracts.Security;
-using System;
 using System.Web;
+using System.Web.Http;
+using Architect.API.Core.Contracts.Security;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
-
-
-
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 {
     /// <summary>
     /// Gestion de procesos para la autenticacion del usuario gestor del Tenant.
@@ -23,14 +17,13 @@ namespace Architect.API.Core.Controllers
     public class SecurityCasesController : ApiController
     {
         /// <summary>
-        /// Creacion del token de autorizacion para los casos 
+        /// Creacion del token de autorizacion para los casos
         /// </summary>
         [HttpGet]
         [Route("Create")]
-
         public async Task<IHttpActionResult> Create([FromUri] string Tenant)
         {
-            Core.Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             IHttpActionResult result = null;
             string UserWebConfi = "Security.Users.Cases." + Tenant;
             string UserCreate = Architect.Utilities.Helpers.Settings.StringValue(UserWebConfi);
@@ -41,7 +34,6 @@ namespace Architect.API.Core.Controllers
             }
             else
             {
-
                 var ck = HttpContext.Current?.Request?.Cookies["AuthToken"];
 
                 if (ck.IsNotEmpty() && ck.Value.IsNotEmpty())
@@ -50,7 +42,6 @@ namespace Architect.API.Core.Controllers
                 }
 
                 string[] ListElement = UserCreate.Split(';');
-
 
                 AuthenticationRequest Envio = new AuthenticationRequest()
                 {
@@ -98,7 +89,6 @@ namespace Architect.API.Core.Controllers
                 return result;
             }
             return result;
-
         }
     }
 
@@ -111,10 +101,9 @@ namespace Architect.API.Core.Controllers
         /// Token de el usuario gestor de los casos.
         /// </summary>
         public string TokenAliado { get; set; }
+
         public string user { get; set; }
         public int CurrentUserId { get; set; }
         public string CurrentToken { get; set; }
-        
-
     }
 }

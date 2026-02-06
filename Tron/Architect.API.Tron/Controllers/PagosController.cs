@@ -1,15 +1,9 @@
-﻿using Architect.API.Core.Business.General;
-using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Net.Http;
+﻿using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -21,7 +15,6 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/Pagos")]
     public class PagosController : ApiController
     {
-
         /// <summary>
         /// Permite la creación de un sesión para realizar un pago.
         /// </summary>
@@ -54,7 +47,6 @@ namespace Architect.API.Tron.Controllers
             }
 
             Business.Traza.TrackRequest.CloseSession(session, result);
-
 
             return Ok(result);
         }
@@ -119,7 +111,6 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> Recobro([FromBody] Contracts.Pagos.RecibosParaRecobro recibos)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            
 
             string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
             string userAgent = Request.Headers.UserAgent.ToString();
@@ -129,9 +120,7 @@ namespace Architect.API.Tron.Controllers
 
             string result = "Ejecución exitosa";
 
-
             return Ok(result);
         }
-
     }
 }

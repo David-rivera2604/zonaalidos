@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0EBCC10A-7CB8-496E-8FF5-67DB50C44F84}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Architect.API.Process.Contracts</RootNamespace>
+    <AssemblyName>Architect.API.Process.Contracts</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="General\CreateProcessInstance.cs" />
+    <Compile Include="General\ProcessCase.cs" />
+    <Compile Include="General\ProcessInstance.cs" />
+    <Compile Include="General\ProcessSpecFlow.cs" />
+    <Compile Include="General\ProcessSpecFlowRole.cs" />
+    <Compile Include="General\ProcessSpecSLA.cs" />
+    <Compile Include="General\ProcessSpecStep.cs" />
+    <Compile Include="General\ProcessSpecStepRole.cs" />
+    <Compile Include="General\ProcessSpecTask.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Generated\ProcessCase.cs" />
+    <Compile Include="_Generated\ProcessCaseComplement.cs" />
+    <Compile Include="_Generated\ProcessCaseResult.cs" />
+    <Compile Include="_Generated\ProcessInstance.cs" />
+    <Compile Include="_Generated\ProcessSpecFlow.cs" />
+    <Compile Include="_Generated\ProcessSpecFlowResult.cs" />
+    <Compile Include="_Generated\ProcessSpecFlowRole.cs" />
+    <Compile Include="_Generated\ProcessSpecFlowRoleResult.cs" />
+    <Compile Include="_Generated\ProcessSpecLink.cs" />
+    <Compile Include="_Generated\ProcessSpecLinkResult.cs" />
+    <Compile Include="_Generated\ProcessSpecSLA.cs" />
+    <Compile Include="_Generated\ProcessSpecSLALevel.cs" />
+    <Compile Include="_Generated\ProcessSpecSLALevelResult.cs" />
+    <Compile Include="_Generated\ProcessSpecSLAResult.cs" />
+    <Compile Include="_Generated\ProcessSpecStep.cs" />
+    <Compile Include="_Generated\ProcessSpecStepResult.cs" />
+    <Compile Include="_Generated\ProcessSpecStepRole.cs" />
+    <Compile Include="_Generated\ProcessSpecStepRoleResult.cs" />
+    <Compile Include="_Generated\ProcessSpecTask.cs" />
+    <Compile Include="_Generated\ProcessSpecTaskResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
+      <Project>{29b21bef-8c87-4a9d-8b37-fecc57cd03c7}</Project>
+      <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kernel\Architect.Utilities\Architect.Utilities.csproj">
+      <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
+      <Name>Architect.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

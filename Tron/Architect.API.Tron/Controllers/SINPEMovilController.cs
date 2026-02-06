@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using Architect.API.Tron.Contracts.SINPEMovil.Response;
 using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
+using Asp.Versioning;
 
 namespace Architect.API.Tron.Controllers
 {

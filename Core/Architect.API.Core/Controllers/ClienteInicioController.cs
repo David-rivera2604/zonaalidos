@@ -1,27 +1,17 @@
-﻿using Microsoft.Web.Http;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Architect.Utilities.Extensions;
-using System.Web.Http.Description;
-using System.Diagnostics.Contracts;
-using Architect.API.Core.Contracts;
-using Architect.API.Core.Business.Security;
+using Asp.Versioning;
 
-
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 
 {
     public class ClienteInicioController : ApiController
     {
-
         [ApiVersion("1.0")]
         [Authorize]
         [RoutePrefix("api/v{version:apiVersion}/Clientes")]
         public class ClientesController : ApiController
         {
-
             [HttpGet]
             [Route("GetInicio")]
             [AllowAnonymous]
@@ -32,15 +22,12 @@ namespace Architect.API.Core.Controllers
 
                 Architect.API.Core.Contracts.Security.ClientesInicioResponse inicio = new Architect.API.Core.Contracts.Security.ClientesInicioResponse();
 
-                await Task.Run(() => {
-
-                    inicio = Architect.API.Core.Business.Security.Accounts.ReadInicio(tokenInfo);
-                
-                
+                await Task.Run(() =>
+                {
+                    // inicio = Architect.API.Core.Business.Security.Accounts.ReadInicio(tokenInfo);
                 })
                 .ConfigureAwait(false);
-                
-                
+
                 result = Ok(inicio);
 
                 return result;
@@ -51,7 +38,6 @@ namespace Architect.API.Core.Controllers
             [Authorize]
             public async Task<IHttpActionResult> PostInicio([FromBody] Architect.API.Core.Contracts.Security.ClientesInicioResponse item)
             {
-
                 Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
                 IHttpActionResult result = null;
                 await Task.Run(() =>
@@ -63,11 +49,6 @@ namespace Architect.API.Core.Controllers
 
                 return result;
             }
-
-
         }
-
-
-
     }
 }

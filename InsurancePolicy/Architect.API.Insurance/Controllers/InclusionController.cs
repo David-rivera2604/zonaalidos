@@ -1,11 +1,10 @@
-﻿using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Results;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
 namespace Architect.API.Insurance.Controllers
 {
@@ -18,7 +17,6 @@ namespace Architect.API.Insurance.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class InclusionController : ApiController
     {
-
         /// <summary>
         /// Lista de inclusiones por número de inclusión.
         /// </summary>
@@ -35,7 +33,6 @@ namespace Architect.API.Insurance.Controllers
             await Task.Run(() =>
             {
                 result = Business.Bayer.Inclusion.View(tokenInfo.CompanyId, idFrom, idTo);
-
             }).ConfigureAwait(false);
 
             if (result.IsEmpty())
@@ -60,7 +57,6 @@ namespace Architect.API.Insurance.Controllers
             await Task.Run(() =>
             {
                 result = Business.Bayer.Inclusion.View(tokenInfo.CompanyId, issueDateFrom, issueDateTo);
-
             }).ConfigureAwait(false);
 
             if (result.IsEmpty())
@@ -91,7 +87,6 @@ namespace Architect.API.Insurance.Controllers
                 {
                     result = Business.Bayer.Inclusion.Retrieve(id, tokenInfo);
                 }
-
             }).ConfigureAwait(false);
 
             if (result.IsEmpty())
@@ -156,7 +151,6 @@ namespace Architect.API.Insurance.Controllers
             return Ok(new { Valid = result, Message = message });
         }
 
-
         /// <summary>
         /// Permite eliminar una solictud o pólizas.
         /// </summary>
@@ -181,6 +175,5 @@ namespace Architect.API.Insurance.Controllers
             }).ConfigureAwait(false);
             return result;
         }
-
     }
 }

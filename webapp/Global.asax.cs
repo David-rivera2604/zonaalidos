@@ -70,7 +70,7 @@ namespace aliados
                 if (processReviewEveryTime > 0)
                 {
                     RecurringJob.AddOrUpdate("OverDueSteps", () =>
-                           Architect.API.Core.Business.General.Process.OverDueSteps(),
+                           Architect.API.Process.Business.General.Process.OverDueSteps(),
                            Cron.MinuteInterval(processReviewEveryTime));
                 }
 

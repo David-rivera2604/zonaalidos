@@ -1,13 +1,7 @@
-﻿using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Xml.Schema;
+using Asp.Versioning;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -19,14 +13,13 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/Batch")]
     public class BatchController : ApiController
     {
-
         /// <summary>
         /// Realiza la solicitud de información para vehículos sin placa.
         /// </summary>
         [HttpPost]
         [Route("SinPlaca")]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> Informacion([FromUri] int offset = 0,[FromUri] int size = 9)
+        public async Task<IHttpActionResult> Informacion([FromUri] int offset = 0, [FromUri] int size = 9)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             await Business.Backoffice.Batch.SinPlaca.RetrieveUnregisteredVehiclesAsync(offset, size);
@@ -45,6 +38,5 @@ namespace Architect.API.Tron.Controllers
             await Business.Backoffice.Batch.SinPlaca.ProcessLicensePlateUpdateAsync(vehicles);
             return Ok();
         }
-
     }
 }

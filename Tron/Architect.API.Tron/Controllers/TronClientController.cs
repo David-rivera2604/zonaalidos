@@ -1,7 +1,7 @@
-﻿using Microsoft.Web.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Asp.Versioning;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -14,7 +14,6 @@ namespace Architect.API.Tron.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class TronClientController : ApiController
     {
-
         [HttpGet]
         [Route("Setup")]
         public async Task<IHttpActionResult> Setup()
@@ -28,6 +27,5 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
-
     }
 }

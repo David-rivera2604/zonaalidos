@@ -1,7 +1,4 @@
-﻿using Architect.API.Insurance.Contracts.Product;
-using Architect.Utilities.Extensions;
-using Microsoft.Web.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,6 +6,9 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Architect.API.Insurance.Contracts.Product;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
 
 namespace Architect.API.Insurance.Controllers
 {
@@ -127,7 +127,6 @@ namespace Architect.API.Insurance.Controllers
             {
                 if (result.Errors.Find(r => r.Group == "DigitalSignFail") == null)
                 {
-
                     message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
                                             result.Errors.Count);
                 }
@@ -143,6 +142,7 @@ namespace Architect.API.Insurance.Controllers
                     case 2:
                         message = "La póliza fue debidamente almacenada, pero dadas las condiciones de la misma, queda pendiente de revisión";
                         break;
+
                     case 10:
                         message = string.Format("La póliza fue emitida de forma exitosa, bajo el número #{0}",
                                                 item.PolicyId);
@@ -188,7 +188,6 @@ namespace Architect.API.Insurance.Controllers
             {
                 if (result.Errors.Find(r => r.Group == "DigitalSignFail") == null)
                 {
-
                     message = string.Format("No se puede emitir la póliza ya que existen {0} error(es) que ameritan su atención",
                                         result.Errors.Count);
                 }
@@ -204,6 +203,7 @@ namespace Architect.API.Insurance.Controllers
                     case 2:
                         message = "La póliza fue debidamente almacenada, pero dadas sus condiciones la misma quedo pendiente de revisión";
                         break;
+
                     case 10:
                         message = string.Format("La póliza fue emitida de forma exitosa, bajo el número #{0}",
                                                 item.PolicyId);
@@ -403,7 +403,6 @@ namespace Architect.API.Insurance.Controllers
             else
                 return NotFound();
         }
-
 
         [HttpPost]
         [Route("Behavior")]

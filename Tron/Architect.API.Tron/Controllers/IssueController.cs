@@ -1,7 +1,7 @@
-﻿using Microsoft.Web.Http;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Asp.Versioning;
 
 namespace Architect.API.Tron.Controllers
 {
@@ -13,7 +13,6 @@ namespace Architect.API.Tron.Controllers
     [RoutePrefix("api/v{version:apiVersion}/Issue")]
     public class IssueController : ApiController
     {
-
         /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Hogar Total
         /// </summary>
@@ -153,7 +152,6 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
-
         /// <summary>
         /// Devuelve posibles complementos a la información de terceros según el rol del usuario y/o fuentes del tomador de la póliza
         /// </summary>
@@ -211,7 +209,6 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
-
 
         /// <summary>
         /// Envío o reenvío de una solicitud Multirriesgo asociada a un presupuesto para su firma manual o por medio de evicertia
@@ -271,7 +268,6 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
-
         /// <summary>
         /// Devuelve información de un presupuesto para la emisión de una póliza de saldo deudor.
         /// </summary>
@@ -306,7 +302,6 @@ namespace Architect.API.Tron.Controllers
             return Ok(result);
         }
 
-
         /// <summary>
         /// Devuelve la estructura de datos asociados a un presupuesto, con información complementaria para permitir la emisión de una póliza de tipo Mapfre Más Plus
         /// </summary>
@@ -318,7 +313,7 @@ namespace Architect.API.Tron.Controllers
         public async Task<IHttpActionResult> MapfreMasPlusSetup(string presupuesto, string mode)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
-            Tron.Contracts.Emision.MapfreMas  result = null;
+            Tron.Contracts.Emision.MapfreMas result = null;
             await Task.Run(() =>
             {
                 result = Architect.API.Tron.Business.Emision.MapfreMasPlus.Setup(presupuesto, mode, tokenInfo);
@@ -422,6 +417,5 @@ namespace Architect.API.Tron.Controllers
                 .ConfigureAwait(false);
             return Ok(result);
         }
-
     }
 }

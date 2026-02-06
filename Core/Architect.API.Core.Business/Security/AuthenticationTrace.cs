@@ -14,7 +14,7 @@ namespace Architect.API.Core.Business.Security
             //DataAccess.Security.AuthenticationTrace.Create(item);
 
             item.EffectDate = DateTime.Now;
-            item.Id = DataAccess.Security.AuthenticationTrace.Create(item);
+            //item.Id = DataAccess.Security.AuthenticationTrace.Create(item);
         }
     }
 }

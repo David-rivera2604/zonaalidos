@@ -1,24 +1,19 @@
-﻿using Microsoft.Web.Http;
-using System;
-using System.Threading.Tasks;
-using System.Web.Http.Description;
-using System.Web.Http;
-using Architect.API.Core.Business.Security;
+﻿using System;
 using System.IO;
+using System.Threading.Tasks;
+using System.Web.Http;
+using Asp.Versioning;
 
-namespace Architect.API.Core.Controllers
+namespace Architect.API.Process.WebApi.Controllers
 {
-
     /// <summary>
     /// Envio de adjuntos relacionados a un identificador
     /// </summary>
     [ApiVersion("1.0")]
     [Authorize]
     [RoutePrefix("api/v{version:apiVersion}/SendAttachments")]
-    //[ApiExplorerSettings(IgnoreApi = true)]
     public class SendAttachmentsController : ApiController
     {
-
         /// <summary>
         /// Recibe documentos a ser asociados a una póliza emitida.
         /// </summary>
@@ -27,26 +22,27 @@ namespace Architect.API.Core.Controllers
         [Authorize]
         public async Task<IHttpActionResult> SendAttachments(Architect.API.Core.Contracts.General.Attachment_customers.Attachments_customer attachments)
         {
-            Contracts.Security.Token tokenInfo = Security.Token.Info();
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Architect.API.Core.Contracts.General.Attachments _documento;
 
-            Architect.API.Core.Contracts.General.GenericResponse result = new Contracts.General.GenericResponse 
+            Architect.API.Core.Contracts.General.GenericResponse result = new Core.Contracts.General.GenericResponse
             {
-            Successful = true,
-            Reason = "Adjuntos recibidos correctamente"
+                Successful = true,
+                Reason = "Adjuntos recibidos correctamente"
             };
 
-            try { 
-
+            try
+            {
                 if (attachments.entity_id == null)
                 {
                     return BadRequest("Debe indicar el entity_id");
                 }
-                if(attachments.attachments_list == null){
+                if (attachments.attachments_list == null)
+                {
                     return BadRequest("Debe existir una lista de documentos");
                 }
 
-                foreach (Contracts.General.Attachment_customers.Attachment_customer documento in attachments.attachments_list)
+                foreach (Core.Contracts.General.Attachment_customers.Attachment_customer documento in attachments.attachments_list)
                 {
                     byte[] bytes = Convert.FromBase64String(documento.file_content_base64);
                     string filename = string.Format("{0}{1}", Architect.Utilities.Helpers.Settings.StringValue("Attachments.Path"), documento.file_name);
@@ -73,14 +69,11 @@ namespace Architect.API.Core.Controllers
                 }
 
                 return Ok(result);
-            
-           }
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

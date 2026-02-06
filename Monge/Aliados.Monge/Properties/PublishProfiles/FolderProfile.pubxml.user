@@ -353,13 +353,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
       <publishTime>11/25/2019 04:57:50</publishTime>
-    </File>
-    <File Include="bin/Microsoft.AspNet.WebApi.Versioning.dll">
-      <publishTime>02/09/2021 03:14:12</publishTime>
-    </File>
-    <File Include="bin/Microsoft.AspNet.WebApi.Versioning.pdb">
-      <publishTime>02/09/2021 03:10:00</publishTime>
-    </File>
+    </File> 
     <File Include="bin/Microsoft.Bcl.AsyncInterfaces.dll">
       <publishTime>10/18/2022 10:19:40</publishTime>
     </File>
