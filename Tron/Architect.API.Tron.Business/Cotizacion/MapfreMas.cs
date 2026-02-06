@@ -206,8 +206,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 if (IsPlan(cod_plan_auto, new int[] { 34, 35, 36 }))
                 {
-                    fec_validez= fec_validez.AddDays(2);
-                    if (IsFromFeb2026(fec_validez))
+                    if (IsFromFeb2026(fec_validez) && !tokenInfo.Roles.Contain("PolizaGrupo"))
                     {
                         cod_cobIncludeFilter += ",1063";
                         cod_cobExcludeFilter = cod_cobExcludeFilter.Replace(",1063", string.Empty);
