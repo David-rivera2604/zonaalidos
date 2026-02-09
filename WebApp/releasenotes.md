@@ -1,8 +1,22 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.171 - 09/02/2026
+
+### Aliados - Trazabilidad: Reporte de Casos creados por Purdy.	
+
+#### Funcionalidades implementadas:
+
+- Reporte de casoso descargable para Rol agente / Purdy / Corredurías que contenga los siguientes campos: #caso / fecha ingreso  / asunto / Estado - Urgente / Usuario de creación (contacto).
+
+#### Dependencias:
+
+1. 20260209a.visualizations.422.sql
+
+---
+
 ## Versión 1.6.170 - 09/02/2026
 
-### Aliados - Trazabilidad: Mejoras varias en la trazabilidad de la aplicación.	
+### Aliados - Trazabilidad: Validación de casos duplicado.	
 
 #### Funcionalidades implementadas:
 
@@ -17,10 +31,6 @@
 #### Funcionalidades implementadas:
 
 - Bulk upgrade of NuGet packages across multiple projects: updated Microsoft.IdentityModel packages (to 8.15.0), System.Text.Json (to 8.0.5), Newtonsoft.Json (to 13.0.4) and many System.* packages, plus Microsoft.Bcl.AsyncInterfaces (to 9.0.10) and added Microsoft.Bcl.TimeProvider, Microsoft.Extensions.Logging.Abstractions and System.Diagnostics.DiagnosticSource. Corresponding csproj HintPath changes and bindingRedirect updates in app.configs were applied. A new update-nuget-packages.ps1 script was added. Also commented out the DataAccess.Security.AuthenticationTrace.Create call in AuthenticationTrace.cs to disable persisting the authentication trace Id (likely temporary for testing). After this change run NuGet restore and full test pass to verify no runtime or binding issues.
-
-#### Dependencias:
-
-1. [Script 1]
 
 ---
 
@@ -72,7 +82,7 @@
 - Habilitar para Rol de agentes y Rol de Purdy en la pestaña de seguimiento la vista de los comentarios colocados en seguimiento de etapas, fechas de la gestión y realizado por. Vista desde tenant aliados y purdy.
 - Abrir casilla para que los casos seleccionados con prioridad "reprocesos" se deba colocar de forma obligatoria el número de caso anterior. Se agrega la capacidad de poder hacer visible o no los campos de referencia con lo cual se puede agregar un par de campos y manejarlo por visibilidad.
 
-- #### Dependencias:
+#### Dependencias:
 
 1. 20251215a.process.alter.sql
 2. 20260106a.lookupmaster.69.sql
