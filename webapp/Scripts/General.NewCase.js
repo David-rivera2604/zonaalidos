@@ -18,19 +18,9 @@ app.GeneralNewCase = (function () {
             maxFilesize: 256,
             done: function (responses) {
                 console.log('Init_Controls: Archivos subidos exitosamente:', responses);
-                //toastr.success('Archivos cargados correctamente', '', {
-                //    timeOut: 3000,
-                //    closeButton: true
-                //});
             },
             fail: function (error, file) {
                 console.error('Init_Controls: Error al subir archivo:', error, file);
-                //var errorMsg = typeof error === 'string' ? error :
-                //    (error.message || 'Error desconocido');
-                //toastr.error('Error al subir el archivo: ' + file.name + ' - ' + errorMsg, '', {
-                //    timeOut: 5000,
-                //    closeButton: true
-                //});
             },
             always: function (result) {
                 console.log('Init_Controls: Proceso de carga completado:', result);
@@ -49,10 +39,7 @@ app.GeneralNewCase = (function () {
             if (app.ui.IsValid('#ProcessCaseEdtForm', false)) {
                 app.ui.ButtonDoing('#ProcessCaseEdtFormSave');
                 var data = MapInputToObject();
-                if (data.Id === 0)
-                    Create(data, 'Save');
-                else
-                    Update(data);
+                Create(data, 'Save');
             }
             e.preventDefault();
         });
@@ -95,22 +82,22 @@ app.GeneralNewCase = (function () {
                 });
         });
 
-            $('#UserId').change(function () {
-                let user = app.core.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.Code === $('#UserId').val())[0];
-                let finded = user != null;
+        $('#UserId').change(function () {
+            let user = app.core.Data().lookups.filter(i => i.Key === 'Users')[0].Lkp.filter(l => l.Code === $('#UserId').val())[0];
+            let finded = user != null;
 
-                if (finded) {
-                    $('#ContactMainName').val(user.Description);
-                    $('#ContactMainEmail').val(user.EMAIL);
-                }
-                else {
-                    $('#ContactMainName').val('');
-                    $('#ContactMainEmail').val('');
-                }
-                $('#ContactMainName').prop("disabled", finded);
-                $('#ContactMainEmail').prop("disabled", finded);
-            });
-        }
+            if (finded) {
+                $('#ContactMainName').val(user.Description);
+                $('#ContactMainEmail').val(user.EMAIL);
+            }
+            else {
+                $('#ContactMainName').val('');
+                $('#ContactMainEmail').val('');
+            }
+            $('#ContactMainName').prop("disabled", finded);
+            $('#ContactMainEmail').prop("disabled", finded);
+        });
+    }
 
     function ReferenceHandler(caption, type, required, valueList, id) {
         if (caption != '') {
@@ -187,7 +174,7 @@ app.GeneralNewCase = (function () {
             });
     }
 
-    function MapInputToObject() { 
+    function MapInputToObject() {
 
         return {
             Id: parseInt(0 + $('#Id').val(), 10),

@@ -92,6 +92,60 @@ SELECT T2.ID CASEID FROM ALIADOS.PROCESSCASE T2 JOIN ALIADOS.PROCESSINSTANCE T1 
             return result;
         }
 
+        /// <summary>
+        /// Alerta de posible caso duplicado por asunto/datos obligatorios
+        /// </summary>
+        public static int CaseExist(int companyId, Architect.API.Process.Contracts.General.ProcessCase processcaseItem, IDbConnection connection = null)
+        {
+            List<DataFactory.Contracts.Parameter> parameters = new List<DataFactory.Contracts.Parameter>();
+            string condition = "";
+            Contracts.General.ProcessSpecFlow process = ProcessSpecFlow.Retrieve(processcaseItem.FlowId, companyId, connection);
+
+
+            FilterReferenceRequired(1, process.ReferenceCaption1, process.ReferenceRequired1, processcaseItem.Reference1, ref parameters, ref condition);
+            FilterReferenceRequired(2, process.ReferenceCaption2, process.ReferenceRequired2, processcaseItem.Reference2, ref parameters, ref condition);
+            FilterReferenceRequired(3, process.ReferenceCaption3, process.ReferenceRequired3, processcaseItem.Reference3, ref parameters, ref condition);
+            FilterReferenceRequired(4, process.ReferenceCaption4, process.ReferenceRequired4, processcaseItem.Reference4, ref parameters, ref condition);
+            FilterReferenceRequired(5, process.ReferenceCaption5, process.ReferenceRequired5, processcaseItem.Reference5, ref parameters, ref condition);
+            FilterReferenceRequired(6, process.ReferenceCaption6, process.ReferenceRequired6, processcaseItem.Reference6, ref parameters, ref condition);
+            FilterReferenceRequired(7, process.ReferenceCaption7, process.ReferenceRequired7, processcaseItem.Reference7, ref parameters, ref condition);
+            FilterReferenceRequired(8, process.ReferenceCaption8, process.ReferenceRequired8, processcaseItem.Reference8, ref parameters, ref condition);
+            FilterReferenceRequired(9, process.ReferenceCaption9, process.ReferenceRequired9, processcaseItem.Reference9, ref parameters, ref condition);
+            FilterReferenceRequired(10, process.ReferenceCaption10, process.ReferenceRequired10, processcaseItem.Reference10, ref parameters, ref condition);
+
+
+            // AND pc.Priority =:Priority
+            // AND LOWER(pc.ContactMainName)=:ContactMainName
+            // AND LOWER(pc.ContactMainEmail)=:ContactMainEmail
+
+            int count = (int)Database.Select(
+ @"SELECT COUNT(Id)
+    FROM ProcessCase pc
+   WHERE pc.CompanyId=:CompanyId
+     AND pc.FlowId=:FlowId
+     AND LOWER(pc.Title) =:Title" + condition)
+                                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                                .AddParameter("FlowId", DbType.Decimal, 9, processcaseItem.FlowId)
+                                //.AddParameter("Priority", DbType.Decimal, 3, processcaseItem.Priority)
+                                .AddParameter("Title", DbType.AnsiString, 120, processcaseItem.Title.ToLower())
+                                //.AddParameter("ContactMainName", DbType.AnsiString, 256, processcaseItem.ContactMainName.ToLower())
+                                //.AddParameter("ContactMainEmail", DbType.AnsiString, 256, processcaseItem.ContactMainEmail.ToLower())
+                                .AddParameter(parameters)
+                                .QueryScalar<Decimal>(connection, "Research");
+            return count;
+        }
+
+        public static void FilterReferenceRequired(int index, string caption, bool isRequired, string value, ref List<DataFactory.Contracts.Parameter> parameters, ref string condition)
+        {
+            if (caption.IsNotEmpty() && isRequired)
+            {
+                condition += $" AND LOWER(Reference{index})=:Reference{index}";
+
+                parameters.Add(new DataFactory.Contracts.Parameter { Name = $"Reference{index}", Type = DbType.AnsiString, Size = 80, Value = value.ToLower(), direction = ParameterDirection.Input });
+            }
+        }
+
+
     }
 
 }

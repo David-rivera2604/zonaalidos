@@ -1,5 +1,15 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.170 - 09/02/2026
+
+### Aliados - Trazabilidad: Mejoras varias en la trazabilidad de la aplicación.	
+
+#### Funcionalidades implementadas:
+
+- Alerta de posible caso duplicado por asunto/datos obligatorios. Se varifica el proceso, asunto y referencias requeridas.
+
+---
+
 ## Versión 1.6.169 - 03/02/2026
 
 ### Aliados - Bump NuGet packages and disable auth DB write.
