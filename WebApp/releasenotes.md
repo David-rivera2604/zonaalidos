@@ -1,5 +1,15 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.172 - 10/02/2026
+
+### Aliados - Pasarela: Tokenización de tarjeta duplicadas.	
+
+#### Funcionalidades implementadas:
+
+- Cuando se hage el pago on line con suscripción se crear una nueva tokenizacion pero queda activa la tokenizacion anterior.
+
+---
+
 ## Versión 1.6.171 - 09/02/2026
 
 ### Aliados - Trazabilidad: Reporte de Casos creados por Purdy.	
