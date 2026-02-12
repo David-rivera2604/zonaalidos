@@ -431,6 +431,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 if (!string.IsNullOrEmpty(token))
                 {
                     int numSpto = DataAccess.Pagos.Recibos.Get_NumSpto(request.OnlinePayment.BillNumber);
+                    DataAccess.Pagos.Tarjetas.Cancel_Previous_Tokens(request.OnlinePayment.PolicyId, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber);
                     DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe");
                 }
             }

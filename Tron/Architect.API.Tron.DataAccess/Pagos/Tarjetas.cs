@@ -133,6 +133,18 @@ namespace Architect.API.Tron.DataAccess.Pagos
                             .AddParameter("NUM_POLIZA", DbType.String, 13, num_poliza)
                             .QueryScalar<Decimal>(connection, "Research");
         }
-    
+
+        public static int Cancel_Previous_Tokens(string num_poliza, string tip_docum, string cod_docum, IDbConnection connection = null)
+        {
+            return (int)Database.Update("BOVEDA", DataFactory.Enumerations.ExecuteMode.CommandBuilder)
+                            .Column("STATUS", DbType.Int32, 3, 9)
+                            .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                            .Filter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
+                            .Filter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
+                            .Filter("NUM_POLIZA", DbType.String, 13, num_poliza)
+                            .FilterCustom("STATUS", DbType.Int32, 1, 9, "<")
+                            .Execute(connection, "Research");
+        }
+
     }
 }
