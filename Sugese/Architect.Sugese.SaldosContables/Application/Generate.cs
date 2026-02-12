@@ -154,7 +154,7 @@ namespace Architect.Sugese.SaldosContables.Application
 
         private static void CreateXMLFile(ModeloSaldosContablesNIIF17 model, string xmlFileName, DataTable response)
         {
-            Utilities.SerializeHandler<ModeloSaldosContablesNIIF17>.SerializeToFile(model, xmlFileName, false);
+            Utilities.SerializeHandler.SerializeToFile<ModeloSaldosContablesNIIF17>(model, xmlFileName, false);
             List<string> result = Validate.XsdValidate("ModeloSaldosContablesNIIF17", xmlFileName);
 
             if (result.Count > 0)

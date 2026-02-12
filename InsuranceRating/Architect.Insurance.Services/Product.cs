@@ -11,7 +11,7 @@ namespace Architect.Insurance.Services
         public static Contracts.Product.ProductMaster Load(string filename)
         {
 
-            Contracts.Product.ProductMaster result = Architect.Utilities.SerializeHandler<Contracts.Product.ProductMaster>.DeserializeFromFile(filename);
+            Contracts.Product.ProductMaster result = Architect.Utilities.SerializeHandler.DeserializeFromFile<Contracts.Product.ProductMaster>(filename);
 
             if (result.ClientsAllowed != null)
                 result.ClientsAllowed = new List<Contracts.Product.ClientAllowed>() { new Contracts.Product.ClientAllowed() { ClientRole = 2 } };

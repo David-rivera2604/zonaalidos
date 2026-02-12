@@ -495,11 +495,11 @@ Public Class Generate
     End Function
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of Canales.ModeloCanales).Serialize(_Canales)
+        Return Utilities.SerializeHandler.Serialize(Of Canales.ModeloCanales)(_Canales)
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
-        Utilities.SerializeHandler(Of Canales.ModeloCanales).SerializeToFile(_Canales, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of Canales.ModeloCanales)(_Canales, filename, withFormat)
 
         Dim result As List(Of String) = Nothing
         result = Validate.XsdValidate("ModeloCanales", filename)

@@ -276,6 +276,12 @@ namespace Architect.API.Process.Business.General
                 {
                     result.Add(new Core.Contracts.General.Error() { Group = group, Key = "UserId", Message = "El valor indicado para el usuario no es valido" });
                 }
+
+                //// SI no existen error de validación, se verifica si ya existe algun caso similar
+                //if (result.Count == 0 && Architect.API.Process.DataAccess.General.ProcessCase.CaseExist(companyId, source, null) > 0)
+                //{
+                //    result.Add(new Core.Contracts.General.Error() { Group = "*", Key = "Case", Message = "Ya existe un caso con ese asunto y las mismas referencias requeridas" });
+                //}
             }
 
             return result;

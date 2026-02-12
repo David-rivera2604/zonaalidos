@@ -207,7 +207,7 @@ namespace Architect.Sugese.EstadisticasInternacionales.Application
 
         private static void CreateXMLFile(Domain.ModeloEstadisticasInternacionales model, string xmlFileName, DataTable response)
         {
-            Utilities.SerializeHandler<Domain.ModeloEstadisticasInternacionales>.SerializeToFile(model, xmlFileName, false);
+            Utilities.SerializeHandler.SerializeToFile<Domain.ModeloEstadisticasInternacionales>(model, xmlFileName, false);
             List<string> result = Validate.XsdValidate("ModeloEstadisticasInternacionalesNIIF17", xmlFileName);
 
             if (result.Count > 0)

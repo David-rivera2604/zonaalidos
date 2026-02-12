@@ -60,7 +60,7 @@ namespace Architect.Sugese.CuentaTecnicaFinanciera.Application
 
         private static void CreateXMLFile(Domain.ModeloCuentaTecnicaFinanciera model, string xmlFileName, DataTable response)
         {
-            Utilities.SerializeHandler<Domain.ModeloCuentaTecnicaFinanciera>.SerializeToFile(model, xmlFileName, false);
+            Utilities.SerializeHandler.SerializeToFile<Domain.ModeloCuentaTecnicaFinanciera>(model, xmlFileName, false);
             List<string> result = Validate.XsdValidate("ModeloCuentaTecnicaFinancieraNIIF17", xmlFileName);
 
             if (result.Count > 0)

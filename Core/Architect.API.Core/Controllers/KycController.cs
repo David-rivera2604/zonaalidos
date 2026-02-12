@@ -96,7 +96,7 @@ namespace Architect.API.Insurance.Controllers
             {
                 try
                 {
-                    result = Utilities.SerializeHandler<List<Actividad_Economica>>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], "Actividad_Economica_List"));
+                    result = Utilities.SerializeHandler.DeserializeJSONFromFile<List<Actividad_Economica>>(string.Format(@"{0}\{1}.json", ConfigurationManager.AppSettings["Product.Definition.Path"], "Actividad_Economica_List"));
                     Utilities.Cache.SetItem("ActividadesEconomicas_Aliados", JsonConvert.SerializeObject(result), -1);
                 }
                 catch (Exception e)

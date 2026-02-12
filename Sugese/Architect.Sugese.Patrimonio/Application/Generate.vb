@@ -33,7 +33,7 @@ Public Class Generate
     End Sub
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
-        Utilities.SerializeHandler(Of ModeloEstadoCambiosPatrimonioPropio).SerializeToFile(_Patrimonio, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of ModeloEstadoCambiosPatrimonioPropio)(_Patrimonio, filename, withFormat)
         Dim result As List(Of String) = Nothing
         'Validación según el XSD enviado por la sugese
         result = Validate.XsdValidate("ModeloEstadoCambiosPatrimonioPropio", filename)

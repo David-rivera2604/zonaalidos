@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.Utilities;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -230,9 +231,9 @@ namespace Architect.API.Process.Business.General
                                 result.AppendLine();
                             }
                         }
-
                     }
                     break;
+
                 case "flowchart":
                     result.AppendLine("flowchart TD");
                     foreach (Contracts.General.ProcessSpecStep step in spec.ProcessSpecSteps)
@@ -250,9 +251,9 @@ namespace Architect.API.Process.Business.General
                                 result.AppendLine();
                             }
                         }
-
                     }
                     break;
+
                 case "statediagram":
                     Contracts.General.ProcessSpecStep first = null;
                     Contracts.General.ProcessSpecStep last = null;
@@ -296,13 +297,14 @@ namespace Architect.API.Process.Business.General
         {
             string fullPath = Path.Combine(HostingEnvironment.MapPath(ConfigurationManager.AppSettings["Files.Path"]), stored);
 
-            Contracts.General.ProcessSpecFlowResult result = Duplicate(Utilities.SerializeHandler<Contracts.General.ProcessSpecFlow>.DeserializeJSONFromFile(fullPath), companyId, userId, String.Empty);
+            Contracts.General.ProcessSpecFlowResult result = Duplicate(fullPath.DeserializeJSONFromFile<Contracts.General.ProcessSpecFlow>(), companyId, userId, String.Empty);
             return true;
         }
+
         public static string Export(int companyId, int userId, int id)
         {
             Contracts.General.ProcessSpecFlow result = DataAccess.Specification.Retrieve(id, companyId, 0);
-            return Utilities.SerializeHandler<Architect.API.Process.Contracts.General.ProcessSpecFlow>.SerializeJSON(result, false, false, true, Newtonsoft.Json.TypeNameHandling.None);
+            return Utilities.SerializeHandler.SerializeJSON<Architect.API.Process.Contracts.General.ProcessSpecFlow>(result, false, false, true, Newtonsoft.Json.TypeNameHandling.None);
         }
 
         /// <summary>

@@ -78,7 +78,7 @@ namespace Architect.Sugese.RendimientoFinanciero.Application
 
         private static void CreateXMLFile(Domain.ModeloRendimientoFinanciero model, string xmlFileName, DataTable response)
         {
-            Utilities.SerializeHandler<Domain.ModeloRendimientoFinanciero>.SerializeToFile(model, xmlFileName, false);
+            Utilities.SerializeHandler.SerializeToFile<Domain.ModeloRendimientoFinanciero>(model, xmlFileName, false);
             List<string> result = Validate.XsdValidate("ModeloRendimientoFinancieroNIIF17", xmlFileName);
 
             if (result.Count > 0)

@@ -140,7 +140,7 @@ namespace aliados.Controllers
 
             if (body.Successful)
             {
-                var context = Architect.Utilities.SerializeHandler<Architect.API.Core.Contracts.Security.AOTPResponse>.DeserializeJSON((string)Architect.Utilities.Cache.GetItem(resetRequest.OTP));
+                var context = Architect.Utilities.SerializeHandler.DeserializeJSON<Architect.API.Core.Contracts.Security.AOTPResponse>((string)Architect.Utilities.Cache.GetItem(resetRequest.OTP));
                 body.Context  = context.Context;
                 body.Token = context.Token;
                 Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, body.Context, body.Token));

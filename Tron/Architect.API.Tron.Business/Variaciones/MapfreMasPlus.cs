@@ -121,7 +121,7 @@ namespace Architect.API.Tron.Business.Variaciones
                 //}
             }
 
-            Utilities.SerializeHandler<Contracts.Variaciones.MapfreMasPlus>.SerializeJSONToFile(result, string.Format(@"c:\temp\mapfremas.proposal.{0}.json", poliza), true, false, false);
+            Utilities.SerializeHandler.SerializeJSONToFile<Contracts.Variaciones.MapfreMasPlus>(result, string.Format(@"c:\temp\mapfremas.proposal.{0}.json", poliza), true, false, false);
 
             Utilities.Cache.SetItem(string.Format("mapfremasplus.proposal.{0}", poliza),
                                     Newtonsoft.Json.JsonConvert.SerializeObject(result), -1);

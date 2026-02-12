@@ -1,6 +1,7 @@
 ﻿using Architect.API.Core.Contracts.Security;
 using Architect.API.Core.DataAccess.Security;
 using Architect.API.Core.Security;
+using Architect.Utilities;
 using Architect.Utilities.Extensions;
 using Architect.Utilities.Helpers;
 using System;
@@ -165,8 +166,9 @@ namespace Architect.API.Core.Business.Security
                             "2FA"
                         );
 
-                        var aOTPResponse = new Contracts.Security.AOTPResponse { Context = result, Token = tokenBody };
-                        Utilities.Cache.SetItem(key, Utilities.SerializeHandler<Contracts.Security.AOTPResponse>.SerializeJSON(aOTPResponse, false));
+                        var aOTPResponse = new Contracts.Security.AOTPResponse { Context = result, Token = tokenBody, Key = key };
+                        result.AOTP = aOTPResponse;
+                        key.SetItem(aOTPResponse.SerializeJSON<Contracts.Security.AOTPResponse>(false));
                         result.Token = string.Empty;
                     }
                 }
@@ -451,7 +453,7 @@ namespace Architect.API.Core.Business.Security
             if (companyItem.IsNotEmpty())
             {
                 companyId = Int32.Parse(companyItem.Code);
-                internalUserId = Architect.Utilities.Helpers.Settings.IntegerValue(string.Format("Tenant.Settings.{0}.External.UserId", companyId));
+                internalUserId = $"Tenant.Settings.{companyId}.External.UserId".IntegerValue();
                 result.UserMember.CompanyId = companyId;
 
                 result.Errors = UserMember.Validate(result.UserMember, true);
@@ -486,7 +488,7 @@ namespace Architect.API.Core.Business.Security
             if (result.Errors.Count == 0)
             {
                 string roleId = "";
-                string roleName = Architect.Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleName", companyId));
+                string roleName = string.Format("Tenant.Settings.{0}.External.RoleName", companyId).StringValue();
                 if (roleName.IsNotEmpty())
                 {
                     Contracts.General.LookupValue rolInfo = Common.Lkp("Roles", companyId).Where(r => r.Description == roleName).FirstOrDefault();
@@ -495,10 +497,9 @@ namespace Architect.API.Core.Business.Security
                         roleId = rolInfo.Code;
                     }
                 }
-                if (roleId.IsEmpty())
-                {
-                    roleId = Architect.Utilities.Helpers.Settings.StringValue(string.Format("Tenant.Settings.{0}.External.RoleId", companyId));
-                }
+                if (roleId.IsEmpty())                
+                    roleId = string.Format("Tenant.Settings.{0}.External.RoleId", companyId).StringValue();
+                
 
                 result.UserMember.Roles = new List<Architect.Utilities.Contracts.LookUpValue> { new Architect.Utilities.Contracts.LookUpValue() { Code = roleId } };
                 result.UserMember = UserMember.Create(companyId, internalUserId, result.UserMember, 1);

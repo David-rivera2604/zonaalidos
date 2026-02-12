@@ -13,7 +13,7 @@ namespace Architect.API.Core.Business.Security
             Contracts.Security.Activity session = (from s in Architect.API.Core.Security.Session.Sessions(string.Empty) where s.Token.Equals(authenticationToken) select s).FirstOrDefault();
             if (session.IsNotEmpty())
             {
-                DateTime expDateTime = session.LastDateTime.AddMinutes(Architect.Utilities.Helpers.Settings.IntegerValue("Session.Timeout", 30));
+                DateTime expDateTime = session.LastDateTime.AddMinutes("Session.Timeout".IntegerValue(30));
                 result = Convert.ToInt32(expDateTime.Subtract(DateTime.Now).TotalSeconds);
             }
             return result;

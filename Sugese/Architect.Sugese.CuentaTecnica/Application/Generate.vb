@@ -1445,7 +1445,7 @@ Public Class Generate
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
-        Utilities.SerializeHandler(Of ModeloCuentaTecnica).SerializeToFile(_CuentaTecnica, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of ModeloCuentaTecnica)(_CuentaTecnica, filename, withFormat)
 
         Dim result As List(Of String) = Nothing
 

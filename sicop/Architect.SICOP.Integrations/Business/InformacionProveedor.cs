@@ -40,7 +40,7 @@ namespace Architect.SICOP.Integrations.Business
 
                 if (result.IsNotEmpty() && result.Body.IsNotEmpty() && result.Body.@return.IsNotEmpty())
                 {
-                    info = Utilities.SerializeHandler<Contracts.SUPPLIER_INFO>.Deserialize(result.Body.@return);
+                    info = Utilities.SerializeHandler.Deserialize<Contracts.SUPPLIER_INFO>(result.Body.@return);
 
                     switch (info.Confirmation)
                     {

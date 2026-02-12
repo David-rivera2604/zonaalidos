@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.Utilities;
+using Architect.Utilities.Extensions;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,7 @@ namespace Architect.DataFactory.Handlers
         {
             using (MD5 md5Hash = MD5.Create())
             {
-                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(ConnectionStringName + command + Architect.Utilities.SerializeHandler<List<Contracts.Parameter>>.Serialize(parameters)));
+                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(ConnectionStringName + command + parameters.Serialize<List<Contracts.Parameter>>()));
                 StringBuilder sBuilder = new StringBuilder();
                 int i;
                 for (i = 0; i <= data.Length - 1; i++)

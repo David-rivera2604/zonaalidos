@@ -80,7 +80,7 @@ namespace Architect.Sugese.PrimasSiniestros.Application
 
         private static void CreateXMLFile(Domain.ModeloPrimasSiniestros model, string xmlFileName, DataTable response)
         {
-            Utilities.SerializeHandler<Domain.ModeloPrimasSiniestros>.SerializeToFile(model, xmlFileName, false);
+            Utilities.SerializeHandler.SerializeToFile<Domain.ModeloPrimasSiniestros>(model, xmlFileName, false);
             List<string> result = Validate.XsdValidate("ModeloPrimasSiniestrosNIIF17", xmlFileName);
 
             if (result.Count > 0)

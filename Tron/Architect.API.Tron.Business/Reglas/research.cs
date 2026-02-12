@@ -22,7 +22,7 @@ namespace Architect.API.Tron.Business.Reglas
             if (!Utilities.Cache.Exist(cacheKey) || Utilities.Helpers.Settings.StringValue("Working.Mode") == "Development")
 
             {
-                Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+                Contracts.Especificacion.Producto def = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
 
                 if (def.Reglas?.Count > 0)
                 {
@@ -82,7 +82,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             else
             {
-                Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+                Contracts.Especificacion.Producto def = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
                 if (def.Coberturas?.Count > 0)
                 {
                     script = BuildCoveragesCode(ruleFile, data, def.Coberturas);
@@ -132,7 +132,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             else
             {
-                Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+                Contracts.Especificacion.Producto def = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
 
                 if (def.Reglas?.Count > 0)
                 {
@@ -180,7 +180,7 @@ namespace Architect.API.Tron.Business.Reglas
         {
             bool allowAdd = false;
             Contracts.Comun.DocumentoRequerido newdocumento;
-            Contracts.Especificacion.Producto rules = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            Contracts.Especificacion.Producto rules = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
 
             if (documentos.IsEmpty())
             {
@@ -259,7 +259,7 @@ namespace Architect.API.Tron.Business.Reglas
 
         internal static List<Contracts.Comun.tercero> Apply_Terceros_int(string ruleFile, List<Contracts.Comun.tercero> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
         {
-            Contracts.Especificacion.Producto rules = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            Contracts.Especificacion.Producto rules = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
             Contracts.Comun.tercero newTercero;
             bool addTercero = false;
             foreach (Contracts.Especificacion.TerceroCondicion condition in rules.Terceros)
@@ -385,7 +385,7 @@ namespace Architect.API.Tron.Business.Reglas
                 }
             }
 
-            Utilities.SerializeHandler<Architect.API.Tron.Contracts.Especificacion.Producto>.SerializeJSONToFile(def,
+            Utilities.SerializeHandler.SerializeJSONToFile<Architect.API.Tron.Contracts.Especificacion.Producto>(def,
                 ConfigurationManager.AppSettings["Product.Definition.Path"] + @"\" + ruleFile + ".rules.json", false, false, true);
 
             return def;
@@ -420,7 +420,7 @@ namespace Architect.API.Tron.Business.Reglas
         /// </summary>
         public static Contracts.Especificacion.Producto GetProducto(string ruleFile)
         {
-            Contracts.Especificacion.Producto def = Utilities.SerializeHandler<Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
+            Contracts.Especificacion.Producto def = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
             int index = 1;
             foreach (Architect.API.Tron.Contracts.Especificacion.Cobertura cobertura in def.Coberturas)
             {

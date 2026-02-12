@@ -63,11 +63,11 @@ Public Class Generate
     End Sub
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of RunOff.ModeloRunOff).Serialize(_RunOff)
+        Return Utilities.SerializeHandler.Serialize(Of RunOff.ModeloRunOff)(_RunOff)
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
-        Utilities.SerializeHandler(Of RunOff.ModeloRunOff).SerializeToFile(_RunOff, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of RunOff.ModeloRunOff)(_RunOff, filename, withFormat)
 
         Dim result As List(Of String) = Nothing
         'Validación según el XSD enviado por la sugese
@@ -79,7 +79,7 @@ Public Class Generate
         End If
         If result.Count > 0 Then
 
-            Utilities.SerializeHandler(Of List(Of String)).SerializeToFile(result, IO.Path.GetDirectoryName(filename) & "\" & IO.Path.GetFileNameWithoutExtension(filename) & ".error.xml", True)
+            Utilities.SerializeHandler.SerializeToFile(Of List(Of String))(result, IO.Path.GetDirectoryName(filename) & "\" & IO.Path.GetFileNameWithoutExtension(filename) & ".error.xml", True)
 
             For Each item As String In result
                 Helpers.XmlRespose.AddError(Response, "error", item)

@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="General\CreateProcessInstance.cs" />
+    <Compile Include="General\FileUploaded.cs" />
     <Compile Include="General\ProcessCase.cs" />
     <Compile Include="General\ProcessInstance.cs" />
     <Compile Include="General\ProcessSpecFlow.cs" />

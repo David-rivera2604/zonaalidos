@@ -31,7 +31,7 @@ namespace Architect.API.Core.Business.Security
         internal static int AuthenticationByLDAP(string userName, string password)
         {
             int response = 0;
-            string domain = Architect.Utilities.Helpers.Settings.StringValue("LDAP.Domain", "mapfre.com.cr");
+            string domain = "LDAP.Domain".StringValue("mapfre.com.cr");
             string _path = "LDAP://" + domain;
             string _username = domain + @"\" + userName;
             DirectoryEntry entry = new DirectoryEntry(_path, _username, password);

@@ -237,11 +237,11 @@ Public Class Generate
     End Function
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of InversionesFinancieras.ModeloInversionesFinancieras).Serialize(_InversionesFinancieras)
+        Return Utilities.SerializeHandler.Serialize(Of InversionesFinancieras.ModeloInversionesFinancieras)(_InversionesFinancieras)
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
-        Utilities.SerializeHandler(Of InversionesFinancieras.ModeloInversionesFinancieras).SerializeToFile(_InversionesFinancieras, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of InversionesFinancieras.ModeloInversionesFinancieras)(_InversionesFinancieras, filename, withFormat)
 
         Dim result As List(Of String) = Nothing
 

@@ -35,7 +35,7 @@ Public Class Generate
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
         Dim result As List(Of String) = Nothing
-        Utilities.SerializeHandler(Of ModeloEstadoResultados).SerializeToFile(_EstadoResultados, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of ModeloEstadoResultados)(_EstadoResultados, filename, withFormat)
 
         'Validación según el XSD enviado por la sugese
         result = Validate.XsdValidate("ModeloEstadoResultados", filename)

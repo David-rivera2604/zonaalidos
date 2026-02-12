@@ -55,7 +55,7 @@ Public Class Generate
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
         Dim errors As Boolean = False
         Try
-            Utilities.SerializeHandler(Of Sugese.Polizas.ModeloPolizas).SerializeToFile(_Polizas, filename, withFormat)
+            Utilities.SerializeHandler.SerializeToFile(Of Sugese.Polizas.ModeloPolizas)(_Polizas, filename, withFormat)
         Catch ex As Exception
             Sugese.Utility.Helpers.XmlRespose.AddError(Response, "error", "Falla al tratar de generar el xml, debe existir algun error con los datos")
             errors = True

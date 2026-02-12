@@ -5,8 +5,7 @@ using System.Text;
 namespace Architect.Utilities.Helpers
 {
     /// <summary>
-    /// Utilidad para hashing seguro de contraseñas usando PBKDF2-HMAC-SHA256.
-    /// NO usar CryptSupport para contraseñas (es cifrado simétrico reversible).
+    /// Utilidad para hashing seguro de contraseñas usando PBKDF2-HMAC-SHA256 (es cifrado simétrico reversible).
     /// 
     /// Algoritmo: PBKDF2-HMAC-SHA256
     /// - Salt: 256 bits aleatorio único por contraseña
@@ -23,9 +22,6 @@ namespace Architect.Utilities.Helpers
     /// IMPORTANTE: Las contraseñas NO se "cifran" (cifrado implica reversibilidad).
     /// Se protegen mediante HASHING IRREVERSIBLE.
     /// 
-    /// Diferencia con CryptSupport:
-    /// - CryptSupport: Cifrado simétrico AES (reversible) ? Para datos sensibles
-    /// - PasswordHasher: Hashing PBKDF2 (irreversible) ? Para contraseñas
     /// </remarks>
     public static class PasswordHasher
     {

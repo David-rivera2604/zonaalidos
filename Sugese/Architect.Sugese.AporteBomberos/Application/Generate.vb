@@ -114,11 +114,11 @@ Public Class Generate
     End Function
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of AporteBomberos.ModeloAporteBomberos).Serialize(_AporteBomberos)
+        Return Utilities.SerializeHandler.Serialize(Of AporteBomberos.ModeloAporteBomberos)(_AporteBomberos)
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
-        Utilities.SerializeHandler(Of AporteBomberos.ModeloAporteBomberos).SerializeToFile(_AporteBomberos, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of AporteBomberos.ModeloAporteBomberos)(_AporteBomberos, filename, withFormat)
     End Sub
 
     Public Function AddRamoPolizaByDataRow(row As DataRow) As ModeloAporteBomberosDatosModeloRamoAporteBomberos

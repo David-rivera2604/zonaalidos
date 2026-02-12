@@ -34,7 +34,7 @@ Public Class Generate
     End Sub
 
     Public Function Serialize(withFormat As Boolean) As String
-        Return Utilities.SerializeHandler(Of Produccion.ModeloProduccion).Serialize(_Produccion)
+        Return Utilities.SerializeHandler.Serialize(Of Produccion.ModeloProduccion)(_Produccion)
     End Function
 
     Private Sub ModelInit()
@@ -98,7 +98,7 @@ Public Class Generate
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
-        Utilities.SerializeHandler(Of Produccion.ModeloProduccion).SerializeToFile(_Produccion, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of Produccion.ModeloProduccion)(_Produccion, filename, withFormat)
 
     End Sub
 

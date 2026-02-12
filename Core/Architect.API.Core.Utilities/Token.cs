@@ -1,5 +1,6 @@
 ﻿using Architect.API.Core.Contracts.Security;
 using Architect.API.Core.DataAccess.Security;
+using Architect.Utilities;
 using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -130,8 +131,7 @@ namespace Architect.API.Core.Security
             if (HttpContext.Current?.User != null)
             {
                 System.Security.Claims.ClaimsPrincipal user = (System.Security.Claims.ClaimsPrincipal)HttpContext.Current.User;
-
-                result = Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Deserialize(Architect.Utilities.Helpers.CryptSupport.DecryptString(user.Claims.FirstOrDefault(c => c.Type == "Body").Value).DecompressString());
+                result = Architect.Utilities.Helpers.CryptSupport.DecryptString(user.Claims.FirstOrDefault(c => c.Type == "Body").Value).DecompressString().Deserialize<Contracts.Security.Token>();
             }
 
             return result;
@@ -305,7 +305,7 @@ namespace Architect.API.Core.Security
                     {
                         tokenValue = Architect.Utilities.Helpers.CryptSupport.DecryptString(tokenValue);
                         tokenValue = tokenValue.DecompressString();
-                        result = Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Deserialize(tokenValue);
+                        result = Architect.Utilities.SerializeHandler.Deserialize<Contracts.Security.Token>(tokenValue);
                     }
                     else
                     {
@@ -327,7 +327,7 @@ namespace Architect.API.Core.Security
                             var body = jwtToken.Claims.First(x => x.Type == "Body").Value.ToString();
                             body = Architect.Utilities.Helpers.CryptSupport.DecryptString(body);
                             body = body.DecompressString();
-                            result = Architect.Utilities.SerializeHandler<Contracts.Security.Token>.Deserialize(body);
+                            result = Architect.Utilities.SerializeHandler.Deserialize<Contracts.Security.Token>(body);
                         }
                     }
                 }

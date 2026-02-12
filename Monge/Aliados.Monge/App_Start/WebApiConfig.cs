@@ -2,6 +2,7 @@
 using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Routing;
+using Architect.Utilities.Helpers;
 using Asp.Versioning.Routing;
 
 namespace Aliados.Monge
@@ -26,7 +27,16 @@ namespace Aliados.Monge
             config.Services.Replace(typeof(IExceptionLogger), new App_Start.UnhandledExceptionLogger());
             config.Services.Replace(typeof(IExceptionHandler), new App_Start.GlobalExceptionHandler());
 
-            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+            // Enable CORS with support for credentials
+            // Read allowed origins from Web.config
+            EnableCorsAttribute cors = new EnableCorsAttribute(
+                origins: "CORS.AllowedOrigins".StringValue("https://localhost:44341,https://app.mapfrecr.com"),
+                headers: "*",
+                methods: "*"
+            )
+            {
+                SupportsCredentials = true
+            };
 
             config.EnableCors(cors);
             config.AddApiVersioning();
@@ -37,7 +47,7 @@ namespace Aliados.Monge
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            //config.Filters.Add(new Architect.API.Core.Security.AuthorizeExtendAttribute());
+            config.Filters.Add(new Architect.API.Core.Security.AuthorizeExtendAttribute());
         }
     }
 }

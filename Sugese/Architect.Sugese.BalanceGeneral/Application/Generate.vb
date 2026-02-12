@@ -44,7 +44,7 @@ Public Class Generate
     End Function
 
     Public Sub FileSerialize(filename As String, withFormat As Boolean)
-        Utilities.SerializeHandler(Of ModeloBalanceGeneral).SerializeToFile(_BalanceGeneral, filename, withFormat)
+        Utilities.SerializeHandler.SerializeToFile(Of ModeloBalanceGeneral)(_BalanceGeneral, filename, withFormat)
 
 
         Dim result As List(Of String) = Nothing

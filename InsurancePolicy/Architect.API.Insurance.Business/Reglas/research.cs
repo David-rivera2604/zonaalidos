@@ -1,4 +1,5 @@
-﻿using Architect.Utilities.Extensions;
+﻿using Architect.Utilities;
+using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,10 +7,8 @@ using System.Text;
 
 namespace Architect.API.Insurance.Business.Reglas
 {
-
     public static class research
     {
-
         public static string Apply_Comportamientos(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
             string cacheKey = $"decision.{ruleFile}.Behavior.source";
@@ -43,7 +42,6 @@ namespace Architect.API.Insurance.Business.Reglas
             return BuildScript(cacheKey, "Behavior", Specification(ruleFile), ruleFile, null, true);
         }
 
-
         public static List<Core.Contracts.General.Error> Apply_Reglas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
             string cacheKey = $"decision.{ruleFile}.rules.source";
@@ -62,12 +60,10 @@ namespace Architect.API.Insurance.Business.Reglas
             return errors;
         }
 
-
         internal static Core.Contracts.Especificacion.Producto Specification(string ruleFile)
         {
-            return Utilities.SerializeHandler<Core.Contracts.Especificacion.Producto>.DeserializeJSONFromFile(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile)); ;
+            return string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile).DeserializeJSONFromFile<Core.Contracts.Especificacion.Producto>(); ;
         }
-
 
         internal static string BuildScript(string cacheKey, string key, Core.Contracts.Especificacion.Producto def, string ruleFile, object data, bool javascript = false)
         {
@@ -114,7 +110,6 @@ namespace Architect.API.Insurance.Business.Reglas
             return script;
         }
 
-
         internal static string BuildRulesCode(object data, string ruleFile, List<Core.Contracts.Especificacion.Regla> rules, Architect.Decision.Vocabulary.Condition condition)
         {
             StringBuilder script = new StringBuilder();
@@ -153,7 +148,6 @@ namespace Architect.API.Insurance.Business.Reglas
 
             script.Append("app.poliza.EvalBehavior = function () {let result = '', data=app.PolicyEdit.Data();");
 
-
             foreach (Core.Contracts.Especificacion.Comportamiento behavior in behaviors)
             {
                 script.AppendFormat("if({0}){{result += ',{1}';}}\n", condition.Parser(behavior.Condicion, "JavaScript"), behavior.Accion);
@@ -161,6 +155,5 @@ namespace Architect.API.Insurance.Business.Reglas
             script.Append("return {Behavior: result};}");
             return script.ToString();
         }
-
     }
 }
