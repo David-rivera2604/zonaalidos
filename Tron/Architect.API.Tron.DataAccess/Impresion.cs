@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,15 +45,48 @@ namespace Architect.API.Tron.DataAccess
         public static async Task<string> Poliza(int cod_cia, string num_poliza, string procedureName, int num_riesgo = 1)
         {
             IDbConnection currentConnection = Architect.DataFactory.Database.OpenConnection("Tron");
-            Database.Procedure(procedureName)
+            string reportId = string.Empty;   
+
+            switch (procedureName)
+            {
+                case "em_p_certificado_401_za":
+
+                    Database.Procedure(procedureName)
+                             .AddParameter("p_num_poliza", Architect.DataFactory.Enumerations.DbType.String, 22, num_poliza)
+                             .AddParameter("p_num_spto", Architect.DataFactory.Enumerations.DbType.Int32, 15, 0)
+                             .AddParameter("p_id_report", Architect.DataFactory.Enumerations.DbType.String, 22, reportId, ParameterDirection.InputOutput)
+                             .Execute(currentConnection, "Tron", new Action<DbCommand>((command) =>
+                             {
+                                 reportId = (command.Parameters["p_id_report"].Value.ToString());
+                             }));
+
+                    break;
+
+                case "em_p_certificado_117_za":
+
+                    Database.Procedure(procedureName)
+                            .AddParameter("p_num_poliza", Architect.DataFactory.Enumerations.DbType.String, 22, num_poliza)
+                            .AddParameter("p_num_spto", Architect.DataFactory.Enumerations.DbType.Int32, 15, 0)
+                            .AddParameter("p_id_report", Architect.DataFactory.Enumerations.DbType.String, 22, reportId, ParameterDirection.InputOutput)
+                            .Execute(currentConnection, "Tron", new Action<DbCommand>((command) =>
+                            {
+                                reportId = (command.Parameters["p_id_report"].Value.ToString());
+                            }));
+
+                    currentConnection.Close();
+                    break;
+
+                default:
+                    Database.Procedure(procedureName)
                     .AddParameter("JBCOD_CIA", Architect.DataFactory.Enumerations.DbType.Int32, 22, cod_cia)
                     .AddParameter("JBNUM_POLIZA", Architect.DataFactory.Enumerations.DbType.String, 15, num_poliza)
                     .AddParameter("JBNUM_RIESGO", Architect.DataFactory.Enumerations.DbType.Int32, 22, num_riesgo)
                     .Execute(currentConnection, "Tron");
+                    reportId = await ReportIdentify(currentConnection, num_poliza);
+                    currentConnection.Close();
+                    break;
+            }
 
-
-            string reportId = await ReportIdentify(currentConnection, num_poliza);
-            currentConnection.Close();
             return reportId;
         }
 

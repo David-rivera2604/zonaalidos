@@ -221,6 +221,12 @@ namespace Architect.API.Tron.Business.Backoffice
                     case "303":
                         procedureName = "em_k_jrp_cuadro_poliza_303.p_lista";
                         break;
+                    case "401":
+                        procedureName = "em_p_certificado_401_za";
+                        break;
+                    case "117":
+                        procedureName = "em_p_certificado_117_za";
+                        break;
                 }
                 if (procedureName.IsEmpty())
                 {
