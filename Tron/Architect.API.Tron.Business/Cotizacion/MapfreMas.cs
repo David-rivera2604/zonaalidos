@@ -89,6 +89,8 @@ namespace Architect.API.Tron.Business.Cotizacion
 
             string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}:cod_agt={cod_agt}:cod_modalidad={99999}";
             List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps(string.Join(",", keys), url, tokenInfo);
+            //string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:edad={edad}:plan={tipo_prod}:cod_marca={cod_marca}:num_contrato={num_contrato}:num_subcontrato={num_subcontrato}:num_poliza_grupo={num_poliza_grupo}:cod_modelo={cod_modelo}:anio_sub_modelo={anio_sub_modelo}:cod_tip_vehi={cod_tip_vehi}:cod_uso_vehi={cod_uso_vehi}:mca_sexo={mca_sexo}:cod_zona_circul={cod_zona_circul}:cod_plan_auto={cod_plan_auto}:cod_agt={cod_agt}:cod_modalidad={99999}";
+            //List<Core.Contracts.General.LookupValues> values =
 
             // result.fec_vcto_poliza = DateTime.Today.AddYears(1);
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
@@ -173,7 +175,8 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 }
             }
-
+            string url = $"cod_ramo={cod_ramo}:cod_mon={cod_mon}:cod_modalidad={99999}";
+            List<Core.Contracts.General.LookupValues> values = Core.Business.Common.Lkps("MM_POLIZA_GRUPO", url, tokenInfo);
             if (cod_cobIncludeFilter.IsEmpty())
             {
                 cod_cobExcludeFilter = Reglas.research.Apply_Coberturas("MapfreMas",
@@ -206,7 +209,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 if (IsPlan(cod_plan_auto, new int[] { 34, 35, 36 }))
                 {
-                    if (IsFromFeb2026(fec_validez) && !tokenInfo.Roles.Contain("PolizaGrupo"))
+                    if (IsFromFeb2026(fec_validez)  && values.Any(x => x.Lkp.Count == 0) )
                     {
                         cod_cobIncludeFilter += ",1063";
                         cod_cobExcludeFilter = cod_cobExcludeFilter.Replace(",1063", string.Empty);
