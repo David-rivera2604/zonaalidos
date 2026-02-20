@@ -223,6 +223,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
                     required = coverageSelection.Any(r => r.cod_cob == item.COD_COB && r.mca_obligatoria == "S");
+                    required = cod_plan_auto == 34 && item.COD_COB == 1063 ? false : required;
                     coberturas.Add(new Contracts.Comun.Cobertura()
                     {
                         seleccionado = required,
