@@ -64,22 +64,6 @@ namespace Architect.API.Tron.Business.Emision
                 }
             };
 
-                var lista = new List<Clientesotrosatributo>();
-                if (tokenInfo.SubAgentCode == 0)
-                {
-                    lista.Add(new Clientesotrosatributo { atributo = 1, descripcionAtributo = "1" });
-                }
-                else
-                {
-                    lista.Add(new Clientesotrosatributo { atributo = 1, descripcionAtributo = "2" });
-                }
-
-                var pais = mapInfo.paisOrigen;
-                lista.Add(new Clientesotrosatributo { atributo = 2, descripcionAtributo = Convert.ToString(pais) });
-
-                mapInfo.clientesOtrosAtributos = lista.ToArray();
-
-
                 string result = Architect.Compliance.Integrations.Business.Customers.SendCustomers(mapInfo).Result;
             }
         }
@@ -276,6 +260,20 @@ namespace Architect.API.Tron.Business.Emision
                     direccion = jsonvalues.TokenStringValue("domiciliocomercialCod_paisDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_estadoDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_provDesc") + "-" + " " + jsonvalues.TokenStringValue("domiciliocomercialCod_localidadDesc")
                 } };
             }
+
+
+            var lista = new List<Clientesotrosatributo>();
+            var pais = mapInfo.paisOrigen;
+
+            int valor = jsonvalues.TokenInt32Value("valorcanalingreso");
+            int valorAsignado = (valor == 2) ? 1 :
+                                (valor == 3) ? 2 : 1;
+
+            lista.Add(new Clientesotrosatributo{atributo = 1, descripcionAtributo = Convert.ToString(valorAsignado)});
+
+            lista.Add(new Clientesotrosatributo { atributo = 2, descripcionAtributo = Convert.ToString(pais) });
+
+            mapInfo.clientesOtrosAtributos = lista.ToArray();
 
             return mapInfo;
         }
