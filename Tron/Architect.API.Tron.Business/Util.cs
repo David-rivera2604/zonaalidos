@@ -253,7 +253,8 @@ namespace Architect.API.Tron.Business
                     result.cod_lista = 203;
                     break;
 
-            };
+            }
+            ;
 
             return result;
         }
@@ -948,34 +949,93 @@ namespace Architect.API.Tron.Business
             DataAccess.Batch.P2000030.UpdateTxt_Motivo_Spto(p_txt_motivo_spto, quoteTron.num_poliza, currentConnection);
         }
 
-        internal static void TerceroSubAgente(Contracts.Presupuesto.DatoFijo datosFijos,Core.Contracts.Security.Token tokenInfo, IDbConnection currentConnection)
+        internal static void TerceroSubAgente(Contracts.Presupuesto.DatoFijo datosFijos, Core.Contracts.Security.Token tokenInfo, IDbConnection currentConnection)
         {
             Contracts.Presupuesto.Tercero p60 = new Contracts.Presupuesto.Tercero()
             {
-                cod_cia = 1, 
+                cod_cia = 1,
                 num_poliza = datosFijos.num_poliza,
-                num_spto = 0, 
-                num_apli = 0, 
-                num_spto_apli = 0, 
-                num_riesgo = 1, 
-                tip_benef = "37", 
-                num_secu = 1,  
-                tip_docum = tokenInfo.IdentificationType, 
-                cod_docum = tokenInfo.Identification, 
-                mca_principal = "N", 
-                mca_calculo = "N", 
-                mca_baja = "N", 
-                mca_vigente = "S", 
-                pct_participacion = 0, 
-                fec_vcto_cesion = DateTime.MinValue, 
-                imp_cesion = 0, 
-                num_prestamo = string.Empty, 
-                tip_relac = string.Empty 
+                num_spto = 0,
+                num_apli = 0,
+                num_spto_apli = 0,
+                num_riesgo = 1,
+                tip_benef = "37",
+                num_secu = 1,
+                tip_docum = tokenInfo.IdentificationType,
+                cod_docum = tokenInfo.Identification,
+                mca_principal = "N",
+                mca_calculo = "N",
+                mca_baja = "N",
+                mca_vigente = "S",
+                pct_participacion = 0,
+                fec_vcto_cesion = DateTime.MinValue,
+                imp_cesion = 0,
+                num_prestamo = string.Empty,
+                tip_relac = string.Empty
             };
 
             DataAccess.CrearPresupuesto.PP_Insert_P2000060(p60, currentConnection);
-           
+
         }
 
+
+
+        /// <summary>
+        /// Obtiene el tercero contratante desde la lista de terceros, considerando equivalencias con asegurado.
+        /// </summary>
+        /// <param name="terceros">Listado de terceros de la cotización.</param>
+        /// <returns>Tercero identificado como contratante o su equivalente.</returns>
+        internal static Contracts.Comun.tercero Contratante(List<Contracts.Comun.tercero> terceros)
+        {
+            Contracts.Comun.tercero contratante = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.TOMADOR);
+            if (contratante == null)
+            {
+                Contracts.Comun.tercero asegurado = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.ASEGURADO);
+                if (asegurado != null && asegurado.elaseguradoeselmismotomador == 1)
+                {
+                    contratante = asegurado;
+                }
+            }
+            return contratante;
+        }
+
+        /// <summary>
+        /// Obtiene el tercero asegurado desde la lista de terceros, considerando equivalencias con tomador.
+        /// </summary>
+        /// <param name="terceros">Listado de terceros de la cotización.</param>
+        /// <returns>Tercero identificado como asegurado o su equivalente.</returns>
+        internal static Contracts.Comun.tercero Asegurado(List<Contracts.Comun.tercero> terceros)
+        {
+            Contracts.Comun.tercero asegurado = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.ASEGURADO);
+            if (asegurado == null)
+            {
+                Contracts.Comun.tercero contratante = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.TOMADOR);
+                if (contratante != null && contratante.eltomadoreselmismoasegurado == 1)
+                {
+                    asegurado = contratante;
+                }
+            }
+            return asegurado;
+        }
+
+        /// <summary>
+        /// Obtiene el tercero asegurado adicional desde la lista de terceros.
+        /// </summary>
+        /// <param name="terceros">Listado de terceros de la cotización.</param>
+        /// <returns>Tercero identificado como asegurado adicional.</returns>
+        internal static Contracts.Comun.tercero AseguradoAdicional(List<Contracts.Comun.tercero> terceros, int parentesco = 0)
+        {
+            Contracts.Comun.tercero aseguradoAdicional = null;
+            if (parentesco == 0)
+            {
+                aseguradoAdicional = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.ASEGURADO_ADICIONAL);
+            }
+            else
+            {
+                aseguradoAdicional = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.ASEGURADO_ADICIONAL && r.parentesco == parentesco);
+            }
+            return aseguradoAdicional;
+        }
     }
+
 }

@@ -1,5 +1,6 @@
-﻿using Architect.Utilities.Extensions;
-using Architect.API.Tron.Contracts.Presupuesto;
+﻿using Architect.API.Tron.Contracts.Presupuesto;
+using Architect.Utilities.Extensions;
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +74,11 @@ namespace Architect.API.Tron.Business.Funerario
 
             Contracts.Cotizacion.Funerario resultInfo = quoteInfo;
             List<Architect.API.Tron.Contracts.Cotizacion.presupuesto> presupuestos = new List<Contracts.Cotizacion.presupuesto>();
-            resultInfo.Errors = Reglas.research.Apply_Reglas("Funerario", quoteInfo, tokenInfo);
+            resultInfo.Errors = Validate("Funerario", quoteInfo, applyType);
+            if (resultInfo.Errors.Count == 0)
+            {
+                resultInfo.Errors = Reglas.research.Apply_Reglas("Funerario", quoteInfo, tokenInfo);
+            }
             if (resultInfo.Errors.Count == 0)
             {
                 string[] planes = { "1001", "1002", "1003" };
@@ -128,7 +133,7 @@ namespace Architect.API.Tron.Business.Funerario
                                 "Emisión Autoexpedible Funerario",
                                 $"Póliza #{result.DatosDelProceso.num_poliza_definitivo}, desde el presupuesto #{result.DatosDelProceso.num_presupuesto}",
                                 tokenInfo.UserId, resultInfo);
-                            
+
                             Contracts.Poliza.DatoFijo poliza = DataAccess.LeerPoliza.Poliza(1, result.DatosDelProceso.num_poliza_definitivo, 0, 0, 0, null, true, "onlyresult");
                             resultInfo = (Contracts.Cotizacion.Funerario)Util.FromTron_CoberturasResult(quoteInfo, poliza, 1, true);
                             resultInfo.num_poliza = result.DatosDelProceso.num_poliza_definitivo;
@@ -138,7 +143,7 @@ namespace Architect.API.Tron.Business.Funerario
 
                             break;
                         }
-                        
+
                     }
                     else
                     {
@@ -270,13 +275,13 @@ namespace Architect.API.Tron.Business.Funerario
                     datosFijos.Terceros.Add(QuoteSupport.Tercero(datosFijos, item, item.tipodetercero));
                     datosFijos.DetalleDeTerceros.Add(Util.CambioTerceroPresupuesto(datosFijos, item));
                 }
-                Contracts.Comun.tercero contratante = QuoteSupport.Contratante(quoteInfo.terceros);
+                Contracts.Comun.tercero contratante = Util.Contratante(quoteInfo.terceros);
                 if (contratante != null)
                 {
                     datosFijos.tip_docum = contratante.DocumentNumberType.DocumentType();
                     datosFijos.cod_docum = contratante.DocumentNumber.DocumentNumber(datosFijos.tip_docum);
                 }
-                Contracts.Comun.tercero asegurado = QuoteSupport.Asegurado(quoteInfo.terceros);
+                Contracts.Comun.tercero asegurado = Util.Asegurado(quoteInfo.terceros);
                 if (asegurado != null)
                 {
                     quoteInfo.FEC_NACIMIENTO = asegurado.fechadenacimiento;
@@ -288,5 +293,86 @@ namespace Architect.API.Tron.Business.Funerario
             return datosFijos;
         }
 
+        public static List<Core.Contracts.General.Error> Validate(string group, Contracts.Cotizacion.Funerario quoteInfo, ApplyType applyType)
+        {
+            List<Core.Contracts.General.Error> result = new List<Core.Contracts.General.Error>();
+
+            if (quoteInfo.cod_mon.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "cod_mon", Message = "Debe indicar la moneda" });
+            }
+            if (quoteInfo.cod_fracc_pago.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "cod_fracc_pago", Message = "Debe indicar el fraccionamiento de pago" });
+            }
+            if (quoteInfo.fec_efec_poliza.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "fec_efec_poliza", Message = "Debe indicar el inicio de vigencia" });
+            }
+            if (quoteInfo.fec_vcto_poliza.IsEmpty())
+            {
+                result.Add(new Core.Contracts.General.Error() { Group = group, Key = "fec_vcto_poliza", Message = "Debe indicar el fin de vigencia" });
+            }
+
+            if (applyType == ApplyType.Cotizar)
+            {
+                // El numero de dependientes num_dependientes no puede ser mayor a 2
+                if (quoteInfo.num_dependientes > 2)
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "num_dependientes", Message = "El número de dependientes no puede ser mayor a 2" });
+                }
+            }
+
+            if (applyType == ApplyType.Emitir)
+            {
+                //Debe indicar un código de plan COD_PLAN_AP
+                if (quoteInfo.COD_PLAN_AP.IsEmpty())
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "Debe indicar un plan de cotización para emitir la póliza" });
+                }
+
+                //Debe existir al menos un contratante
+                Contracts.Comun.tercero contratante = Util.Contratante(quoteInfo.terceros);
+                if (contratante == null)
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "Debe indicar al menos un contratante" });
+                }
+
+                //Debe existir al menos un asegurado
+                Contracts.Comun.tercero asegurado = Util.Asegurado(quoteInfo.terceros);
+                if (asegurado == null)
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "Debe indicar al menos un asegurado" });
+                }
+
+                //Si existir un asegurado adicional tipo hijo(a) debe ser menor a 17 años usando el campo fechadenacimiento para calcular la edad
+                Contracts.Comun.tercero hijoa = Util.AseguradoAdicional(quoteInfo.terceros, 3);
+                if (hijoa != null)
+                {
+                    int edad = DateTime.Today.Year - hijoa.fechadenacimiento.Year;
+                    if (hijoa.fechadenacimiento > DateTime.Today.AddYears(-edad)) edad--;
+                    if (edad >= 17)
+                    {
+                        result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "El asegurado adicional tipo hijo(a) debe ser menor a 17 años" });
+                    }
+                }
+
+                //Deben existir la cantidad de asegurado adicionales tipodetercero = 16 indicados en la cotizacion según num_dependientes
+                int dependientes = quoteInfo.terceros?.Count(t => t.tipodetercero == 16) ?? 0;
+                if (dependientes < quoteInfo.num_dependientes)
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "Debe indicar la cantidad de asegurados adicionales según el número de dependientes" });
+                }
+
+                //la suma del porcetaje de participacion de los beneficiario tipodetercero = 6 debe ser igual al 100%  
+                decimal totalParticipacion = quoteInfo.terceros?.Where(t => t.tipodetercero == 6).Sum(t => t.porcentaje) ?? 0;
+                if (totalParticipacion != 100)
+                {
+                    result.Add(new Core.Contracts.General.Error() { Group = group, Key = "*", Message = "La suma del porcentaje de participación de los beneficiarios debe ser igual al 100%" });
+                }
+            }
+
+            return result;
+        }
     }
 }
