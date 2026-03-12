@@ -32,13 +32,13 @@ app.Tercero = (function () {
 
         // Beneficiario (condicional)
         parentesco: { type: 'dropdownnumeric', rules: [{ type: 'required', message: 'Debe indicar el parentesco' }] },
-        porcentaje: { type: 'numeric', rules: [{ type: 'required', message: 'Debe indicar el porcentaje' }], settings: { maximumValue: '999' } },
+        porcentaje: { type: 'numeric', rules: [{ type: 'required', message: 'Debe indicar el porcentaje' }], settings: { maximumValue: '100' } },
 
         // Acreedor (condicional)
         numerodeprestamo: { type: 'string' },
         importedecesion: { type: 'numeric', settings: { maximumValue: '999999999999999999', decimalPlaces: 2 } },
         vencimientodecesion: { type: 'date', rules: [{ type: 'required', message: 'Debe indicar el vencimiento de la cesión' }] },
-        porcentajeacredor: { type: 'numeric', settings: { maximumValue: '999' } }
+        porcentajeacredor: { type: 'numeric', settings: { maximumValue: '100' } }
     };
 
     let _config = null;

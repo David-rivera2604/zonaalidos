@@ -50,7 +50,7 @@ app.Funerario = (() => {
 
             fec_vcto.setFullYear(fec_vcto.getFullYear() + 1);
             //Asignacion a vencimiento
-            app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto    );
+            app.ui.SetDateValue('#fec_vcto_poliza', fec_vcto);
 
         });
 
@@ -65,7 +65,7 @@ app.Funerario = (() => {
                         _quoteData = data;
                         localStorage.setItem("prototype", JSON.stringify(_quoteData))
                         if (!app.ui.NotifyErrors(data.Error, data.Errors, '#VisualizationsEdtForm')) {
-                            $('#planes').removeClass('d-none');                       
+                            $('#planes').removeClass('d-none');
                             app.FunerarioPlanes.renderPlans(data);
                         }
                     }).always(function () {
@@ -78,32 +78,26 @@ app.Funerario = (() => {
         $('#emitir').click(function (e) {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
                 app.ui.ButtonDoing('#emitir');
+                app.ui.HideAlert('emitirNotify');
                 let payload = DataEntryToObject(true);
                 payload.terceros = _terceros;
                 app.core.Post(`${app.setting.apipath}v1/Funerario/Issue`,
                     JSON.stringify(payload),
                     function (data) {
-                        console.log(data);
-
-                        $('.change-plan-link').addClass('d-none');
-                        $('.gt-action-bar').addClass('d-none');
-                        $('.gt-footer-legend').addClass('d-none');
-                        $('.gt-btn-edit').addClass('d-none');
-                        $('.gt-btn-delete').addClass('d-none');
-                        $('#emitir').addClass('d-none');
-                        const container = document.getElementById('plans-container');
-                        const cards = container.querySelectorAll('.custom-card');
-                        for (let i = 0; i < cards.length; i++) {
-                            cards[i].querySelector('.btn-custom').innerText = `Póliza #${data.num_poliza}`;
+                        if (!app.ui.NotifyErrors(data.Error, data.Errors, '#VisualizationsEdtForm', 'emitirNotify')) {
+                            $('.change-plan-link').addClass('d-none');
+                            $('.gt-action-bar').addClass('d-none');
+                            $('.gt-footer-legend').addClass('d-none');
+                            $('.gt-btn-edit').addClass('d-none');
+                            $('.gt-btn-delete').addClass('d-none');
+                            $('#emitir').addClass('d-none');
+                            const container = document.getElementById('plans-container');
+                            const cards = container.querySelectorAll('.custom-card');
+                            for (let i = 0; i < cards.length; i++) {
+                                cards[i].querySelector('.btn-custom').innerText = `Póliza #${data.num_poliza}`;
+                            }
+                            $('.SendEmail').removeClass('d-none');
                         }
-                        $('.SendEmail').removeClass('d-none');
-
-                        //_quoteData = data;
-                        //localStorage.setItem("prototype", JSON.stringify(_quoteData))
-                        //if (!app.ui.NotifyErrors(data.Error, data.Errors, '#VisualizationsEdtForm')) {
-                        //    $('#planes').removeClass('d-none');
-                        //    app.FunerarioPlanes.renderPlans(data);
-                        //}
                     }).always(function () {
                         app.ui.ButtonDone('#emitir');
                     });
@@ -194,11 +188,13 @@ app.Funerario = (() => {
                     $('.aseguradoSeccion').addClass('d-none');
                     _quoteSetupData.COD_PLAN_AP = data;
                     app.FunerarioTerceros.render(_terceros, _quoteData.num_dependientes);
+                    app.ui.HideAlert('emitirNotify');
                     break;
                 case 'PlanReset':
                     $('.DataGeneralesSeccion').removeClass('d-none');
                     $('.aseguradoSeccion').removeClass('d-none');
                     app.FunerarioTerceros.render([], _quoteData.num_dependientes);
+                    app.ui.HideAlert('emitirNotify');
                     break;
             }
         }

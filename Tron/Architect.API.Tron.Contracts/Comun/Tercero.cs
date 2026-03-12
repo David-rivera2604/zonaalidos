@@ -21,6 +21,16 @@ namespace Architect.API.Tron.Contracts.Comun
         public const int ASEGURADO = 2;
 
         /// <summary>
+        /// Asegurado adicional de la póliza.
+        /// </summary>
+        public const int ASEGURADO_ADICIONAL = 16;
+
+        /// <summary>
+        /// Beneficiario de la póliza.
+        /// </summary>
+        public const int BENEFICIARIO_6 = 6;
+
+        /// <summary>
         /// Beneficiario de la póliza.
         /// </summary>
         public const int BENEFICIARIO = 62;

@@ -668,6 +668,9 @@ app.ui = (function () {
                 message +
                 "</div>");
         },
+        HideAlert: function (ctrolId) {
+            $('#' + ctrolId).html('');
+        },
         GetExtentValue: function () {
             var data = {};
             $('[data-custom]').each(function (index, element) {
@@ -972,7 +975,7 @@ app.ui = (function () {
                 }
             );
         },
-        NotifyErrors: function (message, errors, formName) {
+        NotifyErrors: function (message, errors, formName, display = '') {
 
             if ((message === null || message === '') && (errors === null || errors.length === 0)) {
                 return false;
@@ -1009,33 +1012,42 @@ app.ui = (function () {
             var id = '';
             for (var i = 0; i < count; i++) {
 
-                if (errors[i]['Group'] === 'Table') {
-                    id = errors[i]['Key'];
-                    errorHtml += '<label id="' + id + '-error" for="' + id + '-validate"><a href="#' + id + '-validate">' + errors[i]['Message'] + '</a></label>';
-                    $('#' + id + '-validate').text(errors[i]['Message']);
-                    $('#' + id + '-validate').removeClass('d-none');
+                if (errors[i]['Key'] === '*') {
+                    id = `x${i}`;
+                    errorHtml += '<li><label id="' + id + '-error" for="' + id + '-validate">' + errors[i]['Message'] + '</label></li>';
                 }
-                else {
-                    id = $('#' + errors[i]['Key']).attr('id');
-                    errorHtml += '<label id="' + id + '-error" for="' + id + '">' + errors[i]['Message'] + '</label>';
+                else
+                    if (errors[i]['Group'] === 'Table' || errors[i]['Key'] === '*') {
+                        id = errors[i]['Key'];
+                        errorHtml += '<li><label id="' + id + '-error" for="' + id + '-validate"><a href="#' + id + '-validate">' + errors[i]['Message'] + '</a></label></li>';
 
-                    options = {};
-                    options[errors[i]['Key']] = errors[i]['Message'];
-                    if (formName != null) {
-                        groupName = formName;
+                        $('#' + id + '-validate').text(errors[i]['Message']);
+                        $('#' + id + '-validate').removeClass('d-none');
                     }
                     else {
-                        groupName = '#' + errors[i]['Group'];
-                    }
-                    $(groupName).validate().showErrors(options);
+                        id = $('#' + errors[i]['Key']).attr('id');
+                        errorHtml += '<li><label id="' + id + '-error" for="' + id + '">' + errors[i]['Message'] + '</label></li>';
 
-                    if (i === 0)
-                        $('#' + errors[i]['Key']).focus();
-                }
+                        options = {};
+                        options[errors[i]['Key']] = errors[i]['Message'];
+                        if (formName != null) {
+                            groupName = formName;
+                        }
+                        else {
+                            groupName = '#' + errors[i]['Group'];
+                        }
+                        $(groupName).validate().showErrors(options);
+
+                        if (i === 0)
+                            $('#' + errors[i]['Key']).focus();
+                    }
             }
             errorHtml += '</small>';
 
             toastr.error(errorHtml, title, { timeOut: 7000, closeButton: true, progressBar: true });
+            if (display != '') {
+                app.ui.ShowAlert(display, 'alert-danger', title + '</br>' + errorHtml);
+            }
             return true;
         },
         ShowSideBarEx: function (options) {
@@ -1401,8 +1413,8 @@ app.ui = (function () {
             else
                 window.location.href = app.setting.apipath + 'v1/Common/Download2?id=' + id;
         },
-        DownloadByName: function (path) { 
-            window.open(app.setting.apipath + 'v1/Common/DownloadByName?path=' + encodeURIComponent(path));            
+        DownloadByName: function (path) {
+            window.open(app.setting.apipath + 'v1/Common/DownloadByName?path=' + encodeURIComponent(path));
         },
         GetApi: function (url) {
             $('.sidebar-content').toggleClass('sk-loading');

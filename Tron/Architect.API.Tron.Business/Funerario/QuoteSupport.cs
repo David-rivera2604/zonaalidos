@@ -57,44 +57,6 @@ namespace Architect.API.Tron.Business.Funerario
         }
 
         /// <summary>
-        /// Obtiene el tercero asegurado desde la lista de terceros, considerando equivalencias con tomador.
-        /// </summary>
-        /// <param name="terceros">Listado de terceros de la cotización.</param>
-        /// <returns>Tercero identificado como asegurado o su equivalente.</returns>
-        internal static Contracts.Comun.tercero Asegurado(List<Contracts.Comun.tercero> terceros)
-        {
-            Contracts.Comun.tercero asegurado = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.ASEGURADO);
-            if (asegurado == null)
-            {
-                Contracts.Comun.tercero contratante = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.TOMADOR);
-                if (contratante != null && contratante.eltomadoreselmismoasegurado == 1)
-                {
-                    asegurado = contratante;
-                }
-            }
-            return asegurado;
-        }
-
-        /// <summary>
-        /// Obtiene el tercero contratante desde la lista de terceros, considerando equivalencias con asegurado.
-        /// </summary>
-        /// <param name="terceros">Listado de terceros de la cotización.</param>
-        /// <returns>Tercero identificado como contratante o su equivalente.</returns>
-        internal static Contracts.Comun.tercero Contratante(List<Contracts.Comun.tercero> terceros)
-        {
-            Contracts.Comun.tercero contratante = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.TOMADOR);
-            if (contratante == null)
-            {
-                Contracts.Comun.tercero asegurado = terceros.FirstOrDefault(r => r.tipodetercero == Contracts.Comun.tercero.ASEGURADO);
-                if (asegurado != null && asegurado.elaseguradoeselmismotomador == 1)
-                {
-                    contratante = asegurado;
-                }
-            }
-            return contratante;
-        }
-
-        /// <summary>
         /// Genera los datos variables de presupuesto requeridos por Tron a partir de la cotización funeraria.
         /// </summary>
         /// <param name="quoteInfo">Información de la cotización.</param>

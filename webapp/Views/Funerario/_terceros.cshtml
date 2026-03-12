@@ -159,7 +159,6 @@
     }
 
     .gt-id-text {
-        
         font-weight: 800;
     }
 
@@ -326,13 +325,21 @@
         <i class="fa fa-info-circle"></i>
         <span>Sugerencia: Posicione el cursor sobre cualquier registro para visualizar las opciones de gestión junto al nombre.</span>
     </div>
+    <div class="row">
+        <div class='col-sm-4 col-md-4'>
+            <div class='form-group'>
+                <button id="emitir" type="button" class="btn  btn-primary float-left d-none" style="margin-top: 20px;" data-doing="Emitiendo...">
+                    Emitir
+                </button>
 
-    <div class='col-sm-4 col-md-4'>
-        <div class='form-group'>
-            <button id="emitir" type="button" class="btn  btn-primary float-left d-none" style="margin-top: 20px;" data-doing="Emitiendo...">
-                Emitir
-            </button>
-
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class='col-md-12'>
+            <!-- Notificaciones  -->
+            <div id="emitirNotify">
+            </div>
         </div>
     </div>
 </div>
