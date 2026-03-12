@@ -9,6 +9,9 @@
 - Implementación del ramo 196 para el producto funerario.
 - Se agregan las funcionalidades necesarias para la cotización y emisión de pólizas autoexpedibles funerarias.
 
+#### Rutas de acceso:
+
+- Cotización: /funerario/cotizacion
 ---
 
 ## Versión 1.6.172 - 10/02/2026
