@@ -1,31 +1,105 @@
 ﻿var app = app || {};
 app.frm = (() => {
+
+    const Validations_Setup = (formSelector, elements) => {
+
+        // Construir reglas y mensajes dinámicamente desde elements
+        const validationRules = {};
+        const validationMessages = {};
+
+        Object.keys(elements).forEach(fieldName => {
+            const field = elements[fieldName];
+
+            // Si el campo tiene reglas definidas
+            if (field.rules && field.rules.length > 0) {
+                validationRules[fieldName] = {};
+                validationMessages[fieldName] = {};
+
+                field.rules.forEach(rule => {
+                    // Mapear el tipo de regla al formato de jQuery Validate
+                    if (rule.type === 'required') {
+                        validationRules[fieldName].required = true;
+                        validationMessages[fieldName].required = rule.message;
+                    } else if (rule.type === 'email') {
+                        validationRules[fieldName].email = true;
+                        validationMessages[fieldName].email = rule.message;
+                    } else {
+                        // Para otros tipos de validación personalizada
+                        validationRules[fieldName][rule.type] = true;
+                        validationMessages[fieldName][rule.type] = rule.message;
+                    }
+                });
+            }
+        });
+
+        // Solo aplicar validaciones si hay al menos una regla definida
+        if (Object.keys(validationRules).length > 0) {
+            // Verificar si hay al menos un campo de tipo fecha
+            const hasDateFields = Object.values(elements).some(field => field.type === 'date');
+            if (hasDateFields) {
+                app.ui.DateValidators();
+            }
+
+            $(formSelector).validate({
+                errorPlacement: app.ui.ErrorPlacement,
+                rules: validationRules,
+                messages: validationMessages
+            });
+        }
+    };
+
     return {
-        DateWidget: function (selector) {
-            let settings = {
+        PhoneNumberWidget: function (selector) {
+            return $(selector).formatter({
+                pattern: '{{9999}}-{{9999}}',
+                persistent: false
+            });
+        },
+        DocumentNumberWidget: function (selector) {
+            return $(selector).formatter({
+                pattern: '0{{9}}-{{9999}}-{{9999}}',
+                persistent: false
+            });
+        },
+        DateWidget: function (selector, options) {
+            let conf = {
                 format: 'DD/MM/YYYY',
-                locale: 'es',
-                minDate: new Date('1900-01-01T00:00:00')
+                locale: 'es'
             };
+            const settings = { ...conf, ...options };
             return $(selector + '_group').datetimepicker(settings);
         },
-        NumericWidget: function (selector, options = '', minimumValue = '0', maximumValue = '999999999999999999', decimalPlaces = '2') {
+        NumericWidget: function (selector, options) {
 
-            options = ',' + options.toLowerCase() + ',';
-            if (options.includes(',allownegative,') && minimumValue === '0') {
-                minimumValue = '-99999999999999999';
+            if (options.options == null) {
+                options.options = '';
             }
-            if (options.includes(',integer,') && minimumValue === '0') {
-                decimalPlaces = '0';
+            if (options.minimumValue == null) {
+                options.minimumValue = '0';
+            }
+            if (options.decimalPlaces == null) {
+                options.decimalPlaces = '0';
+            }
+
+            let _minimumValue = options.minimumValue;
+            let _maximumValue = options.maximumValue;
+            let _decimalPlaces = options.decimalPlaces;
+
+            options.options = ',' + options.options.toLowerCase() + ',';
+            if (options.options.includes(',allownegative,') && _minimumValue === '0') {
+                _minimumValue = '-99999999999999999';
+            }
+            if (options.options.includes(',integer,') && minimumValue === '0') {
+                _decimalPlaces = '0';
             }
 
             let settings = {
                 decimalCharacter: ',',
                 decimalCharacterAlternative: '.',
                 digitGroupSeparator: '.',
-                minimumValue: minimumValue,
-                maximumValue: maximumValue,
-                decimalPlaces: decimalPlaces,
+                minimumValue: _minimumValue,
+                maximumValue: _maximumValue,
+                decimalPlaces: _decimalPlaces,
                 emptyInputBehavior: 'null'
             };
             return new AutoNumeric(selector, settings);
@@ -173,16 +247,6 @@ app.frm = (() => {
             }
             $(selector).validate(fullconfig);
         },
-        InitDataEntry: async function (elementsConfig) {
-            for (const [fieldName, configObject] of Object.entries(elementsConfig)) {
-                let selector = `#${fieldName}`;
-                if (configObject.type === 'radionumeric') {
-                    selector = `input:radio[name=${fieldName}]`;
-                }
-                configObject.element = $(selector);
-            }
-            return elementsConfig;
-        },
         ObjectToDataEntry: async function (elementsConfig, data) {
             for (const [fieldName, configObject] of Object.entries(elementsConfig)) {
 
@@ -191,24 +255,36 @@ app.frm = (() => {
                 let $change = configObject.change || false;
                 let value;
 
-                if ((!$element || $element.length === 0) && dataType != 'radioboolean') {
+                if ((!$element || $element.length === 0) && !dataType.startsWith('radio')) {
                     console.warn(`Elemento no encontrado para el campo: ${fieldName}.`);
                     continue;
                 }
 
                 switch (dataType) {
+                    case 'documentnumbertype':
+                        app.ui.SetDocumentTypeValue(`#${$element[0].id}`, data[fieldName]);
+                        break;
+                    case 'documentnumber':
+                        $(`#${$element[0].id}`).val(data[fieldName]);
+                        break;
+                    case 'date':
+                        value = app.ui.SetDateValue(`#${$element[0].id}`, data[fieldName]);
+                        break;
                     case 'numeric':
                         value = app.ui.SetNumericValue(`#${$element[0].id}`, data[fieldName]);
                         break;
                     case 'dropdownnumeric':
                         value = app.ui.SetDropDownNumericValue(`#${$element[0].id}`, data[fieldName]);
                         break;
-
+                    case 'dropdownstring':
+                        value = app.ui.SetDropDownStringValue(`#${$element[0].id}`, data[fieldName]);
+                        break;
                     case 'dropdownmulti':
                         app.ui.SetDropDownMultiValues(fieldName, data[fieldName]);
                         break;
 
                     case 'radioboolean':
+                    case 'radionumeric':
                         if (!$element || $element.length === 0) {
                             $element = $(`input:radio[name=${fieldName}]:checked`);
                             configObject.element = $element;
@@ -219,10 +295,13 @@ app.frm = (() => {
                         $element.val(data[fieldName]);
                         break;
                     case 'string':
+                    case 'phone':
+                    case 'email':
+                    case 'typeahead':
                         $element.val(data[fieldName]);
                         break;
                     default:
-                        throw new Error(`El tipo ${dataType}" no esta implementado`)
+                        throw new Error(`El tipo "${dataType}" no esta implementado`)
                         break;
                 }
                 if ($change) {
@@ -238,19 +317,34 @@ app.frm = (() => {
                 const dataType = configObject.type;
                 let $element = configObject.element;
                 let value;
+                let desc = null;
 
-                if ((!$element || $element.length === 0) && dataType != 'radioboolean') {
+                if ((!$element || $element.length === 0) && !dataType.startsWith('radio')) {
                     console.warn(`Elemento no encontrado para el campo: ${fieldName}. Se asigna null.`);
                     formData[fieldName] = null;
                     continue;
                 }
 
                 switch (dataType) {
+                    case 'documentnumbertype':
+                        value = $(`#${$element[0].id}`).data("value");
+                        break;
+                    case 'documentnumber':
+                        value = $(`#${$element[0].id}`).val();
+                        break;
+                    case 'date':
+                        value = app.ui.GetDateValue(`#${$element[0].id}`)
+                        break;
                     case 'numeric':
                         value = app.ui.GetNumericValue(`#${$element[0].id}`);
                         break;
                     case 'dropdownnumeric':
                         value = app.ui.GetDropDownNumericValue(`#${$element[0].id}`);
+                        desc = app.ui.GetDropDownSelectedText(`#${$element[0].id}`);
+                        break;
+                    case 'dropdownstring':
+                        value = app.ui.GetDropDownStringValue(`#${$element[0].id}`);
+                        desc = app.ui.GetDropDownSelectedText(`#${$element[0].id}`);
                         break;
 
                     case 'dropdownmulti':
@@ -258,17 +352,90 @@ app.frm = (() => {
                         break;
 
                     case 'radioboolean':
+                    case 'radionumeric':
                         if (!$element || $element.length === 0) {
                             $element = $(`input:radio[name=${fieldName}]`);
                             configObject.element = $element;
                         }
-                        value =  $element.filter(':checked').val() == 'true';
+                        if (dataType === 'radionumeric') {
+                            value = app.ui.GetRadioNumericValue(fieldName);
+                        } else {
+                            value = $element.filter(':checked').val() == 'true';
+                        }
                         break;
                     case 'hiddennumeric':
                         value = parseInt(0 + $element.val(), 10) || null;
                         break;
                     case 'string':
+                    case 'phone':
+                    case 'email':
+                    case 'typeahead':
                         value = $element.val();
+                        break;
+                    default:
+                        throw new Error(`El tipo ${dataType}" no esta implementado`)
+                        break;
+                }
+                formData[fieldName] = value;
+                if (desc != null) {
+                    formData[fieldName + 'Desc'] = desc;
+                }
+            }
+
+            return formData;
+        },
+        Empty_Object: function (elementsConfig) {
+            const formData = {};
+
+            for (const [fieldName, configObject] of Object.entries(elementsConfig)) {
+
+                const dataType = configObject.type;
+                let $element = configObject.element;
+                let defaultValue = configObject.default || null;
+                let value = null;
+
+                if ((!$element || $element.length === 0) && !dataType.startsWith('radio')) {
+                    console.warn(`Elemento no encontrado para el campo: ${fieldName}. Se asigna null.`);
+                    formData[fieldName] = null;
+                    continue;
+                }
+
+                switch (dataType) {
+                    case 'documentnumbertype':
+                        value = 0;
+                        break;
+                    case 'documentnumber':
+                        value = null;
+                        break;
+                    case 'date':
+                        value = null;
+                        break;
+                    case 'numeric':
+                        value = null;
+                        break;
+                    case 'dropdownnumeric':
+                        value = null;
+                        break;
+                    case 'dropdownstring':
+                        value = defaultValue;
+                        break;
+
+                    case 'dropdownmulti':
+                        value = null;
+                        break;
+
+                    case 'radioboolean':
+                    case 'radionumeric':
+                        value = defaultValue;
+                        break;
+                    case 'hiddennumeric':
+                        value = null;
+                        break;
+                    case 'string':
+                    case 'phone':
+                    case 'email':
+                    case 'typeahead':
+                        value = null;
                         break;
                     default:
                         throw new Error(`El tipo ${dataType}" no esta implementado`)
@@ -278,6 +445,54 @@ app.frm = (() => {
             }
 
             return formData;
+        },
+        InitDataEntry: async function (elementsConfig, formSelector) {
+            for (const [fieldName, configObject] of Object.entries(elementsConfig)) {
+                const dataType = configObject.type;
+                let selector = `#${fieldName}`;
+
+                switch (configObject.type) {
+                    case 'numeric':
+                        app.frm.NumericWidget(`#${fieldName}`, configObject.settings);
+                        break;
+                    case 'date':
+                        app.frm.DateWidget(`#${fieldName}`, configObject.settings);
+                        break;
+                    case 'documentnumber':
+                        $(`#${fieldName}`).formatter({
+                            pattern: '0{{9}}-{{9999}}-{{9999}}',
+                            persistent: false
+                        });
+                        app.ui.DocumentNumberHandler(`#${fieldName}`, configObject.settings.callbackDone, configObject.settings.callbackDocType);
+
+                        break;
+                    case 'phone':
+                        app.frm.PhoneNumberWidget(`#${fieldName}`);
+                        break;
+
+                    case 'string':
+                    case 'email':
+                    case 'dropdownnumeric':
+                    case 'dropdownstring':
+                    case 'radionumeric':
+                    case 'hiddennumeric':
+                    case 'documentnumbertype':
+                    case 'typeahead':
+                        break;
+                    default:
+                        throw new Error(`El tipo ${dataType}" no esta implementado`)
+                        break;
+                }
+
+                if (configObject.type.startsWith('radio')) {
+                    selector = `input:radio[name=${fieldName}]`;
+                }
+                configObject.element = $(selector);
+            }
+
+            Validations_Setup(formSelector, elementsConfig);
+
+            return elementsConfig;
         }
     };
 })();

@@ -131,6 +131,8 @@
     <Compile Include="Emision\ViajeroConvertFrom.cs" />
     <Compile Include="Emision\EstudiantilConvertTo.cs" />
     <Compile Include="Emision\ViajeroConvertTo.cs" />
+    <Compile Include="Funerario\Quote.cs" />
+    <Compile Include="Funerario\QuoteSupport.cs" />
     <Compile Include="GeneratedPDF.cs" />
     <Compile Include="HogarTotal\Convert\PolizaToIssue.cs" />
     <Compile Include="HogarTotal\Convert\IssueToPresupuesto.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="Siniestro\Purdy.cs" />
     <Compile Include="Siniestro\SiniestroPurdy.cs" />
     <Compile Include="Traza\TrackRequest.cs" />
+    <Compile Include="ErrorHandler.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Emision\HogarTotal.cs" />
     <Compile Include="Emision\HogarTotalConvertFrom.cs" />

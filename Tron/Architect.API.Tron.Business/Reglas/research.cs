@@ -45,7 +45,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             return result;
         }
-        
+
         internal static string BuildListasCode(string ruleFile, object data, List<Lista> listas, string keyword)
         {
             string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
@@ -100,7 +100,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             return result;
         }
-        
+
         internal static string BuildCoveragesCode(string ruleFile, object data, List<Cobertura> Coberturas)
         {
             string basePath = ConfigurationManager.AppSettings["Product.Definition.Path"];
@@ -118,7 +118,7 @@ namespace Architect.API.Tron.Business.Reglas
             }
             return script.ToString();
         }
-        
+
         public static List<Architect.API.Core.Contracts.General.Error> Apply_Reglas(string ruleFile, object data, Core.Contracts.Security.Token tokenInfo)
         {
             string key = $"{ruleFile}.reglas";
@@ -132,12 +132,16 @@ namespace Architect.API.Tron.Business.Reglas
             }
             else
             {
-                Contracts.Especificacion.Producto def = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
-
-                if (def.Reglas?.Count > 0)
+                string filename = string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile);
+                if (System.IO.File.Exists(filename))
                 {
-                    script = BuildRulesCode(ruleFile, data, def.Reglas);
-                    Utilities.Cache.SetItem(cacheKey, script);
+                    Contracts.Especificacion.Producto def = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(filename);
+
+                    if (def.Reglas?.Count > 0)
+                    {
+                        script = BuildRulesCode(ruleFile, data, def.Reglas);
+                        Utilities.Cache.SetItem(cacheKey, script);
+                    }
                 }
             }
             if (script.IsNotEmpty())
@@ -450,7 +454,7 @@ namespace Architect.API.Tron.Business.Reglas
 
             return def;
         }
-    
+
     }
 
 }

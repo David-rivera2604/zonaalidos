@@ -7,6 +7,12 @@ namespace aliados.Controllers
     [IsConnected]
     public class CotizacionController : Controller
     {
+        public ActionResult Funerario()
+        {
+            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
+            return View();
+        }
+
         public ActionResult Multirriesgo()
         {
             ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];

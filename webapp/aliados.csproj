@@ -1277,7 +1277,9 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\Cotizaciones\Funerario.js" />
     <Content Include="Scripts\dashboard\process.js" />
+    <Content Include="Scripts\Common\Tercero.js" />
     <Content Include="Scripts\Envio.js" />
     <Content Include="Scripts\Extend.CobrosRechazados.js" />
     <Content Include="Scripts\Form.Ext.ExcludedPolicies.js" />
@@ -1430,6 +1432,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FunerarioController.cs" />
     <Compile Include="Controllers\HogatTotalController.cs" />
     <Compile Include="Controllers\MultirriesgoController.cs" />
     <Compile Include="Controllers\PurdyController.cs" />
@@ -2022,6 +2025,19 @@
     <None Include="Sugese\validators\Types\SugeseTypes.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Views\Common\_datosgenerales.cshtml" />
+    <Content Include="Views\Common\_tercero_modal.cshtml" />
+    <Content Include="Views\Funerario\_old\Cotizacion.cshtml" />
+    <Content Include="Views\Funerario\_old\_asegurado.cshtml" />
+    <Content Include="Views\Funerario\_old\_planes.cshtml" />
+    <Content Include="Views\Funerario\_old\_terceros.cshtml" />
+    <Content Include="Views\Funerario\_new\_asegurado.cshtml" />
+    <Content Include="Views\Funerario\_new\_planes.cshtml" />
+    <Content Include="Views\Funerario\_new\_terceros.cshtml" />
+    <Content Include="Views\Funerario\_new\Cotizacion.cshtml" />
+    <Content Include="Views\Funerario\_planes.cshtml" />
+    <Content Include="Views\Funerario\_terceros.cshtml" />
+    <Content Include="Views\Funerario\Cotizacion.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

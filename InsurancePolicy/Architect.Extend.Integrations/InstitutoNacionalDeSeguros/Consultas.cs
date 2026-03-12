@@ -1,7 +1,8 @@
-﻿using Architect.Utilities.Extensions;
+using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,18 +36,23 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
             string resultResponse = string.Empty;
             try
             {
-                var json = JsonConvert.SerializeObject(new { Identificacion = identificacion, CodigoTipoIdentificacion = tipo });
+                var json = JsonConvert.SerializeObject(new { TipoId = tipo, Id = identificacion });
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpClient client = new HttpClient() { Timeout = new TimeSpan(0, 0, 2) };
-                var response = await client.PostAsync("https://grupo-ins.com/api/ins/svc/clientSearch", data).ConfigureAwait(false);
+                var response = await client.PostAsync("https://asegurate.grupoins.com/frmEstimacionVehVol.aspx/ObtenerDatosCliente", data).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    resultResponse = response.Content.ReadAsStringAsync().Result;
+                    resultResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     if (resultResponse.IsNotEmpty())
                     {
                         JObject jsonvalues = JObject.Parse(resultResponse);
+                        string innerResponse = jsonvalues.SelectStringToken("d");
+                        if (innerResponse.IsNotEmpty())
+                        {
+                            jsonvalues = JObject.Parse(innerResponse);
+                        }
 
                         if (jsonvalues.SelectToken("PrimerNombre") != null)
                         {
@@ -60,16 +66,16 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
                                 SecondLastName = jsonvalues.SelectStringToken("SegundoApellido"),
                                 Gender = 0,
                                 CivilStatus = 0,
-                                PrimaryEmailAddress = jsonvalues.SelectStringToken("email"),
+                                PrimaryEmailAddress = jsonvalues.SelectStringToken("Correo"),
                                 Province = 0,
                                 Canton = 0,
                                 District = 0,
                                 AddressDetail = string.Empty,
                                 PhoneType = 0,
-                                PhoneNumber = jsonvalues.SelectStringToken("phone"),
+                                PhoneNumber = jsonvalues.SelectStringToken("Telefono"),
                                 Source = "INS"
                             };
-                            switch (jsonvalues.SelectStringToken("CodigoSexo"))
+                            switch (jsonvalues.SelectStringToken("Genero"))
                             {
                                 case "F":
                                     result.Gender = 2;
@@ -140,9 +146,12 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
                             result.SecondLastName = result.SecondLastName.Trim().Capitalize();
                             result.AddressDetail = result.AddressDetail.Trim().Capitalize();
 
-                            string birthDate = jsonvalues.SelectToken("FechaNacimiento").Value<string>();
+                            string birthDate = jsonvalues.SelectStringToken("FechaNacimiento");
 
-                            result.BirthDate = DateTime.Parse(birthDate);
+                            if (birthDate.IsNotEmpty())
+                            {
+                                result.BirthDate = DateTime.Parse(birthDate);
+                            }
 
 
                             if (result.PhoneNumber.IsNotEmpty())
@@ -161,11 +170,18 @@ namespace Architect.Extend.Integrations.InstitutoNacionalDeSeguros
                 }
 
             }
+            catch (HttpRequestException ex)
+            {
+                ex.Data.Add("resultResponse", resultResponse);
+                Architect.Utilities.Log.ErrorLog("INS.PersonaPorIdentificacion",
+                                         string.Format("Falla al tratar de consultar a identificación '{0}' tipo '{1}'", identificacion, tipo),
+                                         ex, "integrations");
+            }
             catch (Exception ex)
             {
                 ex.Data.Add("resultResponse", resultResponse);
                 Architect.Utilities.Log.ErrorLog("INS.PersonaPorIdentificacion",
-                                                         string.Format("Falla al tratar de consultar a identificación '{0}' tipo '{2}'", identificacion, tipo),
+                                                         string.Format("Falla al tratar de consultar a identificación '{0}' tipo '{1}'", identificacion, tipo),
                                                          ex, "integrations");
             }
             return result;

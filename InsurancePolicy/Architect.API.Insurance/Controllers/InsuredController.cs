@@ -55,52 +55,70 @@ namespace Architect.API.Insurance.Controllers
                 verbose += "->coope";
                 result = Architect.Extend.Integrations.Coope.Consultas.ClientePorIdentificacion(id);
             }
-
             if (result == null)
             {
-                Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
-                Task<Contracts.Policy.Insured> ins = Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id.DocumentNumber(docType.ToString()), Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.DocTypeConvert(docType));
-                Task<Contracts.Policy.Insured> padron = Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
+                verbose += "->tron";
+                result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+            }
+            if (result == null)
+            {
+                verbose += "->padron";
+                result = await Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
+                verbose += "->ins";
+                Contracts.Policy.Insured result2 = await Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id.DocumentNumber(docType.ToString()), Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.DocTypeConvert(docType));
 
-                var tasks = new[] { tron, ins, padron };
-
-                var processingTasks = tasks.ToList();
-
-                while (processingTasks.Any())
+                if (result2 != null)
                 {
-                    Task<Contracts.Policy.Insured> ready = await Task.WhenAny(processingTasks);
-                    if (ready == tron)
-                    {
-                        verbose += "->tron";
-                    }
-                    else if (ready == ins)
-                    {
-                        verbose += "->ins";
-                    }
-                    else
-                    {
-                        verbose += "->padron";
-                    }
-
-                    if (ready.Status == TaskStatus.RanToCompletion && ready.Result != null)
-                    {
-                        result = ready.Result;
-                        processingTasks.Clear();
-                        Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado"), "integrations");
-                    }
-                    else
-                    {
-                        processingTasks.Remove(ready);
-                    }
-                }
-                if (result == null)
-                {
-                    Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
+                    result = result2;
                 }
             }
 
+            //if (result == null)
+            //{
+            //    Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+            //    Task<Contracts.Policy.Insured> ins = Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id.DocumentNumber(docType.ToString()), Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.DocTypeConvert(docType));
+            //    Task<Contracts.Policy.Insured> padron = Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
+
+            //    var tasks = new[] { tron, ins, padron };
+            //    var taskLabels = new Dictionary<Task<Contracts.Policy.Insured>, string>
+            //    {
+            //        { tron, "->tron" },
+            //        { ins, "->ins" },
+            //        { padron, "->padron" }
+            //    };
+
+            //    var processingTasks = tasks.ToList();
+
+            //    while (processingTasks.Any())
+            //    {
+            //        Task<Contracts.Policy.Insured> ready = await Task.WhenAny(processingTasks).ConfigureAwait(false);
+            //        processingTasks.Remove(ready);
+
+            //        if (taskLabels.TryGetValue(ready, out string label))
+            //        {
+            //            verbose += label;
+            //        }
+
+            //        if (ready.Status == TaskStatus.RanToCompletion)
+            //        {
+            //            Contracts.Policy.Insured readyResult = await ready.ConfigureAwait(false);
+            //            if (readyResult != null)
+            //            {
+            //                result = readyResult;
+            //                processingTasks.Clear();
+            //                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado"), "integrations");
+            //            }
+            //        }
+            //    }
+            //    if (result == null)
+            //    {
+            //        Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
+            //    }
+            //}
+
             if (result != null)
             {
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado"), "integrations");
                 result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
             }
             return Ok(result);
