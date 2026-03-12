@@ -14,6 +14,17 @@ namespace Architect.API.Tron.Business
     public static class Util
     {
 
+        public static Contracts.Presupuesto.DatoFijo Tron(Contracts.Cotizacion.GenericQuote quoteInfo, int branch, int agentCode, string userName, string title)
+        {
+            Contracts.Presupuesto.DatoFijo datosFijos = Util.DatosFijos(quoteInfo, branch, agentCode, userName, 1);
+
+            datosFijos.Riesgos = Util.DatosDelRiesgo(datosFijos, title, 1, branch);
+            datosFijos.Terceros = Util.Terceros(datosFijos);
+            datosFijos.Coberturas = Util.Coberturas(quoteInfo, datosFijos, false, 1);
+
+            return datosFijos;
+        }
+
         internal static Contracts.Presupuesto.DatoFijo DatosFijos(Contracts.Cotizacion.GenericQuote quoteInfo, int branch, int agentCode, string userName, int cod_sector)
         {
 
@@ -398,7 +409,10 @@ namespace Architect.API.Tron.Business
             {
                 case 1: //Cédula
                     result = documentNumber.OnlyNumbers();
-                    result = result.Substring(1);
+                    if (result.Length > 0)
+                    {
+                        result = Convert.ToInt64(result).ToString();
+                    }
                     break;
                 case 2: //Residencia
                     result = documentNumber.OnlyNumbers();
@@ -635,6 +649,143 @@ namespace Architect.API.Tron.Business
             return quoteInfo;
         }
 
+        internal static Contracts.Cotizacion.GenericQuote FromTron_CoberturasResult(Contracts.Cotizacion.GenericQuote quoteInfo, Contracts.Poliza.DatoFijo tronQuoteInfo, int cod_fracc_pago_anual, bool multiRiesgo = false)
+        {
+
+            if (tronQuoteInfo.Coberturas != null)
+            {
+                if (tronQuoteInfo.Coberturas?.Count == 1)
+                {
+                    quoteInfo.Error = tronQuoteInfo.Coberturas[0].txt_error;
+                }
+                if (multiRiesgo)
+                {
+                    quoteInfo.coberturas = new List<Contracts.Comun.Cobertura>();
+                    foreach (Contracts.Poliza.Cobertura item in tronQuoteInfo.Coberturas.OrderBy(r => r.num_riesgo).ThenBy(p => p.cod_cob))
+                    {
+                        quoteInfo.coberturas.Add(new Contracts.Comun.Cobertura()
+                        {
+                            seleccionado = true,
+                            riesgo = item.num_riesgo,
+                            codigo = item.cod_cob,
+                            nombre = item.nom_cob,
+                            capital = item.suma_aseg,
+                            primatotal = item.imp_total,
+                            deducible = item.nom_franquicia,
+                            error = item.txt_error
+                        });
+                        if (quoteInfo.presupuesto.IsEmpty())
+                        {
+                            quoteInfo.presupuesto = item.num_poliza;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Contracts.Poliza.Cobertura item in tronQuoteInfo.Coberturas.OrderBy(r => r.num_riesgo).ThenBy(p => p.cod_cob))
+                    {
+                        foreach (Contracts.Comun.Cobertura itemQuote in quoteInfo.coberturas)
+                        {
+                            if (item.cod_cob == itemQuote.codigo)
+                            {
+                                itemQuote.seleccionado = true;
+
+                                itemQuote.riesgo = item.num_riesgo;
+                                itemQuote.codigo = item.cod_cob;
+                                itemQuote.nombre = item.nom_cob;
+                                itemQuote.capital = item.suma_aseg;
+                                itemQuote.primatotal = item.imp_total;
+                                itemQuote.deducible = item.nom_franquicia;
+                                itemQuote.error = item.txt_error;
+                                if (quoteInfo.presupuesto.IsEmpty())
+                                {
+                                    quoteInfo.presupuesto = item.num_poliza;
+                                }
+                                break;
+                            }
+                            else if (!itemQuote.seleccionado)
+                            {
+                                itemQuote.capital = 0;
+                                itemQuote.primatotal = 0;
+                                itemQuote.deducible = string.Empty;
+                                itemQuote.error = string.Empty;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (tronQuoteInfo.Recibos != null)
+            {
+                double importeAnual = 0;
+                bool setvalues = true;
+                quoteInfo.plandepago = new List<Contracts.Comun.PlanDePago>();
+                foreach (Contracts.Poliza.Recibo item in tronQuoteInfo.Recibos)
+                {
+                    importeAnual = item.imp_recibo;
+                    quoteInfo.plandepago.Add(new Contracts.Comun.PlanDePago()
+                    {
+                        cuota = item.num_cuota,
+                        fechadesde = item.fec_efec_recibo,
+                        fechahasta = item.fec_vcto_recibo,
+                        primaneta = item.imp_neta + item.imp_recargo,
+                        iVA = item.imp_imptos,
+                        recargoporfraccionamiento = item.imp_interes,
+                        importetotal = item.imp_recibo
+                    });
+                    if (setvalues)
+                    {
+                        quoteInfo.resumen = new Contracts.Cotizacion.resumen()
+                        {
+                            cuotas = tronQuoteInfo.Recibos.Count,
+                            primaneta = item.imp_neta + item.imp_recargo,
+                            iVA = item.imp_imptos,
+                            recargoporfraccionamiento = item.imp_interes,
+                            importetotal = item.imp_recibo
+                        };
+                        setvalues = false;
+                    }
+                }
+
+                if (quoteInfo.cod_fracc_pago == cod_fracc_pago_anual)
+                {
+                    double amount;
+                    quoteInfo.plandepagoporfrecuencia = new List<Contracts.Cotizacion.plandepagoporfrecuencia>();
+                    foreach (Contracts.Ramo.A1001403 item in DataAccess.PorRamo.FrecuenciaDePago(tronQuoteInfo.cod_cia, tronQuoteInfo.cod_ramo, tronQuoteInfo.cod_mon))
+                    {
+                        amount = (importeAnual / item.cod_fracc_pago) + ((importeAnual / item.cod_fracc_pago) * (item.pct_fracc_pago / 100));
+                        quoteInfo.plandepagoporfrecuencia.Add(new Contracts.Cotizacion.plandepagoporfrecuencia()
+                        {
+                            codigo = item.cod_fracc_pago,
+                            frecuencia = item.nom_fracc_pago,
+                            recardoporfraccionamiento = item.pct_fracc_pago,
+                            importetotal = amount
+                        });
+                    }
+                }
+
+            }
+
+            // RANGO DE MESES DEBE ESTAR ENTRE 1 Y 12 MESES &lt;COB_PDR_MESES&gt;</txt_error>
+            if (tronQuoteInfo.DatosDelProceso != null && tronQuoteInfo.DatosDelProceso.txt_error.IsNotEmpty())
+            {
+                quoteInfo.Error = tronQuoteInfo.DatosDelProceso.txt_error;
+            }
+            if (quoteInfo.Error != null)
+            {
+                quoteInfo.Mensaje = quoteInfo.Error;
+                if (quoteInfo.Mensaje.StartsWith("ORA-", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    if (quoteInfo.Mensaje.IndexOf(':') > 0)
+                    {
+                        quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(quoteInfo.Mensaje.IndexOf(':') + 1).Trim();
+                    }
+                    quoteInfo.Mensaje = quoteInfo.Mensaje.Substring(0, 1).ToUpper() + quoteInfo.Mensaje.Substring(1).ToLower();
+                }
+            }
+
+            return quoteInfo;
+        }
 
         internal static List<Contracts.Presupuesto.Tercero> Terceros_ToTron(List<Contracts.Comun.tercero> terceros, Contracts.Presupuesto.DatoFijo datosFijos, bool expanded)
         {

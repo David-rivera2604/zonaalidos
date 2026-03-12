@@ -1,0 +1,207 @@
+﻿<style>
+
+
+    .container-custom {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 50px 15px;
+    }
+
+    /* --- CARD BASE --- */
+    .custom-card {
+        background: #fff;
+        border-radius: 25px;
+        border: 1.5px solid #e2e8f0;
+        transition: all 0.3s ease;
+        position: relative;
+        cursor: pointer;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 30px 30px 50px 30px !important; /* Aumentado padding inferior para el link */
+    }
+
+        .custom-card:hover:not(.selected) {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- ESTADO SELECCIONADO --- */
+        .custom-card.selected {
+            border: 2.5px solid #4484f4;
+            cursor: default;
+            box-shadow: 0 12px 25px rgba(68, 132, 244, 0.15);
+        }
+
+    /* Check superior derecho */
+    .selected-check {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: #4484f4;
+        font-size: 1.8rem;
+        display: none;
+    }
+
+    .custom-card.selected .selected-check {
+        display: block;
+    }
+
+    /* --- ENLACE CAMBIAR PLAN (CORREGIDO) --- */
+    .change-plan-link {
+        position: absolute;
+        bottom: 15px; /* Posicionado debajo del botón */
+        left: 30px;
+        font-size: 0.85rem;
+        color: #4484f4;
+        font-weight: 600;
+        text-decoration: underline;
+        cursor: pointer;
+        display: none;
+        z-index: 10;
+    }
+
+    .custom-card.selected .change-plan-link {
+        display: block;
+    }
+
+    /* --- COLORES Y TEXTOS SEGÚN IMAGEN --- */
+    .plan-tag {
+        background-color: #f1f5f9;
+        color: #475569;
+        font-weight: 800;
+        padding: 5px 22px;
+        border-radius: 20px;
+        display: inline-block;
+        font-size: 0.85rem;
+        border: 1px solid #e2e8f0;
+    }
+
+    .price-value {
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: #c53030; /* Rojo según imagen 2 */
+        letter-spacing: -1.5px;
+        margin-top: 10px;
+    }
+
+    .section-divider {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #9b2c2c; /* Color rojizo oscuro para el título de coberturas */
+        border-bottom: 1.5px solid #f1f5f9;
+        padding-bottom: 12px;
+        margin: 25px 0 20px 0;
+        text-transform: uppercase;
+    }
+
+    /* --- LISTA DE COBERTURAS --- */
+    .coverage-list {
+        padding-left: 0;
+        list-style: none;
+        margin-bottom: 20px;
+        flex-grow: 1;
+    }
+
+    .coverage-item {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .fa-check-item {
+        color: #2d3748;
+        margin-right: 12px;
+        margin-top: 5px;
+        font-size: 0.9rem;
+    }
+
+    .coverage-name {
+        color: #2d3748;
+        font-weight: 800;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+    }
+
+    .coverage-details {
+        color: #a0aec0;
+        font-size: 0.8rem;
+        margin-top: 2px;
+        display: block;
+    }
+
+    /* --- BOTONES --- */
+    .btn-custom {
+        border-radius: 18px;
+        padding: 14px;
+        font-weight: 800;
+        border: 2px solid #1a202c;
+        background: transparent;
+        color: #1a202c;
+        margin-bottom: 10px;
+    }
+
+    .custom-card.selected .btn-custom {
+        background-color: #1e293b;
+        color: #fff;
+        border-color: #1e293b;
+    }
+
+    /* Ocultar columnas */
+    .plan-column.hidden {
+        display: none;
+    }
+</style>
+
+<div id="planes" class="form-row d-none">
+    <div class="col-lg-12">
+        <div class="form-row">
+            <div class='col'>
+                <h4><i class="fa  fa-th-list"></i> Selecciona la opción de plan que mejor se adapte a tu propuesta<label id="coberturasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class='col-md-12' style="padding-bottom: 20px">
+                <!-- TEMPLATE PARA PLANES -->
+                <template id="plan-template">
+                    <div class="col-lg-4 mb-4 plan-column">
+                        <div class="card custom-card">
+                            <div class="selected-check"><i class="fa fa-check-circle"></i></div>
+                            <div class="card-body p-0 d-flex flex-column h-100">
+                                <small class="text-muted font-weight-bold d-block mb-2">AUTOEXPEDIBLE FUNERARIO</small>
+                                <div><span class="plan-tag" data-plan-key></span></div>
+
+                                <p class="text-muted small font-weight-bold mb-0 mt-4">TOTAL A PAGAR CLIENTE</p>
+                                <h2 class="price-value" data-total></h2>
+                                <p class="text-muted small" data-breakdown></p>
+
+                                <h6 class="section-divider">COBERTURAS INCLUIDAS</h6>
+                                <ul class="coverage-list" data-coverages>
+                                </ul>
+
+                                <button type="button" class="btn btn-block btn-custom mt-auto">Seleccionar Plan</button>
+                                <div class="SendEmail d-none" style="text-align: right">
+                                    <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                                </div>
+                                <span class="change-plan-link" onclick="app.FunerarioPlanes.resetView(event)">Cambiar Plan</span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <div class="container-custom">
+                    <div class="row justify-content-center" id="plans-container">
+                        <!-- Los planes se generarán dinámicamente aquí -->
+
+                        <div class="col-lg-8 mb-8 plan-column2 d-none">
+                            @Html.Partial("_terceros")
+                        </div>
+                    </div>
+
+                    <!-- FIN TARJETAS -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

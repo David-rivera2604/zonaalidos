@@ -7,6 +7,10 @@ using Architect.API.Tron.Contracts.Presupuesto.API;
 using System.Collections.Generic;
 using Architect.Utilities;
 using System.Threading.Tasks;
+using System.Linq;
+using Architect.API.Core.Contracts.General;
+using static Architect.API.Tron.Business.ErrorHandler;
+using static Architect.API.Tron.Business.Backoffice.Cotizacion.Generico;
 
 namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 {
@@ -15,9 +19,17 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
     /// </summary>
     public static class Generico
     {
-        public static DatoFijo Calcular(Architect.API.Tron.Contracts.Presupuesto.DatoFijo quoteInfo, int tip_mvto_batch = 8, string txt_alias = "Cotizado desde ZA")
+
+        public enum Tipo_Mvto_Batch : int
+        {
+            Cotizar = 8,
+            Emitir = 3
+        }
+
+        public static DatoFijo Calcular(Architect.API.Tron.Contracts.Presupuesto.DatoFijo quoteInfo, Tipo_Mvto_Batch tip_mvto_batch = Tipo_Mvto_Batch.Cotizar, string txt_alias = "Cotizado desde ZA")
         {
             List<Contracts.Presupuesto.DatoVariable> datosVariable = null;
+            ErrorHandler.ErrorDetail errInfo = new ErrorDetail();
 
             for (int tryIndex = 1; tryIndex <= 2; tryIndex++)
             {
@@ -30,7 +42,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                         {
                             fec_tratamiento = DateTime.Today,
                             num_orden = 0,
-                            tip_mvto_batch = tip_mvto_batch.ToString(),
+                            tip_mvto_batch = ((int)tip_mvto_batch).ToString(),
                             cod_cia = quoteInfo.cod_cia,
                             txt_alias = txt_alias,
                             tip_situ_filtro = 3.ToString(),
@@ -46,10 +58,19 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                         quoteInfo.tip_mvto_batch = g2000510Instance.tip_mvto_batch;
 
                         // Por ser una cotización se crea con el tercero genérico
-                        if (tip_mvto_batch == 8)
+                        if (tip_mvto_batch == Tipo_Mvto_Batch.Cotizar)
                         {
-                            quoteInfo.tip_docum = "CNA";
-                            quoteInfo.cod_docum = "999999999";
+                            var contratante = quoteInfo.Terceros?.Find(t => t.tip_benef == "0");
+                            if (contratante is null)
+                            {
+                                quoteInfo.tip_docum = "CNA";
+                                quoteInfo.cod_docum = "999999999";
+                            }
+                            else
+                            {
+                                quoteInfo.tip_docum = contratante.tip_docum;
+                                quoteInfo.cod_docum = contratante.cod_docum;
+                            }
                         }
 
                         DataAccess.CrearPresupuesto.PP_Insert_P2000030(quoteInfo, currentConnection);
@@ -73,15 +94,16 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                         g2000510Instance = DataAccess.Batch.G2000510.Execute(g2000510Instance, currentConnection);
                         if (g2000510Instance.txt_error.IsEmpty())
                         {
-                            if (tip_mvto_batch == 8)
+                            if (tip_mvto_batch == Tipo_Mvto_Batch.Cotizar)
                             {
                                 quoteInfo = DataAccess.LeerPresupuesto.Presupuesto(quoteInfo.cod_cia, g2000510Instance.num_poliza_definitivo, 0, 0, 0, currentConnection, true, "onlyresult");
                             }
                         }
                         else
                         {
-                            Utilities.Log.WarningLog("Cotizacion.Generico.txt_error", g2000510Instance.txt_error, "tron");
-                            Utilities.Log.WarningLog("Cotizacion.Generico.txt_ruta_error", g2000510Instance.txt_ruta_error, "tron");
+                            errInfo = ErrorHandler.Parser(g2000510Instance.txt_error);
+                            g2000510Instance.txt_error = errInfo.message;
+                            Log.WarningLog("Cotizacion.Generico.txt_error", $"\nnum_presupuesto: {g2000510Instance.num_presupuesto}\n  txt_error: {g2000510Instance.txt_error}\n  txt_error(raw): {errInfo.raw}\n  txt_ruta_error: {g2000510Instance.txt_ruta_error}", "tron");
                         }
 
                         quoteInfo.DatosDelProceso = g2000510Instance;
@@ -108,7 +130,12 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
                 }
                 else
                 {
-                    if (tryIndex <= 2) { 
+                    if (errInfo.tron)
+                    {
+                        break;
+                    }
+                    else if (tryIndex <= 2)
+                    {
                         //Se hace una demora de medio segun antes de volver a intentar la emisión
                         Task.Delay(500);
                     }
@@ -147,7 +174,7 @@ namespace Architect.API.Tron.Business.Backoffice.Cotizacion
 
         private static void Crea_Terceros(DatoFijo quoteInfo, IDbConnection currentConnection)
         {
-            foreach (Contracts.Presupuesto.Tercero p2000030Instance60 in quoteInfo.Terceros)
+            foreach (Contracts.Presupuesto.Tercero p2000030Instance60 in quoteInfo.Terceros.Where(r => r.tip_benef != "0"))
             {
                 p2000030Instance60.num_poliza = quoteInfo.num_poliza;
                 DataAccess.CrearPresupuesto.PP_Insert_P2000060(p2000030Instance60, currentConnection);

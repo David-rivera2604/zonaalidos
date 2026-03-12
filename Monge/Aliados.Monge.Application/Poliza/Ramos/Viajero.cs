@@ -43,7 +43,7 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                     result2.tip_docum = result2.Terceros.FirstOrDefault().tip_docum;
                     result2.cod_docum = result2.Terceros.FirstOrDefault().cod_docum;
 
-                    result2 = Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Calcular(result2, 3, "Riesgo emitido desde ZA Web");
+                    result2 = Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Calcular(result2, Architect.API.Tron.Business.Backoffice.Cotizacion.Generico.Tipo_Mvto_Batch.Emitir, "Riesgo emitido desde ZA Web");
                     if (result2.DatosDelProceso.txt_error == "")
                     {
 

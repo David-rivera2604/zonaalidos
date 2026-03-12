@@ -72,6 +72,7 @@
     <Compile Include="Comun\Vehiculo.cs" />
     <Compile Include="Cotizacion\AccidentesPersonales.cs" />
     <Compile Include="Cotizacion\Estudiantil.cs" />
+    <Compile Include="Cotizacion\Funerario.cs" />
     <Compile Include="Cotizacion\MultirriesgoSettings.cs" />
     <Compile Include="Emision\AccidentesPersonales.cs" />
     <Compile Include="Emision\Estudiantil.cs" />

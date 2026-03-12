@@ -1,0 +1,70 @@
+﻿<div class="form-row DataGeneralesSeccion">
+    <div class="col-lg-12">
+        <h4><i class="fa fa-shield"></i> Datos generales</h4>
+        <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+        <div class="form-row">
+            <!-- agt_cod DropDownList -->
+            <div class='col-sm-3 col-md-3 custom_agent d-none'>
+                <div class='form-group'>
+                    <label class='control-label' for='agt_cod'>Agente<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                    <select id='agt_cod' name='agt_cod' class='form-control'>
+                    </select>
+                </div>
+            </div>
+            <!-- cod_cuadro_com DropDownList -->
+            <div class='col-sm-3 col-md-3 custom_agent d-none'>
+                <div class='form-group'>
+                    <label class='control-label' for='cod_cuadro_com'>Cuadro de comisiones<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                    <select id='cod_cuadro_com' name='cod_cuadro_com' class='form-control'>
+                    </select>
+                </div>
+            </div>
+            <!-- cod_mon DropDownList -->
+            <div class='col-sm-3 col-md-3'>
+                <div class='form-group'>
+                    <label class='control-label' for='cod_mon'>Moneda <span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                    <select id='cod_mon' name='cod_mon' class='form-control'>
+                    </select>
+                </div>
+            </div>
+
+            <!-- cod_fracc_pago DropDownList -->
+            <div class='col-sm-3 col-md-3'>
+                <div class='form-group'>
+                    <label class='control-label' for='cod_fracc_pago'>Fraccionamiento de pago <span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                    <select id='cod_fracc_pago' name='cod_fracc_pago' class='form-control'>
+                    </select>
+                </div>
+            </div>
+
+            <!-- fec_efec_poliza DatePicker -->
+            <div class='col-sm-3 col-md-3'>
+                <div class='form-group'>
+                    <label class='control-label' for='fec_efec_poliza'>Inicio de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                    <div class='input-group date' id='fec_efec_poliza_group'>
+                        <input type='text' id='fec_efec_poliza' name='fec_efec_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                        <span class='input-group-addon'>
+                            <span class='glyphicon glyphicon-calendar'></span>
+                        </span>
+                    </div>
+                    <div id='fec_efec_poliza_validate'></div>
+                </div>
+            </div>
+
+            <!-- fec_vcto_poliza DatePicker -->
+            <div class='col-sm-3 col-md-3'>
+                <div class='form-group'>
+                    <label class='control-label' for='fec_vcto_poliza'>Fin de vigencia<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                    <div class='input-group date' id='fec_vcto_poliza_group'>
+                        <input type='text' id='fec_vcto_poliza' name='fec_vcto_poliza' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
+                        <span class='input-group-addon'>
+                            <span class='glyphicon glyphicon-calendar'></span>
+                        </span>
+                    </div>
+                    <div id='fec_vcto_poliza_validate'></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

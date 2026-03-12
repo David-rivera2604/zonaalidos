@@ -53,7 +53,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 tron.Riesgos.First().mca_exclusivo = "";
             }
 
-            Architect.API.Tron.Contracts.Presupuesto.DatoFijo presupuestoResult = Backoffice.Cotizacion.Generico.Calcular(tron, 3, "Riesgo emitido desde ZA Web");
+            Architect.API.Tron.Contracts.Presupuesto.DatoFijo presupuestoResult = Backoffice.Cotizacion.Generico.Calcular(tron, Backoffice.Cotizacion.Generico.Tipo_Mvto_Batch.Emitir, "Riesgo emitido desde ZA Web");
 
             Contracts.Poliza.DatoFijo data = null;
 

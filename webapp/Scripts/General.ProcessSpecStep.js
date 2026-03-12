@@ -46,7 +46,10 @@ app.GeneralProcessSpecStep = (() => {
     }
 
     const Init_Controls = () => {
-        app.frm.NumericWidget('#StepOrder', '', '0', '99999', '0');
+
+
+
+        app.frm.NumericWidget('#StepOrder', { minimumValue: '0', maximumValue: '99999' });
         app.frm.SelectWidget('#FlowIdFlt');
         app.frm.SelectWidget('#Roles');
         app.frm.SelectWidget('#References');

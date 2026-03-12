@@ -1,0 +1,147 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+<!-- RoleMember -->
+<div class="row">
+    <div id="mainBlock" class="col-md-12 p-0">
+        <div class="ibox">
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-3">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-plane"></i> <span id="PageTitle">Autoexpedible seguro funerario</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a usted y a su familia, suscribiendose a este seguro autoexpedible funerario. Les respaldaremos cumpliendo los compromisos y coberturas que de ella se derivan en relación con los riesgos asumidos por su medio.</p>
+                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a href="https://www.mapfre.cr/contacto/" target="_blank">Seguro funerario</a>
+                        <p class="mt-2 text-center">
+                            ¡Nosotros lo protegemos!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox-content box_design">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                    <div class="sk-rect4"></div>
+                    <div class="sk-rect5"></div>
+                </div>
+                <div id="generalNotify">
+                </div>
+
+                <!-- Edit Form -->
+                <div class='form-row'>
+                    <!-- Opciones -->
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar la información</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='col-md-12 m-2'>
+                        <div id="VisualizationsEdt" class="animated fadeInRight">
+                            <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
+                                <fieldset>
+                                    <!-- datos generales Zone -->
+                                    @Html.Partial("../Common/_datosgenerales")
+
+                                    <!-- datosdelasegurado Zone -->
+                                    <div class="form-row aseguradoSeccion">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-user"></i> Datos necesarios para la cotización</h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class='form-row'>
+                                                <!-- num_dependientes RadioButtonList -->
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <label class='control-label' for='num_dependientes'>
+                                                            Cantidad de dependientes <span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                        </label>
+                                                        <div style="padding-top: 6px;">
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="num_dependientes_0"
+                                                                       name="num_dependientes" value="0">
+                                                                <label class="custom-control-label" for="num_dependientes_0">Sin dependientes</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="num_dependientes_1"
+                                                                       name="num_dependientes" value="1">
+                                                                <label class="custom-control-label" for="num_dependientes_1" title="Conyugue o hijo(a)">1 dependiente</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio custom-control-inline">
+                                                                <input type="radio" class="custom-control-input" id="num_dependientes_2"
+                                                                       name="num_dependientes" value="2">
+                                                                <label class="custom-control-label" for="num_dependientes_2" title="Conyugue y hijo(a)">2 dependientes</label>
+                                                            </div>
+                                                        </div>
+                                                        <small class="form-text text-muted">Indique la cantidad de dependientes como conyugue y/o hijo(a) del asegurado a ser incluidos en la póliza.</small>
+                                                        <div id='num_dependientes_validate'></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class='col-sm-4 col-md-4'>
+                                                    <div class='form-group'>
+                                                        <button id="cotizar" type="button" class="btn  btn-primary float-left" style="margin-top: 20px;" data-doing="Cotizando...">
+                                                            Cotizar
+                                                        </button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='form-row'>
+                                                <div class='col-md-12'>
+                                                    <!-- Notificaciones  -->
+                                                    <div id="quoteNotify">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- Seleccion de planes Zone -->
+                                    @Html.Partial("_planes")
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Form End -->
+                <!-- Seleccion de planes Zone -->
+                @Html.Partial("../Common/_tercero_modal")
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.frm.js")"></script>
+    <script src="@Url.Content("~/Scripts/Cotizaciones/Funerario.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common/Tercero.js")"></script>
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            app.Funerario.Init();
+        });
+    </script>
+}

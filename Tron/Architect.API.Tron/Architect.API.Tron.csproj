@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Contracts\CreateSession.cs" />
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\FunerarioController.cs" />
     <Compile Include="Controllers\SINPEMovilController.cs" />
     <Compile Include="Controllers\VariacionesController.cs" />
     <Compile Include="Controllers\IssueController.cs" />

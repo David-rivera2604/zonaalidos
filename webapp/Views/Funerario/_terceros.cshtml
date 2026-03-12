@@ -1,0 +1,338 @@
+﻿<style>
+    :root {
+        --gt-blue-accent: #3b82f6;
+        --gt-green-accent: #10b981;
+        --gt-purple-accent: #8b5cf6;
+        --gt-orange-accent: #f59e0b;
+        --gt-text-dark: #1e293b;
+        --gt-text-muted: #64748b;
+        --gt-bg-body: #f1f5f9;
+        --gt-edit-bg: rgba(59, 130, 246, 0.1);
+        --gt-delete-bg: rgba(239, 68, 68, 0.1);
+    }
+
+
+    .gt-container {
+        width: 100%;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    /* --- BOTONES DE ACCIÓN SUPERIORES --- */
+    .gt-action-bar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+
+    .gt-btn-add {
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: var(--gt-text-muted);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+        .gt-btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.08);
+            color: var(--gt-text-dark);
+            border-color: #cbd5e1;
+            text-decoration: none;
+        }
+
+        .gt-btn-add i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+    /* --- TABLA ESTILO TARJETAS --- */
+    .gt-table-header {
+        display: flex;
+        padding: 0 25px 8px 25px;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--gt-text-muted);
+        letter-spacing: 1px;
+    }
+
+    .gt-card-row {
+        background: #fff;
+        border-radius: 8px;
+        margin-bottom: 4px;
+        padding: 4px 10px 6px;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: flex-start; /* Cambio de center a flex-start */
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        position: relative;
+    }
+
+        .gt-card-row:hover {
+            border-color: var(--gt-blue-accent);
+            box-shadow: 0 6px 12px -3px rgba(0, 0, 0, 0.05);
+        }
+
+    /* Definición de anchos de columna */
+    .gt-col-type {
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .gt-col-details {
+        width: 50%;
+    }
+
+    .gt-col-location {
+        width: 30%;
+    }
+
+    /* --- COMPONENTES INTERNOS --- */
+    .gt-badge-pill {
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-weight: 800;
+        font-size: 0.65rem;
+        color: #fff;
+        display: inline-block;
+        text-align: center;
+        margin-bottom: 4px;
+        min-width: 110px;
+    }
+
+    .gt-bg-contratante {
+        background-color: var(--gt-blue-accent);
+    }
+
+    .gt-bg-asegurado {
+        background-color: var(--gt-green-accent);
+    }
+
+    .gt-bg-asegurado-adic {
+        background-color: var(--gt-purple-accent);
+    }
+
+    .gt-bg-beneficiario {
+        background-color: var(--gt-orange-accent);
+    }
+
+    /* Contenedor para Nombre + Botones */
+    .gt-name-action-wrap {
+        display: flex;
+        align-items: center;
+    }
+
+    .gt-name-label {
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-right: 12px;
+    }
+
+    .gt-id-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+
+    .gt-prefix-tag {
+        background-color: #f1f5f9;
+        color: #475569;
+        padding: 1px 6px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        margin-right: 2px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .gt-id-text {
+        
+        font-weight: 800;
+    }
+
+    .gt-contact-group {
+        display: flex;
+        gap: 15px;
+        font-size: 0.68rem;
+        color: var(--gt-text-muted);
+        white-space: nowrap;
+    }
+
+        .gt-contact-group i {
+            color: #94a3b8;
+            margin-right: 4px;
+        }
+
+    .gt-location-info {
+        font-size: 0.75rem;
+        color: #475569;
+        display: flex;
+        line-height: 1.3;
+    }
+
+        .gt-location-info i {
+            color: #cbd5e1;
+            margin-right: 10px;
+            margin-top: 2px;
+            font-size: 1rem;
+        }
+
+    /* --- BOTONES DE ACCIÓN (MEJORADOS) --- */
+    .gt-btn-action {
+        background: #f8fafc;
+        border: 1px solid #f1f5f9;
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin-right: 6px;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: scale(0.8);
+    }
+
+    .gt-card-row:hover .gt-btn-action {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .gt-btn-edit:hover {
+        color: var(--gt-blue-accent);
+        background-color: var(--gt-edit-bg);
+        border-color: rgba(59, 130, 246, 0.2);
+        transform: scale(1.1) !important;
+    }
+
+    .gt-btn-delete:hover {
+        color: #ef4444;
+        background-color: var(--gt-delete-bg);
+        border-color: rgba(239, 68, 68, 0.2);
+        transform: scale(1.1) !important;
+    }
+
+    /* --- LEYENDA INFERIOR --- */
+    .gt-footer-legend {
+        margin-top: 20px;
+        padding: 10px 25px;
+        font-size: 0.65rem;
+        color: var(--gt-text-muted);
+        background: #f8f9fa;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+        .gt-footer-legend i {
+            margin-right: 8px;
+            color: var(--gt-blue-accent);
+        }
+
+    /* --- RESPONSIVE --- */
+    @@media (max-width: 992px) {
+        .gt-table-header {
+            display: none;
+        }
+
+        .gt-card-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .gt-col-type, .gt-col-details, .gt-col-location {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 12px;
+        }
+
+        .gt-btn-action {
+            opacity: 1;
+            transform: scale(1);
+            background: #f1f5f9;
+        }
+    }
+</style>
+
+<!-- TEMPLATE PARA TERCEROS -->
+<template id="tercero-template">
+    <div class="gt-card-row">
+        <div class="gt-col-type" data-badges>
+            <!-- Badges se generan dinámicamente -->
+        </div>
+        <div class="gt-col-details">
+            <div class="gt-name-action-wrap">
+                <span class="gt-name-label" data-fullname></span>
+                <button class="gt-btn-action gt-btn-edit" title="Editar" data-edit><i class="fa fa-pencil"></i></button>
+                <button class="gt-btn-action gt-btn-delete" title="Eliminar" data-delete><i class="fa fa-trash-o"></i></button>
+            </div>
+            <div class="gt-contact-group">
+                <span class="gt-id-text" data-document></span>
+                <span data-phone><i class="fa fa-phone"></i> <span data-phone-value></span></span>
+                <span data-email><i class="fa fa-envelope-o"></i> <span data-email-value></span></span>
+            </div>
+        </div>
+        <div class="gt-col-location">
+            <div class="gt-location-info">
+                <i class="fa fa-map-marker"></i>
+                <span data-location></span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<div class="gt-container">
+    <h4 class="font-weight-bold mb-4" style="color: #0f172a;">Información de terceros</h4>
+
+    <!-- Barra de acciones superior -->
+    <div class="gt-action-bar">
+        <a id="addcontratante" href="#" class="gt-btn-add d-none" title="Indique la información del contrante de la póliza"><i class="fa fa-user-plus" style="color: var(--gt-blue-accent)"></i> Agregar contratante</a>
+        <a id="addasegurado" href="#" class="gt-btn-add" title="Indique la información del asegurado de la póliza"><i class="fa fa-shield" style="color: var(--gt-green-accent)"></i> Agregar asegurado</a>
+        <a id="addaseguradoadicionalConyugue" href="#" class="gt-btn-add d-none" title="Indique la información del conyugue del asegurado"><i class="fa fa-plus-circle" style="color: var(--gt-purple-accent)"></i> Agregar conyugue</a>
+        <a id="addaseguradoadicionalHijoa" href="#" class="gt-btn-add d-none" title="Indique la información del hijo(a) del asegurado"><i class="fa fa-plus-circle" style="color: var(--gt-purple-accent)"></i> Agregar hijo(a)</a>
+        <a id="addbeneficiario" href="#" class="gt-btn-add d-none"><i class="fa fa-heart" style="color: var(--gt-orange-accent)"></i> Agregar beneficiario</a>
+    </div>
+
+    <!-- Encabezado de la lista -->
+    <div class="gt-table-header d-none d-lg-flex">
+        <div class="gt-col-type">Tipo</div>
+        <div class="gt-col-details">Detalles del tercero</div>
+        <div class="gt-col-location">Ubicación</div>
+    </div>
+
+    <!-- Contenedor para terceros dinámicos -->
+    <div id="terceros-container">
+        <!-- Los terceros se generarán dinámicamente aquí -->
+    </div>
+
+    <!-- LEYENDA INFORMATIVA -->
+    <div class="gt-footer-legend">
+        <i class="fa fa-info-circle"></i>
+        <span>Sugerencia: Posicione el cursor sobre cualquier registro para visualizar las opciones de gestión junto al nombre.</span>
+    </div>
+
+    <div class='col-sm-4 col-md-4'>
+        <div class='form-group'>
+            <button id="emitir" type="button" class="btn  btn-primary float-left d-none" style="margin-top: 20px;" data-doing="Emitiendo...">
+                Emitir
+            </button>
+
+        </div>
+    </div>
+</div>

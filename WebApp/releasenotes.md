@@ -1,5 +1,16 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.173 - 11/03/2026
+
+### Aliados - Funerario: Implementación del ramo 196.	
+
+#### Funcionalidades implementadas:
+
+- Implementación del ramo 196 para el producto funerario.
+- Se agregan las funcionalidades necesarias para la cotización y emisión de pólizas autoexpedibles funerarias.
+
+---
+
 ## Versión 1.6.172 - 10/02/2026
 
 ### Aliados - Pasarela: Tokenización de tarjeta duplicadas.	

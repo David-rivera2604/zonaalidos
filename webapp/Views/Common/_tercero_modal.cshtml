@@ -5,8 +5,8 @@
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
                 </button>
-                <h4 class="modal-title">Información de tercero</h4>
-                <small class="font-bold">Permite agregar un nuevo tercero o editar uno existente</small>
+                <h4 id="terceroTitle" class="modal-title">Información de tercero</h4>
+                <small id="terceroSubTitle" class="font-bold">Permite agregar un nuevo tercero o editar uno existente</small>
             </div>
             <div class="modal-body">
                 <!-- terceros Grid Edit Form -->
@@ -26,6 +26,7 @@
                                                 <select id='tipodetercero' name='tipodetercero' class='form-control'>
                                                     <option value="0" selected>Tomador(a)</option>
                                                     <option value="2">Asegurado(a)</option>
+                                                    <option value="16">Asegurado(a) adicional</option>
                                                     <option value="3">Conductor habitual</option>
                                                     <option value="6">Beneficiario(a)</option>
                                                     <option value="8">Acreedor(a)</option>
@@ -62,7 +63,8 @@
                                                 </div>
                                                 <div id='DocumentNumber_validate'></div>
                                             </div>
-                                        </div><!-- nombre Text -->
+                                        </div>
+                                        <!-- nombre Text -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='nombre'>
@@ -72,27 +74,30 @@
                                                 <input type='text' id='nombre' name='nombre' class='form-control' size='100'
                                                        maxlength='100' />
                                             </div>
-                                        </div><!-- apellido1 Text -->
+                                        </div>
+                                        <!-- apellido1 Text -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='apellido1'>
-                                                    Apellido 1<span class='required-mark'
-                                                                    title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                    Primer apellido<span class='required-mark'
+                                                                         title='Este campo debe ser llenado de forma obligatoria'>*</span>
                                                 </label>
                                                 <input type='text' id='apellido1' name='apellido1' class='form-control' size='50'
                                                        maxlength='50' />
                                             </div>
-                                        </div><!-- apellido2 Text -->
+                                        </div>
+                                        <!-- apellido2 Text -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='apellido2'>
-                                                    Apellido 2<span class='required-mark'
-                                                                    title='Este campo debe ser llenado de forma obligatoria'>*</span>
+                                                    Segundo apellido<span class='required-mark'
+                                                                          title='Este campo debe ser llenado de forma obligatoria'>*</span>
                                                 </label>
                                                 <input type='text' id='apellido2' name='apellido2' class='form-control' size='50'
                                                        maxlength='50' />
                                             </div>
-                                        </div><!-- fechadenacimiento DatePicker -->
+                                        </div>
+                                        <!-- fechadenacimiento DatePicker -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='fechadenacimiento'>
@@ -153,7 +158,8 @@
                                                 </div>
                                                 <div id='numerodetelefono_validate'></div>
                                             </div>
-                                        </div><!-- correoelectronico Text -->
+                                        </div>
+                                        <!-- correoelectronico Text -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='correoelectronico'>
@@ -169,7 +175,8 @@
                                                 </div>
                                                 <div id='correoelectronico_validate'></div>
                                             </div>
-                                        </div><!-- cod_pais DropDownList -->
+                                        </div>
+                                        <!-- cod_pais DropDownList -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
                                                 <label class='control-label' for='cod_pais'>
@@ -194,6 +201,7 @@
                                                         </a>
                                                     </span>
                                                 </div>
+                                                <div id='TProvinciaHelper_validate'></div>
                                             </div>
                                         </div>
 
@@ -212,6 +220,7 @@
                                                         </a>
                                                     </span>
                                                 </div>
+                                                <div id='TProvincia_validate'></div>
                                             </div>
                                         </div>
                                         <!-- TCanton DropDownList -->
@@ -246,11 +255,10 @@
                                             </div>
                                         </div>
                                         <!-- eltomadoreselmismoasegurado RadioButtonList -->
-                                        <div class='col-sm-4 col-md-4'>
+                                        <div class='col-sm-4 col-md-4 d-none'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='eltomadoreselmismoasegurado'>
-                                                    El tomador es el mismo
-                                                    asegurado
+                                                <label class='control-label' for='eltomadoreselmismoasegurado' title="Indica que el tomador es el mismo asegurado por lo tanto no es necesario volvar a carga la información como asegurado">
+                                                    El tomador es el mismo asegurado
                                                 </label>
                                                 <div style="padding-top: 6px;">
                                                     <div class="custom-control custom-radio custom-control-inline">
@@ -266,10 +274,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- elaseguradoeselmismotomador RadioButtonList CS/Emision -->
+
+                                        <!-- elaseguradoeselmismotomador RadioButtonList -->
                                         <div class='col-sm-4 col-md-4 d-none'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='elaseguradoeselmismotomador'>
+                                                <label class='control-label' for='elaseguradoeselmismotomador' title="Indica que el asegurado es el mismo tomador por lo tanto no es necesario volvar a carga la información como tomador">
                                                     El asegurado es el mismo tomador
                                                 </label>
                                                 <div style="padding-top: 6px;">
@@ -286,6 +295,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <!-- elaseguradoeselconductorhabitual RadioButtonList -->
                                         <div class='col-sm-4 col-md-4 d-none mapfremas-visible'>
                                             <div class='form-group'>
@@ -322,7 +332,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <!-- beneficiario Zone -->
                                     <div id="beneficiarioZone" class="form-row d-none animated fadeIn">

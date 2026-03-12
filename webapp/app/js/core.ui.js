@@ -205,6 +205,8 @@ app.ui = (function () {
                     default:
                         if (AutoNumeric.getAutoNumericElement(`#${identificador}`) !== null) {
                             app.ui.SetNumericValue(`#${identificador}`, valor.replace(/[^\d.,+-]/g, ''));
+                        } else if ($(`#${identificador}_group`).length > 0) {
+                            app.ui.SetDateValue(`#${identificador}`, valor);
                         } else {
                             campo.value = valor;
                         }
@@ -1614,15 +1616,16 @@ app.ui = (function () {
                 navigator.clipboard.readText()
                     .then(text => {
 
-                        let request = { key: 'SmartPasteAssistant', FieldList: fieldList, UserData: text };
-                        console.log(request);
+                        app.ui.SetSmartFormFields(formId, text);
 
-                        app.core.Post(app.setting.apipath + 'v1/AI/Assistant', JSON.stringify(request), undefined, 'text/html; charset=utf-8')
-                            .done(function (data, textStatus, jqXHR) {
-                                console.log(data);
-                                app.ui.SetSmartFormFields(formId, data);
-                            }).always(function () {
-                            });
+                        //let request = { key: 'SmartPasteAssistant', FieldList: fieldList, UserData: text };
+                        //console.log(request);                        
+                        //app.core.Post(app.setting.apipath + 'v1/AI/Assistant', JSON.stringify(request), undefined, 'text/html; charset=utf-8')
+                        //    .done(function (data, textStatus, jqXHR) {
+                        //        console.log(data);
+                        //        app.ui.SetSmartFormFields(formId, data);
+                        //    }).always(function () {
+                        //    });
 
                     })
                     .catch(err => {
