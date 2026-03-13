@@ -241,6 +241,8 @@ namespace Architect.API.Tron.Contracts.Cotizacion
 
         [DataMember(), JsonProperty()] public string nombredelcontratante { get; set; }
 
+        [DataMember(), JsonProperty()] public string COD_TIP_COM_VEHI { get; set; } = "1";
+
     }
 
 }
