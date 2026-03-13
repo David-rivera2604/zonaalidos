@@ -250,6 +250,7 @@ namespace Architect.API.Tron.Business.Emision
             {
                 mapInfo.clientesIngresos = new[] { new Clientesingreso()
                 {
+                    nombreEmpresa = jsonvalues.TokenStringValue("nombreempresaPer"),
                     actividadEconomica = mapInfo.actividadEconomica,
                     cargo = jsonvalues.TokenStringValue("cargoempresaPer"),
                     telefonoCentral = jsonvalues.TokenStringValue("telefonoempresaPer"),
