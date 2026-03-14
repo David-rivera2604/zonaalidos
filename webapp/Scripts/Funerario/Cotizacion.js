@@ -18,6 +18,7 @@ app.Funerario = (() => {
     let _quoteSetupData = null;
     let _quoteData = null;
     let _terceros = [];
+    let _policyData = null;
 
     function Setup() {
         app.core.Get(`${app.setting.apipath}v1/Funerario/Quote/Setup`, null,
@@ -84,6 +85,7 @@ app.Funerario = (() => {
                 app.core.Post(`${app.setting.apipath}v1/Funerario/Issue`,
                     JSON.stringify(payload),
                     function (data) {
+                        _policyData = data;
                         if (!app.ui.NotifyErrors(data.Error, data.Errors, '#VisualizationsEdtForm', 'emitirNotify')) {
                             $('.change-plan-link').addClass('d-none');
                             $('.gt-action-bar').addClass('d-none');
@@ -196,6 +198,9 @@ app.Funerario = (() => {
                     app.FunerarioTerceros.render([], _quoteData.num_dependientes);
                     app.ui.HideAlert('emitirNotify');
                     break;
+                case 'Print':
+                    app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: _policyData.num_poliza, NUM_RIESGO: 1 } })
+                    break;
             }
         }
     };
@@ -235,6 +240,14 @@ app.FunerarioPlanes = (() => {
                 const card = clone.querySelector('.custom-card');
                 card.addEventListener('click', function () {
                     app.FunerarioPlanes.handleCardClick(card, presupuesto.Key);
+                });
+
+                // Evento del boton de enviar certificado por correo
+                let printBtn = clone.getElementById('print');
+                printBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    app.Funerario.EventHandler('Print', presupuesto.Key);
                 });
 
                 // Llenar Plan Key
@@ -490,7 +503,7 @@ app.FunerarioTerceros = (() => {
                 e.preventDefault();
                 e.stopPropagation();
                 onDeleteTercero(tercero, index);
-            });
+            })
 
             // Insertar en el contenedor
             container.appendChild(clone);

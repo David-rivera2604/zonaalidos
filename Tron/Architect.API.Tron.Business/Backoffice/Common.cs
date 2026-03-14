@@ -190,6 +190,15 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 switch (num_poliza.Substring(0, 3))
                 {
+                    case "117":
+                        procedureName = "em_p_certificado_117_za";
+                        break;
+                    case "194":
+                        procedureName = "em_k_jrp_certificado_194_mcr.p_lista";
+                        break;
+                    case "196":
+                        procedureName = "em_k_jrp_certificado_196_mcr.p_lista";
+                        break;
                     case "201":
                         procedureName = "em_k_jrp_cuadropoliza201_mcr.p_lista";
                         break;
@@ -212,20 +221,14 @@ namespace Architect.API.Tron.Business.Backoffice
                     case "302":
                         procedureName = "em_k_jrp_cuadro_poliza_301_mcr.p_lista";
                         break;
-                    case "441":
-                        procedureName = "em_k_jrp_condiciones_441_mcr.p_lista";
-                        break;
-                    case "194":
-                        procedureName = "em_k_jrp_certificado_194_mcr.p_lista";
-                        break;
                     case "303":
                         procedureName = "em_k_jrp_cuadro_poliza_303.p_lista";
                         break;
                     case "401":
                         procedureName = "em_p_certificado_401_za";
                         break;
-                    case "117":
-                        procedureName = "em_p_certificado_117_za";
+                    case "441":
+                        procedureName = "em_k_jrp_condiciones_441_mcr.p_lista";
                         break;
                 }
                 if (procedureName.IsEmpty())
