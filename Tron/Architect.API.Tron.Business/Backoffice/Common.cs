@@ -1,5 +1,7 @@
-﻿using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
+﻿using Architect.API.Core.Business;
+using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Utilities.Extensions;
+using Architect.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -188,49 +190,10 @@ namespace Architect.API.Tron.Business.Backoffice
 
             try
             {
-                switch (num_poliza.Substring(0, 3))
-                {
-                    case "117":
-                        procedureName = "em_p_certificado_117_za";
-                        break;
-                    case "194":
-                        procedureName = "em_k_jrp_certificado_194_mcr.p_lista";
-                        break;
-                    case "196":
-                        procedureName = "em_k_jrp_certificado_196_mcr.p_lista";
-                        break;
-                    case "201":
-                        procedureName = "em_k_jrp_cuadropoliza201_mcr.p_lista";
-                        break;
-                    case "202":
-                        procedureName = "em_k_jrp_cuadropoliza202_mcr.p_lista";
-                        break;
-                    case "204":
-                        procedureName = "em_k_jrp_cuadropoliza204_mcr.p_lista";
-                        break;
-                    case "205":
-                        procedureName = "em_k_jrp_certificado_205_mcr.p_lista";
-                        break;
-                    case "230":
-                        procedureName = "em_k_jrp_certificado_230_mcr.p_lista";
-                        break;
-                    case "288":
-                        procedureName = "em_k_jrp_condiciones_288_mcr.p_lista";
-                        break;
-                    case "300":
-                    case "302":
-                        procedureName = "em_k_jrp_cuadro_poliza_301_mcr.p_lista";
-                        break;
-                    case "303":
-                        procedureName = "em_k_jrp_cuadro_poliza_303.p_lista";
-                        break;
-                    case "401":
-                        procedureName = "em_p_certificado_401_za";
-                        break;
-                    case "441":
-                        procedureName = "em_k_jrp_condiciones_441_mcr.p_lista";
-                        break;
-                }
+                string ramo = num_poliza.Substring(0, 3);
+
+                procedureName = $"tron.prog.certificado.{ramo}".StringValue(0).ToLower();
+
                 if (procedureName.IsEmpty())
                 {
                     throw new Utilities.Exceptions.ApplicationException(string.Format("No se puede imprimir la póliza {0} del ramo {1}", num_poliza, num_poliza.Substring(0, 3)));

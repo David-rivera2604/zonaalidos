@@ -1,5 +1,19 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.174 - 14/03/2026
+
+### Aliados - TRON: Ajuste para obtener el nombre del programa encargado de generar el certificado según el ramo.	
+
+#### Funcionalidades implementadas:
+
+- Se cambia la lógica para obtener el nombre del programa que genera el certificado por ramo, de forma que no esté fija en código y que dicho nombre se obtenga de la tabla `settings` usando como clave la siguiente interpolación (`tron.prog.certificado.{ramo}`).
+
+#### Dependencias:
+
+1. 260314a.settings.tron.prog.certificado.sql
+
+---
+
 ## Versión 1.6.173 - 11/03/2026
 
 ### Aliados - Funerario: Implementación del ramo 196.	
@@ -16,11 +30,11 @@
 
 ## Versión 1.6.172 - 10/02/2026
 
-### Aliados - Pasarela: Tokenización de tarjeta duplicadas.	
+### Aliados - Pasarela: Tokenización de tarjetas duplicadas.	
 
 #### Funcionalidades implementadas:
 
-- Cuando se hage el pago on line con suscripción se crear una nueva tokenizacion pero queda activa la tokenizacion anterior.
+- Cuando se hace el pago en línea con suscripción, se crea una nueva tokenización, pero queda activa la tokenización anterior.
 
 ---
 
@@ -30,7 +44,7 @@
 
 #### Funcionalidades implementadas:
 
-- Reporte de casoso descargable para Rol agente / Purdy / Corredurías que contenga los siguientes campos: #caso / fecha ingreso  / asunto / Estado - Urgente / Usuario de creación (contacto).
+- Reporte de casos descargable para rol agente / Purdy / corredurías que contenga los siguientes campos: #caso / fecha ingreso / asunto / estado - urgente / usuario de creación (contacto).
 
 #### Dependencias:
 
@@ -40,11 +54,11 @@
 
 ## Versión 1.6.170 - 09/02/2026
 
-### Aliados - Trazabilidad: Validación de casos duplicado.	
+### Aliados - Trazabilidad: Validación de casos duplicados.	
 
 #### Funcionalidades implementadas:
 
-- Alerta de posible caso duplicado por asunto/datos obligatorios. Se varifica el proceso, asunto y referencias requeridas.
+- Alerta de posible caso duplicado por asunto/datos obligatorios. Se verifica el proceso, asunto y referencias requeridas.
 
 ---
 
@@ -98,13 +112,13 @@
 - Descarga masiva de documentos desde la pestaña de adjuntos.
 - Eliminar carga de un solo documento de la pestaña de adjuntos.
 - Carga de documentos con arrastre hacia la ventana de la plataforma.
-- Se requiere una alerta o una señal para identificar los nuevos casos cargados o movimientos recientes en la plataforma cada vez que cambie de etapa. Se habilita el agente como persona de contacto del caso de esta forma se pueden configurar las notificaciones.
-- Revisión de 84 procesos para determinar fallas de diseño, solo se encontraron 2 errores y 2 casos para mejora.
-- Apertura de rol para corredurías. Para cualquier tenant diferente al de mapfre se pasa los roles del usuario conectado de forma que la lista de procesos permitido se filtre usando lo roles del usuario, el nombre del rol debe exitir en el tenant mapfre para pode filtrarlo.
-- Ocultar la visualización de casos finalizados posterior a los 30 días para ver solo los pendientes o más recientes para Rol de Purdy /Agentes / Intermediarios, pero dejar en los reportes.
+- Se requiere una alerta o una señal para identificar los nuevos casos cargados o movimientos recientes en la plataforma cada vez que cambie de etapa. Se habilita el agente como persona de contacto del caso; de esta forma se pueden configurar las notificaciones.
+- Revisión de 84 procesos para determinar fallas de diseño; solo se encontraron 2 errores y 2 casos para mejora.
+- Apertura de rol para corredurías. Para cualquier tenant diferente al de Mapfre, se pasan los roles del usuario conectado, de forma que la lista de procesos permitidos se filtre usando los roles del usuario; el nombre del rol debe existir en el tenant Mapfre para poder filtrarlo.
+- Ocultar la visualización de casos finalizados posterior a los 30 días para ver solo los pendientes o más recientes para rol de Purdy / agentes / intermediarios, pero dejarlos en los reportes.
 - Colocar botón opcional en notas que permita decidir si el sistema debe enviar notificación al dejar mensajes nuevos al contacto que apertura el caso.
-- Habilitar para Rol de agentes y Rol de Purdy en la pestaña de seguimiento la vista de los comentarios colocados en seguimiento de etapas, fechas de la gestión y realizado por. Vista desde tenant aliados y purdy.
-- Abrir casilla para que los casos seleccionados con prioridad "reprocesos" se deba colocar de forma obligatoria el número de caso anterior. Se agrega la capacidad de poder hacer visible o no los campos de referencia con lo cual se puede agregar un par de campos y manejarlo por visibilidad.
+- Habilitar para rol de agentes y rol de Purdy, en la pestaña de seguimiento, la vista de los comentarios colocados en seguimiento de etapas, fechas de la gestión y realizado por. Vista desde tenant Aliados y Purdy.
+- Abrir casilla para que los casos seleccionados con prioridad "reprocesos" deban colocar de forma obligatoria el número de caso anterior. Se agrega la capacidad de poder hacer visibles o no los campos de referencia, con lo cual se puede agregar un par de campos y manejarlo por visibilidad.
 
 #### Dependencias:
 
@@ -122,16 +136,16 @@
 #### Funcionalidades implementadas:
 
 - Se ajusta la creación de registros en las tablas AuthenticationTrace y ChangeSet por medio de sequence propios de Oracle.
-- Se habilita validaciones para las cotizaciones de viajero.
-- Se agrega manejo de dos reintentos en caso de existir algun error en la emisión con una pausa de 0.5 segundos entre intento.
+- Se habilitan validaciones para las cotizaciones de viajero.
+- Se agrega manejo de dos reintentos en caso de existir algún error en la emisión, con una pausa de 0.5 segundos entre intentos.
 
-- #### Dependencias:
+#### Dependencias:
 
 1. 260112a.AuthenticationTrace.ChangeSet.alter.sql
 ---
 ## Versión 1.6.165 - 30/12/2025
 
-### Aliados - SICOP : Se habilita traza en el llamado a los servicios de SICOP.
+### Aliados - SICOP: Se habilita traza en el llamado a los servicios de SICOP.
 
 #### Funcionalidades implementadas:
 
@@ -140,7 +154,7 @@
 ---
 ## Versión 1.6.164 - 17/12/2025
 
-### Aliados - Security : Optimización del Control de Inactividad de Usuarios.
+### Aliados - Security: Optimización del Control de Inactividad de Usuarios.
 
 #### Funcionalidades implementadas:
 
@@ -171,29 +185,29 @@ Implementación de nuevos parámetros de configuración (tabla `settings`) para 
 
 ## Versión 1.6.163 - 07/12/2025
 
-### Aliados - SUGESE: Se migra desde medical la funcionalidad de creación de archivo xml para la SUEGSE.
+### Aliados - SUGESE: Se migra desde Medical la funcionalidad de creación de archivo XML para la SUGESE.
 
 #### Funcionalidades implementadas:
 
-- Se crear nueva vista sugese/generador la cual se encarga de procesar archivos excel y convertilos  en el formato de monitoreo XML de la SUGESE.
-- Se crear nueva vista sugese/envio la cual realiza el envio del XML al servicio de la SUGESE.
+- Se crea nueva vista `sugese/generador`, la cual se encarga de procesar archivos Excel y convertirlos en el formato de monitoreo XML de la SUGESE.
+- Se crea nueva vista `sugese/envio`, la cual realiza el envío del XML al servicio de la SUGESE.
 
 Nuevos settings (tabla `settings`) para controlar la autenticación 2FA:
 
 | Setting | Default | Descripción |
 |---------|-------------|-------------|
-| `app.path` | C:\Aliados\WebApp | Ruta fisica de la aplicación |
+| `app.path` | C:\Aliados\WebApp | Ruta física de la aplicación |
 | `sugese.codigoaseguradora` | A03 | Código de la entidad aseguradora |
-| `sugese.entidadaseguradora` | Mapfre Seguros Costa Rica S.A. | nombre de la entidad aseguradora |
+| `sugese.entidadaseguradora` | Mapfre Seguros Costa Rica S.A. | Nombre de la entidad aseguradora |
 
 ---
 ## Versión 1.6.162 - 07/12/2025
 
-### Aliados - Seguridad: Cambios para poder usar el cookie en el request de apis, desde la aplicación la aplicacion web.
+### Aliados - Seguridad: Cambios para poder usar la cookie en el request de APIs, desde la aplicación web.
 
 #### Funcionalidades implementadas:
 
-- Se hacen cambios necesario para no necesitar almacenar el token en el localstore del browser.
+- Se hacen cambios necesarios para no tener que almacenar el token en el local storage del browser.
 
 ---
 ## Versión 1.6.161 - 04/12/2025
@@ -223,9 +237,9 @@ Nuevos settings (tabla `settings`) para controlar la autenticación 2FA:
 
 #### Funcionalidades implementadas:
 
-- Se envía una factura electrónica cuando se hace la emisión y el usuario tiene entre sus roles el rol 'Scotiabank'
-- En la tabla `changeset` con `entitytype = 3000` se agrega traza del envío de la factura electrónica
-- En la tabla `changeset` con `entitytype = 3000` se agrega traza si hubo falla al momento de la emisión
+- Se envía una factura electrónica cuando se hace la emisión y el usuario tiene entre sus roles el rol 'Scotiabank'.
+- En la tabla `changeset` con `entitytype = 3000` se agrega traza del envío de la factura electrónica.
+- En la tabla `changeset` con `entitytype = 3000` se agrega traza si hubo falla al momento de la emisión.
 
 #### Nuevos Settings
 
