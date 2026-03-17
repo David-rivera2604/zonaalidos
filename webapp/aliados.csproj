@@ -1277,6 +1277,7 @@
     <Content Include="Scripts\ColoresTenant.js" />
     <Content Include="Scripts\CompraSegurosClients.js" />
     <Content Include="Scripts\Cotizacion.Coberturas.js" />
+    <Content Include="Scripts\dashboard\syscorpla.js" />
     <Content Include="Scripts\Funerario\Cotizacion.js" />
     <Content Include="Scripts\dashboard\process.js" />
     <Content Include="Scripts\Common\Tercero.js" />

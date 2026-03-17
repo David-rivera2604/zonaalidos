@@ -1,5 +1,19 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.175 - 16/03/2026
+
+### Aliados - syscorpla: Se agregar acceso syscorpla de forma embebida en un iframe a página completa 
+
+#### Funcionalidades implementadas:
+
+- Se agregar acceso syscorpla de forma embebida en un iframe a página completa.
+
+#### Rutas de acceso:
+
+- https://appqa.mapfrecr.com/aliados/viewer/dashboard?id=syscorpla
+
+---
+
 ## Versión 1.6.174 - 14/03/2026
 
 ### Aliados - TRON: Ajuste para obtener el nombre del programa encargado de generar el certificado según el ramo.	
