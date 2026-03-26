@@ -402,7 +402,7 @@
     {
       "Nombre": "MM_MarcasVehiculos",
       "Condicion": "({El Rol del usuario no sea igual a Davivienda} y {El Rol del usuario no sea igual a Empleado})",
-      "Exclusion": "3,14,37,46,57,58,63,81,87,92,105,181,217,273,354,367,384,392,440,565,701,704,706,709,713,425,228,158,430,32"
+      "Exclusion": "3,14,37,46,57,58,63,81,87,105,181,217,273,354,367,384,440,565,701,704,709,713,425,228,158,430,32"
     },
 	{
       "Nombre": "MM_MarcasVehiculos",
@@ -506,6 +506,12 @@
       "Nombre": "MM_ModelosVehiculos",
       "Condicion": "({La marca del vehículo} sea igual a 135) y {El Rol del usuario no sea igual a Privilegios}",
       "Exclusion": "1,2,4,5"
+    },
+	{
+      "Descripcion": "Exclusion Marcas para contratos BN de BMW",
+      "Nombre": "MM_MarcasVehiculos",
+      "Condicion": "({El Contrato} sea igual a 99751)",
+      "Exclusion": "1,5,6,7,13,15,359,17,18,20,25,26,119,718,30,31,35,38,40,44,45,50,51,271,55,56,60,199,441,65,66,71,135,72,73,717,74,78,79"
     }
   ],
   "Reglas": [
@@ -562,13 +568,13 @@
     },
     {
       "Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Dolares",
-      "Condicion": "{El Rol del usuario sea igual a Cotizadores} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {El Rol no sea igual a Purdy} y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 70000",
+      "Condicion": "{El Rol del usuario sea igual a Intermediario} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {El Rol no sea igual a Purdy} y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 70000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 70.000 dólares",
       "Campo": "IMP_VR"
     },
     {
       "Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Colones",
-      "Condicion": "{El Rol del usuario sea igual a Cotizadores} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {El Rol no sea igual a Purdy} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 45500000",
+      "Condicion": "{El Rol del usuario sea igual a Intermediario} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {El Rol no sea igual a Purdy} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 45500000",
       "Mensaje": "El valor del vehículo debe ser menor o igual a 45 500 000 colones",
       "Campo": "IMP_VR"
     },

@@ -576,8 +576,8 @@
     },
     {
       "Descripcion": "Año del Vehiculo Permitido para usuario con Privilegios",
-      "Condicion": "{El Rol del usuario sea igual a Privilegios} y {El Año del vehículo} sea menor a {20 años de antigüedad}",
-      "Mensaje": "El año del vehículo no debe superior a 20 años de antigüedad",
+      "Condicion": "{El Rol del usuario sea igual a Privilegios} y {El Año del vehículo} sea menor a {30 años de antigüedad}",
+      "Mensaje": "El año del vehículo no debe superior a 30 años de antigüedad",
       "Campo": "ANIO_SUB_MODELO"
     },
     {

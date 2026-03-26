@@ -96,7 +96,8 @@ app.CotizacionMapfreMasPlus = (function () {
             'MM_MarcasVehiculos.cod_marca',
             'MM_ModelosVehiculos.cod_modelo',
             'UsoVehiculo.cod_uso_vehi',
-            'TRON_G1010031:DEDUC303_3019.DedudAutoSustConnect'];
+            'TRON_G1010031:DEDUC303_3019.DedudAutoSustConnect',
+            'TRON_G1010031:DEDUC303_3017.DedudAutoSust'];
 
         setupData = JSON.parse(JSON.stringify(data));
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
@@ -271,6 +272,7 @@ app.CotizacionMapfreMasPlus = (function () {
             DED_AUTO_CRI: app.ui.GetDropDownNumericValue('#DED_AUTO_CRI'),
             AutoSust: app.ui.GetDropDownNumericValue('#AutoSust'),
             DedudAutoSustConnect: app.ui.GetDropDownNumericValue('#DedudAutoSustConnect'),
+            DedudAutoSust: app.ui.GetDropDownNumericValue('#DedudAutoSust'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
             plandepagoFull: $('#plandepagoFullTbl').bootstrapTable('getData'),
@@ -1311,6 +1313,13 @@ app.CotizacionMapfreMasPlus = (function () {
         else {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSustConnect', true);
             app.ui.SetDropDownNumericValue('#DedudAutoSustConnect', 0);
+        }
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3017)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSust', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSust', true);
+            app.ui.SetDropDownNumericValue('#DedudAutoSust', 0);
         }
         data_changed();
         Coberturas_Fijas(coberturas);

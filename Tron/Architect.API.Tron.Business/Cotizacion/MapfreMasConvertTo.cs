@@ -113,6 +113,11 @@ namespace Architect.API.Tron.Business.Cotizacion
                         result.coberturas += ",";
                     }
                     result.coberturas += cover.codigo.ToString();
+
+                    if (cover.codigo == 3017){
+                        result.p_mca_auto_sust = "S";
+                        result.p_ded_auto_sust = quoteInfo.DedudAutoSust.ToString();
+                    }
                 }
             }
             return result;
