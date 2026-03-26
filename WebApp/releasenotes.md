@@ -1,5 +1,19 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.176 - 22/03/2026
+
+### Aliados - Trazabilidad: Tablero de estadisticas de casos.	
+
+#### Funcionalidades implementadas:
+
+- Se agregar tablero con multiples estaditicas de casos registrados.
+
+#### Rutas de acceso:
+
+- https://appqa.mapfrecr.com/aliados/viewer/dashboard?id=process
+
+---
+
 ## Versión 1.6.175 - 16/03/2026
 
 ### Aliados - syscorpla: Se agregar acceso syscorpla de forma embebida en un iframe a página completa 
