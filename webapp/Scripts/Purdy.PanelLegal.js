@@ -49,19 +49,23 @@ app.PurdyPanelLegal = (function () {
     function Controls_setup() {
         $('#fechaenviadoainvestigacionDet_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         $('#fechaenviadoaacompanamientoLegDet_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         $('#fechadeleventoDet_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         $('#fechaidentificadocomoposiblesuDet_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         $('#telefonodeltercero').formatter({
             pattern: '{{9999}}-{{9999}}',
@@ -69,7 +73,8 @@ app.PurdyPanelLegal = (function () {
         });
         $('#fechasentencia_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         new AutoNumeric('#montoporrecuperar', {
             decimalCharacter: ',',
@@ -100,7 +105,8 @@ app.PurdyPanelLegal = (function () {
         });
         $('#fecharecuperaLegal_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         new AutoNumeric('#montorecuperaLegal', {
             decimalCharacter: ',',

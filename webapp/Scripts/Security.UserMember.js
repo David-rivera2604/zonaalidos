@@ -451,7 +451,7 @@ app.SecurityUserMember = (function () {
                     required: true
                 },
                 LastName: {
-                    required: true
+                    required: true               
                 },
                 BirthDate: { BirthDate: true },
                 LockedOutDate: {
