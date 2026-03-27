@@ -64,7 +64,8 @@ app.frm = (() => {
         DateWidget: function (selector, options) {
             let conf = {
                 format: 'DD/MM/YYYY',
-                locale: 'es'
+                locale: 'es',
+                minDate: moment('1900-01-01')
             };
             const settings = { ...conf, ...options };
             return $(selector + '_group').datetimepicker(settings);

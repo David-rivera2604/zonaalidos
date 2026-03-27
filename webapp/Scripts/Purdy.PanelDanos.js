@@ -149,7 +149,8 @@ app.PurdyPanelDanos = (function () {
     function Controls_setup() {
         $('#fechaenviodelavaluo_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         new AutoNumeric('#prerepuestos', {
             decimalCharacter: ',',
@@ -225,7 +226,8 @@ app.PurdyPanelDanos = (function () {
         });
         $('#fechaAutorizaciondeUsoPoliza_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         new AutoNumeric('#TipoCambio', {
             decimalCharacter: ',',
@@ -328,7 +330,8 @@ app.PurdyPanelDanos = (function () {
         });
         $('#fechaautorizacion_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
         new AutoNumeric('#danoocultomontoRepuestosDanooculto', {
             decimalCharacter: ',',
@@ -413,7 +416,8 @@ app.PurdyPanelDanos = (function () {
         });
         $('#fechasolicitado_group').datetimepicker({
             format: 'DD/MM/YYYY',
-            locale: 'es'
+            locale: 'es',
+            minDate: moment('1900-01-01')
         });
     };
 

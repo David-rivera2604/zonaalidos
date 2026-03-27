@@ -1,5 +1,15 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.177 - 27/03/2026
+
+### Aliados - Panel Purdy: Se establece en los campos fecha que el valo minimo es `1900-01-01`.
+
+#### Funcionalidades implementadas:
+
+- Se establece en los campos fecha que el valo minimo es `1900-01-01`.
+
+---
+
 ## Versión 1.6.176 - 22/03/2026
 
 ### Aliados - Trazabilidad: Tablero de estadisticas de casos.	
