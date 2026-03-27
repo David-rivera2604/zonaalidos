@@ -77,7 +77,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             };
 
             List<string> keys = new List<string> {
-                "MM_ClaseVehiculos", "MM_Plan",
+                "MM_MarcasVehiculos", "MM_ClaseVehiculos", "MM_Plan",
                 "MM_CAPITAL_RC", "MM_CAPITAL_GM", "MM_CAPITAL_AC", "MM_CAPITAL_GN", "MM_CAPITAL_AM", "MM_CAPITAL_ROTCRI",
                 "MM_DEDU_RC", "MM_DEDU_CV", "MM_DEDU_RA", "MM_DEDU_ROBO", "MM_DEDU_EE", "MM_DEDU_ROTCRI", "TRON_G2990006_ByMod:COD_TIP_COM_VEHI" };
             if (tokenInfo.Roles.Contain("PolizaGrupo"))
@@ -412,6 +412,9 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 switch (itemValues.Key)
                 {
+                    case "MM_MarcasVehiculos":
+                        result.cod_marca = itemValues.Lkp;
+                        break;
                     case "MM_ClaseVehiculos":
                         result.cod_tip_vehi = itemValues.Lkp;
                         break;

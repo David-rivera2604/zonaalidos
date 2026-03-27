@@ -1,5 +1,15 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.178 - 27/03/2026
+
+### Aliados - MapfreMas: Se habilita la carga dinámica de las marcas de vehículos.
+
+#### Funcionalidades implementadas:
+
+- Se habilita la carga dinámica de las marcas de vehículos.
+
+---
+
 ## Versión 1.6.177 - 27/03/2026
 
 ### Aliados - Panel Purdy: Se establece en los campos fecha que el valo minimo es `1900-01-01`.
