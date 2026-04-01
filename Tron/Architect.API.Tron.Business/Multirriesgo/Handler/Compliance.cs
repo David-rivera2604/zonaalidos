@@ -164,12 +164,6 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
                 origenRecursos = 3,
             };
 
-            Clientesotrosatributo OtrosAtributos = new Clientesotrosatributo()
-            {
-                atributo = 1,
-                descripcionAtributo = "0"
-            };
-
             Clientespatrimonio Patrimonio = new Clientespatrimonio()
             {
                 descripcionPatrimonio = "Edificio",
@@ -243,6 +237,7 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
                 Transacciones.montoIngresoMensual = jsonvalues.TokenInt32Value("ingresomensualestimado");
 
                 //-----Ingresos General-----\\
+
                 Ingresos.direccion = jsonvalues.TokenStringValue("domiciliocomercialCod_paisDesc") + " " +
                        jsonvalues.TokenStringValue("domiciliocomercialCod_estadoDesc") + " " +
                        jsonvalues.TokenStringValue("domiciliocomercialCod_provDesc") + " " +
@@ -251,8 +246,7 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
                 Ingresos.monto = jsonvalues.TokenInt32Value("ingresomensualestimado");
                 Ingresos.justificacionOrigenRecursos = jsonvalues.TokenStringValue("correspondenciaOrigendelosfondos");
                 Ingresos.moneda = quoteInfo.cod_mon;
-                //------Otros atributos General------\\
-                OtrosAtributos.descripcionAtributo = jsonvalues.TokenStringValue("valorcanalingreso");
+                Ingresos.nombreEmpresa = jsonvalues.TokenStringValue("nombreempresaPer");
             }
 
 
@@ -461,7 +455,19 @@ namespace Architect.API.Tron.Business.Multirriesgo.Handler
                     tipoProducto = quoteInfo.cod_ramo
                 }
             };
-            mapInfo.clientesOtrosAtributos = new[] { OtrosAtributos };
+            var lista = new List<Clientesotrosatributo>();
+            var pais = mapInfo.paisOrigen.ToString();
+
+            string valor = jsonvalues.TokenInt32Value("valorcanalingreso").ToString();
+            string valorAsignado = (valor == "2") ? "1" :
+                                (valor == "3") ? "2" : "1";
+
+            lista.Add(new Clientesotrosatributo { atributo = 1, descripcionAtributo = valorAsignado });
+
+            lista.Add(new Clientesotrosatributo { atributo = 2, descripcionAtributo = pais });
+
+            mapInfo.clientesOtrosAtributos = lista.ToArray();
+
             mapInfo.clientesPatrimonio = new List<Clientespatrimonio> { Patrimonio };
             if (quoteInfo.DatosEconomicos != null)
             {

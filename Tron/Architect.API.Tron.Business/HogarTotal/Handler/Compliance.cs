@@ -333,6 +333,21 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
                     mapInfo.clientesOtrosAtributos = new[] { otrosAtributos };
 
 
+
+                    var lista = new List<Clientesotrosatributo>();
+                    var pais = mapInfo.paisOrigen.ToString();
+
+                    string valor = jsonvalues.TokenInt32Value("valorcanalingreso").ToString();
+                    string valorAsignado = (valor == "2") ? "1" :
+                                        (valor == "3") ? "2" : "1";
+
+                    lista.Add(new Clientesotrosatributo { atributo = 1, descripcionAtributo = valorAsignado });
+
+                    lista.Add(new Clientesotrosatributo { atributo = 2, descripcionAtributo = pais });
+
+                    mapInfo.clientesOtrosAtributos = lista.ToArray();
+
+
                     Clientespatrimonio clientespatrimonio = new Clientespatrimonio()
                     {
                         descripcionPatrimonio = "SEGURO HOGAR TOTAL",
@@ -568,6 +583,7 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
 
                     Clientesingreso transaccionalidadIngresos = new Clientesingreso()
                     {
+                        nombreEmpresa = jsonvalues.TokenStringValue("nombreempresaPer"),
                         actividadEconomica = mapInfo.actividadEconomica,
                         cargo = jsonvalues.TokenStringValue("cargoempresaPer"),
                         telefonoDirecto = jsonvalues.TokenStringValue("telefonocelularPer"),
