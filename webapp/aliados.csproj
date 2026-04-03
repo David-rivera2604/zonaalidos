@@ -424,6 +424,7 @@
     <Content Include="app\css\Login.css" />
     <Content Include="app\img\ajax-loader.gif" />
     <Content Include="app\js\core.frm.js" />
+    <Content Include="app\js\core.language.js" />
     <Content Include="app\js\core.ui.components.js" />
     <Content Include="app\js\core.ui.js" />
     <Content Include="app\js\core.js" />
@@ -1663,6 +1664,8 @@
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <Content Include="data\dummy.json" />
+    <Content Include="locales\Cases\en.NewCase.json" />
+    <Content Include="locales\Cases\en.Case.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
