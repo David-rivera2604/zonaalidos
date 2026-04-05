@@ -47,6 +47,17 @@ app.language = (function () {
         if (appBasePath.charAt(appBasePath.length - 1) !== '/')
             appBasePath += '/';
 
+        if (pageName.indexOf('/') > -1) {
+            var explicitParts = $.grep(pageName.split('/'), function (part) {
+                return $.trim(part) !== '';
+            });
+
+            if (explicitParts.length > 1) {
+                controllerName = explicitParts[0];
+                pageName = explicitParts[1];
+            }
+        }
+
         return appBasePath + 'locales/' + controllerName + '/' + language + '.' + pageName + '.json';
     }
 
@@ -76,6 +87,9 @@ app.language = (function () {
     }
 
     function hasAllTranslations(labels, translations) {
+        if (!translations || $.isEmptyObject(translations))
+            return false;
+
         var allTranslated = true;
 
         $.each(labels || {}, function (id) {
@@ -101,12 +115,16 @@ app.language = (function () {
         if (!translationValue)
             return null;
 
-        if (typeof translationValue === 'object')
-            return Object.prototype.hasOwnProperty.call(translationValue, 'text')
-                ? translationValue.text
-                : null;
-
-        return translationValue;
+        switch (typeof translationValue) {
+            case 'string':
+                return translationValue;
+            case 'object':
+                return Object.prototype.hasOwnProperty.call(translationValue, 'text')
+                    ? translationValue.text
+                    : null;
+            default:
+                return null;
+        }
     }
 
     function getTranslationAttribute(translations, key, attributeName) {
@@ -166,95 +184,153 @@ app.language = (function () {
         return result;
     }
 
-    function applyLabelTranslations($container, labels, translations) {
-        $.each(labels || {}, function (id) {
-            var $label = $container.find('label[for="' + id + '"]').first();
-            var translatedText = getTranslationText(translations, id);
-            var translatedTitle = getTranslationAttribute(translations, id, 'title');
+    function getControlType($element) {
+        var tagName = ($element.prop('tagName') || '').toLowerCase();
 
-            if ($label.length === 0)
-                return;
-
-            if (translatedText) {
-                var $requiredMark = $label.find('.required-mark').detach();
-                $label.text(translatedText);
-
-                if ($requiredMark.length > 0)
-                    $label.append($requiredMark);
-            }
-
-            if (translatedTitle)
-                $label.attr('title', translatedTitle);
-        });
+        switch (tagName) {
+            case 'label':
+                return 'label';
+            case 'button':
+                return 'button';
+            case 'input':
+                switch (($element.attr('type') || '').toLowerCase()) {
+                    case 'button':
+                    case 'submit':
+                        return 'button';
+                    default:
+                        return 'input';
+                }
+            case 'textarea':
+                return 'textarea';
+            case 'select':
+                return 'select';
+            case 'div':
+                return $element.attr('class') ? 'div' : 'generic';
+            default:
+                return 'generic';
+        }
     }
 
     function applyHeaderTranslations($container, translations) {
         var pageTitle = getTranslationText(translations, 'Title');
+        var pageTitleAttr = getTranslationAttribute(translations, 'Title', 'title');
+        var $titleElement = $container.find('#Title').first();
+
+        if ($titleElement.length > 0) {
+            if (pageTitle)
+                $titleElement.text(pageTitle);
+
+            if (pageTitleAttr)
+                $titleElement.attr('title', pageTitleAttr);
+
+            return;
+        }
 
         if (pageTitle)
             $container.find('.ibox-title h5').first().text(pageTitle);
     }
 
-    function applySectionTranslations($container, translations) {
-        $container.find('div[id][class]').each(function () {
-            var $section = $(this);
-            var sectionId = $section.attr('id');
-            var translatedText = getTranslationText(translations, sectionId);
-            var translatedTitle = getTranslationAttribute(translations, sectionId, 'title');
-            var $firstChild = $section.children().first();
+    function applyLabelTranslation($container, id, translations) {
+        var $label = $container.find('label[for="' + id + '"]').first();
+        var translatedText = getTranslationText(translations, id);
+        var translatedTitle = getTranslationAttribute(translations, id, 'title');
 
-            if (!$firstChild.length || !$firstChild.is('h1, h2, h3, h4, h5, h6'))
-                return;
+        if ($label.length === 0)
+            return;
 
-            if (translatedText)
-                $firstChild.text(translatedText);
+        if (translatedText) {
+            var $requiredMark = $label.find('.required-mark').detach();
+            $label.text(translatedText);
 
-            if (translatedTitle)
-                $firstChild.attr('title', translatedTitle);
-        });
+            if ($requiredMark.length > 0)
+                $label.append($requiredMark);
+        }
+
+        if (translatedTitle)
+            $label.attr('title', translatedTitle);
     }
 
-    function applyElementTranslations($container, translations) {
-        $container.find('[id]').each(function () {
-            var $element = $(this);
-            var elementId = $element.attr('id');
-            var translatedText = getTranslationText(translations, elementId);
-            var translatedTitle = getTranslationAttribute(translations, elementId, 'title');
+    function applySectionTranslation($element, id, translations) {
+        var translatedText = getTranslationText(translations, id);
+        var translatedTitle = getTranslationAttribute(translations, id, 'title');
+        var $firstChild = $element.children().first();
 
-            if ($element.is('label, button, input, textarea, select'))
-                return;
+        if (!$firstChild.length || !$firstChild.is('h1, h2, h3, h4, h5, h6'))
+            return false;
 
-            if ($element.is('div[class]') && $element.children().first().is('h1, h2, h3, h4, h5, h6'))
-                return;
+        if (translatedText)
+            $firstChild.text(translatedText);
 
-            if (translatedText)
-                $element.text(translatedText);
+        if (translatedTitle)
+            $firstChild.attr('title', translatedTitle);
 
-            if (translatedTitle)
-                $element.attr('title', translatedTitle);
-        });
+        return true;
     }
 
-    function applyButtonTranslations($container, translations) {
-        $container.find('button[id], input[type="button"][id], input[type="submit"][id]').each(function () {
-            var $button = $(this);
-            var buttonId = $button.attr('id');
-            var buttonText = getTranslationText(translations, buttonId);
-            var buttonTitle = getTranslationAttribute(translations, buttonId, 'title');
+    function applyGenericElementTranslation($element, id, translations) {
+        var translatedText = getTranslationText(translations, id);
+        var translatedTitle = getTranslationAttribute(translations, id, 'title');
 
-            if (!buttonText) {
-                if (buttonTitle)
-                    $button.attr('title', buttonTitle);
-                return;
-            }
+        if (translatedText)
+            $element.text(translatedText);
 
-            if ($button.is('input'))
-                $button.val(buttonText);
-            else
-                $button.text(buttonText);
+        if (translatedTitle)
+            $element.attr('title', translatedTitle);
+    }
 
+    function applyButtonTranslation($element, id, translations) {
+        var buttonText = getTranslationText(translations, id);
+        var buttonTitle = getTranslationAttribute(translations, id, 'title');
+
+        if (!buttonText) {
             if (buttonTitle)
-                $button.attr('title', buttonTitle);
+                $element.attr('title', buttonTitle);
+            return;
+        }
+
+        if ($element.is('input'))
+            $element.val(buttonText);
+        else
+            $element.text(buttonText);
+
+        if (buttonTitle)
+            $element.attr('title', buttonTitle);
+    }
+
+    function applyTabLinkTranslation($tabLink, translatedText) {
+        var $icon = $tabLink.children('i').first();
+        var $stepDescription = $tabLink.find('#StepDescription').first();
+        var iconHtml = $icon.length > 0 ? $icon.prop('outerHTML') + ' ' : '';
+
+        if ($stepDescription.length > 0) {
+            $tabLink.html(iconHtml + translatedText + ' : ' + $stepDescription.prop('outerHTML'));
+            return;
+        }
+
+        if ($icon.length > 0) {
+            $tabLink.html(iconHtml + translatedText);
+            return;
+        }
+
+        $tabLink.text(translatedText);
+    }
+
+    function applyTabsTranslations($container, translations) {
+        $container.find('a[data-toggle="tab"][href^="#"]').each(function () {
+            var $tabLink = $(this);
+            var href = $tabLink.attr('href') || '';
+            var tabId = href.replace(/^#/, '');
+            var translatedText = getTranslationText(translations, tabId);
+            var translatedTitle = getTranslationAttribute(translations, tabId, 'title');
+
+            if (!tabId)
+                return;
+
+            if (translatedText)
+                applyTabLinkTranslation($tabLink, translatedText);
+
+            if (translatedTitle)
+                $tabLink.attr('title', translatedTitle);
         });
     }
 
@@ -265,17 +341,51 @@ app.language = (function () {
             return;
 
         applyHeaderTranslations($container, translations);
-        applySectionTranslations($container, translations);
-        applyElementTranslations($container, translations);
-        applyLabelTranslations($container, labels, translations);
-        applyButtonTranslations($container, translations);
+
+        $container.find('[id]').each(function () {
+            var $element = $(this);
+            var id = $element.attr('id');
+            var controlType = getControlType($element);
+
+            switch (controlType) {
+                case 'button':
+                    applyButtonTranslation($element, id, translations);
+                    break;
+                case 'div':
+                    if ($element.hasClass('tab-pane') || $element.attr('role') === 'tabpanel')
+                        break;
+
+                    if (!applySectionTranslation($element, id, translations))
+                        applyGenericElementTranslation($element, id, translations);
+                    break;
+                case 'label':
+                case 'input':
+                case 'textarea':
+                case 'select':
+                    break;
+                default:
+                    applyGenericElementTranslation($element, id, translations);
+                    break;
+            }
+
+            if (labels && labels[id])
+                applyLabelTranslation($container, id, translations);
+        });
+
+        applyTabsTranslations($container, translations);
+    }
+
+    function notifyTranslationComplete(onComplete, translations) {
+        if ($.isFunction(onComplete))
+            onComplete(translations || {});
     }
 
     return {
-        translate: function (target, newCase) {
+        translate: function (target, newCase, onComplete) {
             return function () {
                 if (!shouldTranslate()) {
                     currentTranslations = {};
+                    notifyTranslationComplete(onComplete, currentTranslations);
                     return;
                 }
 
@@ -286,12 +396,14 @@ app.language = (function () {
 
                 if (!url) {
                     currentTranslations = {};
+                    notifyTranslationComplete(onComplete, currentTranslations);
                     return;
                 }
 
                 if (hasAllTranslations(labels, storedTranslations)) {
                     currentTranslations = storedTranslations;
                     applyTranslations(target, labels, currentTranslations);
+                    notifyTranslationComplete(onComplete, currentTranslations);
                     return;
                 }
 
@@ -302,11 +414,13 @@ app.language = (function () {
                         currentTranslations = translations || {};
                         saveTranslationsInStorage(storageKey, currentTranslations);
                         applyTranslations(target, labels, currentTranslations);
+                        notifyTranslationComplete(onComplete, currentTranslations);
                     },
                     false
                 ).fail(
                     function () {
                         currentTranslations = {};
+                        notifyTranslationComplete(onComplete, currentTranslations);
                     }
                 );
             };

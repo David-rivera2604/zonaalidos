@@ -1666,6 +1666,8 @@
     <Content Include="data\dummy.json" />
     <Content Include="locales\Cases\en.NewCase.json" />
     <Content Include="locales\Cases\en.Case.json" />
+    <Content Include="locales\Common\en.AttachmentGrid.json" />
+    <Content Include="locales\Common\es.AttachmentGrid.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
