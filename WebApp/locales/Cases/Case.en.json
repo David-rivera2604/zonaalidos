@@ -59,5 +59,25 @@
     "ProcessStepAccept": {
         "text": "Process",
         "title": "Process case step"
+    },
+    "ProcessGridTbl": {
+        "columns": {
+            "Name": {
+                "text": "Stage",
+                "title": "Case stage"
+            },
+            "StartDate": {
+                "text": "Start",
+                "title": "Stage start date"
+            },
+            "FinishDate": {
+                "text": "Completed",
+                "title": "Stage completion date"
+            },
+            "CreatedBy": {
+                "text": "Created by",
+                "title": "Created by user"
+            }
+        }
     }
 }

@@ -25,11 +25,19 @@ app.language = (function () {
     }
 
     function shouldTranslate() {
-        return $.trim((getCurrentLanguage() || '').toLowerCase()) !== 'es';
+        return getNormalizedLanguage() !== 'es';
+    }
+
+    function getNormalizedLanguage() {
+        var rawLanguage = $.trim((getCurrentLanguage() || '').toLowerCase());
+        if (!rawLanguage)
+            return 'es';
+
+        return rawLanguage.split(/[-_]/)[0];
     }
 
     function buildTranslationUrl(newCase) {
-        var language = $.trim((getCurrentLanguage() || '').toLowerCase());
+        var language = getNormalizedLanguage();
         var pageName = $.trim(newCase || '');
         var currentPath = window.location.pathname || '';
         var appBasePath = (app.setting && app.setting.basepath) ? app.setting.basepath : '/';
@@ -58,17 +66,17 @@ app.language = (function () {
             }
         }
 
-        return appBasePath + 'locales/' + controllerName + '/' + language + '.' + pageName + '.json';
+        return appBasePath + 'locales/' + controllerName + '/' + pageName + '.' + language + '.json';
     }
 
     function buildStorageKey(newCase) {
-        var language = $.trim((getCurrentLanguage() || '').toLowerCase());
+        var language = getNormalizedLanguage();
         var pageName = $.trim(newCase || '');
 
         if (!pageName)
             return null;
 
-        return language + '.' + pageName;
+        return pageName + '.' + language;
     }
 
     function getTranslationsFromStorage(storageKey) {
@@ -254,15 +262,18 @@ app.language = (function () {
         var translatedText = getTranslationText(translations, id);
         var translatedTitle = getTranslationAttribute(translations, id, 'title');
         var $firstChild = $element.children().first();
+        var $heading = $firstChild.is('h1, h2, h3, h4, h5, h6')
+            ? $firstChild
+            : $element.find('h1, h2, h3, h4, h5, h6').first();
 
-        if (!$firstChild.length || !$firstChild.is('h1, h2, h3, h4, h5, h6'))
+        if (!$heading.length)
             return false;
 
         if (translatedText)
-            $firstChild.text(translatedText);
+            $heading.text(translatedText);
 
         if (translatedTitle)
-            $firstChild.attr('title', translatedTitle);
+            $heading.attr('title', translatedTitle);
 
         return true;
     }
@@ -334,6 +345,76 @@ app.language = (function () {
         });
     }
 
+    function getGridColumnsTranslations(translations, tableId) {
+        var gridValue = getTranslationValue(translations, tableId);
+
+        if ((!gridValue || typeof gridValue !== 'object') && translations && typeof translations === 'object') {
+            // Fallback: if there is only one grid definition in the file, use it for dynamic table ids.
+            var keys = Object.keys(translations);
+            if (keys.length === 1)
+                gridValue = translations[keys[0]];
+        }
+
+        if (!gridValue || typeof gridValue !== 'object')
+            return null;
+
+        if (gridValue.columns && typeof gridValue.columns === 'object')
+            return gridValue.columns;
+
+        return gridValue;
+    }
+
+    function applyGridHeaderTranslation($header, translatedValue) {
+        if (!translatedValue)
+            return;
+
+        if (typeof translatedValue === 'string') {
+            $header.text(translatedValue);
+            return;
+        }
+
+        if (typeof translatedValue === 'object') {
+            if (Object.prototype.hasOwnProperty.call(translatedValue, 'text') && translatedValue.text)
+                $header.text(translatedValue.text);
+
+            if (translatedValue.title)
+                $header.attr('title', translatedValue.title);
+        }
+    }
+
+    function applyGridTableTranslations($container, translations) {
+        var $tables = $container
+            .filter('table[id$="GridTbl"]')
+            .add($container.find('table[id$="GridTbl"]'));
+
+        $tables.each(function () {
+            var $table = $(this);
+            var tableId = $table.attr('id');
+            var columnTranslations = getGridColumnsTranslations(translations, tableId);
+            var $gridContainer = $table.closest('.bootstrap-table');
+            var $headers = $gridContainer.length > 0
+                ? $gridContainer.find('th[data-field] .th-inner')
+                : $table.find('thead th .th-inner, thead th');
+
+            if (!tableId || !columnTranslations || $headers.length === 0)
+                return;
+
+            $headers.each(function (index) {
+                var $header = $(this);
+                var $th = $header.closest('th');
+                var field = $th.attr('data-field') || '';
+                var translatedValue = null;
+
+                if (field && Object.prototype.hasOwnProperty.call(columnTranslations, field))
+                    translatedValue = columnTranslations[field];
+                else if (Object.prototype.hasOwnProperty.call(columnTranslations, '_' + index))
+                    translatedValue = columnTranslations['_' + index];
+
+                applyGridHeaderTranslation($header, translatedValue);
+            });
+        });
+    }
+
     function applyTranslations(target, labels, translations) {
         var $container = resolveTarget(target);
 
@@ -355,8 +436,12 @@ app.language = (function () {
                     if ($element.hasClass('tab-pane') || $element.attr('role') === 'tabpanel')
                         break;
 
-                    if (!applySectionTranslation($element, id, translations))
-                        applyGenericElementTranslation($element, id, translations);
+                    if (!applySectionTranslation($element, id, translations)) {
+                        var divTitle = getTranslationAttribute(translations, id, 'title');
+
+                        if (divTitle)
+                            $element.attr('title', divTitle);
+                    }
                     break;
                 case 'label':
                 case 'input':
@@ -373,6 +458,7 @@ app.language = (function () {
         });
 
         applyTabsTranslations($container, translations);
+        applyGridTableTranslations($container, translations);
     }
 
     function notifyTranslationComplete(onComplete, translations) {

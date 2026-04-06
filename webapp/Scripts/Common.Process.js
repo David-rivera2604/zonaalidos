@@ -85,7 +85,7 @@
                     align: 'center',
                     formatter: 'app.ui.DateAndTimeFormatter'
                 }, {
-                    field: 'FinishDate',
+                    field: 'CreatedBy',
                     title: 'Realizado por',
                     class: 'd-none d-sm-table-cell',
                     sortable: false,

@@ -1465,6 +1465,7 @@
     <Compile Include="Controllers\CoreController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\PolicyController.cs" />
+    <Compile Include="Filters\SetThemeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1664,10 +1665,12 @@
     <Content Include="documents\CertificadoComplemento\302\boletacargoautomatico.pdf" />
     <Content Include="data\carga_masiva_saldo_deudor.xlsx" />
     <Content Include="data\dummy.json" />
-    <Content Include="locales\Cases\en.NewCase.json" />
-    <Content Include="locales\Cases\en.Case.json" />
-    <Content Include="locales\Common\en.AttachmentGrid.json" />
-    <Content Include="locales\Common\es.AttachmentGrid.json" />
+    <Content Include="locales\viewer\SICOP.en.json" />
+    <Content Include="locales\Cases\Case.en.json" />
+    <Content Include="locales\Cases\NewCase.en.json" />
+    <Content Include="locales\Cases\References.en.json" />
+    <Content Include="locales\Common\AttachmentGrid.en.json" />
+    <Content Include="locales\Common\AttachmentGrid.es.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
