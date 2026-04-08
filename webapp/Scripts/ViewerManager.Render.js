@@ -86,9 +86,15 @@ app.ViewerQuery = (function () {
 
         app.language.translate(
             target,
-            'viewer/' + entity,
-            function (translations) {
-                ApplyQueryTitleTranslation(translations);
+            'viewer/ViewerManager',
+            function () {
+                app.language.translate(
+                    target,
+                    'viewer/' + entity,
+                    function (translations) {
+                        ApplyQueryTitleTranslation(translations);
+                    }
+                )();
             }
         )();
     }

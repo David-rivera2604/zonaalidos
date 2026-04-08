@@ -79,18 +79,6 @@ app.language = (function () {
         return pageName + '.' + language;
     }
 
-    function isViewerTranslationCase(newCase) {
-        var pageName = $.trim(newCase || '').toLowerCase();
-        return pageName.indexOf('viewer/') === 0;
-    }
-
-    function buildViewerToolbarUrl() {
-        return buildTranslationUrl('viewer/ViewerManager');
-    }
-
-    function buildViewerToolbarStorageKey() {
-        return buildStorageKey('viewer/ViewerManager');
-    }
 
     function getTranslationsFromStorage(storageKey) {
         if (!storageKey)
@@ -184,9 +172,6 @@ app.language = (function () {
         localStorage.setItem(storageKey, JSON.stringify(translations || {}));
     }
 
-    function mergeTranslations(baseTranslations, overrideTranslations) {
-        return $.extend(true, {}, baseTranslations || {}, overrideTranslations || {});
-    }
 
     function resolveTarget(target) {
         if (!target)
@@ -680,45 +665,10 @@ app.language = (function () {
                     return;
                 }
 
-                var commonViewerUrl = isViewerTranslationCase(newCase) ? buildViewerToolbarUrl() : null;
-                var commonViewerStorageKey = isViewerTranslationCase(newCase) ? buildViewerToolbarStorageKey() : null;
-                var storedCommonViewerTranslations = useCache ? getTranslationsFromStorage(commonViewerStorageKey) : null;
-
-                function applyAndNotify(pageTranslations, commonTranslations) {
-                    currentTranslations = mergeTranslations(commonTranslations, pageTranslations);
+                if (useCache && hasAllTranslations(labels, storedTranslations)) {
+                    currentTranslations = storedTranslations;
                     applyTranslations(target, labels, currentTranslations);
                     notifyTranslationComplete(onComplete, currentTranslations);
-                }
-
-                function loadCommonViewerTranslations(pageTranslations) {
-                    if (!commonViewerUrl) {
-                        applyAndNotify(pageTranslations, {});
-                        return;
-                    }
-
-                    if (useCache && storedCommonViewerTranslations) {
-                        applyAndNotify(pageTranslations, storedCommonViewerTranslations);
-                        return;
-                    }
-
-                    app.core.Get(
-                        commonViewerUrl,
-                        undefined,
-                        function (commonTranslations) {
-                            var resolvedCommonTranslations = commonTranslations || {};
-                            saveTranslationsInStorage(commonViewerStorageKey, resolvedCommonTranslations);
-                            applyAndNotify(pageTranslations, resolvedCommonTranslations);
-                        },
-                        false
-                    ).fail(
-                        function () {
-                            applyAndNotify(pageTranslations, {});
-                        }
-                    );
-                }
-
-                if (useCache && hasAllTranslations(labels, storedTranslations)) {
-                    loadCommonViewerTranslations(storedTranslations);
                     return;
                 }
 
@@ -726,9 +676,10 @@ app.language = (function () {
                     url,
                     undefined,
                     function (translations) {
-                        var pageTranslations = translations || {};
-                        saveTranslationsInStorage(storageKey, pageTranslations);
-                        loadCommonViewerTranslations(pageTranslations);
+                        currentTranslations = translations || {};
+                        saveTranslationsInStorage(storageKey, currentTranslations);
+                        applyTranslations(target, labels, currentTranslations);
+                        notifyTranslationComplete(onComplete, currentTranslations);
                     },
                     false
                 ).fail(
