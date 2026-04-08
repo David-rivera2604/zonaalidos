@@ -1677,6 +1677,7 @@
     <Content Include="locales\viewer\PaymentNoticesAgent.en.json" />
     <Content Include="locales\viewer\BillingNoticesFromAnAgent.en.json" />
     <Content Include="locales\viewer\RejectedCharges.en.json" />
+    <Content Include="locales\General\Administration.en.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
