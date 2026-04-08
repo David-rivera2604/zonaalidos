@@ -79,6 +79,19 @@ app.language = (function () {
         return pageName + '.' + language;
     }
 
+    function isViewerTranslationCase(newCase) {
+        var pageName = $.trim(newCase || '').toLowerCase();
+        return pageName.indexOf('viewer/') === 0;
+    }
+
+    function buildViewerToolbarUrl() {
+        return buildTranslationUrl('viewer/ViewerManager');
+    }
+
+    function buildViewerToolbarStorageKey() {
+        return buildStorageKey('viewer/ViewerManager');
+    }
+
     function getTranslationsFromStorage(storageKey) {
         if (!storageKey)
             return null;
@@ -144,11 +157,35 @@ app.language = (function () {
         return translationValue[attributeName] || null;
     }
 
+    function getTranslationTextFromValue(translationValue) {
+        if (!translationValue)
+            return null;
+
+        if (typeof translationValue === 'string')
+            return translationValue;
+
+        if (typeof translationValue === 'object' && Object.prototype.hasOwnProperty.call(translationValue, 'text'))
+            return translationValue.text;
+
+        return null;
+    }
+
+    function getTranslationAttributeFromValue(translationValue, attributeName) {
+        if (!translationValue || typeof translationValue !== 'object')
+            return null;
+
+        return translationValue[attributeName] || null;
+    }
+
     function saveTranslationsInStorage(storageKey, translations) {
         if (!storageKey)
             return;
 
         localStorage.setItem(storageKey, JSON.stringify(translations || {}));
+    }
+
+    function mergeTranslations(baseTranslations, overrideTranslations) {
+        return $.extend(true, {}, baseTranslations || {}, overrideTranslations || {});
     }
 
     function resolveTarget(target) {
@@ -345,7 +382,7 @@ app.language = (function () {
         });
     }
 
-    function getGridColumnsTranslations(translations, tableId) {
+    function getGridTranslationBlock(translations, tableId) {
         var gridValue = getTranslationValue(translations, tableId);
 
         if ((!gridValue || typeof gridValue !== 'object') && translations && typeof translations === 'object') {
@@ -358,10 +395,135 @@ app.language = (function () {
         if (!gridValue || typeof gridValue !== 'object')
             return null;
 
+        return gridValue;
+    }
+
+    function getGridColumnsTranslations(translations, tableId) {
+        var gridValue = getGridTranslationBlock(translations, tableId);
+        if (!gridValue)
+            return null;
+
         if (gridValue.columns && typeof gridValue.columns === 'object')
             return gridValue.columns;
 
         return gridValue;
+    }
+
+    function getGridToolbarTranslations(translations, tableId) {
+        var gridValue = getGridTranslationBlock(translations, tableId);
+        if (!gridValue)
+            return null;
+
+        if (gridValue.toolbar && typeof gridValue.toolbar === 'object')
+            return gridValue.toolbar;
+
+        if (gridValue.tools && typeof gridValue.tools === 'object')
+            return gridValue.tools;
+
+        return null;
+    }
+
+    function getGlobalToolbarTranslations(translations) {
+        if (!translations || typeof translations !== 'object')
+            return null;
+
+        if (translations.GridToolbar && typeof translations.GridToolbar === 'object')
+            return translations.GridToolbar;
+
+        if (translations.Toolbar && typeof translations.Toolbar === 'object')
+            return translations.Toolbar;
+
+        if (translations.toolbar && typeof translations.toolbar === 'object')
+            return translations.toolbar;
+
+        return {
+            search: translations.GridToolbarSearch || translations.ToolbarSearch || translations.SearchPlaceholder || null,
+            refresh: translations.GridToolbarRefresh || translations.ToolbarRefresh || null,
+            export: translations.GridToolbarExport || translations.ToolbarExport || null,
+            csv: translations.GridToolbarCsv || translations.ToolbarCsv || null,
+            excel: translations.GridToolbarExcel || translations.ToolbarExcel || null
+        };
+    }
+
+    function mergeToolbarTranslations(baseTranslations, overrideTranslations) {
+        var result = {
+            search: null,
+            refresh: null,
+            export: null,
+            csv: null,
+            excel: null
+        };
+
+        $.extend(true, result, baseTranslations || {});
+        $.extend(true, result, overrideTranslations || {});
+        return result;
+    }
+
+    function hasToolbarTranslationValues(toolbarTranslations) {
+        if (!toolbarTranslations || typeof toolbarTranslations !== 'object')
+            return false;
+
+        return !!(
+            toolbarTranslations.search ||
+            toolbarTranslations.refresh ||
+            toolbarTranslations.export ||
+            toolbarTranslations.csv ||
+            toolbarTranslations.excel
+        );
+    }
+
+    function resolveToolbarTranslations(translations, tableId) {
+        var globals = getGlobalToolbarTranslations(translations);
+        var byTable = getGridToolbarTranslations(translations, tableId);
+
+        var merged = mergeToolbarTranslations({}, globals);
+        merged = mergeToolbarTranslations(merged, byTable);
+
+        return hasToolbarTranslationValues(merged) ? merged : null;
+    }
+
+    function applyToolbarButtonTranslation($button, translatedValue, fallbackToTitleOnly) {
+        var text = getTranslationTextFromValue(translatedValue);
+        var title = getTranslationAttributeFromValue(translatedValue, 'title');
+        var ariaLabel = getTranslationAttributeFromValue(translatedValue, 'ariaLabel');
+
+        if ($button.length === 0 || !translatedValue)
+            return;
+
+        if (typeof translatedValue === 'string' && fallbackToTitleOnly)
+            title = translatedValue;
+
+        if (text && !fallbackToTitleOnly)
+            $button.text(text);
+
+        if (title)
+            $button.attr('title', title);
+
+        if (!ariaLabel && title)
+            ariaLabel = title;
+
+        if (ariaLabel)
+            $button.attr('aria-label', ariaLabel);
+    }
+
+    function applyGridToolbarTranslations($gridContainer, toolbarTranslations) {
+        var searchValue = toolbarTranslations.search || toolbarTranslations.searchPlaceholder || toolbarTranslations.placeholder;
+        var searchPlaceholder = getTranslationTextFromValue(searchValue);
+        var searchTitle = getTranslationAttributeFromValue(searchValue, 'title');
+
+        if ($gridContainer.length === 0 || !toolbarTranslations)
+            return;
+
+        if (searchPlaceholder)
+            $gridContainer.find('.fixed-table-toolbar .search .search-input').attr('placeholder', searchPlaceholder);
+
+        if (searchTitle)
+            $gridContainer.find('.fixed-table-toolbar .search .search-input').attr('title', searchTitle);
+
+        applyToolbarButtonTranslation($gridContainer.find('.fixed-table-toolbar button[name="refresh"]').first(), toolbarTranslations.refresh, true);
+        applyToolbarButtonTranslation($gridContainer.find('.fixed-table-toolbar .export button.dropdown-toggle').first(), toolbarTranslations.export, true);
+        applyToolbarButtonTranslation($gridContainer.find('.fixed-table-toolbar .export .dropdown-item[data-type="csv"]').first(), toolbarTranslations.csv, false);
+        applyToolbarButtonTranslation($gridContainer.find('.fixed-table-toolbar .export .dropdown-item[data-type="excel"]').first(), toolbarTranslations.excel, false);
     }
 
     function applyGridHeaderTranslation($header, translatedValue) {
@@ -391,12 +553,19 @@ app.language = (function () {
             var $table = $(this);
             var tableId = $table.attr('id');
             var columnTranslations = getGridColumnsTranslations(translations, tableId);
+            var toolbarTranslations = resolveToolbarTranslations(translations, tableId);
             var $gridContainer = $table.closest('.bootstrap-table');
             var $headers = $gridContainer.length > 0
                 ? $gridContainer.find('th[data-field] .th-inner')
                 : $table.find('thead th .th-inner, thead th');
 
-            if (!tableId || !columnTranslations || $headers.length === 0)
+            if (!tableId)
+                return;
+
+            if (toolbarTranslations)
+                applyGridToolbarTranslations($gridContainer, toolbarTranslations);
+
+            if (!columnTranslations || $headers.length === 0)
                 return;
 
             $headers.each(function (index) {
@@ -511,10 +680,45 @@ app.language = (function () {
                     return;
                 }
 
-                if (useCache && hasAllTranslations(labels, storedTranslations)) {
-                    currentTranslations = storedTranslations;
+                var commonViewerUrl = isViewerTranslationCase(newCase) ? buildViewerToolbarUrl() : null;
+                var commonViewerStorageKey = isViewerTranslationCase(newCase) ? buildViewerToolbarStorageKey() : null;
+                var storedCommonViewerTranslations = useCache ? getTranslationsFromStorage(commonViewerStorageKey) : null;
+
+                function applyAndNotify(pageTranslations, commonTranslations) {
+                    currentTranslations = mergeTranslations(commonTranslations, pageTranslations);
                     applyTranslations(target, labels, currentTranslations);
                     notifyTranslationComplete(onComplete, currentTranslations);
+                }
+
+                function loadCommonViewerTranslations(pageTranslations) {
+                    if (!commonViewerUrl) {
+                        applyAndNotify(pageTranslations, {});
+                        return;
+                    }
+
+                    if (useCache && storedCommonViewerTranslations) {
+                        applyAndNotify(pageTranslations, storedCommonViewerTranslations);
+                        return;
+                    }
+
+                    app.core.Get(
+                        commonViewerUrl,
+                        undefined,
+                        function (commonTranslations) {
+                            var resolvedCommonTranslations = commonTranslations || {};
+                            saveTranslationsInStorage(commonViewerStorageKey, resolvedCommonTranslations);
+                            applyAndNotify(pageTranslations, resolvedCommonTranslations);
+                        },
+                        false
+                    ).fail(
+                        function () {
+                            applyAndNotify(pageTranslations, {});
+                        }
+                    );
+                }
+
+                if (useCache && hasAllTranslations(labels, storedTranslations)) {
+                    loadCommonViewerTranslations(storedTranslations);
                     return;
                 }
 
@@ -522,10 +726,9 @@ app.language = (function () {
                     url,
                     undefined,
                     function (translations) {
-                        currentTranslations = translations || {};
-                        saveTranslationsInStorage(storageKey, currentTranslations);
-                        applyTranslations(target, labels, currentTranslations);
-                        notifyTranslationComplete(onComplete, currentTranslations);
+                        var pageTranslations = translations || {};
+                        saveTranslationsInStorage(storageKey, pageTranslations);
+                        loadCommonViewerTranslations(pageTranslations);
                     },
                     false
                 ).fail(

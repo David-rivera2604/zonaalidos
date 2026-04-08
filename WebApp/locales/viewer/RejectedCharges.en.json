@@ -1,35 +1,35 @@
 {
-    "QueryTitle": "Rejected charges",
-    "1GridTbl": {
-        "columns": {
-            "SEL": {
-                "text": "Select",
-                "title": "Allows selecting receipts to be excluded from the payment notice"
-            },
-            "POLICYID": {
-                "text": "Policy",
-                "title": "Policy number"
-            },
-            "BILLNUMBER": {
-                "text": "Receipt",
-                "title": "Receipt number"
-            },
-            "AMOUNT": {
-                "text": "Amount",
-                "title": "Charge amount"
-            },
-            "FUENTE": {
-                "text": "Source",
-                "title": "Charge source"
-            },
-            "STATUSDATE": {
-                "text": "Last charge attempt",
-                "title": "Date and time of the last charge attempt"
-            },
-            "REASON": {
-                "text": "Rejection reason",
-                "title": "Reason for charge rejection"
-            }
-        }
+  "QueryTitle": "Rejected charges",
+  "1GridTbl": {
+    "columns": {
+      "SEL": {
+        "text": "Select",
+        "title": "Allows selecting receipts to be excluded from the payment notice"
+      },
+      "POLICYID": {
+        "text": "Policy",
+        "title": "Policy number"
+      },
+      "BILLNUMBER": {
+        "text": "Receipt",
+        "title": "Receipt number"
+      },
+      "AMOUNT": {
+        "text": "Amount",
+        "title": "Charge amount"
+      },
+      "FUENTE": {
+        "text": "Source",
+        "title": "Charge source"
+      },
+      "STATUSDATE": {
+        "text": "Last charge attempt",
+        "title": "Date and time of the last charge attempt"
+      },
+      "REASON": {
+        "text": "Rejection reason",
+        "title": "Reason for charge rejection"
+      }
     }
+  }
 }

@@ -1,0 +1,58 @@
+{
+  "QueryTitle": {
+    "text": "Users grouped by role",
+    "title": "List of users grouped by role"
+  },
+  "1GridTbl": {
+    "columns": {
+      "RolId|h": {
+        "text": "Role ID",
+        "title": "Role identifier"
+      },
+      "Rol": {
+        "text": "Role",
+        "title": "Role name"
+      },
+      "Descripción": {
+        "text": "Description",
+        "title": "Role description"
+      },
+      "Nivel|h": {
+        "text": "Level",
+        "title": "Role level"
+      },
+      "Estado del rol": {
+        "text": "Role status",
+        "title": "Current role status"
+      },
+      "UserId|h": {
+        "text": "User ID",
+        "title": "User identifier"
+      },
+      "Usuario": {
+        "text": "User",
+        "title": "Username"
+      },
+      "Correo": {
+        "text": "Email",
+        "title": "User email"
+      },
+      "Nombre": {
+        "text": "First name",
+        "title": "User first name"
+      },
+      "Apellido": {
+        "text": "Last name",
+        "title": "User last name"
+      },
+      "Sucursal": {
+        "text": "Branch",
+        "title": "Branch office"
+      },
+      "Estado del usuario": {
+        "text": "User status",
+        "title": "Current user status"
+      }
+    }
+  }
+}

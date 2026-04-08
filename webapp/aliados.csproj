@@ -1678,6 +1678,8 @@
     <Content Include="locales\viewer\BillingNoticesFromAnAgent.en.json" />
     <Content Include="locales\viewer\RejectedCharges.en.json" />
     <Content Include="locales\General\Administration.en.json" />
+    <Content Include="locales\viewer\UserListGroupedByRole.en.json" />
+    <Content Include="locales\viewer\ViewerManager.en.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>

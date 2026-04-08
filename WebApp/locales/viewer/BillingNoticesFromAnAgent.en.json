@@ -1,27 +1,27 @@
 {
-    "QueryTitle": "Payment notices from an agent",
-    "1GridTbl": {
-        "columns": {
-            "COD_DOCUM_PAGO": {
-                "text": "Notice No.",
-                "title": "Payment notice number"
-            },
-            "ESTATUS": {
-                "text": "Status",
-                "title": "Current notice status"
-            },
-            "CANT_RECIBOS": {
-                "text": "Receipts",
-                "title": "Number of receipts"
-            },
-            "TOTAL_RECIBOS": {
-                "text": "Amount",
-                "title": "Total receipts amount"
-            },
-            "_4": {
-                "text": "Actions",
-                "title": "Available actions"
-            }
-        }
+  "QueryTitle": "Payment notices from an agent",
+  "1GridTbl": {
+    "columns": {
+      "COD_DOCUM_PAGO": {
+        "text": "Notice No.",
+        "title": "Payment notice number"
+      },
+      "ESTATUS": {
+        "text": "Status",
+        "title": "Current notice status"
+      },
+      "CANT_RECIBOS": {
+        "text": "Receipts",
+        "title": "Number of receipts"
+      },
+      "TOTAL_RECIBOS": {
+        "text": "Amount",
+        "title": "Total receipts amount"
+      },
+      "_4": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
     }
+  }
 }
