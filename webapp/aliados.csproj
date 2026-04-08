@@ -1671,6 +1671,12 @@
     <Content Include="locales\Cases\References.en.json" />
     <Content Include="locales\Common\AttachmentGrid.en.json" />
     <Content Include="locales\Common\AttachmentGrid.es.json" />
+    <Content Include="locales\Cases\CasesAliados.en.json" />
+    <Content Include="locales\Cases\Seguimiento_Al.en.json" />
+    <Content Include="locales\viewer\PolicyActiveV2.en.json" />
+    <Content Include="locales\viewer\PaymentNoticesAgent.en.json" />
+    <Content Include="locales\viewer\BillingNoticesFromAnAgent.en.json" />
+    <Content Include="locales\viewer\RejectedCharges.en.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>

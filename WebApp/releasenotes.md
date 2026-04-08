@@ -1,5 +1,32 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.179 - 02/04/2026
+
+### Aliados - Internacionalización: Implementación de sistema multilenguaje.
+
+#### Funcionalidades implementadas:
+
+- Infraestructura completa de internacionalización (i18n) en la aplicación.
+- Soporte para múltiples idiomas: Español (ES) e Inglés (EN).
+- Refactorización de `Database.cs` para optimización de consultas.
+- Integración de multilenguaje en 30+ controladores backend.
+- Mejora del módulo `core.language.js` con control de caché mediante query string.
+- Implementación de estructura de archivos de traducción por módulo.
+- Atributos `data-i18n` en vistas Razor para carga dinámica de etiquetas.
+
+#### Módulos localizados:
+
+- Cases: Cotizaciones, casos y seguimiento
+- Common: Componentes reutilizables
+- General: Administración general
+- Viewer: Visualizadores de pólizas y pagos
+
+#### Rutas de acceso:
+
+- Aplicación con soporte multilenguaje: https://appqa.mapfrecr.com/aliados/ (parámetro `?cache=false` para forzar recarga de traducciones)
+
+---
+
 ## Versión 1.6.178 - 27/03/2026
 
 ### Aliados - MapfreMas: Se habilita la carga dinámica de las marcas de vehículos.

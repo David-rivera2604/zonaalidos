@@ -79,6 +79,7 @@ app.EspecifiCase = (function () {
                     });
 
                 app.Notes.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, AlternateToken: tokenAl, showContactNotify: true, showResponsibleNotify: true });
+                app.language.translate('body', 'Seguimiento_Al')();
             }).always(function () {
                 $('.ibox-content').toggleClass('sk-loading');
             });
@@ -128,6 +129,7 @@ app.CaseInfo = (function () {
                         /*Api1*/ $('#Casos_Lista').append(`<div class="Content_Case animated fadeInDown" id="${IntanceCase}" onclick="app.CaseInfo.State(${IntanceCase})"><div class="Column_Conte CodCase"><i class="fa fa-caret-right" aria-hidden="true"> </i><p> ${row.Id}</p></div><div class="Column_Conte Asun"> <p>${row.Title}</p></div><div class="Column_Conte StatusDes"><p class="${row.StatusDesc}">${row.StatusDesc}</p><p class="d-none">${row.FlowIdDesc}</p></div></div>`);
                                 /*Api2 */  /*$('#Casos_Lista').append(`<div class="Content_Case" id="${IntanceCase}" onclick="app.CaseInfo.State(${IntanceCase})"><div class="Column_Conte CodCase"><i class="fa fa-caret-right" aria-hidden="true"> </i><p> ${row.ID}</p></div><div class="Column_Conte Asun"> <p>${row.TITLE}</p></div><div class="Column_Conte StatusDes"><p>${row.STATUSDESC}</p></div></div>`); */
                             });
+                            app.language.translate('body', 'Seguimiento_Al')();
                         });
                     $("#AttachmentTbl-error").parent().addClass("d-none");
                 })

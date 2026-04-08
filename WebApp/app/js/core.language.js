@@ -466,9 +466,34 @@ app.language = (function () {
             onComplete(translations || {});
     }
 
+    function shouldUseCacheFromQueryString() {
+        var search = window.location.search || '';
+        if (!search)
+            return true;
+
+        var match = search.match(/[?&]cache=([^&]*)/i);
+        if (!match || match.length < 2)
+            return true;
+
+        var cacheValue = decodeURIComponent(match[1] || '').toLowerCase();
+        switch (cacheValue) {
+            case 'false':
+            case '0':
+            case 'no':
+                return false;
+            default:
+                return true;
+        }
+    }
+
     return {
-        translate: function (target, newCase, onComplete) {
+        translate: function (target, newCase, onComplete, cache) {
             return function () {
+                if (typeof onComplete === 'boolean' && typeof cache === 'undefined')
+                    onComplete = null;
+
+                var useCache = shouldUseCacheFromQueryString();
+
                 if (!shouldTranslate()) {
                     currentTranslations = {};
                     notifyTranslationComplete(onComplete, currentTranslations);
@@ -478,7 +503,7 @@ app.language = (function () {
                 var labels = getAllLabelsFromPage(target);
                 var url = buildTranslationUrl(newCase);
                 var storageKey = buildStorageKey(newCase);
-                var storedTranslations = getTranslationsFromStorage(storageKey);
+                var storedTranslations = useCache ? getTranslationsFromStorage(storageKey) : null;
 
                 if (!url) {
                     currentTranslations = {};
@@ -486,7 +511,7 @@ app.language = (function () {
                     return;
                 }
 
-                if (hasAllTranslations(labels, storedTranslations)) {
+                if (useCache && hasAllTranslations(labels, storedTranslations)) {
                     currentTranslations = storedTranslations;
                     applyTranslations(target, labels, currentTranslations);
                     notifyTranslationComplete(onComplete, currentTranslations);

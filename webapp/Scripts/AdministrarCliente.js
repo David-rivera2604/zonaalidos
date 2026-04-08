@@ -112,6 +112,7 @@ Init_Lookups({ pais: "CRI", Provincias: 1 })
 clientes_controls_setup()
 Setup_Validations()
 DocumentNumberTypeMenu()
+app.language.translate('body', 'Administration')();
 
 
 

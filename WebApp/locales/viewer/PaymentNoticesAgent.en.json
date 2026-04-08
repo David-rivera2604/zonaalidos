@@ -1,0 +1,31 @@
+{
+    "QueryTitle": "Payment notices from an agent",
+    "1GridTbl": {
+        "columns": {
+            "COD_DOCUM_PAGO": {
+                "text": "Notice No.",
+                "title": "Payment notice number"
+            },
+            "FEC_VCTO_PAGO": {
+                "text": "Due date",
+                "title": "Payment due date"
+            },
+            "ESTATUS": {
+                "text": "Status",
+                "title": "Current notice status"
+            },
+            "CANT_RECIBOS": {
+                "text": "Receipts",
+                "title": "Number of receipts"
+            },
+            "TOTAL_RECIBOS": {
+                "text": "Amount",
+                "title": "Total receipts amount"
+            },
+            "_5": {
+                "text": "Actions",
+                "title": "Available actions"
+            }
+        }
+    }
+}

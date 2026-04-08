@@ -3,7 +3,7 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <link href="~/assets/dropzone/css/dropzone.min.css" rel="stylesheet" />
-<link href="~/assets/animatecss/css/animate.min.css" rel="stylesheet" />
+<link href="~/assets/animatecss/animate.min.css" rel="stylesheet" />
 
 <div class="row">
     <div class="col-md-5">
@@ -13,7 +13,7 @@
                 <div class="Inputs" style=" align-items: baseline; display: flex;">
                     <div class="input-bx buscaCa">
                         <input class="form-control search-input" type="text" autocomplete="off" id="Buscador">
-                        <span>Búsqueda</span>
+                        <span id="BuscadorLabel">Búsqueda</span>
                         <i class="bi bi-search"></i>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="input-icon" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
@@ -23,29 +23,29 @@
                         <div class='form-group'>
                             <label class='control-label' for='Estado'>Estado</label>
                             <select id='Estado' name='Estado' class='form-control'>
-                                <option value="No" selected>Todos</option>
-                                <option value="Inicio">Inicio</option>
-                                <option value="En progreso">En progreso</option>
-                                <option value="Finalizado">Finalizado</option>
+                                <option id="EstadoOptionAll" value="No" selected>Todos</option>
+                                <option id="EstadoOptionInicio" value="Inicio">Inicio</option>
+                                <option id="EstadoOptionEnProgreso" value="En progreso">En progreso</option>
+                                <option id="EstadoOptionFinalizado" value="Finalizado">Finalizado</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
                 <div class="ibox-title">
-                    <h5><i class="fa fa-address-card"></i> Casos</h5>
+                    <h5><i class="fa fa-address-card"></i> <span id="CasesListTitle">Casos</span></h5>
 
                 </div>
                 <div class="Title_Caso">
                     <div class="Column_Case CodTi">
-                        <p>Codigo</p>
+                        <p id="CasesColumnCode">Codigo</p>
                     </div>
                     <div class="Column_Case a2">
-                        <p>Asunto</p>
+                        <p id="CasesColumnSubject">Asunto</p>
                     </div>
 
                     <div class="Column_Case">
-                        <p>Estado</p>
+                        <p id="CasesColumnStatus">Estado</p>
                     </div>
                 </div>
                 <div class="ibox ult_in">
@@ -69,7 +69,7 @@
             <div class="col-md-12">
                 <div class="row animated fadeInRight">
                     <div class="ibox-title EstTi">
-                        <h5><i class="fa fa-th-list" aria-hidden="true"></i> Estado del Caso</h5>
+                        <h5><i class="fa fa-th-list" aria-hidden="true"></i> <span id="CaseStatusTitle">Estado del Caso</span></h5>
                     </div>
                     <div class="animated fadeInRight" id="ContenCase" style="width: 96%;">
                         <div class="col-sm-12">
@@ -85,11 +85,11 @@
                                 <div class="row">
                                     <div class="Progres_Bar">
                                         <div class="col infoCase">
-                                            <small class="stats-label">Etapa actual</small>
+                                            <small id="CurrentStepLabel" class="stats-label">Etapa actual</small>
                                             <p id="CurrentStep" class="fw-600"></p>
                                         </div>
                                         <div class="col infoCase">
-                                            <small class="stats-label">Progreso</small>
+                                            <small id="ProgressLabel" class="stats-label">Progreso</small>
                                             <div class="progress" style="margin: 0px 2px 20px 2px;">
                                                 <div style="width: 0%;" class="progress-bar progress-bar-danger ProgreCase"></div>
                                             </div>
@@ -160,6 +160,7 @@
     <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
     <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
     <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Common.Notes.js")"></script>
     <script src="@Url.Content("~/Scripts/Seguimiento_Aliados.js")"></script>
     <script src="@Url.Content("~/Scripts/CreateCase_Aliados.js")"></script>

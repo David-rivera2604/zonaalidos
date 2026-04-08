@@ -1,33 +1,30 @@
 ﻿using Architect.API.Core.Security;
-using System.Configuration;
+using aliados.Filters;
 using System.Web.Mvc;
 
 namespace aliados.Controllers
 {
     [IsConnected]
+    [SetTheme]
     public class PrototypeController : Controller
     {
         public ActionResult Index()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult Render()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult Producto()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult Payment()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
     }

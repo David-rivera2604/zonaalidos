@@ -1,15 +1,15 @@
 ﻿using Architect.API.Core.Security;
-using System.Configuration;
+using aliados.Filters;
 using System.Web.Mvc;
 
 namespace aliados.Controllers
 {
     [IsConnected]
+    [SetTheme]
     public class ManualController : Controller
     {
         public ActionResult Siniestro()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
     }

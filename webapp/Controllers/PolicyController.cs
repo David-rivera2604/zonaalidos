@@ -1,7 +1,7 @@
 ﻿using Architect.API.Core.Security;
+using aliados.Filters;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,17 +9,15 @@ using System.Web.Mvc;
 namespace aliados.Controllers
 {
     [IsConnected]
+    [SetTheme]
     public class PolicyController : Controller
     {
         public ActionResult Products()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
         public ActionResult Index()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
-
             if (!string.IsNullOrEmpty(Architect.Utilities.Helpers.Settings.StringValue("Message")))
             {
                 ViewBag.AlertMessage = Architect.Utilities.Helpers.Settings.StringValue("Message");
@@ -29,35 +27,29 @@ namespace aliados.Controllers
 
         public ActionResult Edit()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
         public ActionResult UpLoadLoans()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult Listv2()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
         public ActionResult Listv3()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult sample()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult Imports()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 

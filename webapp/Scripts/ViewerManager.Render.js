@@ -48,12 +48,49 @@ app.ViewerQuery = (function () {
         ' {Body} ' +
         '</div>';
 
+    function ApplyQueryTitleTranslation(translations) {
+        if (!translations)
+            return;
+
+        var queryTitleValue = translations.QueryTitle;
+        if (!queryTitleValue)
+            return;
+
+        var titleText = null;
+        var titleAttr = null;
+
+        if (typeof queryTitleValue === 'string')
+            titleText = queryTitleValue;
+        else if (typeof queryTitleValue === 'object') {
+            if (Object.prototype.hasOwnProperty.call(queryTitleValue, 'text'))
+                titleText = queryTitleValue.text;
+            if (Object.prototype.hasOwnProperty.call(queryTitleValue, 'title'))
+                titleAttr = queryTitleValue.title;
+        }
+
+        if (titleText) {
+            if ($("#QueryTitle").length === 1)
+                $("#QueryTitle").text(titleText);
+
+            $('html head').find('title').text(titleText);
+        }
+
+        if (titleAttr && $("#QueryTitle").length === 1)
+            $("#QueryTitle").attr('title', titleAttr);
+    }
+
     function TranslateViewerTarget(target, entity) {
         entity = $.trim(entity || '');
         if (!entity)
             return;
 
-        app.language.translate(target, 'viewer/' + entity)();
+        app.language.translate(
+            target,
+            'viewer/' + entity,
+            function (translations) {
+                ApplyQueryTitleTranslation(translations);
+            }
+        )();
     }
 
     function RenderTabHeader(item) {
@@ -108,6 +145,7 @@ app.ViewerQuery = (function () {
 
     function Render(data) {
         gridControlName = "#" + data.index + "GridTbl";
+        var translationEntity = data.entity || data.Entity || (data.table ? data.table.entity : '');
 
         if ($("#QueryTitle").length === 1)
             $("#QueryTitle").html(data.title);
@@ -118,6 +156,8 @@ app.ViewerQuery = (function () {
             $("#QueryTitle").html(data.maintitle);
             $('html head').find('title').text(data.maintitle);
         }
+
+        TranslateViewerTarget('body', translationEntity);
 
 
 

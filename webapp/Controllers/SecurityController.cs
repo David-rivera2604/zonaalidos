@@ -1,9 +1,9 @@
 ﻿using Architect.API.Core.Business;
 using Architect.API.Core.Business.Security;
 using Architect.API.Core.Security;
+using aliados.Filters;
 using Architect.Utilities.Extensions;
 using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -20,6 +20,7 @@ namespace aliados.Controllers
     /// - Configura el contexto del usuario mediante AssingedContext()
     /// - Maneja las vistas de login y páginas relacionadas con seguridad
     /// </remarks>
+    [SetTheme]
     public class SecurityController : Controller
     {
         /// <summary>
@@ -231,7 +232,6 @@ namespace aliados.Controllers
         /// <returns>Vista de Login configurada para modo empleado Mapfre.</returns>
         public ActionResult Mapfre()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View("Login");
         }
 
@@ -241,7 +241,6 @@ namespace aliados.Controllers
         /// <returns>Redirección a la acción Login con tenant = "Carrofácil".</returns>
         public ActionResult Carrofácil()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return this.RedirectToAction("Login", "Security", new { tenant = "Carrofácil" });
         }
 
@@ -251,7 +250,6 @@ namespace aliados.Controllers
         /// <returns>Redirección a la acción Login con tenant = "Coopeservidores".</returns>
         public ActionResult Coope()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return this.RedirectToAction("Login", "Security", new { tenant = "Coopeservidores" });
         }
 
@@ -265,7 +263,6 @@ namespace aliados.Controllers
         /// </remarks>
         public ActionResult Login()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
@@ -276,7 +273,6 @@ namespace aliados.Controllers
         [IsConnected]
         public ActionResult RoleMember()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
@@ -287,7 +283,6 @@ namespace aliados.Controllers
         [IsConnected]
         public ActionResult Role()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View("RoleMember");
         }
 
@@ -298,7 +293,6 @@ namespace aliados.Controllers
         [IsConnected]
         public ActionResult RoleMemberNavigation()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
@@ -309,7 +303,6 @@ namespace aliados.Controllers
         [IsConnected]
         public ActionResult UserMember()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
@@ -320,7 +313,6 @@ namespace aliados.Controllers
         [IsConnected]
         public ActionResult UserRoleMember()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
@@ -334,7 +326,6 @@ namespace aliados.Controllers
         /// </remarks>
         public ActionResult ChangePassword()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
@@ -344,7 +335,6 @@ namespace aliados.Controllers
         /// <returns>Vista de Register.</returns>
         public ActionResult Register()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
@@ -354,7 +344,6 @@ namespace aliados.Controllers
         /// <returns>Vista de Integrate.</returns>
         public ActionResult Integrate()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
     }

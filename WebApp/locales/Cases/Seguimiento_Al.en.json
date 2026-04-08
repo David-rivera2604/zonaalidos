@@ -1,0 +1,32 @@
+{
+  "BuscadorLabel": "Search",
+  "Estado": "Status",
+  "EstadoOptionAll": "All",
+  "EstadoOptionInicio": "Started",
+  "EstadoOptionEnProgreso": "In progress",
+  "EstadoOptionFinalizado": "Completed",
+  "CasesListTitle": "Cases",
+  "CasesColumnCode": "Code",
+  "CasesColumnSubject": "Subject",
+  "CasesColumnStatus": "Status",
+  "CaseStatusTitle": "Case status",
+  "CurrentStepLabel": "Current stage",
+  "ProgressLabel": "Progress",
+  "Title": {
+    "title": "Case description"
+  },
+  "FlowIdDesc": {
+    "title": "Process associated with the case"
+  },
+  "Seguimiento": "Tracking",
+  "Notas": "Notes",
+  "Adjuntos": "Attachments",
+  "ProcessGridTbl": {
+    "columns": {
+      "Name": "Name",
+      "StartDate": "Start date",
+      "FinishDate": "Finish date",
+      "_3": "Total days"
+    }
+  }
+}
