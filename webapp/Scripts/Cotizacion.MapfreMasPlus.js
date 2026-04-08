@@ -139,6 +139,16 @@ app.CotizacionMapfreMasPlus = (function () {
         $('#contrato').on('change', function () {
             let contracto = app.ui.GetDropDownNumericValue('#contrato');
 
+            if (contracto == 10700) {
+                app.ui.SetRadioStringValue('rc_alcohol', 'S');
+                $("#rc_alcohol_2").prop('disabled', true);
+                $("#rc_alcohol_1").prop('disabled', true);
+            } else {
+                $("#rc_alcohol_2").prop('disabled', false);
+                $("#rc_alcohol_1").prop('disabled', false);
+            }
+
+
             if (contracto > 0) {
                 setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO_303')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
             }
