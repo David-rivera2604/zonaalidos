@@ -1217,10 +1217,10 @@ app.CotizacionMapfreMasPlus = (function () {
 
     }
     //permite agregar un nuevo item para los contratos  17100, 17101 BANCA Y DESARROLLO PARA EL RAMO 303
-    function setDropDownUseVehi(codeVehi) {
+    function setDropDownUseVehi(contrato) {
         let selector = "#cod_uso_vehi";
         let textValue = "BANCA Y DESARROLLO";
-        if (lstlowCostDev_Contract.includes(codeVehi)) {
+        if (lstlowCostDev_Contract.includes(contrato)) {
 
             app.ui.DropDownValueWithOption(selector, "1", textValue);
             app.ui.SelectDropDownByText(selector, textValue);
