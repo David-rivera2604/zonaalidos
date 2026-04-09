@@ -1,0 +1,43 @@
+{
+  "QueryTitle": "User system access information list",
+  "1GridTbl": {
+    "columns": {
+      "Cuando": {
+        "text": "When",
+        "title": "Date and time"
+      },
+      "Origen": {
+        "text": "Origin",
+        "title": "Request origin"
+      },
+      "Usuario": {
+        "text": "User",
+        "title": "Username"
+      },
+      "Correo": {
+        "text": "Email",
+        "title": "User email"
+      },
+      "Nombre": {
+        "text": "First name",
+        "title": "User first name"
+      },
+      "Apellido": {
+        "text": "Last name",
+        "title": "User last name"
+      },
+      "Sucursal": {
+        "text": "Branch",
+        "title": "Branch office"
+      },
+      "Resultado": {
+        "text": "Result",
+        "title": "Access result"
+      },
+      "Razón": {
+        "text": "Reason",
+        "title": "Result reason"
+      }
+    }
+  }
+}

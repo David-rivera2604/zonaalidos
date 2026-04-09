@@ -5,7 +5,7 @@
 <!-- RoleMember -->
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Mantenimiento de roles</h5>
+        <h5 id="RoleMemberTitle">Mantenimiento de roles</h5>
         <!-- Opciones -->
         <div class="ibox-tools">
             <a class="tool-filter">
@@ -141,6 +141,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Security.RoleMember.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

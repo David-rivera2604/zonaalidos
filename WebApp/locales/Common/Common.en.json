@@ -1,0 +1,28 @@
+{
+  "GridToolbarSearch": {
+    "text": "Search",
+    "title": "Search in table"
+  },
+  "SearchPlaceholder": "Search",
+  "GridToolbarRefresh": {
+    "text": "Refresh",
+    "title": "Refresh data"
+  },
+  "GridToolbarExport": {
+    "text": "Export",
+    "title": "Export data"
+  },
+  "GridToolbarCsv": "CSV",
+  "GridToolbarExcel": "Excel"
+  ,
+  "desde_group": {
+    "text": "From date",
+    "title": "From date",
+    "placeholder": "day/month/year"
+  },
+  "hasta_group": {
+    "text": "To date",
+    "title": "To date",
+    "placeholder": "day/month/year"
+  }
+}

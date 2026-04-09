@@ -442,6 +442,7 @@ app.GeneralNavigation = (function () {
             Event_Controls();
             Refresh();
             Setup_Validations();
+            app.language.translate('body', 'navigation')();
         },
         New: function (row) {
             let newRow = { NavigationId: 0, ParentCode: null, Code: null, Type: null, Title: null, Description: null, MenuTitle: null, URLPath: null, URLHelp: null, SmallImage: null, BigImage: null, Sequence: 1, RecordStatus: 1 }

@@ -1,0 +1,51 @@
+{
+  "TemplateTitle": "Template maintenance",
+  "TemplateSearch": {
+    "placeholder": "Filter by key or description",
+    "title": "Filter by key or description"
+  },
+  "ApplyFilter": "Filter",
+  "RecordStatusFlt": "Status",
+  "Key": "Key",
+  "Description": "Description",
+  "EmailTo": "Recipient",
+  "Subject": "Subject",
+  "Body": "Email body",
+  "MasterTemplateId": "Master template",
+  "TemplateEdtFormSave": {
+    "text": "Save",
+    "title": "Save changes"
+  },
+  "TemplateEdtFormSaveContinue": {
+    "text": "Save and continue",
+    "title": "Save changes and continue"
+  },
+  "TemplateEdtFormSaveCopy": {
+    "text": "Save and copy",
+    "title": "Save changes and continue"
+  },
+  "TemplateEdtFormDuplicate": {
+    "text": "Duplicate",
+    "title": "Duplicate current information"
+  },
+  "TemplateEdtFormDelete": {
+    "text": "Delete",
+    "title": "Delete current information"
+  },
+  "TemplateEdtFormCancel": "Cancel",
+  "TemplateGridTbl": {
+    "columns": {
+      "Key": "Key",
+      "Description": "Description",
+      "EmailTo": "Recipient",
+      "Subject": "Subject",
+      "Body": "Body",
+      "MasterTemplateIdDesc": "Master template",
+      "UpdateDate": "Updated by",
+      "_7": {
+        "text": "Actions",
+        "title": "Available actions for a template"
+      }
+    }
+  }
+}

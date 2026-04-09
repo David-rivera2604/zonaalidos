@@ -5,7 +5,7 @@
 <!-- UserMember -->
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Mantenimiento de usuarios</h5>
+        <h5 id="UserMemberTitle">Mantenimiento de usuarios</h5>
         <!-- Opciones -->
         <div class="ibox-tools">
             <a class="tool-filter">
@@ -126,10 +126,10 @@
                                                     Cédula
                                                 </button>
                                                 <div class="dropdown-menu" id="DocumentNumberTypeMenu">
-                                                    <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
-                                                    <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
-                                                    <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
-                                                    <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                    <a id="DocumentNumberTypeOption1" class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                    <a id="DocumentNumberTypeOption2" class="dropdown-item" href="#" data-value='2'>DIMEX</a>
+                                                    <a id="DocumentNumberTypeOption3" class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                    <a id="DocumentNumberTypeOption4" class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
                                                 </div>
                                             </div>
                                             <input id='DocumentNumber' name='DocumentNumber'
@@ -381,6 +381,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Security.UserMember.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

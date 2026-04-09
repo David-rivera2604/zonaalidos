@@ -1,0 +1,52 @@
+{
+  "RoleMemberTitle": "Role maintenance",
+  "RoleMemberSearch": {
+    "placeholder": "Filter by role name or description",
+    "title": "Filter by role name or description"
+  },
+  "ApplyFilter": "Filter",
+  "RecordStatusFlt": "Status",
+  "RoleName": "Role name",
+  "Description": "Description",
+  "SecurityLevel": "Security level",
+  "InitialNavigationCode": "Start page",
+  "RecordStatus": "Record status",
+  "RoleMemberEdtFormSave": {
+    "text": "Save",
+    "title": "Save changes"
+  },
+  "RoleMemberEdtFormSaveContinue": {
+    "text": "Save and continue",
+    "title": "Save changes and continue"
+  },
+  "RoleMemberEdtFormSaveCopy": {
+    "text": "Save and copy",
+    "title": "Save changes and continue"
+  },
+  "RoleMemberEdtFormDuplicate": {
+    "text": "Duplicate",
+    "title": "Duplicate current information"
+  },
+  "RoleMemberEdtFormDelete": {
+    "text": "Delete",
+    "title": "Delete current information"
+  },
+  "RoleMemberEdtFormCancel": "Cancel",
+  "RoleMemberGridTbl": {
+    "columns": {
+      "RoleName": "Role",
+      "Description": "Description",
+      "SecurityLevel": {
+        "text": "Security",
+        "title": "Security level"
+      },
+      "InitialNavigationCodeDesc": "Start page",
+      "RecordStatusDesc": "Status",
+      "UpdateDate": "Updated by",
+      "_6": {
+        "text": "Actions",
+        "title": "Available actions for a role"
+      }
+    }
+  }
+}

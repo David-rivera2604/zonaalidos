@@ -1,0 +1,27 @@
+{
+  "QueryTitle": "Quotations by agent",
+  "1GridTbl": {
+    "columns": {
+      "NOM_RAMO": {
+        "text": "Line of business",
+        "title": "Insurance line of business"
+      },
+      "NUM_PRESUPUESTO": {
+        "text": "Quote No.",
+        "title": "Quote number"
+      },
+      "FEC_ACTU": {
+        "text": "Date",
+        "title": "Date and time"
+      },
+      "DETALLE": {
+        "text": "Detail",
+        "title": "Quote detail"
+      },
+      "FRACCIONAMIENTO DE PAGO": {
+        "text": "Payment frequency",
+        "title": "Payment installment frequency"
+      }
+    }
+  }
+}

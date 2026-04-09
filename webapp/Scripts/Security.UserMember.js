@@ -582,6 +582,7 @@ app.SecurityUserMember = (function () {
             Event_Controls();
             Refresh();
             Setup_Validations();
+            app.language.translate('body', 'usermember')();
 
             app.core.Get(app.setting.apipath + 'v1/Common/RenderCustomFields?entityType=1002')
                 .done(function (data, textStatus, jqXHR) {

@@ -1,0 +1,75 @@
+{
+    "QueryTitle": "MAPFRE Plus Policies",
+    "1GridTbl": {
+        "columns": {
+            "NUM_POLIZA_GRUPO": {
+                "text": "Group policy",
+                "title": "Group policy number"
+            },
+            "NUM_CONTRATO": {
+                "text": "Contract",
+                "title": "Contract number"
+            },
+            "NUM_POLIZA": {
+                "text": "Policy No.",
+                "title": "Policy number"
+            },
+            "COD_DOCUM": {
+                "text": "ID",
+                "title": "Identification number"
+            },
+            "NOM_COMPLETO": {
+                "text": "Policyholder",
+                "title": "Policyholder name"
+            },
+            "TLF_NUMERO": {
+                "text": "Phone",
+                "title": "Phone number"
+            },
+            "EMAIL": {
+                "text": "Email",
+                "title": "Email address"
+            },
+            "NOM_RIESGO": {
+                "text": "Risk",
+                "title": "Risk name"
+            },
+            "NOM_FRACC_PAGO": {
+                "text": "Installment",
+                "title": "Payment installment type"
+            },
+            "FEC_EFEC_POLIZA": {
+                "text": "Coverage start date",
+                "title": "Policy effective date"
+            },
+            "FEC_VCTO_POLIZA": {
+                "text": "Coverage end date",
+                "title": "Policy expiration date"
+            },
+            "MARCA": {
+                "text": "Brand",
+                "title": "Vehicle brand"
+            },
+            "MODELO": {
+                "text": "Model",
+                "title": "Vehicle model"
+            },
+            "VALOR_VEHICULO": {
+                "text": "Vehicle value",
+                "title": "Insured vehicle value"
+            },
+            "MOTOR": {
+                "text": "Engine",
+                "title": "Engine number"
+            },
+            "CHASIS": {
+                "text": "Chassis",
+                "title": "Chassis number"
+            },
+            "ANIO": {
+                "text": "Year",
+                "title": "Vehicle year"
+            }
+        }
+    }
+}

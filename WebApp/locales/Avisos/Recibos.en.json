@@ -1,0 +1,123 @@
+{
+  "PageTitle": "Payment notices.",
+  "PageSubTitle": "Available receipts",
+  "Cod_Agt": "Agent",
+  "desde": "From",
+  "hasta": "To",
+  "cod_mon": "Currency",
+  "cod_fracc_pago": "Installment plan",
+  "polizagrupo": "Group policy",
+  "contratos": "Contracts",
+  "DocumentNumber": "Policyholder",
+  "DocumentNumberType": "ID card",
+  "DocumentNumberTypeOption1": "ID card",
+  "DocumentNumberTypeOption2": "DIMEX",
+  "DocumentNumberTypeOption3": "Passport",
+  "DocumentNumberTypeOption4": "Legal entity ID",
+  "RecibosSectionTitle": "Receipts",
+  "PrototypeEdtFormSave": {
+    "text": "Search",
+    "title": "Search receipts that match the selected criteria"
+  },
+  "GeneraAvisos": {
+    "text": "Generate payment notice",
+    "title": "Generate a payment notice using selected receipts"
+  },
+  "PrototypeEdtFormCancel": "Cancel",
+  "RecibosGridTbl": {
+    "columns": {
+      "_0": {
+        "text": "",
+        "title": "Select receipt to create a payment notice"
+      },
+      "Num_Poliza": {
+        "text": "Policy",
+        "title": "Policy number"
+      },
+      "Num_Recibo": {
+        "text": "Receipt",
+        "title": "Receipt number"
+      },
+      "Imp_Recibo": {
+        "text": "Amount",
+        "title": "Receipt amount"
+      },
+      "Fec_Efec_Recibo": {
+        "text": "Effective date",
+        "title": "Receipt effective date"
+      },
+      "Estatus": {
+        "text": "Status",
+        "title": "Receipt status"
+      },
+      "Nom_Riesgo": {
+        "text": "Risk",
+        "title": "Risk name"
+      },
+      "Tip_Docum_Aseg": {
+        "text": "Insured",
+        "title": "Insured person"
+      },
+      "Tip_Docum_Tom": {
+        "text": "Policyholder",
+        "title": "Policyholder"
+      },
+      "mca_cuota_gratis": {
+        "text": "Free installments flag",
+        "title": "Free installments flag"
+      },
+      "tip_docum_pag": {
+        "text": "Payer",
+        "title": "Payer"
+      }
+    }
+  },
+  "1GridTbl": {
+    "columns": {
+      "_0": {
+        "text": "",
+        "title": "Select receipt to create a payment notice"
+      },
+      "Num_Poliza": {
+        "text": "Policy",
+        "title": "Policy number"
+      },
+      "Num_Recibo": {
+        "text": "Receipt",
+        "title": "Receipt number"
+      },
+      "Imp_Recibo": {
+        "text": "Amount",
+        "title": "Receipt amount"
+      },
+      "Fec_Efec_Recibo": {
+        "text": "Effective date",
+        "title": "Receipt effective date"
+      },
+      "Estatus": {
+        "text": "Status",
+        "title": "Receipt status"
+      },
+      "Nom_Riesgo": {
+        "text": "Risk",
+        "title": "Risk name"
+      },
+      "Tip_Docum_Aseg": {
+        "text": "Insured",
+        "title": "Insured person"
+      },
+      "Tip_Docum_Tom": {
+        "text": "Policyholder",
+        "title": "Policyholder"
+      },
+      "mca_cuota_gratis": {
+        "text": "Free installments flag",
+        "title": "Free installments flag"
+      },
+      "tip_docum_pag": {
+        "text": "Payer",
+        "title": "Payer"
+      }
+    }
+  }
+}

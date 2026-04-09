@@ -1,0 +1,26 @@
+{
+  "AgenteAlertLabel": "Attention:",
+  "NoticiasTitle": "Stay up to date with the latest news",
+  "UltimasCotizacionesTitle": "Latest quotes",
+  "UltimasPolizasTitle": "Latest issued policies",
+  "HistorialComisionesTitle": "Commission payment history",
+  "ComisionesDolaresLabel": "Commissions pending payment in dollars",
+  "ComisionesColonesLabel": "Commissions pending payment in colones",
+  "ResumenGeneralTitle": "General summary",
+  "CotizacionesVigentesLabel": "Active quotes",
+  "PolizasActivasLabel": "Active policies",
+  "SiniestrosActivosLabel": "Active claims",
+  "RecibosPendientesLabel": "Pending receipts",
+  "CotizacionesVigentesBox": {
+    "title": "Quotes from the last 30 days"
+  },
+  "PolizasActivasBox": {
+    "title": "Total active policies"
+  },
+  "SiniestrosActivosBox": {
+    "title": "Total active claims"
+  },
+  "RecibosPendientesBox": {
+    "title": "Total pending receipts"
+  }
+}

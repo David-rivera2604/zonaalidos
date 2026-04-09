@@ -5,7 +5,7 @@
 <!-- Navigation -->
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Mantenimiento de navegación</h5>
+        <h5 id="NavigationTitle">Mantenimiento de navegación</h5>
         <!-- Opciones -->
         <div class="ibox-tools">
             <a class="tool-filter">
@@ -199,6 +199,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/General.Navigation.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

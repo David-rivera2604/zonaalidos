@@ -2,7 +2,7 @@
 
 ## Versión 1.6.179 - 02/04/2026
 
-### Aliados - Internacionalización: Implementación de sistema multilenguaje.
+### Aliados - Internacionalización: Implementación de sistema multilenguaje completo.
 
 #### Funcionalidades implementadas:
 
@@ -10,20 +10,32 @@
 - Soporte para múltiples idiomas: Español (ES) e Inglés (EN).
 - Refactorización de `Database.cs` para optimización de consultas.
 - Integración de multilenguaje en 30+ controladores backend.
-- Mejora del módulo `core.language.js` con control de caché mediante query string.
-- Implementación de estructura de archivos de traducción por módulo.
+- Mejora del módulo `core.language.js` con control dinámico de caché mediante query string.
+- Implementación de estructura de archivos de traducción JSON por módulo.
 - Atributos `data-i18n` en vistas Razor para carga dinámica de etiquetas.
+- Actualización de 16+ scripts JavaScript para soporte i18n.
+- Localización de 35+ vistas Razor (casos, cotizaciones, seguridad, general).
 
 #### Módulos localizados:
 
-- Cases: Cotizaciones, casos y seguimiento
-- Common: Componentes reutilizables
-- General: Administración general
-- Viewer: Visualizadores de pólizas y pagos
+- **Avisos**: Gestión de avisos de cobro
+- **Cases**: Cotizaciones, casos y seguimiento
+- **Cotizacion**: Estudiantil, MapfreMas, MapfreMasPlus, PolizaLider, Viajero, HogarTotal, Multirriesgo
+- **Common**: Componentes reutilizables (grillas, validaciones)
+- **General**: Navegación, plantillas, configuración de pagos
+- **Inicio**: Panel de inicio por agente
+- **Security**: Gestión de roles y miembros de usuario
+- **Viewer**: Visualizadores de pólizas, cotizaciones, cargos recurrentes, información de acceso
 
 #### Rutas de acceso:
 
 - Aplicación con soporte multilenguaje: https://appqa.mapfrecr.com/aliados/ (parámetro `?cache=false` para forzar recarga de traducciones)
+
+#### Cambios técnicos:
+
+- Actualización de `Web.config` con configuración i18n
+- Actualización de `aliados.csproj` y referencias del proyecto
+- Validación de traducción JSON en tiempo de ejecución
 
 ---
 

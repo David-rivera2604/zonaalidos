@@ -1680,6 +1680,33 @@
     <Content Include="locales\General\Administration.en.json" />
     <Content Include="locales\viewer\UserListGroupedByRole.en.json" />
     <Content Include="locales\viewer\ViewerManager.en.json" />
+    <Content Include="locales\Inicio\agente.en.json" />
+    <Content Include="locales\viewer\Case.en.json" />
+    <Content Include="locales\viewer\QueryGeneral.en.json" />
+    <Content Include="locales\Avisos\Recibos.en.json" />
+    <Content Include="locales\Common\Common.en.json" />
+    <Content Include="locales\Cotizacion\Estudiantil.en.json" />
+    <Content Include="locales\Cotizacion\hogartotal.en.json" />
+    <Content Include="locales\Cotizacion\MapfreMas.en.json" />
+    <Content Include="locales\Cotizacion\MapfreMasPlus.en.json" />
+    <Content Include="locales\Cotizacion\multirriesgo.en.json" />
+    <Content Include="locales\Cotizacion\PolizaLider.en.json" />
+    <Content Include="locales\viewer\ActiveMapfrePlusPolicies.en.json" />
+    <Content Include="locales\General\navigation.en.json" />
+    <Content Include="locales\General\paymentsettings.en.json" />
+    <Content Include="locales\General\template.en.json" />
+    <Content Include="locales\Cotizacion\Viajero.en.json" />
+    <Content Include="locales\viewer\SuretyPolicies.en.json" />
+    <Content Include="locales\viewer\UserMembers.en.json" />
+    <Content Include="locales\viewer\UserSystemAccessInformationList.en.json" />
+    <Content Include="locales\viewer\PendingQuotationsToIssue.en.json" />
+    <Content Include="locales\viewer\Policies.en.json" />
+    <Content Include="locales\viewer\Quotations.en.json" />
+    <Content Include="locales\viewer\QuotationsByAgent.en.json" />
+    <Content Include="locales\viewer\RecurringChargeExecutions.en.json" />
+    <Content Include="locales\viewer\TransactionStatus.en.json" />
+    <Content Include="locales\Security\rolemember.en.json" />
+    <Content Include="locales\Security\usermember.en.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>

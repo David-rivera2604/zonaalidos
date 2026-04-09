@@ -556,6 +556,7 @@ app.CotizacionViajero = (function () {
 
                 Controls_Events();
                 Setup();
+                app.language.translate('body', 'Viajero')();
                 console.log("Inicio");
             }
             catch (err) {

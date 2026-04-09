@@ -3,7 +3,7 @@ app.language = (function () {
     var currentTranslations = {};
 
     function getCurrentLanguage() {
-        var current = localStorage.getItem('current');
+        var current = sessionStorage.getItem('current');
         var currentData = null;
 
         if (current) {
@@ -15,10 +15,10 @@ app.language = (function () {
         }
 
         return (
-            localStorage.getItem('Language') ||
-            localStorage.getItem('language') ||
-            localStorage.getItem('Lang') ||
-            localStorage.getItem('lang') ||
+            sessionStorage.getItem('Language') ||
+            sessionStorage.getItem('language') ||
+            sessionStorage.getItem('Lang') ||
+            sessionStorage.getItem('lang') ||
             (currentData && (currentData.Language || currentData.language || currentData.Lang || currentData.lang)) ||
             'es'
         );
@@ -41,12 +41,22 @@ app.language = (function () {
         var pageName = $.trim(newCase || '');
         var currentPath = window.location.pathname || '';
         var appBasePath = (app.setting && app.setting.basepath) ? app.setting.basepath : '/';
-        var relativePath = currentPath.indexOf(appBasePath) === 0
-            ? currentPath.substring(appBasePath.length)
-            : currentPath.replace(/^\/+/, '');
-        var pathParts = $.grep(relativePath.split('/'), function (part) {
+        var currentPathParts = $.grep(currentPath.replace(/^\/+/, '').split('/'), function (part) {
             return $.trim(part) !== '';
         });
+        var baseParts = $.grep(appBasePath.replace(/^\/+|\/+$/g, '').split('/'), function (part) {
+            return $.trim(part) !== '';
+        });
+        var appRootSegment = baseParts.length > 0 ? baseParts[0].toLowerCase() : '';
+        var pathParts = currentPathParts.slice(0);
+
+        if (pathParts.length > 1 && (
+            (appRootSegment && pathParts[0].toLowerCase() === appRootSegment) ||
+            pathParts[0].toLowerCase() === 'aliados'
+        )) {
+            pathParts = pathParts.slice(1);
+        }
+
         var controllerName = pathParts.length > 0 ? pathParts[0] : 'Cases';
 
         if (!pageName)
@@ -79,12 +89,20 @@ app.language = (function () {
         return pageName + '.' + language;
     }
 
+    function buildCommonTranslationUrl() {
+        return buildTranslationUrl('Common/Common');
+    }
+
+    function getCommonStorageKey() {
+        return buildStorageKey('Common');
+    }
+
 
     function getTranslationsFromStorage(storageKey) {
         if (!storageKey)
             return null;
 
-        var rawValue = localStorage.getItem(storageKey);
+        var rawValue = sessionStorage.getItem(storageKey);
         if (!rawValue)
             return null;
 
@@ -169,7 +187,7 @@ app.language = (function () {
         if (!storageKey)
             return;
 
-        localStorage.setItem(storageKey, JSON.stringify(translations || {}));
+        sessionStorage.setItem(storageKey, JSON.stringify(translations || {}));
     }
 
 
@@ -280,6 +298,38 @@ app.language = (function () {
             $label.attr('title', translatedTitle);
     }
 
+    function applyForBasedLabelTranslations($container, translations) {
+        $container.find('label[for]').each(function () {
+            var $label = $(this);
+            var forId = $.trim($label.attr('for') || '');
+            var translatedText = null;
+            var translatedTitle = null;
+            var $requiredMark = null;
+
+            if (!forId)
+                return;
+
+            // Usual case is handled by label[for] + existing control id.
+            // This fallback only applies when no control exists with that id (radio-group style names).
+            if ($container.find('[id="' + forId + '"]').length > 0)
+                return;
+
+            translatedText = getTranslationText(translations, forId);
+            translatedTitle = getTranslationAttribute(translations, forId, 'title');
+
+            if (translatedText) {
+                $requiredMark = $label.find('.required-mark').detach();
+                $label.text(translatedText);
+
+                if ($requiredMark.length > 0)
+                    $label.append($requiredMark);
+            }
+
+            if (translatedTitle)
+                $label.attr('title', translatedTitle);
+        });
+    }
+
     function applySectionTranslation($element, id, translations) {
         var translatedText = getTranslationText(translations, id);
         var translatedTitle = getTranslationAttribute(translations, id, 'title');
@@ -328,6 +378,43 @@ app.language = (function () {
 
         if (buttonTitle)
             $element.attr('title', buttonTitle);
+    }
+
+    function applyInputTranslation($element, id, translations) {
+        var translatedText = getTranslationText(translations, id);
+        var translatedTitle = getTranslationAttribute(translations, id, 'title');
+        var translatedPlaceholder = getTranslationAttribute(translations, id, 'placeholder');
+
+        if (translatedTitle)
+            $element.attr('title', translatedTitle);
+
+        if (translatedPlaceholder)
+            $element.attr('placeholder', translatedPlaceholder);
+
+        if (translatedText && !translatedPlaceholder)
+            $element.attr('placeholder', translatedText);
+    }
+
+    function applyTextAreaTranslation($element, id, translations) {
+        var translatedText = getTranslationText(translations, id);
+        var translatedTitle = getTranslationAttribute(translations, id, 'title');
+        var translatedPlaceholder = getTranslationAttribute(translations, id, 'placeholder');
+
+        if (translatedTitle)
+            $element.attr('title', translatedTitle);
+
+        if (translatedPlaceholder)
+            $element.attr('placeholder', translatedPlaceholder);
+
+        if (translatedText && !translatedPlaceholder)
+            $element.attr('placeholder', translatedText);
+    }
+
+    function applySelectTranslation($element, id, translations) {
+        var translatedTitle = getTranslationAttribute(translations, id, 'title');
+
+        if (translatedTitle)
+            $element.attr('title', translatedTitle);
     }
 
     function applyTabLinkTranslation($tabLink, translatedText) {
@@ -531,12 +618,12 @@ app.language = (function () {
 
     function applyGridTableTranslations($container, translations) {
         var $tables = $container
-            .filter('table[id$="GridTbl"]')
-            .add($container.find('table[id$="GridTbl"]'));
+            .filter('table[id$="GridTbl"], table[id$="Tbl"], table[name$="GridTbl"], table[name$="Tbl"]')
+            .add($container.find('table[id$="GridTbl"], table[id$="Tbl"], table[name$="GridTbl"], table[name$="Tbl"]'));
 
         $tables.each(function () {
             var $table = $(this);
-            var tableId = $table.attr('id');
+            var tableId = $table.attr('name') || $table.attr('id');
             var columnTranslations = getGridColumnsTranslations(translations, tableId);
             var toolbarTranslations = resolveToolbarTranslations(translations, tableId);
             var $gridContainer = $table.closest('.bootstrap-table');
@@ -598,9 +685,16 @@ app.language = (function () {
                     }
                     break;
                 case 'label':
+                    applyGenericElementTranslation($element, id, translations);
+                    break;
                 case 'input':
+                    applyInputTranslation($element, id, translations);
+                    break;
                 case 'textarea':
+                    applyTextAreaTranslation($element, id, translations);
+                    break;
                 case 'select':
+                    applySelectTranslation($element, id, translations);
                     break;
                 default:
                     applyGenericElementTranslation($element, id, translations);
@@ -612,12 +706,50 @@ app.language = (function () {
         });
 
         applyTabsTranslations($container, translations);
+        applyForBasedLabelTranslations($container, translations);
         applyGridTableTranslations($container, translations);
     }
 
     function notifyTranslationComplete(onComplete, translations) {
         if ($.isFunction(onComplete))
             onComplete(translations || {});
+    }
+
+    function mergeTranslations(commonTranslations, pageTranslations) {
+        var merged = {};
+        $.extend(true, merged, commonTranslations || {});
+        $.extend(true, merged, pageTranslations || {});
+        return merged;
+    }
+
+    function resolveTranslationsWithCommon(pageTranslations, useCache, onResolved) {
+        var commonStorageKey = getCommonStorageKey();
+        var commonUrl = buildCommonTranslationUrl();
+        var commonFromStorage = useCache ? getTranslationsFromStorage(commonStorageKey) : null;
+
+        if (commonFromStorage && !$.isEmptyObject(commonFromStorage)) {
+            onResolved(mergeTranslations(commonFromStorage, pageTranslations));
+            return;
+        }
+
+        if (!commonUrl) {
+            onResolved(pageTranslations || {});
+            return;
+        }
+
+        app.core.Get(
+            commonUrl,
+            undefined,
+            function (commonTranslations) {
+                var normalizedCommon = commonTranslations || {};
+                saveTranslationsInStorage(commonStorageKey, normalizedCommon);
+                onResolved(mergeTranslations(normalizedCommon, pageTranslations));
+            },
+            false
+        ).fail(function () {
+            saveTranslationsInStorage(commonStorageKey, {});
+            onResolved(pageTranslations || {});
+        });
     }
 
     function shouldUseCacheFromQueryString() {
@@ -666,9 +798,11 @@ app.language = (function () {
                 }
 
                 if (useCache && hasAllTranslations(labels, storedTranslations)) {
-                    currentTranslations = storedTranslations;
-                    applyTranslations(target, labels, currentTranslations);
-                    notifyTranslationComplete(onComplete, currentTranslations);
+                    resolveTranslationsWithCommon(storedTranslations, useCache, function (effectiveTranslations) {
+                        currentTranslations = effectiveTranslations || {};
+                        applyTranslations(target, labels, currentTranslations);
+                        notifyTranslationComplete(onComplete, currentTranslations);
+                    });
                     return;
                 }
 
@@ -676,10 +810,13 @@ app.language = (function () {
                     url,
                     undefined,
                     function (translations) {
-                        currentTranslations = translations || {};
-                        saveTranslationsInStorage(storageKey, currentTranslations);
-                        applyTranslations(target, labels, currentTranslations);
-                        notifyTranslationComplete(onComplete, currentTranslations);
+                        var pageTranslations = translations || {};
+                        saveTranslationsInStorage(storageKey, pageTranslations);
+                        resolveTranslationsWithCommon(pageTranslations, useCache, function (effectiveTranslations) {
+                            currentTranslations = effectiveTranslations || {};
+                            applyTranslations(target, labels, currentTranslations);
+                            notifyTranslationComplete(onComplete, currentTranslations);
+                        });
                     },
                     false
                 ).fail(

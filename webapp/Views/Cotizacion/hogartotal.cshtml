@@ -12,11 +12,11 @@
                         <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
                     </div>
                     <div class="title_partner T2">
-                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a su familia, con nuestro seguro Hogar Total. Más que un seguro contra siniestros o robos, es un seguro de protección total para su hogar; 11 riesgos de cobertura básica y 8 coberturas opcionales.</p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
+                        <p id="HogarTotalIntroText" class="text-muted small">MAPFRE le trae una nueva forma de proteger a su familia, con nuestro seguro Hogar Total. Más que un seguro contra siniestros o robos, es un seguro de protección total para su hogar; 11 riesgos de cobertura básica y 8 coberturas opcionales.</p>
+                        <h4 id="HogarTotalRequiredFieldsText" class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
                     <div class="title_partner T3 text-center">
-                        <a href="https://www.mapfre.cr/seguros-cr/seguros/hogar/hogar-total/" target="_blank">Seguro Hogar Total</a>
-                        <p class="mt-2 text-center">
+                        <a id="HogarTotalLinkText" href="https://www.mapfre.cr/seguros-cr/seguros/hogar/hogar-total/" target="_blank">Seguro Hogar Total</a>
+                        <p id="HogarTotalSloganText" class="mt-2 text-center">
                             Más que un seguro, una protección integral.
                         </p>
                     </div>
@@ -50,7 +50,7 @@
                                     <div class="form-row">
                                         <div class="col-lg-12">
 
-                                            <h4><i class="fa fa-list"></i>  Datos generales</h4>
+                                            <h4><i class="fa fa-list"></i>  <span id="HogarTotalDatosGeneralesTitle">Datos generales</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
                                                 <!-- agt_cod DropDownList -->
@@ -123,7 +123,7 @@
                                     <!-- datosdelhogar Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-home"></i> Datos del hogar</h4>
+                                            <h4><i class="fa fa-home"></i> <span id="HogarTotalDatosHogarTitle">Datos del hogar</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -233,7 +233,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-row">
                                                         <div class='col'>
-                                                            <h4><i class="fa fa-check-square"></i> Coberturas<label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label></h4>
+                                                            <h4><i class="fa fa-check-square"></i> <span id="HogarTotalCoberturasTitle">Coberturas</span><label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label></h4>
                                                         </div>
                                                         <div class='col-auto'>
                                                             <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
@@ -258,7 +258,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-row">
                                                         <div class='col'>
-                                                            <h4><i class="fa fa-plus-square"></i> Sumas aseguradas</h4>
+                                                            <h4><i class="fa fa-plus-square"></i> <span id="HogarTotalSumasAseguradasTitle">Sumas aseguradas</span></h4>
                                                         </div>
                                                     </div>
                                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -342,7 +342,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Plan de pago</h4>
+                                                    <h4 id="HogarTotalPlanPagoTitle">Plan de pago</h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Plan de pago" data-toggle="modal" id="plandepagoNew"> <i class="fa fa-plus"></i> </button>
@@ -375,7 +375,7 @@
         <div class="ibox">
             <div class="ibox-title text-center float-right">
                 <div class="quote-title">
-                    <h4><i class="fa fa-file-text-o"></i> Resumen de la cotización</h4>
+                    <h4><i class="fa fa-file-text-o"></i> <span id="HogarTotalResumenCotizacionTitle">Resumen de la cotización</span></h4>
                     <span class="label label-success" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span>
                 </div>
             </div>
@@ -411,7 +411,7 @@
 
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Importe por fraccionamiento de pago</h5>
+                <h5 id="HogarTotalImporteFraccionamientoTitle">Importe por fraccionamiento de pago</h5>
             </div>
             <div class="ibox-content text-center">
                 <div class="form-row">
@@ -429,6 +429,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.HogarTotal.js")"></script>
     <script type="text/javascript">

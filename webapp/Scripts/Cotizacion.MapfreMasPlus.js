@@ -1376,6 +1376,7 @@ app.CotizacionMapfreMasPlus = (function () {
             plandepagoporfrecuencia_table_setup();
 
             Controls_Events();
+            app.language.translate('body', 'MapfreMasPlus')();
             Setup(mode);
         }
     };

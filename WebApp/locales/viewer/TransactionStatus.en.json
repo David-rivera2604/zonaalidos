@@ -1,0 +1,35 @@
+{
+  "QueryTitle": "Transaction status",
+  "1GridTbl": {
+    "columns": {
+      "UPDATEDATE": {
+        "text": "Date and time",
+        "title": "Transaction date and time"
+      },
+      "REFERENCE": {
+        "text": "Reference",
+        "title": "Transaction reference"
+      },
+      "AUTHORIZATION": {
+        "text": "Authorization/CUS",
+        "title": "Authorization or CUS"
+      },
+      "DESCRIPTION": {
+        "text": "Status",
+        "title": "Transaction status"
+      },
+      "AMOUNT": {
+        "text": "Amount",
+        "title": "Transaction amount"
+      },
+      "POLICYID": {
+        "text": "Policy",
+        "title": "Policy number"
+      },
+      "BILLNUMBER": {
+        "text": "Receipt",
+        "title": "Receipt number"
+      }
+    }
+  }
+}

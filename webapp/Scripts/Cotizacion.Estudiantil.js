@@ -448,6 +448,7 @@ app.CotizacionEstudiantil = (function () {
                 plandepago_table_setup();
                 plandepagoporfrecuencia_table_setup();
                 Controls_Events();
+                app.language.translate('body', 'Estudiantil')();
                 
                 console.log("Inicio");
             }

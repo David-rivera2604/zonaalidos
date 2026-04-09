@@ -1,0 +1,43 @@
+{
+  "QueryTitle": "User members",
+  "1GridTbl": {
+    "columns": {
+      "FIRSTNAME": {
+        "text": "Full name",
+        "title": "User full name"
+      },
+      "EMAIL": {
+        "text": "Email",
+        "title": "Email"
+      },
+      "USERNAME": {
+        "text": "User",
+        "title": "Username"
+      },
+      "LOGINDATE": {
+        "text": "Last login",
+        "title": "Last user sign-in date"
+      },
+      "LOCKEDOUTDATE": {
+        "text": "Locked date",
+        "title": "Date when user was locked"
+      },
+      "ROLELIST": {
+        "text": "Roles",
+        "title": "Roles assigned to the user"
+      },
+      "RECORDSTATUSDESC": {
+        "text": "Status",
+        "title": "User status"
+      },
+      "UPDATEDATE": {
+        "text": "Updated by",
+        "title": "Last update user and date"
+      },
+      "_8": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  }
+}

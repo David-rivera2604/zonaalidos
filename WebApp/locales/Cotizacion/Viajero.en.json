@@ -1,0 +1,111 @@
+{
+  "PageTitle": "Travel Insurance",
+  "PageSubTitle": "Quote.",
+  "ViajeroIntroText": "MAPFRE brings you a new way to protect yourself and your family by subscribing to this travel insurance. We will support you by honoring all commitments and coverages derived from the assumed risks.",
+  "ViajeroRequiredFieldsText": "All fields marked with a red asterisk are required to continue.",
+  "ViajeroLinkText": "Travel Insurance",
+  "ViajeroSloganText": "We protect you!",
+  "DatosGeneralesTitle": "General data",
+  "agt_cod": "Agent",
+  "cod_cuadro_com": "Commission table",
+  "cod_mon": "Currency",
+  "cod_fracc_pago": "Payment installment frequency",
+  "fec_efec_poliza": {
+    "text": "Coverage start date",
+    "placeholder": "day/month/year"
+  },
+  "fec_vcto_poliza": {
+    "text": "Coverage end date",
+    "placeholder": "day/month/year"
+  },
+  "ViajeroDatosViajeTitle": "Travel data",
+  "TIP_PLAN": "Plan",
+  "TIP_VIAJE": "Travel type",
+  "FEC_VIAJE": {
+    "text": "Trip start date",
+    "placeholder": "day/month/year"
+  },
+  "PAIS_ORIGEN": "Country of origin",
+  "DES_DESTINO": "Destination country",
+  "COD_MODALIDAD": "Modality",
+  "cantidad_riesgos": "Number of insured risks",
+  "FEC_NACIMIENTO": {
+    "text": "Date of birth - Risk 1",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO2": {
+    "text": "Date of birth - Risk 2",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO3": {
+    "text": "Date of birth - Risk 3",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO4": {
+    "text": "Date of birth - Risk 4",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO5": {
+    "text": "Date of birth - Risk 5",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO6": {
+    "text": "Date of birth - Risk 6",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO7": {
+    "text": "Date of birth - Risk 7",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO8": {
+    "text": "Date of birth - Risk 8",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO9": {
+    "text": "Date of birth - Risk 9",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO10": {
+    "text": "Date of birth - Risk 10",
+    "placeholder": "day/month/year"
+  },
+  "ViajeroCoberturasTitle": "Coverages",
+  "ViajeroPlanPagoTitle": "Payment plan",
+  "cotizar": "Quote",
+  "ViajeroResumenTitle": "Quote summary",
+  "ViajeroPresupuestoLabel": "Quote #",
+  "ViajeroImporteTotalLabel": "Total amount",
+  "ViajeroPrimaNetaLabel": "Net premium",
+  "ViajeroIvaLabel": "VAT",
+  "ViajeroRecargoLabel": "Surcharge",
+  "ViajeroCuotasLink": {
+    "text": "Installments",
+    "title": "View installment details"
+  },
+  "ViajeroEmitirText": "Issue",
+  "ViajeroPrintText": "Print",
+  "coberturasTbl": {
+    "columns": {
+      "riesgo": {
+        "text": "Risk",
+        "title": "Risk number"
+      },
+      "codigo": "Code",
+      "nombre": "Name",
+      "capital": "Capital",
+      "primatotal": "Total premium",
+      "deducible": "Deductible"
+    }
+  },
+  "plandepagoTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recargoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  }
+}

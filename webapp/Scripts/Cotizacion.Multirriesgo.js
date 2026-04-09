@@ -1016,6 +1016,7 @@ app.CotizacionMultirriesgo = (function () {
             plandepagoporfrecuencia_table_setup();
 
             Controls_Events();
+            app.language.translate('body', 'multirriesgo')();
             Setup();
         }
     };

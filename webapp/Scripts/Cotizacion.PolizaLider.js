@@ -639,6 +639,7 @@ app.CotizacionPolizaLider = (function () {
 
             Controls_Events();
             Setup();
+            app.language.translate('body', 'PolizaLider')();
         }
     };
 })();

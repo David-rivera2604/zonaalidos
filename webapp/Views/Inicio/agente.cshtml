@@ -7,7 +7,7 @@
     if (ViewBag.AlertMessage != null)
     {
         <div class="alert alert-warning alert-dismissible fade show" role="alert" style="background-color: #ffcc00; border: 2px solid #e6a900; color: #4d4d4d; font-size: 1em; padding: 15px;">
-             <strong>Atención:</strong> @ViewBag.AlertMessage
+             <strong id="AgenteAlertLabel">Atención:</strong> @ViewBag.AlertMessage
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: #4d4d4d;">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -31,7 +31,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-10 p-0">
-                                <h3>Manténgase al tanto de las últimas noticias</h3>
+                                <h3 id="NoticiasTitle">Manténgase al tanto de las últimas noticias</h3>
                             </div>
                             <div class="col-2">
                                 <button class="btn equis" id="equis">
@@ -65,7 +65,7 @@
 
             <div class="col-sm-6 col-md-6">
                 <div class="ibox-title">
-                    <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Ultimas cotizaciones</h5>
+                    <h5><i class="fa fa-list-alt" aria-hidden="true"></i> <span id="UltimasCotizacionesTitle">Ultimas cotizaciones</span></h5>
                 </div>
                 <div class="ibox ult_in">
                     <div class="ibox-content">
@@ -80,7 +80,7 @@
             </div>
             <div class="col-sm-6 col-md-6">
                 <div class="ibox-title">
-                    <h5><i class="fa fa-check-square" aria-hidden="true"></i> Ultimas pólizas emitidas</h5>
+                    <h5><i class="fa fa-check-square" aria-hidden="true"></i> <span id="UltimasPolizasTitle">Ultimas pólizas emitidas</span></h5>
                 </div>
                 <div class="ibox ult_in">
                     <div class="ibox-content">
@@ -227,16 +227,16 @@
     <div class="col-md-4">
         <div class="row">
             <div class="col-sm-12 line_hist_pago">
-                <h5 class="m-b-xs title1"><i class="fa fa-line-chart" aria-hidden="true"></i> Historial de pago de comisiones</h5>
+                <h5 class="m-b-xs title1"><i class="fa fa-line-chart" aria-hidden="true"></i> <span id="HistorialComisionesTitle">Historial de pago de comisiones</span></h5>
                 <div id="sparkline2" class="m-b-sm linesparkbottom"><canvas width="507" height="50" style="display: inline-block; width: 507.656px; height: 50px; vertical-align: top;"></canvas></div>
 
                 <div class="row m-t-xs comisiones" style="margin-bottom: 30px" title="Comisiones estimadas por pagar">
                     <div class="col-6 line2col">
-                        <h5 class="m-b-xs">Comisiones por pagar en dolares</h5>
+                        <h5 id="ComisionesDolaresLabel" class="m-b-xs">Comisiones por pagar en dolares</h5>
                         <h2 id="ComisionesPorPagarDolares" class="no-margins" style="white-space: nowrap; font-weight: 500;">$ 0</h2>
                     </div>
                     <div class="col-6">
-                        <h5 class="m-b-xs">Comisiones por pagar en colones</h5>
+                        <h5 id="ComisionesColonesLabel" class="m-b-xs">Comisiones por pagar en colones</h5>
                         <h2 id="ComisionesPorPagarColones" class="no-margins" style="white-space: nowrap; font-weight: 500;">₡ 0</h2>
                     </div>
                 </div>
@@ -269,12 +269,12 @@
             </div>
         </div>
         <div class="row">
-            <h5 class="m-b-xs title1 res_tit"><i class="fa fa-clipboard" aria-hidden="true"></i> Resumen general</h5>
+            <h5 class="m-b-xs title1 res_tit"><i class="fa fa-clipboard" aria-hidden="true"></i> <span id="ResumenGeneralTitle">Resumen general</span></h5>
             <div class="col-sm-6 col-md-6 boxresumen">
-                <div class="ibox res_bo" title="Cotizaciones de los últimos 30 días">
+                <div id="CotizacionesVigentesBox" class="ibox res_bo" title="Cotizaciones de los últimos 30 días">
                     <div class="ibox-content container">
                         <div class="items">
-                            <label for="" style="color: var(--mapfrered1);">Cotizaciones vigentes</label>
+                            <label id="CotizacionesVigentesLabel" for="" style="color: var(--mapfrered1);">Cotizaciones vigentes</label>
                         </div>
                         <div class="info">
                             <p>
@@ -286,10 +286,10 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 boxresumen">
-                <div class="ibox res_bo" title="Total de pólizas activas">
+                <div id="PolizasActivasBox" class="ibox res_bo" title="Total de pólizas activas">
                     <div class="ibox-content container">
                         <div class="items">
-                            <label for="" style="color: var(--mapfrered1);">Pólizas activas</label>
+                            <label id="PolizasActivasLabel" for="" style="color: var(--mapfrered1);">Pólizas activas</label>
                         </div>
                         <div class="info">
                             <p><i class="fa fa-shield fa-2x iconboxes" style="color: #1AB394;"></i><a class="num" id="PolizasActivas" href="/Aliados/viewer/tab?id=300">...</a></p>
@@ -299,10 +299,10 @@
             </div>
             <div class="w-100"></div>
             <div class="col-sm-6 col-md-6 boxresumen">
-                <div class="ibox res_bo" title="Total de siniestros activos">
+                <div id="SiniestrosActivosBox" class="ibox res_bo" title="Total de siniestros activos">
                     <div class="ibox-content container">
                         <div class="items">
-                            <label for="" style="color: #C31F09;">Siniestros activos</label>
+                            <label id="SiniestrosActivosLabel" for="" style="color: #C31F09;">Siniestros activos</label>
                         </div>
                         <div class="info">
                             <p><i class="fa fa-exclamation-triangle fa-2x iconboxes" style="color: #FFCE2B;"></i> <a class="num" id="SiniestrosActivos" href="/Aliados/viewer/tab?id=300">...</a></p>
@@ -311,10 +311,10 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 boxresumen">
-                <div class="ibox res_bo" title="Total de recibos pendientes">
+                <div id="RecibosPendientesBox" class="ibox res_bo" title="Total de recibos pendientes">
                     <div class="ibox-content container">
                         <div class="items">
-                            <label for="" style="color: #C31F09;">Recibos pendientes</label>
+                            <label id="RecibosPendientesLabel" for="" style="color: #C31F09;">Recibos pendientes</label>
                         </div>
                         <div class="info">
                             <p><i class="fa fa-clock-o fa-2x iconboxes" style="color: #ED5565"></i> <a class="num" id="RecibosPendientes" href="/Aliados/viewer/tab?id=310">...</a></p>
@@ -346,6 +346,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/assets/sparkline/jquery.sparkline.min.js")"></script>
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script type="text/javascript">
         let pagasColones = [];
         let pagasDolares = [];
@@ -455,10 +456,11 @@
                                     break;
                                 case 2:
                                     $('#ComisionesPorPagarDolares').html('$ ' + row.IMP_MVTO.toLocaleString('ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                                    break;
+                                break;
                             }
                         });
                     });
+                app.language.translate('body', 'agente')();
 
             } catch (e) {
                 console.log(e);

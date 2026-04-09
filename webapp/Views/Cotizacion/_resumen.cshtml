@@ -2,16 +2,16 @@
 
     <div class="ibox">
         <div class="ibox-title">
-            <h5>Resumen</h5>
+            <h5 id="ResumenTitle">Resumen</h5>
             <div class="ibox-tools">
-                <h5><span class="label label-success float-right" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span></h5>
+                <h5><span id="PresupuestoBadge" class="label label-success float-right" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span></h5>
             </div>
         </div>
         <div class="ibox-content">
 
             <div class="row">
                 <div class="col-7 col-md-6">
-                    <span>
+                    <span id="ImporteTotalLabel">
                         Importe total
                     </span>
                     <h2 class="font-bold">
@@ -20,18 +20,18 @@
                 </div>
                 <div class="col-5 col-md-6">
                     <table class="text-muted small">
-                        <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
-                        <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
-                        <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
-                        <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><a href="#plandepagoRow" title="Ver detalle de las cuotas">Cuotas</a></td></tr>
+                        <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td id="PrimaNetaLabel">Prima neta</td></tr>
+                        <tr><td style="text-align:right"><span id="iva">0,00</span></td><td id="IvaLabel">IVA</td></tr>
+                        <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td id="RecargoLabel">Recargo</td></tr>
+                        <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><a id="CuotasLink" href="#plandepagoRow" title="Ver detalle de las cuotas">Cuotas</a></td></tr>
                     </table>
                 </div>
             </div>
             <hr>
             <div class="m-t-sm">
                 <div class="btn-group">
-                    <a id="emitir" href="#" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> Emisión</a>
-                    <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-print"></i> Imprimir</a>
+                    <a id="emitir" href="#" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> <span id="EmitirText">Emisión</span></a>
+                    <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-print"></i> <span id="ImprimirText">Imprimir</span></a>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
 
     <div class="ibox d-none" id="plandepagoporfrecuencia">
         <div class="ibox-title">
-            <h5>Importe por fraccionamiento de pago</h5>
+            <h5 id="ImportePorFraccionamientoTitle">Importe por fraccionamiento de pago</h5>
         </div>
         <div class="ibox-content text-center">
             <div class="form-row">

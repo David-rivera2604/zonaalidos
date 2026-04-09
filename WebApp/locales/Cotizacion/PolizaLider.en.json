@@ -1,0 +1,96 @@
+{
+  "PageTitle": "New Leader Policy",
+  "PageSubTitle": "Quote.",
+  "PolizaLiderIntroText": "At MAPFRE Costa Rica we have created a wide range of options with excellent coverages and added values, designed for all Costa Rican needs.",
+  "PolizaLiderRequiredFieldsText": "All fields marked with a red asterisk are required to continue.",
+  "PolizaLiderLinkText": "New leader policy insurance",
+  "PolizaLiderSloganText": "Insurance that offers different coverages such as liability, collision and/or rollover, theft, and additional coverages, among others.",
+  "DatosGeneralesTitle": "General data",
+  "agt_cod": "Agent",
+  "cod_cuadro_com": "Commission table",
+  "cod_mon": "Currency",
+  "cod_fracc_pago": "Payment installment frequency",
+  "fec_efec_poliza": {
+    "text": "Coverage start date",
+    "placeholder": "day/month/year"
+  },
+  "fec_vcto_poliza": {
+    "text": "Coverage end date",
+    "placeholder": "day/month/year"
+  },
+  "PolizaLiderDatosVehiculoTitle": "Vehicle data",
+  "COD_PLAN_AUTO": "Plan",
+  "COD_MARCA": "Brand",
+  "COD_MODELO": "Model",
+  "PCT_DCTO_AUTO_PAR": "Family discount %",
+  "COD_TIP_VEHI": "Vehicle class",
+  "COD_USO_VEHI": "Vehicle usage",
+  "ANIO_SUB_MODELO": "Manufacturing year",
+  "MCA_VR": "Valuation type",
+  "MCA_VR_1": "VR",
+  "MCA_VR_2": "PRA",
+  "MCA_DESC_CLIENTE_NUEVO": "Is this a new customer?",
+  "MCA_DESC_CLIENTE_NUEVO_1": "Yes",
+  "MCA_DESC_CLIENTE_NUEVO_2": "No",
+  "MCA_CERO_KM": "Is it zero km?",
+  "MCA_CERO_KM_1": "Yes",
+  "MCA_CERO_KM_2": "No",
+  "MCA_AUTO_GPS": "Does it have GPS?",
+  "MCA_AUTO_GPS_1": "Yes",
+  "MCA_AUTO_GPS_2": "No",
+  "mca_HogarTotal": "Do you have \"Home Total\" policy?",
+  "mca_HogarTotal_1": "Yes",
+  "mca_HogarTotal_2": "No",
+  "MCA_AUTO_GPS_CMS": "Does it have GPS with agreement?",
+  "MCA_AUTO_GPS_CMS_1": "Yes",
+  "MCA_AUTO_GPS_CMS_2": "No",
+  "PolizaLiderCoberturasTitle": "Coverages",
+  "PolizaLiderSumasAseguradasTitle": "Insured amounts",
+  "Resp_civilSA": "Liability",
+  "Gast_medicSA": "Medical expenses for occupants",
+  "Acc_ConducSA": "Driver accidents",
+  "Valor_VehiSA": "Insured vehicle value",
+  "Equi_EspeSA": "Special equipment",
+  "IMP_AUTO_CRI": "Glass breakage",
+  "cotizar": "Quote",
+  "limpiar": "Clear",
+  "PolizaLiderPlanPagoTitle": "Payment plan",
+  "PolizaLiderResumenTitle": "Quote summary",
+  "PolizaLiderImporteTotalLabel": "Total amount",
+  "PolizaLiderPrimaNetaLabel": "Net premium",
+  "PolizaLiderIvaLabel": "VAT",
+  "PolizaLiderRecargoLabel": "Surcharge",
+  "PolizaLiderCuotasLink": {
+    "text": "Installments",
+    "title": "View installment details"
+  },
+  "PolizaLiderPrintText": "Print",
+  "PolizaLiderImporteFraccionamientoTitle": "Amount by payment installment",
+  "coberturasTbl": {
+    "columns": {
+      "codigo": "Code",
+      "nombre": "Name",
+      "capital": "Capital",
+      "primatotal": "Total premium",
+      "deducible": "Deductible"
+    }
+  },
+  "plandepagoTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recargoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  },
+  "plandepagoporfrecuenciaTbl": {
+    "columns": {
+      "frecuencia": "Installment frequency",
+      "importetotal": "Amount",
+      "recargoporfraccionamiento": "%"
+    }
+  }
+}
