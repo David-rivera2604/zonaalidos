@@ -338,6 +338,10 @@
     {
       "Condicion": "{El Plan} sea igual a {Plan plata} y {La clase del vehículo} sea igual a 5",
       "Exclusion": "3002,3003,3007,3014,3015,3008,3009,1060,1063,3016,3017,3018,3017,3094,1061"
+    },
+    {
+      "Condicion": "{El Plan} sea igual a 50",
+      "Exclusion": "3002,3003,3008,3009,3007,1060"
     }
   ],
   "Listas": [

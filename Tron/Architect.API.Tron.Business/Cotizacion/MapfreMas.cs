@@ -203,11 +203,17 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 List<Contracts.Ramo.ta301003> coverageSelection = DataAccess.PorRamo.AutomobileCoverageSelection(cod_cia, num_poliza_grupo, num_contrato, num_subcontrato, cod_ramo, cod_mon, cod_marca, cod_modelo, anio_sub_modelo, cod_tip_vehi, cod_uso_vehi, mca_sexo, cod_zona_circul, edad, cod_plan_auto, tip_valoracion);
                 bool required;
+
                 cod_cobIncludeFilter = "3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011,3012,1060";
+
+                if (cod_plan_auto == 50 || cod_plan_auto == 51)
+                {
+                    cod_cobIncludeFilter += ",3016";
+                }
 
                 if (IsPlan(cod_plan_auto, new int[] { 34, 35, 36 }))
                 {
-                    if (IsFromFeb2026(fec_validez)  && values.Any(x => x.Lkp.Count == 0) )
+                    if (IsFromFeb2026(fec_validez) && values.Any(x => x.Lkp.Count == 0))
                     {
                         cod_cobIncludeFilter += ",1063";
                         cod_cobExcludeFilter = cod_cobExcludeFilter.Replace(",1063", string.Empty);
@@ -217,6 +223,8 @@ namespace Architect.API.Tron.Business.Cotizacion
                         cod_cobIncludeFilter += ",3016";
                     }
                 }
+
+                
 
                 foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {
