@@ -2,40 +2,66 @@
 
 ## Versión 1.6.179 - 02/04/2026
 
-### Aliados - Internacionalización: Implementación de sistema multilenguaje completo.
+### Aliados - Internacionalización: Implementación de sistema multilenguaje completo (Fase I y II).
 
 #### Funcionalidades implementadas:
 
-- Infraestructura completa de internacionalización (i18n) en la aplicación.
+**Infraestructura i18n:**
+- Sistema completo de internacionalización (i18n) en la aplicación.
 - Soporte para múltiples idiomas: Español (ES) e Inglés (EN).
-- Refactorización de `Database.cs` para optimización de consultas.
-- Integración de multilenguaje en 30+ controladores backend.
 - Mejora del módulo `core.language.js` con control dinámico de caché mediante query string.
-- Implementación de estructura de archivos de traducción JSON por módulo.
+- Control de caché por parámetro URL: `?cache=false` para forzar recarga de traducciones.
+
+**Backend (.NET Framework 4.8):**
+- Refactorización de `Database.cs` para optimización de consultas.
+- Integración de multilenguaje en 30+ controladores (30 controladores base modificados).
+- Actualización de `Web.config` con configuración i18n.
+- Actualización de `aliados.csproj` y referencias del proyecto.
+
+**Frontend (JavaScript/Razor):**
+- Localización de 8 módulos de emisión de pólizas con 51 archivos JSON de traducción.
 - Atributos `data-i18n` en vistas Razor para carga dinámica de etiquetas.
-- Actualización de 16+ scripts JavaScript para soporte i18n.
-- Localización de 35+ vistas Razor (casos, cotizaciones, seguridad, general).
+- Mejora de `core.ui.js` para mejor soporte de traducciones en componentes UI.
+- Actualización de 25+ scripts JavaScript para soporte i18n.
+- Localización de 42+ vistas Razor (.cshtml).
 
-#### Módulos localizados:
+#### Módulos localizados y archivos de traducción:
 
-- **Avisos**: Gestión de avisos de cobro
-- **Cases**: Cotizaciones, casos y seguimiento
-- **Cotizacion**: Estudiantil, MapfreMas, MapfreMasPlus, PolizaLider, Viajero, HogarTotal, Multirriesgo
-- **Common**: Componentes reutilizables (grillas, validaciones)
-- **General**: Navegación, plantillas, configuración de pagos
-- **Inicio**: Panel de inicio por agente
-- **Security**: Gestión de roles y miembros de usuario
-- **Viewer**: Visualizadores de pólizas, cotizaciones, cargos recurrentes, información de acceso
+**Fase I (Cotizaciones y Casos):**
+- Cases (5 archivos: Case, CasesAliados, NewCase, References, Seguimiento)
+- Cotizacion (7 archivos: Estudiantil, MapfreMas, MapfreMasPlus, PolizaLider, Viajero, HogarTotal, Multirriesgo)
+- Common (2 archivos: AttachmentGrid, componentes generales)
+- General (3 archivos: Administration, Navigation, PaymentSettings, Template)
 
-#### Rutas de acceso:
+**Fase II (Emisión de pólizas):**
+- Emision (10 archivos: AccidentesPersonales, Estudiantil, MapfreMas, MapfreMasPlus, SaldoDeudor, Viajero, HogarTotal, Multirriesgo, VerificarDomicilio)
+- Viewer (11 archivos: PolicyActiveV2, Quotations, QuotationsByAgent, ActiveMapfrePlusPolicies, BillingNoticesFromAnAgent, PaymentNoticesAgent, RejectedCharges, SICOP, y más)
 
-- Aplicación con soporte multilenguaje: https://appqa.mapfrecr.com/aliados/ (parámetro `?cache=false` para forzar recarga de traducciones)
+**Módulos adicionales:**
+- Avisos (Gestión de avisos de cobro)
+- Inicio (Panel de inicio por agente)
+- Security (Gestión de roles y miembros de usuario)
+
+**Total de archivos JSON de traducción:** 51 archivos en múltiples idiomas
 
 #### Cambios técnicos:
 
-- Actualización de `Web.config` con configuración i18n
-- Actualización de `aliados.csproj` y referencias del proyecto
-- Validación de traducción JSON en tiempo de ejecución
+- Validación de traducción JSON en tiempo de ejecución.
+- Estructura modular de archivos de traducción: `WebApp/locales/{modulo}/{archivo}.{idioma}.json`.
+- Compatibilidad hacia atrás mantenida para aplicaciones sin localización.
+- Estadísticas de cambio: 1,459 inserciones(+), 174 eliminaciones(-) en 30 archivos.
+
+#### Rutas de acceso:
+
+- Aplicación con soporte multilenguaje: https://appqa.mapfrecr.com/aliados/
+- Forzar recarga de traducciones: https://appqa.mapfrecr.com/aliados/?cache=false
+
+#### Notas de implementación:
+
+- Los archivos de traducción se cargan dinámicamente desde el servidor.
+- El idioma se detecta automáticamente o puede seleccionarse manualmente.
+- Todas las etiquetas UI se obtienen del sistema de traducción.
+- Los datos del usuario se mantienen en los mismos formatos previos.
 
 ---
 
