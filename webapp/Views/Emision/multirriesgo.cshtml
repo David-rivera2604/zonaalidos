@@ -13,23 +13,19 @@
                         <small><span id="PageSubTitle"> Emisión</span></small>
                     </div>
                     <div class='title_partner T2'>
-                        <p>
-                            Son diversos los riesgos a los cuales se encuentran expuestos los negocios, el seguro multirriesgo empresa representa una buena opción para hacer frente a posibles eventualidades ya que es un paquete integral que se adapta a las necesidades de protección de cada empresa o negocio.
-                        </p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
+                        <p><span id="MultirriesgoIntroText">Son diversos los riesgos a los cuales se encuentran expuestos los negocios, el seguro multirriesgo empresa representa una buena opción para hacer frente a posibles eventualidades ya que es un paquete integral que se adapta a las necesidades de protección de cada empresa o negocio.</span></p>
+                        <h4 class="text-muted" style="color: #c31f09"><span id="MultirriesgoRequiredFieldsText">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</span></h4>                    </div>
                     <div class='title_partner T3'>
-                        <a href="https://www.mapfre.cr/seguros-cr/seguros/empresas/multirriesgo-empresa/" target="_blank">Seguro Multirriesgo Empresa</a>
-                        <p class="text-center mt-2">
-                            Usted hace crecer su negocio, ¡nosotros lo protegemos!
-                        </p>
+                        <a id="MultirriesgoLinkText" href="https://www.mapfre.cr/seguros-cr/seguros/empresas/multirriesgo-empresa/" target="_blank">Seguro Multirriesgo Empresa</a>
+                        <p id="MultirriesgoSloganText" class="text-center mt-2">Usted hace crecer su negocio, ¡nosotros lo protegemos!</p>
                     </div>
                     <div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
 
                         <div class="ibox">
                             <div class="ibox-title">
-                                <h5><i class="fa fa-file-text-o"></i> Resumen</h5>
+                                <h5><i class="fa fa-file-text-o"></i> <span id="MultirriesgoResumenCotizacionTitle">Resumen</span></h5>
                                 <div class="ibox-tools">
-                                    <h5><span class="label label-success float-right" style="font-size: small;">Póliza #<span id="NumPoliza"></span></span></h5>
+                                    <h5><span class="label label-success float-right" style="font-size: small;"><span id="MultirriesgoPolizaBadge">Póliza #</span><span id="NumPoliza"></span></span></h5>
                                 </div>
                             </div>
                             <div class="ibox-content">
@@ -37,7 +33,7 @@
                                 <div class="row">
                                     <div class="col-7 col-md-6">
                                         <span>
-                                            Importe total
+                                            <span id="MultirriesgoImporteTotalTitle">Importe total</span>
                                         </span>
                                         <h2 class="font-bold">
                                             <span id="importetotal">0,00</span>
@@ -45,17 +41,17 @@
                                     </div>
                                     <div class="col-5 col-md-6">
                                         <table class="text-muted small">
-                                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
-                                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
-                                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
-                                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td>Cuotas</td></tr>
+                                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td><span id="MultirriesgoPrimaNetaTitle">Prima neta</span></td></tr>
+                                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td><span id="MultirriesgoIVATitle">IVA</span></td></tr>
+                                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td><span id="MultirriesgoRecargoTitle">Recargo</span></td></tr>
+                                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><span id="MultirriesgoCuotasTitle">Cuotas</span></td></tr>
                                         </table>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="m-t-sm text-center">
                                     <div class="btn-group">
-                                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="MultirriesgoEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +85,7 @@
                                     <div class="form-row">
                                         <!-- datosgenerales Zone -->
                                         <div class="datosgeneralesZone col-lg-12">
-                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
+                                            <h4><i class="fa fa-list"></i> <span id="DatosGeneralesTitle">Datos generales</span></h4>
 
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
@@ -153,7 +149,7 @@
                                                 <!-- user_txt_motivo_spto Text -->
                                                 <div class='col-sm-6 col-md-6 _user_txt_motivo_spto'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='user_txt_motivo_spto'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
+                                                        <label class='control-label' for='user_txt_motivo_spto' id='user_txt_motivo_spto_Label'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
                                                         <input type='text' id='user_txt_motivo_spto' name='user_txt_motivo_spto' class='form-control' size='100' maxlength='100' />
                                                     </div>
                                                 </div>
@@ -165,7 +161,7 @@
                                     <!-- datosdelnegocio Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-briefcase"></i> Datos del negocio</h4>
+                                            <h4><i class="fa fa-briefcase"></i> <span id="MultirriesgoDatosNegocioTitle">Datos del negocio</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -242,7 +238,7 @@
                                     <!-- datosdelaedificacion Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-building-o"></i> Datos de la edificación</h4>
+                                            <h4><i class="fa fa-building-o"></i> <span id="MultirriesgoDatosEdificacionTitle">Datos de la edificación</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -306,7 +302,7 @@
                                     <!-- sumasaseguradasparacoberturas Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas para coberturas</h4>
+                                            <h4><i class="fa fa-sliders"></i> <span id="MultirriesgoSumasCoberturasTitle">Sumas aseguradas para coberturas</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -419,7 +415,7 @@
                                     <!-- sumasaseguradaspararubros Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas para rubros</h4>
+                                            <h4><i class="fa fa-sliders"></i> <span id="MultirriesgoSumasRubrosTitle">Sumas aseguradas para rubros</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -502,7 +498,7 @@
                                     <!-- medidascontraindendio Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-fire"></i> Medidas contra incendio</h4>
+                                            <h4><i class="fa fa-fire"></i> <span id="MultirriesgoMedidasIncendioTitle">Medidas contra incendio</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -551,7 +547,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-check-square"></i> Coberturas</h4>
+                                                    <h4><i class="fa fa-check-square"></i> <span id="MultirriesgoCoberturasTitle">Coberturas</span></h4>
                                                 </div>
 
                                             </div>
@@ -571,7 +567,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-credit-card-alt"></i> Plan de pago</h4>
+                                                    <h4><i class="fa fa-credit-card-alt"></i> <span id="MultirriesgoPlanPagoTitle">Plan de pago</span></h4>
                                                 </div>
 
                                             </div>
@@ -615,7 +611,7 @@
                                             <div class="form-row">
                                                 <div class='col'>
                                                     <h4>
-                                                        <i class="fa fa-user-o"></i> Terceros<label id="tercerosTbl-error" class="float-right d-none"
+                                                        <i class="fa fa-user-o"></i> <span id="TercerosSectionTitle">Terceros</span><label id="tercerosTbl-error" class="float-right d-none"
                                                                                                     style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label>
                                                     </h4>
                                                 </div>
@@ -643,7 +639,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-pencil-square-o"></i> Formularios requeridos<label id="formulariosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                    <h4><i class="fa fa-pencil-square-o"></i> <span id="MultirriesgoFormulariosRequeridosTitle">Formularios requeridos</span><label id="formulariosTbl-error" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
                                             </div>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -660,7 +656,7 @@
 
                                     <div class="form-row">
                                         <div class="col-lg-12 d-none enviosolicitudZone">
-                                            <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
+                                        <h4><i class="fa fa-envelope-o"></i> <span id="MultirriesgoDestinatarioSolicitudTitle">Destinatario para envío de solicitud</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -699,7 +695,7 @@
                                             <div class="form-row">
                                                 <div class='col'>
                                                     <h4>
-                                                        <i class="fa fa-file-o"></i> Documentos requeridos<label id="documentosrequeridosTbl-error" class="float-right d-none"
+                                                        <i class="fa fa-file-o"></i> <span id="DocumentosRequeridosSectionTitle">Documentos requeridos</span><label id="documentosrequeridosTbl-error" class="float-right d-none"
                                                                                                                  style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label>
                                                     </h4>
                                                 </div>
@@ -1520,6 +1516,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.Multirriesgo.js")"></script>
     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>

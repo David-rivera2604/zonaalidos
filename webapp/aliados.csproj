@@ -1707,6 +1707,14 @@
     <Content Include="locales\viewer\TransactionStatus.en.json" />
     <Content Include="locales\Security\rolemember.en.json" />
     <Content Include="locales\Security\usermember.en.json" />
+    <Content Include="locales\Emision\AccidentesPersonales.en.json" />
+    <Content Include="locales\Emision\Estudiantil.en.json" />
+    <Content Include="locales\Emision\hogartotal.en.json" />
+    <Content Include="locales\Emision\MapfreMas.en.json" />
+    <Content Include="locales\Emision\MapfreMasPlus.en.json" />
+    <Content Include="locales\Emision\multirriesgo.en.json" />
+    <Content Include="locales\Emision\SaldoDeudor.en.json" />
+    <Content Include="locales\Emision\Viajero.en.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>

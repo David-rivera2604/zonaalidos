@@ -1464,6 +1464,8 @@ app.EmisionAccidentesPersonales = (function () {
             documentosrequeridos_table_Validations();
             documentosrequeridos_controls_Events();
             Setup();
+            app.language.translate('body', 'AccidentesPersonales')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);

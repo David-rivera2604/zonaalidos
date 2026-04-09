@@ -47,7 +47,7 @@
                                     <!-- datosgenerales Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos generales</h4>
+                                            <h4 id="DatosGeneralesTitle">Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -100,7 +100,7 @@
                                                 <!-- user_txt_motivo_spto Text -->
                                                 <div class='col-sm-6 col-md-6 _user_txt_motivo_spto'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='user_txt_motivo_spto'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
+                                                        <label class='control-label' for='user_txt_motivo_spto' id='user_txt_motivo_spto_Label'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
                                                         <input type='text' id='user_txt_motivo_spto' name='user_txt_motivo_spto' class='form-control' size='100' maxlength='100' />
                                                     </div>
                                                 </div>
@@ -112,7 +112,7 @@
                                     <!-- datosdelviaje Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos del viaje</h4>
+                                            <h4 id="ViajeroDatosViajeTitle">Datos del viaje</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -194,7 +194,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-user-o"></i> Terceros<label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                    <h4><i class="fa fa-user-o"></i> <span id="TercerosSectionTitle">Terceros</span><label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo tercero" data-toggle="modal" id="tercerosNew"> <i class="fa fa-plus"></i> </button>
@@ -217,7 +217,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-file-o"></i> Documentos requeridos<label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                    <h4><i class="fa fa-file-o"></i> <span id="DocumentosRequeridosSectionTitle">Documentos requeridos</span><label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo documento pendiente" data-toggle="modal" id="documentosrequeridosNew"> <i class="fa fa-plus"></i> </button>
@@ -240,7 +240,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Coberturas<label id="coberturasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                    <h4><span id="ViajeroCoberturasTitle">Coberturas</span><label id="coberturasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
 
                                             </div>
@@ -261,7 +261,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Plan de pago<label id="plandepagoTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                    <h4><span id="ViajeroPlanPagoTitle">Plan de pago</span><label id="plandepagoTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
 
                                             </div>
@@ -304,9 +304,9 @@
 
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Resumen</h5>
+                <h5><span id="ViajeroResumenTitle">Resumen</span></h5>
                 <div class="ibox-tools">
-                    <h5><span class="label label-success float-right" style="font-size: small;">Póliza #<span id="NumPoliza"></span></span></h5>
+                    <h5><span class="label label-success float-right" style="font-size: small;"><span id="ViajeroPresupuestoLabel">Póliza #</span><span id="NumPoliza"></span></span></h5>
                 </div>
             </div>
             <div class="ibox-content">
@@ -314,7 +314,7 @@
                 <div class="row">
                     <div class="col-7 col-md-6">
                         <span>
-                            Importe total
+                            <span id="ViajeroImporteTotalLabel">Importe total</span>
                         </span>
                         <h2 class="font-bold">
                             <span id="importetotal">0,00</span>
@@ -322,17 +322,17 @@
                     </div>
                     <div class="col-5 col-md-6">
                         <table class="text-muted small">
-                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
-                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
-                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
-                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td>Cuotas</td></tr>
+                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td><span id="ViajeroPrimaNetaLabel">Prima neta</span></td></tr>
+                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td><span id="ViajeroIvaLabel">IVA</span></td></tr>
+                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td><span id="ViajeroRecargoLabel">Recargo</span></td></tr>
+                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><span id="ViajeroCuotasLabel">Cuotas</span></td></tr>
                         </table>
                     </div>
                 </div>
                 <hr>
                 <div class="m-t-sm text-center">
                     <div class="btn-group">
-                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="ViajeroEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
                     </div>
                 </div>
             </div>
@@ -349,8 +349,8 @@
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
                 </button>
-                <h4 class="modal-title">Información de tercero</h4>
-                <small class="font-bold">Permite agregar un nuevo terceros o editar uno ya existente</small>
+                <h4 class="modal-title"><span id="ViajeroTerceroModalTitle">Información de tercero</span></h4>
+                <small class="font-bold"><span id="ViajeroTerceroModalSubtitle">Permite agregar un nuevo terceros o editar uno ya existente</span></small>
             </div>
             <div class="modal-body">
                 <!-- terceros Grid Edit Form -->
@@ -843,6 +843,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.Viajero.js")"></script>
     <script type="text/javascript">

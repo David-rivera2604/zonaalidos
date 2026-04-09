@@ -1528,6 +1528,8 @@ app.EmisionViajero = (function () {
             documentosrequeridos_controls_Events();
 
             Setup();
+            app.language.translate('body', 'Viajero')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);

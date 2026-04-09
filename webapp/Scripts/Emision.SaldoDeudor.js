@@ -1323,7 +1323,7 @@ app.EmisionSaldoDeudor = (function () {
 
     $.validator.addMethod("valorSeleccionado", function (value, element) {
         return value !== "0";
-    }, 
+    }, "Debe seleccionar un valor válido.");
 
     function terceros_table_Validations() {
         app.ui.DateValidators();
@@ -1957,6 +1957,8 @@ app.EmisionSaldoDeudor = (function () {
                 $('#tipodetercero option[value=3]').attr('hidden', '');
 
                 Setup();
+                app.language.translate('body', 'SaldoDeudor')();
+                app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
                 console.log("Inicio");
             }
             catch (err) {

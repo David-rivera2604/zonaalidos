@@ -2615,6 +2615,8 @@ app.EmisionMultirriesgo = (function () {
             documentosrequeridos_controls_Events();
 
             formularios_table_setup();
+            app.language.translate('body', 'multirriesgo')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
 
 
         },

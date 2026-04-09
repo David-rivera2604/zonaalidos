@@ -14,16 +14,14 @@
                         <small class="m-l-sm"><span id="PageSubTitle"> Emisión.</span></small>
                     </div>
                     <div class="title_partner T2">
-                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a ti y a su familia, suscribiendose a este seguro Saldo Deudor. Les respaldaremos cumpliendo los compromisos que de ella se derivan en relación con los riesgos asumidos por su medio.</p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>				    </div>
+                        <p class="text-muted small"><span id="SaldoDeudorIntroText">MAPFRE le trae una nueva forma de proteger a ti y a su familia, suscribiendose a este seguro Saldo Deudor. Les respaldaremos cumpliendo los compromisos que de ella se derivan en relación con los riesgos asumidos por su medio.</span></p>
+                        <h4 class="text-muted" style="color: #c31f09"><span id="SaldoDeudorRequiredFieldsText">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</span></h4>				    </div>
                     <div class="title_partner T3 text-center">
-                        <a href="https://www.mapfre.cr/contacto/" target="_blank">Saldo deudor declarativo</a>
+                        <a id="SaldoDeudorLinkText" href="https://www.mapfre.cr/contacto/" target="_blank">Saldo deudor declarativo</a>
 																																	 
 							 
 							
-                        <p class="mt-2 text-center">
-                            ¡Nosotros lo protegemos!
-                        </p>
+                        <p id="SaldoDeudorSloganText" class="mt-2 text-center">¡Nosotros lo protegemos!</p>
                     </div>
                 </div>
             </div>
@@ -47,7 +45,7 @@
                                     <!-- datosgenerales Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos generales</h4>
+                                            <h4 id="DatosGeneralesTitle">Datos generales</h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -100,7 +98,7 @@
                                                 <!-- user_txt_motivo_spto Text -->
                                                 <div class='col-sm-6 col-md-6 _user_txt_motivo_spto'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='user_txt_motivo_spto'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
+                                                        <label class='control-label' for='user_txt_motivo_spto' id='user_txt_motivo_spto_Label'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
                                                         <input type='text' id='user_txt_motivo_spto' name='user_txt_motivo_spto' class='form-control' size='100' maxlength='100' />
                                                     </div>
                                                 </div>
@@ -114,7 +112,7 @@
                                     <!-- datosdelasegurado Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-user-circle-o"></i> Datos del asegurado</h4>
+                                            <h4><i class="fa fa-user-circle-o"></i> <span id="DatosAseguradoTitle">Datos del asegurado</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -200,7 +198,7 @@
                                     <!-- informaciongeneral Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Información general</h4>
+                                            <h4><span id="InformacionGeneralTitle">Información general</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -346,7 +344,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Enfermedades excluidas<label id="enfermedadesexcluidasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                    <h4><span id="EnfermedadesExcluidasTitle">Enfermedades excluidas</span><label id="enfermedadesexcluidasTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo Enfermedades excluidas" data-toggle="modal" id="enfermedadesexcluidasNew"> <i class="fa fa-plus"></i> </button>
@@ -371,7 +369,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-user-o"></i> Terceros<label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                    <h4><i class="fa fa-user-o"></i> <span id="TercerosSectionTitle">Terceros</span><label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo tercero" data-toggle="modal" id="tercerosNew"> <i class="fa fa-plus"></i> </button>
@@ -394,13 +392,13 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-user-o"></i> Cuestionario Salud<label id="cuestionarioSaludTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                    <h4><i class="fa fa-user-o"></i> <span id="CuestionarioSaludTitle">Cuestionario Salud</span><label id="cuestionarioSaludTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
                                             </div>
                                             <div class="hr-line-dashed" style="border-top: 2px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
                                                 <div class='col-auto'>
-                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite responder a las preguntas del Cuestionario Salud" data-toggle="modal" id="cuestionarioNew"><i class="fa fa-plus"></i> Responder Cuestionario de Salud </button>
+                                                    <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite responder a las preguntas del Cuestionario Salud" data-toggle="modal" id="cuestionarioNew"><i class="fa fa-plus"></i> <span id="CuestionarioSaludButtonText">Responder Cuestionario de Salud</span> </button>
                                                     <label id="cuestionario-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;">
                                                 </div>
                                                 <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -414,7 +412,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-user-o"></i> Cuestionario Covid<label id="cuestionarioCovidTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                    <h4><i class="fa fa-user-o"></i> <span id="CuestionarioCovidTitle">Cuestionario Covid</span><label id="cuestionarioCovidTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite responder a las preguntas del Cuestionario Covid" data-toggle="modal" id="cuestionarioCovidNew"> <i class="fa fa-plus"></i> </button>
@@ -429,7 +427,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-file-o"></i> Documentos requeridos<label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                    <h4><i class="fa fa-file-o"></i> <span id="DocumentosRequeridosSectionTitle">Documentos requeridos</span><label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo documento pendiente" data-toggle="modal" id="documentosrequeridosNew"> <i class="fa fa-plus"></i> </button>
@@ -451,7 +449,7 @@
 
                                     <div class="form-row enviosolicitudZone">
                                         <div class="hr-line-dashed" style="border-top: 2px solid #e7eaec; margin: 10px 0;"></div>
-                                        <h4><i class="fa fa-envelope-o"></i> Envío de Solicitud de Seguro</h4>
+                                        <h4><i class="fa fa-envelope-o"></i> <span id="EnvioSolicitudSeguroTitle">Envío de Solicitud de Seguro</span></h4>
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <!-- tipoenvio DropDownList -->
@@ -1737,6 +1735,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.SaldoDeudor.js")"></script>
     <script type="text/javascript">

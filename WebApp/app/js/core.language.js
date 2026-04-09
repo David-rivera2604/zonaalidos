@@ -3,7 +3,7 @@ app.language = (function () {
     var currentTranslations = {};
 
     function getCurrentLanguage() {
-        var current = sessionStorage.getItem('current');
+        var current = sessionStorage.getItem('current') || localStorage.getItem('current');
         var currentData = null;
 
         if (current) {
@@ -19,6 +19,10 @@ app.language = (function () {
             sessionStorage.getItem('language') ||
             sessionStorage.getItem('Lang') ||
             sessionStorage.getItem('lang') ||
+            localStorage.getItem('Language') ||
+            localStorage.getItem('language') ||
+            localStorage.getItem('Lang') ||
+            localStorage.getItem('lang') ||
             (currentData && (currentData.Language || currentData.language || currentData.Lang || currentData.lang)) ||
             'es'
         );
@@ -598,6 +602,15 @@ app.language = (function () {
         applyToolbarButtonTranslation($gridContainer.find('.fixed-table-toolbar .export .dropdown-item[data-type="excel"]').first(), toolbarTranslations.excel, false);
     }
 
+    function applyGridEmptyStateTranslations($gridContainer, translations) {
+        var noMatchesText = getTranslationText(translations, 'GridNoMatches');
+
+        if ($gridContainer.length === 0 || !noMatchesText)
+            return;
+
+        $gridContainer.find('.no-records-found td').text(noMatchesText);
+    }
+
     function applyGridHeaderTranslation($header, translatedValue) {
         if (!translatedValue)
             return;
@@ -636,6 +649,8 @@ app.language = (function () {
 
             if (toolbarTranslations)
                 applyGridToolbarTranslations($gridContainer, toolbarTranslations);
+
+            applyGridEmptyStateTranslations($gridContainer, translations);
 
             if (!columnTranslations || $headers.length === 0)
                 return;

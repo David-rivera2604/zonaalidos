@@ -1,0 +1,137 @@
+{
+  "PageTitle": "Home Total",
+  "PageSubTitle": "Quote.",
+  "HogarTotalIntroText": "MAPFRE brings you a new way to protect your family with our Home Total insurance. More than insurance against incidents or theft, it is full protection for your home; 11 basic coverage risks and 8 optional coverages.",
+  "HogarTotalRequiredFieldsText": "All fields marked with a red asterisk are required to continue.",
+  "HogarTotalLinkText": "Home Total Insurance",
+  "HogarTotalSloganText": "More than insurance, comprehensive protection.",
+  "HogarTotalDatosGeneralesTitle": "General information",
+  "HogarTotalDatosHogarTitle": "Home information",
+  "HogarTotalCoberturasTitle": "Coverages",
+  "HogarTotalSumasAseguradasTitle": "Insured amounts",
+  "HogarTotalPlanPagoTitle": "Payment plan",
+  "HogarTotalResumenCotizacionTitle": "Quote summary",
+  "HogarTotalDatosPropiedadTitle": "Property information to insure",
+  "HogarTotalFormulariosRequeridosTitle": "Required forms",
+  "HogarTotalDestinatarioSolicitudTitle": "Recipient for sending the application",
+  "HogarTotalImporteTotalTitle": "Total amount",
+  "HogarTotalPrimaNetaTitle": "Net premium",
+  "HogarTotalIVATitle": "VAT",
+  "HogarTotalRecargoTitle": "Surcharge",
+  "HogarTotalCuotasTitle": "Installments",
+  "HogarTotalEnviarCertificadoCorreoText": "Send certificate by email",
+  "HogarTotalImporteFraccionamientoTitle": "Amount by payment installment frequency",
+  "agt_cod": "Agent",
+  "cod_cuadro_com": "Commissions table",
+  "moneda": "Currency",
+  "fraccionamientodepago": "Payment installment frequency",
+  "iniciodevigencia": {
+    "text": "Coverage start date",
+    "placeholder": "day/month/year"
+  },
+  "findevigencia": {
+    "text": "Coverage end date",
+    "placeholder": "day/month/year"
+  },
+  "user_txt_motivo_spto": "If you want to manually complete the issuing user name, fill in this field.",
+  "user_txt_motivo_spto_Label": "If you want to manually complete the issuing user name, fill in this field.",
+  "TercerosSectionTitle": "Third parties",
+  "DocumentosRequeridosSectionTitle": "Required documents",
+  "GridNoMatches": "No records found",
+  "CoberturasSectionTitle": "Coverages",
+  "PlanDePagoSectionTitle": "Payment plan",
+  "pais": "Country",
+  "provincia": "Province",
+  "canton": "Canton",
+  "distrito": "District",
+  "ocupaciondelriesgo": "Risk occupation",
+  "tipodesuscripcion": "Subscription type",
+  "numerodepisosedificacion": "Number of floors in the building",
+  "tipodeestrucdelaedificacion": "Type of building structure",
+  "numerodepiso": {
+    "text": "Floor number",
+    "title": "Floor where it is located"
+  },
+  "mesesaampararporperdrentas": "Months to cover for loss of rent",
+  "medidasdeseguridad": "Security measures",
+  "descuento": "Discount",
+  "sAEdificio": "Building",
+  "sAObjetosvaliosos": "Valuable items",
+  "sADomocristalmarmolgranito": "Dome, glass, marble, granite",
+  "sAGastosalquiler": "Rental expenses",
+  "sAPerdidaderentas": "Loss of rent",
+  "sARespcivil": "Liability",
+  "sAMobiliario": "Furniture",
+  "cotizar": "Quote",
+  "limpiar": "Clear",
+  "coberturasTbl": {
+    "columns": {
+      "codigo": "Code",
+      "nombre": "Name",
+      "capital": "Capital",
+      "primatotal": "Total premium",
+      "decucible": "Deductible",
+      "error": "Error"
+    }
+  },
+  "plandepagoTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recargoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  },
+  "plandepagoporfrecuenciaTbl": {
+    "columns": {
+      "frecuencia": "Installment frequency",
+      "importetotal": "Amount",
+      "recargoporfraccionamiento": "%"
+    }
+  },
+  "tercerosTbl": {
+    "columns": {
+      "tipodeterceroDesc": "Third-party type",
+      "numeroderiesgo": "Risk",
+      "DocumentNumber": "ID",
+      "nombre": "Full name",
+      "fechadenacimiento": "Birth date",
+      "tercerosMca_sexoDesc": "Gender",
+      "estadoCivilDesc": "Marital status",
+      "numerodetelefono": "Phone",
+      "correoelectronico": "Email",
+      "TProvinciaDesc": "Province",
+      "TCantonDesc": "County",
+      "TDistritoDesc": "District",
+      "otrasenas": "Address details",
+      "numerodeprestamo": "Loan number",
+      "importedecesion": "Assignment amount",
+      "vencimientodecesion": "Assignment expiration",
+      "porcentajeacredor": "Creditor percentage",
+      "parentesco": "Relationship",
+      "porcentaje": "Percentage",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  },
+  "documentosrequeridosTbl": {
+    "columns": {
+      "DStored": "Status",
+      "tipo": "Document type",
+      "DNombre": "File",
+      "DArchivoEsperado": "Expected file",
+      "Grupo": "Group",
+      "DFecha": "Date",
+      "DTamano": "Size",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  }
+}

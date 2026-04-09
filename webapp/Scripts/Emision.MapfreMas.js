@@ -2634,6 +2634,8 @@ app.EmisionMapfreMas = (function () {
             $('.mapfremas-visible').removeClass('d-none');
 
             Setup();
+            app.language.translate('body', 'MapfreMas')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);

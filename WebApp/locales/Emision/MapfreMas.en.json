@@ -1,0 +1,204 @@
+{
+  "PageTitle": "Mapfre Más",
+  "PageSubTitle": "Quote.",
+  "MapfreMasIntroText": "At MAPFRE Costa Rica, we have created a wide range of options with excellent coverages and added values, designed for all Costa Rican needs.",
+  "MapfreMasRequiredFieldsText": "All fields marked with a red asterisk are required to continue.",
+  "MapfreMasLinkText": "Mapfre Más Insurance",
+  "MapfreMasSloganText": "Insurance that offers different coverages, including liability, collision and/or rollover, theft, and additional coverages.",
+  "MapfreMasTipoProductoTitle": "Product type",
+  "MapfreMasDatosContratanteTitle": "Contractor details",
+  "MapfreMasDatosVehiculoTitle": "Vehicle details",
+  "MapfreMasCoberturasTitle": "Coverages",
+  "MapfreMasSumasAseguradasTitle": "Insured amounts",
+  "MapfreMasPlanPagoTitle": "Payment plan",
+  "MapfreMasPlanPagoVigenciaTitle": "Full term payment plan",
+  "MapfreMasResumenTitle": "Summary",
+  "MapfreMasResumenCotizacionTitle": "Quote summary",
+  "MapfreMasPresupuestoBadge": "Quote #",
+  "MapfreMasPolizaBadge": "Policy #",
+  "MapfreMasFormulariosRequeridosTitle": "Required forms",
+  "MapfreMasDestinatarioSolicitudTitle": "Recipient for sending the application",
+  "MapfreMasImporteTotalTitle": "Total amount",
+  "MapfreMasPrimaNetaTitle": "Net premium",
+  "MapfreMasIVATitle": "VAT",
+  "MapfreMasRecargoTitle": "Surcharge",
+  "MapfreMasCuotasTitle": "Installments",
+  "MapfreMasEnviarCertificadoCorreoText": "Send certificate by email",
+  "MapfreMasImporteFraccionamientoTitle": "Amount by payment installment frequency",
+  "DatosGeneralesTitle": "General information",
+  "agt_cod": "Agent",
+  "cod_cuadro_com": "Commissions table",
+  "cod_mon": "Currency",
+  "cod_fracc_pago": "Payment installment frequency",
+  "fec_efec_poliza": {
+    "text": "Coverage start date",
+    "placeholder": "day/month/year"
+  },
+  "fec_vcto_poliza": {
+    "text": "Coverage end date",
+    "placeholder": "day/month/year"
+  },
+  "user_txt_motivo_spto": "If you want to manually complete the issuing user name, fill in this field.",
+  "user_txt_motivo_spto_Label": "If you want to manually complete the issuing user name, fill in this field.",
+  "TercerosSectionTitle": "Third parties",
+  "DocumentosRequeridosSectionTitle": "Required documents",
+  "GridNoMatches": "No records found",
+  "CoberturasSectionTitle": "Coverages",
+  "PlanDePagoSectionTitle": "Payment plan",
+  "tipo_prod_Label": "Product type",
+  "tipo_prod": "Product type",
+  "tipo_prod_1": "Basic",
+  "tipo_prod_2": "Extended",
+  "tipo_prod_3": "Plus",
+  "tipo_prod_4": "Gold",
+  "tipo_prod_5": "Silver",
+  "tipo_prod_6": "Trebol",
+  "tipo_prod_7": "Trebol RC",
+  "edad": "Age",
+  "mca_sexo": "Gender",
+  "nombredelcontratante": "Name",
+  "PCT_AJUSTE_GEN": {
+    "title": "Value between -25 and 0%"
+  },
+  "PCT_AJUSTE_GEN_Label": "Commercial adjustment percentage",
+  "MCA_CERO_KM_Label": "Is it zero km?",
+  "MCA_AUTO_GPS_Label": "Does it have GPS?",
+  "MCA_AUTO_GPS_CMS_Label": "GPS under ministry agreement?",
+  "MCA_MONITOREO_GPS_Label": "GPS with monitoring?",
+  "MCA_PRA_Label": "Insure first risk ABS?",
+  "MCA_VR_Label": "Insure at real value?",
+  "MCA_DESC_CLIENTE_NUEVO_Label": "Is it a new customer?",
+  "MCA_CERO_KM_1": "Yes",
+  "MCA_CERO_KM_2": "No",
+  "MCA_AUTO_GPS_1": "Yes",
+  "MCA_AUTO_GPS_2": "No",
+  "MCA_AUTO_GPS_CMS_1": "Yes",
+  "MCA_AUTO_GPS_CMS_2": "No",
+  "MCA_MONITOREO_GPS_1": "Yes",
+  "MCA_MONITOREO_GPS_2": "No",
+  "MCA_PRA_1": "Yes",
+  "MCA_PRA_2": "No",
+  "MCA_VR_1": "Yes",
+  "MCA_VR_2": "No",
+  "MCA_DESC_CLIENTE_NUEVO_1": "Yes",
+  "MCA_DESC_CLIENTE_NUEVO_2": "No",
+  "COD_PLAN_AUTO": "Plan",
+  "cod_zona_circul": "Circulation area",
+  "cod_marca": "Brand",
+  "cod_marcaHelper": {
+    "placeholder": "Enter detail..."
+  },
+  "cod_modelo": "Model",
+  "cod_sub_modelo": "Sub model",
+  "num_cuotas_gratis": {
+    "text": "Number of free installments",
+    "placeholder": "0",
+    "title": "Number of free months"
+  },
+  "ANIO_SUB_MODELO": "Vehicle year",
+  "IMP_VR": "Insured vehicle value",
+  "NUM_MATRICULA": "Plate number",
+  "COD_CHASSIS": "Chassis number",
+  "NUM_MOTOR": "Engine number",
+  "IMP_AUTO_RC": "Liability",
+  "DED_AUTO_RC": "Liability deductible",
+  "IMP_AUTO_GMO": "Medical expenses for occupants",
+  "IMP_AUTO_ACO": "Driver accidents",
+  "IMP_AUTO_CYV": "Collision and rollover",
+  "DED_AUTO_CYV": "Collision and rollover deductible",
+  "IMP_AUTO_RAD": "Additional risks",
+  "DED_AUTO_RAD": "Additional risks deductible",
+  "IMP_AUTO_ROB": "Theft",
+  "DED_AUTO_ROB": "Theft deductible",
+  "IMP_AUTO_EQESP": "Special equipment",
+  "DED_AUTO_EQESP": "Special equipment deductible",
+  "IMP_AUTO_CRI": "Glass breakage",
+  "DED_AUTO_CRI": "Glass breakage deductible",
+  "AutoSust": "Replacement car",
+  "DedudAutoSust": "Replacement car deductible",
+  "IMP_AUTO_NEUM": "Tire warranty",
+  "IMP_AUTO_MECA": "Mechanical breakdown",
+  "cotizar": "Quote",
+  "limpiar": "Clear",
+  "coberturasTbl": {
+    "columns": {
+      "codigo": "Code",
+      "nombre": "Name",
+      "capital": "Capital",
+      "primatotal": "Total premium",
+      "deducible": "Deductible",
+      "error": "Error"
+    }
+  },
+  "plandepagoTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recargoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  },
+  "plandepagoFullTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recargoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  },
+  "plandepagoporfrecuenciaTbl": {
+    "columns": {
+      "frecuencia": "Installment frequency",
+      "importetotal": "Amount",
+      "recargoporfraccionamiento": "%"
+    }
+  },
+  "tercerosTbl": {
+    "columns": {
+      "tipodeterceroDesc": "Third-party type",
+      "numeroderiesgo": "Risk",
+      "DocumentNumber": "ID",
+      "nombre": "Full name",
+      "fechadenacimiento": "Birth date",
+      "tercerosMca_sexoDesc": "Gender",
+      "estadoCivilDesc": "Marital status",
+      "numerodetelefono": "Phone",
+      "correoelectronico": "Email",
+      "TProvinciaDesc": "Province",
+      "TCantonDesc": "County",
+      "TDistritoDesc": "District",
+      "otrasenas": "Address details",
+      "numerodeprestamo": "Loan number",
+      "importedecesion": "Assignment amount",
+      "vencimientodecesion": "Assignment expiration",
+      "porcentajeacredor": "Creditor percentage",
+      "parentesco": "Relationship",
+      "porcentaje": "Percentage",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  },
+  "documentosrequeridosTbl": {
+    "columns": {
+      "DStored": "Status",
+      "tipo": "Document type",
+      "DNombre": "File",
+      "DArchivoEsperado": "Expected file",
+      "Grupo": "Group",
+      "DFecha": "Date",
+      "DTamano": "Size",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  }
+}

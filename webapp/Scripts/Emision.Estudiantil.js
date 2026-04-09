@@ -1589,6 +1589,8 @@ app.EmisionEstudiantil = (function () {
             documentosrequeridos_controls_Events();
 
             Setup();
+            app.language.translate('body', 'Estudiantil')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);

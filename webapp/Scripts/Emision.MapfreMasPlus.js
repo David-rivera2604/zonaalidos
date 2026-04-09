@@ -1573,6 +1573,8 @@ app.EmisionMapfreMasPlus = (function () {
             $('.mapfremas-visible').removeClass('d-none');
 
             Setup();
+            app.language.translate('body', 'MapfreMasPlus')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
         },
         documentosrequeridosEditRow: function (row) {
             documentosrequeridos_table_row_edit(row);

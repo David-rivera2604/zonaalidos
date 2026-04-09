@@ -2520,6 +2520,8 @@ app.HogarTotal = (function () {
             formularios_table_setup();
 
             Setup();
+            app.language.translate('body', 'hogartotal')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
