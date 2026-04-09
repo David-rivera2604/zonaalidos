@@ -1,5 +1,16 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.179 - 07/04/2026
+
+### Aliados - MapfreMasPlus: Al seleccionar el contrato 10700, el campo 'RC alcohol' se marca como 'si' y se bloquea.
+
+#### Funcionalidades implementadas:
+
+- Al seleccionar el contrato 10700, el campo 'RC alcohol' se marca como 'si' y se bloquea.
+- La visibilidad del campo 'RC alcohol' se condiciona a los roles Intermediario y Empleado.
+
+---
+
 ## Versión 1.6.178 - 27/03/2026
 
 ### Aliados - MapfreMas: Se habilita la carga dinámica de las marcas de vehículos.

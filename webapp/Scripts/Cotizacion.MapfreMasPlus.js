@@ -9,6 +9,7 @@ app.CotizacionMapfreMasPlus = (function () {
     let quoteData = null;
     let showCalculate = false;
     let coberturas = null;
+    const lstlowCostDev_Contract = [17100, 17101];
 
     function Setup(mode) {
         app.ui.CommonBehaviour();
@@ -139,6 +140,16 @@ app.CotizacionMapfreMasPlus = (function () {
         $('#contrato').on('change', function () {
             let contracto = app.ui.GetDropDownNumericValue('#contrato');
 
+            if (contracto == 10700) {
+                app.ui.SetRadioStringValue('rc_alcohol', 'S');
+                $("#rc_alcohol_2").prop('disabled', true);
+                $("#rc_alcohol_1").prop('disabled', true);
+            } else {
+                $("#rc_alcohol_2").prop('disabled', false);
+                $("#rc_alcohol_1").prop('disabled', false);
+            }
+
+
             if (contracto > 0) {
                 setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO_303')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
             }
@@ -154,6 +165,7 @@ app.CotizacionMapfreMasPlus = (function () {
                     }
                 },
                 `cod_ramo=${setupData.cod_ramo}:num_contrato=`);
+            setDropDownUseVehi(contracto);
         });
 
         $('input:radio[name=tipo_prod]').change(function () {
@@ -1202,6 +1214,28 @@ app.CotizacionMapfreMasPlus = (function () {
                 CoverageReload();
                 app.Cotizacion.DefaultSettings('MapfreMasPlus');
             });
+
+    }
+    //permite agregar un nuevo item para los contratos  17100, 17101 BANCA Y DESARROLLO PARA EL RAMO 303
+    function setDropDownUseVehi(contrato) {
+        let selector = "#cod_uso_vehi";
+        let textValue = "BANCA Y DESARROLLO";
+        if (lstlowCostDev_Contract.includes(contrato)) {
+
+            app.ui.DropDownValueWithOption(selector, "1", textValue);
+            app.ui.SelectDropDownByText(selector, textValue);
+            app.ui.DropDownDisabled(selector, true, false);
+
+        } else {
+
+            if (app.ui.GetDropDownSelectedText(selector) == textValue) {
+                $(`${selector} option:contains('${textValue}')`).remove();
+                app.ui.DropDownDisabled(selector, false, false);
+                app.ui.SetDropDownNumericValue(selector, "1");
+
+            }
+        }
+        
 
     }
 

@@ -10,6 +10,7 @@ app.EmisionMapfreMasPlus = (function () {
     let showCalculate = false;
     let rowDocumentosrequeridos = null;
     let mca_cuotas_gratis = 'N';
+    const lstlowCostDev_Contract = [17100, 17101];
 
     function Setup() {
         app.ui.CommonBehaviour();
@@ -315,7 +316,8 @@ app.EmisionMapfreMasPlus = (function () {
         $('#cod_sub_modelo').val(data.cod_sub_modelo);
         app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
         $('#cod_tip_vehi').val(data.cod_tip_vehi);
-        $('#cod_uso_vehi').val(data.cod_uso_vehi);
+        inputSetCodeUsoVehi(data);
+
         $('#NUM_MATRICULA').val(data.NUM_MATRICULA);
         $('#COD_CHASSIS').val(data.COD_CHASSIS);
         $('#NUM_MOTOR').val(data.NUM_MOTOR);
@@ -395,6 +397,22 @@ app.EmisionMapfreMasPlus = (function () {
 
         formularios_handler();
 
+    }
+
+    function inputSetCodeUsoVehi(data) {
+        let selector = "#cod_uso_vehi";
+        let textValue = "BANCA Y DESARROLLO";
+        let contrato = data.contrato;
+
+        if (lstlowCostDev_Contract.includes(contrato)) {
+            $(selector).val(data.cod_uso_vehi);
+            app.ui.DropDownValueWithOption(selector, "1", textValue);
+            app.ui.SelectDropDownByText(selector, textValue);
+        } else {
+
+            $(`${selector} option:contains('${textValue}')`).remove();
+            $(selector).val(data.cod_uso_vehi);
+        }
     }
 
     function Controls_setup() {
