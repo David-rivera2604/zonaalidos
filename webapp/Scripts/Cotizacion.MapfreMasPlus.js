@@ -1216,12 +1216,14 @@ app.CotizacionMapfreMasPlus = (function () {
             app.ui.SelectDropDownByText(selector, textValue);
             app.ui.DropDownDisabled(selector, true, false);
 
-        } else if (app.ui.GetDropDownSelectedText(selector) == textValue) {
-            $(`${selector} option:contains('${textValue}')`).remove();
-            app.ui.DropDownDisabled(selector, false, false);
         } else {
-            app.ui.SetDropDownNumericValue(selector, "1");
 
+            if (app.ui.GetDropDownSelectedText(selector) == textValue) {
+                $(`${selector} option:contains('${textValue}')`).remove();
+                app.ui.DropDownDisabled(selector, false, false);
+                app.ui.SetDropDownNumericValue(selector, "1");
+
+            }
         }
         
 
