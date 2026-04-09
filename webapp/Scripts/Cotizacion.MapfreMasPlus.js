@@ -9,6 +9,7 @@ app.CotizacionMapfreMasPlus = (function () {
     let quoteData = null;
     let showCalculate = false;
     let coberturas = null;
+    const lstlowCostDev_Contract = [17100, 17101];
 
     function Setup(mode) {
         app.ui.CommonBehaviour();
@@ -164,6 +165,7 @@ app.CotizacionMapfreMasPlus = (function () {
                     }
                 },
                 `cod_ramo=${setupData.cod_ramo}:num_contrato=`);
+            setDropDownUseVehi(contracto);
         });
 
         $('input:radio[name=tipo_prod]').change(function () {
@@ -1212,6 +1214,28 @@ app.CotizacionMapfreMasPlus = (function () {
                 CoverageReload();
                 app.Cotizacion.DefaultSettings('MapfreMasPlus');
             });
+
+    }
+    //permite agregar un nuevo item para los contratos  17100, 17101 BANCA Y DESARROLLO PARA EL RAMO 303
+    function setDropDownUseVehi(codeVehi) {
+        let selector = "#cod_uso_vehi";
+        let textValue = "BANCA Y DESARROLLO";
+        if (lstlowCostDev_Contract.includes(codeVehi)) {
+
+            app.ui.DropDownValueWithOption(selector, "1", textValue);
+            app.ui.SelectDropDownByText(selector, textValue);
+            app.ui.DropDownDisabled(selector, true, false);
+
+        } else {
+
+            if (app.ui.GetDropDownSelectedText(selector) == textValue) {
+                $(`${selector} option:contains('${textValue}')`).remove();
+                app.ui.DropDownDisabled(selector, false, false);
+                app.ui.SetDropDownNumericValue(selector, "1");
+
+            }
+        }
+        
 
     }
 
