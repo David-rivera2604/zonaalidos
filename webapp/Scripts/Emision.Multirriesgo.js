@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.EmisionMultirriesgo = (function () {
 
@@ -2617,6 +2617,9 @@ app.EmisionMultirriesgo = (function () {
             formularios_table_setup();
             app.language.translate('body', 'multirriesgo')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
+    app.language.translate('#quoteBlock', '_resumen')();
+    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+    app.language.translate('#tercerosModal', '_tercero')();
 
 
         },
@@ -2681,3 +2684,5 @@ window.formulariosDV_Events = {
         e.stopPropagation();
     }
 };
+
+

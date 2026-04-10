@@ -1,9 +1,9 @@
 ﻿<div id="quoteBlock" class="col-md-3 animated bounceInRight d-none">
     <div class="ibox">
         <div class="ibox-title">
-            <h5>Resumen</h5>
+            <h5><span id="SummaryPanelTitle">Resumen</span></h5>
             <div class="ibox-tools">
-                <h5><span class="label label-success float-right" style="font-size: small;">Póliza #<span id="NumPoliza"></span></span></h5>
+                <h5><span class="label label-success float-right" style="font-size: small;"><span id="SummaryPolicyBadge">Póliza #</span><span id="NumPoliza"></span></span></h5>
             </div>
         </div>
         <div class="ibox-content">
@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-7 col-md-6">
                     <span>
-                        Importe total
+                        <span id="SummaryTotalAmountLabel">Importe total</span>
                     </span>
                     <h2 class="font-bold">
                         <span id="importetotal">0,00</span>
@@ -19,17 +19,17 @@
                 </div>
                 <div class="col-5 col-md-6">
                     <table class="text-muted small">
-                        <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
-                        <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
-                        <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
-                        <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td>Cuotas</td></tr>
+                        <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td><span id="SummaryNetPremiumLabel">Prima neta</span></td></tr>
+                        <tr><td style="text-align:right"><span id="iva">0,00</span></td><td><span id="SummaryVATLabel">IVA</span></td></tr>
+                        <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td><span id="SummarySurchargeLabel">Recargo</span></td></tr>
+                        <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><span id="SummaryInstallmentsLabel">Cuotas</span></td></tr>
                     </table>
                 </div>
             </div>
             <hr>
             <div class="m-t-sm text-center">
                 <div class="btn-group">
-                    <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                    <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="SummarySendCertificateEmailText">Enviar certificado por correo</span></a>
                 </div>
             </div>
         </div>

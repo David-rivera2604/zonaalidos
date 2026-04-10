@@ -1,0 +1,10 @@
+{
+  "SummaryPanelTitle": "Summary",
+  "SummaryPolicyBadge": "Policy #",
+  "SummaryTotalAmountLabel": "Total amount",
+  "SummaryNetPremiumLabel": "Net premium",
+  "SummaryVATLabel": "VAT",
+  "SummarySurchargeLabel": "Surcharge",
+  "SummaryInstallmentsLabel": "Installments",
+  "SummarySendCertificateEmailText": "Send certificate by email"
+}

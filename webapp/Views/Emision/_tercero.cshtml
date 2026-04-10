@@ -5,8 +5,8 @@
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
                 </button>
-                <h4 class="modal-title">Información de tercero</h4>
-                <small class="font-bold">Permite agregar un nuevo tercero o editar uno existente</small>
+                <h4 class="modal-title"><span id="ThirdPartyModalTitle">Información de tercero</span></h4>
+                <small class="font-bold"><span id="ThirdPartyModalSubtitle">Permite agregar un nuevo tercero o editar uno existente</span></small>
             </div>
             <div class="modal-body">
                 <!-- terceros Grid Edit Form -->
@@ -426,10 +426,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="tercerosEdtFormSave" data-doing="Guardando...">
-                    Guardar
-                    cambios
+                    <span id="ThirdPartySaveChangesText">Guardar cambios</span>
                 </button>
-                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal"><span id="ThirdPartyCancelText">Cancelar</span></button>
             </div>
         </div>
     </div>

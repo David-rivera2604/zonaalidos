@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.EmisionSaldoDeudor = (function () {
 
@@ -1959,6 +1959,9 @@ app.EmisionSaldoDeudor = (function () {
                 Setup();
                 app.language.translate('body', 'SaldoDeudor')();
                 app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
+    app.language.translate('#quoteBlock', '_resumen')();
+    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+    app.language.translate('#tercerosModal', '_tercero')();
                 console.log("Inicio");
             }
             catch (err) {
@@ -2704,3 +2707,5 @@ window.documentosrequeridosTbl_Events = {
 };
 
 //#endregion
+
+

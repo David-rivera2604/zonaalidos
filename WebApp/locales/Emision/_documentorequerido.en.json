@@ -1,0 +1,10 @@
+{
+  "DocumentRequiredModalTitle": "Required documents",
+  "DocumentRequiredModalSubtitle": "Allows adding a new required document or editing an existing one",
+  "DocumentRequiredTypeLabel": "Document type",
+  "DocumentRequiredFileLabel": "File",
+  "DocumentRequiredBrowseText": "Browse...",
+  "DocumentRequiredDescriptionLabel": "Description",
+  "DocumentRequiredSaveChangesText": "Save changes",
+  "DocumentRequiredCancelText": "Cancel"
+}

@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.EmisionViajero = (function () {
     let workMode = '';
@@ -1530,6 +1530,9 @@ app.EmisionViajero = (function () {
             Setup();
             app.language.translate('body', 'Viajero')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
+    app.language.translate('#quoteBlock', '_resumen')();
+    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+    app.language.translate('#tercerosModal', '_tercero')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
@@ -1566,3 +1569,5 @@ window.documentosrequeridosTbl_Events = {
         e.stopPropagation();
     }
 };
+
+

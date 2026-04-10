@@ -1715,6 +1715,7 @@
     <Content Include="locales\Emision\multirriesgo.en.json" />
     <Content Include="locales\Emision\SaldoDeudor.en.json" />
     <Content Include="locales\Emision\Viajero.en.json" />
+    <Content Include="locales\Emision\verificardomicilio.en.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
