@@ -527,6 +527,7 @@ app.kycpersona = (function () {
     return {
         Init: function (data) {
             try {
+                app.language.translate('#kycpersonaModal', '_kyc_persona')();
                 Controls_setup();
                 Setup_Validations();
 

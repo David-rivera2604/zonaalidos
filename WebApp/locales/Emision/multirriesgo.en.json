@@ -17,7 +17,10 @@
   "MultirriesgoPresupuestoBadge": "Quote #",
   "MultirriesgoPolizaBadge": "Policy #",
   "MultirriesgoFormulariosRequeridosTitle": "Required forms",
+  "MultirriesgoDatosAdicionalesEdificacionTitle": "Additional building information",
   "MultirriesgoDestinatarioSolicitudTitle": "Recipient for sending the application",
+  "MultirriesgoTipoEnvioLabel": "Shipment type",
+  "MultirriesgoCorreoEnvioLabel": "Email",
   "MultirriesgoImporteTotalTitle": "Total amount",
   "MultirriesgoPrimaNetaTitle": "Net premium",
   "MultirriesgoIVATitle": "VAT",
@@ -149,7 +152,34 @@
         "title": "Available actions"
       }
     }
-  }
-,
-  "ThirdPartyCancelText": "Cancel"}
+  },
+  "formulariosDV": {
+    "columns": {
+      "status": "Status",
+      "name": "Form",
+      "when": "Date",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions for a form"
+      }
+    }
+  },
+  "formulariosDVTbl": {
+    "columns": {
+      "status": "Status",
+      "name": "Form",
+      "when": "Date",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions for a form"
+      }
+    }
+  },
+  "MultirriesgoFormularioDVRowName": "Building information is incomplete; the construction year is required.",
+  "MultirriesgoFormularioDVStatusIncomplete": "Incomplete",
+  "MultirriesgoFormularioDVStatusReady": "Ready",
+  "MultirriesgoFormularioDVEditActionTitle": "Click to add or edit the form information"
+  ,
+  "ThirdPartyCancelText": "Cancel"
+}
 

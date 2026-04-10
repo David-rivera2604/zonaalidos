@@ -1719,6 +1719,16 @@
     <Content Include="locales\Emision\_documentorequerido.en.json" />
     <Content Include="locales\Emision\_resumen.en.json" />
     <Content Include="locales\Emision\_tercero.en.json" />
+    <Content Include="locales\Variaciones\_tercero.en.json" />
+    <Content Include="locales\Cotizacion\_coberturaPlan.en.json" />
+    <Content Include="locales\Cotizacion\_datosgenerales.en.json" />
+    <Content Include="locales\Cotizacion\_enfermedadesexcluidasGrid.en.json" />
+    <Content Include="locales\Cotizacion\_enfermedadesexcluidasModal.en.json" />
+    <Content Include="locales\Cotizacion\_polizagrupo.en.json" />
+    <Content Include="locales\Cotizacion\_resumen.en.json" />
+    <Content Include="locales\Emision\_kyc_juridico.en.json" />
+    <Content Include="locales\Emision\_kyc_declarante.en.json" />
+    <Content Include="locales\Emision\_kyc_persona.en.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>

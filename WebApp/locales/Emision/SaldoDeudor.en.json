@@ -37,6 +37,29 @@
   "MCA_NEGOCIO_MIGRADO": "Is it a migrated business?",
   "MCA_NEGOCIO_MIGRADO_1": "Yes",
   "MCA_NEGOCIO_MIGRADO_2": "No",
+  "MCA_NEGOCIO_MIGRADO_S": "Yes",
+  "MCA_NEGOCIO_MIGRADO_N": "No",
+  "COD_CIA_ORI": "Original company",
+  "FEC_EMISION_ORI": {
+    "text": "Original issue date",
+    "placeholder": "day/month/year"
+  },
+  "IMP_MONTO_ORI": "Original loan amount",
+  "IMP_SLD_ACTUAL": "Current balance",
+  "NUM_PRESTAMO": "Loan number",
+  "TIP_NEGOCIO": "Business type",
+  "IMP_PRIMA_INFORMADA": "Reported premium",
+  "IMP_GASTOS_EMISION": "Issue expense amount",
+  "PCT_DTO_COMERCIAL": "% Commercial discount/surcharge",
+  "PCT_DCTO_TECNICO": "% Technical discount percentage",
+  "FEC_PRIM_FINAN": {
+    "text": "First financing date",
+    "placeholder": "day/month/year"
+  },
+  "tip_firma": "Shipment type",
+  "tip_firma_M": "Manual",
+  "tip_firma_F": "Digital Evicertia",
+  "correoenvio": "Email",
   "CoberturasSectionTitle": "Coverages",
   "PlanDePagoSectionTitle": "Payment plan",
   "CuestionarioSaludTitle": "Health questionnaire",
@@ -119,6 +142,19 @@
       "Grupo": "Group",
       "DFecha": "Date",
       "DTamano": "Size",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  },
+  "enfermedadesexcluidasTbl": {
+    "columns": {
+      "NOM_ENF_EXC": "Illness",
+      "NOM_TIP_EXC": "Type",
+      "FEC_INI_EXC": "Start date",
+      "FEC_FIN_EXC": "End date",
+      "TXT_OBS_ENF_EXC": "Observations",
       "Actions": {
         "text": "Actions",
         "title": "Available actions"

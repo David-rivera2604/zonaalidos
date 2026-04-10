@@ -1,0 +1,11 @@
+{
+  "KycDeclaranteModalTitle": "Know your customer form - Individual",
+  "KycDeclaranteLegalRepresentativeTitle": "Legal representative data",
+  "KycDeclarantePermanentAddressTitle": "Permanent address",
+  "KycDeclaranteFundsOriginTitle": "Source of funds",
+  "KycDeclaranteAssetsTitle": "Asset types",
+  "KycDeclarantePepTitle": "Politically exposed persons (PEPs)",
+  "KycDeclaranteCorrespondenceTitle": "Correspondence",
+  "KycDeclaranteSaveChangesText": "Save changes",
+  "KycDeclaranteCancelText": "Cancel"
+}

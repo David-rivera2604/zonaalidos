@@ -1,0 +1,12 @@
+{
+  "ResumenTitle": "Summary",
+  "PresupuestoBadge": "Quote #",
+  "ImporteTotalLabel": "Total amount",
+  "PrimaNetaLabel": "Net premium",
+  "IvaLabel": "VAT",
+  "RecargoLabel": "Surcharge",
+  "CuotasLink": "Installments",
+  "EmitirText": "Issue",
+  "ImprimirText": "Print",
+  "ImportePorFraccionamientoTitle": "Amount by payment installment frequency"
+}

@@ -1011,6 +1011,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
 
     <script src="@Url.Content("~/Scripts/Variaciones.Coberturas.js")"></script>
@@ -1024,6 +1025,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             app.VariacionHogarTotalPlus.Init();
+            if (app.language && app.language.translate) {
+                app.language.translate('#tercerosModal', '_tercero')();
+            }
             //app.EmisionTercero.Init();
             //app.EmisionTercero.Callback(app.EmisionMapfreMas.formularios_handler);
         });

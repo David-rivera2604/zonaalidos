@@ -959,6 +959,10 @@ app.kycjuridico = (function () {
                 participacionaccionariaJur_table_Validations();
 
                 Controls_Events();
+                if (app.language && app.language.translate) {
+                    app.language.translate('#kycjuridicoModal', '_kyc_juridico')();
+                    app.language.translate('#participacionaccionariaJurModal', '_kyc_juridico')();
+                }
                 Setup(data);
                 console.log("Inicio");
             }

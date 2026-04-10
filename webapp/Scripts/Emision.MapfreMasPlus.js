@@ -1577,7 +1577,6 @@ app.EmisionMapfreMasPlus = (function () {
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
     app.language.translate('#quoteBlock', '_resumen')();
     app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
-    app.language.translate('#tercerosModal', '_tercero')();
         },
         documentosrequeridosEditRow: function (row) {
             documentosrequeridos_table_row_edit(row);
@@ -1620,5 +1619,6 @@ window.formulariosTbl_Events = {
         e.stopPropagation();
     }
 };
+
 
 

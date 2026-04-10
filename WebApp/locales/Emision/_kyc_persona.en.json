@@ -1,0 +1,18 @@
+{
+  "KycPersonaModalTitle": "Know your customer form - Individual",
+  "KycPersonaGeneralDataTitle": "General data",
+  "KycPersonaPermanentAddressTitle": "Permanent address",
+  "KycPersonaCurrentOccupationTitle": "Current occupation or activity",
+  "KycPersonaCompanyDataTitle": "Company or income source data",
+  "KycPersonaCommercialAddressTitle": "Commercial address",
+  "KycPersonaFundsOriginTitle": "Source of funds",
+  "KycPersonaAssetsTitle": "Asset types",
+  "KycPersonaAdditionalInfoTitle": "Additional client information record (Optional)",
+  "KycPersonaFatcaTitle": "FATCA information record (Optional)",
+  "KycPersonaPepTitle": "Politically exposed persons (PEPs)",
+  "KycPersonaPolicyDescriptionTitle": "Policy description",
+  "KycPersonaCicacTitle": "CICAC",
+  "KycPersonaCorrespondenceTitle": "Correspondence",
+  "KycPersonaSaveChangesText": "Save changes",
+  "KycPersonaCancelText": "Cancel"
+}

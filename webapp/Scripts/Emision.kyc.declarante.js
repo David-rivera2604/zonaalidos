@@ -316,6 +316,7 @@ app.kycdeclarante = (function () {
     return {
         Init: function () {
             try {
+                app.language.translate('#kycdeclaranteDecEdt', '_kyc_declarante')();
                 Controls_setup();
                 Setup_Validations();
 
