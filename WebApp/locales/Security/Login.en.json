@@ -1,0 +1,103 @@
+{
+  "SessionExpiredMessage": "You have been redirected to this page because your user session exceeded the maximum inactivity time.",
+  "LoginWelcomeTitle": "Welcome to our Partner Zone",
+  "Tenant": {
+    "title": "Partner name or code",
+    "placeholder": "Partner name"
+  },
+  "Username": {
+    "title": "Username or email",
+    "placeholder": "Username or email"
+  },
+  "Password": {
+    "title": "Access password",
+    "placeholder": "Password"
+  },
+  "AccessOtpInfo": "We sent a verification code to your registered email address. Enter it to continue.",
+  "accessotp": {
+    "title": "Verification code",
+    "placeholder": "Verification code"
+  },
+  "ResetLinkText": "Cancel",
+  "Send": {
+    "text": "Sign in",
+    "title": "Verify access credentials"
+  },
+  "ForgotLinkText": "Forgot your password?",
+  "ForgotModalTitle": "Forgot your password?",
+  "ForgotModalInfo": "Enter the email address associated with your account. A temporary code will be sent so you can set a new access password.",
+  "ForgotMail": {
+    "title": "Registered email"
+  },
+  "ForgotMailLabel": "Email",
+  "ForgotSend": {
+    "text": "Continue",
+    "title": "Send temporary code"
+  },
+  "ForgotCancel": {
+    "text": "Cancel",
+    "title": "Return to the home page"
+  },
+  "ForgotCodeModalTitle": "Enter verification code",
+  "ForgotCodeModalInfo": "We sent a verification code to your registered email address. Enter it to continue the process.",
+  "forgoCodeMail": {
+    "title": "Verification code"
+  },
+  "ForgoCodeMailLabel": "Verification code",
+  "forgoCodeSend": {
+    "text": "Continue",
+    "title": "Verify the entered code"
+  },
+  "forgoCodeCancel": {
+    "text": "Cancel",
+    "title": "Return to the home page"
+  },
+  "SetPasswordModalTitle": "Set your new access password",
+  "SetPasswordModalInfo": "Enter the new access password that will be associated with your account.",
+  "SetPasswordMail": {
+    "title": "New access password"
+  },
+  "SetPasswordMailLabel": "Access password",
+  "SetPasswordMail2": {
+    "title": "Confirm new access password"
+  },
+  "SetPasswordMail2Label": "Repeat access password",
+  "SetPasswordSend": {
+    "text": "Change access password",
+    "title": "Update the new access password"
+  },
+  "SetPasswordCancel": {
+    "text": "Cancel",
+    "title": "Return to the home page"
+  },
+  "ValidationTenantRequired": "Please enter the partner name or code.",
+  "ValidationUsernameRequired": "Please enter the username or email address.",
+  "ValidationUsernameMinLength": "The username or email address must contain at least 4 characters.",
+  "ValidationPasswordRequired": "Please enter the access password.",
+  "ValidationPasswordMinLength": "The access password must contain at least 4 characters.",
+  "ValidationAccessOtpRequired": "Please enter the verification code.",
+  "ValidationForgotMailEmail": "Please enter a valid email address.",
+  "ValidationForgotMailRequired": "Please enter the email address.",
+  "ValidationForgoCodeRequired": "Please enter the verification code.",
+  "ValidationForgoCodeMinLength": "Please enter the 6-digit verification code.",
+  "ValidationSetPasswordRequired": "Please enter the access password.",
+  "ValidationSetPasswordMinLength": "The access password must contain at least 8 characters.",
+  "ValidationSetPasswordPattern": "It must include one uppercase letter, one number, and one special character.",
+  "ValidationSetPassword2Required": "Please confirm the access password.",
+  "ValidationSetPassword2MinLength": "The access password must contain at least 8 characters.",
+  "ValidationSetPassword2Pattern": "It must include one uppercase letter, one number, and one special character.",
+  "SendTextStart": "Sign in",
+  "SendTextVerifyCode": "Verify code",
+  "SendLoadingValidating": "Validating...",
+  "SendLoadingAccessing": "Accessing...",
+  "ForgotSendLoadingValidating": "Validating...",
+  "ForgotSendTextContinue": "Continue",
+  "ForgoCodeSendLoadingSending": "Sending...",
+  "ForgoCodeSendTextContinue": "Continue",
+  "SetPasswordSendLoadingProcessing": "Processing...",
+  "SetPasswordSendText": "Change access password",
+  "SetPasswordSuccessMessage": "The access password has been set successfully.",
+  "GenericErrorTitle": "An error has occurred",
+  "PasswordExpiredTitle": "Your access password has expired. We sent a verification code to your email.",
+  "PasswordExpiredInfo": "Enter the verification code sent to your registered email to set your new access password."
+}

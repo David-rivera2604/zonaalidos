@@ -1729,6 +1729,12 @@
     <Content Include="locales\Emision\_kyc_juridico.en.json" />
     <Content Include="locales\Emision\_kyc_declarante.en.json" />
     <Content Include="locales\Emision\_kyc_persona.en.json" />
+    <Content Include="locales\Security\Login.en.json" />
+    <Content Include="locales\Security\changepassword.en.json" />
+    <Content Include="locales\Security\integrate.en.json" />
+    <Content Include="locales\Security\register.en.json" />
+    <Content Include="locales\Security\rolemembernavigation.en.json" />
+    <Content Include="locales\Security\userrolemember.en.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>

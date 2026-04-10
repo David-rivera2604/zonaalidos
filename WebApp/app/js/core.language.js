@@ -1,9 +1,84 @@
 var app = app || {};
 app.language = (function () {
     var currentTranslations = {};
+    var languageFromUrlSynced = false;
+
+    function readQueryStringValue(key) {
+        var search = window.location.search || '';
+        var coreValue = '';
+
+        if (app && app.core && typeof app.core.URLStringValue === 'function')
+            coreValue = app.core.URLStringValue(key);
+
+        if (coreValue)
+            return coreValue;
+
+        if (!search)
+            return '';
+
+        var pattern = new RegExp('[?&]' + key + '=([^&#]*)', 'i');
+        var match = pattern.exec(search);
+        if (!match || typeof match[1] === 'undefined')
+            return '';
+
+        return decodeURIComponent(match[1].replace(/\+/g, ' '));
+    }
+
+    function getLanguageFromUrl() {
+        var languageFromQuery = $.trim(readQueryStringValue('language') || readQueryStringValue('lang') || '');
+
+        if (!languageFromQuery)
+            return null;
+
+        return languageFromQuery.split(/[-_]/)[0].toLowerCase();
+    }
+
+    function setNormalizedSessionLanguage(languageValue) {
+        var normalizedLanguage = $.trim((languageValue || '').toLowerCase()).split(/[-_]/)[0];
+        if (!normalizedLanguage)
+            return;
+
+        sessionStorage.setItem('language', normalizedLanguage);
+        sessionStorage.removeItem('Language');
+        sessionStorage.removeItem('Lang');
+        sessionStorage.removeItem('lang');
+
+        var currentRaw = sessionStorage.getItem('current');
+        var currentValue = {};
+
+        if (currentRaw) {
+            try {
+                currentValue = JSON.parse(currentRaw) || {};
+            } catch (error) {
+                currentValue = {};
+            }
+        }
+
+        delete currentValue.Language;
+        delete currentValue.Lang;
+        delete currentValue.lang;
+        currentValue.language = normalizedLanguage;
+
+        sessionStorage.setItem('current', JSON.stringify(currentValue));
+    }
+
+    function syncLanguageFromUrl() {
+        if (languageFromUrlSynced)
+            return;
+
+        languageFromUrlSynced = true;
+
+        var languageFromUrl = getLanguageFromUrl();
+        if (!languageFromUrl)
+            return;
+
+        setNormalizedSessionLanguage(languageFromUrl);
+    }
 
     function getCurrentLanguage() {
-        var current = sessionStorage.getItem('current') || localStorage.getItem('current');
+        syncLanguageFromUrl();
+
+        var current = sessionStorage.getItem('current');
         var currentData = null;
 
         if (current) {
@@ -14,18 +89,15 @@ app.language = (function () {
             }
         }
 
-        return (
+        var resolvedLanguage = sessionStorage.getItem('language') ||
             sessionStorage.getItem('Language') ||
-            sessionStorage.getItem('language') ||
             sessionStorage.getItem('Lang') ||
             sessionStorage.getItem('lang') ||
-            localStorage.getItem('Language') ||
-            localStorage.getItem('language') ||
-            localStorage.getItem('Lang') ||
-            localStorage.getItem('lang') ||
-            (currentData && (currentData.Language || currentData.language || currentData.Lang || currentData.lang)) ||
-            'es'
-        );
+            (currentData && (currentData.language || currentData.Language || currentData.Lang || currentData.lang)) ||
+            'es';
+
+        setNormalizedSessionLanguage(resolvedLanguage);
+        return sessionStorage.getItem('language') || 'es';
     }
 
     function shouldTranslate() {

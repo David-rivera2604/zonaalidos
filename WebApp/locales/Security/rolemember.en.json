@@ -5,6 +5,11 @@
     "title": "Filter by role name or description"
   },
   "ApplyFilter": "Filter",
+  "RoleMemberMenuNew": "Create a new role",
+  "RoleMemberMenuFilter": "Show advanced filter...",
+  "RoleMemberMenuRefresh": "Reload roles",
+  "RoleMemberMenuExport": "Export to Excel...",
+  "RoleMemberMenuAudit": "History...",
   "RecordStatusFlt": "Status",
   "RoleName": "Role name",
   "Description": "Description",

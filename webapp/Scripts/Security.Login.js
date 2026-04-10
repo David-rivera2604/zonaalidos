@@ -52,7 +52,7 @@ app.login = (function () {
             $('#Username').prop("disabled", false);
             $('.PasswordCls').removeClass('d-none');
             $('.accessotpCls').addClass('d-none');
-            $('#Send').html('Iniciar');
+            $('#Send').html(getTranslationText('SendTextStart', 'Sign in'));
             $('#Send').prop("disabled", false);
             $('#Password').val('');
             $('#accessotp').val('');
@@ -63,7 +63,7 @@ app.login = (function () {
             if (app.ui.IsValid('#LoginEdtForm', false)) {
                 var status = 'validate';
                 $('#Send').prop("disabled", true);
-                $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...');
+                $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' + getTranslationText('SendLoadingValidating', 'Validating...'));
                 var inputData = InputToObject();
                 if (dataStage == null) {
                     app.core.Post(app.setting.basepath + 'Security/LogIn', JSON.stringify(inputData))
@@ -76,7 +76,7 @@ app.login = (function () {
                                         $('#Username').prop("disabled", true);
                                         $('.PasswordCls').addClass('d-none');
                                         $('.accessotpCls').removeClass('d-none');
-                                        $('#Send').html('Verificar el código');
+                                        $('#Send').html(getTranslationText('SendTextVerifyCode', 'Verify code'));
                                         $('#Send').prop("disabled", false);
                                     }
                                     else {
@@ -91,15 +91,15 @@ app.login = (function () {
 
                                     $('#forgoCode').removeClass('d-none');
 
-                                    $("#forgoCode h3").html('Su clave de acceso ha expirado, hemos enviado a su correo electrónico, un código de verificación');
-                                    $("#forgoCode p").html('Ingrese el código de verificación enviado a su correo electrónico registrado, para establecer su nueva clave de acceso');
+                                    $("#forgoCode h3").html(getTranslationText('PasswordExpiredTitle', 'Your access password has expired. We sent a verification code to your email.'));
+                                    $("#forgoCode p").html(getTranslationText('PasswordExpiredInfo', 'Enter the verification code sent to your registered email to set your new access password.'));
                                 }
                             }
                             else
-                                toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
+                                toastr.error(data.Reason, getTranslationText('GenericErrorTitle', 'An error has occurred'), { timeOut: 10000, closeButton: true, progressBar: true });
                         }).always(function () {
                             if (dataStage == null && status != 'redirect') {
-                                $('#Send').html('Iniciar');
+                                $('#Send').html(getTranslationText('SendTextStart', 'Sign in'));
                                 $('#Send').prop("disabled", false);
                             }
                         });
@@ -110,8 +110,8 @@ app.login = (function () {
                                 Authenticated(data.Context);
                             }
                             else {
-                                toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
-                                $('#Send').html('Verificar el código');
+                                toastr.error(data.Reason, getTranslationText('GenericErrorTitle', 'An error has occurred'), { timeOut: 10000, closeButton: true, progressBar: true });
+                                $('#Send').html(getTranslationText('SendTextVerifyCode', 'Verify code'));
                                 $('#Send').prop("disabled", false);
                             }
                         });
@@ -124,18 +124,18 @@ app.login = (function () {
             event.preventDefault();
             if (app.ui.IsValid('#ForgotEdtForm', false)) {
                 $('#ForgotSend').prop("disabled", true);
-                $('#ForgotSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...');
+                $('#ForgotSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' + getTranslationText('ForgotSendLoadingValidating', 'Validating...'));
 
                 app.core.Post(app.setting.apipath + 'v1/Security/SendOTP', JSON.stringify({ Tenant: $('#Tenant').val(), EMail: $('#ForgotMail').val() }))
                     .done(function (data, textStatus, jqXHR) {
                         if (!data.Successful)
-                            toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
+                            toastr.error(data.Reason, getTranslationText('GenericErrorTitle', 'An error has occurred'), { timeOut: 10000, closeButton: true, progressBar: true });
                         else {
                             $('#forgo').addClass('d-none');
                             $('#forgoCode').removeClass('d-none');
                         }
                     }).always(function () {
-                        $('#ForgotSend').html('Continuar');
+                        $('#ForgotSend').html(getTranslationText('ForgotSendTextContinue', 'Continue'));
                         $('#ForgotSend').prop("disabled", false);
                     });
             }
@@ -145,18 +145,18 @@ app.login = (function () {
             event.preventDefault();
             if (app.ui.IsValid('#forgoCodeEdtForm', false)) {
                 $('#forgoCodeSend').prop("disabled", true);
-                $('#forgoCodeSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...');
+                $('#forgoCodeSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' + getTranslationText('ForgoCodeSendLoadingSending', 'Sending...'));
 
                 app.core.Post(app.setting.apipath + 'v1/Security/IsOTPValid', JSON.stringify({ Tenant: $('#Tenant').val(), EMail: $('#ForgotMail').val(), OTP: $('#forgoCodeMail').val() }))
                     .done(function (data, textStatus, jqXHR) {
                         if (!data.Successful)
-                            toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
+                            toastr.error(data.Reason, getTranslationText('GenericErrorTitle', 'An error has occurred'), { timeOut: 10000, closeButton: true, progressBar: true });
                         else {
                             $('#forgoCode').addClass('d-none');
                             $('#SetPassword').removeClass('d-none');
                         }
                     }).always(function () {
-                        $('#forgoCodeSend').html('Continuar');
+                        $('#forgoCodeSend').html(getTranslationText('ForgoCodeSendTextContinue', 'Continue'));
                         $('#forgoCodeSend').prop("disabled", false);
                     });
             }
@@ -166,20 +166,20 @@ app.login = (function () {
             event.preventDefault();
             if (app.ui.IsValid('#SetPasswordEdtForm', false)) {
                 $('#SetPasswordSend').prop("disabled", true);
-                $('#SetPasswordSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...');
+                $('#SetPasswordSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' + getTranslationText('SetPasswordSendLoadingProcessing', 'Processing...'));
 
                 app.core.Post(app.setting.apipath + 'v1/Security/ResetPassword', JSON.stringify({ Tenant: $('#Tenant').val(), EMail: $('#ForgotMail').val(), OTP: $('#forgoCodeMail').val(), Password: $('#SetPasswordMail').val(), PasswordConfirm: $('#SetPasswordMail2').val() }))
                     .done(function (data, textStatus, jqXHR) {
                         $("#myModal").hide();
                         if (!data.Successful)
-                            toastr.error(data.Reason, "Ha ocurrido un error", { timeOut: 10000, closeButton: true, progressBar: true });
+                            toastr.error(data.Reason, getTranslationText('GenericErrorTitle', 'An error has occurred'), { timeOut: 10000, closeButton: true, progressBar: true });
                         else {
-                            toastr.success("La clave de acceso ha sido establecida de forma exitosa", "", { timeOut: 5000, closeButton: true, progressBar: true });
+                            toastr.success(getTranslationText('SetPasswordSuccessMessage', 'The access password has been set successfully'), "", { timeOut: 5000, closeButton: true, progressBar: true });
                             $('#SetPassword').addClass('d-none');
                             $('#login').removeClass('d-none');
                         }
                     }).always(function () {
-                        $('#SetPasswordSend').html('Cambiar clave de acceso');
+                        $('#SetPasswordSend').html(getTranslationText('SetPasswordSendText', 'Change access password'));
                         $('#SetPasswordSend').prop("disabled", false);
                     });
             }
@@ -207,8 +207,51 @@ app.login = (function () {
         })
     };
 
+    function getTranslationText(key, fallback) {
+        var translations = app.language && typeof app.language.getTranslations === 'function'
+            ? app.language.getTranslations()
+            : null;
+        var value = translations ? translations[key] : null;
+
+        if (typeof value === 'string' && value !== '')
+            return value;
+
+        if (value && typeof value === 'object' && typeof value.text === 'string' && value.text !== '')
+            return value.text;
+
+        return fallback;
+    }
+
+    function resetValidation($form) {
+        if ($form.data('validator')) {
+            $form.removeData('validator');
+            $form.removeData('unobtrusiveValidation');
+            $form.find('label.error').remove();
+        }
+    }
+
+    function applyTranslatedRuntimeTexts() {
+        $('#Send').text(getTranslationText('SendTextStart', 'Sign in'));
+        $('#ForgotSend').text(getTranslationText('ForgotSendTextContinue', 'Continue'));
+        $('#ForgotCancel').text(getTranslationText('ForgotCancel', 'Cancel'));
+        $('#forgoCodeSend').text(getTranslationText('ForgoCodeSendTextContinue', 'Continue'));
+        $('#forgoCodeCancel').text(getTranslationText('forgoCodeCancel', 'Cancel'));
+        $('#SetPasswordSend').text(getTranslationText('SetPasswordSendText', 'Change access password'));
+        $('#SetPasswordCancel').text(getTranslationText('SetPasswordCancel', 'Cancel'));
+    }
+
     function Setup_Validations() {
-        $("#LoginEdtForm").validate({
+        var $loginForm = $("#LoginEdtForm");
+        var $forgotForm = $("#ForgotEdtForm");
+        var $forgoCodeForm = $("#forgoCodeEdtForm");
+        var $setPasswordForm = $("#SetPasswordEdtForm");
+
+        resetValidation($loginForm);
+        resetValidation($forgotForm);
+        resetValidation($forgoCodeForm);
+        resetValidation($setPasswordForm);
+
+        $loginForm.validate({
             errorPlacement: function (error, element) {
                 var name = $(element).attr("name");
                 var $obj = $("#" + name + "_validate");
@@ -237,22 +280,22 @@ app.login = (function () {
             },
             messages: {
                 Tenant: {
-                    required: 'Debe indicar el nombre o código de aliado'
+                    required: getTranslationText('ValidationTenantRequired', 'Debe indicar el nombre o código de aliado')
                 },
                 Username: {
-                    required: 'Debe indicar el nombre del usuario o el correo electrónico',
-                    minlength: 'El nombre del usuario o el correo electrónico deben tener por lo menos 4 caracteres'
+                    required: getTranslationText('ValidationUsernameRequired', 'Debe indicar el nombre del usuario o el correo electrónico'),
+                    minlength: getTranslationText('ValidationUsernameMinLength', 'El nombre del usuario o el correo electrónico deben tener por lo menos 4 caracteres')
                 },
                 Password: {
-                    required: 'Debe indicar la clave de acceso',
-                    minlength: 'La clave de acceso debe tener por lo menos 4 caracteres'
+                    required: getTranslationText('ValidationPasswordRequired', 'Debe indicar la clave de acceso'),
+                    minlength: getTranslationText('ValidationPasswordMinLength', 'La clave de acceso debe tener por lo menos 4 caracteres')
                 },
                 accessotp: {
-                    required: 'Debe indicar el código de verificación'
+                    required: getTranslationText('ValidationAccessOtpRequired', 'Debe indicar el código de verificación')
                 }
             }
         });
-        $("#ForgotEdtForm").validate({
+        $forgotForm.validate({
             errorPlacement: function (error, element) {
                 var name = $(element).attr("name");
                 var $obj = $("#" + name + "_validate");
@@ -271,12 +314,12 @@ app.login = (function () {
             },
             messages: {
                 ForgotMail: {
-                    email: 'Debe indicar un correo electrónico valido',
-                    required: 'Debe indicar el correo electrónico'
+                    email: getTranslationText('ValidationForgotMailEmail', 'Debe indicar un correo electrónico valido'),
+                    required: getTranslationText('ValidationForgotMailRequired', 'Debe indicar el correo electrónico')
                 }
             }
         });
-        $("#forgoCodeEdtForm").validate({
+        $forgoCodeForm.validate({
             errorPlacement: function (error, element) {
                 var name = $(element).attr("name");
                 var $obj = $("#" + name + "_validate");
@@ -295,12 +338,12 @@ app.login = (function () {
             },
             messages: {
                 forgoCodeMail: {
-                    required: 'Debe indicar el código de verificación',
-                    minlength: 'Debe indicar los 6 digitos del código de verificación'
+                    required: getTranslationText('ValidationForgoCodeRequired', 'Debe indicar el código de verificación'),
+                    minlength: getTranslationText('ValidationForgoCodeMinLength', 'Debe indicar los 6 digitos del código de verificación')
                 }
             }
         });
-        $("#SetPasswordEdtForm").validate({
+        $setPasswordForm.validate({
             errorPlacement: function (error, element) {
                 var name = $(element).attr("name");
                 var $obj = $("#" + name + "_validate");
@@ -324,14 +367,14 @@ app.login = (function () {
             },
             messages: {
                 SetPasswordMail: {
-                    required: 'Debe indicar la clave de acceso',
-                    minlength: 'La clave de acceso debe tener por lo menos 8 caracteres',
-                    pattern: ' Debe tener una mayúscula, un número y un carácter especial'
+                    required: getTranslationText('ValidationSetPasswordRequired', 'Debe indicar la clave de acceso'),
+                    minlength: getTranslationText('ValidationSetPasswordMinLength', 'La clave de acceso debe tener por lo menos 8 caracteres'),
+                    pattern: getTranslationText('ValidationSetPasswordPattern', 'Debe tener una mayúscula, un número y un carácter especial')
                 },
                 SetPasswordMail2: {
-                    required: 'Debe indicar la clave de acceso',
-                    minlength: 'La clave de acceso debe tener por lo menos 8 caracteres',
-                    pattern: ' Debe tener una mayúscula, un número y un carácter especial'
+                    required: getTranslationText('ValidationSetPassword2Required', 'Debe indicar la clave de acceso'),
+                    minlength: getTranslationText('ValidationSetPassword2MinLength', 'La clave de acceso debe tener por lo menos 8 caracteres'),
+                    pattern: getTranslationText('ValidationSetPassword2Pattern', 'Debe tener una mayúscula, un número y un carácter especial')
                 }
             }
         });
@@ -364,7 +407,7 @@ app.login = (function () {
         localStorage.setItem('Expires', dt);
 
         $('#Send').prop("disabled", true);
-        $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Accediendo...');
+        $('#Send').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' + getTranslationText('SendLoadingAccessing', 'Accessing...'));
         if (app.login.lasthref == null) {
             window.location.replace(app.setting.basepath + data.InitialPath);
         } else {
@@ -400,6 +443,11 @@ app.login = (function () {
             $('#Tenant').val(_tenant);
             if (employeeMode)
                 $('#forgotlink').addClass('d-none');
+
+            app.language.translate('body', 'Security/Login', function () {
+                applyTranslatedRuntimeTexts();
+                Setup_Validations();
+            })();
         }
     };
 })();

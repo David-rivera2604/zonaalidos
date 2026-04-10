@@ -43,7 +43,7 @@
                                         <!-- datosgenerales Zone -->
                                         <div class="form-row">
                                             <div class="col-lg-12">
-                                                <h4>Registro de Usuarios - Complete la información.</h4>
+                                                <h4 id="RegisterMainTitle">Registro de Usuarios - Complete la información.</h4>
                                                 <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                                 <div class="form-row">
 
@@ -60,10 +60,10 @@
                                                                         Cédula
                                                                     </button>
                                                                     <div class="dropdown-menu" id="identificacionTypeMenu">
-                                                                        <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
-                                                                        <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
-                                                                        <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
-                                                                        <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                                        <a id="identificacionTypeOption1" class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                                        <a id="identificacionTypeOption2" class="dropdown-item" href="#" data-value='2'>DIMEX</a>
+                                                                        <a id="identificacionTypeOption3" class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                                        <a id="identificacionTypeOption4" class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
                                                                     </div>
                                                                 </div>
                                                                 <input id='identificacion' name='identificacion'
@@ -150,6 +150,7 @@
 
     @Scripts.Render("~/bundles/jsBase")
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
 
     <script src="@Url.Content("~/Scripts/Security.Register.js")"></script>
 

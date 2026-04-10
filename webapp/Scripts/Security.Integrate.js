@@ -4,6 +4,8 @@ app.SecurityIntegrate = (function () {
 
     return {
         Init: function () {
+            app.language.translate('body', 'integrate')();
+
             var src = app.core.URLStringValue('src');
             var key = app.core.URLStringValue('key');
             if (src === '' || key === '') {

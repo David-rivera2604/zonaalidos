@@ -141,6 +141,7 @@ app.SecurityRegister = (function () {
             Controls_setup();
             Setup_Validations();
             Controls_Events();
+            app.language.translate('body', 'register')();
         }
     };
 })();

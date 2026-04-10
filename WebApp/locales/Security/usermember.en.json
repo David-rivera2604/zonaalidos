@@ -5,6 +5,11 @@
     "title": "Filter by username or description"
   },
   "ApplyFilter": "Filter",
+  "UserMemberMenuNew": "Create a new user",
+  "UserMemberMenuFilter": "Show advanced filter...",
+  "UserMemberMenuRefresh": "Reload users",
+  "UserMemberMenuExport": "Export to Excel...",
+  "UserMemberMenuAudit": "History...",
   "RecordStatusFlt": "Status",
   "UserName": "User",
   "EMail": "Email",

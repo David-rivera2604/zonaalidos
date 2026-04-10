@@ -41,13 +41,13 @@
     <div class="container">
         <div class="alert alert-info alert-dismissable fade show di_aleLog d-none ">
             <button data-dismiss="alert" class="close" type="button">×</button>
-            Usted ha sido redireccionado a esta página debido a que su sesión de usuario ha superado el tiempo máximo de inactividad.
+            <span id="SessionExpiredMessage">Usted ha sido redireccionado a esta página debido a que su sesión de usuario ha superado el tiempo máximo de inactividad.</span>
         </div>
 
         <form id="LoginEdtForm">
 
             <img class="logohorizontal" src="~/images/Mapfre-logo.png">
-            <h3>Bienvenido a nuestra Zona de Aliados</h3>
+            <h3 id="LoginWelcomeTitle">Bienvenido a nuestra Zona de Aliados</h3>
 
             <div class="form-group">
                 <div class="input-group Mydis">
@@ -68,18 +68,18 @@
                 </div>
             </div>
             <div class="form-group accessotpCls d-none" style="margin-bottom: 0px;">
-                <p>
+                <p id="AccessOtpInfo">
                     Hemos enviado a su correo electrónico registrado, un código de verificación el cual deberá ingresar para continuar.
                 </p>
                 <div class="input-group Mydis ">
                     <input id="accessotp" name="accessotp" type="text" class="desi_In" maxlength="6" required="" autocomplete="off" title="Código de verificación" placeholder="Código de verificación">
                     <div id='accessotp_validate'></div>
                 </div>
-                <a href="#" id="reset" title="Permite volver a ingresar las credenciales" class="accessotpCls"><small>Cancelar</small></a>
+                <a href="#" id="reset" title="Permite volver a ingresar las credenciales" class="accessotpCls"><small id="ResetLinkText">Cancelar</small></a>
             </div>
             <button id="Send" type="submit" title="Verifica las credenciales de acceso">Iniciar Sesión</button>
             
-            <a href="#" id="forgotlink" title="Permite establecer una nueva clave de acceso"><small>Olvidó su clave de acceso?</small></a>
+            <a href="#" id="forgotlink" title="Permite establecer una nueva clave de acceso"><small id="ForgotLinkText">Olvidó su clave de acceso?</small></a>
         </form>
 
     </div>
@@ -89,8 +89,8 @@
             <span class="close">&times;</span>
             <div id="forgo" class="animated fadeInDown  d-none m-t ">
                 <div class="text-center forgot_info">
-                    <h3>¿Olvidó su clave de acceso?</h3>
-                    <p>
+                    <h3 id="ForgotModalTitle">¿Olvidó su clave de acceso?</h3>
+                    <p id="ForgotModalInfo">
                         Ingrese la dirección de correo electrónico asociada a su cuenta, a continuación, le será enviado un código temporal, el cual le permitirá establecer una clave de acceso.
                     </p>
                 </div>
@@ -99,7 +99,7 @@
                         <div class="form-group">
                             <div class="input-group Mydis">
                                 <input id="ForgotMail" name="ForgotMail" type="text" class="desi_In" maxlength="60" required="" autocomplete="off" title="Correo registrado">
-                                <label class="lab_desi for_lab"><i class="fa fa-envelope Ilog" aria-hidden="true"></i>  Email</label>
+                                <label id="ForgotMailLabel" class="lab_desi for_lab"><i class="fa fa-envelope Ilog" aria-hidden="true"></i>  Email</label>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                             </div>
@@ -114,8 +114,8 @@
 
             <div id="forgoCode" class="animated fadeInDown d-none ">
                 <div class="text-center forgot_info">
-                    <h3>Ingrese código de verificación</h3>
-                    <p>
+                    <h3 id="ForgotCodeModalTitle">Ingrese código de verificación</h3>
+                    <p id="ForgotCodeModalInfo">
                         Hemos enviado a su correo electrónico registrado, un código de verificación el cual permitirá continuar con el proceso.
                     </p>
                 </div>
@@ -125,7 +125,7 @@
                             <div class="input-group Mydis">
 
                                 <input id="forgoCodeMail" name="forgoCodeMail" type="text" class="desi_In" maxlength="6" required="" autocomplete="off" title="Código de verificación">
-                                <label class="lab_desi for_lab"><i class="fa fa-commenting Ilog" aria-hidden="true"></i> Codigo de verificación</label>
+                                <label id="ForgoCodeMailLabel" class="lab_desi for_lab"><i class="fa fa-commenting Ilog" aria-hidden="true"></i> Codigo de verificación</label>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                             </div>
@@ -140,8 +140,8 @@
 
             <div id="SetPassword" class="animated fadeInDown d-none ">
                 <div class="text-center forgot_info">
-                    <h3>Indique su nueva clave de acceso</h3>
-                    <p>
+                    <h3 id="SetPasswordModalTitle">Indique su nueva clave de acceso</h3>
+                    <p id="SetPasswordModalInfo">
                         Ingrese la nueva clave de acceso que quedará asociada a su cuenta.
                     </p>
                 </div>
@@ -151,7 +151,7 @@
                             <div class="input-group Mydis">
 
                                 <input id="SetPasswordMail" name="SetPasswordMail" type="password" class="desi_In" maxlength="60" required="" autocomplete="off" title="Nueva clave de acceso">
-                                <label class="lab_desi for_lab"><i class="fa fa-lock Ilog" aria-hidden="true"></i> Clave de acceso</label>
+                                <label id="SetPasswordMailLabel" class="lab_desi for_lab"><i class="fa fa-lock Ilog" aria-hidden="true"></i> Clave de acceso</label>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                             </div>
@@ -160,7 +160,7 @@
                         <div class="form-group">
                             <div class="input-group Mydis">
                                 <input id="SetPasswordMail2" name="SetPasswordMail2" type="password" class="desi_In" maxlength="60" required="" autocomplete="off" title="Verifica la nueva clave de acceso">
-                                <label class="lab_desi for_lab"><i class="fa fa-check-circle Ilog" aria-hidden="true"></i> Repita la clave de acceso</label>
+                                <label id="SetPasswordMail2Label" class="lab_desi for_lab"><i class="fa fa-check-circle Ilog" aria-hidden="true"></i> Repita la clave de acceso</label>
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                             </div>
@@ -175,7 +175,7 @@
         </div>
     </div>
 
-    <!-- @Scripts.Render("~/bundles/jsMaster") -->
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Security.Login.js")"></script>
     <script>
         function mostrarPassword() {

@@ -1,0 +1,35 @@
+{
+  "RoleMemberNavigationTitle": "Role allowed navigation",
+  "RoleMemberNavigationSearch": {
+    "placeholder": "Filter by role name or description",
+    "title": "Filter by role name or description"
+  },
+  "ApplyFilter": "Filter",
+  "RecordStatusFlt": "Status",
+  "RoleMemberNavigationMenuNew": "Create a new role",
+  "RoleMemberNavigationMenuFilter": "Advanced filter...",
+  "RoleMemberNavigationMenuRefresh": "Reload roles",
+  "RoleMemberNavigationMenuExport": "Export to Excel...",
+  "RoleMemberNavigationMenuAudit": "History...",
+  "RoleId": "Role",
+  "Allow": "Allow",
+  "SecurityLevel": "Security",
+  "CreateAction": "Add",
+  "ReadAction": "Read",
+  "UpdateAction": "Update",
+  "DeleteAction": "Delete",
+  "ListAction": "List",
+  "PrintAction": "Print",
+  "RoleMemberNavigationEdtFormSave": "Save changes",
+  "RoleMemberNavigationEdtFormCancel": "Cancel",
+  "RoleMemberNavigationGridTbl": {
+    "columns": {
+      "SecurityLevel": "Security",
+      "UpdateDate": "Updated by",
+      "_3": {
+        "text": "Actions",
+        "title": "Available row actions"
+      }
+    }
+  }
+}
