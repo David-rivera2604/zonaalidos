@@ -1,114 +1,115 @@
 {
-  "1GridTbl": {
-    "columns": {
-      "_0": {
-        "text": "Actions",
-        "title": "Available actions"
-      },
-      "GUARANTEE_NUMBER": {
-        "text": "Guarantee #",
-        "title": "Guarantee number"
-      },
-      "EX_METODO": {
-        "text": "Status",
-        "title": "Current status"
-      },
-      "EX_CODIGO_PROCESO": {
-        "text": "Process code",
-        "title": "Process code"
-      },
-      "EX_FECHA_PROCESO": {
-        "text": "Status date and time",
-        "title": "Status date and time"
-      },
-      "ISSUE_DATE": {
-        "text": "Start date",
-        "title": "Issue date"
-      },
-      "VALID_PERIOD_DATE": {
-        "text": "Expiration date",
-        "title": "Valid through date"
-      },
-      "GUARANTEE_TYPE_CODE": {
-        "text": "Type",
-        "title": "Guarantee type"
-      },
-      "INSTITUTION_IDENTIFIER": {
-        "text": "Sponsoring institution",
-        "title": "Institution that promotes"
-      },
-      "SUPPLIER_IDENTIFIER": {
-        "text": "Supplier",
-        "title": "Supplier"
-      },
-      "GUARANTEE_IDENTIFIER": {
-        "text": "Guarantor entity",
-        "title": "Guarantor entity"
-      },
-      "INSTITUCION_NOTICE_NUMBER": {
-        "text": "Procedure number",
-        "title": "Procedure number"
-      },
-      "NOTICE_NUMBER": {
-        "text": "Tender number",
-        "title": "Tender number"
-      },
-      "CUENTA_CLIENTE": {
-        "text": "Account number",
-        "title": "Client account number"
-      },
-      "GUARANTEE_CHARGE_PERSON_NAME": {
-        "text": "Officer name",
-        "title": "Name of the officer in charge"
-      },
-      "GUARANTEE_CHARGE_PERSON_EMAIL": {
-        "text": "Officer email",
-        "title": "Email of the officer in charge"
-      },
-      "GUARANTEE_TELEPHONE_NUMBER": {
-        "text": "Officer phone",
-        "title": "Phone of the officer in charge"
-      },
-      "GUARANTEE_POSTAL_CODE": {
-        "text": "Officer postal code",
-        "title": "Postal code of the officer in charge"
-      },
-      "GUARANTEE_ADDRESS_LINE": {
-        "text": "Officer address",
-        "title": "Address of the officer in charge"
-      },
-      "GUARANTEE_PAYMENT_CODE": {
-        "text": "Payment method",
-        "title": "Payment method"
-      },
-      "GUARANTEE_AMOUNT": {
-        "text": "Amount",
-        "title": "Guarantee amount"
-      },
-      "MONEDA": {
-        "text": "Currency",
-        "title": "Currency"
-      },
-      "TIPO_DE_MODIFICATION": {
-        "text": "Change type",
-        "title": "Modification type"
-      },
-      "GUARANTEE_CONTENTS": {
-        "text": "Comments",
-        "title": "Comments"
-      },
-      "CONFIRMATION": {
-        "text": "Confirmation",
-        "title": "Confirmation"
-      },
-      "MSG_ERR": {
-        "text": "Returned message",
-        "title": "Returned message"
-      },
-      "UPDATEDATE": {
-        "text": "Completed by",
-        "title": "Completed by"
-      }
+    "QueryTitle": "Electronic guarantees",
+    "1GridTbl": {
+        "columns": {
+            "_0": {
+                "text": "Actions",
+                "title": "Available actions"
+            },
+            "GUARANTEE_NUMBER": {
+                "text": "Guarantee #",
+                "title": "Guarantee number"
+            },
+            "EX_METODO": {
+                "text": "Status",
+                "title": "Current status"
+            },
+            "EX_CODIGO_PROCESO": {
+                "text": "Process code",
+                "title": "Process code"
+            },
+            "EX_FECHA_PROCESO": {
+                "text": "Status date and time",
+                "title": "Status date and time"
+            },
+            "ISSUE_DATE": {
+                "text": "Start date",
+                "title": "Issue date"
+            },
+            "VALID_PERIOD_DATE": {
+                "text": "Expiration date",
+                "title": "Valid through date"
+            },
+            "GUARANTEE_TYPE_CODE": {
+                "text": "Type",
+                "title": "Guarantee type"
+            },
+            "INSTITUTION_IDENTIFIER": {
+                "text": "Sponsoring institution",
+                "title": "Institution that promotes"
+            },
+            "SUPPLIER_IDENTIFIER": {
+                "text": "Supplier",
+                "title": "Supplier"
+            },
+            "GUARANTEE_IDENTIFIER": {
+                "text": "Guarantor entity",
+                "title": "Guarantor entity"
+            },
+            "INSTITUCION_NOTICE_NUMBER": {
+                "text": "Procedure number",
+                "title": "Procedure number"
+            },
+            "NOTICE_NUMBER": {
+                "text": "Tender number",
+                "title": "Tender number"
+            },
+            "CUENTA_CLIENTE": {
+                "text": "Account number",
+                "title": "Client account number"
+            },
+            "GUARANTEE_CHARGE_PERSON_NAME": {
+                "text": "Officer name",
+                "title": "Name of the officer in charge"
+            },
+            "GUARANTEE_CHARGE_PERSON_EMAIL": {
+                "text": "Officer email",
+                "title": "Email of the officer in charge"
+            },
+            "GUARANTEE_TELEPHONE_NUMBER": {
+                "text": "Officer phone",
+                "title": "Phone of the officer in charge"
+            },
+            "GUARANTEE_POSTAL_CODE": {
+                "text": "Officer postal code",
+                "title": "Postal code of the officer in charge"
+            },
+            "GUARANTEE_ADDRESS_LINE": {
+                "text": "Officer address",
+                "title": "Address of the officer in charge"
+            },
+            "GUARANTEE_PAYMENT_CODE": {
+                "text": "Payment method",
+                "title": "Payment method"
+            },
+            "GUARANTEE_AMOUNT": {
+                "text": "Amount",
+                "title": "Guarantee amount"
+            },
+            "MONEDA": {
+                "text": "Currency",
+                "title": "Currency"
+            },
+            "TIPO_DE_MODIFICATION": {
+                "text": "Change type",
+                "title": "Modification type"
+            },
+            "GUARANTEE_CONTENTS": {
+                "text": "Comments",
+                "title": "Comments"
+            },
+            "CONFIRMATION": {
+                "text": "Confirmation",
+                "title": "Confirmation"
+            },
+            "MSG_ERR": {
+                "text": "Returned message",
+                "title": "Returned message"
+            },
+            "UPDATEDATE": {
+                "text": "Completed by",
+                "title": "Completed by"
+            }
+        }
     }
-  }
 }
