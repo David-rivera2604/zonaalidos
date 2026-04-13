@@ -11,7 +11,7 @@
 - Localización de 64 archivos JSON en 10 módulos (Avisos, Cases, Cotizacion, Common, Emision, General, Inicio, Security, Variaciones, Viewer).
 - Integración de librería en 30+ controladores backend y actualización de 25+ scripts JavaScript.
 - Localización de 42+ vistas Razor con atributos `data-i18n`.
-- Refactorización de `Database.cs` y actualización de `Web.config` y `aliados.csproj`.
+- Refactorización de `Database.cs` y `aliados.csproj`.
 
 ---
 
