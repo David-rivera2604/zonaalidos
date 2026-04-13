@@ -1,0 +1,95 @@
+{
+  "PageTitle": "Business Multi-risk Insurance",
+  "PageSubTitle": "Quote.",
+  "MultirriesgoIntroText": "Businesses are exposed to various risks. Multi-risk business insurance is a great option to handle potential events, as it is a comprehensive package adapted to each business protection need.",
+  "MultirriesgoRequiredFieldsText": "All fields marked with a red asterisk are required to continue.",
+  "MultirriesgoLinkText": "Multi-risk Business Insurance",
+  "MultirriesgoSloganText": "You grow your business, we protect it!",
+  "DatosGeneralesTitle": "General information",
+  "MultirriesgoDatosNegocioTitle": "Business details",
+  "MultirriesgoDatosEdificacionTitle": "Building details",
+  "MultirriesgoSumasCoberturasTitle": "Insured amounts for coverages",
+  "MultirriesgoSumasRubrosTitle": "Insured amounts for categories",
+  "MultirriesgoMedidasIncendioTitle": "Fire protection measures",
+  "MultirriesgoCoberturasTitle": "Coverages",
+  "MultirriesgoPlanPagoTitle": "Payment plan",
+  "MultirriesgoResumenCotizacionTitle": "Quote summary",
+  "MultirriesgoPresupuestoBadge": "Quote #",
+  "MultirriesgoImporteFraccionamientoTitle": "Amount by payment installment frequency",
+  "agt_cod": "Agent",
+  "cod_cuadro_com": "Commissions table",
+  "cod_mon": "Currency",
+  "cod_fracc_pago": "Payment installment frequency",
+  "fec_efec_poliza": {
+    "text": "Coverage start date",
+    "placeholder": "day/month/year"
+  },
+  "fec_vcto_poliza": {
+    "text": "Coverage end date",
+    "placeholder": "day/month/year"
+  },
+  "cod_pais": "Country",
+  "cod_estado": "Province",
+  "cod_prov": "Canton",
+  "cod_localidad": "District",
+  "otrassenasdelriesgo": "Other risk details",
+  "cod_tip_ocup": "Risk occupation",
+  "cod_tip_edit": "Type",
+  "num_pisos_edif": "Number of floors",
+  "cod_tipo_estruc": "Structure type",
+  "cod_tipo_techo": "Roof type",
+  "cod_tipo_pared": "Wall type",
+  "IMP_EDIFICIO": "Building",
+  "cod_tip_med_rob": "Type of anti-theft measure",
+  "IMP_DOMOS_TOTAL": "Dome, glass, marble and granite breakage",
+  "IMP_GAS_ALQ": "Rental expenses",
+  "IMP_PER_REN": "Loss of rent",
+  "COB_PDR_MESES": "Months to cover",
+  "IMP_MER_TRA": "Goods in transit",
+  "cod_tip_med_rdm": "Type of machinery breakage measure",
+  "IMP_INT_NEG": "Business interruption",
+  "COB_IDN_MESES": "Months to cover",
+  "cod_tip_rgo_idn": "Type of business interruption risks",
+  "IMP_MOBILIARIO": "Furniture",
+  "IMP_MAQUINARIA": "Machinery",
+  "IMP_EQUIP_ELEC": "Electronic equipment (non-mobile)",
+  "IMP_EQUIP_ELEC_M": "Electronic equipment (mobile)",
+  "IMP_MERCADERIA": "Merchandise",
+  "IMP_BIE_TEM_DES": "Temporarily relocated assets",
+  "IMP_BIE_INT": "Outdoor assets",
+  "IMP_OBJ_ESP_VAL": "Special value items",
+  "cod_tip_med_inc": "Type of fire protection measure",
+  "MCA_EXTIN_INC": "Do you have fire extinguishers?",
+  "MCA_EXTIN_INC_1": "Yes",
+  "MCA_EXTIN_INC_2": "No",
+  "NUM_EXTIN_INC": "Number of fire extinguishers",
+  "cotizar": "Quote",
+  "limpiar": "Clear",
+  "coberturasTbl": {
+    "columns": {
+      "codigo": "Code",
+      "nombre": "Name",
+      "capital": "Capital",
+      "primatotal": "Total premium",
+      "deducible": "Deductible"
+    }
+  },
+  "plandepagoTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recargoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  },
+  "plandepagoporfrecuenciaTbl": {
+    "columns": {
+      "frecuencia": "Installment frequency",
+      "importetotal": "Amount",
+      "recargoporfraccionamiento": "%"
+    }
+  }
+}

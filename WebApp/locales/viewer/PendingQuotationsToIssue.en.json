@@ -1,0 +1,31 @@
+{
+  "QueryTitle": "Pending quotations to issue",
+  "1GridTbl": {
+    "columns": {
+      "ISSUEDATE": {
+        "text": "Created",
+        "title": "Creation date and time"
+      },
+      "PROPOSALID": {
+        "text": "Quote",
+        "title": "Quote number"
+      },
+      "STATUSDESC": {
+        "text": "Status",
+        "title": "Current quote status"
+      },
+      "INSUREDNAME": {
+        "text": "Insured",
+        "title": "Insured party"
+      },
+      "SUMMARY": {
+        "text": "Details",
+        "title": "Quote details"
+      },
+      "_7": {
+        "text": "Actions",
+        "title": "Available actions for a quote"
+      }
+    }
+  }
+}

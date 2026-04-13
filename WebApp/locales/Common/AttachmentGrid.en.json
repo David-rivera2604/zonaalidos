@@ -1,0 +1,28 @@
+{
+  "AttachmentTitleText": "Attachments",
+  "AttachmentDownload": {
+    "title": "Download attachments"
+  },
+  "dzDownload": {
+    "title": "Download"
+  },
+  "dzRemove": {
+    "title": "Remove"
+  },
+  "downloadZipText": "Download all (ZIP)",
+  "downloadIndividualText": "Download one by one",
+  "DropzoneTitle": "Drag files here or click to select",
+  "DropzoneSubtitle": "You can upload multiple files at once",
+  "dictDefaultMessage": "Drag files here or click to select",
+  "dictFallbackMessage": "Your browser does not support drag and drop file uploads.",
+  "dictFileTooBig": "The file is too large ({{filesize}}MB). Maximum size: {{maxFilesize}}MB.",
+  "dictInvalidFileType": "You cannot upload files of this type.",
+  "dictResponseError": "The server responded with code {{statusCode}}.",
+  "dictCancelUpload": "Cancel upload",
+  "dictUploadCanceled": "Upload canceled.",
+  "dictCancelUploadConfirmation": "Are you sure you want to cancel this upload?",
+  "dictRemoveFile": "Remove file",
+  "dictMaxFilesExceeded": "You cannot upload any more files.",
+  "UploadProgressTitle": "Uploading files",
+  "ZipFileNamePrefix": "attachments"
+}

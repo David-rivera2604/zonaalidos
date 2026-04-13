@@ -255,6 +255,7 @@ app.SecurityUserRoleMember = (function () {
             Event_Controls();
             Refresh();
             Setup_Validations();
+            app.language.translate('body', 'userrolemember')();
         },
         New: function () {
             EditMode({ Id: 0, UserId: 0, RoleId: 0 });

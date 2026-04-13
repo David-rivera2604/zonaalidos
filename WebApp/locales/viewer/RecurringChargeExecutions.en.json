@@ -1,0 +1,35 @@
+{
+  "QueryTitle": "Recurring charge executions",
+  "1GridTbl": {
+    "columns": {
+      "PROCESSID": {
+        "text": "Action",
+        "title": "Allows downloading the recurring charge report"
+      },
+      "STARTDATE": {
+        "text": "Start",
+        "title": "Start date and time"
+      },
+      "FINISHDATE": {
+        "text": "End",
+        "title": "End date and time"
+      },
+      "POLICYCOUNT": {
+        "text": "Processed policies count",
+        "title": "Number of processed policies"
+      },
+      "BILLCOUNT": {
+        "text": "Processed receipts count",
+        "title": "Number of processed receipts"
+      },
+      "FIRSTPOLICY": {
+        "text": "First policy",
+        "title": "First processed policy"
+      },
+      "FIRSTBILL": {
+        "text": "First receipt",
+        "title": "First processed receipt"
+      }
+    }
+  }
+}

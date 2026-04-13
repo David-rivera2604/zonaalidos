@@ -1,0 +1,83 @@
+{
+    "Title": {
+        "text": "insurance cancellation",
+        "title": "Case description"
+    },
+    "FlowIdDesc": {
+        "title": "Process associated with the case"
+    },
+    "StatusDesc": {
+        "title": "Current status/label"
+    },
+    "ExternalLinksParent": {
+        "title": "Useful links"
+    },
+    "Description": "Description",
+    "DescriptionLabel": "Description",
+    "PriorityLabel": "Priority",
+    "ContactLabel": "Contact",
+    "ContactMainEmailLabel": "Email address",
+    "SLALabel": "Service level agreement",
+    "ProgressLabel": "Progress",
+    "CurrentStepLabel": "Current stage",
+    "TotalDaysLabel": "Number of days",
+    "PriorityDesc": "Priority",
+    "ContactMainName": "Contact",
+    "ContactMainEmail": "Email address",
+    "SLADesc": "Service level agreement",
+    "CurrentStep": "Current stage",
+    "TotalDays": "Number of days",
+    "ReferenceCaption1": "Reference 1",
+    "ReferenceCaption2": "Reference 2",
+    "ReferenceCaption3": "Reference 3",
+    "ReferenceCaption4": "Reference 4",
+    "ReferenceCaption5": "Reference 5",
+    "ReferenceCaption6": "Reference 6",
+    "ReferenceCaption7": "Reference 7",
+    "ReferenceCaption8": "Reference 8",
+    "ReferenceCaption9": "Reference 9",
+    "ReferenceCaption10": "Reference 10",
+    "Tareas": {
+        "text": "Stage",
+        "title": "Case stage details"
+    },
+    "Seguimiento": {
+        "text": "Tracking",
+        "title": "Case tracking information"
+    },
+    "Notas": {
+        "text": "Notes",
+        "title": "Case notes"
+    },
+    "Adjuntos": {
+        "text": "Attachments",
+        "title": "Case attachments"
+    },
+    "ChangeStage": "Available options to move forward",
+    "Annotation": "Comment",
+    "CustomNotify": "Send email notification to the insured",
+    "ProcessStepAccept": {
+        "text": "Process",
+        "title": "Process case step"
+    },
+    "ProcessGridTbl": {
+        "columns": {
+            "Name": {
+                "text": "Stage",
+                "title": "Case stage"
+            },
+            "StartDate": {
+                "text": "Start",
+                "title": "Stage start date"
+            },
+            "FinishDate": {
+                "text": "Completed",
+                "title": "Stage completion date"
+            },
+            "CreatedBy": {
+                "text": "Created by",
+                "title": "Created by user"
+            }
+        }
+    }
+}

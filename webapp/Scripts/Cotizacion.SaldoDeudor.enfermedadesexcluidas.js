@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 var errors = false;
 var msj_errors = '';
 
@@ -216,6 +216,10 @@ app.CotizacionSaldoDeudorEnfermedadesExcluidas = (function () {
             try {
                 enfermedadesexcluidas_table_setup();
                 enfermedadesexcluidas_table_Validations();
+                if (app.language && app.language.translate) {
+                    app.language.translate('#enfermedadesexcluidasTbl', '_enfermedadesexcluidasGrid')();
+                    app.language.translate('#enfermedadesexcluidasModal', '_enfermedadesexcluidasModal')();
+                }
                 
             }
             catch (err) {
@@ -245,4 +249,6 @@ window.enfermedadesexcluidasTbl_Events = {
         e.stopPropagation();
     }
 };
+
+
 

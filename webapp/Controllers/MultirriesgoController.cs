@@ -1,17 +1,17 @@
 ﻿using Architect.API.Core.Security;
+using aliados.Filters;
 using Microsoft.Ajax.Utilities;
-using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace aliados.Controllers
 {
     [IsConnected]
+    [SetTheme]
     public class MultirriesgoController : Controller
     {
         public ActionResult Cotizacion()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
@@ -20,13 +20,11 @@ namespace aliados.Controllers
             RouteValueDictionary routerValues = new RouteValueDictionary();
             Request.QueryString.AllKeys.ForEach(key => routerValues.Add(key, Request.QueryString[key]));
 
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return this.RedirectToAction("Emision", "Multirriesgo", routerValues);
         }
 
         public ActionResult Emision()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 

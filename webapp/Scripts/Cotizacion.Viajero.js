@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.CotizacionViajero = (function () {
 
@@ -555,7 +555,14 @@ app.CotizacionViajero = (function () {
                 plandepago_table_setup();
 
                 Controls_Events();
+                if (app.language && app.language.translate) {
+                    app.language.translate('#quoteBlock', '_resumen')();
+                    app.language.translate('#DatosGeneralesTitle', '_datosgenerales')();
+                    app.language.translate('#coberturasTbl', '_coberturaPlan')();
+                    app.language.translate('#polizagrupoZone', '_polizagrupo')();
+                }
                 Setup();
+                app.language.translate('body', 'Viajero')();
                 console.log("Inicio");
             }
             catch (err) {
@@ -574,3 +581,5 @@ app.CotizacionViajero = (function () {
         }
     };
 })();
+
+

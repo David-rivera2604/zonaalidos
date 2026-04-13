@@ -1079,6 +1079,7 @@ app.ui = (function () {
                 else {
 
                     localStorage.setItem('current', JSON.stringify(options.data));
+                    sessionStorage.setItem('current', JSON.stringify(options.data));
 
                     app.core.Get(app.setting.apipath + `v1/Viewer/Dialog?id=${options.id}`)
                         .done(function (data, textStatus, jqXHR) {
@@ -1219,6 +1220,7 @@ app.ui = (function () {
             }
             if (options.data != undefined && options.data != null) {
                 localStorage.setItem('current', JSON.stringify(options.data));
+                sessionStorage.setItem('current', JSON.stringify(options.data));
             }
             $('#sidebarTitle').html('');
             if (typeof options.title != "undefined") {

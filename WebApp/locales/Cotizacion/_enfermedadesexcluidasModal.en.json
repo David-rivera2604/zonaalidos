@@ -1,0 +1,11 @@
+{
+  "EnfermedadesExcluidasModalTitle": "Excluded illnesses",
+  "EnfermedadesExcluidasModalSubtitle": "Allows adding a new excluded illness or editing an existing one",
+  "EnfermedadesExcluidasDiseaseLabel": "Illness",
+  "EnfermedadesExcluidasTypeLabel": "Exclusion type",
+  "EnfermedadesExcluidasStartDateLabel": "Exclusion start date",
+  "EnfermedadesExcluidasEndDateLabel": "Exclusion end date",
+  "EnfermedadesExcluidasObservationsLabel": "Observations",
+  "EnfermedadesExcluidasSaveChangesText": "Save changes",
+  "EnfermedadesExcluidasCancelText": "Cancel"
+}

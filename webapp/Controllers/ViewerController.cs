@@ -1,16 +1,15 @@
 ﻿using Architect.API.Core.Security;
-using System.Configuration;
+using aliados.Filters;
 using System.Web.Mvc;
 
 namespace aliados.Controllers
 {
     [IsConnected]
+    [SetTheme]
     public class ViewerController : Controller
     {
         public ActionResult Index()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
-            
             if (!string.IsNullOrEmpty(Architect.Utilities.Helpers.Settings.StringValue("Message")))
             {
                 ViewBag.AlertMessage = Architect.Utilities.Helpers.Settings.StringValue("Message");
@@ -20,13 +19,11 @@ namespace aliados.Controllers
 
         public ActionResult Render()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
      
         public ActionResult Viewer()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             bool _viewType = false;
             ViewBag.inboxClass = "";
             ViewBag.iboxContentClass = "";
@@ -43,49 +40,41 @@ namespace aliados.Controllers
                 ViewBag.AlertMessage = Architect.Utilities.Helpers.Settings.StringValue("Message");
             }
             return View();
-        } 
+        }
 
         public ActionResult Tab()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult TabRender()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult Form()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
         public ActionResult Formio()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
         public ActionResult FormBuilder()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
         public ActionResult FormDefine()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
         public ActionResult Dashboard()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult crud()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View("crud");
         }
     }

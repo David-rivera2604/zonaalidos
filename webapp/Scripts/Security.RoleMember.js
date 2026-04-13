@@ -385,6 +385,7 @@ app.SecurityRoleMember = (function () {
             Event_Controls();
             Refresh();
             Setup_Validations();
+            app.language.translate('body', 'rolemember')();
         },
         New: function (row) {
             let newRow = { RoleId: 0, RoleName: null, Description: null, SecurityLevel: 50, InitialNavigationCode: null, RecordStatus: 1 }

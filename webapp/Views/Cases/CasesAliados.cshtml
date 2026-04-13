@@ -3,15 +3,15 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <link href="~/assets/dropzone/css/dropzone.min.css" rel="stylesheet" />
-<link href="~/assets/animatecss/css/animate.min.css" rel="stylesheet" />
+<link href="~/assets/animatecss/animate.min.css" rel="stylesheet" />
 <!-- ProcessCase -->
 <div class="ibox">
     <div class="ibox-title">
-        <h5><i class="fa fa-envelope-open" aria-hidden="true"></i> Crear un nuevo caso</h5>
+        <h5><i class="fa fa-envelope-open" aria-hidden="true"></i> <span id="CasesAliadosPageTitle">Crear un nuevo caso</span></h5>
         <!-- Opciones -->
         <div class="ibox-tools">
             <a class="fullscreen-link">
-                <i class="fa fa-expand" title="Expande la zona de trabajo"></i>
+                <i id="CasesAliadosFullscreenIcon" class="fa fa-expand" title="Expande la zona de trabajo"></i>
             </a>
         </div>
     </div>
@@ -159,7 +159,7 @@
                                 <!-- Referencias -->
 
                                 <div class="col-lg-12">
-                                    <h4><i class="fa fa-file-text-o" aria-hidden="true"></i> Referencias</h4>
+                                    <h4><i class="fa fa-file-text-o" aria-hidden="true"></i> <span id="CasesAliadosReferencesTitle">Referencias</span></h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                     <div class="FormCasBox">
                                         <!-- Reference1 -->
@@ -230,6 +230,7 @@
     <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
     <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
     <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/CreateCase_Aliados.js")"></script>
 
     <script type="text/javascript">

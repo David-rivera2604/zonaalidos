@@ -1,0 +1,79 @@
+{
+  "PageTitle": "Home Total",
+  "PageSubTitle": "Quote.",
+  "HogarTotalIntroText": "MAPFRE brings you a new way to protect your family with our Home Total insurance. More than insurance against incidents or theft, it is full protection for your home; 11 basic coverage risks and 8 optional coverages.",
+  "HogarTotalRequiredFieldsText": "All fields marked with a red asterisk are required to continue.",
+  "HogarTotalLinkText": "Home Total Insurance",
+  "HogarTotalSloganText": "More than insurance, comprehensive protection.",
+  "HogarTotalDatosGeneralesTitle": "General information",
+  "HogarTotalDatosHogarTitle": "Home information",
+  "HogarTotalCoberturasTitle": "Coverages",
+  "HogarTotalSumasAseguradasTitle": "Insured amounts",
+  "HogarTotalPlanPagoTitle": "Payment plan",
+  "HogarTotalResumenCotizacionTitle": "Quote summary",
+  "HogarTotalImporteFraccionamientoTitle": "Amount by payment installment frequency",
+  "agt_cod": "Agent",
+  "cod_cuadro_com": "Commissions table",
+  "moneda": "Currency",
+  "fraccionamientodepago": "Payment installment frequency",
+  "iniciodevigencia": {
+    "text": "Coverage start date",
+    "placeholder": "day/month/year"
+  },
+  "findevigencia": {
+    "text": "Coverage end date",
+    "placeholder": "day/month/year"
+  },
+  "pais": "Country",
+  "provincia": "Province",
+  "canton": "Canton",
+  "distrito": "District",
+  "ocupaciondelriesgo": "Risk occupation",
+  "tipodesuscripcion": "Subscription type",
+  "numerodepisosedificacion": "Number of floors in the building",
+  "tipodeestrucdelaedificacion": "Type of building structure",
+  "numerodepiso": {
+    "text": "Floor number",
+    "title": "Floor where it is located"
+  },
+  "mesesaampararporperdrentas": "Months to cover for loss of rent",
+  "medidasdeseguridad": "Security measures",
+  "descuento": "Discount",
+  "sAEdificio": "Building",
+  "sAObjetosvaliosos": "Valuable items",
+  "sADomocristalmarmolgranito": "Dome, glass, marble, granite",
+  "sAGastosalquiler": "Rental expenses",
+  "sAPerdidaderentas": "Loss of rent",
+  "sARespcivil": "Liability",
+  "sAMobiliario": "Furniture",
+  "cotizar": "Quote",
+  "limpiar": "Clear",
+  "coberturasTbl": {
+    "columns": {
+      "codigo": "Code",
+      "nombre": "Name",
+      "capital": "Capital",
+      "primatotal": "Total premium",
+      "decucible": "Deductible",
+      "error": "Error"
+    }
+  },
+  "plandepagoTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recargoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  },
+  "plandepagoporfrecuenciaTbl": {
+    "columns": {
+      "frecuencia": "Installment frequency",
+      "importetotal": "Amount",
+      "recargoporfraccionamiento": "%"
+    }
+  }
+}

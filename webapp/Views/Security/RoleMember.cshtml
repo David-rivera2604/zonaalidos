@@ -5,7 +5,7 @@
 <!-- RoleMember -->
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Mantenimiento de roles</h5>
+        <h5 id="RoleMemberTitle">Mantenimiento de roles</h5>
         <!-- Opciones -->
         <div class="ibox-tools">
             <a class="tool-filter">
@@ -22,19 +22,19 @@
             </a>
             <ul class="dropdown-menu dropdown-user">
                 <li>
-                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> Crear un nuevo rol</a>
+                    <a href="#" class="dropdown-item tool-new"><i class="fa fa-plus"></i> <span id="RoleMemberMenuNew">Crear un nuevo rol</span></a>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> Despliega el filtro avanzado...</a>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-filter"></i> <span id="RoleMemberMenuFilter">Despliega el filtro avanzado...</span></a>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> Recargar los roles</a>
+                    <a href="#" class="dropdown-item tool-refresh"><i class="fa fa-refresh"></i> <span id="RoleMemberMenuRefresh">Recargar los roles</span></a>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> Exportar a Excel...</a>
+                    <a href="#" class="dropdown-item tool-filter"><i class="fa fa-file-excel-o"></i> <span id="RoleMemberMenuExport">Exportar a Excel...</span></a>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> Historial...</a>
+                    <a href="#" class="dropdown-item tool-audit" data-toggle="modal" data-target="#myModal5"><i class="fa fa-clock-o"></i> <span id="RoleMemberMenuAudit">Historial...</span></a>
                 </li>
             </ul>
         </div>
@@ -141,6 +141,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Security.RoleMember.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

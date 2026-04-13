@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 //Aliniacion a la derecha de los combos
 //select { text-align-last: right; }
@@ -2634,6 +2634,10 @@ app.EmisionMapfreMas = (function () {
             $('.mapfremas-visible').removeClass('d-none');
 
             Setup();
+            app.language.translate('body', 'MapfreMas')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
+    app.language.translate('#quoteBlock', '_resumen')();
+    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
@@ -2720,3 +2724,6 @@ window.formulariosTbl_Events = {
         e.stopPropagation();
     }
 };
+
+
+

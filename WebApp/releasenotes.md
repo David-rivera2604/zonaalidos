@@ -1,5 +1,20 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.181 - 02/04/2026
+
+### Aliados - Multilenguaje: Implementación de librería propia de traducción y localización (Fase I y II).
+
+#### Funcionalidades implementadas:
+
+- Librería propia de multilenguaje con soporte para múltiples idiomas (ES/EN).
+- Mejora de `core.language.js` (módulo propietario) con control dinámico de caché mediante query string (`?cache=false`).
+- Localización de 64 archivos JSON en 10 módulos (Avisos, Cases, Cotizacion, Common, Emision, General, Inicio, Security, Variaciones, Viewer).
+- Integración de librería en 30+ controladores backend y actualización de 25+ scripts JavaScript.
+- Localización de 42+ vistas Razor con atributos `data-i18n`.
+- Refactorización de `Database.cs` y `aliados.csproj`.
+
+---
+
 ## Versión 1.6.180 - 13/04/2026
 
 ### Aliados - MapfreMasPlus: Se habilita el uso del contrato para poder agregar terecero por medio de reglas.

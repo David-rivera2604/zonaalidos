@@ -12,13 +12,11 @@
                         <small class="m-l-sm"><span id="PageSubTitle"> Emisión</span></small>
                     </div>
                     <div class="title_partner T2">
-                        <p class="text-muted small">MAPFRE le trae una nueva forma de proteger a su familia, con nuestro seguro Hogar Total. Más que un seguro contra siniestros o robos, es un seguro de protección total para su hogar; 11 riesgos de cobertura básica y 8 coberturas opcionales.</p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
+                        <p class="text-muted small"><span id="HogarTotalIntroText">MAPFRE le trae una nueva forma de proteger a su familia, con nuestro seguro Hogar Total. Más que un seguro contra siniestros o robos, es un seguro de protección total para su hogar; 11 riesgos de cobertura básica y 8 coberturas opcionales.</span></p>
+                        <h4 class="text-muted" style="color: #c31f09"><span id="HogarTotalRequiredFieldsText">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</span></h4>                    </div>
                     <div class="title_partner T3 text-center">
-                        <a href="https://www.mapfre.cr/seguros-cr/seguros/hogar/hogar-total/" target="_blank">Seguro Hogar Total</a>
-                        <p class="mt-2 text-center">
-                            Más que un seguro, una protección integral.
-                        </p>
+                        <a id="HogarTotalLinkText" href="https://www.mapfre.cr/seguros-cr/seguros/hogar/hogar-total/" target="_blank">Seguro Hogar Total</a>
+                        <p id="HogarTotalSloganText" class="mt-2 text-center">Más que un seguro, una protección integral.</p>
                     </div>
                 </div>
             </div>
@@ -53,7 +51,7 @@
                                             <div class="col-lg-4"></div>
                                             <div class="col-lg-8"></div>
 
-                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
+                                            <h4><i class="fa fa-list"></i> <span id="HogarTotalDatosGeneralesTitle">Datos generales</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
                                             <div class="form-row">
 
@@ -120,7 +118,7 @@
                                                 <!-- user_txt_motivo_spto Text -->
                                                 <div class='col-sm-6 col-md-6 _user_txt_motivo_spto'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='user_txt_motivo_spto'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
+                                                        <label class='control-label' for='user_txt_motivo_spto' id='user_txt_motivo_spto_Label'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
                                                         <input type='text' id='user_txt_motivo_spto' name='user_txt_motivo_spto' class='form-control' size='100' maxlength='100' />
                                                     </div>
                                                 </div>
@@ -133,7 +131,7 @@
                                     <!-- datosdelhogar Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-home"></i> Datos de la cotización</h4>
+                                            <h4><i class="fa fa-home"></i> <span id="HogarTotalDatosHogarTitle">Datos de la cotización</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
                                             <div class="form-row">
 
@@ -278,7 +276,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-row">
                                                         <div class="col">
-                                                            <h4><i class="fa fa-plus-square-o"></i> Sumas aseguradas</h4>
+                                                            <h4><i class="fa fa-plus-square-o"></i> <span id="HogarTotalSumasAseguradasTitle">Sumas aseguradas</span></h4>
                                                         </div>
                                                     </div>
                                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 2px 0px 6px 0px;"></div>
@@ -352,7 +350,7 @@
                                                             <div class='form-group newEmision'>
                                                                 @*<i class="fa fa-home icon"></i>*@
                                                                 <label class='control-label' for='sAMobiliario'>
-                                                                    sAMobiliario
+                                                                    Mobiliario
                                                                 </label>
                                                                 <input type='text' id='sAMobiliario' name='sAMobiliario' class='form-control text-right' size='21' maxlength='21' disabled />
                                                                 <div class="lineNE"></div>
@@ -371,7 +369,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-row">
                                                         <div class='col'>
-                                                            <h4><i class="fa fa-check-square-o"></i> Coberturas</h4>
+                                                            <h4><i class="fa fa-check-square-o"></i> <span id="HogarTotalCoberturasTitle">Coberturas</span></h4>
                                                         </div>
                                                         <div class='col-auto'>
                                                             <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Coberturas" data-toggle="modal" id="coberturasNew"> <i class="fa fa-plus"></i> </button>
@@ -401,7 +399,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-credit-card"></i> Plan de pago</h4>
+                                                    <h4><i class="fa fa-credit-card"></i> <span id="HogarTotalPlanPagoTitle">Plan de pago</span></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white d-none" title="Al hacer click permite agregar un nuevo Plan de pago" data-toggle="modal" id="plandepagoNew"> <i class="fa fa-plus"></i> </button>
@@ -425,7 +423,7 @@
                                             <div class="form-row">
                                                 <div class='col'>
                                                     <h4>
-                                                        <i class="fa fa-home"></i> Datos de la propiedad a asegurar<label id="propiedadTbl-error" class="float-right d-none" style="color: #cc5965;
+                                                        <i class="fa fa-home"></i> <span id="HogarTotalDatosPropiedadTitle">Datos de la propiedad a asegurar</span><label id="propiedadTbl-error" class="float-right d-none" style="color: #cc5965;
         display: inline-block;
         font-size: 11px;
         font-weight: normal;
@@ -455,7 +453,7 @@
                                             <div class="form-row">
                                                 <div class='col'>
                                                     <h4>
-                                                        <i class="fa fa-user-o"></i> Terceros<label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;
+                                                        <i class="fa fa-user-o"></i> <span id="TercerosSectionTitle">Terceros</span><label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;
                                                                 display: inline-block;
                                                                 font-size: 11px;
                                                                 font-weight: normal;
@@ -484,7 +482,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-pencil-square-o"></i> Formularios requeridos<label id="formulariosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                    <h4><i class="fa fa-pencil-square-o"></i> <span id="HogarTotalFormulariosRequeridosTitle">Formularios requeridos</span><label id="formulariosTbl-error" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
                                             </div>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -504,7 +502,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-file-o"></i> Documentos requeridos<label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                    <h4><i class="fa fa-file-o"></i> <span id="DocumentosRequeridosSectionTitle">Documentos requeridos</span><label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo documento pendiente" data-toggle="modal" id="documentosrequeridosNew"> <i class="fa fa-plus"></i> </button>
@@ -525,16 +523,16 @@
 
                                     <!-- enviosolicitud Zone -->
                                     <div class="col-md-12 enviosolicitudZone" id="enviosolicitudzona" style="padding: 0px">
-                                        <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
+                                        <h4><i class="fa fa-envelope-o"></i> <span id="HogarTotalDestinatarioSolicitudTitle">Destinatario para envío de solicitud</span></h4>
                                         <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec"></div>
                                         <div class="form-row">
 
                                             <!-- tipoenvio DropDownList -->
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label" for="tip_firma">Tipo de envío<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span></label>
+                                                    <label class="control-label" for="tip_firma"><span id="HogarTotalTipoEnvioLabel">Tipo de envío</span><span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span></label>
                                                     <select id="tip_firma" name="tip_firma" class="form-control">
-                                                        <option value="F">FIRMA ACEPTACION DIGITAL</option>
+                                                        <option id="HogarTotalFirmaAceptacionDigitalOption" value="F">FIRMA ACEPTACION DIGITAL</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -542,7 +540,7 @@
                                             <!-- correoenvio Text -->
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label" for="correoenvio">Correo<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span></label>
+                                                    <label class="control-label" for="correoenvio"><span id="HogarTotalCorreoEnvioLabel">Correo</span><span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span></label>
                                                     <input id="correoenvio" name="correoenvio" type="text" class="form-control" size="80" maxlength="80">
                                                 </div>
                                             </div>
@@ -577,7 +575,7 @@
 
         <div class="ibox">
             <div class="ibox-title">
-                <h5><i class="fa fa-file-text-o"></i> Resumen</h5>
+                <h5><i class="fa fa-file-text-o"></i> <span id="HogarTotalResumenCotizacionTitle">Resumen</span></h5>
                 <div class="ibox-tools">
                     <h5><span class="label label-success float-right" style="font-size: small;">Póliza #<span id="NumPoliza"></span></span></h5>
                 </div>
@@ -587,7 +585,7 @@
                 <div class="row">
                     <div class="col-7 col-md-6">
                         <span>
-                            Importe total
+                            <span id="HogarTotalImporteTotalTitle">Importe total</span>
                         </span>
                         <h2 class="font-bold">
                             <span id="importetotal">0,00</span>
@@ -595,17 +593,17 @@
                     </div>
                     <div class="col-5 col-md-6">
                         <table class="text-muted small">
-                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
-                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
-                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
-                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td>Cuotas</td></tr>
+                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td><span id="HogarTotalPrimaNetaTitle">Prima neta</span></td></tr>
+                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td><span id="HogarTotalIVATitle">IVA</span></td></tr>
+                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td><span id="HogarTotalRecargoTitle">Recargo</span></td></tr>
+                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><span id="HogarTotalCuotasTitle">Cuotas</span></td></tr>
                         </table>
                     </div>
                 </div>
                 <hr>
                 <div class="m-t-sm text-center">
                     <div class="btn-group">
-                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="HogarTotalEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
                     </div>
                 </div>
             </div>
@@ -1496,6 +1494,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.HogarTotal.js")"></script>
     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>

@@ -1,0 +1,75 @@
+{
+  "QueryTitle": "Surety Policies",
+  "1GridTbl": {
+    "columns": {
+      "_0": {
+        "text": "Actions",
+        "title": "Available actions"
+      },
+      "NUM_POLIZA_GRUPO": {
+        "text": "Group policy",
+        "title": "Group policy number"
+      },
+      "NUM_CONTRATO": {
+        "text": "Contract",
+        "title": "Contract number"
+      },
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "ABR_RAMO": {
+        "text": "Line of business",
+        "title": "Insurance line of business"
+      },
+      "COD_DOCUM": {
+        "text": "Policyholder ID",
+        "title": "Policyholder identification number"
+      },
+      "NOM_TOMADOR": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "TLF_NUMERO": {
+        "text": "Phone",
+        "title": "Policyholder phone number"
+      },
+      "EMAIL": {
+        "text": "Email",
+        "title": "Policyholder email address"
+      },
+      "IDENTIFICACION": {
+        "text": "Insured ID",
+        "title": "Insured identification number"
+      },
+      "NOM_COMPLETO": {
+        "text": "Insured",
+        "title": "Insured full name"
+      },
+      "TLF_NUMERO_ASEG": {
+        "text": "Insured phone",
+        "title": "Insured phone number"
+      },
+      "EMAIL_ASEG": {
+        "text": "Insured email",
+        "title": "Insured email address"
+      },
+      "NOM_ACREEDOR": {
+        "text": "Creditor",
+        "title": "Creditor name"
+      },
+      "NOM_RIESGO": {
+        "text": "Risk",
+        "title": "Insured risk"
+      },
+      "FEC_EFEC_POLIZA": {
+        "text": "Coverage start date",
+        "title": "Policy effective date"
+      },
+      "FEC_VCTO_POLIZA": {
+        "text": "Coverage end date",
+        "title": "Policy expiration date"
+      }
+    }
+  }
+}

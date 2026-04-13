@@ -1,0 +1,29 @@
+{
+  "UserRoleMemberTitle": "Roles by user",
+  "UserRoleMemberSearch": {
+    "placeholder": "Filter by role name or description",
+    "title": "Filter by role name or description"
+  },
+  "ApplyFilter": "Filter",
+  "RecordStatusFlt": "Status",
+  "UserRoleMemberMenuNew": "Create a new role",
+  "UserRoleMemberMenuFilter": "Advanced filter...",
+  "UserRoleMemberMenuRefresh": "Reload roles",
+  "UserRoleMemberMenuExport": "Export to Excel...",
+  "UserRoleMemberMenuAudit": "History...",
+  "UserId": "User",
+  "RoleId": "Role",
+  "UserRoleMemberEdtFormSave": "Save changes",
+  "UserRoleMemberEdtFormCancel": "Cancel",
+  "UserRoleMemberGridTbl": {
+    "columns": {
+      "UserId": "User",
+      "RoleId": "Role",
+      "UpdateDate": "Updated by",
+      "_3": {
+        "text": "Actions",
+        "title": "Available row actions"
+      }
+    }
+  }
+}

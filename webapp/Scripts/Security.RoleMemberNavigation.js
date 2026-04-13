@@ -271,6 +271,7 @@ app.SecurityRoleMemberNavigation = (function () {
             Event_Controls();
             Refresh();
             Setup_Validations();
+            app.language.translate('body', 'rolemembernavigation')();
         },
         New: function () {
             EditMode({ Id: 0, RoleId: 0, Code: null, Allow: null, SecurityLevel: 0, CreateAction: null, ReadAction: null, UpdateAction: null, DeleteAction: null, ListAction: null, PrintAction: null });

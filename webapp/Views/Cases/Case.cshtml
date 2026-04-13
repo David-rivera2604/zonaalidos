@@ -3,7 +3,7 @@
 }
 @Styles.Render("~/Content/cssCRUD")
 <link href="~/assets/dropzone/css/dropzone.min.css" rel="stylesheet" />
-<link href="~/assets/animatecss/css/animate.min.css" rel="stylesheet" />
+<link href="~/assets/animatecss/animate.min.css" rel="stylesheet" />
 
 <div class="row animated fadeInRight">
     <div class="col-sm-12">
@@ -39,25 +39,25 @@
 
                 <div class="row">
                     <div class="col-md-2 d-none description-col">
-                        <small class="stats-label">Descripción</small>
+                        <small id="DescriptionLabel" class="stats-label">Descripción</small>
                         <p id="Description" class="fw-600"></p>
                     </div>
                     <div class="col-md-7">
                         <div class="row">
                             <div class="col-md-3">
-                                <small class="stats-label">Prioridad</small>
+                                <small id="PriorityLabel" class="stats-label">Prioridad</small>
                                 <p id="PriorityDesc" class="fw-600"></p>
                             </div>
                             <div class="col-md-3">
-                                <small class="stats-label">Contacto</small>
+                                <small id="ContactLabel" class="stats-label">Contacto</small>
                                 <p id="ContactMainName" class="fw-600"></p>
                             </div>
                             <div class="col-md-3">
-                                <small class="stats-label">Correo electrónico</small>
+                                <small id="ContactMainEmailLabel" class="stats-label">Correo electrónico</small>
                                 <p id="ContactMainEmail" class="fw-600"></p>
                             </div>
                             <div class="col-md-2">
-                                <small class="stats-label">Acuerdo de servicio</small>
+                                <small id="SLALabel" class="stats-label">Acuerdo de servicio</small>
                                 <p id="SLADesc" class="fw-600"></p>
                             </div>
                         </div>
@@ -107,17 +107,17 @@
                     </div>
                     <div class="col-md">
                         <div class="col">
-                            <small class="stats-label">Progreso</small>
+                            <small id="ProgressLabel" class="stats-label">Progreso</small>
                             <div class="progress" style="margin: 0px 2px 3px 2px;">
                                 <div style="width: 0%;" class="progress-bar progress-bar-danger"></div>
                             </div>
                         </div>
                         <div class="col">
-                            <small class="stats-label">Etapa actual</small>
+                            <small id="CurrentStepLabel" class="stats-label">Etapa actual</small>
                             <p id="CurrentStep" class="fw-600"></p>
                         </div>
                         <div class="col">
-                            <small class="stats-label">Cantidad de Dias</small>
+                            <small id="TotalDaysLabel" class="stats-label">Cantidad de Dias</small>
                             <p id="TotalDays" class="fw-600"></p>
                         </div>
                     </div>
@@ -290,6 +290,7 @@
     <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
     <script src="@Url.Content("~/Scripts/Common.Notes.js")"></script>
     <script src="@Url.Content("~/Scripts/ManagerLinks.UI.js")"></script>
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/General.Case.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

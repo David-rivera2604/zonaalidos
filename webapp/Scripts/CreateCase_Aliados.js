@@ -316,6 +316,7 @@ app.CentralCase = (function () {
                     Event_Controls();
                     Setup_Validations();
                     app.Attachments.Init({ EntityType: 1304, Id: 0, PostByEachRow: false, AlternateToken: Token_Ali });
+                    app.language.translate('body', 'CasesAliados')();
                 })
         },
         New: function (row) {

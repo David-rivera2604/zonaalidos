@@ -3,8 +3,8 @@
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                <h4 class="modal-title">Enfermedades excluidas</h4>
-                <small class="font-bold">Permite agregar una Enfermedad excluida o editar una ya existente</small>
+                <h4 class="modal-title"><span id="EnfermedadesExcluidasModalTitle">Enfermedades excluidas</span></h4>
+                <small class="font-bold"><span id="EnfermedadesExcluidasModalSubtitle">Permite agregar una Enfermedad excluida o editar una ya existente</span></small>
             </div>
             <div class="modal-body">
                 <!-- enfermedadesexcluidas Grid Edit Form -->
@@ -17,7 +17,7 @@
                                         <!-- COD_ENF_EXC DropDownList -->
                                         <div class='col-sm-12 col-md-12'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='COD_ENF_EXC'>Enfermedad<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <label class='control-label' for='COD_ENF_EXC'><span id='EnfermedadesExcluidasDiseaseLabel'>Enfermedad</span><span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                 <select id='COD_ENF_EXC' name='COD_ENF_EXC' class='form-control'>
                                                 </select>
                                             </div>
@@ -25,7 +25,7 @@
                                         <!-- COD_TIP_EXC DropDownList -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='COD_TIP_EXC'>Tipo exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <label class='control-label' for='COD_TIP_EXC'><span id='EnfermedadesExcluidasTypeLabel'>Tipo exclusión</span><span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                 <select id='COD_TIP_EXC' name='COD_TIP_EXC' class='form-control'>
                                                 </select>
                                             </div>
@@ -33,7 +33,7 @@
                                         <!-- FEC_INI_EXC DatePicker -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='FEC_INI_EXC'>Fecha inicio de exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <label class='control-label' for='FEC_INI_EXC'><span id='EnfermedadesExcluidasStartDateLabel'>Fecha inicio de exclusión</span><span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                 <div class='input-group date' id='FEC_INI_EXC_group'>
                                                     <input type='text' id='FEC_INI_EXC' name='FEC_INI_EXC' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                     <span class='input-group-addon'>
@@ -46,7 +46,7 @@
                                         <!-- FEC_FIN_EXC DatePicker -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='FEC_FIN_EXC'>Fecha fin de exclusión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                <label class='control-label' for='FEC_FIN_EXC'><span id='EnfermedadesExcluidasEndDateLabel'>Fecha fin de exclusión</span><span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
                                                 <div class='input-group date' id='FEC_FIN_EXC_group'>
                                                     <input type='text' id='FEC_FIN_EXC' name='FEC_FIN_EXC' class='form-control' size='10' maxlength='10' placeholder='día/mes/año' />
                                                     <span class='input-group-addon'>
@@ -59,7 +59,7 @@
                                         <!-- TXT_OBS_ENF_EXC Text -->
                                         <div class='col-sm-64 col-md-12'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='TXT_OBS_ENF_EXC'>Observaciones</label>
+                                                <label class='control-label' for='TXT_OBS_ENF_EXC'><span id='EnfermedadesExcluidasObservationsLabel'>Observaciones</span></label>
                                                 <input type='text' id='TXT_OBS_ENF_EXC' name='TXT_OBS_ENF_EXC' class='form-control' size='50' maxlength='50' />
                                             </div>
                                         </div>
@@ -71,8 +71,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="enfermedadesexcluidasEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
-                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="enfermedadesexcluidasEdtFormSave" data-doing="Guardando..."><span id='EnfermedadesExcluidasSaveChangesText'>Guardar cambios</span></button>
+                <button type="button" class="btn btn-white" data-dismiss="modal"><span id='EnfermedadesExcluidasCancelText'>Cancelar</span></button>
             </div>
         </div>
     </div>

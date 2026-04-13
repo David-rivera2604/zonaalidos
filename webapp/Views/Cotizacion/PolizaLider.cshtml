@@ -12,11 +12,11 @@
                         <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
                     </div>
                     <div class="title_partner T2">
-                        <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses.</p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
+                        <p id="PolizaLiderIntroText" class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses.</p>
+                        <h4 id="PolizaLiderRequiredFieldsText" class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
                     <div class="title_partner T3 text-center">
-                        <a href="https://www.mapfre.cr/seguros-cr/seguros/autos/poliza-lider/" target="_blank">Seguro nueva póliza líder</a>
-                        <p class="mt-2 text-center">
+                        <a id="PolizaLiderLinkText" href="https://www.mapfre.cr/seguros-cr/seguros/autos/poliza-lider/" target="_blank">Seguro nueva póliza líder</a>
+                        <p id="PolizaLiderSloganText" class="mt-2 text-center">
                             El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales, entre otras.
                         </p>
                     </div>
@@ -64,7 +64,7 @@
                                     <!-- datosdelvehiculo Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-car"></i> Datos del vehículo</h4>
+                                            <h4><i class="fa fa-car"></i> <span id="PolizaLiderDatosVehiculoTitle">Datos del vehículo</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -231,7 +231,7 @@
                                                     <div class="form-row">
                                                         <div class='col'>
                                                             <h4>
-                                                                <i class="fa fa-check-square"></i> Coberturas
+                                                                <i class="fa fa-check-square"></i> <span id="PolizaLiderCoberturasTitle">Coberturas</span>
                                                                 <label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label>
                                                             </h4>
 
@@ -257,7 +257,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="form-row">
                                                         <div class='col'>
-                                                            <h4><i class="fa fa-plus-square"></i> Sumas aseguradas</h4>
+                                                            <h4><i class="fa fa-plus-square"></i> <span id="PolizaLiderSumasAseguradasTitle">Sumas aseguradas</span></h4>
                                                         </div>
                                                     </div>
                                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -338,7 +338,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Plan de pago</h4>
+                                                    <h4 id="PolizaLiderPlanPagoTitle">Plan de pago</h4>
                                                 </div>
 
                                             </div>
@@ -367,33 +367,31 @@
         <div class="ibox">
             <div class="ibox-title text-center float-right">
                 <div class="quote-title">
-                    <h4>Resumen de la cotización</h4>
+                    <h4 id="PolizaLiderResumenTitle">Resumen de la cotización</h4>
                 </div>
             </div>
             <div class="ibox-content">
 
                 <div class="row">
                     <div class="col-7 col-md-6">
-                        <span>
-                            Importe total
-                        </span>
+                        <span id="PolizaLiderImporteTotalLabel">Importe total</span>
                         <h2 class="font-bold">
                             <span id="importetotal">0,00</span>
                         </h2>
                     </div>
                     <div class="col-5 col-md-6">
                         <table class="text-muted small">
-                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
-                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
-                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
-                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><a href="#plandepagoRow" title="Ver detalle de las cuotas">Cuotas</a></td></tr>
+                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td id="PolizaLiderPrimaNetaLabel">Prima neta</td></tr>
+                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td id="PolizaLiderIvaLabel">IVA</td></tr>
+                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td id="PolizaLiderRecargoLabel">Recargo</td></tr>
+                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><a id="PolizaLiderCuotasLink" href="#plandepagoRow" title="Ver detalle de las cuotas">Cuotas</a></td></tr>
                         </table>
                     </div>
                 </div>
                 <hr>
                 <div class="m-t-sm">
                     <div class="btn-group">
-                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-print"></i> Imprimir</a>
+                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-print"></i> <span id="PolizaLiderPrintText">Imprimir</span></a>
                     </div>
                 </div>
             </div>
@@ -401,7 +399,7 @@
 
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Importe por fraccionamiento de pago</h5>
+                <h5 id="PolizaLiderImporteFraccionamientoTitle">Importe por fraccionamiento de pago</h5>
             </div>
             <div class="ibox-content text-center">
                 <div class="form-row">
@@ -419,6 +417,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.PolizaLider.js")"></script>
     <script type="text/javascript">

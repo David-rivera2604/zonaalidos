@@ -12,12 +12,12 @@
                         <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
                     </div>
                     <div class="title_partner T2">
-                        <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses.</p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
+                        <p id="MapfreMasIntroText" class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses.</p>
+                        <h4 id="MapfreMasRequiredFieldsText" class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
                     <div class="title_partner T3 text-center">
-                        <a href="https://www.mapfre.cr/seguros-autos/" target="_blank">Seguro Mapfre Más</a>
+                        <a id="MapfreMasLinkText" href="https://www.mapfre.cr/seguros-autos/" target="_blank">Seguro Mapfre Más</a>
 						
-                        <p class="mt-2 text-center">
+                        <p id="MapfreMasSloganText" class="mt-2 text-center">
                             El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.
 																																	
                         </p>
@@ -62,14 +62,14 @@
                                     <!-- tipodeproducto Zone -->
                                     <div class="form-row">
                                         <div class="col-md-4 tipodeproductoZone role-Purdy-notvisible">
-                                            <h4><i class="fa fa-th"></i> Tipo de producto</h4>
+                                            <h4><i class="fa fa-th"></i> <span id="MapfreMasTipoProductoTitle">Tipo de producto</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
                                                 <!-- tipo_prod RadioButtonList -->
                                                 <div class='col-sm-12 col-md-12'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='tipo_prod'>Tipo de producto</label>
+                                                        <label id="tipo_prod_Label" class='control-label' for='tipo_prod'>Tipo de producto</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="tipo_prod_1" name="tipo_prod" value="basico">
@@ -116,7 +116,7 @@
 
                                         <!-- datosdelcontratante Zone -->
                                         <div class="col-md-8 contratanteZone">
-                                            <h4><i class="fa fa-user-o"></i> Datos del contratante</h4>
+                                            <h4><i class="fa fa-user-o"></i> <span id="MapfreMasDatosContratanteTitle">Datos del contratante</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -156,7 +156,7 @@
                                     <!-- datosdelvehiculo Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-car"></i> Datos del vehículo</h4>
+                                            <h4><i class="fa fa-car"></i> <span id="MapfreMasDatosVehiculoTitle">Datos del vehículo</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -288,7 +288,7 @@
                                                 <!-- PCT_AJUSTE_GEN Numeric -->
                                                 <div class='col-sm-3 col-md-3 role-Purdy-notvisible role-Davivienda_Leasing-notvisible role-Davivienda_Prendarios-notvisible'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='PCT_AJUSTE_GEN' title="Valor entre -25 y 0%">Porcentaje de ajuste comercial</label>
+                                                        <label id="PCT_AJUSTE_GEN_Label" class='control-label' for='PCT_AJUSTE_GEN' title="Valor entre -25 y 0%">Porcentaje de ajuste comercial</label>
                                                         <div class='input-group'>
                                                             <input type='text' id='PCT_AJUSTE_GEN' name='PCT_AJUSTE_GEN' class='form-control text-right role-Purdy-disable' size='3' maxlength='3' title="Valor entre -25 y 0%" />
                                                             <span class='input-group-addon'>
@@ -302,7 +302,7 @@
                                                 <!-- MCA_CERO_KM RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='MCA_CERO_KM'>¿Es cero km?</label>
+                                                        <label id="MCA_CERO_KM_Label" class='control-label' for='MCA_CERO_KM'>¿Es cero km?</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="MCA_CERO_KM_1" name="MCA_CERO_KM" value="1">
@@ -318,7 +318,7 @@
                                                 <!-- MCA_AUTO_GPS RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='MCA_AUTO_GPS'>¿Tiene GPS?</label>
+                                                        <label id="MCA_AUTO_GPS_Label" class='control-label' for='MCA_AUTO_GPS'>¿Tiene GPS?</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="MCA_AUTO_GPS_1" name="MCA_AUTO_GPS" value="1">
@@ -334,7 +334,7 @@
                                                 <!-- MCA_AUTO_GPS_CMS RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='MCA_AUTO_GPS_CMS'>¿GPS con convenio del ministerio?</label>
+                                                        <label id="MCA_AUTO_GPS_CMS_Label" class='control-label' for='MCA_AUTO_GPS_CMS'>¿GPS con convenio del ministerio?</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="MCA_AUTO_GPS_CMS_1" name="MCA_AUTO_GPS_CMS" value="1">
@@ -350,7 +350,7 @@
                                                 <!-- MCA_MONITOREO_GPS RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='MCA_MONITOREO_GPS'>¿GPS con monitoreo?</label>
+                                                        <label id="MCA_MONITOREO_GPS_Label" class='control-label' for='MCA_MONITOREO_GPS'>¿GPS con monitoreo?</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="MCA_MONITOREO_GPS_1" name="MCA_MONITOREO_GPS" value="1">
@@ -366,7 +366,7 @@
                                                 <!-- MCA_PRA RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3 role-Purdy-notvisible'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='MCA_PRA'>¿Asegurar a primer riesgo ABS?</label>
+                                                        <label id="MCA_PRA_Label" class='control-label' for='MCA_PRA'>¿Asegurar a primer riesgo ABS?</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="MCA_PRA_1" name="MCA_PRA" value="1">
@@ -382,7 +382,7 @@
                                                 <!-- MCA_VR RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='MCA_VR'>¿Asegurar a valor real?</label>
+                                                        <label id="MCA_VR_Label" class='control-label' for='MCA_VR'>¿Asegurar a valor real?</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="MCA_VR_1" name="MCA_VR" value="1">
@@ -399,7 +399,7 @@
                                                 <!-- MCA_DESC_CLIENTE_NUEVO RadioButtonList -->
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='MCA_DESC_CLIENTE_NUEVO'>¿Es cliente nuevo?</label>
+                                                        <label id="MCA_DESC_CLIENTE_NUEVO_Label" class='control-label' for='MCA_DESC_CLIENTE_NUEVO'>¿Es cliente nuevo?</label>
                                                         <div style="padding-top: 6px;">
                                                             <div class="custom-control custom-radio custom-control-inline">
                                                                 <input type="radio" class="custom-control-input" id="MCA_DESC_CLIENTE_NUEVO_1" name="MCA_DESC_CLIENTE_NUEVO" value="1">
@@ -483,7 +483,7 @@
                                                 <div class='col'>
                                                     <h4>
                                                         <i class="fa fa-check-square"></i>
-                                                        Coberturas
+                                                        <span id="MapfreMasCoberturasTitle">Coberturas</span>
                                                         <label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label>
                                                     </h4>
                                                 </div>
@@ -504,7 +504,7 @@
                                     <!-- sumasaseguradas Zone -->
                                     <div class="form-row sumasaseguradasZone">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas</h4>
+                                            <h4><i class="fa fa-sliders"></i> <span id="MapfreMasSumasAseguradasTitle">Sumas aseguradas</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -673,7 +673,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Plan de pago</h4>
+                                                    <h4 id="MapfreMasPlanPagoTitle">Plan de pago</h4>
                                                 </div>
 
                                             </div>
@@ -694,7 +694,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Plan de pago vigencia completa</h4>
+                                                    <h4 id="MapfreMasPlanPagoVigenciaTitle">Plan de pago vigencia completa</h4>
                                                 </div>
 
                                             </div>
@@ -722,10 +722,10 @@
 
         <div class="ibox">
             <div class="text-center float-right">
-                <h5>Resumen</h5>
+                <h5 id="MapfreMasResumenTitle">Resumen</h5>
                 <div class="quote-title">
-                    <h4><i class="fa fa-file-text-o"></i> Resumen de la cotización</h4>																						
-                    <h5><span class="label label-success float-right" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span></h5>
+                    <h4><i class="fa fa-file-text-o"></i> <span id="MapfreMasResumenCotizacionTitle">Resumen de la cotización</span></h4>																						
+                    <h5><span id="MapfreMasPresupuestoBadge" class="label label-success float-right" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span></h5>
                 </div>
             </div>
             <div class="ibox-content">
@@ -760,7 +760,7 @@
 
         <div class="ibox ibox">
             <div class="ibox-title">
-                <h5>Importe por fraccionamiento de pago</h5>
+                <h5 id="MapfreMasImporteFraccionamientoTitle">Importe por fraccionamiento de pago</h5>
             </div>
             <div class="ibox-content text-center">
                 <div class="form-row">
@@ -777,6 +777,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.MapfreMas.js")"></script>

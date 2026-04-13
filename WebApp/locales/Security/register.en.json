@@ -1,0 +1,27 @@
+{
+  "RegisterMainTitle": "User registration - Complete the information.",
+  "identificacion": {
+    "text": "Identification",
+    "placeholder": "0X-XXXX-XXXX",
+    "title": "Identification number"
+  },
+  "identificacionType": "ID card",
+  "identificacionTypeOption1": "ID card",
+  "identificacionTypeOption2": "DIMEX",
+  "identificacionTypeOption3": "Passport",
+  "identificacionTypeOption4": "Legal entity ID",
+  "FirstName": "First name(s)",
+  "LastName": "Last name(s)",
+  "BirthDate": {
+    "text": "Date of birth",
+    "placeholder": "day/month/year"
+  },
+  "EMail": "Email",
+  "Password": {
+    "text": "Access password",
+    "title": "Access password"
+  },
+  "RegisterEdtFormSave": "Sign up",
+  "RegisterEdtFormCancel": "Cancel",
+  "RegisterEdtFormContinue": "Continue"
+}

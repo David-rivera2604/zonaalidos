@@ -12,14 +12,14 @@
                         <small class="m-l-sm"><span id="PageSubTitle"> Cotización.</span></small>
                     </div>
                     <div class="title_partner T2">
-                        <p class="text-muted small">
+                        <p id="MultirriesgoIntroText" class="text-muted small">
                             Son diversos los riesgos a los cuales se encuentran expuestos los negocios, el seguro multirriesgo empresa representa una buena opción para hacer frente a posibles eventualidades ya que es un paquete integral que se adapta a las necesidades de protección de cada empresa o negocio.
                         </p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>
+                        <h4 id="MultirriesgoRequiredFieldsText" class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>
                     </div>
                     <div class="title_partner T3 text-center">
-                        <a href="https://www.mapfre.cr/seguros-cr/seguros/empresas/multirriesgo-empresa/" target="_blank">Seguro Multirriesgo Empresa</a>
-                        <p class="mt-2 text-center">
+                        <a id="MultirriesgoLinkText" href="https://www.mapfre.cr/seguros-cr/seguros/empresas/multirriesgo-empresa/" target="_blank">Seguro Multirriesgo Empresa</a>
+                        <p id="MultirriesgoSloganText" class="mt-2 text-center">
                             Usted hace crecer su negocio, ¡nosotros lo protegemos!
                         </p>
                     </div>
@@ -71,7 +71,7 @@
                                     <!-- datosdelnegocio Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-briefcase"></i> Datos del negocio</h4>
+                                            <h4><i class="fa fa-briefcase"></i> <span id="MultirriesgoDatosNegocioTitle">Datos del negocio</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -129,7 +129,7 @@
                                     <!-- datosdelaedificacion Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-building-o"></i> Datos de la edificación</h4>
+                                            <h4><i class="fa fa-building-o"></i> <span id="MultirriesgoDatosEdificacionTitle">Datos de la edificación</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -180,7 +180,7 @@
                                     <!-- sumasaseguradasparacoberturas Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas para coberturas</h4>
+                                            <h4><i class="fa fa-sliders"></i> <span id="MultirriesgoSumasCoberturasTitle">Sumas aseguradas para coberturas</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -271,7 +271,7 @@
                                     <!-- sumasaseguradaspararubros Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas para rubros</h4>
+                                            <h4><i class="fa fa-sliders"></i> <span id="MultirriesgoSumasRubrosTitle">Sumas aseguradas para rubros</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -338,7 +338,7 @@
                                     <!-- medidascontraindendio Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-fire"></i> Medidas contra incendio</h4>
+                                            <h4><i class="fa fa-fire"></i> <span id="MultirriesgoMedidasIncendioTitle">Medidas contra incendio</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -382,7 +382,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-check-square"></i> Coberturas<label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label></h4>
+                                                    <h4><i class="fa fa-check-square"></i> <span id="MultirriesgoCoberturasTitle">Coberturas</span><label id="coberturasTbl-validate" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
 
                                             </div>
@@ -420,7 +420,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Plan de pago</h4>
+                                                    <h4 id="MultirriesgoPlanPagoTitle">Plan de pago</h4>
                                                 </div>
 
                                             </div>
@@ -451,8 +451,8 @@
         <div class="ibox">
             <div class="ibox-title text-center float-right">
                 <div class="quote-title">
-                    <h4><i class="fa fa-file-text-o"></i> Resumen de la cotización</h4>
-                    <span class="label label-success" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span>
+                    <h4><i class="fa fa-file-text-o"></i> <span id="MultirriesgoResumenCotizacionTitle">Resumen de la cotización</span></h4>
+                    <span id="MultirriesgoPresupuestoBadge" class="label label-success" style="font-size: small;">Presupuesto #<span id="presupuesto"></span></span>
                 </div>
             </div>
             <div class="ibox-content">
@@ -487,7 +487,7 @@
 
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Importe por fraccionamiento de pago</h5>
+                <h5 id="MultirriesgoImporteFraccionamientoTitle">Importe por fraccionamiento de pago</h5>
             </div>
             <div class="ibox-content text-center">
                 <div class="form-row">
@@ -505,6 +505,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.Multirriesgo.js")"></script>
     <script type="text/javascript">

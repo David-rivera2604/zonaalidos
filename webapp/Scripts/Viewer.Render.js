@@ -6,8 +6,140 @@ app.ViewerQuery = (function () {
     var _id = null;
     var _data;
 
+    function getTranslationTextFromValue(translationValue) {
+        if (!translationValue)
+            return null;
+
+        if (typeof translationValue === 'string')
+            return translationValue;
+
+        if (typeof translationValue === 'object' && Object.prototype.hasOwnProperty.call(translationValue, 'text'))
+            return translationValue.text;
+
+        return null;
+    }
+
+    function getTranslationAttributeFromValue(translationValue, attributeName) {
+        if (!translationValue || typeof translationValue !== 'object')
+            return null;
+
+        return translationValue[attributeName] || null;
+    }
+
+    function applyViewerGroupTranslation($scope, key, translationValue) {
+        var $group = $scope.find('#' + key);
+        if ($group.length === 0)
+            $group = $scope.find('[id^="' + key + '"]');
+
+        if ($group.length > 1)
+            $group = $group.first();
+
+        var $input = $group.find('input, textarea, select').first();
+        var inputId = $input.attr('id');
+        var text = getTranslationTextFromValue(translationValue);
+        var title = getTranslationAttributeFromValue(translationValue, 'title');
+        var placeholder = getTranslationAttributeFromValue(translationValue, 'placeholder');
+        var $label = inputId ? $scope.find('label[for="' + inputId + '"]').first() : $();
+
+        if ($group.length === 0 || $input.length === 0)
+            return;
+
+        if (placeholder)
+            $input.attr('placeholder', placeholder);
+        else if (text)
+            $input.attr('placeholder', text);
+
+        if (title)
+            $input.attr('title', title);
+        else if (text)
+            $input.attr('title', text);
+
+        if ($label.length > 0 && text) {
+            var $requiredMark = $label.find('.required-mark').detach();
+            $label.text(text);
+            if ($requiredMark.length > 0)
+                $label.append($requiredMark);
+        }
+    }
+
+    function applyViewerCommonFieldTranslations(target, translations) {
+        var $scope = $(target || document.body);
+        if ($scope.length === 0 || !translations)
+            return;
+
+        $.each(translations, function (key, translationValue) {
+            if (!key || key.indexOf('_group') < 0)
+                return;
+
+            applyViewerGroupTranslation($scope, key, translationValue);
+        });
+
+        // Fallbacks for common dynamic date filters in legacy viewers.
+        if (translations.desde_group)
+            applyViewerGroupTranslation($scope, 'desde_group_', translations.desde_group);
+        if (translations.hasta_group)
+            applyViewerGroupTranslation($scope, 'hasta_group_', translations.hasta_group);
+    }
+
+    function ApplyQueryTitleTranslation(translations) {
+        if (!translations)
+            return;
+
+        var queryTitleValue = translations.QueryTitle;
+        if (!queryTitleValue)
+            return;
+
+        var titleText = null;
+        var titleAttr = null;
+
+        if (typeof queryTitleValue === 'string')
+            titleText = queryTitleValue;
+        else if (typeof queryTitleValue === 'object') {
+            if (Object.prototype.hasOwnProperty.call(queryTitleValue, 'text'))
+                titleText = queryTitleValue.text;
+            if (Object.prototype.hasOwnProperty.call(queryTitleValue, 'title'))
+                titleAttr = queryTitleValue.title;
+        }
+
+        if (titleText) {
+            if ($("#QueryTitle").length === 1)
+                $("#QueryTitle").text(titleText);
+
+            $('html head').find('title').text(titleText);
+        }
+
+        if (titleAttr && $("#QueryTitle").length === 1)
+            $("#QueryTitle").attr('title', titleAttr);
+    }
+
+    function TranslateViewerTarget(target, entity) {
+        entity = $.trim(entity || '');
+        if (!entity)
+            return;
+
+        app.language.translate(
+            target,
+            'viewer/ViewerManager',
+            function (baseTranslations) {
+                applyViewerCommonFieldTranslations(target, baseTranslations);
+                app.language.translate(
+                    target,
+                    'viewer/' + entity,
+                    function (translations) {
+                        ApplyQueryTitleTranslation(translations);
+                        applyViewerCommonFieldTranslations(target, translations);
+                    }
+                )();
+            }
+        )();
+    }
+
     function Render(data) {
+        if (data.index === undefined || data.index === null)
+            data.index = 1;
+
         gridControlName = "#" + data.index + "GridTbl";
+        var translationEntity = data.entity || data.Entity || (data.table ? data.table.entity : '');
 
         if ($("#QueryTitle").length === 1)
             $("#QueryTitle").html(data.title);
@@ -18,6 +150,8 @@ app.ViewerQuery = (function () {
             $("#QueryMainTitle").html(data.maintitle);
             $('html head').find('title').text(data.maintitle);
         }
+
+        TranslateViewerTarget('body', translationEntity);
 
         if (data.type != undefined && data.type == 'template') {
             Template_Render(data.template, data.data);
@@ -39,10 +173,15 @@ app.ViewerQuery = (function () {
 
                     eval(data.dialog.code);
 
+                    TranslateViewerTarget('.advancefilter-row', translationEntity);
+
                     app.Prototype.Changed(function (data) {
                         app.ViewerQuery.Refresh(undefined, $('#RoleMemberGridTbl'), _id, '');
                     });
                 }
+
+                if (data.table && !data.table.entity)
+                    data.table.entity = translationEntity;
 
                 Table_Render(data.table, data.index);
             }
@@ -59,7 +198,13 @@ app.ViewerQuery = (function () {
     }
 
     function Table_Render(spec, index) {
+        if (index === undefined || index === null)
+            index = 1;
+
         gridControlName = "#" + index + "GridTbl";
+        var tableSelector = '#RoleMemberGridTbl';
+        if (!spec.entity)
+            spec.entity = '';
 
         //Defaults
         if (spec.classes === undefined) {
@@ -200,7 +345,18 @@ app.ViewerQuery = (function () {
             detailClose: 'fa-angle-double-down',
             export: 'fa-download'
         };
-        $('#RoleMemberGridTbl').bootstrapTable(spec);
+        var originalOnPostBody = spec.onPostBody;
+        spec.onPostBody = function (data) {
+            app.ui.CommonBehaviour();
+            TranslateViewerTarget(tableSelector, spec.entity);
+            if ($.isFunction(originalOnPostBody))
+                originalOnPostBody.call(this, data);
+        };
+
+        $(tableSelector).attr('name', index + 'GridTbl');
+
+        $(tableSelector).bootstrapTable(spec);
+        TranslateViewerTarget(tableSelector, spec.entity);
 
         if (spec.searchStyle != undefined) {
             $('.search').width(spec.searchStyle);
@@ -315,6 +471,8 @@ app.ViewerQuery = (function () {
         app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
             .done(function (data, textStatus, jqXHR) {
                 var spec = data.table;
+                if (!spec.entity)
+                    spec.entity = data.entity || data.Entity || '';
                 title.html(data.title);
                 if (spec.classes === undefined) {
                     spec.classes = "table table-bordered table-hover table-index";
@@ -342,8 +500,12 @@ app.ViewerQuery = (function () {
                 spec.showColumnsToggleAll = false;
                 spec.searchAlign = 'left';
                 spec.maintainMetaData = true;
+                var originalOnPostBody = spec.onPostBody;
                 spec.onPostBody = function (data) {
                     app.ui.CommonBehaviour();
+                    TranslateViewerTarget('#' + tableId, spec.entity);
+                    if ($.isFunction(originalOnPostBody))
+                        originalOnPostBody.call(this, data);
                 };
                 //spec.onRefresh = function (params) {
                 //    app.ViewerQuery.Refresh(params, $el);
@@ -367,7 +529,9 @@ app.ViewerQuery = (function () {
                     }
                 });
 
+                $el.attr('name', tableId);
                 $el.bootstrapTable(spec);
+                TranslateViewerTarget('#' + tableId, spec.entity);
 
                 app.ViewerQuery.Refresh(undefined, $el, id, url);
 

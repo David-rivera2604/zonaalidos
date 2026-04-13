@@ -359,6 +359,7 @@ app.GeneralPaymentSettings = (function () {
             Event_Controls();
             Refresh();
             Setup_Validations();
+            app.language.translate('body', 'paymentsettings')();
         },
         New: function (row) {
             let newRow = { Id: 0, UserId: null, Currency: null, ClientId: null, SecretKey: null }

@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.EmisionMultirriesgo = (function () {
 
@@ -6,6 +6,7 @@ app.EmisionMultirriesgo = (function () {
     var setupData = null;
     var showCalculate = false;
     var rowDocumentosrequeridos = null;
+    var pageTranslations = null;
 
     function Setup() {
         var _id = app.core.URLStringValue('presupuesto');
@@ -2188,6 +2189,23 @@ app.EmisionMultirriesgo = (function () {
     };
 
     function formularios_table_setup() {
+        $('#formulariosDV').attr('name', 'formulariosDVTbl');
+
+        function t(key, fallback) {
+            var translations = pageTranslations || (app.language.getTranslations ? app.language.getTranslations() : null);
+            if (!translations || !Object.prototype.hasOwnProperty.call(translations, key)) {
+                return fallback;
+            }
+            var value = translations[key];
+            if (typeof value === 'string') {
+                return value;
+            }
+            if (value && typeof value === 'object' && value.text) {
+                return value.text;
+            }
+            return fallback;
+        }
+
         $('#formulariosTbl').bootstrapTable({
             uniqueId: 'formularioId',
             data: [],
@@ -2287,10 +2305,10 @@ app.EmisionMultirriesgo = (function () {
                     formatter: function (value, row, index, field) {
 
                         if (row.data === null) {
-                            return '<span class="label label-secondary">Incompleto</span>';
+                            return '<span class="label label-secondary">' + t('MultirriesgoFormularioDVStatusIncomplete', 'Incompleto') + '</span>';
                         }
                         else {
-                            return '<span class="label label-success">Listo</span>';
+                            return '<span class="label label-success">' + t('MultirriesgoFormularioDVStatusReady', 'Listo') + '</span>';
                         }
 
                     },
@@ -2333,7 +2351,7 @@ app.EmisionMultirriesgo = (function () {
                     events: 'formulariosDV_Events',
                     formatter: function (value, row, index, field) {
                         var html = [];
-                        html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite agregar o editar la información de un formulario"> <i class="fa fa-pencil"></i> </button>');
+                        html.push('<button type="button" class="btn btn-sm btn-white edit" title="' + t('MultirriesgoFormularioDVEditActionTitle', 'Al hacer click permite agregar o editar la información de un formulario') + '"> <i class="fa fa-pencil"></i> </button>');
                         return html.join('');
                     },
                     cellStyle: function (value, row, index) {
@@ -2347,8 +2365,35 @@ app.EmisionMultirriesgo = (function () {
                 }]
         });
 
-        let row = { formularioId: 1, name: 'Información de la edificación, es requerido ingresar el año de construcción.', when: null, type: 'datosvariables', data: null };
+        let row = { formularioId: 1, name: t('MultirriesgoFormularioDVRowName', 'Información de la edificación, es requerido ingresar el año de construcción.'), when: null, type: 'datosvariables', data: null };
         $('#formulariosDV').bootstrapTable('load', [row]);
+    }
+
+    function refreshFormulariosDVTranslations(translations) {
+        var table = $('#formulariosDV');
+        if (table.length === 0) {
+            return;
+        }
+
+        if (translations) {
+            pageTranslations = translations;
+        }
+
+        var data = table.bootstrapTable('getData') || [];
+        if (data.length > 0 && data[0].type === 'datosvariables') {
+            var activeTranslations = pageTranslations || (app.language.getTranslations ? app.language.getTranslations() : null);
+            var fallback = 'Información de la edificación, es requerido ingresar el año de construcción.';
+            var translated = fallback;
+            if (activeTranslations && Object.prototype.hasOwnProperty.call(activeTranslations, 'MultirriesgoFormularioDVRowName')) {
+                var value = activeTranslations.MultirriesgoFormularioDVRowName;
+                translated = typeof value === 'string' ? value : (value && value.text ? value.text : fallback);
+            }
+            data[0].name = translated;
+            table.bootstrapTable('updateByUniqueId', { id: data[0].formularioId, row: data[0] });
+        }
+        setTimeout(function () {
+            app.language.translate('#formulariosDV', 'multirriesgo', null, false)();
+        }, 50);
     }
 
     function formularios_table_row_edit(row) {
@@ -2615,6 +2660,13 @@ app.EmisionMultirriesgo = (function () {
             documentosrequeridos_controls_Events();
 
             formularios_table_setup();
+            app.language.translate('body', 'multirriesgo', function (translations) {
+                refreshFormulariosDVTranslations(translations || null);
+            }, false)();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
+    app.language.translate('#quoteBlock', '_resumen')();
+    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+    app.language.translate('#tercerosModal', '_tercero')();
 
 
         },
@@ -2679,3 +2731,5 @@ window.formulariosDV_Events = {
         e.stopPropagation();
     }
 };
+
+

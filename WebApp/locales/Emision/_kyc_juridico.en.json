@@ -1,0 +1,15 @@
+{
+  "KycJuridicoModalTitle": "Know your customer form - Legal entity",
+  "KycJuridicoCompanyDataTitle": "Company data",
+  "KycJuridicoCommercialAddressTitle": "Commercial address",
+  "KycJuridicoLegalRepresentativeTitle": "Legal representative data",
+  "KycJuridicoPermanentAddressTitle": "Permanent address",
+  "KycJuridicoFundsOriginTitle": "Source of funds",
+  "KycJuridicoPolicyDescriptionTitle": "Policy description",
+  "KycJuridicoSaveChangesText": "Save changes",
+  "KycJuridicoCancelText": "Cancel",
+  "KycJuridicoShareholderModalTitle": "Shareholding participation",
+  "KycJuridicoShareholderModalSubtitle": "Allows adding a new shareholding record or editing an existing one",
+  "KycJuridicoShareholderSaveChangesText": "Save changes",
+  "KycJuridicoShareholderCancelText": "Cancel"
+}

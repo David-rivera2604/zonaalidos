@@ -1,0 +1,24 @@
+{
+  "GridToolbar": {
+    "search": {
+      "text": "Search",
+      "title": "Search records"
+    },
+    "refresh": {
+      "title": "Refresh",
+      "ariaLabel": "Refresh"
+    },
+    "export": {
+      "title": "Export data",
+      "ariaLabel": "Export"
+    },
+    "csv": {
+      "text": "CSV",
+      "title": "Export as CSV"
+    },
+    "excel": {
+      "text": "MS-Excel",
+      "title": "Export as Excel"
+    }
+  }
+}

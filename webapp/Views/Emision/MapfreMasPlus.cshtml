@@ -12,18 +12,12 @@
                         <small class="m-l-sm"><span id="PageSubTitle"> Emisión.</span></small>
                     </div>
                     <div class="title_partner T2">
-                        <p class="text-muted small">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses.</p>
-                        <h4 class="text-muted" style="color: #c31f09">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</h4>                    </div>
+                        <p class="text-muted small"><span id="MapfreMasPlusIntroText">En MAPFRE Costa Rica hemos creado una amplia variedad de opciones con excelentes coberturas y valores agregados, pensados para todas las necesidades de los costarricenses.</span></p>
+                        <h4 class="text-muted" style="color: #c31f09"><span id="MapfreMasPlusRequiredFieldsText">Todos los campos que cuentan con asterisco rojo , son obligatorios para continuar.</span></h4>                    </div>
                     <div class="title_partner T3 text-center">
-                        <a href="https://www.mapfre.cr/seguros-autos/" target="_blank">Seguro Mapfre 303</a>
+                        <a id="MapfreMasPlusLinkText" href="https://www.mapfre.cr/seguros-autos/" target="_blank">Seguro Mapfre 303</a>
 
-                        <p class="mt-2 text-center">
-                            El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.
-
-
-
-
-                        </p>
+                        <p id="MapfreMasPlusSloganText" class="mt-2 text-center">El seguro que le ofrece diferentes coberturas desde responsabilidad civil, colisión y/o vuelco, robo, y coberturas adicionales.</p>
                     </div>
                 </div>
             </div>
@@ -47,7 +41,7 @@
                                     <div class="form-row">
                                         <!-- datosgenerales Zone -->
                                         <div class="col-md-12 datosgeneralesZone">
-                                            <h4><i class="fa fa-list"></i> Datos generales</h4>
+                                            <h4><i class="fa fa-list"></i> <span id="DatosGeneralesTitle">Datos generales</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
                                                 <!-- Fuente_Tomador DropDownList -->
@@ -149,7 +143,7 @@
                                                 <!-- user_txt_motivo_spto Text -->
                                                 <div class='col-sm-6 col-md-6 _user_txt_motivo_spto'>
                                                     <div class='form-group'>
-                                                        <label class='control-label' for='user_txt_motivo_spto'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
+                                                        <label class='control-label' for='user_txt_motivo_spto' id='user_txt_motivo_spto_Label'>Si deseas completar manualmente el nombre del usuario que hace la emisión, completa el siguiente espacio.</label>
                                                         <input type='text' id='user_txt_motivo_spto' name='user_txt_motivo_spto' class='form-control' size='100' maxlength='100' />
                                                     </div>
                                                 </div>
@@ -162,7 +156,7 @@
                                     <!-- datosdelvehiculo Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-car"></i> Datos del vehículo</h4>
+                                            <h4><i class="fa fa-car"></i> <span id="MapfreMasPlusDatosVehiculoTitle">Datos del vehículo</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -460,7 +454,7 @@
                                     <!-- sumasaseguradas Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4><i class="fa fa-sliders"></i> Sumas aseguradas</h4>
+                                            <h4><i class="fa fa-sliders"></i> <span id="MapfreMasPlusSumasAseguradasTitle">Sumas aseguradas</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -603,7 +597,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-user-o"></i> Terceros<label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
+                                                    <h4><i class="fa fa-user-o"></i> <span id="TercerosSectionTitle">Terceros</span><label id="tercerosTbl-error" class="float-right d-none" style="color: #cc5965;display: inline-block;font-size: 11px;font-weight: normal;"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo tercero" data-toggle="modal" id="tercerosNew"> <i class="fa fa-plus"></i> </button>
@@ -626,7 +620,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-pencil-square-o"></i> Formularios requeridos<label id="formulariosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                    <h4><i class="fa fa-pencil-square-o"></i> <span id="MapfreMasPlusFormulariosRequeridosTitle">Formularios requeridos</span><label id="formulariosTbl-error" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
                                             </div>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
@@ -646,7 +640,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4><i class="fa fa-file-o"></i> Documentos requeridos<label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
+                                                    <h4><i class="fa fa-file-o"></i> <span id="DocumentosRequeridosSectionTitle">Documentos requeridos</span><label id="documentosrequeridosTbl-error" class="float-right d-none LabelValidate"></label></h4>
                                                 </div>
                                                 <div class='col-auto'>
                                                     <button type="button" class="btn btn-sm btn-white" title="Al hacer click permite agregar un nuevo documento pendiente" data-toggle="modal" id="documentosrequeridosNew"> <i class="fa fa-plus"></i> </button>
@@ -669,7 +663,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Coberturas</h4>
+                                                    <h4 id="MapfreMasPlusCoberturasTitle">Coberturas</h4>
                                                 </div>
 
                                             </div>
@@ -694,7 +688,7 @@
                                         <div class="col-lg-12">
                                             <div class="form-row">
                                                 <div class='col'>
-                                                    <h4>Plan de pago</h4>
+                                                    <h4 id="MapfreMasPlusPlanPagoTitle">Plan de pago</h4>
                                                 </div>
 
                                             </div>
@@ -713,7 +707,7 @@
 
                                         <!-- enviosolicitud Zone -->
                                         <div class="col-md-12 d-none enviosolicitudZone">
-                                            <h4><i class="fa fa-envelope-o"></i> Destinatario para envío de solicitud</h4>
+                                        <h4><i class="fa fa-envelope-o"></i> <span id="MapfreMasPlusDestinatarioSolicitudTitle">Destinatario para envío de solicitud</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -769,9 +763,9 @@
 
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Resumen</h5>
+                <h5><span id="MapfreMasPlusResumenTitle">Resumen</span></h5>
                 <div class="ibox-tools">
-                    <h5><span class="label label-success float-right" style="font-size: small;">Póliza #<span id="NumPoliza"></span></span></h5>
+                    <h5><span class="label label-success float-right" style="font-size: small;"><span id="MapfreMasPlusPolizaBadge">Póliza #</span><span id="NumPoliza"></span></span></h5>
                 </div>
             </div>
             <div class="ibox-content">
@@ -779,7 +773,7 @@
                 <div class="row">
                     <div class="col-7 col-md-6">
                         <span>
-                            Importe total
+                            <span id="MapfreMasPlusImporteTotalTitle">Importe total</span>
                         </span>
                         <h2 class="font-bold">
                             <span id="importetotal">0,00</span>
@@ -787,17 +781,17 @@
                     </div>
                     <div class="col-5 col-md-6">
                         <table class="text-muted small">
-                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td>Prima neta</td></tr>
-                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td>IVA</td></tr>
-                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td>Recargo</td></tr>
-                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td>Cuotas</td></tr>
+                            <tr><td style="text-align:right"><span id="primaneta">0,00</span></td><td><span id="MapfreMasPlusPrimaNetaTitle">Prima neta</span></td></tr>
+                            <tr><td style="text-align:right"><span id="iva">0,00</span></td><td><span id="MapfreMasPlusIVATitle">IVA</span></td></tr>
+                            <tr><td style="text-align:right"><span id="recardoporfraccionamiento">0,00</span></td><td><span id="MapfreMasPlusRecargoTitle">Recargo</span></td></tr>
+                            <tr class=""><td style="text-align:right"><span id="cuotas">0</span></td><td><span id="MapfreMasPlusCuotasTitle">Cuotas</span></td></tr>
                         </table>
                     </div>
                 </div>
                 <hr>
                 <div class="m-t-sm text-center">
                     <div class="btn-group">
-                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="MapfreMasPlusEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
                     </div>
                 </div>
             </div>
@@ -882,6 +876,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.MapfreMasPlus.js")"></script>

@@ -48,6 +48,57 @@ app.ViewerQuery = (function () {
         ' {Body} ' +
         '</div>';
 
+    function ApplyQueryTitleTranslation(translations) {
+        if (!translations)
+            return;
+
+        var queryTitleValue = translations.QueryTitle;
+        if (!queryTitleValue)
+            return;
+
+        var titleText = null;
+        var titleAttr = null;
+
+        if (typeof queryTitleValue === 'string')
+            titleText = queryTitleValue;
+        else if (typeof queryTitleValue === 'object') {
+            if (Object.prototype.hasOwnProperty.call(queryTitleValue, 'text'))
+                titleText = queryTitleValue.text;
+            if (Object.prototype.hasOwnProperty.call(queryTitleValue, 'title'))
+                titleAttr = queryTitleValue.title;
+        }
+
+        if (titleText) {
+            if ($("#QueryTitle").length === 1)
+                $("#QueryTitle").text(titleText);
+
+            $('html head').find('title').text(titleText);
+        }
+
+        if (titleAttr && $("#QueryTitle").length === 1)
+            $("#QueryTitle").attr('title', titleAttr);
+    }
+
+    function TranslateViewerTarget(target, entity) {
+        entity = $.trim(entity || '');
+        if (!entity)
+            return;
+
+        app.language.translate(
+            target,
+            'viewer/ViewerManager',
+            function () {
+                app.language.translate(
+                    target,
+                    'viewer/' + entity,
+                    function (translations) {
+                        ApplyQueryTitleTranslation(translations);
+                    }
+                )();
+            }
+        )();
+    }
+
     function RenderTabHeader(item) {
         body = app.core.ReplaceAll(_itemHeader, "{index}", item.index);
         body = app.core.ReplaceAll(body, "{title}", item.title);
@@ -100,6 +151,7 @@ app.ViewerQuery = (function () {
 
     function Render(data) {
         gridControlName = "#" + data.index + "GridTbl";
+        var translationEntity = data.entity || data.Entity || (data.table ? data.table.entity : '');
 
         if ($("#QueryTitle").length === 1)
             $("#QueryTitle").html(data.title);
@@ -110,6 +162,8 @@ app.ViewerQuery = (function () {
             $("#QueryTitle").html(data.maintitle);
             $('html head').find('title').text(data.maintitle);
         }
+
+        TranslateViewerTarget('body', translationEntity);
 
 
 
@@ -147,8 +201,11 @@ app.ViewerQuery = (function () {
                 }
             }
             if (data.type != 'template') {
-                if (data.table != undefined)
+                if (data.table != undefined) {
                     data.table.Direct = data.Direct;
+                    if (!data.table.entity)
+                        data.table.entity = data.entity || data.Entity || '';
+                }
                 Table_Render(data.table, data.index);
             }
         }
@@ -324,6 +381,7 @@ app.ViewerQuery = (function () {
         };
         spec.onPostBody = function (data) {
             app.ui.CommonBehaviour();
+            TranslateViewerTarget(gridControlName, spec.entity);
             let extendName = spec.extendName != undefined ? spec.extendName : "Extend";
             if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
                 app[extendName]['EventHandler'](spec.key, spec.index, 'onPostBody', spec);
@@ -348,6 +406,7 @@ app.ViewerQuery = (function () {
         //};
 
         $(gridControlName).bootstrapTable(spec);
+        TranslateViewerTarget(gridControlName, spec.entity);
         if (spec.searchStyle != undefined) {
             $('.search').width(spec.searchStyle);
         }
@@ -459,6 +518,8 @@ app.ViewerQuery = (function () {
         app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
             .done(function (data, textStatus, jqXHR) {
                 var spec = data.table;
+                if (!spec.entity)
+                    spec.entity = data.entity || data.Entity || '';
                 title.html(data.title.supplant(row));
                 if (spec.classes === undefined) {
                     spec.classes = "table table-bordered table-hover table-index";
@@ -500,6 +561,7 @@ app.ViewerQuery = (function () {
                 };
                 spec.onPostBody = function (data) {
                     app.ui.CommonBehaviour();
+                    TranslateViewerTarget('#' + tableId, spec.entity);
                     let extendName = spec.extendName != undefined ? spec.extendName : "Extend";
                     if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
                         app[extendName]['EventHandler'](spec.key, spec.index, 'onPostBody', spec);
@@ -567,6 +629,7 @@ app.ViewerQuery = (function () {
                 });
 
                 $el.bootstrapTable(spec);
+                TranslateViewerTarget('#' + tableId, spec.entity);
 
                 app.ViewerQuery.Refresh(undefined, $el, id, url);
             });

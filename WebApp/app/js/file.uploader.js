@@ -31,6 +31,168 @@ function getMimeType(filename) {
     return mimeTypes[ext] || 'application/octet-stream';
 }
 
+function resolveUploaderTranslationPath($element) {
+    if ($element.closest('#AttachmentGrid, .AttachmentGrid').length > 0)
+        return 'Common/AttachmentGrid';
+
+    return null;
+}
+
+function resolveUploaderTranslationScope($element) {
+    var $scope = $element.closest('#AttachmentGrid, .AttachmentGrid');
+
+    if ($scope.length > 0)
+        return $scope.first();
+
+    return $element;
+}
+
+function getUploaderTranslations() {
+    if (app.language && app.language.getTranslations)
+        return app.language.getTranslations() || {};
+
+    return {};
+}
+
+function runUploaderTranslation($scope, translationPath, onComplete) {
+    if (!app.language || !app.language.translate || !translationPath)
+    {
+        if ($.isFunction(onComplete))
+            onComplete({});
+        return;
+    }
+
+    app.language.translate($scope, translationPath, function (translations) {
+        if ($.isFunction(onComplete))
+            onComplete(translations || {});
+    })();
+}
+
+function getUploaderTranslationValue(translations, key) {
+    if (!translations || !key)
+        return null;
+
+    return translations[key] || null;
+}
+
+function getUploaderTranslationText(translations, key) {
+    var translationValue = getUploaderTranslationValue(translations, key);
+
+    if (!translationValue)
+        return null;
+
+    switch (typeof translationValue) {
+        case 'string':
+            return translationValue;
+        case 'object':
+            return Object.prototype.hasOwnProperty.call(translationValue, 'text')
+                ? translationValue.text
+                : null;
+        default:
+            return null;
+    }
+}
+
+function getUploaderTranslationAttribute(translations, key, attributeName) {
+    var translationValue = getUploaderTranslationValue(translations, key);
+
+    if (!translationValue || typeof translationValue !== 'object')
+        return null;
+
+    return translationValue[attributeName] || null;
+}
+
+function applyUploaderTranslationToElement($element, translations) {
+    var id = $element.attr('id');
+    var translatedText = getUploaderTranslationText(translations, id);
+    var translatedTitle = getUploaderTranslationAttribute(translations, id, 'title');
+
+    if (!id)
+        return;
+
+    if (translatedText) {
+        if ($element.is('input'))
+            $element.val(translatedText);
+        else
+            $element.text(translatedText);
+    }
+
+    if (translatedTitle)
+        $element.attr('title', translatedTitle);
+}
+
+function applyUploaderTranslations($scope, translations) {
+    if (!$scope || $scope.length === 0 || !translations)
+        return;
+
+    $scope.find('[id]').each(function () {
+        applyUploaderTranslationToElement($(this), translations);
+    });
+}
+
+function applyUploaderPreviewTranslations($element, translations) {
+    var downloadTitle = getUploaderTranslationAttribute(translations, 'dzDownload', 'title');
+    var removeTitle = getUploaderTranslationAttribute(translations, 'dzRemove', 'title');
+
+    if (downloadTitle)
+        $element.find('.dz-download').attr('title', downloadTitle);
+
+    if (removeTitle)
+        $element.find('.dz-remove').attr('title', removeTitle);
+}
+
+function localizeUploaderSettings(settings, translations) {
+    var localizedSettings = $.extend({}, settings);
+
+    $.each([
+        'dictDefaultMessage',
+        'dictFallbackMessage',
+        'dictFileTooBig',
+        'dictInvalidFileType',
+        'dictResponseError',
+        'dictCancelUpload',
+        'dictUploadCanceled',
+        'dictCancelUploadConfirmation',
+        'dictRemoveFile',
+        'dictMaxFilesExceeded'
+    ], function (_, key) {
+        var translatedText = getUploaderTranslationText(translations, key);
+
+        if (translatedText)
+            localizedSettings[key] = translatedText;
+    });
+
+    return localizedSettings;
+}
+
+function updateDropzoneDictionary(dz, settings) {
+    if (!dz || !dz.options)
+        return;
+
+    dz.options.dictDefaultMessage = settings.dictDefaultMessage;
+    dz.options.dictFallbackMessage = settings.dictFallbackMessage;
+    dz.options.dictFileTooBig = settings.dictFileTooBig;
+    dz.options.dictInvalidFileType = settings.dictInvalidFileType;
+    dz.options.dictResponseError = settings.dictResponseError;
+    dz.options.dictCancelUpload = settings.dictCancelUpload;
+    dz.options.dictUploadCanceled = settings.dictUploadCanceled;
+    dz.options.dictCancelUploadConfirmation = settings.dictCancelUploadConfirmation;
+    dz.options.dictRemoveFile = settings.dictRemoveFile;
+    dz.options.dictMaxFilesExceeded = settings.dictMaxFilesExceeded;
+}
+
+function applyUploaderTranslationState($el, translationScope, dz, instance, settings, translations) {
+    var translatedValues = translations || {};
+    var translatedSettings = localizeUploaderSettings(settings, translatedValues);
+
+    if (instance)
+        instance.translations = translatedValues;
+
+    applyUploaderTranslations(translationScope, translatedValues);
+    applyUploaderPreviewTranslations($el, translatedValues);
+    updateDropzoneDictionary(dz, translatedSettings);
+}
+
 (function ($) {
     $.fn.fileUploader = function (optionsOrMethod) {
         var defaults = {
@@ -61,6 +223,10 @@ function getMimeType(filename) {
                 return this.each(function () {
                     var $el = $(this);
                     var elementId = $el.attr('id') || 'sin-id';
+                    var translationPath = resolveUploaderTranslationPath($el);
+                    var translationScope = resolveUploaderTranslationScope($el);
+                    var translations = getUploaderTranslations();
+                    var localizedSettings = localizeUploaderSettings(settings, translations);
 
                     // Prevenir inicialización duplicada
                     if ($el.data('fileUploader')) {
@@ -71,6 +237,11 @@ function getMimeType(filename) {
                     if ($el[0].dropzone) {
                         $el[0].dropzone.destroy();
                     }
+
+                    translations = getUploaderTranslations();
+                    localizedSettings = localizeUploaderSettings(settings, translations);
+                    applyUploaderTranslations(translationScope, translations);
+                    applyUploaderPreviewTranslations($el, translations);
 
                     var responses = [];
                     var hasError = false;
@@ -132,7 +303,7 @@ function getMimeType(filename) {
                         var downloadIcon = document.createElement('a');
                         downloadIcon.href = 'javascript:void(0)';
                         downloadIcon.className = 'dz-download';
-                        downloadIcon.title = 'Descargar';
+                        downloadIcon.title = getUploaderTranslationAttribute(translations, 'dzDownload', 'title') || 'Descargar';
                         downloadIcon.innerHTML = '<i class="fa fa-download" style="font-size: 18px; color: #28a745;"></i>';
                         downloadIcon.style.cssText = 'cursor: pointer; padding: 5px; display: inline-block;';
 
@@ -165,7 +336,7 @@ function getMimeType(filename) {
                         var deleteIcon = document.createElement('a');
                         deleteIcon.href = 'javascript:void(0)';
                         deleteIcon.className = 'dz-remove';
-                        deleteIcon.title = 'Eliminar';
+                        deleteIcon.title = getUploaderTranslationAttribute(translations, 'dzRemove', 'title') || 'Eliminar';
                         deleteIcon.innerHTML = '<i class="fa fa-trash" style="font-size: 18px; color: #dc3545;"></i>';
                         deleteIcon.style.cssText = 'cursor: pointer; padding: 5px; display: inline-block;';
 
@@ -186,19 +357,19 @@ function getMimeType(filename) {
                         url: 'javascript:void(0)',
                         autoProcessQueue: false,
                         clickable: true,
-                        maxFilesize: settings.maxFilesize,
-                        parallelUploads: settings.parallelUploads,
+                        maxFilesize: localizedSettings.maxFilesize,
+                        parallelUploads: localizedSettings.parallelUploads,
                         addRemoveLinks: false, // Desactivado - usamos iconos personalizados
-                        dictDefaultMessage: settings.dictDefaultMessage,
-                        dictFallbackMessage: settings.dictFallbackMessage,
-                        dictFileTooBig: settings.dictFileTooBig,
-                        dictInvalidFileType: settings.dictInvalidFileType,
-                        dictResponseError: settings.dictResponseError,
-                        dictCancelUpload: settings.dictCancelUpload,
-                        dictUploadCanceled: settings.dictUploadCanceled,
-                        dictCancelUploadConfirmation: settings.dictCancelUploadConfirmation,
-                        dictRemoveFile: settings.dictRemoveFile,
-                        dictMaxFilesExceeded: settings.dictMaxFilesExceeded,
+                        dictDefaultMessage: localizedSettings.dictDefaultMessage,
+                        dictFallbackMessage: localizedSettings.dictFallbackMessage,
+                        dictFileTooBig: localizedSettings.dictFileTooBig,
+                        dictInvalidFileType: localizedSettings.dictInvalidFileType,
+                        dictResponseError: localizedSettings.dictResponseError,
+                        dictCancelUpload: localizedSettings.dictCancelUpload,
+                        dictUploadCanceled: localizedSettings.dictUploadCanceled,
+                        dictCancelUploadConfirmation: localizedSettings.dictCancelUploadConfirmation,
+                        dictRemoveFile: localizedSettings.dictRemoveFile,
+                        dictMaxFilesExceeded: localizedSettings.dictMaxFilesExceeded,
 
                         init: function () {
                             var self = this;
@@ -295,7 +466,7 @@ function getMimeType(filename) {
                                     // Si hay archivos fallidos, marcar como error general
                                     if (failedList.length > 0) {
                                         hasError = true;
-                                        settings.fail(failedList, batch);
+                                        localizedSettings.fail(failedList, batch);
                                     }
 
                                     checkQueueComplete();
@@ -321,7 +492,7 @@ function getMimeType(filename) {
                                         Logger.log('Error AJAX al subir ' + ajaxErrorMessages.length + ' archivo(s): ' + error + ' - ' + JSON.stringify(ajaxErrorMessages));
                                     }
 
-                                    settings.fail(error, failedFiles);
+                                    localizedSettings.fail(error, failedFiles);
                                     checkQueueComplete();
                                 });
                             }
@@ -343,10 +514,10 @@ function getMimeType(filename) {
                                     };
 
                                     if (!hasError) {
-                                        settings.done(responses);
+                                        localizedSettings.done(responses);
                                     }
 
-                                    settings.always(result);
+                                    localizedSettings.always(result);
                                     self.emit('queuecomplete');
                                 }
                             }
@@ -449,7 +620,7 @@ function getMimeType(filename) {
 
                                         if (!progressToast) {
                                             // Crear el toast la primera vez
-                                            progressToast = toastr.info(message, 'Subiendo archivos', {
+                                            progressToast = toastr.info(message, getUploaderTranslationText(translations, 'UploadProgressTitle') || 'Subiendo archivos', {
                                                 timeOut: 0,
                                                 extendedTimeOut: 0,
                                                 closeButton: false,
@@ -544,6 +715,7 @@ function getMimeType(filename) {
                     var instance = {
                         dz: dz,
                         elementId: elementId,
+                        translations: translations,
                         responses: responses,
                         setupFileActions: setupFileActions, // Exponer funcion para uso en load()
                         getFiles: function () {
@@ -662,7 +834,7 @@ function getMimeType(filename) {
                                 var url = window.URL.createObjectURL(blob);
                                 var a = document.createElement('a');
                                 a.href = url;
-                                a.download = 'adjuntos_' + new Date().getTime() + '.zip';
+                                a.download = (getUploaderTranslationText(translations, 'ZipFileNamePrefix') || 'adjuntos') + '_' + new Date().getTime() + '.zip';
                                 a.style.display = 'none';
                                 document.body.appendChild(a);
                                 a.click();
@@ -702,9 +874,14 @@ function getMimeType(filename) {
                     };
 
                     $el.data('fileUploader', instance);
+                    runUploaderTranslation(translationScope, translationPath, function (translatedValues) {
+                        translations = translatedValues || {};
+                        localizedSettings = localizeUploaderSettings(settings, translations);
+                        applyUploaderTranslationState($el, translationScope, dz, instance, settings, translations);
+                    });
 
                     // 🔹 Auto-configurar botones de descarga si están habilitados
-                    if (settings.enableDownloadButtons) {
+                    if (localizedSettings.enableDownloadButtons) {
                         // Buscar botones con data-fileuploader-action
                         var $downloadAllBtn = $('[data-fileuploader-target="' + elementId + '"][data-fileuploader-action="downloadAll"]');
                         var $downloadZipBtn = $('[data-fileuploader-target="' + elementId + '"][data-fileuploader-action="downloadZip"]');

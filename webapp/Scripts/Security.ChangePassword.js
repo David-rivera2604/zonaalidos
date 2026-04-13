@@ -97,6 +97,7 @@ app.SecurityChangePassword = (function () {
         Init: function () {
             Event_Controls();
             Setup_Validations();
+            app.language.translate('body', 'changepassword')();
 
             $('#CurrentPassword').focus();
         }

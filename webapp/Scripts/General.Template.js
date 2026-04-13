@@ -357,6 +357,7 @@ app.GeneralTemplate = (function () {
             Event_Controls();
             Refresh();
             Setup_Validations();
+            app.language.translate('body', 'template')();
         },
         New: function (row) {
             let newRow = { Id: 0, Key: null, Description: null, EmailTo: null, Subject: null, Body: null, MasterTemplateId: null }

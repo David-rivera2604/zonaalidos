@@ -5,7 +5,7 @@
 
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Actualizar datos del cliente</h5>
+        <h5 id="AdministrationTitle">Actualizar datos del cliente</h5>
     </div>
     <div class="ibox-content">
         <div class='form-row'>
@@ -18,7 +18,7 @@
                                     <div class="row d-flex flex-row justify-content-center text-center">
                                         <!-- DocumentNumber Text -->
                                         <div class='col-sm-3 col-md-3'>
-                                            <h4 style="font-weight: 600;">Elija y digite el número de identificación</h4>
+                                            <h4 id="DocumentNumberHelpText" style="font-weight: 600;">Elija y digite el número de identificación</h4>
                                             <div class='form-group mt-3'>
                                                 <label class='control-label' for='DocumentNumber'>
                                                     Identificación<span class='required-mark'
@@ -34,10 +34,10 @@
                                                             Cédula
                                                         </button>
                                                         <div class="dropdown-menu" id="DocumentNumberTypeMenu">
-                                                            <a class="dropdown-item active" href="#" data-value='1'>Cédula</a>
-                                                            <a class="dropdown-item" href="#" data-value='2'>DIMEX</a>
-                                                            <a class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
-                                                            <a class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
+                                                            <a id="DocumentNumberTypeOption1" class="dropdown-item active" href="#" data-value='1'>Cédula</a>
+                                                            <a id="DocumentNumberTypeOption2" class="dropdown-item" href="#" data-value='2'>DIMEX</a>
+                                                            <a id="DocumentNumberTypeOption3" class="dropdown-item" href="#" data-value='3'>Pasaporte</a>
+                                                            <a id="DocumentNumberTypeOption4" class="dropdown-item" href="#" data-value='4'>Cédula jurídica</a>
                                                         </div>
                                                     </div>
                                                     <input id='DocumentNumber' name='DocumentNumber' type='text' class='form-control'
@@ -216,7 +216,7 @@
                                 <div class='col-md-12'>
                                     <div class="modal-footer">
                                         <button class="btn btn-primary" id="actualizarCambios">Actualizar cambios</button>
-                                        <a href="~/General/Administration"><button class="btn btn-default float-right" type="button">Cancelar</button></a>
+                                        <a id="AdministrationCancelLink" href="~/General/Administration"><button id="AdministrationCancelButton" class="btn btn-default float-right" type="button">Cancelar</button></a>
                                     </div>
                                 </div>
                             </div>
@@ -232,6 +232,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/AdministrarCliente.js")"></script>
 }
 

@@ -5,10 +5,9 @@
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span>
                 </button>
-                <h4 class="modal-title">Documentos requeridos</h4>
+                <h4 class="modal-title"><span id="DocumentRequiredModalTitle">Documentos requeridos</span></h4>
                 <small class="font-bold">
-                    Permite agregar un nuevo Documentos requeridos o editar uno ya
-                    existente
+                    <span id="DocumentRequiredModalSubtitle">Permite agregar un nuevo Documentos requeridos o editar uno ya existente</span>
                 </small>
             </div>
             <div class="modal-body">
@@ -24,7 +23,7 @@
                                         <!-- tipo -->
                                         <div class='col-sm-3 col-md-3'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='tipo'>Tipo de documento<span class='required-mark'>*</span></label>
+                                                <label class='control-label' for='tipo'><span id="DocumentRequiredTypeLabel">Tipo de documento</span><span class='required-mark'>*</span></label>
                                                 <select id='tipo' name='tipo' class='form-control' disabled>
                                                     <option value="99">Genérico</option>
                                                 </select>
@@ -33,14 +32,14 @@
                                         <!-- FileName -->
                                         <div class='col-sm-6 col-md-9'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='DNombre'>Archivo<span class='required-mark'>*</span></label>
+                                                <label class='control-label' for='DNombre'><span id="DocumentRequiredFileLabel">Archivo</span><span class='required-mark'>*</span></label>
                                                 <div class="input-group">
                                                     <input id='DNombre' name='DNombre' type='text' class='form-control' size='80' maxlength='80' placeholder="Indique el archivo a procesar..." readonly>
                                                     <input id="DStored" type="hidden" value="" />
                                                     <input id="DTamano" type="hidden" value="" />
                                                     <div class="input-group-append">
                                                         <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo a ser procesado">
-                                                            <span>Examinar...</span>
+                                                            <span id="DocumentRequiredBrowseText">Examinar...</span>
                                                             <input id="fileUploadModal" type="file" />
                                                         </span>
                                                     </div>
@@ -51,7 +50,7 @@
                                         <!-- Description -->
                                         <div class='col-sm-3 col-md-12'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='DDescripcion'>Descripción<span class='required-mark'>*</span></label>
+                                                <label class='control-label' for='DDescripcion'><span id="DocumentRequiredDescriptionLabel">Descripción</span><span class='required-mark'>*</span></label>
                                                 <input id='DDescripcion' name='DDescripcion' type='text' class='form-control' size='120' maxlength='120'>
                                             </div>
                                         </div>
@@ -65,9 +64,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="documentosrequeridosEdtFormSave"
                         data-doing="Guardando...">
-                    Guardar cambios
+                    <span id="DocumentRequiredSaveChangesText">Guardar cambios</span>
                 </button>
-                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal"><span id="DocumentRequiredCancelText">Cancelar</span></button>
             </div>
         </div>
     </div>

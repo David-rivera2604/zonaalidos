@@ -1,0 +1,47 @@
+{
+  "PaymentSettingsTitle": "User payment gateway access",
+  "PaymentSettingsSearch": {
+    "placeholder": "Filter by username",
+    "title": "Filter by username"
+  },
+  "ApplyFilter": "Filter",
+  "UserIdFlt": "User",
+  "UserId": "User",
+  "Currency": "Currency",
+  "ClientId": "Client ID",
+  "SecretKey": "Secret key",
+  "PaymentSettingsEdtFormSave": {
+    "text": "Save",
+    "title": "Save changes"
+  },
+  "PaymentSettingsEdtFormSaveContinue": {
+    "text": "Save and continue",
+    "title": "Save changes and continue"
+  },
+  "PaymentSettingsEdtFormSaveCopy": {
+    "text": "Save and copy",
+    "title": "Save changes and continue"
+  },
+  "PaymentSettingsEdtFormDuplicate": {
+    "text": "Duplicate",
+    "title": "Duplicate current information"
+  },
+  "PaymentSettingsEdtFormDelete": {
+    "text": "Delete",
+    "title": "Delete current information"
+  },
+  "PaymentSettingsEdtFormCancel": "Cancel",
+  "PaymentSettingsGridTbl": {
+    "columns": {
+      "UserIdDesc": "User",
+      "CurrencyDesc": "Currency",
+      "ClientId": "Client ID",
+      "SecretKey": "Secret key",
+      "UpdateDate": "Updated by",
+      "_5": {
+        "text": "Actions",
+        "title": "Available actions for a payment access"
+      }
+    }
+  }
+}

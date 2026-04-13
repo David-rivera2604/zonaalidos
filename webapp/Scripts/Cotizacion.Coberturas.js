@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.CotizacionCoberturas = (function () {
 
@@ -276,5 +276,6 @@ app.CotizacionCoberturas = (function () {
         }
     };
 })();
+
 
 

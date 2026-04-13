@@ -4,7 +4,7 @@
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                <h4 class="modal-title">Formulario conozca a su cliente - Persona Jurídica</h4>
+                <h4 class="modal-title"><span id="KycJuridicoModalTitle">Formulario conozca a su cliente - Persona Jurídica</span></h4>
             </div>
             <div class="modal-body">
                 <!-- Edit Form -->
@@ -16,7 +16,7 @@
                                     <!-- datosdelaempresaJur Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos de la empresa</h4>
+                                            <h4><span id="KycJuridicoCompanyDataTitle">Datos de la empresa</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -56,7 +56,7 @@
                                                 <div class='col-sm-3 col-md-3'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='numidentificacionJur'>Número cédula jurídica<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <input type='text' id='numidentificacionJur' ,' name='numidentificacionJur' class='form-control' size='40' maxlength='40' disabled />
+                                                        <input type='text' id='numidentificacionJur' name='numidentificacionJur' class='form-control' size='40' maxlength='40' disabled />
 
                                                     </div>
                                                 </div>
@@ -178,7 +178,7 @@
                                     <!-- domiciliocomercialJur Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Domicilio comercial</h4>
+                                            <h4><span id="KycJuridicoCommercialAddressTitle">Domicilio comercial</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -255,7 +255,7 @@
                                     <!-- datosdelrepresentantelegalJur Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Datos del representante legal</h4>
+                                            <h4><span id="KycJuridicoLegalRepresentativeTitle">Datos del representante legal</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -556,7 +556,7 @@
                                     <!-- domiciliopermanenteJur Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Domicilio permanente</h4>
+                                            <h4><span id="KycJuridicoPermanentAddressTitle">Domicilio permanente</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -610,7 +610,7 @@
                                     <!-- origendelosfondosJur Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Origen de los fondos</h4>
+                                            <h4><span id="KycJuridicoFundsOriginTitle">Origen de los fondos</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -912,7 +912,7 @@
                                     <!-- descripciondelapolizaJur Zone -->
                                     <div class="form-row">
                                         <div class="col-lg-12">
-                                            <h4>Descripción de la póliza</h4>
+                                            <h4><span id="KycJuridicoPolicyDescriptionTitle">Descripción de la póliza</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
 
@@ -1090,8 +1090,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="kycjuridicoJurEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios...">Guardar cambios</button>
-                <button id="kycjuridicoJurEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios..." data-dismiss="modal">Cancelar</button>
+                <button id="kycjuridicoJurEdtFormSave" type="button" class="btn btn-primary" data-doing="Guardando cambios..."><span id="KycJuridicoSaveChangesText">Guardar cambios</span></button>
+                <button id="kycjuridicoJurEdtFormCancel" type="button" class="btn btn-white" data-doing="Cancelando cambios..." data-dismiss="modal"><span id="KycJuridicoCancelText">Cancelar</span></button>
             </div>
         </div>
     </div>
@@ -1103,8 +1103,8 @@
         <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                <h4 class="modal-title">Participación accionaria</h4>
-                <small class="font-bold">Permite agregar un nuevo Participación accionaria o editar uno ya existente</small>
+                <h4 class="modal-title"><span id="KycJuridicoShareholderModalTitle">Participación accionaria</span></h4>
+                <small class="font-bold"><span id="KycJuridicoShareholderModalSubtitle">Permite agregar un nuevo Participación accionaria o editar uno ya existente</span></small>
             </div>
             <div class="modal-body">
                 <!-- participacionaccionariaJur Grid Edit Form -->
@@ -1307,8 +1307,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="participacionaccionariaJurEdtFormSave" data-doing="Guardando...">Guardar cambios</button>
-                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="participacionaccionariaJurEdtFormSave" data-doing="Guardando..."><span id="KycJuridicoShareholderSaveChangesText">Guardar cambios</span></button>
+                <button type="button" class="btn btn-white" data-dismiss="modal"><span id="KycJuridicoShareholderCancelText">Cancelar</span></button>
             </div>
         </div>
     </div>

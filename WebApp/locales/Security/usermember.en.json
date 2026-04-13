@@ -1,0 +1,103 @@
+{
+  "UserMemberTitle": "User maintenance",
+  "UserMemberSearch": {
+    "placeholder": "Filter by username or description",
+    "title": "Filter by username or description"
+  },
+  "ApplyFilter": "Filter",
+  "UserMemberMenuNew": "Create a new user",
+  "UserMemberMenuFilter": "Show advanced filter...",
+  "UserMemberMenuRefresh": "Reload users",
+  "UserMemberMenuExport": "Export to Excel...",
+  "UserMemberMenuAudit": "History...",
+  "RecordStatusFlt": "Status",
+  "UserName": "User",
+  "EMail": "Email",
+  "Password": "Password",
+  "DocumentNumber": "Identification",
+  "DocumentNumberType": "ID card",
+  "DocumentNumberTypeOption1": "ID card",
+  "DocumentNumberTypeOption2": "DIMEX",
+  "DocumentNumberTypeOption3": "Passport",
+  "DocumentNumberTypeOption4": "Legal entity ID",
+  "FirstName": "First name",
+  "LastName": "Last name",
+  "BirthDate": {
+    "text": "Date of birth",
+    "placeholder": "day/month/year"
+  },
+  "SecurityLevel": "Security",
+  "IsLockedOut": "Locked",
+  "IsLockedOuta": "Yes",
+  "IsLockedOutb": "No",
+  "BranchOffice": "Branch",
+  "Reference": "Reference",
+  "Position": "Position",
+  "PhoneNumber": "Phone",
+  "RecordStatus": "Record status",
+  "Roles": "Roles",
+  "AccessKey": "Integration access key",
+  "Cod_Agt": "Agent",
+  "IsService": "Is this a service account?",
+  "IsServicea": "Yes",
+  "IsServiceb": "No",
+  "Is2FAEnabled": "Is two-factor authentication enabled?",
+  "Is2FAEnableda": "Yes",
+  "Is2FAEnabledb": "No",
+  "UserMemberEdtFormSave": {
+    "text": "Save changes",
+    "title": "Save changes"
+  },
+  "UserMemberEdtFormSaveContinue": {
+    "text": "Save and continue",
+    "title": "Save changes and continue"
+  },
+  "UserMemberEdtFormSaveCopy": {
+    "text": "Save and copy",
+    "title": "Save changes and continue"
+  },
+  "UserMemberEdtFormDuplicate": {
+    "text": "Duplicate",
+    "title": "Duplicate current information"
+  },
+  "UserMemberEdtFormDelete": {
+    "text": "Delete",
+    "title": "Delete current information"
+  },
+  "UserMemberEdtFormCancel": "Cancel",
+  "UserMemberGridTbl": {
+    "columns": {
+      "UserName": "User",
+      "EMail": "Email",
+      "FirstName": {
+        "text": "First name",
+        "title": "First name"
+      },
+      "LastName": {
+        "text": "Last name",
+        "title": "Last name"
+      },
+      "LoginDate": {
+        "text": "Last login",
+        "title": "Last user login"
+      },
+      "LockedOutDate": {
+        "text": "Lock date",
+        "title": "Lock date"
+      },
+      "RoleList": {
+        "text": "Roles",
+        "title": "Assigned roles list"
+      },
+      "RecordStatusDesc": {
+        "text": "Status",
+        "title": "General record status"
+      },
+      "UpdateDate": "Updated by",
+      "_9": {
+        "text": "Actions",
+        "title": "Available actions for a user"
+      }
+    }
+  }
+}

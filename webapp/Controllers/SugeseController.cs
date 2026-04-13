@@ -1,23 +1,22 @@
-﻿using System;
+﻿using aliados.Filters;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace aliados.Controllers
 {
+    [SetTheme]
     public class SugeseController : Controller
     {
         public ActionResult Generador()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 
         public ActionResult Envio()
         {
-            ViewBag.theme = ConfigurationManager.AppSettings["app.theme"];
             return View();
         }
 

@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.EmisionTercero = (function () {
 
@@ -636,6 +636,10 @@ app.EmisionTercero = (function () {
             terceros_table_Validations();
             terceros_controls_Events();
 
+            if (app.language && app.language.translate) {
+                app.language.translate('#tercerosModal', '_tercero')();
+            }
+
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
@@ -659,3 +663,4 @@ window.tercerosTbl_Events = {
         e.stopPropagation();
     }
 };
+

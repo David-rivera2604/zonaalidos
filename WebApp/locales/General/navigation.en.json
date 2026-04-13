@@ -1,0 +1,67 @@
+{
+  "NavigationTitle": "Navigation maintenance",
+  "NavigationSearch": {
+    "placeholder": "Filter by menu title or description",
+    "title": "Filter by menu title or description"
+  },
+  "ApplyFilter": "Filter",
+  "RecordStatusFlt": "Status",
+  "ParentCode": "Menu",
+  "Code": "Code",
+  "Type": "Type",
+  "Title": "Title",
+  "Description": "Description",
+  "MenuTitle": "Menu title",
+  "URLPath": "Path",
+  "URLHelp": "Help",
+  "SmallImage": "Small image",
+  "BigImage": "Large image",
+  "Sequence": "Order",
+  "Roles": "Roles",
+  "RecordStatus": "Record status",
+  "NavigationEdtFormSave": {
+    "text": "Save",
+    "title": "Save changes"
+  },
+  "NavigationEdtFormSaveContinue": {
+    "text": "Save and continue",
+    "title": "Save changes and continue"
+  },
+  "NavigationEdtFormSaveCopy": {
+    "text": "Save and copy",
+    "title": "Save changes and continue"
+  },
+  "NavigationEdtFormDuplicate": {
+    "text": "Duplicate",
+    "title": "Duplicate current information"
+  },
+  "NavigationEdtFormDelete": {
+    "text": "Delete",
+    "title": "Delete current information"
+  },
+  "NavigationEdtFormCancel": "Cancel",
+  "NavigationGridTbl": {
+    "columns": {
+      "ParentCodeDesc": "Menu",
+      "Code": "Code",
+      "TypeDesc": "Type",
+      "Sequence": {
+        "text": "Order",
+        "title": "Display order"
+      },
+      "Title": "Title",
+      "Description": "Description",
+      "MenuTitle": "Menu title",
+      "URLPath": "Path",
+      "URLHelp": "Help",
+      "SmallImage": "Small image",
+      "BigImage": "Large image",
+      "RecordStatusDesc": "Record status",
+      "UpdateDate": "Updated by",
+      "_12": {
+        "text": "Actions",
+        "title": "Available actions for a navigation item"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.HogarTotal = (function () {
 
@@ -2520,6 +2520,11 @@ app.HogarTotal = (function () {
             formularios_table_setup();
 
             Setup();
+            app.language.translate('body', 'hogartotal')();
+            app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
+    app.language.translate('#quoteBlock', '_resumen')();
+    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+    app.language.translate('#tercerosModal', '_tercero')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
@@ -2610,4 +2615,6 @@ window.formulariosTbl_Events = {
         e.stopPropagation();
     }
 };
+
+
 

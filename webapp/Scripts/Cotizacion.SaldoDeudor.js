@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 var errors = false;
 var msj_errors = '';
 
@@ -895,6 +895,12 @@ app.CotizacionSaldoDeudor = (function () {
                 plandepagoporfrecuencia_table_setup();
 
                 Controls_Events();
+                if (app.language && app.language.translate) {
+                    app.language.translate('#quoteBlock', '_resumen')();
+                    app.language.translate('#DatosGeneralesTitle', '_datosgenerales')();
+                    app.language.translate('#coberturasTbl', '_coberturaPlan')();
+                    app.language.translate('#polizagrupoZone', '_polizagrupo')();
+                }
                 pre_imc_change_peso();
                 pre_imc_change_estatura();
                 valid_inic_prestamo();
@@ -937,5 +943,7 @@ app.CotizacionSaldoDeudor = (function () {
         }
     };
 })();
+
+
 
 

@@ -1,0 +1,66 @@
+{
+  "QueryTitle": {
+    "text": "Cases",
+    "title": "Cases list"
+  },
+  "1GridTbl": {
+    "columns": {
+      "ID": {
+        "text": "Case No.",
+        "title": "Case identifier"
+      },
+      "PRIORITYDESC": {
+        "text": "Priority",
+        "title": "Case priority"
+      },
+      "TITLE": {
+        "text": "Subject",
+        "title": "Case subject"
+      },
+      "CORREDURIA": {
+        "text": "Brokerage",
+        "title": "Brokerage office"
+      },
+      "CONTACTMAINNAME": {
+        "text": "Contact",
+        "title": "Main contact"
+      },
+      "STARTDATE": {
+        "text": "Created",
+        "title": "Creation date"
+      },
+      "STATUSDESC": {
+        "text": "Status",
+        "title": "Case status"
+      },
+      "Progreso": {
+        "text": "% Progress",
+        "title": "Case progress"
+      },
+      "STEPNAME": {
+        "text": "Current stage",
+        "title": "Current workflow stage"
+      },
+      "FINISHDATE": {
+        "text": "Completed",
+        "title": "Completion date"
+      },
+      "STEPSTARTDATE": {
+        "text": "STEPSTARTDATE",
+        "title": "Step start date"
+      },
+      "STEPFINISHDATE": {
+        "text": "STEPFINISHDATE",
+        "title": "Step finish date"
+      },
+      "STEPDUEDATE": {
+        "text": "STEPDUEDATE",
+        "title": "Step due date"
+      },
+      "ROLES": {
+        "text": "Roles",
+        "title": "Assigned roles"
+      }
+    }
+  }
+}

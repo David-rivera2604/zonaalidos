@@ -1,0 +1,80 @@
+{
+  "PageTitle": "Student Auto-Issuance",
+  "PageSubTitle": "Quote.",
+  "EstudiantilIntroText": "MAPFRE brings you a new way to protect your family by subscribing to this Student insurance. We will support you by fulfilling the commitments derived from it regarding the risks assumed through this policy.",
+  "EstudiantilRequiredFieldsText": "All fields marked with a red asterisk are required to continue.",
+  "EstudiantilLinkText": "Student Auto-Issuance",
+  "EstudiantilSloganText": "We protect you!",
+  "DatosGeneralesTitle": "General information",
+  "DatosAseguradoTitle": "Insured person data",
+  "InformacionGeneralTitle": "General information",
+  "agt_cod": "Agent",
+  "cod_cuadro_com": "Commissions table",
+  "cod_mon": "Currency",
+  "cod_fracc_pago": "Payment installment frequency",
+  "fec_efec_poliza": {
+    "text": "Coverage start date",
+    "placeholder": "day/month/year"
+  },
+  "fec_vcto_poliza": {
+    "text": "Coverage end date",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO": {
+    "text": "Date of birth",
+    "placeholder": "day/month/year"
+  },
+  "MCA_SEXO": "Gender",
+  "MCA_SEXO_1": "Female",
+  "MCA_SEXO_2": "Male",
+  "TXT_CRED_ESTUD": "Student credential",
+  "COD_PLAN_AP": "Plan",
+  "CoberturasSectionTitle": "Coverages",
+  "PlanDePagoSectionTitle": "Payment plan",
+  "cotizar": "Quote",
+  "limpiar": "Clear",
+  "ResumenTitle": "Summary",
+  "PresupuestoBadge": "Quote #",
+  "ImporteTotalLabel": "Total amount",
+  "PrimaNetaLabel": "Net premium",
+  "IvaLabel": "VAT",
+  "RecargoLabel": "Surcharge",
+  "CuotasLink": {
+    "text": "Installments",
+    "title": "View installment details"
+  },
+  "EmitirText": "Issue",
+  "ImprimirText": "Print",
+  "ImportePorFraccionamientoTitle": "Amount by payment installment frequency",
+  "coberturasTbl": {
+    "columns": {
+      "riesgo": {
+        "text": "Risk",
+        "title": "Risk number"
+      },
+      "codigo": "Code",
+      "nombre": "Name",
+      "capital": "Capital",
+      "primatotal": "Total premium",
+      "deducible": "Deductible"
+    }
+  },
+  "plandepagoTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recardoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  },
+  "plandepagoporfrecuenciaTbl": {
+    "columns": {
+      "frecuencia": "Installment frequency",
+      "importetotal": "Amount",
+      "recargoporfraccionamiento": "%"
+    }
+  }
+}

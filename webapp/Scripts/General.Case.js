@@ -330,6 +330,8 @@ app.GeneralCase = (function () {
             Event_Controls();
             Setup_Validations();
             Init_Lookups();
+            app.language.translate('body', 'Case')();
+
         },
         EditRow: function (row) {
             EditMode(row);

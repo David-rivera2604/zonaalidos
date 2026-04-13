@@ -1,0 +1,134 @@
+{
+  "PageTitle": "Personal Accidents Auto-Issuance",
+  "PageSubTitle": "Issue.",
+  "EstudiantilIntroText": "MAPFRE brings you a new way to protect your family by subscribing to this Personal Accidents insurance. We will support you by fulfilling the commitments derived from the risks assumed through this policy.",
+  "EstudiantilRequiredFieldsText": "All fields marked with a red asterisk are required to continue.",
+  "EstudiantilLinkText": "Personal Accidents Auto-Issuance",
+  "EstudiantilSloganText": "We protect you!",
+  "DatosGeneralesTitle": "General information",
+  "ModalidadTitle": "Modality",
+  "DatosAseguradoTitle": "Insured person data",
+  "InformacionGeneralTitle": "General information",
+  "agt_cod": "Agent",
+  "cod_cuadro_com": "Commissions table",
+  "cod_mon": "Currency",
+  "cod_fracc_pago": "Payment installment frequency",
+  "fec_efec_poliza": {
+    "text": "Coverage start date",
+    "placeholder": "day/month/year"
+  },
+  "fec_vcto_poliza": {
+    "text": "Coverage end date",
+    "placeholder": "day/month/year"
+  },
+  "FEC_NACIMIENTO": {
+    "text": "Date of birth",
+    "placeholder": "day/month/year"
+  },
+  "MCA_SEXO": "Gender",
+  "MCA_SEXO_1": "Female",
+  "MCA_SEXO_2": "Male",
+  "TXT_CRED_ESTUD": "Student credential",
+  "COD_OCUPACION": "Occupation-related activity",
+  "COD_DEDUCIBLE": "Daily income deductible days",
+  "user_txt_motivo_spto": "If you want to manually complete the issuing user name, fill in this field.",
+  "COD_OCUPACION_Label": "Occupation-related activity",
+  "COD_DEDUCIBLE_Label": "Daily income deductible days",
+  "COD_PLAN_AP": "Plan",
+  "user_txt_motivo_spto_Label": "If you want to manually complete the issuing user name, fill in this field.",
+  "TercerosSectionTitle": "Third parties",
+  "DocumentosRequeridosSectionTitle": "Required documents",
+  "GridNoMatches": "No records found",
+  "CoberturasSectionTitle": "Coverages",
+  "PlanDePagoSectionTitle": "Payment plan",
+  "cotizar": "Quote",
+  "limpiar": "Clear",
+  "ResumenTitle": "Summary",
+  "PresupuestoBadge": "Quote #",
+  "ImporteTotalLabel": "Total amount",
+  "PrimaNetaLabel": "Net premium",
+  "IvaLabel": "VAT",
+  "RecargoLabel": "Surcharge",
+  "CuotasLink": {
+    "text": "Installments",
+    "title": "View installment details"
+  },
+  "EmitirText": "Issue",
+  "ImprimirText": "Print",
+  "ImportePorFraccionamientoTitle": "Amount by payment installment frequency",
+  "coberturasTbl": {
+    "columns": {
+      "riesgo": {
+        "text": "Risk",
+        "title": "Risk number"
+      },
+      "codigo": "Code",
+      "nombre": "Name",
+      "capital": "Capital",
+      "primatotal": "Total premium",
+      "deducible": "Deductible"
+    }
+  },
+  "plandepagoTbl": {
+    "columns": {
+      "cuota": "Installment",
+      "fechadesde": "From date",
+      "fechahasta": "To date",
+      "primaneta": "Net premium",
+      "iVA": "VAT",
+      "recargoporfraccionamiento": "Installment surcharge",
+      "importetotal": "Total amount"
+    }
+  },
+  "plandepagoporfrecuenciaTbl": {
+    "columns": {
+      "frecuencia": "Installment frequency",
+      "importetotal": "Amount",
+      "recargoporfraccionamiento": "%"
+    }
+  },
+  "tercerosTbl": {
+    "columns": {
+      "tipodeterceroDesc": "Third-party type",
+      "numeroderiesgo": "Risk",
+      "DocumentNumber": "ID",
+      "nombre": "Full name",
+      "fechadenacimiento": "Birth date",
+      "tercerosMca_sexoDesc": "Gender",
+      "estadoCivilDesc": "Marital status",
+      "numerodetelefono": "Phone",
+      "correoelectronico": "Email",
+      "TProvinciaDesc": "Province",
+      "TCantonDesc": "County",
+      "TDistritoDesc": "District",
+      "otrasenas": "Address details",
+      "numerodeprestamo": "Loan number",
+      "importedecesion": "Assignment amount",
+      "vencimientodecesion": "Assignment expiration",
+      "porcentajeacredor": "Creditor percentage",
+      "parentesco": "Relationship",
+      "porcentaje": "Percentage",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  },
+  "documentosrequeridosTbl": {
+    "columns": {
+      "DStored": "Status",
+      "tipo": "Document type",
+      "DNombre": "File",
+      "DArchivoEsperado": "Expected file",
+      "Grupo": "Group",
+      "DFecha": "Date",
+      "DTamano": "Size",
+      "Actions": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  }
+,
+  "ThirdPartyCancelText": "Cancel"}
+

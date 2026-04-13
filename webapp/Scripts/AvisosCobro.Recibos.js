@@ -74,9 +74,9 @@ app.AvisosRecibos = (function () {
         app.ui.SetDropDownNumericValue('#contratos', data.contratos, true);
         $('#DocumentNumber').val(data.DocumentNumber);
         if (data.recibos != null)
-            $('#recibosTbl').bootstrapTable('load', data.recibos);
+            $('#RecibosGridTbl').bootstrapTable('load', data.recibos);
         else
-            $('#recibosTbl').bootstrapTable('load', {});
+            $('#RecibosGridTbl').bootstrapTable('load', {});
 
     };
 
@@ -118,7 +118,7 @@ app.AvisosRecibos = (function () {
 
             if (app.ui.IsValid('#PrototypeEdtForm', false)) {
                 let payload = MapInputToObject();
-                payload.Lista_Recibos = $('#recibosTbl').bootstrapTable('getData').filter(i => i.seleccionado).map(u => u.Num_Recibo).join(';');
+                payload.Lista_Recibos = $('#RecibosGridTbl').bootstrapTable('getData').filter(i => i.seleccionado).map(u => u.Num_Recibo).join(';');
 
                 app.ui.ButtonDoing('#GeneraAvisos');
                 app.core.Post(app.setting.apipath + 'v1/AvisoCobro/Generar',
@@ -130,8 +130,8 @@ app.AvisosRecibos = (function () {
                         } else {
                             app.ui.ShowAlert('quoteNotify', 'alert-danger', 'Ha ocurrido un error al tratar de generar el aviso de cobro, por favor intente nuevamente y en caso de persistir el problema contacte el personal de soporte');
                         }
-                        $('#recibosTbl').bootstrapTable('removeAll', {});
-                        $('#recibosTbl').bootstrapTable('load', {});
+                        $('#RecibosGridTbl').bootstrapTable('removeAll', {});
+                        $('#RecibosGridTbl').bootstrapTable('load', {});
 
                     }).always(function () {
                         app.ui.ButtonDone('#GeneraAvisos');
@@ -155,9 +155,9 @@ app.AvisosRecibos = (function () {
                         }
                         else {
                             if (data != null)
-                                $('#recibosTbl').bootstrapTable('load', data);
+                                $('#RecibosGridTbl').bootstrapTable('load', data);
                             else
-                                $('#recibosTbl').bootstrapTable('load', {});
+                                $('#RecibosGridTbl').bootstrapTable('load', {});
                         }
 
                     }).always(function () {
@@ -190,15 +190,15 @@ app.AvisosRecibos = (function () {
         let event = $(e).data('event');
         switch (event) {
             case 'clear.grid':
-                $('#recibosTbl').bootstrapTable('removeAll', {});
-                $('#recibosTbl').bootstrapTable('load', {});
+                $('#RecibosGridTbl').bootstrapTable('removeAll', {});
+                $('#RecibosGridTbl').bootstrapTable('load', {});
                 break;
         }
 
         if ($('#generalNotify').html().length > 10) {
             $('#generalNotify').html('');
         }
-        $('#GeneraAvisos').prop("disabled", $('#recibosTbl').bootstrapTable('getData').filter(i => i.seleccionado).length == 0);
+        $('#GeneraAvisos').prop("disabled", $('#RecibosGridTbl').bootstrapTable('getData').filter(i => i.seleccionado).length == 0);
 
         if (changedCallback !== undefined && changedCallback !== null)
             changedCallback(MapInputToObject());
@@ -206,7 +206,7 @@ app.AvisosRecibos = (function () {
         if (e != null && e.name == 'btSelectAllX') {
             console.log(e);
             let checked = $("[name='btSelectAll']").is(":checked");
-            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+            $('#RecibosGridTbl').bootstrapTable('getData').forEach(function (item) {
                 item.seleccionado = checked;
             })
         }
@@ -233,7 +233,7 @@ app.AvisosRecibos = (function () {
 
     function recibos_table_setup() {
 
-        $('#recibosTbl').bootstrapTable({
+        $('#RecibosGridTbl').bootstrapTable({
             uniqueId: 'Num_Recibo',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: true,
@@ -349,20 +349,20 @@ app.AvisosRecibos = (function () {
                 }  ]
         });
 
-        $('#recibosTbl').on('check.bs.table', function () {
-            data_changed('#recibosTbl');
+        $('#RecibosGridTbl').on('check.bs.table', function () {
+            data_changed('#RecibosGridTbl');
         });
-        $('#recibosTbl').on('uncheck.bs.table', function () {
-            data_changed('#recibosTbl');
+        $('#RecibosGridTbl').on('uncheck.bs.table', function () {
+            data_changed('#RecibosGridTbl');
         });
 
-        $('#recibosTbl').on('check-all.bs.table', function () {
-            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+        $('#RecibosGridTbl').on('check-all.bs.table', function () {
+            $('#RecibosGridTbl').bootstrapTable('getData').forEach(function (item) {
                 item.seleccionado = true;
             })
         });
-        $('#recibosTbl').on('uncheck-all.bs.table', function () {
-            $('#recibosTbl').bootstrapTable('getData').forEach(function (item) {
+        $('#RecibosGridTbl').on('uncheck-all.bs.table', function () {
+            $('#RecibosGridTbl').bootstrapTable('getData').forEach(function (item) {
                 item.seleccionado = false;
             })
         });
@@ -384,6 +384,7 @@ app.AvisosRecibos = (function () {
 
                 Controls_Events();
                 Setup();
+                app.language.translate('body', 'Recibos')();
                 console.log("Inicio");
             }
             catch (err) {

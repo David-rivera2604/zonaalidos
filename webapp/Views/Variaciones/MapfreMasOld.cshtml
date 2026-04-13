@@ -1,4 +1,4 @@
-﻿@{
+@{
     Layout = "~/Views/_Layout.cshtml";
 }
 @Styles.Render("~/Content/cssCRUD")
@@ -1010,6 +1010,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+    <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
     <script src="@Url.Content("~/Scripts/Variaciones.MapfreMasOld.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.Terceros.js")"></script>
@@ -1022,3 +1023,4 @@
         });
     </script>
 }
+

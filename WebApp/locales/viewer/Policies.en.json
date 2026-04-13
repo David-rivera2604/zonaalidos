@@ -1,0 +1,59 @@
+{
+  "QueryTitle": "Policies",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy",
+        "title": "Policy number"
+      },
+      "NOM_TOMADOR": {
+        "text": "Policyholder",
+        "title": "Policyholder name"
+      },
+      "NOM_RIESGO": {
+        "text": "Risk",
+        "title": "Risk description"
+      },
+      "VALOR_STATUS": {
+        "text": "Status",
+        "title": "Policy status"
+      },
+      "_4": {
+        "text": "Validity",
+        "title": "Validity period"
+      },
+      "_5": {
+        "text": "Endorsement",
+        "title": "Endorsement period"
+      },
+      "_6": {
+        "text": "Agent",
+        "title": "Agent information"
+      },
+      "DESDE": {
+        "text": "Start",
+        "title": "Start date"
+      },
+      "HASTA": {
+        "text": "Expiration",
+        "title": "Expiration date"
+      },
+      "FEC_EFEC_SPTO": {
+        "text": "Start",
+        "title": "Endorsement start date"
+      },
+      "FEC_VCTO_SPTO": {
+        "text": "Expiration",
+        "title": "Endorsement expiration date"
+      },
+      "TIP_DOCUM": {
+        "text": "ID",
+        "title": "Agent identification"
+      },
+      "AGENTE": {
+        "text": "Names",
+        "title": "Agent names"
+      }
+    }
+  }
+}
