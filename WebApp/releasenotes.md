@@ -1,5 +1,15 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.180 - 13/04/2026
+
+### Aliados - MapfreMasPlus: Se habilita el uso del contrato para poder agregar terecero por medio de reglas.
+
+#### Funcionalidades implementadas:
+
+- Se habilita el uso del contrato para poder agregar terecero por medio de reglas. Ejmplo: "Condition": "contrato=10701"
+- 
+---
+
 ## Versión 1.6.179 - 07/04/2026
 
 ### Aliados - MapfreMasPlus: Al seleccionar el contrato 10700, el campo 'RC alcohol' se marca como 'si' y se bloquea.

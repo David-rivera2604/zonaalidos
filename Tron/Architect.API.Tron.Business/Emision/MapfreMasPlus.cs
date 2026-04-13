@@ -80,7 +80,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 if (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron)
                 {
-                    result.terceros = Reglas.research.Apply_Terceros("MapfreMasPlus", result.terceros, result.Fuente_Tomador, tokenInfo);
+                    result.terceros = Reglas.research.Apply_Terceros("MapfreMasPlus", result.terceros, result.Fuente_Tomador, result.contrato, tokenInfo);
                 }
 
                 result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMasPlus", null, result.MCA_CERO_KM, tokenInfo);

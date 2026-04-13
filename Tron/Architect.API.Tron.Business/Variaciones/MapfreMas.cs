@@ -44,7 +44,7 @@ namespace Architect.API.Tron.Business.Variaciones
 
                 if (!tokenInfo.Roles.Contain("Purdy") )
                 {
-                    result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
+                    result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, result.contrato, tokenInfo);
                 }
 
                 result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);

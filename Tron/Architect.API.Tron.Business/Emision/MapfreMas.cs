@@ -84,7 +84,7 @@ namespace Architect.API.Tron.Business.Emision
                 if (!tokenInfo.Roles.Contain("Purdy") &&
                     (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron))
                 {
-                    result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, tokenInfo);
+                    result.terceros = Reglas.research.Apply_Terceros("MapfreMas", result.terceros, result.Fuente_Tomador, result.contrato, tokenInfo);
                 }
 
                 result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("MapfreMas", null, result.MCA_CERO_KM, tokenInfo);

@@ -39,7 +39,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 //result.terceros = Default_Terceros(result);
 
-                result.terceros = Reglas.research.Apply_Terceros("Estudiantil", result.terceros, string.Empty, tokenInfo);
+                result.terceros = Reglas.research.Apply_Terceros("Estudiantil", result.terceros, string.Empty, result.num_contrato, tokenInfo);
 
                 result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("Estudiantil", null, 0, tokenInfo);
 
