@@ -1,0 +1,47 @@
+{
+  "QueryTitle": "Policy detail - Certificates by term",
+  "1GridTbl": {
+    "columns": {
+      "NRO_REGISTRO": {
+        "text": "#",
+        "title": "Record number"
+      },
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "NUM_RIESGO": {
+        "text": "Risk No.",
+        "title": "Risk number"
+      },
+      "NUM_SPTO": {
+        "text": "Endorsement No.",
+        "title": "Endorsement number"
+      },
+      "TIP_SPTO": {
+        "text": "Endorsement type",
+        "title": "Type of endorsement"
+      },
+      "FEC_EMISION": {
+        "text": "Issue date",
+        "title": "Issue date"
+      },
+      "FEC_EFEC_POLIZA": {
+        "text": "Coverage start date",
+        "title": "Policy effective date"
+      },
+      "FEC_VCTO_POLIZA": {
+        "text": "Coverage end date",
+        "title": "Policy expiration date"
+      },
+      "ID_REPORTE": {
+        "text": "Report ID",
+        "title": "Report identifier"
+      },
+      "_9": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "QueryTitle": "Collected bills",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "NOM_COMPLETO": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "NUM_RECIBO": {
+        "text": "Bill",
+        "title": "Bill number"
+      },
+      "FEC_EFEC_RECIBO": {
+        "text": "Bill start date",
+        "title": "Bill effective start date"
+      },
+      "FEC_VCTO_RECIBO": {
+        "text": "Bill end date",
+        "title": "Bill expiration date"
+      },
+      "COD_MON_ISO": {
+        "text": "Currency",
+        "title": "Currency"
+      },
+      "IMP_RECIBO": {
+        "text": "Amount",
+        "title": "Bill amount"
+      },
+      "FEC_SITUACION": {
+        "text": "Payment date",
+        "title": "Payment date"
+      },
+      "_8": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  }
+}

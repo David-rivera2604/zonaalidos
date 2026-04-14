@@ -1,6 +1,14 @@
 ﻿var app = app || {};
 app.frm = (() => {
 
+    const getTableLanguageConfig = () => {
+        if (!app.language || typeof app.language.getBootstrapTableTranslations !== 'function') {
+            return {};
+        }
+
+        return app.language.getBootstrapTableTranslations() || {};
+    };
+
     const Validations_Setup = (formSelector, elements) => {
 
         // Construir reglas y mensajes dinámicamente desde elements
@@ -134,7 +142,8 @@ app.frm = (() => {
                     export: 'fa-download'
                 }
             };
-            const fullconfig = { ...conf, ...options };
+            const languageConfig = getTableLanguageConfig();
+            const fullconfig = { ...conf, ...languageConfig, ...options };
             if (typeof selector === 'string') {
                 $(selector).bootstrapTable(fullconfig);
             } else {

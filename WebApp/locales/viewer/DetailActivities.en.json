@@ -1,0 +1,35 @@
+{
+  "QueryTitle": "List of activities performed by a user",
+  "1GridTbl": {
+    "columns": {
+      "Id": {
+        "text": "Id",
+        "title": "Activity identifier"
+      },
+      "Usuario": {
+        "text": "User",
+        "title": "Username"
+      },
+      "Fecha": {
+        "text": "Date",
+        "title": "Activity date and time"
+      },
+      "Entidad": {
+        "text": "Entity",
+        "title": "Related entity"
+      },
+      "Referencia": {
+        "text": "Reference",
+        "title": "Reference number"
+      },
+      "Acción": {
+        "text": "Action",
+        "title": "Performed action"
+      },
+      "Descripción": {
+        "text": "Description",
+        "title": "Activity description"
+      }
+    }
+  }
+}

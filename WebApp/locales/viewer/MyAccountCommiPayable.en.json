@@ -1,0 +1,43 @@
+{
+  "QueryTitle": "Estimated commissions payable",
+  "1GridTbl": {
+    "columns": {
+      "COD_CIA": {
+        "text": "Company code",
+        "title": "Company code"
+      },
+      "COD_AGT": {
+        "text": "Agent code",
+        "title": "Agent code"
+      },
+      "TIP_DOCUM_AGT": {
+        "text": "Agent ID type",
+        "title": "Agent identification document type"
+      },
+      "COD_DOCUM_AGT": {
+        "text": "Agent ID",
+        "title": "Agent identification number"
+      },
+      "COD_MON": {
+        "text": "Currency code",
+        "title": "Currency code"
+      },
+      "NOM_MON": {
+        "text": "Currency",
+        "title": "Currency"
+      },
+      "IMP_RECIBO": {
+        "text": "Bill amount",
+        "title": "Bill amount"
+      },
+      "IMP_MVTO": {
+        "text": "Commission",
+        "title": "Commission amount"
+      },
+      "KEY": {
+        "text": "Key",
+        "title": "Record key"
+      }
+    }
+  }
+}

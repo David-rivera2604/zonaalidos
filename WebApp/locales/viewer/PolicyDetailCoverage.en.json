@@ -1,0 +1,51 @@
+{
+  "QueryTitle": "Coverages",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "COD_COB": {
+        "text": "Code",
+        "title": "Coverage code"
+      },
+      "NOM_COB": {
+        "text": "Name",
+        "title": "Coverage name"
+      },
+      "SUMA_ASEG": {
+        "text": "Insured amount",
+        "title": "Insured amount"
+      },
+      "IMP_ANUAL": {
+        "text": "Annual premium",
+        "title": "Annual premium amount"
+      },
+      "IMP_IVA": {
+        "text": "Tax amount",
+        "title": "Tax amount"
+      },
+      "IMP_FRACC": {
+        "text": "Installment amount",
+        "title": "Installment amount"
+      },
+      "IMP_TOTAL": {
+        "text": "Total premium",
+        "title": "Total premium amount"
+      },
+      "COD_FRANQUICIA": {
+        "text": "Deductible code",
+        "title": "Deductible code"
+      },
+      "NOM_FRANQUICIA": {
+        "text": "Deductible",
+        "title": "Deductible description"
+      },
+      "TXT_ERROR": {
+        "text": "Error text",
+        "title": "Error description"
+      }
+    }
+  }
+}

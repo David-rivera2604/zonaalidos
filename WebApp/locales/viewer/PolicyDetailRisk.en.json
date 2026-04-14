@@ -1,0 +1,19 @@
+{
+  "QueryTitle": "Risk information",
+  "1GridTbl": {
+    "columns": {
+      "NOM_CAMPO": {
+        "text": "Name",
+        "title": "Field name"
+      },
+      "VAL_CAMPO": {
+        "text": "Value",
+        "title": "Field value"
+      },
+      "TXT_CAMPO": {
+        "text": "Description",
+        "title": "Field description"
+      }
+    }
+  }
+}

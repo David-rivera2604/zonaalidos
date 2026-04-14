@@ -1,0 +1,47 @@
+{
+  "QueryTitle": "Assignments",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "COD_NIVEL3_AGT": {
+        "text": "Agency",
+        "title": "Agency where the sale was made"
+      },
+      "COD_RAMO": {
+        "text": "Line code",
+        "title": "Code of the policy line of business"
+      },
+      "ABR_RAMO": {
+        "text": "Line name",
+        "title": "Description of the line of business"
+      },
+      "NUM_RECIBO": {
+        "text": "Bill No.",
+        "title": "Bill number"
+      },
+      "TIP_SITUACION": {
+        "text": "Status",
+        "title": "Bill status"
+      },
+      "FEC_MVTO": {
+        "text": "Movement date",
+        "title": "Date of movement"
+      },
+      "NOM_COMPLETO": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "IMP_RECIBO": {
+        "text": "Total bill",
+        "title": "Total premium amount of the paid bill"
+      },
+      "IMP_MVTO": {
+        "text": "Commission amount",
+        "title": "Commission amount of the bill"
+      }
+    }
+  }
+}

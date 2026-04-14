@@ -1,0 +1,23 @@
+{
+  "QueryTitle": "Uploaded documents",
+  "1GridTbl": {
+    "columns": {
+      "DESCRIPTION": {
+        "text": "Type",
+        "title": "Document type"
+      },
+      "FILENAME": {
+        "text": "File",
+        "title": "File name"
+      },
+      "FILESIZE": {
+        "text": "Size",
+        "title": "File size"
+      },
+      "UPDATEDATE": {
+        "text": "Date",
+        "title": "Upload date"
+      }
+    }
+  }
+}

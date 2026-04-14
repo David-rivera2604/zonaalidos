@@ -1,0 +1,23 @@
+{
+  "QueryTitle": "Third parties",
+  "1GridTbl": {
+    "columns": {
+      "TIP_DOCUM": {
+        "text": "Document type",
+        "title": "Type of document"
+      },
+      "COD_DOCUM": {
+        "text": "Document",
+        "title": "Document number"
+      },
+      "NOM_COMPLETO": {
+        "text": "Name",
+        "title": "Full name"
+      },
+      "NOM_BENEF": {
+        "text": "Type",
+        "title": "Third party type"
+      }
+    }
+  }
+}

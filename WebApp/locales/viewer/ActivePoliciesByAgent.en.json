@@ -1,0 +1,35 @@
+{
+  "QueryTitle": "Active policies",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "ABR_RAMO": {
+        "text": "Line of business",
+        "title": "Insurance line of business"
+      },
+      "COD_DOCUM": {
+        "text": "ID",
+        "title": "Identification number"
+      },
+      "NOM_COMPLETO": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "FEC_EFEC_POLIZA": {
+        "text": "Coverage start date",
+        "title": "Policy effective date"
+      },
+      "FEC_VCTO_POLIZA": {
+        "text": "Coverage end date",
+        "title": "Policy expiration date"
+      },
+      "_6": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  }
+}

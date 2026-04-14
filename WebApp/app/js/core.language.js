@@ -266,6 +266,33 @@ app.language = (function () {
         sessionStorage.setItem(storageKey, JSON.stringify(translations || {}));
     }
 
+    function formatTemplate(template, values) {
+        var source = template == null ? '' : String(template);
+
+        return source.replace(/\{(\d+)\}/g, function (match, index) {
+            var valueIndex = parseInt(index, 10);
+
+            if (!values || valueIndex >= values.length || typeof values[valueIndex] === 'undefined' || values[valueIndex] === null)
+                return '';
+
+            return String(values[valueIndex]);
+        });
+    }
+
+    function getCommonTranslations() {
+        return getTranslationsFromStorage(getCommonStorageKey()) || {};
+    }
+
+    function getRuntimeTranslationValue(key) {
+        return getTranslationValue(currentTranslations, key) || getTranslationValue(getCommonTranslations(), key);
+    }
+
+    function getRuntimeTranslationText(key, fallbackText) {
+        var translatedText = getTranslationTextFromValue(getRuntimeTranslationValue(key));
+
+        return translatedText || fallbackText || '';
+    }
+
 
     function resolveTarget(target) {
         if (!target)
@@ -440,10 +467,15 @@ app.language = (function () {
     function applyButtonTranslation($element, id, translations) {
         var buttonText = getTranslationText(translations, id);
         var buttonTitle = getTranslationAttribute(translations, id, 'title');
+        var buttonDoing = getTranslationAttribute(translations, id, 'doing');
 
         if (!buttonText) {
             if (buttonTitle)
                 $element.attr('title', buttonTitle);
+
+            if (buttonDoing)
+                $element.attr('data-doing', buttonDoing);
+
             return;
         }
 
@@ -454,6 +486,9 @@ app.language = (function () {
 
         if (buttonTitle)
             $element.attr('title', buttonTitle);
+
+        if (buttonDoing)
+            $element.attr('data-doing', buttonDoing);
     }
 
     function applyInputTranslation($element, id, translations) {
@@ -535,9 +570,21 @@ app.language = (function () {
 
         if ((!gridValue || typeof gridValue !== 'object') && translations && typeof translations === 'object') {
             // Fallback: if there is only one grid definition in the file, use it for dynamic table ids.
-            var keys = Object.keys(translations);
-            if (keys.length === 1)
-                gridValue = translations[keys[0]];
+            // Viewer locales usually contain extra keys such as QueryTitle, so we must detect
+            // grid-like blocks instead of relying on the total root-key count.
+            var gridKeys = Object.keys(translations).filter(function (key) {
+                var candidate = translations[key];
+                if (!candidate || typeof candidate !== 'object')
+                    return false;
+
+                if (candidate.columns && typeof candidate.columns === 'object')
+                    return true;
+
+                return /(?:GridTbl|Tbl)$/i.test(key);
+            });
+
+            if (gridKeys.length === 1)
+                gridValue = translations[gridKeys[0]];
         }
 
         if (!gridValue || typeof gridValue !== 'object')
@@ -699,6 +746,46 @@ app.language = (function () {
             if (translatedValue.title)
                 $header.attr('title', translatedValue.title);
         }
+    }
+
+    function getBootstrapTableTranslations() {
+        return {
+            formatRecordsPerPage: function (pageNumber) {
+                var template = getRuntimeTranslationText('GridPaginationRecordsPerPage', '{0} rows per page');
+                return formatTemplate(template, [pageNumber]);
+            },
+            formatShowingRows: function (pageFrom, pageTo, totalRows, totalNotFiltered) {
+                var templateKey = totalNotFiltered !== undefined && totalNotFiltered > 0 && totalNotFiltered > totalRows
+                    ? 'GridPaginationShowingRowsFiltered'
+                    : 'GridPaginationShowingRows';
+                var fallbackTemplate = templateKey === 'GridPaginationShowingRowsFiltered'
+                    ? 'Showing {0} to {1} of {2} rows (filtered from {3} total rows)'
+                    : 'Showing {0} to {1} of {2} total rows';
+
+                return formatTemplate(getRuntimeTranslationText(templateKey, fallbackTemplate), [pageFrom, pageTo, totalRows, totalNotFiltered]);
+            },
+            formatSRPaginationPreText: function () {
+                return getRuntimeTranslationText('GridPaginationPreviousPage', 'previous page');
+            },
+            formatSRPaginationPageText: function (page) {
+                return formatTemplate(getRuntimeTranslationText('GridPaginationPage', 'to page {0}'), [page]);
+            },
+            formatSRPaginationNextText: function () {
+                return getRuntimeTranslationText('GridPaginationNextPage', 'next page');
+            },
+            formatDetailPagination: function (totalRows) {
+                return formatTemplate(getRuntimeTranslationText('GridPaginationDetail', 'Showing {0} rows'), [totalRows]);
+            },
+            formatAllRows: function () {
+                return getRuntimeTranslationText('GridPaginationAllRows', 'All');
+            },
+            formatNoMatches: function () {
+                return getRuntimeTranslationText('GridNoMatches', 'No matching records found');
+            },
+            formatSearch: function () {
+                return getRuntimeTranslationText('GridToolbarSearch', 'Search');
+            }
+        };
     }
 
     function applyGridTableTranslations($container, translations) {
@@ -916,6 +1003,9 @@ app.language = (function () {
         },
         getTranslations: function () {
             return currentTranslations;
+        },
+        getBootstrapTableTranslations: function () {
+            return getBootstrapTableTranslations();
         }
     };
 })();
