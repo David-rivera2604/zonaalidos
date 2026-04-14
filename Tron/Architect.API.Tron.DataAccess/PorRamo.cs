@@ -250,10 +250,18 @@ SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD
         /// <summary>
         /// FORMAS DE PAGO/PLANES DE PAGO DEL RAMO
         /// </summary>
-        public static List<Architect.API.Tron.Contracts.Ramo.A1001403> FrecuenciaDePago(int cod_cia, int cod_ramo, int cod_mon)
+        public static List<Architect.API.Tron.Contracts.Ramo.A1001403> FrecuenciaDePago(int cod_cia, int cod_ramo, int cod_mon, string num_poliza_grupo = "", int num_contrato = 0)
         {
             List<Architect.API.Tron.Contracts.Ramo.A1001403> result = new List<Architect.API.Tron.Contracts.Ramo.A1001403>();
             string filter_bimensual = "";
+            string p_num_poliza_grupo = "9999999999999";
+            int p_num_contrato = 99999;
+
+            if (num_poliza_grupo != "" && num_contrato != 0)
+            {
+                p_num_poliza_grupo = num_poliza_grupo;
+                p_num_contrato = num_contrato;
+            }
 
             if((cod_ramo == 302 || cod_ramo == 303) && num_contrato != 10700){
 
@@ -265,7 +273,7 @@ SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD
                              " LEFT JOIN A1001402 b" +
                                " ON b.cod_cia = a.cod_cia AND b.cod_fracc_pago=a.cod_fracc_pago" +
                              " LEFT JOIN a2990020_mcr c" +
-                               " ON c.cod_cia = a.cod_cia AND c.cod_ramo=a.cod_ramo AND c.num_poliza_grupo=9999999999999 AND c.num_contrato=99999 AND (c.cod_mon = a.cod_mon OR c.cod_mon = 99) AND c.cod_fracc_pago=a.cod_fracc_pago AND c.mca_colectivo = 'N' AND nvl(c.mca_inh, 'N') = 'N'" +
+                               " ON c.cod_cia = a.cod_cia AND c.cod_ramo=a.cod_ramo AND c.num_poliza_grupo="+p_num_poliza_grupo+" AND c.num_contrato="+p_num_contrato+" AND (c.cod_mon = a.cod_mon OR c.cod_mon = 99) AND c.cod_fracc_pago=a.cod_fracc_pago AND c.mca_colectivo = 'N' AND nvl(c.mca_inh, 'N') = 'N'" +
                             " WHERE a.cod_cia = :cod_cia" +
                               " AND a.cod_ramo = :cod_ramo" +
                               " AND a.cod_mon = :cod_mon" +
