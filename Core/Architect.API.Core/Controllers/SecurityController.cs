@@ -103,7 +103,7 @@ namespace Architect.API.Process.WebApi.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            List<Architect.API.Core.Contracts.Security.NavAllowed> result = Core.Business.Security.Navigation.RetrieveNavigationAllowed(tokenInfo.Roles, tokenInfo.CompanyId);
+            List<Architect.API.Core.Contracts.Security.NavAllowed> result = Core.Business.Security.Navigation.RetrieveNavigationAllowed(tokenInfo.Roles, tokenInfo.CompanyId, tokenInfo.Language);
 
             if (result.IsEmpty())
                 return NotFound();

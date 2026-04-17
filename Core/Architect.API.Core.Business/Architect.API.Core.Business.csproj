@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="General\CustomData.cs" />
+    <Compile Include="General\Translation.cs" />
     <Compile Include="General\Tron.cs" />
     <Compile Include="Security\AccountSupport.cs" />
     <Compile Include="Security\OTP.cs" />

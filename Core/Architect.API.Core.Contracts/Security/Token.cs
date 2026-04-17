@@ -71,6 +71,12 @@ namespace Architect.API.Core.Contracts.Security
         [DataMember(), JsonProperty()]
         public string UserName { get; set; }
 
+        /// <summary>
+        /// Languaje usado en la session del usuario.
+        /// </summary>
+        [DataMember(), JsonProperty()]
+        public string Language { get; set; } = "ES";
+
         public List<SettingItem> Settings { get; set; }
 
     }
