@@ -2,6 +2,8 @@ var app = app || {};
 app.language = (function () {
     var currentTranslations = {};
     var languageFromUrlSynced = false;
+    var translationCacheIndexKey = 'app.language.translationCacheIndex';
+    var maxTranslationCacheItems = 10;
 
     function readQueryStringValue(key) {
         var search = window.location.search || '';
@@ -173,10 +175,106 @@ app.language = (function () {
         return buildStorageKey('Common');
     }
 
+    function isReservedStorageKey(storageKey) {
+        return storageKey === 'language' ||
+            storageKey === 'Language' ||
+            storageKey === 'Lang' ||
+            storageKey === 'lang' ||
+            storageKey === 'current' ||
+            storageKey === translationCacheIndexKey;
+    }
+
+    function isTranslationStorageKey(storageKey) {
+        if (!storageKey || isReservedStorageKey(storageKey))
+            return false;
+
+        return /\.[a-z]{2}$/i.test(storageKey);
+    }
+
+    function getStoredTranslationKeys() {
+        var keys = [];
+
+        for (var index = 0; index < sessionStorage.length; index++) {
+            var storageKey = sessionStorage.key(index);
+            if (isTranslationStorageKey(storageKey))
+                keys.push(storageKey);
+        }
+
+        return keys;
+    }
+
+    function getTranslationCacheIndex() {
+        var rawValue = sessionStorage.getItem(translationCacheIndexKey);
+        if (!rawValue)
+            return [];
+
+        try {
+            var parsedValue = JSON.parse(rawValue);
+            return $.isArray(parsedValue) ? parsedValue : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function saveTranslationCacheIndex(index) {
+        sessionStorage.setItem(translationCacheIndexKey, JSON.stringify(index || []));
+    }
+
+    function syncTranslationCacheIndex() {
+        var storedKeys = getStoredTranslationKeys();
+        var storedKeysLookup = {};
+        var normalizedIndex = [];
+
+        $.each(storedKeys, function (_, storageKey) {
+            storedKeysLookup[storageKey] = true;
+        });
+
+        $.each(getTranslationCacheIndex(), function (_, storageKey) {
+            if (!storedKeysLookup[storageKey] || $.inArray(storageKey, normalizedIndex) > -1)
+                return;
+
+            normalizedIndex.push(storageKey);
+        });
+
+        $.each(storedKeys, function (_, storageKey) {
+            if ($.inArray(storageKey, normalizedIndex) === -1)
+                normalizedIndex.push(storageKey);
+        });
+
+        while (normalizedIndex.length > maxTranslationCacheItems) {
+            var oldestKey = normalizedIndex.shift();
+            if (oldestKey)
+                sessionStorage.removeItem(oldestKey);
+        }
+
+        saveTranslationCacheIndex(normalizedIndex);
+        return normalizedIndex;
+    }
+
+    function touchTranslationCacheKey(storageKey) {
+        if (!storageKey)
+            return;
+
+        var index = $.grep(syncTranslationCacheIndex(), function (item) {
+            return item && item !== storageKey;
+        });
+
+        index.push(storageKey);
+
+        while (index.length > maxTranslationCacheItems) {
+            var oldestKey = index.shift();
+            if (oldestKey)
+                sessionStorage.removeItem(oldestKey);
+        }
+
+        saveTranslationCacheIndex(index);
+    }
 
     function getTranslationsFromStorage(storageKey) {
         if (!storageKey)
             return null;
+
+        syncTranslationCacheIndex();
 
         var rawValue = sessionStorage.getItem(storageKey);
         if (!rawValue)
@@ -264,6 +362,7 @@ app.language = (function () {
             return;
 
         sessionStorage.setItem(storageKey, JSON.stringify(translations || {}));
+        touchTranslationCacheKey(storageKey);
     }
 
     function formatTemplate(template, values) {

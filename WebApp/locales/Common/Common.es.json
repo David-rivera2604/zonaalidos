@@ -1,0 +1,40 @@
+{
+  "GridToolbarSearch": {
+    "text": "Buscar",
+    "title": "Buscar en la tabla"
+  },
+  "SearchPlaceholder": "Buscar",
+  "GridToolbarRefresh": {
+    "text": "Actualizar",
+    "title": "Actualizar datos"
+  },
+  "GridToolbarExport": {
+    "text": "Exportar",
+    "title": "Exportar datos"
+  },
+  "GridToolbarCsv": "CSV",
+  "GridToolbarExcel": "Excel",
+  "GridPaginationRecordsPerPage": "{0} filas por página",
+  "GridPaginationShowingRows": "Mostrando de {0} a {1} de {2} filas totales",
+  "GridPaginationShowingRowsFiltered": "Mostrando de {0} a {1} de {2} filas (filtradas de {3} filas totales)",
+  "GridPaginationPreviousPage": "página anterior",
+  "GridPaginationPage": "ir a la página {0}",
+  "GridPaginationNextPage": "página siguiente",
+  "GridPaginationDetail": "Mostrando {0} filas",
+  "GridPaginationAllRows": "Todas",
+  "LanguageMenuLabel": "Idioma",
+  "LanguageOptions": {
+    "es": "Español",
+    "en": "Inglés"
+  },
+  "desde_group": {
+    "text": "Fecha desde",
+    "title": "Fecha desde",
+    "placeholder": "día/mes/año"
+  },
+  "hasta_group": {
+    "text": "Fecha hasta",
+    "title": "Fecha hasta",
+    "placeholder": "día/mes/año"
+  }
+}

@@ -22,6 +22,11 @@
   "GridPaginationNextPage": "next page",
   "GridPaginationDetail": "Showing {0} rows",
   "GridPaginationAllRows": "All",
+  "LanguageMenuLabel": "Language",
+  "LanguageOptions": {
+    "es": "Spanish",
+    "en": "English"
+  },
   "desde_group": {
     "text": "From date",
     "title": "From date",
