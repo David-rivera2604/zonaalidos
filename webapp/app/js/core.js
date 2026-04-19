@@ -59,6 +59,10 @@ app.core = (function () {
         }
     }
 
+    function getLanguage() {
+        return sessionStorage.getItem('language');
+    }
+
     function GetPDF(url, download, filename, callback, alterToken = '') {
         let excel = false;
 
@@ -75,13 +79,17 @@ app.core = (function () {
             blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;';
         }
         let token = alterToken == '' ? getAuthToken() : alterToken;
+        let language = getLanguage();
+        let headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': 'Bearer ' + token
+        };
+        if (language)
+            headers['Accept-Language'] = language;
         fetch(url, {
             body: null,
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + token
-            },
+            headers: headers,
         }).then(response => {
             if (!response.ok) { throw response }
             return response.blob();
@@ -190,6 +198,9 @@ app.core = (function () {
             timeout: 600000,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
+                let language = getLanguage();
+                if (language)
+                    xhr.setRequestHeader('Accept-Language', language);
             }
         }).done(function (response) {
             if (typeof fullconfig.callback === 'function') {
@@ -270,6 +281,9 @@ app.core = (function () {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + alterToken);
                     }
                 }
+                let language = getLanguage();
+                if (language)
+                    xhr.setRequestHeader('Accept-Language', language);
             }
         }).done(function (data, textStatus, jqXHR) {
             if (data != null && data.Success !== undefined) {
@@ -978,13 +992,17 @@ app.core = (function () {
         },
         datapi: function (method, url, data) {
             return new Promise((resolve, reject) => {
+                let language = getLanguage();
+                let headers = {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Authorization': 'Bearer ' + getAuthToken()
+                };
+                if (language)
+                    headers['Accept-Language'] = language;
                 return fetch(`${app.setting.entityapi}/${url}`, {
                     body: method === 'GET' ? null : JSON.stringify(data),
                     method: method,
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8',
-                        'Authorization': 'Bearer ' + getAuthToken()
-                    }
+                    headers: headers
                 }).then(response => {
                     if (!response.ok) {
                         api_ShowError();

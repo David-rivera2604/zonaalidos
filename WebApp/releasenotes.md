@@ -1,5 +1,45 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.181 - [En Desarrollo] - Feature Branch: `feature/multilanguage`
+
+### Aliados - Multilenguaje: Refinamientos y mejoras complementarias (Fase III).
+
+#### Cambios pendientes de commit:
+
+**Backend:**
+- Mejora en `Token.cs` - Utilidades de token actualizadas para soporte multilenguaje.
+
+**Frontend - JavaScript/CSS:**
+- Refinamiento de `core.language.js` - Optimizaciones adicionales del motor de lenguaje.
+- Mejoras en `core.js`, `core.frm.js` - Integración mejorada de multilenguaje en funcionalidades base.
+- Actualización de `master.js` - Script maestro con soporte multilenguaje.
+- Actualización de `Viewer.Form.js`, `ViewerManager.Render.js` - Localización del módulo Visor.
+- Mejoras en `mapfre.css` - Estilos CSS ajustados para layouts multilenguaje.
+
+**Vistas Razor:**
+- Actualización de `_Layout.cshtml` - Layout maestro con soporte de idiomas.
+- Refinamiento de `Viewer.cshtml`, `Form.cshtml` - Vistas del Visor.
+- **Nueva vista parcial:** `_ViewerFormContent.cshtml` - Contenido de formulario reutilizable.
+
+**Localización (JSON):**
+- **Nuevo:** `Common.es.json` - Diccionario de localizaciones comunes (ES).
+- **Nuevo:** `UserMembers.Forms.en.json` - Localizaciones de formularios de miembros (EN).
+- Actualización de `Common.en.json`, `UserMembers.en.json` - Mejoras en diccionarios existentes.
+
+**Seguridad:**
+- **Nueva carpeta:** `WebApp/Scripts/Security/` - Scripts de seguridad mejorados.
+
+**Configuración:**
+- Refactorización de `aliados.csproj` - Actualización de referencias de proyecto.
+
+#### Resumen técnico:
+- **14 archivos modificados** en backend, frontend y vistas.
+- **4 archivos/carpetas nuevos** (scripts de seguridad, vista parcial, localizaciones adicionales).
+- **Áreas afectadas:** Soporte multilenguaje (ES/EN), seguridad, vistas de usuario, formularios dinámicos.
+- **Status:** Cambios pendientes de staging/commit en rama de feature.
+
+---
+
 ## Versión 1.6.180 - 02/04/2026
 
 ### Aliados - Multilenguaje: Implementación de librería propia de traducción y localización (Fase I y II).

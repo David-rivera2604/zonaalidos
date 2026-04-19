@@ -83,16 +83,21 @@ else
                 <div class="sk-rect4"></div>
                 <div class="sk-rect5"></div>
             </div>
-            <!-- Filtro -->
-            <div class='form-row filter-row'>
-                <div class='form-group col-md-12'>
-                    <div class="input-group placeholder-small">
+            <div id="viewerGridHost">
+                <!-- Filtro -->
+                <div class='form-row filter-row'>
+                    <div class='form-group col-md-12'>
+                        <div class="input-group placeholder-small">
+                        </div>
                     </div>
                 </div>
+                @{
+                    Html.RenderPartial("_ViewControl");
+                }
             </div>
-            @{
-                Html.RenderPartial("_ViewControl");
-            }
+            <div id="viewerFormHost" style="display:none;">
+                @Html.Partial("_ViewerFormContent")
+            </div>
         </div>
         <!-- context menu -->
         <!--<ul id="context-menu" class="dropdown-menu">
@@ -112,6 +117,7 @@ else
         <script src="@Url.Content("~/assets/template7/template7.min.js")"></script>
         <script src="@Url.Content("~/app/js/core.language.js")"></script>
         <script src="@Url.Content("~/Scripts/ViewerManager.Render.js")"></script>
+	<script src="@Url.Content("~/Scripts/Viewer.Form.js")"></script>
         <script type="text/javascript">
             $(document).ready(function () {
                 app.ViewerQuery.Init();

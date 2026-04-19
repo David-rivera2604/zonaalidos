@@ -1,14 +1,11 @@
-﻿using Architect.API.Core.Contracts.Security;
-using Architect.API.Core.DataAccess.Security;
+﻿using Architect.API.Core.DataAccess.Security;
 using Architect.Utilities;
 using Architect.Utilities.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Reflection;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
@@ -194,9 +191,11 @@ namespace Architect.API.Core.Security
             if (result.CompanyId == 0 &&
                     ck.IsNotEmpty() &&
                      ck.Value.IsNotEmpty())
-            {
                 result = Info(ck.Value);
-            }
+
+            if (HttpContext.Current.Request.Headers["Accept-Language"].IsNotEmpty())
+                result.Language = HttpContext.Current.Request.Headers["Accept-Language"];
+
             return result;
         }
 

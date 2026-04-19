@@ -1,0 +1,76 @@
+{
+  "formTitle": "User Maintenance",
+  "DatosDelAseguradoTitle": "Insured Information",
+  "OrganizacionTitle": "Organization",
+  "BotoneraTitle": "Actions",
+  "UserId": {
+    "text": "User Id",
+    "title": "User identifier"
+  },
+  "UserName": "Username",
+  "EMail": {
+    "text": "Email",
+    "title": "User email address"
+  },
+  "Password": {
+    "text": "Password",
+    "title": "Access password"
+  },
+  "Identification": "Identification",
+  "FirstName": "First Name",
+  "LastName": "Last Name",
+  "BirthDate": {
+    "text": "Date of Birth",
+    "placeholder": "dd/mm/yyyy",
+    "title": "User date of birth"
+  },
+  "SecurityLevel": "Security Level",
+  "IsLockedOut": "Locked Out",
+  "IsLockedOut_1": "Yes",
+  "IsLockedOut_2": "No",
+  "IsService": "Is it a service account?",
+  "IsService_1": "Yes",
+  "IsService_2": "No",
+  "Is2FAEnabled": "Is two-factor authentication enabled?",
+  "Is2FAEnabled_1": "Yes",
+  "Is2FAEnabled_2": "No",
+  "IsManager": "Supervisor",
+  "IsManager_1": "Yes",
+  "IsManager_2": "No",
+  "BranchOffice": "Branch Office",
+  "Reference": "Reference",
+  "Position": "Position",
+  "PhoneNumber": {
+    "text": "Phone Number",
+    "title": "Primary phone number"
+  },
+  "RecordStatus": "Status",
+  "Roles": {
+    "text": "Roles",
+    "title": "Assign the access roles for the user"
+  },
+  "AccessKey": {
+    "text": "Integration Access Key",
+    "title": "Access key for integrations"
+  },
+  "Cod_Agt": "Agent",
+  "IsService": "Is this a service account?",
+  "Is2FAEnabled": "Is two-factor authentication enabled?",
+
+  "WorkArea": "Operational Area",
+  "OperationalWorkUnit": "Operational Unit",
+  "ManagerId": "Supervisor",
+  "HireDate": {
+    "text": "Hire Date",
+    "placeholder": "dd/mm/yyyy",
+    "title": "Employee hire date"
+  },
+  "IsManager": "Supervisor",
+  "IsExecutive": "Executive",
+  "saveBtn": "Save Changes",
+  "saveContinueBtn": "Save and Continue",
+  "saveCopyBtn": "Save and Copy",
+  "duplicateBtn": "Duplicate",
+  "deleteBtn": "Delete",
+  "cancelBtn": "Cancel"
+}

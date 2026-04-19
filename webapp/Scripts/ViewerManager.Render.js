@@ -1,5 +1,247 @@
 ﻿var app = app || {};
 
+app.ViewerPage = (function () {
+    var viewerFormInitialized = false;
+    var viewerFormEntity = null;
+    var viewerFormControlType = null;
+    var viewerAnimationDurationMs = 450;
+    var pageInitialized = false;
+
+    function clearAnimationClasses($el) {
+        $el.removeClass("animated animate__animated fadeIn fadeOut animate__fadeIn animate__fadeOut");
+        $el.css("animation-duration", "");
+        $el.css("--animate-duration", "");
+    }
+
+    function animateIn($el) {
+        return new Promise(function (resolve) {
+            clearAnimationClasses($el);
+            $el.show();
+            $el.addClass("animated animate__animated fadeIn animate__fadeIn");
+            $el.css("animation-duration", viewerAnimationDurationMs + "ms");
+            $el.css("--animate-duration", viewerAnimationDurationMs + "ms");
+
+            var completed = false;
+            var finish = function () {
+                if (completed) {
+                    return;
+                }
+
+                completed = true;
+                $el.off("animationend", finish);
+                clearAnimationClasses($el);
+                resolve();
+            };
+
+            $el.one("animationend", finish);
+            setTimeout(finish, viewerAnimationDurationMs + 50);
+        });
+    }
+
+    function animateSwap($current, $next) {
+        return new Promise(function (resolve) {
+            if ($current.length === 0 || $next.length === 0) {
+                $current.hide();
+                $next.show();
+                resolve();
+                return;
+            }
+
+            var completed = false;
+            var completeOut = function () {
+                if (completed) {
+                    return;
+                }
+
+                completed = true;
+                $current.off("animationend");
+                clearAnimationClasses($current);
+                $current.hide();
+                animateIn($next).then(resolve);
+            };
+
+            clearAnimationClasses($current);
+            $current.addClass("animated animate__animated fadeOut animate__fadeOut");
+            $current.css("animation-duration", viewerAnimationDurationMs + "ms");
+            $current.css("--animate-duration", viewerAnimationDurationMs + "ms");
+            $current.one("animationend", completeOut);
+            setTimeout(completeOut, viewerAnimationDurationMs + 50);
+        });
+    }
+
+    function normalizeValue(value) {
+        return value === undefined || value === null ? null : value;
+    }
+
+    function hasEmbeddedFormHost() {
+        return $("#viewerFormHost").length > 0 && $("#viewerGridHost").length > 0;
+    }
+
+    function initializeEmbeddedState() {
+        if (!hasEmbeddedFormHost()) {
+            return;
+        }
+
+        $("#viewerFormHost").hide();
+        $("#viewerGridHost").show();
+    }
+
+    function translateForm(entity) {
+        var normalizedEntity = $.trim(entity || "");
+        var $target = hasEmbeddedFormHost() ? $("#viewerFormHost") : $("body");
+
+        if (!normalizedEntity || $target.length === 0) {
+            return Promise.resolve();
+        }
+
+        if (!app.language || typeof app.language.translate !== "function") {
+            return Promise.resolve();
+        }
+
+        return new Promise(function (resolve) {
+            try {
+                app.language.translate($target, "viewer/" + normalizedEntity + ".Forms", function () {
+                    resolve();
+                })();
+            } catch (error) {
+                resolve();
+            }
+        });
+    }
+
+    function showForm(entity, controlType) {
+        var normalizedEntity = normalizeValue(entity);
+        var normalizedControlType = normalizeValue(controlType);
+        var animationPromise = Promise.resolve();
+        var initPromise = Promise.resolve();
+
+        if (hasEmbeddedFormHost()) {
+            animationPromise = animateSwap($("#viewerGridHost"), $("#viewerFormHost"));
+        }
+
+        if (
+            app.ViewerForm
+            && typeof app.ViewerForm.Init === "function"
+            && (
+                !viewerFormInitialized
+                || viewerFormEntity !== normalizedEntity
+                || viewerFormControlType !== normalizedControlType
+            )
+        ) {
+            initPromise = Promise.resolve()
+                .then(function () {
+                    return app.ViewerForm.Init(normalizedEntity, normalizedControlType);
+                })
+                .then(function () {
+                    viewerFormInitialized = true;
+                    viewerFormEntity = normalizedEntity;
+                    viewerFormControlType = normalizedControlType;
+                });
+        }
+
+        return Promise.all([animationPromise, initPromise]).then(function () {
+            return translateForm(normalizedEntity);
+        }).then(function () {
+            return {
+                entity: normalizedEntity,
+                controlType: normalizedControlType
+            };
+        });
+    }
+
+    function hideForm() {
+        if (!hasEmbeddedFormHost()) {
+            return;
+        }
+
+        //const $iboxContent = $('.ibox-content');
+        //if ($iboxContent.hasClass('sk-loading')) {
+        //    $iboxContent.removeClass('sk-loading');
+        //}
+        animateSwap($("#viewerFormHost"), $("#viewerGridHost"));
+    }
+
+    function refresh() {
+        var $grid = $("#viewerGridHost table[id$='GridTbl']").first();
+
+        if ($grid.length === 0) {
+            $grid = $("table[id$='GridTbl']").first();
+        }
+
+        if ($grid.length > 0 && typeof $grid.bootstrapTable === "function") {
+            return $grid.bootstrapTable("refresh");
+        }
+    }
+
+    function createContext(entity, controlType) {
+        return {
+            ShowForm: function (nextEntity, nextControlType) {
+                var targetEntity = nextEntity !== undefined ? nextEntity : entity;
+                var targetControlType = nextControlType !== undefined ? nextControlType : controlType;
+                return showForm(targetEntity, targetControlType);
+            },
+            HideForm: function () {
+                return hideForm();
+            },
+            showForm: function (nextEntity, nextControlType) {
+                var targetEntity = nextEntity !== undefined ? nextEntity : entity;
+                var targetControlType = nextControlType !== undefined ? nextControlType : controlType;
+                return showForm(targetEntity, targetControlType);
+            },
+            hideForm: function () {
+                return hideForm();
+            },
+            Refresh: function () {
+                return refresh();
+            },
+            refresh: function () {
+                return refresh();
+            },
+            HasEmbeddedFormHost: hasEmbeddedFormHost,
+            hasEmbeddedFormHost: hasEmbeddedFormHost
+        };
+    }
+
+    function applyContext(target, entity, controlType, contextOverride) {
+        var context = contextOverride || createContext(entity, controlType);
+
+        if (target && (typeof target === "object" || typeof target === "function")) {
+            target.context = context;
+            target.viewerContext = context;
+            target.ShowForm = context.ShowForm;
+            target.HideForm = context.HideForm;
+            target.showForm = context.showForm;
+            target.hideForm = context.hideForm;
+            target.Refresh = context.Refresh;
+            target.refresh = context.refresh;
+            target.HasEmbeddedFormHost = context.HasEmbeddedFormHost;
+            target.hasEmbeddedFormHost = context.hasEmbeddedFormHost;
+            return target;
+        }
+
+        return context;
+    }
+
+    function init() {
+        if (pageInitialized) {
+            return;
+        }
+
+        pageInitialized = true;
+        initializeEmbeddedState();
+        app.ViewerQuery.Init();
+    }
+
+    return {
+        Init: init,
+        ShowForm: showForm,
+        HideForm: hideForm,
+        Refresh: refresh,
+        HasEmbeddedFormHost: hasEmbeddedFormHost,
+        CreateContext: createContext,
+        ApplyContext: applyContext
+    };
+})();
 app.ViewerQuery = (function () {
     let _handler = null;
     var _id = null;
@@ -47,6 +289,208 @@ app.ViewerQuery = (function () {
     _itemAvanceFilter = '<div class="ibox"> ' +
         ' {Body} ' +
         '</div>';
+
+    function getFormContext() {
+        let id = app.core.URLStringValue('id');
+        let version = app.core.URLStringValue('version');
+
+        if (id !== '') {
+            return {
+                id: id,
+                version: version !== '' ? version : '3'
+            };
+        }
+
+        var match = /\/view\/([^\/?#]+)/i.exec(window.location.pathname);
+        if (match !== null && match.length > 1) {
+            return {
+                version: version !== '' ? version : '3',
+                id: decodeURIComponent(match[1])
+            };
+        }
+
+        return {
+            id: '',
+            version: version !== '' ? version : '3'
+        };
+    }
+
+    function preEdit() {
+    }
+
+    function posEdit() {
+    }
+
+    function ResolveFunctionReference(target) {
+        if (typeof target === 'function') {
+            return target;
+        }
+
+        if (typeof target === 'string' && target.trim() !== '') {
+            try {
+                return eval(target);
+            }
+            catch (e) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    function CreateButtonsContext(spec, index, caller) {
+        var context = {
+            spec: spec,
+            index: index,
+            gridId: "#" + index + "GridTbl",
+            toolbarId: "#" + index + "toolbar",
+            caller: caller
+        };
+
+        var entity = spec != undefined ? (spec.entity != undefined ? spec.entity : spec.Entity) : undefined;
+        var controlType = spec != undefined ? (spec.controlType != undefined ? spec.controlType : spec.ControlType) : undefined;
+
+        if (app.ViewerPage && typeof app.ViewerPage.ApplyContext === 'function') {
+            return app.ViewerPage.ApplyContext(context, entity, controlType);
+        }
+
+        return context;
+    }
+
+    function LocalButtons(spec, index, context, args) {
+        let extendName = spec.extendName != undefined ? spec.extendName : "Extend";
+
+        if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
+            app[extendName]['EventHandler'](spec.key, index, 'buttons', {
+                context: context,
+                args: Array.prototype.slice.call(args || [])
+            });
+        }
+    }
+
+    function WrapToolbarButtonEvents(spec, index, buttons, factoryContext) {
+        if (buttons == undefined || typeof buttons !== 'object') {
+            return buttons;
+        }
+
+        Object.keys(buttons).forEach(function (buttonKey) {
+            var buttonSpec = buttons[buttonKey];
+            if (buttonSpec == undefined || typeof buttonSpec !== 'object' || typeof buttonSpec.event !== 'function') {
+                return;
+            }
+
+            var originalEvent = buttonSpec.event;
+            buttonSpec.event = function () {
+                var eventContext = CreateButtonsContext(spec, index, factoryContext || this);
+                eventContext.buttonKey = buttonKey;
+                eventContext.button = buttonSpec;
+                var eventArgs = arguments;
+
+                if (app.ViewerQuery && typeof app.ViewerQuery.LocalButtons === 'function') {
+                    app.ViewerQuery.LocalButtons(spec, index, eventContext, eventArgs);
+                }
+                else {
+                    LocalButtons(spec, index, eventContext, eventArgs);
+                }
+
+                return originalEvent.apply(eventContext, eventArgs);
+            };
+        });
+
+        return buttons;
+    }
+
+    function WrapSpecButtons(spec, index) {
+        if (spec.buttons == undefined) {
+            return;
+        }
+
+        var originalButtons = ResolveFunctionReference(spec.buttons);
+        spec._buttons = spec.buttons;
+        spec.buttons = function () {
+            var localResult = null;
+            var factoryContext = CreateButtonsContext(spec, index, this);
+            var originalArgs = [factoryContext].concat(Array.prototype.slice.call(arguments));
+
+            if (app.ViewerQuery && typeof app.ViewerQuery.LocalButtons === 'function') {
+                localResult = app.ViewerQuery.LocalButtons(spec, index, factoryContext, arguments);
+            }
+            else {
+                localResult = LocalButtons(spec, index, factoryContext, arguments);
+            }
+
+            if (typeof originalButtons === 'function') {
+                return WrapToolbarButtonEvents(spec, index, originalButtons.apply(factoryContext, originalArgs), factoryContext);
+            }
+
+            return localResult;
+        };
+    }
+
+    function EnsureLocalEvents(spec) {
+        var eventName = `Local_Events_${spec.index}`;
+
+        window[eventName] = {
+            'click .event': function (e, value, row, index) {
+                e.stopPropagation();
+                app.ViewerQuery.ButtonClick(spec, this, e, e.currentTarget.name, row, index);
+            }
+        };
+
+        return eventName;
+    }
+
+    function PreCallLocal(row, entity, controlType) {
+        // Abre el formulario embebido antes de ejecutar la accion.
+        if (app.ViewerPage && typeof app.ViewerPage.ShowForm === 'function') {
+            app.ViewerPage.ShowForm(entity, controlType);
+        }
+
+        // Hook opcional para logica custom definida por Viewer.Form.js u otros includes.
+        if (app.ViewerForm && typeof app.ViewerForm.PreCall === 'function') {
+            app.ViewerForm.PreCall(row, entity, controlType);
+        }
+    }
+
+    function PosCallLocal(row, entity, controlType) {
+        // Hook opcional para logica custom posterior a la accion.
+        if (app.ViewerForm && typeof app.ViewerForm.PosCall === 'function') {
+            app.ViewerForm.PosCall(row, entity, controlType);
+        }
+
+        // Si el formulario no existe o no se usa en esta vista, no falla.
+        if ($('#viewerFormHost').length === 0) {
+            return;
+        }
+    }
+
+    function CreateActionContext(entity, controlType) {
+        if (app.ViewerPage && typeof app.ViewerPage.CreateContext === "function") {
+            return app.ViewerPage.CreateContext(entity, controlType);
+        }
+
+        return {
+            ShowForm: function () { },
+            HideForm: function () { },
+            showForm: function () { },
+            hideForm: function () { },
+            Refresh: function () { },
+            refresh: function () { },
+            HasEmbeddedFormHost: function () { return false; },
+            hasEmbeddedFormHost: function () { return false; }
+        };
+    }
+
+    function BindContextToActionCalls(actionCode) {
+        if (!actionCode || actionCode.indexOf("ApplyContext(") >= 0) {
+            return actionCode;
+        }
+
+        return actionCode.replace(
+            /([A-Za-z_$][A-Za-z0-9_$.]*)\.([A-Za-z_$][A-Za-z0-9_$]*)\(\s*row(\s*[,)\]])/g,
+            "app.ViewerPage.ApplyContext($1, entity, controlType, context), ($1.$2).call($1, row, context$3"
+        );
+    }
 
     function ApplyQueryTitleTranslation(translations) {
         if (!translations)
@@ -164,9 +608,6 @@ app.ViewerQuery = (function () {
         }
 
         TranslateViewerTarget('body', translationEntity);
-
-
-
 
         if (data.chart != undefined) {
             var spec = data.table;
@@ -321,7 +762,10 @@ app.ViewerQuery = (function () {
         if (spec.onAll != undefined) {
             spec.onAll = new Function(["name", "args"], "{ " + spec.onAll + "('" + index + "GridTbl', name, args); }");
         }
-        
+
+        WrapSpecButtons(spec, index);
+        var localEventsName = EnsureLocalEvents(spec);
+
         if (Array.isArray(spec.columns[0])) {
             spec.columns.forEach(function (group, gindex, garray) {
                 group.forEach(function (column, index, array) {
@@ -334,7 +778,7 @@ app.ViewerQuery = (function () {
                         }
                     }
                     if (column.events != undefined) {
-                        column.events = 'Local_Events';
+                        column.events = localEventsName;
                     }
                     if (column.colorstate != undefined) {
                         app.ViewerQuery.state[column.field] = column.colorstate;
@@ -356,7 +800,7 @@ app.ViewerQuery = (function () {
                     }
                 }
                 if (column.events != undefined) {
-                    column.events = 'Local_Events';
+                    column.events = localEventsName;
                 }
                 if (column.colorstate != undefined) {
                     app.ViewerQuery.state[column.field] = column.colorstate;
@@ -391,14 +835,13 @@ app.ViewerQuery = (function () {
             spec.ajax = null;
         }
 
-
         //spec.contextMenu = '#context-menu';
         //spec.contextMenuButton = '.ns';
         //spec.onContextMenuItem = function (row, $el) {
         //    if($el.data("item") == "edit"){
         //        alert();
         //    }
-        //        console.log(row);            
+        //        console.log(row);
         //};
         //spec.beforeContextMenuRow = function (e, row, buttonElement) {
         //    let r = (buttonElement !=null && $(buttonElement).hasClass('ns'))
@@ -652,8 +1095,12 @@ app.ViewerQuery = (function () {
     }
 
     return {
+        PreEdit: preEdit,
+        PosEdit: posEdit,
         Init: function () {
-            _id = app.core.URLStringValue('id');
+            let context = getFormContext();
+            _id = context.id;
+
             Event_Controls();
             if (_id != '')
 
@@ -698,7 +1145,6 @@ app.ViewerQuery = (function () {
                                 item.table.key = _id;
                                 $("#container").append(RenderTabContentUI(item));
                                 if (item.include !== null && item.include !== '') {
-
                                     if (item.include.startsWith('class:')) {
                                         let extendName = item.include.substring(6);
                                         let entityType = 'Render';
@@ -727,7 +1173,6 @@ app.ViewerQuery = (function () {
                                                 console.error(err);
                                             });
                                     }
-
                                 } else {
                                     Render(item);
                                 }
@@ -773,7 +1218,6 @@ app.ViewerQuery = (function () {
                     element.bootstrapTable('hideLoading');
                     doing = false;
                 } else {
-
                     var nameClass = "Prototype" + index;
                     if (nameClass in app) {
                         if (app[nameClass]['IsValid'](false)) {
@@ -848,7 +1292,7 @@ app.ViewerQuery = (function () {
 
             window.open(href, "vdetail", "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes, top=100, height=450, left=400, width=900");
         },
-        ButtonClick: function (tbl, e, name, row, index) {
+        ButtonClick: function (spec, tbl, e, name, row, index) {
             switch (name) {
                 case 'print':
                     app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + row.NUM_POLIZA + "/" + row.NUM_RIESGO, false, 'Mapfre Certificado.pdf');
@@ -876,7 +1320,51 @@ app.ViewerQuery = (function () {
                 default:
                     $.each(tbl.columns, function (key, column) {
                         if (typeof column['action_' + name] != "undefined") {
-                            eval(column['action_' + name].supplant(row));
+                            var actionRoot = column[`action_${name}`].split(".").slice(0, 2).join(".");
+                            var rootNode = undefined;
+                            var eventsNode = undefined;
+
+                            try { rootNode = eval(actionRoot); } catch (e) { }
+
+                            if (rootNode && rootNode.events != undefined)
+                                eventsNode = rootNode.events;
+                            else
+                                try { eventsNode = eval(`${actionRoot}.events`); } catch (e) { }
+
+                            var entity = spec != undefined ? spec.entity : undefined;
+                            var controlType = spec != undefined ? spec.controlType : undefined;
+                            var eventRoot = eventsNode || rootNode;
+
+                            var objectEvent = eventRoot;
+                            if (eventRoot && typeof eventRoot === "object") {
+                                objectEvent = eventRoot[name];
+                                if (objectEvent == undefined && typeof name.ToPascalFirst === "function") {
+                                    objectEvent = eventRoot[name.ToPascalFirst()];
+                                }
+                                if (objectEvent == undefined) {
+                                    objectEvent = eventRoot;
+                                }
+                            }
+
+                            // PRE
+                            if (objectEvent) {
+                                if (typeof objectEvent.PreCall === "function")
+                                    objectEvent.PreCall(row);
+                                else if (objectEvent.PreCall === true)
+                                    PreCallLocal(row, entity, controlType);
+                            }
+
+                            var context = CreateActionContext(entity, controlType);
+                            var actionCode = BindContextToActionCalls(column['action_' + name].supplant(row));
+                            eval(actionCode);
+
+                            // POST
+                            if (objectEvent) {
+                                if (typeof objectEvent.PosCall === "function")
+                                    objectEvent.PosCall(row);
+                                else if (objectEvent.PosCall === true)
+                                    PosCallLocal(row, entity, controlType);
+                            }
                         }
                     })
                     break;
@@ -884,6 +1372,9 @@ app.ViewerQuery = (function () {
         },
         Data: function () {
             return _data;
+        },
+        LocalButtons: function (spec, index, context, args) {
+            return LocalButtons(spec, index, context, args);
         },
         EventHandler: function (handler) {
             _handler = handler;
@@ -897,6 +1388,10 @@ window.Local_Events = {
         app.ViewerQuery.ButtonClick(this, e, e.currentTarget.name, row, index)
     }
 };
+
+$(document).ready(function () {
+    app.ViewerPage.Init();
+});
 //app.ui.ShowSideBar({
 //    isExternal: true,
 //    url: '/Aliados/viewer/render?id=666',

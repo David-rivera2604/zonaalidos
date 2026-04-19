@@ -3,6 +3,110 @@
 app.master = (function () {
     var timerId;
 
+    function getNormalizedLanguage(languageValue) {
+        var normalizedLanguage = $.trim((languageValue || '').toLowerCase()).split(/[-_]/)[0];
+        return normalizedLanguage || 'es';
+    }
+
+    function getCurrentLanguage() {
+        var currentRaw = sessionStorage.getItem('current');
+        var currentValue = null;
+
+        if (currentRaw) {
+            try {
+                currentValue = JSON.parse(currentRaw);
+            } catch (error) {
+                currentValue = null;
+            }
+        }
+
+        return getNormalizedLanguage(
+            sessionStorage.getItem('language') ||
+            sessionStorage.getItem('Language') ||
+            sessionStorage.getItem('Lang') ||
+            sessionStorage.getItem('lang') ||
+            (currentValue && (currentValue.language || currentValue.Language || currentValue.Lang || currentValue.lang)) ||
+            'es'
+        );
+    }
+
+    function updateLanguageSelectorState() {
+        var currentLanguage = getCurrentLanguage();
+        applyLanguageButtonState($('#LanguageOptionSpanish'), currentLanguage === 'es');
+        applyLanguageButtonState($('#LanguageOptionEnglish'), currentLanguage === 'en');
+    }
+
+    function applyLanguageButtonState($button, isActive) {
+        if (!$button || $button.length === 0)
+            return;
+
+        $button.toggleClass('is-active', isActive);
+    }
+
+    function setLanguage(languageValue) {
+        var normalizedLanguage = getNormalizedLanguage(languageValue);
+        var currentRaw = sessionStorage.getItem('current');
+        var currentValue = {};
+
+        if (currentRaw) {
+            try {
+                currentValue = JSON.parse(currentRaw) || {};
+            } catch (error) {
+                currentValue = {};
+            }
+        }
+
+        sessionStorage.setItem('language', normalizedLanguage);
+        sessionStorage.removeItem('Language');
+        sessionStorage.removeItem('Lang');
+        sessionStorage.removeItem('lang');
+
+        delete currentValue.Language;
+        delete currentValue.Lang;
+        delete currentValue.lang;
+        currentValue.language = normalizedLanguage;
+
+        sessionStorage.setItem('current', JSON.stringify(currentValue));
+        window.location.reload();
+    }
+
+    function updateLanguageOptionTexts() {
+        var currentLanguage = getCurrentLanguage();
+        var commonStorageKey = 'Common.' + currentLanguage;
+        var commonTranslations = null;
+        var languageOptions = null;
+
+        try {
+            commonTranslations = JSON.parse(sessionStorage.getItem(commonStorageKey) || 'null');
+        } catch (error) {
+            commonTranslations = null;
+        }
+
+        languageOptions = commonTranslations && commonTranslations.LanguageOptions
+            ? commonTranslations.LanguageOptions
+            : null;
+
+        if (languageOptions) {
+            applyLanguageOptionTexts(languageOptions);
+            return;
+        }
+
+        app.core.Get(app.setting.basepath + 'locales/Common/Common.' + currentLanguage + '.json', undefined, function (translations) {
+            applyLanguageOptionTexts(translations && translations.LanguageOptions ? translations.LanguageOptions : null);
+        }, false);
+    }
+
+    function applyLanguageOptionTexts(languageOptions) {
+        if (!languageOptions)
+            return;
+
+        if (languageOptions.es)
+            $('#LanguageOptionSpanish').text(languageOptions.es);
+
+        if (languageOptions.en)
+            $('#LanguageOptionEnglish').text(languageOptions.en);
+    }
+
     function activateActivityTracker() {
         window.addEventListener("mousemove", userActivityThrottler);
         window.addEventListener("scroll", userActivityThrottler);
@@ -276,6 +380,11 @@ app.master = (function () {
 
                 $('#UserNameMaster').html(localStorage.getItem('Username'));
                 $('#TenantMaster').html(localStorage.getItem('Tenant'));
+                updateLanguageSelectorState();
+                updateLanguageOptionTexts();
+
+                if (app.language && typeof app.language.translate === 'function')
+                    app.language.translate('body', 'Common/Common')();
 
                 main_menu();
                 //token_timeout(10000);
@@ -315,6 +424,9 @@ app.master = (function () {
         ShowSideBarExternal: function (title, url) {
             let width = app.core.URLValue('wd', url);
             app.ui.ShowSideBar({ title: title, subtitle: '', url: url, width: width, isExternal: true })
+        },
+        SetLanguage: function (languageValue) {
+            setLanguage(languageValue);
         }
     };
 })();

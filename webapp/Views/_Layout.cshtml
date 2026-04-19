@@ -24,6 +24,7 @@
                     'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-NL4F2ZN');</script>
     <!-- End Google Tag Manager -->
+
 </head>
 
 <body class="fixed-sidebar fixed-nav fixed-nav-basic Mapfre @ViewBag.theme">
@@ -90,6 +91,15 @@
                                                 </a>
                                             </li>
                                             <li style="display: flex;align-items: center;"><a href="~/Security/ChangePassword" style="padding-top: 10px;" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
+                                            <li class="language-selector-menu-item" style="height:auto; min-height:50px; padding-top:6px; padding-bottom:6px;">
+                                                <div class="language-selector-menu" style="display:flex; flex-direction:column; gap:5px; min-width:150px;">
+                                                    <span id="LanguageMenuLabel" class="language-selector-menu__label" style="font-size:11px; font-weight:700; color:inherit; text-transform:uppercase;">Idioma</span>
+                                                    <div class="language-selector-menu__actions">
+                                                        <button type="button" id="LanguageOptionSpanish" class="language-selector-menu__button" onclick="app.master.SetLanguage('es'); return false;">Español</button>
+                                                        <button type="button" id="LanguageOptionEnglish" class="language-selector-menu__button" onclick="app.master.SetLanguage('en'); return false;">English</button>
+                                                    </div>
+                                                </div>
+                                            </li>
                                         </ul>
                                     </div>
                                 </nav>

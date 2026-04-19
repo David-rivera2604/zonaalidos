@@ -56,6 +56,15 @@ app.frm = (() => {
         }
     };
 
+    function ElementReference(fieldName, type) {
+        let selector = `#${fieldName}`;
+
+        if (type.startsWith('radio')) {
+            selector = `input:radio[name=${fieldName}]`;
+        }
+        return $(selector);
+    }
+
     return {
         PhoneNumberWidget: function (selector) {
             return $(selector).formatter({
@@ -85,6 +94,9 @@ app.frm = (() => {
             }
             if (options.minimumValue == null) {
                 options.minimumValue = '0';
+            }
+            if (options.maximumValue == null) {
+                options.maximumValue = '99999999999999';
             }
             if (options.decimalPlaces == null) {
                 options.decimalPlaces = '0';
@@ -323,8 +335,12 @@ app.frm = (() => {
             const formData = {};
 
             for (const [fieldName, configObject] of Object.entries(elementsConfig)) {
-
                 const dataType = configObject.type;
+
+                if (configObject.element == undefined) {
+                    configObject.element = ElementReference(fieldName, dataType);
+                }
+
                 let $element = configObject.element;
                 let value;
                 let desc = null;
@@ -380,6 +396,7 @@ app.frm = (() => {
                     case 'phone':
                     case 'email':
                     case 'typeahead':
+                    case 'password':
                         value = $element.val();
                         break;
                     default:
@@ -445,6 +462,7 @@ app.frm = (() => {
                     case 'phone':
                     case 'email':
                     case 'typeahead':
+                    case 'password':
                         value = null;
                         break;
                     default:
