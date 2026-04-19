@@ -14,14 +14,23 @@
   },
   "GridToolbarCsv": "CSV",
   "GridToolbarExcel": "Excel",
-  "GridPaginationRecordsPerPage": "{0} rows per page",
-  "GridPaginationShowingRows": "Showing {0} to {1} of {2} total rows",
-  "GridPaginationShowingRowsFiltered": "Showing {0} to {1} of {2} rows (filtered from {3} total rows)",
+  "GridPaginationRecordsPerPage": "{0} records per page",
+  "GridPaginationShowingRows": "Showing {0} to {1} of {2} total records",
+  "GridPaginationShowingRowsFiltered": "Showing {0} to {1} of {2} records (filtered from {3} total records)",
   "GridPaginationPreviousPage": "previous page",
   "GridPaginationPage": "to page {0}",
   "GridPaginationNextPage": "next page",
-  "GridPaginationDetail": "Showing {0} rows",
+  "GridPaginationDetail": "Showing {0} records",
   "GridPaginationAllRows": "All",
+  "GridNoMatches": "No matching records found",
+  "UserMenuLogoutText": "Sign out",
+  "UserMenuLogoutLink": {
+    "title": "Ends the current user session"
+  },
+  "UserMenuChangePasswordText": "Change password",
+  "UserMenuChangePasswordLink": {
+    "title": "Allows the connected user to change the access password"
+  },
   "LanguageMenuLabel": "Language",
   "LanguageOptions": {
     "es": "Spanish",

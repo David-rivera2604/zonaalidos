@@ -2,41 +2,40 @@
 
 ## Versión 1.6.181 - [En Desarrollo] - Feature Branch: `feature/multilanguage`
 
-### Aliados - Multilenguaje: Refinamientos y mejoras complementarias (Fase III).
+### Aliados - Multilenguaje: Refinamientos avanzados y soporte de Bootstrap Table (Fase III).
 
-#### Cambios pendientes de commit:
+#### Cambios implementados:
 
-**Backend:**
-- Mejora en `Token.cs` - Utilidades de token actualizadas para soporte multilenguaje.
+**Motor de Multilenguaje - `core.language.js`:**
+- ✅ **Nuevo soporte para Bootstrap Table:** Función `applyBootstrapTableTranslations()` que extiende opciones de traducción dinámicamente.
+- ✅ **Refrescado de traducciones en tablas:** Nueva función `refreshBootstrapTableTranslations()` para actualizar traducciones en tiempo de ejecución en grillas Bootstrap.
+- ✅ **Mejora de filtros de labels:** Control mejorado para evitar traducción duplicada en etiquetas con ID definido.
+- ✅ **Sincronización automática:** Las tablas Bootstrap se actualizan automáticamente cuando se cargan nuevas traducciones.
 
-**Frontend - JavaScript/CSS:**
-- Refinamiento de `core.language.js` - Optimizaciones adicionales del motor de lenguaje.
-- Mejoras en `core.js`, `core.frm.js` - Integración mejorada de multilenguaje en funcionalidades base.
-- Actualización de `master.js` - Script maestro con soporte multilenguaje.
-- Actualización de `Viewer.Form.js`, `ViewerManager.Render.js` - Localización del módulo Visor.
-- Mejoras en `mapfre.css` - Estilos CSS ajustados para layouts multilenguaje.
+**Interfaz de Usuario - Vistas Razor:**
+- ✅ **Localización del menú de usuario:** `_Layout.cshtml` y `_LayoutEx.cshtml` refactorizadas con IDs específicos para elementos del menú:
+  - `UserMenuLogoutLink` / `UserMenuLogoutText` - Botón de cerrar sesión
+  - `UserMenuChangePasswordLink` / `UserMenuChangePasswordText` - Enlace de cambio de clave
+  - `LanguageMenuLabel` - Selector de idioma mejorado
+- ✅ **Nueva vista de seguridad:** `Security/RoleMember.cshtml` con soporte multilenguaje completo.
 
-**Vistas Razor:**
-- Actualización de `_Layout.cshtml` - Layout maestro con soporte de idiomas.
-- Refinamiento de `Viewer.cshtml`, `Form.cshtml` - Vistas del Visor.
-- **Nueva vista parcial:** `_ViewerFormContent.cshtml` - Contenido de formulario reutilizable.
+**Diccionarios de Localización:**
+- ✅ **Nuevo:** `Security/rolemember.en.json` - Diccionario de miembros por rol (EN).
+- ✅ **Actualizado:** `Common.en.json` y `Common.es.json` - Textos de menú de usuario.
+- ✅ **Actualizado:** `UserMembers.Forms.en.json` - Localizaciones de formularios de miembros.
 
-**Localización (JSON):**
-- **Nuevo:** `Common.es.json` - Diccionario de localizaciones comunes (ES).
-- **Nuevo:** `UserMembers.Forms.en.json` - Localizaciones de formularios de miembros (EN).
-- Actualización de `Common.en.json`, `UserMembers.en.json` - Mejoras en diccionarios existentes.
-
-**Seguridad:**
-- **Nueva carpeta:** `WebApp/Scripts/Security/` - Scripts de seguridad mejorados.
-
-**Configuración:**
-- Refactorización de `aliados.csproj` - Actualización de referencias de proyecto.
+**Scripts Complementarios:**
+- ✅ **Actualizado:** `master.js` - Inicialización mejorada del motor de multilenguaje.
 
 #### Resumen técnico:
-- **14 archivos modificados** en backend, frontend y vistas.
-- **4 archivos/carpetas nuevos** (scripts de seguridad, vista parcial, localizaciones adicionales).
-- **Áreas afectadas:** Soporte multilenguaje (ES/EN), seguridad, vistas de usuario, formularios dinámicos.
+- **9 archivos modificados** (motor de lenguaje, vistas, diccionarios, scripts).
+- **Mejoras principales:**
+  - Soporte completo para Bootstrap Table con actualizaciones dinámicas
+  - Menú de usuario totalmente localizable (ES/EN)
+  - Prevención de traducciones duplicadas en etiquetas
+  - Sincronización automática de cambios de idioma en grillas
 - **Status:** Cambios pendientes de staging/commit en rama de feature.
+- **Impacto:** Mejora significativa en la experiencia de usuario multilingüe, especialmente en grillas de datos dinámicas.
 
 ---
 

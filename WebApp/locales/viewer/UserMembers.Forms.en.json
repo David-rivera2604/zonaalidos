@@ -25,18 +25,21 @@
     "title": "User date of birth"
   },
   "SecurityLevel": "Security Level",
-  "IsLockedOut": "Locked Out",
+  "IsLockedOutLabel": "Locked Out",
   "IsLockedOut_1": "Yes",
   "IsLockedOut_2": "No",
-  "IsService": "Is it a service account?",
+  "IsServiceLabel": "Is it a service account?",
   "IsService_1": "Yes",
   "IsService_2": "No",
-  "Is2FAEnabled": "Is two-factor authentication enabled?",
+  "Is2FAEnabledLabel": "Is two-factor authentication enabled?",
   "Is2FAEnabled_1": "Yes",
   "Is2FAEnabled_2": "No",
-  "IsManager": "Supervisor",
+  "IsManagerLabel": "Manager",
   "IsManager_1": "Yes",
   "IsManager_2": "No",
+  "IsExecutiveLabel": "Executive",
+  "IsExecutive_1": "Yes",
+  "IsExecutive_2": "No",
   "BranchOffice": "Branch Office",
   "Reference": "Reference",
   "Position": "Position",
@@ -54,7 +57,6 @@
     "title": "Access key for integrations"
   },
   "Cod_Agt": "Agent",
-  "IsService": "Is this a service account?",
   "Is2FAEnabled": "Is two-factor authentication enabled?",
 
   "WorkArea": "Operational Area",
@@ -72,5 +74,7 @@
   "saveCopyBtn": "Save and Copy",
   "duplicateBtn": "Duplicate",
   "deleteBtn": "Delete",
-  "cancelBtn": "Cancel"
+  "cancelBtn": "Cancel",
+  "botoneraZone": "Actions",
+  "datosdelaseguradoZone": "Insured's details"
 }

@@ -86,11 +86,11 @@
                                         <label class="level_1__item level_2__small" for="Aliados"> <a class="level_1__link  dropdown-toggle" title=""> <span><span id="TenantMaster">menu</span></span></a></label>
                                         <ul class="menu-dropdown" aria-expanded="false">
                                             <li>
-                                                <a href="#" onclick="app.security().logout();  return false;" title="Permite terminar la sesión del usuario">
-                                                    <i class="fa fa-sign-out"></i> <span class="d-sm-inline">Desconectar </span>
+                                                <a id="UserMenuLogoutLink" href="#" onclick="app.security().logout();  return false;" title="Permite terminar la sesión del usuario">
+                                                    <i class="fa fa-sign-out"></i> <span id="UserMenuLogoutText" class="d-sm-inline">Desconectar </span>
                                                 </a>
                                             </li>
-                                            <li style="display: flex;align-items: center;"><a href="~/Security/ChangePassword" style="padding-top: 10px;" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
+                                            <li style="display: flex;align-items: center;"><a id="UserMenuChangePasswordLink" href="~/Security/ChangePassword" style="padding-top: 10px;" title="Permite el cambio de la clave de acceso del usuario conectado"><span id="UserMenuChangePasswordText">Cambio de clave de acceso</span></a></li>
                                             <li class="language-selector-menu-item" style="height:auto; min-height:50px; padding-top:6px; padding-bottom:6px;">
                                                 <div class="language-selector-menu" style="display:flex; flex-direction:column; gap:5px; min-width:150px;">
                                                     <span id="LanguageMenuLabel" class="language-selector-menu__label" style="font-size:11px; font-weight:700; color:inherit; text-transform:uppercase;">Idioma</span>

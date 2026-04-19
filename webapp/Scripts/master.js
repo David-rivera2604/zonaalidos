@@ -67,6 +67,7 @@ app.master = (function () {
         currentValue.language = normalizedLanguage;
 
         sessionStorage.setItem('current', JSON.stringify(currentValue));
+        localStorage.removeItem('Navegation');
         window.location.reload();
     }
 

@@ -37,10 +37,11 @@ app.language = (function () {
 
     function setNormalizedSessionLanguage(languageValue) {
         var normalizedLanguage = $.trim((languageValue || '').toLowerCase()).split(/[-_]/)[0];
+        var storageLanguage = normalizedLanguage.toUpperCase();
         if (!normalizedLanguage)
             return;
 
-        sessionStorage.setItem('language', normalizedLanguage);
+        sessionStorage.setItem('language', storageLanguage);
         sessionStorage.removeItem('Language');
         sessionStorage.removeItem('Lang');
         sessionStorage.removeItem('lang');
@@ -59,7 +60,7 @@ app.language = (function () {
         delete currentValue.Language;
         delete currentValue.Lang;
         delete currentValue.lang;
-        currentValue.language = normalizedLanguage;
+        currentValue.language = storageLanguage;
 
         sessionStorage.setItem('current', JSON.stringify(currentValue));
     }
@@ -96,10 +97,10 @@ app.language = (function () {
             sessionStorage.getItem('Lang') ||
             sessionStorage.getItem('lang') ||
             (currentData && (currentData.language || currentData.Language || currentData.Lang || currentData.lang)) ||
-            'es';
+            'ES';
 
         setNormalizedSessionLanguage(resolvedLanguage);
-        return sessionStorage.getItem('language') || 'es';
+        return sessionStorage.getItem('language') || 'ES';
     }
 
     function shouldTranslate() {
@@ -481,7 +482,9 @@ app.language = (function () {
     }
 
     function applyLabelTranslation($container, id, translations) {
-        var $label = $container.find('label[for="' + id + '"]').first();
+        var $label = $container.find('label[for="' + id + '"]').filter(function () {
+            return !$.trim($(this).attr('id') || '');
+        }).first();
         var translatedText = getTranslationText(translations, id);
         var translatedTitle = getTranslationAttribute(translations, id, 'title');
 
@@ -503,10 +506,14 @@ app.language = (function () {
     function applyForBasedLabelTranslations($container, translations) {
         $container.find('label[for]').each(function () {
             var $label = $(this);
+            var labelId = $.trim($label.attr('id') || '');
             var forId = $.trim($label.attr('for') || '');
             var translatedText = null;
             var translatedTitle = null;
             var $requiredMark = null;
+
+            if (labelId)
+                return;
 
             if (!forId)
                 return;
@@ -887,6 +894,13 @@ app.language = (function () {
         };
     }
 
+    function applyBootstrapTableTranslations() {
+        if (!$.fn || !$.fn.bootstrapTable || !$.fn.bootstrapTable.defaults)
+            return;
+
+        $.extend($.fn.bootstrapTable.defaults, getBootstrapTableTranslations());
+    }
+
     function applyGridTableTranslations($container, translations) {
         var $tables = $container
             .filter('table[id$="GridTbl"], table[id$="Tbl"], table[name$="GridTbl"], table[name$="Tbl"]')
@@ -929,6 +943,29 @@ app.language = (function () {
         });
     }
 
+    function refreshBootstrapTableTranslations($container) {
+        var runtimeTranslations = getBootstrapTableTranslations();
+        var $tables = $container
+            .filter('table[id$="GridTbl"], table[id$="Tbl"], table[name$="GridTbl"], table[name$="Tbl"]')
+            .add($container.find('table[id$="GridTbl"], table[id$="Tbl"], table[name$="GridTbl"], table[name$="Tbl"]'));
+
+        if (!$tables.length || !$.fn || !$.fn.bootstrapTable)
+            return;
+
+        $tables.each(function () {
+            var $table = $(this);
+
+            if (!$table.data('bootstrap.table'))
+                return;
+
+            try {
+                $table.bootstrapTable('refreshOptions', runtimeTranslations);
+            } catch (error) {
+                // Keep page translations working even if a specific grid instance cannot be refreshed.
+            }
+        });
+    }
+
     function applyTranslations(target, labels, translations) {
         var $container = resolveTarget(target);
 
@@ -936,6 +973,7 @@ app.language = (function () {
             return;
 
         applyHeaderTranslations($container, translations);
+        refreshBootstrapTableTranslations($container);
 
         $container.find('[id]').each(function () {
             var $element = $(this);
@@ -1055,6 +1093,7 @@ app.language = (function () {
 
                 if (!shouldTranslate()) {
                     currentTranslations = {};
+                    applyBootstrapTableTranslations();
                     notifyTranslationComplete(onComplete, currentTranslations);
                     return;
                 }
@@ -1073,6 +1112,7 @@ app.language = (function () {
                 if (useCache && hasAllTranslations(labels, storedTranslations)) {
                     resolveTranslationsWithCommon(storedTranslations, useCache, function (effectiveTranslations) {
                         currentTranslations = effectiveTranslations || {};
+                        applyBootstrapTableTranslations();
                         applyTranslations(target, labels, currentTranslations);
                         notifyTranslationComplete(onComplete, currentTranslations);
                     });
@@ -1087,6 +1127,7 @@ app.language = (function () {
                         saveTranslationsInStorage(storageKey, pageTranslations);
                         resolveTranslationsWithCommon(pageTranslations, useCache, function (effectiveTranslations) {
                             currentTranslations = effectiveTranslations || {};
+                            applyBootstrapTableTranslations();
                             applyTranslations(target, labels, currentTranslations);
                             notifyTranslationComplete(onComplete, currentTranslations);
                         });
