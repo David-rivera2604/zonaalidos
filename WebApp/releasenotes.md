@@ -1,6 +1,6 @@
 ﻿# Release Notes - Aliados
-
-## Versión 1.6.181 - [En Desarrollo] - Feature Branch: `feature/multilanguage`
+ 
+## Versión 1.6.181 - Multilenguaje: Refinamientos avanzados y soporte de Bootstrap Table (Fase III).
 
 ### Aliados - Multilenguaje: Refinamientos avanzados y soporte de Bootstrap Table (Fase III).
 
@@ -12,30 +12,14 @@
 - ✅ **Mejora de filtros de labels:** Control mejorado para evitar traducción duplicada en etiquetas con ID definido.
 - ✅ **Sincronización automática:** Las tablas Bootstrap se actualizan automáticamente cuando se cargan nuevas traducciones.
 
-**Interfaz de Usuario - Vistas Razor:**
-- ✅ **Localización del menú de usuario:** `_Layout.cshtml` y `_LayoutEx.cshtml` refactorizadas con IDs específicos para elementos del menú:
-  - `UserMenuLogoutLink` / `UserMenuLogoutText` - Botón de cerrar sesión
-  - `UserMenuChangePasswordLink` / `UserMenuChangePasswordText` - Enlace de cambio de clave
-  - `LanguageMenuLabel` - Selector de idioma mejorado
-- ✅ **Nueva vista de seguridad:** `Security/RoleMember.cshtml` con soporte multilenguaje completo.
-
-**Diccionarios de Localización:**
-- ✅ **Nuevo:** `Security/rolemember.en.json` - Diccionario de miembros por rol (EN).
-- ✅ **Actualizado:** `Common.en.json` y `Common.es.json` - Textos de menú de usuario.
-- ✅ **Actualizado:** `UserMembers.Forms.en.json` - Localizaciones de formularios de miembros.
-
-**Scripts Complementarios:**
-- ✅ **Actualizado:** `master.js` - Inicialización mejorada del motor de multilenguaje.
-
-#### Resumen técnico:
-- **9 archivos modificados** (motor de lenguaje, vistas, diccionarios, scripts).
-- **Mejoras principales:**
-  - Soporte completo para Bootstrap Table con actualizaciones dinámicas
-  - Menú de usuario totalmente localizable (ES/EN)
-  - Prevención de traducciones duplicadas en etiquetas
-  - Sincronización automática de cambios de idioma en grillas
-- **Status:** Cambios pendientes de staging/commit en rama de feature.
-- **Impacto:** Mejora significativa en la experiencia de usuario multilingüe, especialmente en grillas de datos dinámicas.
+#### Dependencias:
+1. 260416a.visualization.upd.des.57c14536.sql
+2. 260416b.navigation.fix.75db2a1c.sql
+3. 260416c.translations.038ca66a.sql 
+4. 260416d.translations.data.7805eced.sql
+5. 20260419a.lookupmaster.alter.3021530b.sql
+6. 20260419b.translations.tron_a1002090.aa95c583.sql
+7. 20260419c.G1010031.42edd036.sql 
 
 ---
 
