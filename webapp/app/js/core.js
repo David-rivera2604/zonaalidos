@@ -50,6 +50,7 @@ app.core = (function () {
     let inactiveSeconds = 0;
 
     let lookupData = [];
+    let loadingScripts = {};
 
     function getAuthToken() {
         return localStorage.getItem("Token");
@@ -946,29 +947,42 @@ app.core = (function () {
             if (!url.startsWith('http')) {
                 url = app.setting.basepath + 'scripts/' + url;
             }
-            return new Promise((resolve, reject) => {
+            const scriptUrl = new URL(url, window.location.href).href;
+            const existingScript = Array.from(document.scripts).find(script => script.src === scriptUrl);
+
+            if (existingScript) {
+                return loadingScripts[scriptUrl] || Promise.resolve({ status: true, skipped: true });
+            }
+
+            const scriptPromise = new Promise((resolve, reject) => {
                 try {
                     const scriptEle = document.createElement("script");
                     scriptEle.type = type;
                     scriptEle.async = async;
-                    scriptEle.src = url;
+                    scriptEle.src = scriptUrl;
 
                     scriptEle.addEventListener("load", (ev) => {
+                        delete loadingScripts[scriptUrl];
                         resolve({ status: true });
                     });
 
                     scriptEle.addEventListener("error", (ev) => {
+                        delete loadingScripts[scriptUrl];
                         reject({
                             status: false,
-                            message: `Failed to load the script ${url}`
+                            message: `Failed to load the script ${scriptUrl}`
                         });
                     });
 
                     document.body.appendChild(scriptEle);
                 } catch (error) {
+                    delete loadingScripts[scriptUrl];
                     reject(error);
                 }
             });
+
+            loadingScripts[scriptUrl] = scriptPromise;
+            return scriptPromise;
         },
         api_report: function (reportName, data) {
             return new Promise((resolve, reject) => {
