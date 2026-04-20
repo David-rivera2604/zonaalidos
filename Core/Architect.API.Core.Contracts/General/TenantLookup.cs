@@ -48,5 +48,13 @@ namespace Architect.API.Core.Contracts.General
         [DataMember(), JsonProperty()] public string ExcludeByRole { get; set; }
 
         [DataMember(), JsonProperty()] public bool IsCached { get; set; }
+        /// <summary>
+        /// Fuente de la traducción.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string TranslationSrc { get; set; }
+        /// <summary>
+        /// Contexto de la traducción.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string TranslationCtx { get; set; }
     }
 }
