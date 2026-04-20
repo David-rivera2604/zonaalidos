@@ -945,7 +945,6 @@ app.language = (function () {
 
     function refreshBootstrapTableTranslations($container) {
         var runtimeTranslations = getBootstrapTableTranslations();
-        var runtimeLanguage = getNormalizedLanguage();
         var $tables = $container
             .filter('table[id$="GridTbl"], table[id$="Tbl"], table[name$="GridTbl"], table[name$="Tbl"]')
             .add($container.find('table[id$="GridTbl"], table[id$="Tbl"], table[name$="GridTbl"], table[name$="Tbl"]'));
@@ -955,19 +954,13 @@ app.language = (function () {
 
         $tables.each(function () {
             var $table = $(this);
-            var appliedLanguage = $table.data('bootstrap-table-language');
 
             if (!$table.data('bootstrap.table'))
                 return;
 
-            if (appliedLanguage === runtimeLanguage)
-                return;
-
             try {
-                $table.data('bootstrap-table-language', runtimeLanguage);
                 $table.bootstrapTable('refreshOptions', runtimeTranslations);
             } catch (error) {
-                $table.removeData('bootstrap-table-language');
                 // Keep page translations working even if a specific grid instance cannot be refreshed.
             }
         });
