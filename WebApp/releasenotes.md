@@ -19,7 +19,7 @@
 4. 260416d.translations.data.7805eced.sql
 5. 20260419a.lookupmaster.alter.3021530b.sql
 6. 20260419b.translations.tron_a1002090.aa95c583.sql
-7. 20260419c.G1010031.42edd036.sql 
+7. 20260419c.G1010031.42edd036.sql.
 
 ---
 
