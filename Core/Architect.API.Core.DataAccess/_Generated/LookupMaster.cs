@@ -80,9 +80,9 @@ namespace Architect.API.Core.DataAccess.General
         public static Architect.API.Core.Contracts.General.LookupMaster Retrieve(int lookupid, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.General.LookupMaster result = null;
-            Database.Select("SELECT LookupId, Type, Description, Key, Tenant, StatementType, Statement, Fields, IsCached, ConnectionName, IncludeByRole, ExcludeByRole, LookupMaster.RecordStatus, LookupMaster.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, LookupMaster.UpdateDate " +
-                              "FROM LookupMaster LEFT JOIN UserMember um ON um.UserId = LookupMaster.UpdateUserCode " +
-                             "WHERE LookupMaster.LookupId=:LookupId")
+            Database.Select("SELECT LookupId, Type, Description, Key, Tenant, StatementType, Statement, Fields, IsCached, ConnectionName, IncludeByRole, ExcludeByRole, LookupMaster.RecordStatus, LookupMaster.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, LookupMaster.UpdateDate, TranslationSrc, TranslationCtx " +
+                             " FROM LookupMaster LEFT JOIN UserMember um ON um.UserId = LookupMaster.UpdateUserCode " +
+                            " WHERE LookupMaster.LookupId=:LookupId")
                         .AddParameter("LookupId", DbType.Decimal, 9, lookupid)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
@@ -101,8 +101,8 @@ namespace Architect.API.Core.DataAccess.General
         public static List<Architect.API.Core.Contracts.General.LookupMaster> RetrieveAll(string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.General.LookupMaster> result = new List<Architect.API.Core.Contracts.General.LookupMaster>();
-            Database.Select("SELECT LookupId, Type, Description, Key, Tenant, StatementType, Statement, Fields, IsCached, ConnectionName, IncludeByRole, ExcludeByRole, LookupMaster.RecordStatus, LookupMaster.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, LookupMaster.UpdateDate " +
-                              "FROM LookupMaster LEFT JOIN UserMember um ON um.UserId = LookupMaster.UpdateUserCode" + filter)
+            Database.Select(@"SELECT LookupId, Type, Description, Key, Tenant, StatementType, Statement, Fields, IsCached, ConnectionName, IncludeByRole, ExcludeByRole, LookupMaster.RecordStatus, LookupMaster.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, LookupMaster.UpdateDate, TranslationSrc, TranslationCtx
+                                FROM LookupMaster LEFT JOIN UserMember um ON um.UserId = LookupMaster.UpdateUserCode" + filter)
                         .AddParameter(parameters)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
@@ -132,7 +132,7 @@ namespace Architect.API.Core.DataAccess.General
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT LookupId, Type, Description, Key, Tenant, StatementType, Statement, Fields, IsCached, ConnectionName, IncludeByRole, ExcludeByRole, LookupMaster.RecordStatus, LookupMaster.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, LookupMaster.UpdateDate " +
+                            "SELECT LookupId, Type, Description, Key, Tenant, StatementType, Statement, Fields, IsCached, ConnectionName, IncludeByRole, ExcludeByRole, LookupMaster.RecordStatus, LookupMaster.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, LookupMaster.UpdateDate, TranslationSrc, TranslationCtx " +
                                    ", ROW_NUMBER() OVER (ORDER BY LookupMaster.LookupId DESC) RowNumber " +
                               "FROM LookupMaster LEFT JOIN UserMember um ON um.UserId = LookupMaster.UpdateUserCode" + filter +
                                ") WHERE RowNumber BETWEEN :beginIndex AND :endIndex")
@@ -389,6 +389,9 @@ namespace Architect.API.Core.DataAccess.General
             item.UpdateUserCode = reader.IntegerValue("UpdateUserCode");
             item.UpdateUserName = reader.StringValue("UpdateUserName");
             item.UpdateDate = reader.DateTimeValue("UpdateDate");
+            item.TranslationSrc = reader.StringValue("TranslationSrc");
+            item.TranslationCtx = reader.StringValue("TranslationCtx");
+
             return item;
         }
 

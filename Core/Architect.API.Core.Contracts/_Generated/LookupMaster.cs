@@ -70,6 +70,15 @@ namespace Architect.API.Core.Contracts.General
         /// Fecha que se actualizo por última vez el registro.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime UpdateDate { get; set; }
+        /// <summary>
+        /// Fuente de la traducción.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string TranslationSrc { get; set; }
+        /// <summary>
+        /// Contexto de la traducción.
+        /// </summary>
+        [DataMember(), JsonProperty()] public string TranslationCtx { get; set; }
+
     }
 }
 

@@ -38,7 +38,9 @@ namespace Architect.API.Core.Business.General
                         ConnectionName = item.ConnectionName,
                         IncludeByRole = item.IncludeByRole,
                         ExcludeByRole = item.ExcludeByRole,
-                        IsCached = item.IsCached
+                        IsCached = item.IsCached,
+                        TranslationSrc = item.TranslationSrc,
+                        TranslationCtx = item.TranslationCtx
                     });
                 }
                 Architect.Utilities.Cache.SetItem("tenantLkpMaster", tenantLkpMaster);

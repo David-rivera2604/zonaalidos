@@ -1,9 +1,11 @@
 ﻿using Architect.API.Core.Contracts.General;
 using Architect.Utilities.Extensions;
 using FastMember;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Architect.API.Core.Business
 {
@@ -22,6 +24,7 @@ namespace Architect.API.Core.Business
         public static List<Contracts.General.LookupValues> Lkps(string keys, string url, Core.Contracts.Security.Token tokenInfo)
         {
             List<Contracts.General.LookupValues> values = new List<Contracts.General.LookupValues>();
+            string language = tokenInfo.Language;
             if (keys == null)
             {
                 return values;
@@ -135,6 +138,34 @@ namespace Architect.API.Core.Business
                         }
                     }
                     customValues = newList;
+                }
+
+                if (!string.Equals(language, "ES", StringComparison.OrdinalIgnoreCase) && customValues != null && customValues.Count > 0)
+                {
+                    List<Contracts.General.Translation> translations = null;
+                    switch (tenantLkpMaster.TranslationSrc)
+                    {
+                        case "ALIADOS":
+                            translations = General.Translation.GetByContext(tenantLkpMaster.TranslationCtx, language);
+                            break;
+                        case "TRON":
+                            translations = Architect.API.Core.DataAccess.Security.Tron.GetG1010031ByContext(tenantLkpMaster.TranslationCtx == "{extend}" ? extend : tenantLkpMaster.TranslationCtx, language);
+                            break;
+                    }
+
+                    if (translations != null && translations.Count > 0)
+                    {
+                        Dictionary<string, string> translationMap = translations
+                            .ToDictionary(t => t.TranslationKey, t => t.TranslatedText, StringComparer.OrdinalIgnoreCase);
+
+                        foreach (LookupValue item in customValues)
+                        {
+                            if (item.Code.IsNotEmpty() && translationMap.TryGetValue(item.Code, out string translatedTitle))
+                            {
+                                item.Description = translatedTitle;
+                            }
+                        }
+                    }
                 }
 
                 values.Add(new Contracts.General.LookupValues()
