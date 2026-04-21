@@ -101,8 +101,10 @@ namespace Architect.API.Tron.Business.Cotizacion
                     result.p_ded_auto_sust_connect = quoteInfo.DedudAutoSustConnect.ToString();
                 }
 
-                result.rc_alcohol = quoteInfo.rc_alcohol;
+                
             }
+
+            result.rc_alcohol = quoteInfo.rc_alcohol;
 
             if (quoteInfo.coberturas.IsNotEmpty())
             {
