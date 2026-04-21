@@ -1,0 +1,27 @@
+{
+  "QueryTitle": "Cancelled policies",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "ABR_RAMO": {
+        "text": "Line of business",
+        "title": "Insurance line of business"
+      },
+      "COD_DOCUM": {
+        "text": "ID",
+        "title": "Identification number"
+      },
+      "NOM_COMPLETO": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "FEC_EFEC_SPTO": {
+        "text": "Cancellation date",
+        "title": "Policy cancellation date"
+      }
+    }
+  }
+}

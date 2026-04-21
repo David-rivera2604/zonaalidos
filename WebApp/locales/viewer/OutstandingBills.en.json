@@ -1,0 +1,67 @@
+{
+  "QueryTitle": "Outstanding bills",
+  "desde_group": {
+    "text": "Start date",
+    "title": "Bill start date"
+  },
+  "hasta_group": {
+    "text": "End date",
+    "title": "Bill end date"
+  },
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "NOM_COMPLETO2": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "NUM_RECIBO": {
+        "text": "Bill",
+        "title": "Bill number"
+      },
+      "TIP_GESTOR_DESC": {
+        "text": "Manager",
+        "title": "Assigned manager"
+      },
+      "TIP_SITUACION_DESC": {
+        "text": "Status",
+        "title": "Bill status"
+      },
+      "NOM_MON": {
+        "text": "Currency",
+        "title": "Currency"
+      },
+      "IMP_RECIBO": {
+        "text": "Amount",
+        "title": "Bill amount"
+      },
+      "IMP_COMIS": {
+        "text": "Commission",
+        "title": "Commission amount"
+      },
+      "FEC_VCTO_RECIBO": {
+        "text": "Due date",
+        "title": "Bill due date"
+      },
+      "EMAIL": {
+        "text": "Email",
+        "title": "Email address"
+      },
+      "TLF_NUMERO": {
+        "text": "Phone 1",
+        "title": "Phone number 1"
+      },
+      "TLF_NUMERO_COM": {
+        "text": "Phone 2",
+        "title": "Phone number 2"
+      },
+      "NOM_DOMICILIO1": {
+        "text": "Address",
+        "title": "Address"
+      }
+    }
+  }
+}

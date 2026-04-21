@@ -1,6 +1,29 @@
 ﻿# Release Notes - Aliados
+ 
+## Versión 1.6.181 - Multilenguaje: Refinamientos avanzados y soporte de Bootstrap Table (Fase III).
 
-## Versión 1.6.181 - 02/04/2026
+### Aliados - Multilenguaje: Refinamientos avanzados y soporte de Bootstrap Table (Fase III).
+
+#### Cambios implementados:
+
+**Motor de Multilenguaje - `core.language.js`:**
+- ✅ **Nuevo soporte para Bootstrap Table:** Función `applyBootstrapTableTranslations()` que extiende opciones de traducción dinámicamente.
+- ✅ **Refrescado de traducciones en tablas:** Nueva función `refreshBootstrapTableTranslations()` para actualizar traducciones en tiempo de ejecución en grillas Bootstrap.
+- ✅ **Mejora de filtros de labels:** Control mejorado para evitar traducción duplicada en etiquetas con ID definido.
+- ✅ **Sincronización automática:** Las tablas Bootstrap se actualizan automáticamente cuando se cargan nuevas traducciones.
+
+#### Dependencias:
+1. 260416a.visualization.upd.des.57c14536.sql
+2. 260416b.navigation.fix.75db2a1c.sql
+3. 260416c.translations.038ca66a.sql 
+4. 260416d.translations.data.7805eced.sql
+5. 20260419a.lookupmaster.alter.3021530b.sql
+6. 20260419b.translations.tron_a1002090.aa95c583.sql
+7. 20260419c.G1010031.42edd036.sql.
+
+---
+
+## Versión 1.6.180 - 02/04/2026
 
 ### Aliados - Multilenguaje: Implementación de librería propia de traducción y localización (Fase I y II).
 
@@ -13,16 +36,6 @@
 - Localización de 42+ vistas Razor con atributos `data-i18n`.
 - Refactorización de `Database.cs` y `aliados.csproj`.
 
----
-
-## Versión 1.6.180 - 13/04/2026
-
-### Aliados - MapfreMasPlus: Se habilita el uso del contrato para poder agregar terecero por medio de reglas.
-
-#### Funcionalidades implementadas:
-
-- Se habilita el uso del contrato para poder agregar terecero por medio de reglas. Ejmplo: "Condition": "contrato=10701"
-- 
 ---
 
 ## Versión 1.6.179 - 07/04/2026

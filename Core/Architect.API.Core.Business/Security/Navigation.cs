@@ -19,11 +19,41 @@ namespace Architect.API.Core.Business.Security
             return result;
         }
 
-        public static List<Contracts.Security.NavAllowed> RetrieveNavigationAllowed(string roleNameList, int companyId)
+        /// <summary>
+        /// Recupera la lista de navegación permitida para un conjunto de roles.
+        /// Cuando el idioma es diferente de 'ES', aplica las traducciones del contexto 'NAVIGATION'
+        /// usando el campo <c>Code</c> como llave y reemplaza el valor de <c>Title</c>.
+        /// </summary>
+        /// <param name="roleNameList">Lista de nombres de roles separados por coma.</param>
+        /// <param name="companyId">Identificación de la compañía propietaria.</param>
+        /// <param name="language">Código ISO de 2 caracteres del idioma solicitado (ej: 'ES', 'EN').</param>
+        /// <returns>Lista de instancias de <see cref="Contracts.Security.NavAllowed"/> con los títulos traducidos.</returns>
+        public static List<Contracts.Security.NavAllowed> RetrieveNavigationAllowed(string roleNameList, int companyId, string language)
         {
             string roleNameListFormated = string.Format("'{0}'", roleNameList.Replace(",", "','"));
 
-            return DataAccess.General.Navigation.RetrieveNavigationAllowed(roleNameListFormated, companyId);
+            List<Contracts.Security.NavAllowed> result = DataAccess.General.Navigation.RetrieveNavigationAllowed(roleNameListFormated, companyId);
+
+            if (!string.Equals(language, "ES", StringComparison.OrdinalIgnoreCase) && result != null && result.Count > 0)
+            {
+                List<Contracts.General.Translation> translations = General.Translation.GetByContext("NAVIGATION", language);
+
+                if (translations != null && translations.Count > 0)
+                {
+                    Dictionary<string, string> translationMap = translations
+                        .ToDictionary(t => t.TranslationKey, t => t.TranslatedText, StringComparer.OrdinalIgnoreCase);
+
+                    foreach (Contracts.Security.NavAllowed item in result)
+                    {
+                        if (item.Code.IsNotEmpty() && translationMap.TryGetValue(item.Code, out string translatedTitle))
+                        {
+                            item.Title = translatedTitle;
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

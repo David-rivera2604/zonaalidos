@@ -28,7 +28,7 @@ namespace Architect.API.Tron.Business.Emision
             {
                 result = Newtonsoft.Json.JsonConvert.DeserializeObject<Contracts.Emision.AccidentesPersonales>(Architect.Utilities.Cache.GetItem(key).ToString());
                 //result.terceros = Default_Terceros(result);
-                result.terceros = Reglas.research.Apply_Terceros("AccidentesPersonales", result.terceros, string.Empty, result.num_contrato, tokenInfo);
+                result.terceros = Reglas.research.Apply_Terceros("AccidentesPersonales", result.terceros, string.Empty, tokenInfo);
                 result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("AccidentesPersonales", null, 0, tokenInfo);
             }
             return result;

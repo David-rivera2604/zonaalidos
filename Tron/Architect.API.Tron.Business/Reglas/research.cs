@@ -239,9 +239,9 @@ namespace Architect.API.Tron.Business.Reglas
             return documentos;
         }
 
-        public static List<Contracts.Comun.tercero> Apply_Terceros(string ruleFile, List<Contracts.Comun.tercero> terceros, string fuente_Tomador, int contrato, Core.Contracts.Security.Token tokenInfo)
+        public static List<Contracts.Comun.tercero> Apply_Terceros(string ruleFile, List<Contracts.Comun.tercero> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
         {
-            List<Contracts.Comun.tercero> result = Apply_Terceros_int(ruleFile, new List<Contracts.Comun.tercero>(), fuente_Tomador, contrato, tokenInfo);
+            List<Contracts.Comun.tercero> result = Apply_Terceros_int(ruleFile, new List<Contracts.Comun.tercero>(), fuente_Tomador, tokenInfo);
 
             if (result?.Count > 0 && terceros?.Count > 0)
             {
@@ -261,7 +261,7 @@ namespace Architect.API.Tron.Business.Reglas
             return result;
         }
 
-        internal static List<Contracts.Comun.tercero> Apply_Terceros_int(string ruleFile, List<Contracts.Comun.tercero> terceros, string fuente_Tomador, int contrato, Core.Contracts.Security.Token tokenInfo)
+        internal static List<Contracts.Comun.tercero> Apply_Terceros_int(string ruleFile, List<Contracts.Comun.tercero> terceros, string fuente_Tomador, Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Especificacion.Producto rules = Utilities.SerializeHandler.DeserializeJSONFromFile<Contracts.Especificacion.Producto>(string.Format(@"{0}\{1}.rules.json", ConfigurationManager.AppSettings["Product.Definition.Path"], ruleFile));
             Contracts.Comun.tercero newTercero;
@@ -276,10 +276,6 @@ namespace Architect.API.Tron.Business.Reglas
                         if (condition.Condicion.StartsWith("Fuente_Tomador=", StringComparison.CurrentCultureIgnoreCase))
                         {
                             addTercero = condition.Condicion.Substring(15).Equals(fuente_Tomador, StringComparison.CurrentCultureIgnoreCase);
-                        }
-                        else if (condition.Condicion.StartsWith("contrato=", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            addTercero = condition.Condicion.Substring(9).Equals(contrato.ToString(), StringComparison.CurrentCultureIgnoreCase);
                         }
                     }
                     if (addTercero)

@@ -1,0 +1,43 @@
+{
+  "QueryTitle": "Payment plan",
+  "1GridTbl": {
+    "columns": {
+      "FEC_EFEC_RECIBO": {
+        "text": "Start date",
+        "title": "Receipt start date"
+      },
+      "FEC_VCTO_RECIBO": {
+        "text": "End date",
+        "title": "Receipt end date"
+      },
+      "FEC_VALOR": {
+        "text": "Charged date",
+        "title": "Charge date"
+      },
+      "TIP_SITUACION": {
+        "text": "Receipt status",
+        "title": "Receipt status"
+      },
+      "IMP_NETA": {
+        "text": "Net premium",
+        "title": "Net premium amount"
+      },
+      "IMP_IMPTOS": {
+        "text": "VAT",
+        "title": "VAT amount"
+      },
+      "IMP_INTERES": {
+        "text": "Installment surcharge",
+        "title": "Installment surcharge amount"
+      },
+      "IMP_RECIBO": {
+        "text": "Total amount",
+        "title": "Total receipt amount"
+      },
+      "_8": {
+        "text": "Interest amount",
+        "title": "Interest amount"
+      }
+    }
+  }
+}

@@ -32,6 +32,84 @@ app.ViewerQuery = (function () {
         return string.split(search).join(replace);
     }
 
+    function ApplyQueryTitleTranslation(target, translations) {
+        if (!translations)
+            return;
+
+        var queryTitleValue = translations.QueryTitle;
+        if (!queryTitleValue)
+            return;
+
+        var titleText = null;
+        var titleAttr = null;
+
+        if (typeof queryTitleValue === 'string')
+            titleText = queryTitleValue;
+        else if (typeof queryTitleValue === 'object') {
+            if (Object.prototype.hasOwnProperty.call(queryTitleValue, 'text'))
+                titleText = queryTitleValue.text;
+            if (Object.prototype.hasOwnProperty.call(queryTitleValue, 'title'))
+                titleAttr = queryTitleValue.title;
+        }
+
+        if (titleText) {
+            if ($("#QueryMainTitle").length === 1)
+                $("#QueryMainTitle").text(titleText);
+
+            $('html head').find('title').text(titleText);
+
+            var $target = $(target || []);
+            var $tabPane = $target.closest('.tab-pane');
+            var tabPaneId = $tabPane.attr('id') || '';
+
+            if (tabPaneId) {
+                var $tabLink = $('#queryTab').find('a[href="#' + tabPaneId + '"]').first();
+                if ($tabLink.length > 0)
+                    $tabLink.text(titleText);
+            }
+        }
+
+        if (titleAttr && $("#QueryMainTitle").length === 1)
+            $("#QueryMainTitle").attr('title', titleAttr);
+    }
+
+    function TranslateViewerTarget(target, entity) {
+        entity = $.trim(entity || '');
+        if (!entity)
+            return;
+
+        app.language.translate(
+            target,
+            'viewer/ViewerManager',
+            function () {
+                app.language.translate(
+                    target,
+                    'viewer/' + entity,
+                    function (translations) {
+                        ApplyQueryTitleTranslation(target, translations);
+                    }
+                )();
+            }
+        )();
+    }
+
+    function resolveTableTranslationName(index, entity, defaultSuffix) {
+        var normalizedEntity = $.trim(entity || '');
+        var suffix = defaultSuffix || 'GridTbl';
+
+        if (!normalizedEntity)
+            return index + suffix;
+
+        normalizedEntity = normalizedEntity.replace(/[^\w]/g, '');
+        if (!normalizedEntity)
+            return index + suffix;
+
+        if (/(?:GridTbl|Tbl)$/i.test(normalizedEntity))
+            return normalizedEntity;
+
+        return normalizedEntity + suffix;
+    }
+
     function RenderTabHeader(item) {
         body = ReplaceAll(_itemHeader, "{index}", item.index);
         body = ReplaceAll(body, "{title}", item.title);        
@@ -64,6 +142,7 @@ app.ViewerQuery = (function () {
 
     function Render(data) {
         gridControlName = "#" + data.index + "GridTbl";
+        var translationEntity = data.entity || data.Entity || (data.table ? data.table.entity : '');
 
         if ($("#QueryTitle").length === 1)
             $("#QueryTitle").html(data.title);
@@ -74,6 +153,8 @@ app.ViewerQuery = (function () {
             $("#QueryMainTitle").html(data.maintitle);
             $('html head').find('title').text(data.maintitle);
         }
+
+        TranslateViewerTarget('body', translationEntity);
 
         var spec = data.table;
 
@@ -96,6 +177,7 @@ app.ViewerQuery = (function () {
 
     function Table_Render(spec, index) {
         gridControlName = "#" + index + "GridTbl";
+        var tableTranslationName = resolveTableTranslationName(index, spec.entity, 'GridTbl');
 
         //Defaults
         if (spec.classes === undefined) {
@@ -109,6 +191,8 @@ app.ViewerQuery = (function () {
         }
         spec.id = gridControlName;
         spec.index = index;
+        if (!spec.entity)
+            spec.entity = '';
         spec.toolbar = "#" + spec.index + "toolbar";
         spec.buttonsClass = "outline btn-default";
         spec.exportDataType = "all";
@@ -248,8 +332,12 @@ app.ViewerQuery = (function () {
             detailClose: 'fa-angle-double-down',
             export: 'fa-download'
         };
+        var originalOnPostBody = spec.onPostBody;
         spec.onPostBody = function (data) {
             app.ui.CommonBehaviour();
+            TranslateViewerTarget(gridControlName, spec.entity);
+            if ($.isFunction(originalOnPostBody))
+                originalOnPostBody.call(this, data);
         };
         //spec.onAll = function (name, args) {
         //    console.log(name, args);
@@ -262,7 +350,9 @@ app.ViewerQuery = (function () {
         //    console.log($element);
         //};
 
+        $(gridControlName).attr('name', tableTranslationName);
         $(gridControlName).bootstrapTable(spec);
+        TranslateViewerTarget(gridControlName, spec.entity);
         if (spec.searchStyle != undefined) {
             $('.search').width(spec.searchStyle);
         }
@@ -375,6 +465,10 @@ app.ViewerQuery = (function () {
         app.core.Get(app.setting.apipath + 'v1/Viewer/QuerySpecification?id=' + id + '&url=' + window.location.search.slice(1).replace(/&/g, ':'))
             .done(function (data, textStatus, jqXHR) {
                 var spec = data.table;
+                var tableTranslationName = null;
+                if (!spec.entity)
+                    spec.entity = data.entity || data.Entity || '';
+                tableTranslationName = resolveTableTranslationName(id, spec.entity, 'Tbl');
                 title.html(data.title);
                 if (spec.classes === undefined) {
                     spec.classes = "table table-bordered table-hover table-index";
@@ -403,8 +497,12 @@ app.ViewerQuery = (function () {
                 spec.showColumnsToggleAll = false;
                 spec.maintainMetaData = true;
 
+                var originalOnPostBody = spec.onPostBody;
                 spec.onPostBody = function (data) {
                     app.ui.CommonBehaviour();
+                    TranslateViewerTarget('#' + $el.attr('id'), spec.entity);
+                    if ($.isFunction(originalOnPostBody))
+                        originalOnPostBody.call(this, data);
                 };
 
                 //spec.onRefresh = function (params) {
@@ -428,7 +526,9 @@ app.ViewerQuery = (function () {
                     }
                 });
 
+                $el.attr('name', tableTranslationName);
                 $el.bootstrapTable(spec);
+                TranslateViewerTarget('#' + $el.attr('id'), spec.entity);
 
                 app.ViewerQuery.Refresh(undefined, $el, id, url);
 

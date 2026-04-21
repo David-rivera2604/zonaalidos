@@ -146,7 +146,7 @@ namespace Architect.API.Tron.Controllers
             List<Contracts.Comun.tercero> result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Reglas.research.Apply_Terceros("MapfreMas", terceros, fuente_Tomador, 0, tokenInfo);
+                result = Architect.API.Tron.Business.Reglas.research.Apply_Terceros("MapfreMas", terceros, fuente_Tomador, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);
@@ -166,7 +166,7 @@ namespace Architect.API.Tron.Controllers
             List<Contracts.Comun.tercero> result = null;
             await Task.Run(() =>
             {
-                result = Architect.API.Tron.Business.Reglas.research.Apply_Terceros("MapfreMasPlus", terceros, fuente_Tomador, 0, tokenInfo);
+                result = Architect.API.Tron.Business.Reglas.research.Apply_Terceros("MapfreMasPlus", terceros, fuente_Tomador, tokenInfo);
             })
                 .ConfigureAwait(false);
             return Ok(result);

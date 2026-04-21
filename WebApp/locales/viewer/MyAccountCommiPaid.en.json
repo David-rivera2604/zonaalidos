@@ -1,0 +1,27 @@
+{
+  "QueryTitle": "Paid commissions",
+  "1GridTbl": {
+    "columns": {
+      "FEC_PROCESO": {
+        "text": "Payment date",
+        "title": "Commission payment date"
+      },
+      "NOM_MON": {
+        "text": "Currency",
+        "title": "Payment currency"
+      },
+      "IMP_COMIS": {
+        "text": "Assignments",
+        "title": "Assigned commissions"
+      },
+      "IMP_DEDUC": {
+        "text": "Deductions",
+        "title": "Applied deductions"
+      },
+      "IMP_PAGADO": {
+        "text": "Paid",
+        "title": "Paid amount"
+      }
+    }
+  }
+}

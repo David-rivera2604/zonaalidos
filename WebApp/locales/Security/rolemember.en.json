@@ -1,5 +1,17 @@
 {
   "RoleMemberTitle": "Role maintenance",
+  "RoleMemberToolFilter": {
+    "title": "Show advanced filter..."
+  },
+  "RoleMemberToolNew": {
+    "title": "Create a new role"
+  },
+  "RoleMemberToolFullscreen": {
+    "title": "Expand work area"
+  },
+  "RoleMemberToolOptions": {
+    "title": "Additional options..."
+  },
   "RoleMemberSearch": {
     "placeholder": "Filter by role name or description",
     "title": "Filter by role name or description"

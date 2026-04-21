@@ -1673,9 +1673,39 @@
     <Content Include="locales\Common\AttachmentGrid.es.json" />
     <Content Include="locales\Cases\CasesAliados.en.json" />
     <Content Include="locales\Cases\Seguimiento_Al.en.json" />
+    <Content Include="locales\viewer\ActiveClaims.en.json" />
+    <Content Include="locales\viewer\ActivePoliciesByAgent.en.json" />
+    <Content Include="locales\viewer\ActivePolicies.en.json" />
+    <Content Include="locales\viewer\CancelledPolicies.en.json" />
+    <Content Include="locales\viewer\ClaimDetailFiles.en.json" />
+    <Content Include="locales\viewer\CollectedBills.en.json" />
+    <Content Include="locales\viewer\CollectedBillsByAgent.en.json" />
+    <Content Include="locales\viewer\CommissionAssignmentsPaid.en.json" />
+    <Content Include="locales\viewer\CommissionAssignmentsPend.en.json" />
+    <Content Include="locales\viewer\CommissionDeductions.en.json" />
+    <Content Include="locales\viewer\DetailActivities.en.json" />
+    <Content Include="locales\viewer\MyAccountIssuedPolicies.en.json" />
+    <Content Include="locales\viewer\MyAccountCommiPaid.en.json" />
+    <Content Include="locales\viewer\MyAccountCommiPayable.en.json" />
+    <Content Include="locales\viewer\MyAccountOutstandingBills.en.json" />
+    <Content Include="locales\viewer\OutstandingBills.en.json" />
+    <Content Include="locales\viewer\OutstandingBillsByAgent.en.json" />
+    <Content Include="locales\viewer\PoliciesForVariations.en.json" />
+    <Content Include="locales\viewer\PoliciesCancelledByAgent.en.json" />
+    <Content Include="locales\viewer\PolicyDetailGeneral.en.json" />
+    <Content Include="locales\viewer\PolicyDetailThrid.en.json" />
+    <Content Include="locales\viewer\PolicyDetailDocuments.en.json" />
+    <Content Include="locales\viewer\PolicyDetailDocumentsByQuote.en.json" />
+    <Content Include="locales\viewer\PolicyDetailCertifByTerm.en.json" />
+    <Content Include="locales\viewer\PolicyDetailCertif.en.json" />
+    <Content Include="locales\viewer\PolicyDetailCoverage.en.json" />
+    <Content Include="locales\viewer\PolicyDetailPaymentPlan.en.json" />
+    <Content Include="locales\viewer\PolicyDetailRisk.en.json" />
+    <Content Include="locales\viewer\PaidClaims.en.json" />
     <Content Include="locales\viewer\PolicyActiveV2.en.json" />
     <Content Include="locales\viewer\PaymentNoticesAgent.en.json" />
     <Content Include="locales\viewer\BillingNoticesFromAnAgent.en.json" />
+    <Content Include="locales\viewer\BillsCollectionNotice.en.json" />
     <Content Include="locales\viewer\RejectedCharges.en.json" />
     <Content Include="locales\General\Administration.en.json" />
     <Content Include="locales\viewer\UserListGroupedByRole.en.json" />
@@ -1735,6 +1765,8 @@
     <Content Include="locales\Security\register.en.json" />
     <Content Include="locales\Security\rolemembernavigation.en.json" />
     <Content Include="locales\Security\userrolemember.en.json" />
+    <Content Include="locales\viewer\UserMembers.Forms.en.json" />
+    <Content Include="locales\Common\Common.es.json" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -2103,6 +2135,7 @@
     <Content Include="Views\Funerario\_planes.cshtml" />
     <Content Include="Views\Funerario\_terceros.cshtml" />
     <Content Include="Views\Funerario\Cotizacion.cshtml" />
+    <Content Include="Views\Viewer\_ViewerFormContent.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Data;
 using System.Text.Json;
+using System.Collections.Generic;
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Core.DataAccess.Security
@@ -128,6 +129,37 @@ FETCH FIRST 1 ROWS ONLY")
                          }));
 
             return resultado;
+        }
+
+
+        /// <summary>
+        /// Recupera todas las traducciones pertenecientes a un contexto e idioma específicos.
+        /// </summary>
+        /// <param name="context">Agrupador lógico de las traducciones (ej: 'NAVIGATION', 'ERRORS').</param>
+        /// <param name="language">Código ISO de 2 caracteres del idioma solicitado (ej: 'ES', 'EN').</param>
+        /// <param name="connection">Instancia de una conexión compartida.</param>
+        /// <returns>Lista de instancias de <see cref="Architect.API.Core.Contracts.General.Translation"/>.</returns>
+        public static List<Architect.API.Core.Contracts.General.Translation> GetG1010031ByContext(string context, string language, IDbConnection connection = null)
+        {
+            List<Architect.API.Core.Contracts.General.Translation> result = new List<Architect.API.Core.Contracts.General.Translation>();
+            Database.Select(@"SELECT COD_VALOR, NOM_VALOR
+                              FROM G1010031
+                             WHERE COD_CAMPO = :Context
+                               AND COD_IDIOMA = :Language
+                             ORDER BY COD_VALOR")
+                        .AddParameter("Context", DbType.AnsiString, 80, context)
+                        .AddParameter("Language", DbType.AnsiStringFixedLength, 2, language)
+                        .Query(connection, "Tron", new System.Action<IDataReader>((reader) =>
+                        {
+                            result.Add(new Architect.API.Core.Contracts.General.Translation()
+                            {
+                                Context = context,
+                                TranslationKey = reader.StringValue("COD_VALOR"),
+                                Language = language,
+                                TranslatedText = reader.StringValue("NOM_VALOR")
+                            });
+                        }));
+            return result;
         }
 
     }

@@ -1,0 +1,51 @@
+{
+  "QueryTitle": "Deductions",
+  "1GridTbl": {
+    "columns": {
+      "COD_CIA": {
+        "text": "Company code",
+        "title": "Company code"
+      },
+      "COD_AGT": {
+        "text": "Agent code",
+        "title": "Agent code"
+      },
+      "TIP_DOCUM_AGT": {
+        "text": "Agent ID type",
+        "title": "Agent identification document type"
+      },
+      "COD_DOCUM_AGT": {
+        "text": "Agent ID",
+        "title": "Agent identification number"
+      },
+      "COD_MON": {
+        "text": "Currency code",
+        "title": "Currency code"
+      },
+      "FEC_PROCESO": {
+        "text": "Process date",
+        "title": "Process date"
+      },
+      "TIP_ANTICIPO": {
+        "text": "Advance type",
+        "title": "Advance type"
+      },
+      "NOM_ANTICIPO": {
+        "text": "Description",
+        "title": "Movement description"
+      },
+      "FEC_MVTO": {
+        "text": "Movement date",
+        "title": "Date of movement"
+      },
+      "IMP_MVTO": {
+        "text": "Movement amount",
+        "title": "Amount of movement"
+      },
+      "COD_MVTO": {
+        "text": "Movement code",
+        "title": "Movement code"
+      }
+    }
+  }
+}

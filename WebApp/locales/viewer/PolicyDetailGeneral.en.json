@@ -1,0 +1,35 @@
+{
+  "QueryTitle": "General data",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "COD_MON": {
+        "text": "Currency",
+        "title": "Currency"
+      },
+      "COD_FRACC_PAGO": {
+        "text": "Payment installment",
+        "title": "Payment installment type"
+      },
+      "FEC_EFEC_POLIZA": {
+        "text": "Coverage start date",
+        "title": "Policy effective date"
+      },
+      "FEC_VCTO_POLIZA": {
+        "text": "Coverage end date",
+        "title": "Policy expiration date"
+      },
+      "NOM_COMPLETO": {
+        "text": "Payer",
+        "title": "Payer full name"
+      },
+      "TXT_MOTIVO_SPTO": {
+        "text": "Endorsement reason",
+        "title": "Reason for the endorsement"
+      }
+    }
+  }
+}

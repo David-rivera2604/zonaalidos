@@ -1,5 +1,8 @@
 {
-  "QueryTitle": "User members",
+  "QueryTitle": {
+    "text": "User Members",
+    "title": "User members list"
+  },
   "1GridTbl": {
     "columns": {
       "FIRSTNAME": {
@@ -8,19 +11,19 @@
       },
       "EMAIL": {
         "text": "Email",
-        "title": "Email"
+        "title": "User email address"
       },
       "USERNAME": {
-        "text": "User",
-        "title": "Username"
+        "text": "Username",
+        "title": "System username"
       },
       "LOGINDATE": {
         "text": "Last login",
-        "title": "Last user sign-in date"
+        "title": "User last login date and time"
       },
       "LOCKEDOUTDATE": {
-        "text": "Locked date",
-        "title": "Date when user was locked"
+        "text": "Locked out",
+        "title": "Lockout date"
       },
       "ROLELIST": {
         "text": "Roles",
@@ -31,8 +34,8 @@
         "title": "User status"
       },
       "UPDATEDATE": {
-        "text": "Updated by",
-        "title": "Last update user and date"
+        "text": "Performed by",
+        "title": "Last update date and user"
       },
       "_8": {
         "text": "Actions",

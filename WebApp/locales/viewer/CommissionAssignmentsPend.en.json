@@ -1,0 +1,55 @@
+{
+  "QueryTitle": "Assignments",
+  "1GridTbl": {
+    "columns": {
+      "COD_CIA": {
+        "text": "Company code",
+        "title": "Company code"
+      },
+      "COD_AGT": {
+        "text": "Agent code",
+        "title": "Agent code"
+      },
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "COD_NIVEL3": {
+        "text": "Agency",
+        "title": "Agency"
+      },
+      "COD_RAMO": {
+        "text": "Line code",
+        "title": "Line of business code"
+      },
+      "ABR_RAMO": {
+        "text": "Line name",
+        "title": "Line of business name"
+      },
+      "NUM_RECIBO": {
+        "text": "Bill No.",
+        "title": "Bill number"
+      },
+      "TIP_SITUACION": {
+        "text": "Status",
+        "title": "Bill status"
+      },
+      "FEC_MVTO": {
+        "text": "Movement date",
+        "title": "Date of movement"
+      },
+      "NOM_COMPLETO": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "IMP_RECIBO": {
+        "text": "Total bill",
+        "title": "Total bill amount"
+      },
+      "IMP_MVTO": {
+        "text": "Commission amount",
+        "title": "Commission amount"
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "QueryTitle": "Claim detail (Files)",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "NUM_RIESGO": {
+        "text": "Risk No.",
+        "title": "Risk number"
+      },
+      "NOM_RIESGO": {
+        "text": "Risk name",
+        "title": "Name of the risk"
+      },
+      "NOM_COMPLETO": {
+        "text": "Policyholder",
+        "title": "Policyholder"
+      },
+      "NUM_SINI": {
+        "text": "Claim No.",
+        "title": "Claim number"
+      },
+      "FEC_SINI": {
+        "text": "Occurrence date",
+        "title": "Occurrence date"
+      },
+      "FEC_TERM_SINI": {
+        "text": "Claim closing date",
+        "title": "Claim closing date"
+      },
+      "TIP_EXP": {
+        "text": "File type",
+        "title": "Type of file"
+      },
+      "NOM_EXP": {
+        "text": "File name",
+        "title": "Name of the file"
+      },
+      "IMP_RESERVA": {
+        "text": "Reserve amount",
+        "title": "Reserve amount"
+      },
+      "IMP_ESTIMADO": {
+        "text": "Estimated amount",
+        "title": "Estimated amount"
+      },
+      "IMP_LIQUIDADO": {
+        "text": "Settled amount",
+        "title": "Settled amount"
+      },
+      "IMP_PAGADO": {
+        "text": "Paid amount",
+        "title": "Paid amount"
+      }
+    }
+  }
+}

@@ -58,7 +58,7 @@ namespace Architect.API.Tron.Business.HogarTotal.Handler
 
                 if (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron)
                 {
-                    result.terceros = Reglas.research.Apply_Terceros("HogarTotal", result.terceros, result.Fuente_Tomador, result.contrato, tokenInfo);
+                    result.terceros = Reglas.research.Apply_Terceros("HogarTotal", result.terceros, result.Fuente_Tomador, tokenInfo);
                 }
 
                     result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);

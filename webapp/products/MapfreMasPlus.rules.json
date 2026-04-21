@@ -313,7 +313,7 @@
     },
     {
       "Condicion": "{El Plan} sea igual a {Plan básico}",
-      "Exclusion": "3002,3003,3016,3018,3014,3015,3008,3017,1065,1066,3019,1063"
+      "Exclusion": "3002,3003,3016,3018,3014,3015,3008,3017"
     },
     {
       "Condicion": "{El Plan} sea igual a {Plan amplio}",

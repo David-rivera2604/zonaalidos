@@ -1,0 +1,49 @@
+{
+  "GridToolbarSearch": {
+    "text": "Buscar",
+    "title": "Buscar en la tabla"
+  },
+  "SearchPlaceholder": "Buscar",
+  "GridToolbarRefresh": {
+    "text": "Actualizar",
+    "title": "Actualizar datos"
+  },
+  "GridToolbarExport": {
+    "text": "Exportar",
+    "title": "Exportar datos"
+  },
+  "GridToolbarCsv": "CSV",
+  "GridToolbarExcel": "Excel",
+  "GridPaginationRecordsPerPage": "{0} registros por página",
+  "GridPaginationShowingRows": "Mostrando de {0} a {1} de {2} registros en total",
+  "GridPaginationShowingRowsFiltered": "Mostrando de {0} a {1} de {2} registros (filtrados de {3} registros en total)",
+  "GridPaginationPreviousPage": "página anterior",
+  "GridPaginationPage": "ir a la página {0}",
+  "GridPaginationNextPage": "página siguiente",
+  "GridPaginationDetail": "Mostrando {0} registros",
+  "GridPaginationAllRows": "Todas",
+  "GridNoMatches": "No se encontraron registros",
+  "UserMenuLogoutText": "Desconectar",
+  "UserMenuLogoutLink": {
+    "title": "Permite terminar la sesión del usuario"
+  },
+  "UserMenuChangePasswordText": "Cambio de clave de acceso",
+  "UserMenuChangePasswordLink": {
+    "title": "Permite el cambio de la clave de acceso del usuario conectado"
+  },
+  "LanguageMenuLabel": "Idioma",
+  "LanguageOptions": {
+    "es": "Español",
+    "en": "Inglés"
+  },
+  "desde_group": {
+    "text": "Fecha desde",
+    "title": "Fecha desde",
+    "placeholder": "día/mes/año"
+  },
+  "hasta_group": {
+    "text": "Fecha hasta",
+    "title": "Fecha hasta",
+    "placeholder": "día/mes/año"
+  }
+}

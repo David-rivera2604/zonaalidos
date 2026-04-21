@@ -1,0 +1,51 @@
+{
+  "QueryTitle": "Active claims",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA_GRUPO": {
+        "text": "Group policy",
+        "title": "Group policy number"
+      },
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "COD_MON": {
+        "text": "Currency",
+        "title": "Claim currency"
+      },
+      "NOM_RIESGO": {
+        "text": "Risk name",
+        "title": "Insured risk name"
+      },
+      "NOM_EXP": {
+        "text": "File",
+        "title": "Claim file"
+      },
+      "NUM_SINI": {
+        "text": "Claim No.",
+        "title": "Claim number"
+      },
+      "COD_DOCUM": {
+        "text": "ID",
+        "title": "Identification number"
+      },
+      "NOM_COMPLETO": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "FEC_SINI": {
+        "text": "Occurrence date",
+        "title": "Claim occurrence date"
+      },
+      "IMP_VAL_INICIAL": {
+        "text": "Reserve amount",
+        "title": "Initial reserve amount"
+      },
+      "IMP_VAL": {
+        "text": "Estimated amount",
+        "title": "Estimated claim amount"
+      }
+    }
+  }
+}

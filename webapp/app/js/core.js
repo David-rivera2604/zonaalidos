@@ -50,6 +50,7 @@ app.core = (function () {
     let inactiveSeconds = 0;
 
     let lookupData = [];
+    let loadingScripts = {};
 
     function getAuthToken() {
         return localStorage.getItem("Token");
@@ -57,6 +58,10 @@ app.core = (function () {
         if (token != null && token != '') {
             return token;
         }
+    }
+
+    function getLanguage() {
+        return sessionStorage.getItem('language');
     }
 
     function GetPDF(url, download, filename, callback, alterToken = '') {
@@ -75,13 +80,17 @@ app.core = (function () {
             blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;';
         }
         let token = alterToken == '' ? getAuthToken() : alterToken;
+        let language = getLanguage();
+        let headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': 'Bearer ' + token
+        };
+        if (language)
+            headers['Accept-Language'] = language;
         fetch(url, {
             body: null,
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': 'Bearer ' + token
-            },
+            headers: headers,
         }).then(response => {
             if (!response.ok) { throw response }
             return response.blob();
@@ -190,6 +199,9 @@ app.core = (function () {
             timeout: 600000,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + getAuthToken());
+                let language = getLanguage();
+                if (language)
+                    xhr.setRequestHeader('Accept-Language', language);
             }
         }).done(function (response) {
             if (typeof fullconfig.callback === 'function') {
@@ -270,6 +282,9 @@ app.core = (function () {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + alterToken);
                     }
                 }
+                let language = getLanguage();
+                if (language)
+                    xhr.setRequestHeader('Accept-Language', language);
             }
         }).done(function (data, textStatus, jqXHR) {
             if (data != null && data.Success !== undefined) {
@@ -932,29 +947,42 @@ app.core = (function () {
             if (!url.startsWith('http')) {
                 url = app.setting.basepath + 'scripts/' + url;
             }
-            return new Promise((resolve, reject) => {
+            const scriptUrl = new URL(url, window.location.href).href;
+            const existingScript = Array.from(document.scripts).find(script => script.src === scriptUrl);
+
+            if (existingScript) {
+                return loadingScripts[scriptUrl] || Promise.resolve({ status: true, skipped: true });
+            }
+
+            const scriptPromise = new Promise((resolve, reject) => {
                 try {
                     const scriptEle = document.createElement("script");
                     scriptEle.type = type;
                     scriptEle.async = async;
-                    scriptEle.src = url;
+                    scriptEle.src = scriptUrl;
 
                     scriptEle.addEventListener("load", (ev) => {
+                        delete loadingScripts[scriptUrl];
                         resolve({ status: true });
                     });
 
                     scriptEle.addEventListener("error", (ev) => {
+                        delete loadingScripts[scriptUrl];
                         reject({
                             status: false,
-                            message: `Failed to load the script ${url}`
+                            message: `Failed to load the script ${scriptUrl}`
                         });
                     });
 
                     document.body.appendChild(scriptEle);
                 } catch (error) {
+                    delete loadingScripts[scriptUrl];
                     reject(error);
                 }
             });
+
+            loadingScripts[scriptUrl] = scriptPromise;
+            return scriptPromise;
         },
         api_report: function (reportName, data) {
             return new Promise((resolve, reject) => {
@@ -978,13 +1006,17 @@ app.core = (function () {
         },
         datapi: function (method, url, data) {
             return new Promise((resolve, reject) => {
+                let language = getLanguage();
+                let headers = {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Authorization': 'Bearer ' + getAuthToken()
+                };
+                if (language)
+                    headers['Accept-Language'] = language;
                 return fetch(`${app.setting.entityapi}/${url}`, {
                     body: method === 'GET' ? null : JSON.stringify(data),
                     method: method,
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8',
-                        'Authorization': 'Bearer ' + getAuthToken()
-                    }
+                    headers: headers
                 }).then(response => {
                     if (!response.ok) {
                         api_ShowError();

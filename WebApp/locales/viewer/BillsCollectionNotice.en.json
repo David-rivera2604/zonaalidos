@@ -1,0 +1,55 @@
+{
+  "QueryTitle": "Bills from a collection notice",
+  "1GridTbl": {
+    "columns": {
+      "SEL": {
+        "text": "Select",
+        "title": "Allows selecting bills to exclude from the collection notice"
+      },
+      "SUM(IMP_RECIBO)": {
+        "text": "Amount",
+        "title": "Total amount"
+      },
+      "NUM_RECIBO": {
+        "text": "Bill No.",
+        "title": "Bill number"
+      },
+      "FEC_EFEC_RECIBO": {
+        "text": "Effective date",
+        "title": "Bill effective date"
+      },
+      "COD_MON": {
+        "text": "Currency",
+        "title": "Currency"
+      },
+      "TIP_SITUACION": {
+        "text": "Status",
+        "title": "Bill status"
+      },
+      "NUM_POLIZA": {
+        "text": "Policy",
+        "title": "Policy number"
+      },
+      "NOM_RIESGO": {
+        "text": "Risk name",
+        "title": "Name of the risk"
+      },
+      "TIP_DOCUM": {
+        "text": "Insured ID type",
+        "title": "Insured identification type"
+      },
+      "COD_DOCUM": {
+        "text": "Insured ID",
+        "title": "Insured identification number"
+      },
+      "NOM_COMPLETO": {
+        "text": "Insured name",
+        "title": "Insured full name"
+      },
+      "COD_DOCUM_PAGO": {
+        "text": "Notice",
+        "title": "Collection notice number"
+      }
+    }
+  }
+}

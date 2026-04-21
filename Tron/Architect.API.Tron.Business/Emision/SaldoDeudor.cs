@@ -63,7 +63,7 @@ namespace Architect.API.Tron.Business.Emision
 
                 if (mode.IsEmpty() || mode == "draft" || mode == "resume" || tryOnTron)
                 {
-                    result.terceros = Reglas.research.Apply_Terceros(Cotizacion.SaldoDeudor.NOM_PROD, result.terceros, string.Empty, result.num_contrato, tokenInfo);
+                    result.terceros = Reglas.research.Apply_Terceros(Cotizacion.SaldoDeudor.NOM_PROD, result.terceros, string.Empty, tokenInfo);
                 }
 
                 result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos(Cotizacion.SaldoDeudor.NOM_PROD, null, 0, tokenInfo);

@@ -1,0 +1,51 @@
+{
+  "QueryTitle": "Outstanding bills",
+  "1GridTbl": {
+    "columns": {
+      "NUM_POLIZA": {
+        "text": "Policy No.",
+        "title": "Policy number"
+      },
+      "NOM_COMPLETO": {
+        "text": "Policyholder",
+        "title": "Policyholder full name"
+      },
+      "TIP_GESTOR": {
+        "text": "Manager",
+        "title": "Assigned manager"
+      },
+      "TIP_SITUACION": {
+        "text": "Status",
+        "title": "Bill status"
+      },
+      "NUM_RECIBO": {
+        "text": "Bill No.",
+        "title": "Bill number"
+      },
+      "IMP_RECIBO": {
+        "text": "Amount",
+        "title": "Bill amount"
+      },
+      "IMP_COMIS": {
+        "text": "Commission",
+        "title": "Commission amount"
+      },
+      "FEC_VCTO_RECIBO": {
+        "text": "Due date",
+        "title": "Bill due date"
+      },
+      "TIP_DOCUM": {
+        "text": "ID type",
+        "title": "Identification document type"
+      },
+      "COD_DOCUM": {
+        "text": "ID",
+        "title": "Identification number"
+      },
+      "_10": {
+        "text": "Actions",
+        "title": "Available actions"
+      }
+    }
+  }
+}

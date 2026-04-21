@@ -1,0 +1,19 @@
+{
+  "QueryTitle": "Documents associated with the quote",
+  "1GridTbl": {
+    "columns": {
+      "DESCRIPTION": {
+        "text": "Type",
+        "title": "Document type"
+      },
+      "FILENAME": {
+        "text": "File",
+        "title": "File name"
+      },
+      "FILESIZE": {
+        "text": "Size",
+        "title": "File size"
+      }
+    }
+  }
+}
