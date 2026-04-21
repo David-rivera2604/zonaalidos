@@ -263,7 +263,8 @@ SELECT a30.COD_RAMO, a1800.nom_ramo, a200.NOM_SECTOR, a1331.TIP_DOCUM, a1331.COD
                 p_num_contrato = num_contrato;
             }
 
-            if(cod_ramo == 302 || cod_ramo == 303){
+            if((cod_ramo == 302 || cod_ramo == 303) && num_contrato != 10700){
+
                 filter_bimensual = ",6";
             }
 
