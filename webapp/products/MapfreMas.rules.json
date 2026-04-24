@@ -127,21 +127,21 @@
     },
     {
       "Role": "Purdy",
-      "Condicion": "Fuente_Tomador=SCOTIABANK",
+      "Condicion": "Fuente_Tomador=DAVIBANK",
       "Detalles": [
         {
-          "tip_benef": "0",
-          "tip_docum": "CJU",
-          "cod_docum": "3101046536",
-          "nom_tercero": "SCOTIABANK DE COSTA RICA SOCIEDAD ANONIMA",
-          "email": "Marianela.arias@scotiabank.com",
-          "tlf_numero": "2210-4000",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10108,
-          "nom_domicilio1": "FINAL AVENIDA LAS AMERICAS, COSTADO N ESTADIO NACIONAL"
-        }
+					"tip_benef": "0",
+					"tip_docum": "CJU",
+					"cod_docum": "3101046536",
+					"nom_tercero": "DAVIBANK DE COSTA RICA",
+					"email": "cr-rsu-seguros.agenciasext@davibank.cr",
+					"tlf_numero": "2210-4000",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 101,
+					"cod_localidad": 10108,
+					"nom_domicilio1": "FINAL AVENIDA LAS AMERICAS, COSTADO N ESTADIO NACIONAL"
+                }
       ]
     },
     {
@@ -342,6 +342,10 @@
     {
       "Condicion": "{El Plan} sea igual a 50",
       "Exclusion": "3002,3003,3008,3009,3007,1060"
+    },
+    {
+      "Condicion": "{El Plan} sea igual a 51",
+      "Exclusion": "3008,1060,3007"
     }
   ],
   "Listas": [
@@ -510,12 +514,6 @@
       "Nombre": "MM_ModelosVehiculos",
       "Condicion": "({La marca del vehículo} sea igual a 135) y {El Rol del usuario no sea igual a Privilegios}",
       "Exclusion": "1,2,4,5"
-    },
-	{
-      "Descripcion": "Exclusion Marcas para contratos BN de BMW",
-      "Nombre": "MM_MarcasVehiculos",
-      "Condicion": "({El Contrato} sea igual a 99751)",
-      "Exclusion": "1,5,6,7,13,15,359,17,18,20,25,26,119,718,30,31,35,38,40,44,45,50,51,271,55,56,60,199,441,65,66,71,135,72,73,717,74,78,79"
     }
   ],
   "Reglas": [

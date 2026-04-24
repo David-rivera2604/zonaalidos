@@ -1,614 +1,673 @@
 ﻿{
-  "Terceros": [
-    {
-      "Role": "Davivienda_Prendarios",
-      "Detalles": [
-        {
-          "tip_benef": "0",
-          "tip_docum": "CJU",
-          "cod_docum": "3101046008",
-          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-          "email": "costarica_seguros_davivienda@davivienda.cr",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE"
-        },
-        {
-          "tip_benef": "8",
-          "tip_docum": "CJU",
-          "cod_docum": "3101046008",
-          "nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
-          "email": "costarica_seguros_davivienda@davivienda.cr",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10101,
-          "nom_domicilio1": "SAN JOSE",
-          "porcentajeacredor": "100"
-        }
-      ]
-    },
-    {
-      "Role": "Davivienda_Leasing",
-      "Detalles": [
-        {
-          "tip_benef": "0",
-          "tip_docum": "CJU",
-          "cod_docum": "3101692430",
-          "nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
-          "email": "LEASING_SEGUROS@DAVIVIENDA.CR",
-          "tlf_numero": "2588-9477",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 102,
-          "cod_localidad": 10203,
-          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
-        },
-        {
-          "tip_benef": "2",
-          "tip_docum": "CJU",
-          "cod_docum": "3101692430",
-          "nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
-          "email": "LEASING_SEGUROS@DAVIVIENDA.CR",
-          "tlf_numero": "2588-9477",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 102,
-          "cod_localidad": 10203,
-          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
-        },
-        {
-          "tip_benef": "3",
-          "tip_docum": "CJU",
-          "cod_docum": "3101692430",
-          "nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
-          "email": "LEASING_SEGUROS@DAVIVIENDA.CR",
-          "tlf_numero": "2588-9477",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 102,
-          "cod_localidad": 10203,
-          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
-          "editable": true
-        },
-        {
-          "tip_benef": "8",
-          "tip_docum": "CJU",
-          "cod_docum": "3101692430",
-          "nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
-          "email": "LEASING_SEGUROS@DAVIVIENDA.CR",
-          "tlf_numero": "2588-9477",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 102,
-          "cod_localidad": 10203,
-          "nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
-          "porcentajeacredor": "100"
-        }
-      ]
-    },
-    {
-      "Role": "Purdy",
-      "Condicion": "Fuente_Tomador=CAFSA",
-      "Detalles": [
-        {
-          "tip_benef": "0",
-          "tip_docum": "CJU",
-          "cod_docum": "3101052431",
-          "nom_tercero": "FINANCIERA CAFSA",
-          "email": "INFO@CAFSA.FI.CR",
-          "tlf_numero": "2884-1000",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10102,
-          "nom_domicilio1": "DETRAS DE PURDY MOTOR EN PASEO COLON"
-        }
-      ]
-    },
-    {
-      "Role": "Purdy",
-      "Condicion": "Fuente_Tomador=PURDY",
-      "Detalles": [
-        {
-          "tip_benef": "0",
-          "tip_docum": "CJU",
-          "cod_docum": "3101005744",
-          "nom_tercero": "PURDY MOTOR SOCIEDAD ANONIMA",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10102,
-          "nom_domicilio1": "EDIFICIO PURDY MOTOR PASEO COLON"
-        }
-      ]
-    },
-    {
-      "Role": "Purdy",
-      "Condicion": "Fuente_Tomador=SCOTIABANK",
-      "Detalles": [
-        {
-          "tip_benef": "0",
-          "tip_docum": "CJU",
-          "cod_docum": "3101046536",
-          "nom_tercero": "SCOTIABANK DE COSTA RICA SOCIEDAD ANONIMA",
-          "email": "Marianela.arias@scotiabank.com",
-          "tlf_numero": "2210-4000",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 101,
-          "cod_localidad": 10108,
-          "nom_domicilio1": "FINAL AVENIDA LAS AMERICAS, COSTADO N ESTADIO NACIONAL"
-        }
-      ]
-    },
-    {
-      "Role": "Arrend_Leasing",
-      "Condicion": "",
-      "Detalles": [
-        {
-          "tip_benef": "0",
-          "tip_docum": "CJU",
-          "cod_docum": "3101728943",
-          "nom_tercero": "ARREND LEASING COSTA RICA S.A",
-          "email": "SEGUROS@ARRENDLEASING.COM",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 102,
-          "cod_localidad": 10203,
-          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
-        },
-        {
-          "tip_benef": "2",
-          "tip_docum": "CJU",
-          "cod_docum": "3101728943",
-          "nom_tercero": "ARREND LEASING COSTA RICA S.A",
-          "email": "SEGUROS@ARRENDLEASING.COM",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 102,
-          "cod_localidad": 10203,
-          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
-        },
-        {
-          "tip_benef": "3",
-          "tip_docum": "CJU",
-          "cod_docum": "3101728943",
-          "nom_tercero": "ARREND LEASING COSTA RICA S.A",
-          "email": "SEGUROS@ARRENDLEASING.COM",
-          "cod_pais": "CRI",
-          "cod_estado": 1,
-          "cod_prov": 102,
-          "cod_localidad": 10203,
-          "nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
-        }
-      ]
-    }
-  ],
-  "DocumentosRequeridos": [
-    {
-      "Role": "_default_asegurado_fisico",
-      "Detalles": [
-        {
-          "descripcion": "Cédula de cliente vigente por ambos lados",
-          "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Fotos del Riesgo",
-          "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Formulario de Inspección",
-          "archivo": "Formulario_de_Inspeccion.pdf",
-          "requerido": true
-        }
-      ]
-    },
-    {
-      "Role": "_default_asegurado_juridico",
-      "Detalles": [
-        {
-          "descripcion": "Cédula de cliente vigente por ambos lados",
-          "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Fotos del Riesgo",
-          "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Formulario de Inspección",
-          "archivo": "Formulario_de_Inspeccion.pdf",
-          "requerido": true
-        }
-      ]
-    },
-    {
-      "Role": "Davivienda_Prendarios",
-      "Detalles": [
-        {
-          "descripcion": "Documentación digitalizada",
-          "archivo": "Documentos.docx",
-          "requerido": true
-        }
-      ]
-    },
-    {
-      "Role": "Davivienda_Leasing",
-      "Detalles": [
-        {
-          "descripcion": "Documentación digitalizada",
-          "archivo": "Documentos.docx",
-          "requerido": true
-        }
-      ]
-    },
-    {
-      "Role": "Purdy",
-      "Condicion": "MCA_CERO_KM=2",
-      "Detalles": [
-        {
-          "descripcion": "Formulario de inspección",
-          "archivo": "inspección.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Fotos o facturas",
-          "archivo": "fotos.pdf,facturas.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Solicitud de inscripción",
-          "archivo": "inscripción.pdf",
-          "requerido": false
-        },
-        {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SolicitudFirmada.pdf",
-          "requerido": true
-        }
-      ]
-    },
-    {
-      "Role": "Purdy",
-      "Condicion": "MCA_CERO_KM=1",
-      "Detalles": [
-        {
-          "descripcion": "Factura proforma",
-          "archivo": "proforma.pdf",
-          "requerido": false
-        },
-        {
-          "descripcion": "Solicitud de seguro firmada",
-          "archivo": "SolicitudFirmada.pdf",
-          "requerido": true
-        }
-      ]
-    },
-    {
-      "Role": "Arrend_Leasing",
-      "Detalles": [
-        {
-          "descripcion": "Carta Cumplimentada",
-          "archivo": "Carta-Cumplimentada.pdf",
-          "requerido": true
-        },
-        {
-          "descripcion": "Factura Proforma",
-          "archivo": "Factura-Proforma.pdf",
-          "requerido": true
-        }
-      ]
-    }
-  ],
-  "Coberturas": [
-    {
-      "Condicion": "{El Plan} no sea igual a {Plan básico} y {El Plan} no sea igual a {Plan amplio} y {El Plan} no sea igual a {Plan especial}",
-      "Exclusion": "3016,3018"
-    },
-    {
-      "Condicion": "{El Plan} sea igual a {Plan básico}",
-      "Exclusion": "3002,3003,3016,3018,3014,3015,3008,3017,1065,1066,3019,1063"
-    },
-    {
-      "Condicion": "{El Plan} sea igual a {Plan amplio}",
-      "Exclusion": "3015,3008,3016,3018,3017"
-    },
-    {
-      "Condicion": "{El Plan} sea igual a {Plan especial}",
-      "Exclusion": "3010,3016,3018,1063"
-    },
-    {
-      "Condicion": "{El uso del vehículo} no sea igual a 2 y {El Plan} sea igual a {Plan plata}",
-      "Exclusion": "3015,3008,3016,3018,3017"
-    }
-  ],
-  "Listas": [
-    {
-      "Nombre": "MM_CAPITAL_RC",
-      "Condicion": "({El Tipo de producto} sea igual a {Trébol RC} y {La Moneda} sea igual a {Colones})",
-      "Exclusion": "100000000,150000000"
-    },
-    {
-      "Nombre": "MM_CAPITAL_RC",
-      "Condicion": "({El Tipo de producto} sea igual a {Trébol RC} y {La Moneda} sea igual a {Dólares})",
-      "Exclusion": "200000,300000"
-    },
-    {
-      "Nombre": "MM_CAPITAL_GM",
-      "Condicion": "(({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) y {La Moneda} sea igual a {Dólares})",
-      "Exclusion": "20000"
-    },
-    {
-      "Nombre": "cod_fracc_pago",
-      "Condicion": "(({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC}))",
-      "Exclusion": "26"
-    },
-    {
-      "Nombre": "MM_ClaseVehiculos",
-      "Descripcion": "Exclusion de Clase Vehiculos para plan Basico, Amplio, Plus y Plata",
-      "Condicion": "((({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Plata})) y ({El Rol del usuario no sea igual a Privilegios}) y ({El Rol del usuario no sea igual a Purdy}))",
-      "Exclusion": "5,17,18"
-    },
-    {
-      "Nombre": "MM_ClaseVehiculos",
-      "Descripcion": "Exclusion de Clase Vehiculos para plan Oro y Trebol",
-      "Condicion": "((({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol})) y ({El Rol del usuario no sea igual a Privilegios}))",
-      "Exclusion": "5"
-    },
-    {
-      "Nombre": "MM_ClaseVehiculos",
-      "Descripcion": "Exclusion de Clase Vehiculos para plan Trebol RC",
-      "Condicion": "((({El Tipo de producto} sea igual a {Trébol RC})) y ({El Rol del usuario no sea igual a Privilegios}))",
-      "Exclusion": "5,17,18"
-    },
-    {
-      "Nombre": "MM_CAPITAL_GM",
-      "Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Colones}))",
-      "Exclusion": "2500000,5000000,7500000,10000000"
-    },
-    {
-      "Nombre": "MM_CAPITAL_AC",
-      "Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Colones}))",
-      "Exclusion": "2500000,5000000,7500000,10000000"
-    },
-    {
-      "Nombre": "MM_CAPITAL_GM",
-      "Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Dólares}))",
-      "Exclusion": "4700,9400,14100,18800"
-    },
-    {
-      "Nombre": "MM_CAPITAL_AC",
-      "Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Dólares}))",
-      "Exclusion": "4700,9400,14100,18800"
-    },
-    {
-      "Nombre": "MM_MarcasVehiculos",
-      "Condicion": "({El Rol del usuario no sea igual a Davivienda} y {El Rol del usuario no sea igual a Empleado})",
-      "Exclusion": "3,14,37,46,57,58,63,81,87,92,105,181,217,273,354,367,384,392,440,565,701,704,706,709,713,425,228,158,430,32"
-    },
-	{
-      "Nombre": "MM_MarcasVehiculos",
-      "Condicion": "({El Rol del usuario no sea igual a Davivienda} y {El Rol del usuario no sea igual a Privilegios})",
-      "Exclusion": "113,209,261,284,2,382,317,157,378,563,350,4,336,409,390,115,888,120,114,104,287,82,344,395,166,161,84,276,275,426,348,110,169,90,357,193,203,296,205,242,353,10,211,423,272,94,214,12,380,391,230,371,278,994,142,314,131,337,434,281,225,349,993,351,126,177,138,254,141,340,103,116,327,369,407,320,429,368,412,558,393,102,16,700,372,118,117,256,19,310,132,383,149,277,229,136,293,21,554,252,22,23,394,106,292,251,86,95,185,374,226,397,307,221,85,999,295,109,215,235,236,179,998,288,150,183,309,373,561,83,124,27,398,28,439,153,187,144,170,557,264,553,436,29,356,258,417,159,200,198,323,328,450,192,173,244,162,269,33,34,280,36,559,332,257,195,399,339,96,716,227,98,562,414,216,289,129,600,996,381,343,224,186,39,223,318,97,108,218,342,237,201,137,322,334,266,316,406,233,41,422,43,156,435,335,163,396,702,238,243,424,180,178,47,164,152,48,134,347,405,89,333,240,364,143,375,712,52,204,168,140,324,360,53,54,427,234,995,121,219,413,241,376,358,404,263,311,331,433,182,313,377,139,366,212,100,160,59,308,705,123,171,379,61,174,62,400,127,291,361,259,175,549,312,93,112,262,208,111,345,282,555,997,362,188,172,385,67,330,68,246,128,402,122,145,176,69,191,167,992,319,70,432,556,420,708,363,710,410,421,341,355,401,146,239,231,290,438,388,548,703,707,301,130,370,386,207,403,552,431,206,147,232,194,714,154,107,428,329,387,165,352,196,389,151,75,365,560,711,564,155,222,279,326,270,325,76,99,411,77,274,189,245,202,306,321,213,184,220,210,190,148,80,315,88,91,715,133,125,451,101,418,255,9,11,24,197,42,49,64"
-    },
-    {
-      "Nombre": "TRON_DEDU_CONTR:DED_AUTO_EQESP",
-      "Condicion": "({El Rol del usuario sea igual a Purdy})",
-      "Exclusion": "2,248,244,5"
-    },
-    {
-      "Nombre": "TRON_G1010031:DEDUC303_3007",
-      "Condicion": "({El Rol del usuario sea igual a Purdy})",
-      "Exclusion": "2,248,244,5"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca Audi",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 6) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "29,30"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca BYD",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 94) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "7,8,10"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca HYUNDAI",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 31) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "64,70,79,88"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca JAC",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 559) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "17,18,19"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca LEXUS",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 45) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "6,28"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca MG",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 105) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "17,19"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca MERCEDES",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 51) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "141"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca NISSAN",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 56) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "108,125"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca RENAULT",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 65) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "43,48,49,22"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca PORSHE",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 64) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "16"
-    },
-	{
-	  "Descripcion": "Exclusion Modelos Marca VOLKSWAGEN",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 78) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "66"
-    },
-    {
-      "Descripcion": "Exclusion Modelos Marca VOLVO",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 79) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "33,34,36,42,43,44,38,39,40,41"
-    },
-    {
-      "Descripcion": "Exclusion Modelos Marca  SSANG YONG",
-      "Nombre": "MM_ModelosVehiculos",
-      "Condicion": "({La marca del vehículo} sea igual a 135) y {El Rol del usuario no sea igual a Privilegios}",
-      "Exclusion": "1,2,4,5"
-    }
-
-  ],
-  "Reglas": [
-    {
-      "Condicion": "({El Rol del usuario sea igual a Davivienda_Prendarios} o {El Rol sea igual a Davivienda_Leasing}) y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 110000000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 110.000.000 colones",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Condicion": "({El Rol del usuario sea igual a Davivienda_Prendarios} o {El Rol sea igual a Davivienda_Leasing}) y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 175000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 175.000 dólares",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Condicion": "{El Rol del usuario sea igual a Davivienda_Prendarios}  y {El Año del vehículo} sea menor a {2 años de antigüedad}",
-      "Mensaje": "Solo se deben cotizar autos de 2 años de antiguedad como máximo",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-    {
-      "Condicion": "{El Rol del usuario sea igual a Davivienda_Leasing}  y {El Año del vehículo} sea menor a {5 años de antigüedad}",
-      "Mensaje": "Solo se deben cotizar autos de 5 años de antiguedad como máximo",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-    {
-      "Condicion": "{La Marca del vehículo} sea igual a 60 y {El Año del vehículo} sea menor a {3 años de antigüedad} y {El Rol del usuario no sea igual a Privilegios}",
-      "Mensaje": "Para un Peugeot, el año del vehículo no debe superior a 3 años de antigüedad",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-    {
-      "Condicion": "{El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol del usuario no sea igual a Davivienda_Leasing} y {El Rol del usuario no sea igual a Red_Afecta} y {El Año del vehículo} sea menor a {15 años de antigüedad}",
-      "Mensaje": "El año del vehículo no debe superior a 15 años de antigüedad",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-    {
-      "Condicion": "{El Rol del usuario sea igual a Purdy} y {El Contrato} sea igual a 10002 y {El Año del vehículo} sea menor a {1 año de antigüedad}",
-      "Mensaje": "El año del vehículo no debe superior a 1 año de antigüedad",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-	{
-      "Condicion": "{El Rol del usuario sea igual a Purdy}  y {El Año del vehículo} sea menor a {10 años de antigüedad}",
-      "Mensaje": "Solo se deben cotizar autos de 10 años de antiguedad como máximo",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-    {
-      "Condicion": "({La Cobertura 3004 sea seleccionada} y {El Valor del vehículo} sea diferente a {La Suma Asegurada de Colisión y vuelco}) o ({La Cobertura 3005 sea seleccionada} y {El Valor del vehículo} sea diferente a {La Suma Asegurada de Riesgos adicionales}) o ({La Cobertura 3006 sea seleccionada} y {El Valor del vehículo} sea diferente a {La Suma Asegurada de Robo})",
-      "Mensaje": "El valor del vehículo y las coberturas de colisión y vuelco, riesgos adicionales y robo, deben ser iguales",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Condicion": "{No hay coberturas seleccionadas}",
-      "Mensaje": "Debe seleccionar al menos una cobertura",
-      "Campo": "coberturasTbl",
-      "Grupo": "Table"
-    },
-    {
-      "Condicion": "({El Tipo de producto} sea igual a \"trebolrc\") y {El Año del vehículo} sea menor a {10 años de antigüedad}",
-      "Mensaje": "Para el Plan Trébol RC el año del vehículo no debe ser superior a 10 años de antigüedad",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-    {
-      "Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Dolares",
-      "Condicion": "{El Rol del usuario sea igual a Cotizadores} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {El Rol no sea igual a Purdy} y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 70000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 70.000 dólares",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Colones",
-      "Condicion": "{El Rol del usuario sea igual a Cotizadores} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {El Rol no sea igual a Purdy} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 45500000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 45 500 000 colones",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Condicion": "({El Tipo de producto} sea igual a \"trebol\") y !((data.coberturas.Any(r => r.codigo == 3002 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3003 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3004 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3005 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3006 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3007 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3008 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3009 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3014 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3015 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 1060 && r.seleccionado)))",
-      "Mensaje": "Debe seleccionar al menos una cobertura adicional",
-      "Campo": "coberturasTbl",
-      "Grupo": "Table"
-    },
-    {
-      "Descripcion": "Condicion de Valor Vehiculo para usuarios con rol Arrend Leasing Dolares",
-      "Condicion": "{El Rol del usuario sea igual a Arrend_Leasing}  y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 100000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 100.000 dólares",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Descripcion": "Condicion de Valor Vehiculo para usuarios con rol Arrend Leasing Colones",
-      "Condicion": "{El Rol del usuario sea igual a Arrend_Leasing} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 65000000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 65 000 000 colones",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Descripcion": "Año del Vehiculo Permitido para usuario con Privilegios",
-      "Condicion": "{El Rol del usuario sea igual a Privilegios} y {El Año del vehículo} sea menor a {30 años de antigüedad}",
-      "Mensaje": "El año del vehículo no debe superior a 30 años de antigüedad",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-    {
-      "Descripcion": "Condicion de Valor Vehiculo Dolares para usuarios con rol Privilegios",
-      "Condicion": "{El Rol del usuario sea igual a Privilegios}  y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 200000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 200.000 dólares",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Descripcion": "Condicion de Valor Vehiculo Colones para usuarios con rol Privilegios",
-      "Condicion": "{El Rol del usuario sea igual a Privilegios}  y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 136000000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 136 000 000 colones",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Descripcion": "Año del Vehiculo Permitido para usuario con Red_Afecta",
-      "Condicion": "{El Rol del usuario sea igual a Red_Afecta} y {El Año del vehículo} sea menor a {17 años de antigüedad}",
-      "Mensaje": "El año del vehículo no debe ser superior a 17 años de antigüedad",
-      "Campo": "ANIO_SUB_MODELO"
-    },
-	{
-      "Descripcion": "Condicion de Valor Vehiculo Dolares para usuarios con rol Purdy",
-      "Condicion": "{El Rol del usuario sea igual a Purdy}  y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 230000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 230.000 dólares",
-      "Campo": "IMP_VR"
-    },
-    {
-      "Descripcion": "Condicion de Valor Vehiculo Colones para usuarios con rol Purdy",
-      "Condicion": "{El Rol del usuario sea igual a Purdy}  y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 115000000",
-      "Mensaje": "El valor del vehículo debe ser menor o igual a 115 000 000 colones",
-      "Campo": "IMP_VR"
-    }
-  ]
+	"Terceros": [
+		{
+			"Role": "Davivienda_Prendarios",
+			"Detalles": [
+				{
+					"tip_benef": "0",
+					"tip_docum": "CJU",
+					"cod_docum": "3101046008",
+					"nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
+					"email": "costarica_seguros_davivienda@davivienda.cr",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 101,
+					"cod_localidad": 10101,
+					"nom_domicilio1": "SAN JOSE"
+				},
+				{
+					"tip_benef": "8",
+					"tip_docum": "CJU",
+					"cod_docum": "3101046008",
+					"nom_tercero": "BANCO DAVIVIENDA (COSTA RICA) SOCIEDAD ANONIMA",
+					"email": "costarica_seguros_davivienda@davivienda.cr",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 101,
+					"cod_localidad": 10101,
+					"nom_domicilio1": "SAN JOSE",
+					"porcentajeacredor": "100"
+				}
+			]
+		},
+		{
+			"Role": "Davivienda_Leasing",
+			"Detalles": [
+				{
+					"tip_benef": "0",
+					"tip_docum": "CJU",
+					"cod_docum": "3101692430",
+					"nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
+					"email": "LEASING_SEGUROS@DAVIVIENDA.CR",
+					"tlf_numero": "2588-9477",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 102,
+					"cod_localidad": 10203,
+					"nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
+				},
+				{
+					"tip_benef": "2",
+					"tip_docum": "CJU",
+					"cod_docum": "3101692430",
+					"nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
+					"email": "LEASING_SEGUROS@DAVIVIENDA.CR",
+					"tlf_numero": "2588-9477",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 102,
+					"cod_localidad": 10203,
+					"nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9"
+				},
+				{
+					"tip_benef": "3",
+					"tip_docum": "CJU",
+					"cod_docum": "3101692430",
+					"nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
+					"email": "LEASING_SEGUROS@DAVIVIENDA.CR",
+					"tlf_numero": "2588-9477",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 102,
+					"cod_localidad": 10203,
+					"nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
+					"editable": true
+				},
+				{
+					"tip_benef": "8",
+					"tip_docum": "CJU",
+					"cod_docum": "3101692430",
+					"nom_tercero": "DAVIVIENDA LEASING (COSTA RICA) S.A.",
+					"email": "LEASING_SEGUROS@DAVIVIENDA.CR",
+					"tlf_numero": "2588-9477",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 102,
+					"cod_localidad": 10203,
+					"nom_domicilio1": "125 SUR MULTIPLAZA ESCAZÚ, EDIFICIO MERIDIANO, PISO 9",
+					"porcentajeacredor": "100"
+				}
+			]
+		},
+		{
+			"Role": "Purdy",
+			"Condicion": "Fuente_Tomador=CAFSA",
+			"Detalles": [
+				{
+					"tip_benef": "0",
+					"tip_docum": "CJU",
+					"cod_docum": "3101052431",
+					"nom_tercero": "FINANCIERA CAFSA",
+					"email": "INFO@CAFSA.FI.CR",
+					"tlf_numero": "2884-1000",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 101,
+					"cod_localidad": 10102,
+					"nom_domicilio1": "DETRAS DE PURDY MOTOR EN PASEO COLON"
+				}
+			]
+		},
+		{
+			"Role": "Purdy",
+			"Condicion": "Fuente_Tomador=PURDY",
+			"Detalles": [
+				{
+					"tip_benef": "0",
+					"tip_docum": "CJU",
+					"cod_docum": "3101005744",
+					"nom_tercero": "PURDY MOTOR SOCIEDAD ANONIMA",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 101,
+					"cod_localidad": 10102,
+					"nom_domicilio1": "EDIFICIO PURDY MOTOR PASEO COLON"
+				}
+			]
+		},
+		{
+			"Role": "Purdy",
+			"Condicion": "Fuente_Tomador=DAVIBANK",
+			"Detalles": [
+				{
+					"tip_benef": "0",
+					"tip_docum": "CJU",
+					"cod_docum": "3101046536",
+					"nom_tercero": "DAVIBANK DE COSTA RICA",
+					"email": "cr-rsu-seguros.agenciasext@davibank.cr",
+					"tlf_numero": "2210-4000",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 101,
+					"cod_localidad": 10108,
+					"nom_domicilio1": "FINAL AVENIDA LAS AMERICAS, COSTADO N ESTADIO NACIONAL"
+                }
+			]
+		},
+		{
+			"Role": "Arrend_Leasing",
+			"Condicion": "",
+			"Detalles": [
+				{
+					"tip_benef": "0",
+					"tip_docum": "CJU",
+					"cod_docum": "3101728943",
+					"nom_tercero": "ARREND LEASING COSTA RICA S.A",
+					"email": "SEGUROS@ARRENDLEASING.COM",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 102,
+					"cod_localidad": 10203,
+					"nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
+				},
+				{
+					"tip_benef": "2",
+					"tip_docum": "CJU",
+					"cod_docum": "3101728943",
+					"nom_tercero": "ARREND LEASING COSTA RICA S.A",
+					"email": "SEGUROS@ARRENDLEASING.COM",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 102,
+					"cod_localidad": 10203,
+					"nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
+				},
+				{
+					"tip_benef": "3",
+					"tip_docum": "CJU",
+					"cod_docum": "3101728943",
+					"nom_tercero": "ARREND LEASING COSTA RICA S.A",
+					"email": "SEGUROS@ARRENDLEASING.COM",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 102,
+					"cod_localidad": 10203,
+					"nom_domicilio1": "ESCAZU CORPORATE CENTER PISO 4 OFICINA NORFOUND"
+				}
+			]
+		},
+		{
+			"Role": "Purdy",
+			"Condicion": "contrato=10701",
+			"Detalles": [
+				{
+					"tip_benef": "8",
+					"tip_docum": "CJU",
+					"cod_docum": "4000042152",
+					"nom_tercero": "BANCO POPULAR Y DE DESARROLLO COMUNAL",
+					"email": "edgar.sandi@tractomotriz.com",
+					"tlf_numero": "2211-7000",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 101,
+					"cod_localidad": 10102,
+					"nom_domicilio1": "COSTADO SUR DEL TEATRO NACIONAL",
+					"porcentajeacredor": "100"
+				}
+			]
+		},
+		{
+			"Role": "Purdy",
+			"Condicion": "contrato=10702",
+			"Detalles": [
+				{
+					"tip_benef": "8",
+					"tip_docum": "CJU",
+					"cod_docum": "3101048587",
+					"nom_tercero": "BANCO BCT SOCIEDAD ANONIMA",
+					"email": "servicioalcliente@bct.com",
+					"tlf_numero": "2545-2500",
+					"cod_pais": "CRI",
+					"cod_estado": 1,
+					"cod_prov": 101,
+					"cod_localidad": 10102,
+					"nom_domicilio1": "CALLE CENTRAL EDIFICIO BCT",
+					"porcentajeacredor": "100"
+				}
+			]
+		},
+		{
+			"Role": "Purdy",
+			"Condicion": "contrato=10703",
+			"Detalles": [
+				{
+					"tip_benef": "8",
+					"tip_docum": "CJU",
+					"cod_docum": "3102306047",
+					"nom_tercero": "ALIGN TECHNOLOGY DE COSTA RICA S.R.L.",
+					"email": "ALPORRAS@ALIGNTECH.COM",
+					"tlf_numero": "2209-1343",
+					"cod_pais": "CRI",
+					"cod_estado": 4,
+					"cod_prov": 401,
+					"cod_localidad": 40104,
+					"nom_domicilio1": "LA AURORA CONTIGUO A TIERRA UNO CENTRO COMERCIAL LA AURORA 650 E",
+					"porcentajeacredor": "100"
+				}
+			]
+		}
+	],
+	"DocumentosRequeridos": [
+		{
+			"Role": "_default_asegurado_fisico",
+			"Detalles": [
+				{
+					"descripcion": "Cédula de cliente vigente por ambos lados",
+					"archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
+					"requerido": true
+				},
+				{
+					"descripcion": "Fotos del Riesgo",
+					"archivo": "Fotos_del_riesgo.pdf",
+					"requerido": true
+				},
+				{
+					"descripcion": "Formulario de Inspección",
+					"archivo": "Formulario_de_Inspeccion.pdf",
+					"requerido": true
+				}
+			]
+		},
+		{
+			"Role": "_default_asegurado_juridico",
+			"Detalles": [
+				{
+					"descripcion": "Cédula de cliente vigente por ambos lados",
+					"archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
+					"requerido": true
+				},
+				{
+					"descripcion": "Fotos del Riesgo",
+					"archivo": "Fotos_del_riesgo.pdf",
+					"requerido": true
+				},
+				{
+					"descripcion": "Formulario de Inspección",
+					"archivo": "Formulario_de_Inspeccion.pdf",
+					"requerido": true
+				}
+			]
+		},
+		{
+			"Role": "Davivienda_Prendarios",
+			"Detalles": [
+				{
+					"descripcion": "Documentación digitalizada",
+					"archivo": "Documentos.docx",
+					"requerido": true
+				}
+			]
+		},
+		{
+			"Role": "Davivienda_Leasing",
+			"Detalles": [
+				{
+					"descripcion": "Documentación digitalizada",
+					"archivo": "Documentos.docx",
+					"requerido": true
+				}
+			]
+		},
+		{
+			"Role": "Purdy",
+			"Condicion": "MCA_CERO_KM=2",
+			"Detalles": [
+				{
+					"descripcion": "Formulario de inspección",
+					"archivo": "inspección.pdf",
+					"requerido": true
+				},
+				{
+					"descripcion": "Fotos o facturas",
+					"archivo": "fotos.pdf,facturas.pdf",
+					"requerido": true
+				},
+				{
+					"descripcion": "Solicitud de inscripción",
+					"archivo": "inscripción.pdf",
+					"requerido": false
+				},
+				{
+					"descripcion": "Solicitud de seguro firmada",
+					"archivo": "SolicitudFirmada.pdf",
+					"requerido": true
+				}
+			]
+		},
+		{
+			"Role": "Purdy",
+			"Condicion": "MCA_CERO_KM=1",
+			"Detalles": [
+				{
+					"descripcion": "Factura proforma",
+					"archivo": "proforma.pdf",
+					"requerido": false
+				},
+				{
+					"descripcion": "Solicitud de seguro firmada",
+					"archivo": "SolicitudFirmada.pdf",
+					"requerido": true
+				}
+			]
+		},
+		{
+			"Role": "Arrend_Leasing",
+			"Detalles": [
+				{
+					"descripcion": "Carta Cumplimentada",
+					"archivo": "Carta-Cumplimentada.pdf",
+					"requerido": true
+				},
+				{
+					"descripcion": "Factura Proforma",
+					"archivo": "Factura-Proforma.pdf",
+					"requerido": true
+				}
+			]
+		}
+	],
+	"Coberturas": [
+		{
+			"Condicion": "{El Plan} no sea igual a {Plan básico} y {El Plan} no sea igual a {Plan amplio} y {El Plan} no sea igual a {Plan especial}",
+			"Exclusion": "3016,3018"
+		},
+		{
+			"Condicion": "{El Plan} sea igual a {Plan básico}",
+			"Exclusion": "3002,3003,3016,3018,3014,3015,3008,3017,1065,1066,3019,1063"
+		},
+		{
+			"Condicion": "{El Plan} sea igual a {Plan amplio}",
+			"Exclusion": "3015,3008,3016,3018,3017"
+		},
+		{
+			"Condicion": "{El Plan} sea igual a {Plan especial}",
+			"Exclusion": "3010,3016,3018,1063"
+		},
+		{
+			"Condicion": "{El uso del vehículo} no sea igual a 2 y {El Plan} sea igual a {Plan plata}",
+			"Exclusion": "3015,3008,3016,3018,3017"
+		}
+	],
+	"Listas": [
+		{
+			"Nombre": "MM_CAPITAL_RC",
+			"Condicion": "({El Tipo de producto} sea igual a {Trébol RC} y {La Moneda} sea igual a {Colones})",
+			"Exclusion": "100000000,150000000"
+		},
+		{
+			"Nombre": "MM_CAPITAL_RC",
+			"Condicion": "({El Tipo de producto} sea igual a {Trébol RC} y {La Moneda} sea igual a {Dólares})",
+			"Exclusion": "200000,300000"
+		},
+		{
+			"Nombre": "MM_CAPITAL_GM",
+			"Condicion": "(({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) y {La Moneda} sea igual a {Dólares})",
+			"Exclusion": "20000"
+		},
+		{
+			"Nombre": "cod_fracc_pago",
+			"Condicion": "(({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Plata}) o ({El Tipo de producto} sea igual a {Trébol}) o ({El Tipo de producto} sea igual a {Trébol RC}))",
+			"Exclusion": "26"
+		},
+		{
+			"Nombre": "MM_ClaseVehiculos",
+			"Descripcion": "Exclusion de Clase Vehiculos para plan Basico, Amplio, Plus y Plata",
+			"Condicion": "((({El Tipo de producto} sea igual a {Básico}) o ({El Tipo de producto} sea igual a {Amplio}) o ({El Tipo de producto} sea igual a {Plus}) o ({El Tipo de producto} sea igual a {Plata})) y ({El Rol del usuario no sea igual a Privilegios}) y ({El Rol del usuario no sea igual a Purdy}))",
+			"Exclusion": "5,17,18"
+		},
+		{
+			"Nombre": "MM_ClaseVehiculos",
+			"Descripcion": "Exclusion de Clase Vehiculos para plan Oro y Trebol",
+			"Condicion": "((({El Tipo de producto} sea igual a {Oro}) o ({El Tipo de producto} sea igual a {Trébol})) y ({El Rol del usuario no sea igual a Privilegios}))",
+			"Exclusion": "5"
+		},
+		{
+			"Nombre": "MM_ClaseVehiculos",
+			"Descripcion": "Exclusion de Clase Vehiculos para plan Trebol RC",
+			"Condicion": "((({El Tipo de producto} sea igual a {Trébol RC})) y ({El Rol del usuario no sea igual a Privilegios}))",
+			"Exclusion": "5,17,18"
+		},
+		{
+			"Nombre": "MM_CAPITAL_GM",
+			"Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Colones}))",
+			"Exclusion": "2500000,5000000,7500000,10000000"
+		},
+		{
+			"Nombre": "MM_CAPITAL_AC",
+			"Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Colones}))",
+			"Exclusion": "2500000,5000000,7500000,10000000"
+		},
+		{
+			"Nombre": "MM_CAPITAL_GM",
+			"Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Dólares}))",
+			"Exclusion": "4700,9400,14100,18800"
+		},
+		{
+			"Nombre": "MM_CAPITAL_AC",
+			"Condicion": "(({El Tipo de producto} sea igual a {Plata} y {La Moneda} sea igual a {Dólares}))",
+			"Exclusion": "4700,9400,14100,18800"
+		},
+		{
+			"Nombre": "MM_MarcasVehiculos",
+			"Condicion": "({El Rol del usuario no sea igual a Davivienda} y {El Rol del usuario no sea igual a Empleado})",
+			"Exclusion": "3,14,37,46,57,58,63,81,87,92,105,181,217,273,354,367,384,392,440,565,701,704,706,709,713,425,228,158,430,32"
+		},
+		{
+			"Nombre": "MM_MarcasVehiculos",
+			"Condicion": "({El Rol del usuario no sea igual a Davivienda} y {El Rol del usuario no sea igual a Privilegios})",
+			"Exclusion": "113,209,261,284,2,382,317,157,378,563,350,4,336,409,390,115,888,120,114,104,287,82,344,395,166,161,84,276,275,426,348,110,169,90,357,193,203,296,205,242,353,10,211,423,272,94,214,12,380,391,230,371,278,994,142,314,131,337,434,281,225,349,993,351,126,177,138,254,141,340,103,116,327,369,407,320,429,368,412,558,393,102,16,700,372,118,117,256,19,310,132,383,149,277,229,136,293,21,554,252,22,23,394,106,292,251,86,95,185,374,226,397,307,221,85,999,295,109,215,235,236,179,998,288,150,183,309,373,561,83,124,27,398,28,439,153,187,144,170,557,264,553,436,29,356,258,417,159,200,198,323,328,450,192,173,244,162,269,33,34,280,36,559,332,257,195,399,339,96,716,227,98,562,414,216,289,129,600,996,381,343,224,186,39,223,318,97,108,218,342,237,201,137,322,334,266,316,406,233,41,422,43,156,435,335,163,396,702,238,243,424,180,178,47,164,152,48,134,347,405,89,333,240,364,143,375,712,52,204,168,140,324,360,53,54,427,234,995,121,219,413,241,376,358,404,263,311,331,433,182,313,377,139,366,212,100,160,59,308,705,123,171,379,61,174,62,400,127,291,361,259,175,549,312,93,112,262,208,111,345,282,555,997,362,188,172,385,67,330,68,246,128,402,122,145,176,69,191,167,992,319,70,432,556,420,708,363,710,410,421,341,355,401,146,239,231,290,438,388,548,703,707,301,130,370,386,207,403,552,431,206,147,232,194,714,154,107,428,329,387,165,352,196,389,151,75,365,560,711,564,155,222,279,326,270,325,76,99,411,77,274,189,245,202,306,321,213,184,220,210,190,148,80,315,88,91,715,133,125,451,101,418,255,9,11,24,197,42,49,64"
+		},
+		{
+			"Nombre": "TRON_DEDU_CONTR:DED_AUTO_EQESP",
+			"Condicion": "({El Rol del usuario sea igual a Purdy})",
+			"Exclusion": "2,248,244,5"
+		},
+		{
+			"Nombre": "TRON_G1010031:DEDUC303_3007",
+			"Condicion": "({El Rol del usuario sea igual a Purdy})",
+			"Exclusion": "2,248,244,5"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca Audi",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 6) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "29,30"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca BYD",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 94) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "7,8,10"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca HYUNDAI",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 31) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "64,70,79,88"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca JAC",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 559) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "17,18,19"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca LEXUS",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 45) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "6,28"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca MG",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 105) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "17,19"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca MERCEDES",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 51) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "141"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca NISSAN",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 56) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "108,125"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca RENAULT",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 65) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "43,48,49,22"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca PORSHE",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 64) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "16"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca VOLKSWAGEN",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 78) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "66"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca VOLVO",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 79) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "33,34,36,42,43,44,38,39,40,41"
+		},
+		{
+			"Descripcion": "Exclusion Modelos Marca  SSANG YONG",
+			"Nombre": "MM_ModelosVehiculos",
+			"Condicion": "({La marca del vehículo} sea igual a 135) y {El Rol del usuario no sea igual a Privilegios}",
+			"Exclusion": "1,2,4,5"
+		}
+	],
+	"Reglas": [
+		{
+			"Condicion": "({El Rol del usuario sea igual a Davivienda_Prendarios} o {El Rol sea igual a Davivienda_Leasing}) y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 110000000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 110.000.000 colones",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Condicion": "({El Rol del usuario sea igual a Davivienda_Prendarios} o {El Rol sea igual a Davivienda_Leasing}) y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 175000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 175.000 dólares",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Condicion": "{El Rol del usuario sea igual a Davivienda_Prendarios}  y {El Año del vehículo} sea menor a {2 años de antigüedad}",
+			"Mensaje": "Solo se deben cotizar autos de 2 años de antiguedad como máximo",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Condicion": "{El Rol del usuario sea igual a Davivienda_Leasing}  y {El Año del vehículo} sea menor a {5 años de antigüedad}",
+			"Mensaje": "Solo se deben cotizar autos de 5 años de antiguedad como máximo",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Condicion": "{La Marca del vehículo} sea igual a 60 y {El Año del vehículo} sea menor a {3 años de antigüedad} y {El Rol del usuario no sea igual a Privilegios}",
+			"Mensaje": "Para un Peugeot, el año del vehículo no debe superior a 3 años de antigüedad",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Condicion": "{El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol del usuario no sea igual a Davivienda_Leasing} y {El Rol del usuario no sea igual a Red_Afecta} y {El Año del vehículo} sea menor a {15 años de antigüedad}",
+			"Mensaje": "El año del vehículo no debe superior a 15 años de antigüedad",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Condicion": "{El Rol del usuario sea igual a Purdy} y {El Contrato} sea igual a 10002 y {El Año del vehículo} sea menor a {1 año de antigüedad}",
+			"Mensaje": "El año del vehículo no debe superior a 1 año de antigüedad",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Condicion": "{El Rol del usuario sea igual a Purdy}  y {El Año del vehículo} sea menor a {10 años de antigüedad}",
+			"Mensaje": "Solo se deben cotizar autos de 10 años de antiguedad como máximo",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Condicion": "({La Cobertura 3004 sea seleccionada} y {El Valor del vehículo} sea diferente a {La Suma Asegurada de Colisión y vuelco}) o ({La Cobertura 3005 sea seleccionada} y {El Valor del vehículo} sea diferente a {La Suma Asegurada de Riesgos adicionales}) o ({La Cobertura 3006 sea seleccionada} y {El Valor del vehículo} sea diferente a {La Suma Asegurada de Robo})",
+			"Mensaje": "El valor del vehículo y las coberturas de colisión y vuelco, riesgos adicionales y robo, deben ser iguales",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Condicion": "{No hay coberturas seleccionadas}",
+			"Mensaje": "Debe seleccionar al menos una cobertura",
+			"Campo": "coberturasTbl",
+			"Grupo": "Table"
+		},
+		{
+			"Condicion": "({El Tipo de producto} sea igual a \"trebolrc\") y {El Año del vehículo} sea menor a {10 años de antigüedad}",
+			"Mensaje": "Para el Plan Trébol RC el año del vehículo no debe ser superior a 10 años de antigüedad",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Dolares",
+			"Condicion": "{El Rol del usuario sea igual a Intermediario} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {El Rol no sea igual a Purdy} y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 70000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 70.000 dólares",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Descripcion": "Condicion de Valor Vehiculo para usuarios Agentes-Corredores Colones",
+			"Condicion": "{El Rol del usuario sea igual a Intermediario} y {El Rol del usuario no sea igual a Privilegios} y {El Rol del usuario no sea igual a Arrend_Leasing} y {El Rol del usuario no sea igual a Davivienda_Prendarios} y {El Rol no sea igual a Davivienda_Leasing} y {El Rol no sea igual a Purdy} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 45500000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 45 500 000 colones",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Condicion": "({El Tipo de producto} sea igual a \"trebol\") y !((data.coberturas.Any(r => r.codigo == 3002 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3003 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3004 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3005 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3006 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3007 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3008 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3009 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3014 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 3015 && r.seleccionado)) o (data.coberturas.Any(r => r.codigo == 1060 && r.seleccionado)))",
+			"Mensaje": "Debe seleccionar al menos una cobertura adicional",
+			"Campo": "coberturasTbl",
+			"Grupo": "Table"
+		},
+		{
+			"Descripcion": "Condicion de Valor Vehiculo para usuarios con rol Arrend Leasing Dolares",
+			"Condicion": "{El Rol del usuario sea igual a Arrend_Leasing}  y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 100000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 100.000 dólares",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Descripcion": "Condicion de Valor Vehiculo para usuarios con rol Arrend Leasing Colones",
+			"Condicion": "{El Rol del usuario sea igual a Arrend_Leasing} y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 65000000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 65 000 000 colones",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Descripcion": "Año del Vehiculo Permitido para usuario con Privilegios",
+			"Condicion": "{El Rol del usuario sea igual a Privilegios} y {El Año del vehículo} sea menor a {20 años de antigüedad}",
+			"Mensaje": "El año del vehículo no debe superior a 20 años de antigüedad",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Descripcion": "Condicion de Valor Vehiculo Dolares para usuarios con rol Privilegios",
+			"Condicion": "{El Rol del usuario sea igual a Privilegios}  y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 200000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 200.000 dólares",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Descripcion": "Condicion de Valor Vehiculo Colones para usuarios con rol Privilegios",
+			"Condicion": "{El Rol del usuario sea igual a Privilegios}  y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 136000000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 136 000 000 colones",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Descripcion": "Año del Vehiculo Permitido para usuario con Red_Afecta",
+			"Condicion": "{El Rol del usuario sea igual a Red_Afecta} y {El Año del vehículo} sea menor a {17 años de antigüedad}",
+			"Mensaje": "El año del vehículo no debe ser superior a 17 años de antigüedad",
+			"Campo": "ANIO_SUB_MODELO"
+		},
+		{
+			"Descripcion": "Condicion de Valor Vehiculo Dolares para usuarios con rol Purdy",
+			"Condicion": "{El Rol del usuario sea igual a Purdy}  y {La Moneda} sea igual a {Dólares} y {El Valor del vehículo} sea mayor a 230000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 230.000 dólares",
+			"Campo": "IMP_VR"
+		},
+		{
+			"Descripcion": "Condicion de Valor Vehiculo Colones para usuarios con rol Purdy",
+			"Condicion": "{El Rol del usuario sea igual a Purdy}  y {La Moneda} sea igual a {Colones} y {El Valor del vehículo} sea mayor a 115000000",
+			"Mensaje": "El valor del vehículo debe ser menor o igual a 115 000 000 colones",
+			"Campo": "IMP_VR"
+		}
+	]
 }
