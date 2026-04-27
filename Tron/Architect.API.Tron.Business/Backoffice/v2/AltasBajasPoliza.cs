@@ -59,7 +59,27 @@ namespace Architect.API.Tron.Business.Backoffice
                 FEC_INI_PRESTAMO = poliza.INI_PRESTAMO.ToString("dd/MM/yyyy"),
                 FEC_VCTO_PRESTAMO = poliza.VCTO_PRESTAMO.ToString("dd/MM/yyyy"),
                 COD_PLAN_AP = poliza.COD_PLAN_AP,
-                TIP_DE_PROCESO = alta ? "N" : "A"
+                TIP_DE_PROCESO = alta ? "N" : "A",
+                OCUPACION_ASEG = poliza.OCUPACION_ASEG,
+                TTL_NUMERO_ASEG = poliza.TTL_NUMERO_ASEG,
+                BENEFICIARIOS = poliza.Beneficiarios?.Select(b => new Contracts.AltasBajas.Request.SPCallBeneficiario
+                {
+                    TIP_DOCUM_BENEF = b.TIP_DOCUM_BENEF,
+                    COD_DOCUM_BENEF = b.COD_DOCUM_BENEF,
+                    NOM_TERCERO_BENEF = b.NOM_TERCERO_BENEF,
+                    NOM2_TERCERO_BENEF = b.NOM2_TERCERO_BENEF,
+                    APE1_TERCERO_BENEF = b.APE1_TERCERO_BENEF,
+                    APE2_TERCERO_BENEF = b.APE2_TERCERO_BENEF,
+                    TIP_BENEF = 15,
+                    PCT_PARTICIPACION = b.PCT_PARTICIPACION,
+                    TIP_RELAC = b.TIP_RELAC,
+                    MCA_SEXO_BENEF = b.MCA_SEXO_BENEF,
+                    PROVINCIA_BENEF = b.PROVINCIA_BENEF,
+                    LOCALIDAD_BENEF = b.LOCALIDAD_BENEF,
+                    TLF_NUMERO_BENEF = b.TLF_NUMERO_BENEF,
+                    EMAIL_BENEF = b.EMAIL_BENEF,
+                    FEC_NAC_BENEF = b.FEC_NAC_BENEF.ToString("ddMMyyyy")
+                }).ToList()
             };
 
             string json = JsonConvert.SerializeObject(sp);

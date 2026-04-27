@@ -47,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AltasBajas\Request\Base.cs" />
+    <Compile Include="AltasBajas\Request\SPCallBeneficiario.cs" />
+    <Compile Include="AltasBajas\Request\BeneficiarioBase.cs" />
+    <Compile Include="AltasBajas\Request\Beneficiario.cs" />
     <Compile Include="AltasBajas\Request\SPCall.cs" />
     <Compile Include="AltasBajas\Request\Poliza.cs" />
     <Compile Include="AltasBajas\Response\Poliza.cs" />

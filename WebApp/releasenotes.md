@@ -1,5 +1,24 @@
 ﻿# Release Notes - Aliados
  
+## Versión 1.6.182 - Altas/Bajas: Se agregar los campos teléfono, ocupación y sección repetitiva para beneficiarios.
+
+### Aliados - Altas/Bajas: Se agregar los campos teléfono, ocupación y sección repetitiva para beneficiarios.
+
+#### Cambios implementados:
+
+- Se agrega el mapeo de la colección `Beneficiarios` en `AltasBajasPoliza.cs` hacia `SPCall.BENEFICIARIOS`.
+- Se incorpora el mapeo completo de propiedades de beneficiario para el request del procedimiento almacenado.
+- Se aplica conversión de `FEC_NAC_BENEF` al formato requerido `ddMMyyyy` para `SPCallBeneficiario`.
+- Se documentan clases y propiedades con comentarios XML en el namespace `Architect.API.Tron.Contracts.AltasBajas.Request`.
+- Archivos documentados: `Base.cs`, `BeneficiarioBase.cs`, `Beneficiario.cs`, `Poliza.cs`, `SPCall.cs`, `SPCallBeneficiario.cs`.
+- Se ajusta definición de forma EmitirPoliza de la tabla visualization.
+- Ajustes al javascript de soporte Form.Ext.Altas.js.
+
+#### Dependencias:
+1. 260421a.visualization.emitirpoliza.sql
+
+---
+
 ## Versión 1.6.181 - Multilenguaje: Refinamientos avanzados y soporte de Bootstrap Table (Fase III).
 
 ### Aliados - Multilenguaje: Refinamientos avanzados y soporte de Bootstrap Table (Fase III).
