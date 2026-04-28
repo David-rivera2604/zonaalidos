@@ -13,6 +13,7 @@ namespace aliados
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+
             routes.MapRoute(
                 name: "ViewerForm",
                 url: "form/{id}",
@@ -24,6 +25,13 @@ namespace aliados
                 url: "view/{id}",
                 defaults: new { controller = "Viewer", action = "Viewer", id = UrlParameter.Optional }
             );
+
+            //routes.MapRoute(
+            //    name: "TenantEntraIdLogin",
+            //    url: "{tenant}",
+            //    defaults: new { controller = "EntraID", action = "Login" },
+            //    constraints: new { tenant = "aliados|purdy|mapfre" }
+            //);
 
             routes.MapRoute(
                   name: "Default",

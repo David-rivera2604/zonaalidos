@@ -1,5 +1,38 @@
 ﻿# Release Notes - Aliados
  
+## Versión 1.6.183 - Autenticación Microsoft Entra ID (Azure AD) - OAuth 2.0.
+
+### Aliados - Integración de inicio de sesión federado con Microsoft Entra ID mediante el flujo Authorization Code de OAuth 2.0.
+
+#### Cambios implementados:
+
+- Nuevo controlador EntraID para controla el flujo de autorización.
+- Nuevo controlador Acceso para definir punto de entrada especificos para tres tenant `aliados`, `purdy` y `mapfre`.
+- Nuevas paginas de login para cada tenant, con botón de inicio de sesión con Microsoft Entra ID.
+
+#### Nuevos puntos de access por tenant:
+
+	- Aliados: {webapp}/acceso/aliados, ejemplo: https://appqa.mapfrecr.com/aliados/acceso/aliados
+	- Purdy: {webapp}/acceso/purdy, ejemplo: https://appqa.mapfrecr.com/aliados/acceso/purdy
+	- Mapfre: {webapp}/acceso/mapfre, ejemplo: https://appqa.mapfrecr.com/aliados/acceso/mapfre
+
+#### Nuevos settings de configuración requeridos (`Web.config`):
+
+
+| Setting | Descripción |
+|---|---|
+| `EntraId.ClientId` | ID de la aplicación registrada en el portal de Microsoft Entra ID (Azure AD). |
+| `EntraId.TenantId` | ID del directorio (tenant) de Microsoft Entra ID donde está registrada la aplicación. |
+| `EntraId.ClientSecret` | Secreto de cliente generado en el portal de Entra ID. Debe rotarse periódicamente y no exponerse en repositorios públicos. |
+| `EntraId.RedirectUri` | URI de redirección a la que Microsoft devuelve el código de autorización tras la autenticación. Debe coincidir exactamente con la registrada en el portal de Entra ID. |
+
+> ⚠️ Ajustar `EntraId.RedirectUri` según el ambiente (desarrollo, QA, producción). El valor debe coincidir exactamente con la URI registrada en el portal de Entra ID.
+
+#### Dependencias:
+- Registro de la aplicación en Microsoft Entra ID.
+
+---
+
 ## Versión 1.6.182 - Altas/Bajas: Se agregar los campos teléfono, ocupación y sección repetitiva para beneficiarios.
 
 ### Aliados - Altas/Bajas: Se agregar los campos teléfono, ocupación y sección repetitiva para beneficiarios.
@@ -63,7 +96,7 @@
 
 #### Funcionalidades implementadas:
 
-- Al seleccionar el contrato 10700, el campo 'RC alcohol' se marca como 'si' y se bloquea.
+- Al seleccionar el contrato 10700, el campo 'RC alcohol' se marca como 'si' y se bloquee.
 - La visibilidad del campo 'RC alcohol' se condiciona a los roles Intermediario y Empleado.
 
 ---
@@ -370,3 +403,13 @@ Nuevos settings (tabla `settings`) para controlar el envío de la factura electr
 
 ---
 
+## Notas:
+
+### Flujo de entregas a DES
+
+- Se hace merge de DES a rama del feature
+- Se prepara releasenotes.md con la información del feature
+- Se hace el commit para dejara la rama feature actualizada con DES
+- Se cambia a rama DES y se hace el pull de la misma
+- Se hace el merge de la rama feature a DES (git merge --squash feature/{nombre})
+- Se hace commit y push usando el título de la versión liberada del release notes

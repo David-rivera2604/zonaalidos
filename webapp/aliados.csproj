@@ -1269,6 +1269,7 @@
     <Content Include="products\cope_vida.xml" />
     <Content Include="roles.configurations.txt" />
     <Content Include="releaseletter.txt" />
+    <Content Include="Scripts\Acceso\Ingreso.js" />
     <Content Include="Scripts\AdministrarCliente.js" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
     <Content Include="Scripts\Bayer.Carnet.js" />
@@ -1434,6 +1435,8 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccesoController.cs" />
+    <Compile Include="Controllers\EntraIDController.cs" />
     <Compile Include="Controllers\FunerarioController.cs" />
     <Compile Include="Controllers\HogatTotalController.cs" />
     <Compile Include="Controllers\MultirriesgoController.cs" />
@@ -2136,6 +2139,9 @@
     <Content Include="Views\Funerario\_terceros.cshtml" />
     <Content Include="Views\Funerario\Cotizacion.cshtml" />
     <Content Include="Views\Viewer\_ViewerFormContent.cshtml" />
+    <Content Include="Views\Acceso\aliados.cshtml" />
+    <Content Include="Views\Acceso\mapfre.cshtml" />
+    <Content Include="Views\Acceso\purdy.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

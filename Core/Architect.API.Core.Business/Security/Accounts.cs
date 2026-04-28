@@ -569,5 +569,62 @@ namespace Architect.API.Core.Business.Security
             }
             return result;
         }
+
+        /// <summary>
+        /// Autentica a un usuario cuya identidad ya fue verificada por Microsoft Entra ID.
+        /// No valida contraseña; el email proviene del id_token de Microsoft.
+        /// </summary>
+        /// <param name="email">Correo extraído del token de Entra ID.</param>
+        /// <param name="tenant">Nombre del tenant al que pertenece el usuario.</param>
+        /// <param name="ipAddress">Dirección IP del cliente.</param>
+        /// <param name="userAgent">User-Agent del cliente.</param>
+        /// <param name="token">Token de salida con el contexto del usuario autenticado.</param>
+        /// <returns>Respuesta de autenticación con el token JWT y datos del usuario.</returns>
+        public static Contracts.Security.AuthenticationResponse AuthenticationByEntraId(
+            string email, string tenant, string ipAddress, string userAgent,
+            ref Contracts.Security.Token token)
+        {
+            var result  = new Contracts.Security.AuthenticationResponse { Settings = new List<SettingItem>() };
+            var track   = new Contracts.Security.AuthenticationTrace
+            {
+                TraceType = 1,
+                IPAddress = ipAddress,
+                UserName  = email?.Trim(),
+                UserAgent = userAgent
+            };
+
+            var dummyRequest = new Contracts.Security.AuthenticationRequest
+            {
+                Tenant    = tenant,
+                Email     = email,
+                IPAddress = ipAddress,
+                UserAgent = userAgent
+            };
+
+            if (!AccountSupport.TryGetCompanyId(tenant, result, track, out int companyId))
+            {
+                AuthenticationTrace.Create(track);
+                return result;
+            }
+
+            var user = AccountSupport.RetrieveUser(email, companyId);
+            if (user.IsEmpty())
+            {
+                result.Reason = track.Reason = "Usuario no registrado";
+                AuthenticationTrace.Create(track);
+                return result;
+            }
+
+            track.UserId   = user.UserId;
+            track.UserName = user.UserName;
+            result.EMail   = user.EMail;
+
+            ProcessSuccessfulAuthentication(dummyRequest, user, result, ref token, true, companyId, track);
+
+            track.Reason = result.Reason;
+            AuthenticationTrace.Create(track);
+
+            return result;
+        }
     }
 }

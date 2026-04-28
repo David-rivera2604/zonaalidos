@@ -1,11 +1,13 @@
-﻿using Architect.API.Core.Business;
+﻿using aliados.Filters;
+using Architect.API.Core.Business;
 using Architect.API.Core.Business.Security;
 using Architect.API.Core.Security;
-using aliados.Filters;
+using Architect.API.Tron.Business.Cotizacion;
 using Architect.Utilities.Extensions;
 using System;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace aliados.Controllers
@@ -99,7 +101,7 @@ namespace aliados.Controllers
                 }
                 else
                 {
-                    if(!responseItem.Need2FAOTP)
+                    if (!responseItem.Need2FAOTP)
                         Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, responseItem, token));
                     Response.StatusCode = 200;
                     result = Json(responseItem, JsonRequestBehavior.AllowGet);
@@ -142,7 +144,7 @@ namespace aliados.Controllers
             if (body.Successful)
             {
                 var context = Architect.Utilities.SerializeHandler.DeserializeJSON<Architect.API.Core.Contracts.Security.AOTPResponse>((string)Architect.Utilities.Cache.GetItem(resetRequest.OTP));
-                body.Context  = context.Context;
+                body.Context = context.Context;
                 body.Token = context.Token;
                 Response.Cookies.Add(Architect.API.Core.Business.Security.Accounts.AssingedContext(Request, body.Context, body.Token));
             }
@@ -151,7 +153,7 @@ namespace aliados.Controllers
 
             result = Json(body, JsonRequestBehavior.AllowGet);
 
-            return result;      
+            return result;
         }
 
 
@@ -159,37 +161,22 @@ namespace aliados.Controllers
         /// Cierra la sesión del usuario eliminando la cookie de autenticación y limpiando el contexto del servidor.
         /// </summary>
         /// <returns>
-        /// Retorna un objeto JSON indicando que el cierre de sesión fue exitoso:
-        /// { success: true, mensaje: "Sesión cerrada exitosamente" }
-        /// </returns>
-        /// <remarks>
-        /// Este método realiza las siguientes operaciones:
-        /// 1. Elimina la cookie "AuthToken" estableciendo su expiración en el pasado
-        /// 2. Limpia el contexto del usuario en el servidor (HttpContext.User y Thread.CurrentPrincipal)
-        /// 3. Invalida la autenticación de FormsAuthentication
-        ///
-        /// Después de llamar a este método, el usuario deberá autenticarse nuevamente para acceder
-        /// a páginas protegidas con el atributo [IsConnected].
-        /// </remarks>
-        /// <example>
-        /// Ejemplo de uso desde JavaScript:
-        /// <code>
-        /// app.core.Post(app.setting.basepath + 'Security/Logout')
-        ///     .done(function(data) {
-        ///         if (data.success) {
-        ///             // Limpiar localStorage
-        ///             localStorage.removeItem('Token');
-        ///             localStorage.removeItem('Username');
-        ///             localStorage.removeItem('Roles');
-        ///             // Redirigir al login
-        ///             window.location.replace(app.setting.basepath + 'Security/Login');
-        ///         }
-        ///     });
-        /// </code>
-        /// </example>
-        [IsConnected]
-        [HttpPost]
-        public ActionResult Logout()
+        [HttpGet]
+        public ActionResult Logout(string tenant = "mapfre")
+        {
+            string loginRedirect = WebConfigurationManager.AppSettings["Security.Login.RedirectUrl"] ?? "/";
+
+            string logoutUrl = ClearLocalSession(loginRedirect);
+
+            if (EntraIDController.NormalizeTenant(tenant) != null)
+            {
+                logoutUrl = EntraIDController.Logout(tenant);    
+            }
+
+            return Json(new { success = true, mensaje = "Sesión cerrada exitosamente", url = logoutUrl }, JsonRequestBehavior.AllowGet);
+        }
+
+        private string ClearLocalSession(string loginRedirect)
         {
             // ✅ Eliminar la cookie de autenticación estableciendo su expiración en el pasado
             if (Request.Cookies["AuthToken"] != null)
@@ -222,21 +209,11 @@ namespace aliados.Controllers
                 Session.Clear();
                 Session.Abandon();
             }
-
-            return Json(new { success = true, mensaje = "Sesión cerrada exitosamente" }, JsonRequestBehavior.AllowGet);
+            return ResolveAbsoluteUrl(loginRedirect, "Security/Login").OriginalString;
         }
 
         /// <summary>
-        /// Muestra la vista de login para usuarios de Mapfre en modo empleado.
-        /// </summary>
-        /// <returns>Vista de Login configurada para modo empleado Mapfre.</returns>
-        public ActionResult Mapfre()
-        {
-            return View("Login");
-        }
-
-        /// <summary>
-        /// Redirige a la página de login con el tenant "Carrofácil" preconfigurado.
+        /// Redirige a la página de login with el tenant "Carrofácil" preconfigurado.
         /// </summary>
         /// <returns>Redirección a la acción Login con tenant = "Carrofácil".</returns>
         public ActionResult Carrofácil()
@@ -245,7 +222,7 @@ namespace aliados.Controllers
         }
 
         /// <summary>
-        /// Redirige a la página de login con el tenant "Coopeservidores" preconfigurado.
+        /// Redirige a la página de login with el tenant "Coopeservidores" preconfigurado.
         /// </summary>
         /// <returns>Redirección a la acción Login con tenant = "Coopeservidores".</returns>
         public ActionResult Coope()
@@ -345,6 +322,52 @@ namespace aliados.Controllers
         public ActionResult Integrate()
         {
             return View();
+        }
+
+        /// <summary>
+        /// Redirige al callback de EntraID (legacy)
+        /// </summary>
+        /// <param name="code">Código de autorización recibido</param>
+        /// <param name="state">Estado recibido</param>
+        /// <param name="error">Error, si ocurrió</param>
+        /// <param name="error_description">Descripción del error, si ocurrió</param>
+        /// <returns>Redirect a EntraID.Callback</returns>
+        [HttpGet]
+        public ActionResult EntraIdCallback(string code, string state, string error, string error_description)
+        {
+            return RedirectToAction("Callback", "EntraID", new
+            {
+                code,
+                state,
+                error,
+                error_description
+            });
+        }
+
+        private Uri ResolveAbsoluteUrl(string value, string aliadosBaseUrl)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            if (Uri.TryCreate(value, UriKind.Absolute, out var absolute))
+                return absolute;
+
+            var normalized = value.StartsWith("~/") ? Url.Content(value) : value;
+
+            if (!string.IsNullOrWhiteSpace(aliadosBaseUrl) && Uri.TryCreate(aliadosBaseUrl, UriKind.Absolute, out var baseUri))
+            {
+                if (Uri.TryCreate(normalized, UriKind.RelativeOrAbsolute, out var candidate))
+                {
+                    return candidate.IsAbsoluteUri ? candidate : new Uri(baseUri, normalized);
+                }
+            }
+
+            if (Request?.Url != null && Uri.TryCreate(normalized, UriKind.RelativeOrAbsolute, out var relativeToRequest))
+            {
+                return relativeToRequest.IsAbsoluteUri ? relativeToRequest : new Uri(Request.Url, normalized);
+            }
+
+            return null;
         }
     }
 }
