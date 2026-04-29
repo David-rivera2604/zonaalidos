@@ -158,25 +158,38 @@ namespace aliados.Controllers
 
 
         /// <summary>
-        /// Cierra la sesión del usuario eliminando la cookie de autenticación y limpiando el contexto del servidor.
+        /// Cierra la sesión del usuario. 
+        /// Si el login fue realizado vía Entra ID (sesión contiene entraid_tenant),
+        /// realiza logout federado de Entra ID; de lo contrario, solo logout local.
         /// </summary>
         /// <returns>
-        [HttpGet]
-        public ActionResult Logout(string tenant = "mapfre")
+        /// Objeto JSON con { success: true, url: logoutUrl } donde logoutUrl es:
+        /// - URL de logout federado de Entra ID si la sesión contiene entraid_tenant.
+        /// - Ruta de login local en caso contrario.
+        /// </returns>
+        [IsConnected]
+        [HttpPost]
+        public ActionResult Logout()
         {
-            string loginRedirect = WebConfigurationManager.AppSettings["Security.Login.RedirectUrl"] ?? "/";
+            var entraIdTenant = Session["entraid_tenant"]?.ToString();
+            string normalizedTenant = EntraIDController.NormalizeTenant(entraIdTenant);
+            
+            string logoutUrl = ClearLocalSession();
 
-            string logoutUrl = ClearLocalSession(loginRedirect);
-
-            if (EntraIDController.NormalizeTenant(tenant) != null)
+            // Si el login fue por Entra ID, hacer logout federado
+            if (normalizedTenant != null)
             {
-                logoutUrl = EntraIDController.Logout(tenant);    
+                logoutUrl = EntraIDController.Logout(normalizedTenant);
             }
 
             return Json(new { success = true, mensaje = "Sesión cerrada exitosamente", url = logoutUrl }, JsonRequestBehavior.AllowGet);
         }
 
-        private string ClearLocalSession(string loginRedirect)
+        /// <summary>
+        /// Limpia la sesión local: elimina cookies, limpia FormsAuthentication y contexto del usuario.
+        /// </summary>
+        /// <returns>Ruta de login local como fallback.</returns>
+        private string ClearLocalSession()
         {
             // ✅ Eliminar la cookie de autenticación estableciendo su expiración en el pasado
             if (Request.Cookies["AuthToken"] != null)
@@ -209,7 +222,7 @@ namespace aliados.Controllers
                 Session.Clear();
                 Session.Abandon();
             }
-            return ResolveAbsoluteUrl(loginRedirect, "Security/Login").OriginalString;
+            return WebConfigurationManager.AppSettings["Security.Login.RedirectUrl"];
         }
 
         /// <summary>

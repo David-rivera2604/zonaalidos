@@ -123,11 +123,12 @@ namespace aliados.Controllers
 
             string storedState = Session["entraid_state"]?.ToString();
             Session.Remove("entraid_state");
-            Session.Remove("entraid_tenant");
+            // ⚠️ NO eliminar entraid_tenant aquí; se mantiene en sesión para el logout
 
             if (string.IsNullOrEmpty(code) || state != storedState)
             {
                 TempData["EntraIdError"] = "La solicitud de autenticación no es válida.";
+                Session.Remove("entraid_tenant"); // Limpiar si falla la validación
                 return Redirect(loginUrl);
             }
 

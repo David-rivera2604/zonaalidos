@@ -1069,20 +1069,19 @@ app.security = (function () {
             return getCookie(name);
         },
         logout: function () {
-            let tenant = localStorage.getItem("Tenant");
 
-            // Limpiar localStorage
-            localStorage.removeItem('Token');
-            localStorage.removeItem('Username');
-            localStorage.removeItem('Color1Tenant');
-            localStorage.removeItem('Color2Tenant');
-            localStorage.removeItem('Roles');
-            localStorage.removeItem('Expires');
-            localStorage.removeItem('LastActivity');
-            localStorage.removeItem('Navegation');
 
-            app.core.Get(app.setting.basepath + 'Security/Logout?tenant=' + tenant)
+            app.core.Post(app.setting.basepath + 'Security/Logout', undefined, undefined, false)
                 .done(function (data) {
+                    // Limpiar localStorage
+                    localStorage.removeItem('Token');
+                    localStorage.removeItem('Username');
+                    localStorage.removeItem('Color1Tenant');
+                    localStorage.removeItem('Color2Tenant');
+                    localStorage.removeItem('Roles');
+                    localStorage.removeItem('Expires');
+                    localStorage.removeItem('LastActivity');
+                    localStorage.removeItem('Navegation');
                     if (data.success) {
                         // Redirigir al login
                         window.location.replace(data.url);
