@@ -156,7 +156,7 @@ app.EmisionMapfreMas = (function () {
     }
 
     function DisabledAllControls(isdisabled) {
-        $('#cod_fracc_pago').prop('disabled', isdisabled);
+        //$('#cod_fracc_pago').prop('disabled', isdisabled);
         $('#MCA_FEC_EFEC_SYS_1').prop('disabled', isdisabled);
         $('#MCA_FEC_EFEC_SYS_2').prop('disabled', isdisabled);
 
