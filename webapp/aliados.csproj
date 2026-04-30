@@ -1436,6 +1436,7 @@
     <Compile Include="App_Start\UnhandledExceptionLogger.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccesoController.cs" />
+    <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\EntraIDController.cs" />
     <Compile Include="Controllers\FunerarioController.cs" />
     <Compile Include="Controllers\HogatTotalController.cs" />

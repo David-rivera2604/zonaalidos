@@ -1148,6 +1148,9 @@ app.language = (function () {
                 );
             };
         },
+        getTranslationText: function (key, fallbackText) {
+            return getRuntimeTranslationText(key, fallbackText);
+        },
         getTranslations: function () {
             return currentTranslations;
         },
