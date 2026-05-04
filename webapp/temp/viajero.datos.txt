@@ -1,0 +1,41 @@
+field cod_mon|2
+field cod_fracc_pago|101
+field fec_efec_poliza|2026-05-02T00:00:00
+field fec_vcto_poliza|2026-05-11T00:00:00
+field TIP_PLAN|F
+field TIP_VIAJE|P
+field FEC_VIAJE|2026-05-02T00:00:00
+field PAIS_ORIGEN|CRI
+field DES_DESTINO|MEX
+field COD_MODALIDAD|44110
+field cantidad_riesgos|2
+field FEC_NACIMIENTO|1995-06-04T00:00:00
+field FEC_NACIMIENTO2|2000-04-23T00:00:00
+END_RESPONSE
+
+field agt_cod|NO_DATA
+field cod_cuadro_com|NO_DATA
+field cod_mon|2
+field cod_fracc_pago|101
+field fec_efec_poliza|2026-05-02T00:00:00
+field fec_vcto_poliza|2026-05-11T00:00:00
+field TIP_PLAN|F
+field TIP_VIAJE|P
+field FEC_VIAJE|2026-05-02T00:00:00
+field PAIS_ORIGEN|CRI
+field DES_DESTINO|MEX
+field COD_MODALIDAD|44110
+field cantidad_riesgos|2
+field FEC_NACIMIENTO|1995-06-04T00:00:00
+field FEC_NACIMIENTO2|2000-04-23T00:00:00
+field FEC_NACIMIENTO3|NO_DATA
+field FEC_NACIMIENTO4|NO_DATA
+field FEC_NACIMIENTO5|NO_DATA
+field FEC_NACIMIENTO6|NO_DATA
+field FEC_NACIMIENTO7|NO_DATA
+field FEC_NACIMIENTO8|NO_DATA
+field FEC_NACIMIENTO9|NO_DATA
+field FEC_NACIMIENTO10|NO_DATA
+END_RESPONSE
+
+

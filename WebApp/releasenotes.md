@@ -1,5 +1,23 @@
 ﻿# Release Notes - Aliados
  
+## Versión 1.6.184 - Viajero: Validaciones de beneficiarios y mejoras de captura.
+
+### Aliados - Viajero: Se fortalecen validaciones y experiencia de ingreso de datos para beneficiarios.
+
+#### Cambios implementados:
+
+- Se agrega validación para asegurar que el porcentaje de participación de beneficiarios sume 100% por riesgo.
+- Se muestran mejoras visuales en la tabla de beneficiarios, incluyendo la columna de porcentaje.
+- Se ajusta el comportamiento del tipo y número de identificación para una captura más consistente.
+- Se mejoran validaciones y mensajes en pantalla durante el registro/edición de beneficiarios.
+- Se incorporan ajustes menores de interfaz para una experiencia más clara en el flujo de Viajero.
+
+#### Dependencias:
+
+- No aplica.
+
+---
+
 ## Versión 1.6.183 - Autenticación Microsoft Entra ID (Azure AD) - OAuth 2.0.
 
 ### Aliados - Integración de inicio de sesión federado con Microsoft Entra ID mediante el flujo Authorization Code de OAuth 2.0.

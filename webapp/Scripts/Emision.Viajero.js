@@ -485,11 +485,13 @@ app.EmisionViajero = (function () {
         let result = 0;
         let message = 'Debe indicar la información de terceros';
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
+
         let terceroserrors = (terceros.length === 0);
 
         if (!terceroserrors) {
             let holder = terceros.filter(i => i.tipodetercero === 0);
             let insured = terceros.filter(i => i.tipodetercero === 2);
+            let beneficiaries = terceros.filter(i => i.tipodetercero === 6);
 
             if (holder.length === 0 || holder[0].DocumentNumber === '') {
                 let currentAseguradoTomador = terceros.find(e => e.tipodetercero === 2 && e.elaseguradoeselmismotomador === 1);
@@ -502,6 +504,29 @@ app.EmisionViajero = (function () {
                 message += ', indique el asegurado';
                 terceroserrors = true;
             }
+
+            if (beneficiaries.length > 0) {
+                let porcentajePorRiesgo = beneficiaries.reduce((acumulado, item) => {
+                    let riesgo = item.numeroderiesgo;
+                    let porcentaje = Number(item.porcentaje) || 0;
+
+                    if (riesgo !== null && riesgo !== undefined && riesgo !== '') {
+                        if (!acumulado[riesgo]) {
+                            acumulado[riesgo] = 0;
+                        }
+                        acumulado[riesgo] += porcentaje;
+                    }
+
+                    return acumulado;
+                }, {});
+
+                let riesgosInvalidos = Object.keys(porcentajePorRiesgo).filter(riesgo => porcentajePorRiesgo[riesgo] !== 100);
+                if (riesgosInvalidos.length > 0) {
+                    message += ', El total del porcentaje de participación para los beneficiarios debe ser el 100% por riesgo. Riesgo(s): ' + riesgosInvalidos.join(', ');
+                    terceroserrors = true;
+                }
+            }
+
         }
         if (terceroserrors) {
             $('#tercerosTbl-error').html(message);
@@ -635,6 +660,15 @@ app.EmisionViajero = (function () {
                     align: 'left',
                     formatter: 'app.ui.StringFormatter'
                 }, {
+                    field: 'porcentaje',
+                    title: '%',
+                    titleTooltip: 'Porcentaje de participación',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.DecimalFormatter',
+                    visible: true
+                }, {
                     field: 'otrasenas',
                     title: 'Otra señas',
                     titleTooltip: '',
@@ -707,15 +741,6 @@ app.EmisionViajero = (function () {
                     formatter: 'app.ui.StringFormatter',
                     visible: false
                 }, {
-                    field: 'porcentaje',
-                    title: 'Porcentaje',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'right',
-                    formatter: 'app.ui.IntegerFormatter',
-                    visible: false
-                }, {
                     field: 'Actions',
                     title: 'Acciones',
                     class: 'd-none d-sm-table-cell',
@@ -784,6 +809,7 @@ app.EmisionViajero = (function () {
 
                 app.ui.ButtonDone('#tercerosEdtFormSave')
                 $('#tercerosModal').modal('hide');
+                OtherValidations();
             }
         });
 
@@ -810,8 +836,8 @@ app.EmisionViajero = (function () {
                 tercerosId: null,
                 tipodetercero: 2,
                 numeroderiesgo: 1,
-                DocumentNumberType: null,
-                DocumentNumber: null,
+                DocumentNumberType: 1,
+                DocumentNumber: '',
                 nombre: null,
                 apellido1: null,
                 apellido2: null,
@@ -933,6 +959,7 @@ app.EmisionViajero = (function () {
         terceros_documentTypeCallBack(row.DocumentNumberType);
         app.ui.SetNumericValue('#numeroderiesgo', row.numeroderiesgo);
         $('#DocumentNumber').val(row.DocumentNumber);
+        $('#DocumentNumber').data('current', row.DocumentNumber);
         $('#nombre').val(row.nombre);
         $('#apellido1').val(row.apellido1);
         $('#apellido2').val(row.apellido2);
@@ -1530,9 +1557,9 @@ app.EmisionViajero = (function () {
             Setup();
             app.language.translate('body', 'Viajero')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
-    app.language.translate('#quoteBlock', '_resumen')();
-    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
-    app.language.translate('#tercerosModal', '_tercero')();
+            app.language.translate('#quoteBlock', '_resumen')();
+            app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+            app.language.translate('#tercerosModal', '_tercero')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);

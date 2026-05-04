@@ -13,6 +13,32 @@ app.ui = (function () {
         };
         return str.replace(/[áéíóúüñÁÉÍÓÚÜÑ]/g, char => charMap[char] || char);
     }
+    
+    function applyIdentificationDocumentTypeFormat(element, value) {
+        switch (value) {
+            case 1: //Cédula física 9 
+                $(element).val('');
+                $(element).formatter().resetPattern('0{{9}}-{{9999}}-{{9999}}');
+                $(element).attr('placeholder', '0X-XXXX-XXXX');
+                break;
+            case 2: //DIME 11 o 12  12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
+                $(element).val('');
+                $(element).formatter().resetPattern('{{9999}}-{{999999}}-{{99}}');
+                $(element).attr('placeholder', 'XXXX-XXXXXX-XX');
+                break;
+            case 3: //Pasaporte 14 DÍGITOS: XXXXXXXXXXXXXX
+                $(element).val('');
+                $(element).formatter().resetPattern('{{**************}}');
+                $(element).attr('placeholder', 'XXXXXXXXXXXXXX');
+                break;
+            case 4: // Cédula jurídica 10
+                $(element).val('');
+                $(element).formatter().resetPattern('{{9999999999}}');
+                $(element).attr('placeholder', 'XXXXXXXXXX');
+                break;
+        }
+    }
+    
     function compareValues(value1, value2, options) {
         const {
             caseInsensitive = true,
@@ -126,7 +152,47 @@ app.ui = (function () {
         // Si no se encuentra ninguna etiqueta asociada
         return '';
     }
-    async function listarCampos(formId) {
+
+    async function obtenerValor(formulario, identificador) {
+        const campo = formulario.querySelector(`[id="${identificador}"], [name="${identificador}"]`);
+        if (campo != null) {
+            let value = '';
+
+            switch (campo.type) {
+                case 'text':
+                case 'password':
+                case 'hidden':
+                    if (AutoNumeric.getAutoNumericElement(`#${identificador}`) !== null) {
+                        value = app.ui.GetNumericValue(`#${identificador}`);
+                    } else if ($(`#${identificador}_group`).length > 0) {
+                        value = app.ui.GetDateValue(`#${identificador}`);
+                    } else {
+                        value = campo.value;
+                    }
+                    break;
+                case 'radio':
+                    value = app.ui.GetRadioStringValue(identificador)
+                    break;
+                case 'select-one':
+                    value = app.ui.GetDropDownStringValue(`#${identificador}`)
+                    break;
+                case 'select-multiple':
+                    value = app.ui.GetDropDownMultiValues(`${identificador}`)
+                    value = value.map(item => item.Description).join(', ');
+                    break;
+                default:
+                    console.log(campo.type);
+                    break;
+            }
+            return value;
+        }
+        else {
+            return '';
+        }
+
+    }
+
+    async function listarCampos(formId, values = false) {
         const formulario = document.getElementById(formId);
 
         if (!formulario) {
@@ -147,17 +213,25 @@ app.ui = (function () {
             // Excluye los botones de tipo submit/reset
             if (elemento.type !== 'submit' && elemento.type !== 'reset' && elemento.type !== 'button' && elemento.type !== 'fieldset') {
                 let etiqueta = await obtenerEtiqueta(elemento, true);
+
                 let id = elemento.id;
                 if (elemento.type === 'radio') {
                     id = elemento.name;
                     etiqueta = await obtenerEtiqueta(elemento, false);
                 }
+                if (values) {
+                    etiqueta = await obtenerValor(formulario, id);
+                }
+
                 if (!listaCampos.some(elemento => elemento.id === id)) {
+                    if (!values) {
+                        etiqueta = etiqueta.endsWith("*") ? etiqueta.substring(0, etiqueta.length - 1) : etiqueta;
+                    }
                     listaCampos.push({
                         nombre: elemento.name,
                         id: id,
                         tipo: elemento.type,
-                        etiqueta: etiqueta.endsWith("*") ? etiqueta.substring(0, etiqueta.length - 1) : etiqueta
+                        etiqueta: etiqueta
                     });
                 }
             }
@@ -187,6 +261,24 @@ app.ui = (function () {
         const campos = await parseResponse(response);
         const formulario = document.getElementById(formId);
 
+        // Helper function para disparar handlers de eventos (change o blur)
+        function triggerEventHandlers(element) {
+            const $elem = $(element);
+            const eventos = jQuery._data(element, 'events');
+            
+            // Primero intenta disparar change
+            if (eventos && eventos.change && eventos.change.length > 0) {
+                $elem.change();
+            }
+            
+            // Si no existe change, intenta disparar blur
+            if (eventos && eventos.blur && eventos.blur.length > 0) {
+                $elem.blur();
+            }
+            
+            return false;
+        }
+
         // Iterar sobre cada campo y asignar el valor correspondiente
         for (const [identificador, valor] of Object.entries(campos)) {
             const campo = formulario.querySelector(`[id="${identificador}"], [name="${identificador}"]`);
@@ -197,10 +289,13 @@ app.ui = (function () {
                         let ctrl = Array.from(document.querySelectorAll(`label[for^='${identificador}']`)).find(label => compareValues(label.textContent, valor, {}));
                         if (ctrl) {
                             ctrl.click();
+                            triggerEventHandlers(campo);
                         }
                         break;
                     case 'select-one':
+                    case 'select-multiple':
                         setSelectValue(identificador, valor);
+                        triggerEventHandlers(campo);
                         break;
                     default:
                         if (AutoNumeric.getAutoNumericElement(`#${identificador}`) !== null) {
@@ -210,6 +305,7 @@ app.ui = (function () {
                         } else {
                             campo.value = valor;
                         }
+                        triggerEventHandlers(campo);
                         break;
                 }
 
@@ -329,7 +425,7 @@ app.ui = (function () {
             return (($(selector).val() !== '') ? $(selector + '_group').data('DateTimePicker').date().format('YYYY-MM-DDT00:00:00') : moment('0001-01-01T00:00:00').format('YYYY-MM-DDT00:00:00'));
         },
         SetDateValue: function (selector, value) {
-            if (value == undefined || value === null || value.toString() === '0001-01-01T00:00:00')
+            if (value == undefined || value === null || value.toString() === '0001-01-01T00:00:00' || value == '')
                 $(selector + '_group').data("DateTimePicker").date(null);
             else
                 $(selector + '_group').data("DateTimePicker").date(moment(value));
@@ -449,12 +545,21 @@ app.ui = (function () {
         GetRadioSelectedText: function (name) {
             return $('label[for=' + name + '_' + app.ui.GetRadioNumericValue(name) + ']').text();
         },
-        SetDocumentTypeValue: function (name, value) {
+        GetRadioNumericSelectedText: function (name) {
+            return $('label[for=' + name + '_' + app.ui.GetRadioNumericValue(name) + ']').text();
+        },
+        GetRadioStringSelectedText: function (name) {
+            return $('label[for=' + name + '_' + app.ui.GetRadioStringValue(name) + ']').text();
+        },
+        SetDocumentTypeValue: function (name, value, element) {
             if (value == null || value == 0) {
                 value = 1;
             }
             $(name).data('value', value);
             $(name).text($(name).parent().find(name + 'Menu a[data-value=' + value + ']').text());
+
+            var targetElement = element || name.replace(/Type$/, '');
+            applyIdentificationDocumentTypeFormat(targetElement, value);
         },
         IsValid: function (formId, ignore, showResume, others) {
             toastr.remove();
@@ -486,7 +591,7 @@ app.ui = (function () {
                     }
 
                     for (var i = 0; i < count; i++) {
-                        errorHtml += '<label id="' + $(validate.errorList[i]['element']).attr('id') + '-error" for="' + $(validate.errorList[i]['element']).attr('id') + '">' + validate.errorList[i]['message'] + '</label>';
+                        errorHtml += '<label id="' + $(validate.errorList[i]['element']).attr('id') + '-error' + '" for="' + $(validate.errorList[i]['element']).attr('id') + '">' + validate.errorList[i]['message'] + '</label>';
                     }
                     if (count <= 5) {
                         for (var i = 0; i < others.length; i++) {
@@ -721,28 +826,7 @@ app.ui = (function () {
             event.preventDefault();
 
             if (type == 'Identification') {
-                switch (value) {
-                    case 1: //Cédula física 9 
-                        $(element).val('');
-                        $(element).formatter().resetPattern('0{{9}}-{{9999}}-{{9999}}');
-                        $(element).attr('placeholder', '0X-XXXX-XXXX');
-                        break;
-                    case 2: //DIME 11 o 12  12 DÍGITOS Y DEBE INICIAR CON “1”: 1XXX-XXXXXX-XX
-                        $(element).val('');
-                        $(element).formatter().resetPattern('{{9999}}-{{999999}}-{{99}}');
-                        $(element).attr('placeholder', 'XXXX-XXXXXX-XX');
-                        break;
-                    case 3: //Pasaporte 14 DÍGITOS: XXXXXXXXXXXXXX
-                        $(element).val('');
-                        $(element).formatter().resetPattern('{{**************}}');
-                        $(element).attr('placeholder', 'XXXXXXXXXXXXXX');
-                        break;
-                    case 4: // Cédula jurídica 10
-                        $(element).val('');
-                        $(element).formatter().resetPattern('{{9999999999}}');
-                        $(element).attr('placeholder', 'XXXXXXXXXX');
-                        break;
-                }
+                applyIdentificationDocumentTypeFormat(element, value);
             }
             if (callbackDocumentType !== undefined && callbackDocumentType !== null) {
                 callbackDocumentType(value);
@@ -1014,19 +1098,19 @@ app.ui = (function () {
 
                 if (errors[i]['Key'] === '*') {
                     id = `x${i}`;
-                    errorHtml += '<li><label id="' + id + '-error" for="' + id + '-validate">' + errors[i]['Message'] + '</label></li>';
+                    errorHtml += '<li><label id="' + id + '-error' + '" for="' + id + '-validate">' + errors[i]['Message'] + '</label></li>';
                 }
                 else
                     if (errors[i]['Group'] === 'Table' || errors[i]['Key'] === '*') {
                         id = errors[i]['Key'];
-                        errorHtml += '<li><label id="' + id + '-error" for="' + id + '-validate"><a href="#' + id + '-validate">' + errors[i]['Message'] + '</a></label></li>';
+                        errorHtml += '<li><label id="' + id + '-error' + '" for="' + id + '-validate"><a href="#' + id + '-validate">' + errors[i]['Message'] + '</a></label></li>';
 
                         $('#' + id + '-validate').text(errors[i]['Message']);
                         $('#' + id + '-validate').removeClass('d-none');
                     }
                     else {
                         id = $('#' + errors[i]['Key']).attr('id');
-                        errorHtml += '<li><label id="' + id + '-error" for="' + id + '">' + errors[i]['Message'] + '</label></li>';
+                        errorHtml += '<li><label id="' + id + '-error' + '" for="' + id + '">' + errors[i]['Message'] + '</label></li>';
 
                         options = {};
                         options[errors[i]['Key']] = errors[i]['Message'];
@@ -1601,18 +1685,24 @@ app.ui = (function () {
 
             return await listarCampos(formId);
         },
-        GetSmartFormFields: async function (formId) {
+        GetSmartFormFields: async function (formId, values = false) {
             let result = '';
 
             if (formId == null)
                 formId = document.forms[0].id;
 
             if (formId != null) {
-                let fields = await listarCampos(formId)
+                let fields = await listarCampos(formId, values)
 
                 let desc = '';
                 fields.forEach(function (value, index, array) {
-                    desc = value.etiqueta == '' ? value.id : value.etiqueta;
+                    if (values) {
+                        desc = value.etiqueta
+                        if (desc == undefined || desc == null | desc == '' || desc == '0001-01-01T00:00:00') {
+                            desc = 'NO_DATA';
+                        }
+                    }
+                    else { desc = value.etiqueta == '' ? value.id : value.etiqueta };
                     result += `field ${value.id}|${desc}\n`;
                 });
                 result += `END_RESPONSE\n`;
