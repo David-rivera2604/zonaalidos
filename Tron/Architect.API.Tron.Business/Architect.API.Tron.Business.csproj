@@ -157,7 +157,6 @@
     <Compile Include="Reglas\research.cs" />
     <Compile Include="Siniestro\Purdy.cs" />
     <Compile Include="Siniestro\SiniestroPurdy.cs" />
-    <Compile Include="Traza\TrackRequest.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Emision\HogarTotal.cs" />
@@ -234,6 +233,8 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Traza\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

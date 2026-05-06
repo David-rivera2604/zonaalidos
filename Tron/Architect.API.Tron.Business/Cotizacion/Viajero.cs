@@ -18,7 +18,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         public static Contracts.Cotizacion.Viajero Setup(Core.Contracts.Security.Token tokenInfo)
         {
             Contracts.Cotizacion.Viajero result = null;
-            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Quote/Setup", result);
+            global::Architect.API.Core.Contracts.Traza.TrackSession session = global::Architect.API.Core.Business.Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Quote/Setup", result);
 
             try
             {
@@ -54,7 +54,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 session.ResponseText = ex.Message;
             }
 
-            Traza.TrackRequest.CloseSession(session, result);
+            global::Architect.API.Core.Business.Traza.TrackRequest.CloseSession(session, result);
             return result;
         }
 
@@ -102,7 +102,7 @@ namespace Architect.API.Tron.Business.Cotizacion
         {
             Contracts.Cotizacion.Viajero resultInfo = quoteInfo;
 
-            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Quote/Quote", quoteInfo);
+            global::Architect.API.Core.Contracts.Traza.TrackSession session = global::Architect.API.Core.Business.Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Quote/Quote", quoteInfo);
             try
             {
                 //TODO: Es necesario convertir las validaciones existentes en el JS
@@ -139,7 +139,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 session.ResponseText = ex.Message;
             }
 
-            Traza.TrackRequest.CloseSession(session, resultInfo);
+            global::Architect.API.Core.Business.Traza.TrackRequest.CloseSession(session, resultInfo);
 
             return resultInfo;
         }

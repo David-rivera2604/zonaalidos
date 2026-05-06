@@ -13,14 +13,14 @@ namespace Aliados.Monge.Application.Poliza
         {
             RespuestaCertificado result;
 
-            int trackingId = Architect.API.Tron.Business.Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
-                             new Architect.API.Tron.Contracts.Traza.TrackRequest()
-                             {
-                                 DocumentId = certificado.document_id,
-                                 RequestType = "Certificado",
-                                 RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(certificado),
-                                 RequestTimeStamp = DateTime.Now
-                             }).Id;
+            int trackingId = global::Architect.API.Core.Business.Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                    new global::Architect.API.Core.Contracts.Traza.TrackRequest()
+                    {
+                        DocumentId = certificado.document_id,
+                        RequestType = "Certificado",
+                        RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(certificado),
+                        RequestTimeStamp = DateTime.Now
+                    }).Id;
 
             try
             {
@@ -78,15 +78,15 @@ namespace Aliados.Monge.Application.Poliza
             }
 
 
-            Architect.API.Tron.Business.Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
-                          new Architect.API.Tron.Contracts.Traza.TrackRequest()
-                          {
-                              MessageId = result.message_id,
-                              ResponseStatus = result.message_status,
-                              ResponseText = result.message_text,
-                              ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
-                              ResponseTimeStamp = DateTime.Now
-                          });
+            global::Architect.API.Core.Business.Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
+                    new global::Architect.API.Core.Contracts.Traza.TrackRequest()
+                    {
+                        MessageId = result.message_id,
+                        ResponseStatus = result.message_status,
+                        ResponseText = result.message_text,
+                        ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
+                        ResponseTimeStamp = DateTime.Now
+                    });
 
             return result;
         }

@@ -63,6 +63,18 @@ namespace Architect.API.Core.Contracts.Traza
         /// Fecha que se actualizo por última vez el registro.
         /// </summary>
         public DateTime UpdateDate { get; set; }
+        /// <summary>
+        /// Número de póliza asociado a la solicitud.
+        /// </summary>
+        public string PolicyId { get; set; }
+        /// <summary>
+        /// Identificación del asegurado asociada a la solicitud.
+        /// </summary>
+        public string InsuredId { get; set; }
+        /// <summary>
+        /// Nombre del asegurado asociado a la solicitud.
+        /// </summary>
+        public string InsuredName { get; set; }
     }
 }
 

@@ -18,7 +18,7 @@ namespace Aliados.Monge.Application.Poliza
             try
             {
 
-                Architect.API.Tron.Contracts.Traza.TrackRequest item = Architect.API.Tron.Business.Traza.TrackRequest.Retrieve(solicitud.document_id, tokenInfo.CompanyId);
+                global::Architect.API.Core.Contracts.Traza.TrackRequest item = global::Architect.API.Core.Business.Traza.TrackRequest.Retrieve(solicitud.document_id, tokenInfo.CompanyId);
 
                 if (item != null)
                 {

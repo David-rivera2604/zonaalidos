@@ -22,14 +22,14 @@ namespace Aliados.Monge.Application.Poliza.Ramos
         internal static async Task<Domain.Poliza.Emision.Respuesta> Handler(Domain.Poliza.Emision.Poliza risk, Architect.API.Core.Contracts.Security.Token tokenInfo)
         {
             Domain.Poliza.Emision.Respuesta result = null;
-            int trackingId = Architect.API.Tron.Business.Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
-                                         new Architect.API.Tron.Contracts.Traza.TrackRequest()
-                                         {
-                                             DocumentId = risk.document_id,
-                                             RequestType = "Emision",
-                                             RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(risk),
-                                             RequestTimeStamp = DateTime.Now
-                                         }).Id;
+            int trackingId = global::Architect.API.Core.Business.Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                    new global::Architect.API.Core.Contracts.Traza.TrackRequest()
+                    {
+                        DocumentId = risk.document_id,
+                        RequestType = "Emision",
+                        RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(risk),
+                        RequestTimeStamp = DateTime.Now
+                    }).Id;
 
             try
             {
@@ -114,15 +114,15 @@ namespace Aliados.Monge.Application.Poliza.Ramos
                 };
             }
 
-            Architect.API.Tron.Business.Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
-                                      new Architect.API.Tron.Contracts.Traza.TrackRequest()
-                                      {
-                                          MessageId = result.message_id,
-                                          ResponseStatus = result.message_status,
-                                          ResponseText = result.message_text,
-                                          ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
-                                          ResponseTimeStamp = DateTime.Now
-                                      });
+            global::Architect.API.Core.Business.Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
+                    new global::Architect.API.Core.Contracts.Traza.TrackRequest()
+                    {
+                        MessageId = result.message_id,
+                        ResponseStatus = result.message_status,
+                        ResponseText = result.message_text,
+                        ResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(result),
+                        ResponseTimeStamp = DateTime.Now
+                    });
             return result;
         }
 

@@ -1,5 +1,22 @@
 ﻿# Release Notes - Aliados
  
+## Versión 1.6.185 - Compliance: Se habilita la trazabilidad para Compliance (SNAP).
+
+### Compliance - Se actualiza el flujo de integración de Compliance (SNAP) para registrar trazabilidad completa.
+
+#### Cambios implementados:
+
+- Se agregan nuevos campos opcionales en la traza de solicitudes para mejorar el contexto de negocio: `PolicyId`, `InsuredId` e `InsuredName`.
+- Se actualiza el flujo de integración de Compliance para registrar trazabilidad completa de request/response en `TrackRequest`.
+- Se consolida la lógica de trazabilidad para usar una única implementación central en Core.
+- Se migran los consumidores de Tron y Monge para usar la implementación de trazas de Core.
+
+#### Dependencias:
+
+1. 260504a.TrackRequest.alter.sql
+
+---
+
 ## Versión 1.6.184 - Viajero: Validaciones de beneficiarios y mejoras de captura.
 
 ### Aliados - Viajero: Se fortalecen validaciones y experiencia de ingreso de datos para beneficiarios.

@@ -32,6 +32,9 @@ namespace Architect.API.Core.DataAccess.Traza
                             .AddParameter("RequestType", DbType.AnsiString, 40, trackrequestItem.RequestType)
                             .AddParameter("RequestBody", DbType.AnsiString, 4000, trackrequestItem.RequestBody)
                             .AddParameter("RequestTimeStamp", DbType.DateTime, 9, trackrequestItem.RequestTimeStamp)
+                            .AddParameter("PolicyId", DbType.AnsiString, 13, trackrequestItem.PolicyId)
+                            .AddParameter("InsuredId", DbType.AnsiString, 20, trackrequestItem.InsuredId)
+                            .AddParameter("InsuredName", DbType.AnsiString, 120, trackrequestItem.InsuredName)
                             .AddParameter("MessageId", DbType.AnsiString, 40, trackrequestItem.MessageId)
                             .AddParameter("ResponseStatus", DbType.Decimal, 5, trackrequestItem.ResponseStatus)
                             .AddParameter("ResponseText", DbType.AnsiString, 512, trackrequestItem.ResponseText)
@@ -41,8 +44,8 @@ namespace Architect.API.Core.DataAccess.Traza
                             .AddParameter("UpdateDate", DbType.DateTime, 0, trackrequestItem.UpdateDate)
                             .AddParameter("ID", DbType.Decimal, 9, 0, ParameterDirection.Output).Parameters;
 
-            int rows = Database.Insert("INSERT INTO TrackRequest (CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:CompanyId, :DocumentId, :RequestType, :RequestBody, :RequestTimeStamp, :MessageId, :ResponseStatus, :ResponseText, :ResponseBody, :ResponseTimeStamp, :UpdateUserCode, :UpdateDate) " +
+            int rows = Database.Insert("INSERT INTO TrackRequest (CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, PolicyId, InsuredId, InsuredName, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:CompanyId, :DocumentId, :RequestType, :RequestBody, :RequestTimeStamp, :PolicyId, :InsuredId, :InsuredName, :MessageId, :ResponseStatus, :ResponseText, :ResponseBody, :ResponseTimeStamp, :UpdateUserCode, :UpdateDate) " +
                                                  " RETURNING ID INTO :ID")
                             .AddParameter(parameters)
                             .Execute(connection, "Research");
@@ -61,7 +64,7 @@ namespace Architect.API.Core.DataAccess.Traza
         public static Architect.API.Core.Contracts.Traza.TrackRequest Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.Traza.TrackRequest result = null;
-            Database.Select("SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
+            Database.Select("SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, PolicyId, InsuredId, InsuredName, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
                               "FROM TrackRequest LEFT JOIN UserMember um ON um.UserId = TrackRequest.UpdateUserCode " +
                              "WHERE TrackRequest.Id=:Id AND TrackRequest.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -84,7 +87,7 @@ namespace Architect.API.Core.DataAccess.Traza
         public static List<Architect.API.Core.Contracts.Traza.TrackRequest> RetrieveAll(int companyId, string filter, List<Architect.DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Core.Contracts.Traza.TrackRequest> result = new List<Architect.API.Core.Contracts.Traza.TrackRequest>();
-            Database.Select("SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
+            Database.Select("SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, PolicyId, InsuredId, InsuredName, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
                               "FROM TrackRequest LEFT JOIN UserMember um ON um.UserId = TrackRequest.UpdateUserCode " +
                              "WHERE TrackRequest.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -118,7 +121,7 @@ namespace Architect.API.Core.DataAccess.Traza
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
+                            "SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, PolicyId, InsuredId, InsuredName, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY TrackRequest.Id DESC) RowNumber " +
                               "FROM TrackRequest LEFT JOIN UserMember um ON um.UserId = TrackRequest.UpdateUserCode " +
                              "WHERE TrackRequest.CompanyId=:CompanyId" + filter +
@@ -161,13 +164,16 @@ namespace Architect.API.Core.DataAccess.Traza
                 trackrequestItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE TrackRequest " +
-                                      "SET CompanyId=:CompanyId, DocumentId=:DocumentId, RequestType=:RequestType, RequestBody=:RequestBody, RequestTimeStamp=:RequestTimeStamp, MessageId=:MessageId, ResponseStatus=:ResponseStatus, ResponseText=:ResponseText, ResponseBody=:ResponseBody, ResponseTimeStamp=:ResponseTimeStamp, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET CompanyId=:CompanyId, DocumentId=:DocumentId, RequestType=:RequestType, RequestBody=:RequestBody, RequestTimeStamp=:RequestTimeStamp, PolicyId=:PolicyId, InsuredId=:InsuredId, InsuredName=:InsuredName, MessageId=:MessageId, ResponseStatus=:ResponseStatus, ResponseText=:ResponseText, ResponseBody=:ResponseBody, ResponseTimeStamp=:ResponseTimeStamp, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, trackrequestItem.CompanyId)
                                 .AddParameter("DocumentId", DbType.AnsiString, 40, trackrequestItem.DocumentId)
                                 .AddParameter("RequestType", DbType.AnsiString, 40, trackrequestItem.RequestType)
                                 .AddParameter("RequestBody", DbType.AnsiString, 4000, trackrequestItem.RequestBody)
                                 .AddParameter("RequestTimeStamp", DbType.DateTime, 9, trackrequestItem.RequestTimeStamp)
+                                .AddParameter("PolicyId", DbType.AnsiString, 13, trackrequestItem.PolicyId)
+                                .AddParameter("InsuredId", DbType.AnsiString, 20, trackrequestItem.InsuredId)
+                                .AddParameter("InsuredName", DbType.AnsiString, 120, trackrequestItem.InsuredName)
                                 .AddParameter("MessageId", DbType.AnsiString, 40, trackrequestItem.MessageId)
                                 .AddParameter("ResponseStatus", DbType.Decimal, 5, trackrequestItem.ResponseStatus)
                                 .AddParameter("ResponseText", DbType.AnsiString, 512, trackrequestItem.ResponseText)
@@ -303,6 +309,9 @@ namespace Architect.API.Core.DataAccess.Traza
             item.RequestType = reader.StringValue("RequestType");
             item.RequestBody = reader.StringValue("RequestBody");
             item.RequestTimeStamp = reader.DateTimeValue("RequestTimeStamp");
+            item.PolicyId = reader.StringValue("PolicyId");
+            item.InsuredId = reader.StringValue("InsuredId");
+            item.InsuredName = reader.StringValue("InsuredName");
             item.MessageId = reader.StringValue("MessageId");
             item.ResponseStatus = reader.IntegerValue("ResponseStatus");
             item.ResponseText = reader.StringValue("ResponseText");
@@ -346,7 +355,7 @@ namespace Architect.API.Core.DataAccess.Traza
         public static Architect.API.Core.Contracts.Traza.TrackRequest Retrieve(string documentId, int companyId, IDbConnection connection = null)
         {
             Architect.API.Core.Contracts.Traza.TrackRequest result = null;
-            Database.Select("SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
+            Database.Select("SELECT Id, TrackRequest.CompanyId, DocumentId, RequestType, RequestBody, RequestTimeStamp, PolicyId, InsuredId, InsuredName, MessageId, ResponseStatus, ResponseText, ResponseBody, ResponseTimeStamp, TrackRequest.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, TrackRequest.UpdateDate " +
                               "FROM TrackRequest LEFT JOIN UserMember um ON um.UserId = TrackRequest.UpdateUserCode " +
                              "WHERE TrackRequest.DocumentId=:DocumentId AND TrackRequest.CompanyId=:CompanyId")
                         .AddParameter("DocumentId", DbType.AnsiString, 40, documentId)

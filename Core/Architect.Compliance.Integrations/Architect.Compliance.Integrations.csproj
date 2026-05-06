@@ -54,6 +54,14 @@
       <Project>{e8317ab3-7807-4fcf-8520-b80340b4eb7d}</Project>
       <Name>Architect.Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
+      <Project>{579105B3-776B-4094-A301-87A9C42962C5}</Project>
+      <Name>Architect.API.Core.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">
+      <Project>{29B21BEF-8C87-4A9D-8B37-FECC57CD03C7}</Project>
+      <Name>Architect.API.Core.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

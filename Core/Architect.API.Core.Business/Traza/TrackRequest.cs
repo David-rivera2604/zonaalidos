@@ -39,20 +39,23 @@ namespace Architect.API.Core.Business.Traza
             Core.DataAccess.Traza.TrackRequest.Update2(item);
         }
 
-        public static Core.Contracts.Traza.TrackSession NewSession(Core.Contracts.Security.Token tokenInfo, string requestType, object data, string documentId = "")
+        public static Core.Contracts.Traza.TrackSession NewSession(Core.Contracts.Security.Token tokenInfo, string requestType, object data, string documentId = "", string policyId = "", string insuredId = "", string insuredName = "")
         {
             if (string.IsNullOrEmpty(documentId))
             {
                 documentId = Guid.NewGuid().ToString();
             }
             int trackingId = Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
-                                         new Core.Contracts.Traza.TrackRequest()
-                                         {
-                                             DocumentId = documentId,
-                                             RequestType = requestType,
-                                             RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(data),
-                                             RequestTimeStamp = DateTime.Now
-                                         }).Id;
+                                     new Core.Contracts.Traza.TrackRequest()
+                                     {
+                                         DocumentId = documentId,
+                                         RequestType = requestType,
+                                         RequestBody = Newtonsoft.Json.JsonConvert.SerializeObject(data),
+                                         RequestTimeStamp = DateTime.Now,
+                                         PolicyId = policyId,
+                                         InsuredId = insuredId,
+                                         InsuredName = insuredName
+                                     }).Id;
 
             return new Core.Contracts.Traza.TrackSession()
             {

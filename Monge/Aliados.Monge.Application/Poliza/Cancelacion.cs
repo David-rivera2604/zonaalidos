@@ -20,8 +20,8 @@ namespace Aliados.Monge.Application.Poliza
         public static async Task<Domain.Poliza.Cancelacion.RespuestaCancelacion> Handler(Domain.Poliza.Cancelacion.SolicitudDeCancelacion solicitud, Architect.API.Core.Contracts.Security.Token tokenInfo)
         {
             Domain.Poliza.Cancelacion.RespuestaCancelacion result = new Domain.Poliza.Cancelacion.RespuestaCancelacion();
-            int trackingId = Architect.API.Tron.Business.Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
-                             new Architect.API.Tron.Contracts.Traza.TrackRequest()
+            int trackingId = global::Architect.API.Core.Business.Traza.TrackRequest.Add(tokenInfo.CompanyId, tokenInfo.UserId,
+                             new global::Architect.API.Core.Contracts.Traza.TrackRequest()
                              {
                                  DocumentId = solicitud.document_id,
                                  RequestType = "Cancelacion",
@@ -72,8 +72,8 @@ namespace Aliados.Monge.Application.Poliza
                 };
             }
 
-            Architect.API.Tron.Business.Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
-              new Architect.API.Tron.Contracts.Traza.TrackRequest()
+            global::Architect.API.Core.Business.Traza.TrackRequest.Update(tokenInfo.CompanyId, tokenInfo.UserId, trackingId,
+              new global::Architect.API.Core.Contracts.Traza.TrackRequest()
               {
                   MessageId = result.message_id,
                   ResponseStatus = result.message_status,

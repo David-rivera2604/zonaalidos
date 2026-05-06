@@ -24,7 +24,7 @@ namespace Architect.API.Tron.Business.Emision
         {
 
             Contracts.Emision.Viajero result = null;
-            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Issue/Setup", result);
+            global::Architect.API.Core.Contracts.Traza.TrackSession session = global::Architect.API.Core.Business.Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Issue/Setup", result);
 
             try
             {
@@ -63,7 +63,7 @@ namespace Architect.API.Tron.Business.Emision
                 session.ResponseText = ex.Message;
             }
 
-            Traza.TrackRequest.CloseSession(session, result);
+            global::Architect.API.Core.Business.Traza.TrackRequest.CloseSession(session, result);
 
             return result;
         }
@@ -123,7 +123,7 @@ namespace Architect.API.Tron.Business.Emision
 
             Contracts.Emision.Viajero resultQuoteInfo = null;
 
-            Contracts.Traza.TrackSession session = Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Issue/Issue", quoteInfo);
+            global::Architect.API.Core.Contracts.Traza.TrackSession session = global::Architect.API.Core.Business.Traza.TrackRequest.NewSession(tokenInfo, "Viajero/Issue/Issue", quoteInfo);
 
             try
             {
@@ -181,7 +181,7 @@ namespace Architect.API.Tron.Business.Emision
                 session.ResponseText = ex.Message;
             }
 
-            Traza.TrackRequest.CloseSession(session, resultQuoteInfo);
+            global::Architect.API.Core.Business.Traza.TrackRequest.CloseSession(session, resultQuoteInfo);
 
 
             return resultQuoteInfo;

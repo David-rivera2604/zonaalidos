@@ -112,7 +112,6 @@
     <Compile Include="Ramo\G2000180.cs" />
     <Compile Include="Siniestro\Purdy\Siniestro.cs" />
     <Compile Include="Siniestro\Purdy\SiniestroPurdy.cs" />
-    <Compile Include="Traza\TrackRequest.cs" />
     <Compile Include="Variaciones\S2000025.cs" />
     <Compile Include="Variaciones\S2000020.cs" />
     <Compile Include="Variaciones\S2000040.cs" />
@@ -138,6 +137,8 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Traza\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

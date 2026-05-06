@@ -26,7 +26,7 @@ namespace Architect.API.Tron.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Payment.Integrations.Contracts.SessionInformation result = null;
-            Contracts.Traza.TrackSession session = Business.Traza.TrackRequest.NewSession(tokenInfo, "Pagos/CrearSesion", sessionRequest);
+            global::Architect.API.Core.Contracts.Traza.TrackSession session = global::Architect.API.Core.Business.Traza.TrackRequest.NewSession(tokenInfo, "Pagos/CrearSesion", sessionRequest);
             try
             {
                 string ipAddress = Architect.Utilities.Helpers.Connection.UserHostAddress();
@@ -46,7 +46,7 @@ namespace Architect.API.Tron.Controllers
                 session.ResponseText = ex.Message;
             }
 
-            Business.Traza.TrackRequest.CloseSession(session, result);
+            global::Architect.API.Core.Business.Traza.TrackRequest.CloseSession(session, result);
 
             return Ok(result);
         }
