@@ -3,6 +3,7 @@
   "CasesAliadosFullscreenIcon": {
     "title": "Expand workspace"
   },
+  "CasesAliadosContactTitle": "Contact",
   "CasesAliadosReferencesTitle": "References",
   "FlowId": {
     "text": "Process",
@@ -21,12 +22,19 @@
   "Reference3": "Reference 3",
   "Reference4": "Reference 4",
   "Reference5": "Reference 5",
+  "TOMADOR": "Policyholder",
+  "PÓLIZA": "Policy",
+  "POLIZA": "Policy",
+  "CORREDURIA": "Brokerage",
+  "NO. REFERENCIA": "Reference no.",
+  "BANCO": "Bank",
   "UserId": "User",
   "ContactMainName": "Full name",
   "ContactMainEmail": "Email",
   "ProcessCaseEdtFormSave": {
     "text": "Save",
-    "title": "Save changes"
+    "title": "Save changes",
+    "doing": "Saving changes..."
   },
   "ProcessCaseEdtFormCancel": "Cancel"
 }

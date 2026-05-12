@@ -1,5 +1,20 @@
 ﻿var app = app || {};
 var tokenAl
+
+function seguimientoTranslationText(key, fallbackText) {
+    if (app.language && $.isFunction(app.language.getTranslationText))
+        return app.language.getTranslationText(key, fallbackText);
+
+    return fallbackText || '';
+}
+
+function applySeguimientoListTranslations() {
+    $('[data-status-key]').each(function () {
+        var $element = $(this);
+        var statusKey = $element.attr('data-status-key');
+        $element.text(seguimientoTranslationText(statusKey, statusKey));
+    });
+}
 //Funciones para la carga de datos especificos
 app.EspecifiCase = (function () {
 
@@ -39,7 +54,7 @@ app.EspecifiCase = (function () {
 
         $('#Title').html(data.Title);
         $('#FlowIdDesc').html(data.FlowIdDesc + '.');
-        let status = data.StatusDesc;
+        let status = seguimientoTranslationText(data.StatusDesc, data.StatusDesc);
         if (data.SubLabel != '') {
             status += ' / ' + data.SubLabel;
         }
@@ -79,7 +94,10 @@ app.EspecifiCase = (function () {
                     });
 
                 app.Notes.Init({ EntityType: 1304, Id: data.Id, PostByEachRow: true, AlternateToken: tokenAl, showContactNotify: true, showResponsibleNotify: true });
-                app.language.translate('body', 'Seguimiento_Al')();
+                app.language.translate('body', 'Seguimiento_Al', function () {
+                    MapObjectToInput(data);
+                    applySeguimientoListTranslations();
+                })();
             }).always(function () {
                 $('.ibox-content').toggleClass('sk-loading');
             });
@@ -126,10 +144,13 @@ app.CaseInfo = (function () {
                             data.forEach(function (row, index, array) {
 
                         /*Api1*/ var IntanceCase = row.InstanceId
-                        /*Api1*/ $('#Casos_Lista').append(`<div class="Content_Case animated fadeInDown" id="${IntanceCase}" onclick="app.CaseInfo.State(${IntanceCase})"><div class="Column_Conte CodCase"><i class="fa fa-caret-right" aria-hidden="true"> </i><p> ${row.Id}</p></div><div class="Column_Conte Asun"> <p>${row.Title}</p></div><div class="Column_Conte StatusDes"><p class="${row.StatusDesc}">${row.StatusDesc}</p><p class="d-none">${row.FlowIdDesc}</p></div></div>`);
+                        /*Api1*/ var statusText = seguimientoTranslationText(row.StatusDesc, row.StatusDesc);
+                        /*Api1*/ $('#Casos_Lista').append(`<div class="Content_Case animated fadeInDown" id="${IntanceCase}" onclick="app.CaseInfo.State(${IntanceCase})"><div class="Column_Conte CodCase"><i class="fa fa-caret-right" aria-hidden="true"> </i><p> ${row.Id}</p></div><div class="Column_Conte Asun"> <p>${row.Title}</p></div><div class="Column_Conte StatusDes"><p class="${row.StatusDesc}" data-status-key="${row.StatusDesc}">${statusText}</p><p class="d-none">${row.FlowIdDesc}</p></div></div>`);
                                 /*Api2 */  /*$('#Casos_Lista').append(`<div class="Content_Case" id="${IntanceCase}" onclick="app.CaseInfo.State(${IntanceCase})"><div class="Column_Conte CodCase"><i class="fa fa-caret-right" aria-hidden="true"> </i><p> ${row.ID}</p></div><div class="Column_Conte Asun"> <p>${row.TITLE}</p></div><div class="Column_Conte StatusDes"><p>${row.STATUSDESC}</p></div></div>`); */
                             });
-                            app.language.translate('body', 'Seguimiento_Al')();
+                            app.language.translate('body', 'Seguimiento_Al', function () {
+                                applySeguimientoListTranslations();
+                            })();
                         });
                     $("#AttachmentTbl-error").parent().addClass("d-none");
                 })
@@ -163,7 +184,9 @@ app.CaseInfo = (function () {
         Busqueda: function (busqueda, datfil) {
             busqueda = busqueda.toLowerCase();
             datfil = datfil.toLowerCase();
-            if (busqueda == "" && datfil == "todos") {
+            var sinFiltroEstado = datfil == "" || datfil == "no" || datfil == "todos";
+
+            if (busqueda == "" && sinFiltroEstado) {
                 $(".table1 div.Content_Case").each(function () {
                     $(this).each(function () {
                         $(this).removeClass("d-none");
@@ -179,12 +202,13 @@ app.CaseInfo = (function () {
                             if (value.indexOf(busqueda) >= 0) {
 
                                 var filtro = false
-                                if (datfil != "todos") {
+                                if (!sinFiltroEstado) {
                                     filtro = true
                                 }
 
                                 if (filtro) {
-                                    if (value.indexOf(datfil) >= 0) {
+                                    var statusValue = ($(this).find('[data-status-key]').attr('data-status-key') || '').toLowerCase();
+                                    if (statusValue.indexOf(datfil) >= 0) {
                                         $(this).removeClass("d-none");
                                     }
                                     else {
@@ -213,14 +237,14 @@ app.CaseInfo = (function () {
 var inputbuscador = document.getElementById('Buscador')
 
 inputbuscador.addEventListener('input', e => {
-    var datfil = $('select#Estado option:selected').text();
+    var datfil = $('select#Estado').val();
     var text = $("#Buscador").val();
     app.CaseInfo.Busqueda(text, datfil);
 })
 
 
 $("#Estado").change(function () {
-    var datfil = $('select#Estado option:selected').text();
+    var datfil = $('select#Estado').val();
     var text = $("#Buscador").val();
     app.CaseInfo.Busqueda(text, datfil);
 });

@@ -123,10 +123,17 @@ app.CentralCase = (function () {
 
     function ReferenceHandler(caption, type, required, valueList, id) {
         if (caption != '') {
+            var translatedCaption = caption;
+
+            if (app.language && $.isFunction(app.language.getTranslationText)) {
+                translatedCaption = app.language.getTranslationText(caption, '') ||
+                    app.language.getTranslationText(id, caption);
+            }
+
             if (required)
-                $("label[for='" + id + "']").html(caption + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
+                $("label[for='" + id + "']").html(translatedCaption + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>");
             else
-                $("label[for='" + id + "']").html(caption);
+                $("label[for='" + id + "']").html(translatedCaption);
 
             if (valueList == '') {
                 $('#' + id).removeClass('d-none');
@@ -316,7 +323,10 @@ app.CentralCase = (function () {
                     Event_Controls();
                     Setup_Validations();
                     app.Attachments.Init({ EntityType: 1304, Id: 0, PostByEachRow: false, AlternateToken: Token_Ali });
-                    app.language.translate('body', 'CasesAliados')();
+                    app.language.translate('body', 'CasesAliados', function () {
+                        if ($('#FlowId').val())
+                            $('#FlowId').change();
+                    })();
                 })
         },
         New: function (row) {

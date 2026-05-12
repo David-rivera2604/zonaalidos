@@ -11,9 +11,32 @@
 - Se consolida la lógica de trazabilidad para usar una única implementación central en Core.
 - Se migran los consumidores de Tron y Monge para usar la implementación de trazas de Core.
 
+#### Actualizaciones de interfaz de usuario:
+
+- **Vistas CSHTML mejoradas**: Se actualiza el sistema de traducción multilenguaje en vistas, incluyendo:
+  - Vistas de seguridad: `Login`, `Register`, `ChangePassword`, `Integrate`, `RoleMember`, `UserMember`, etc.
+  - Vistas de Variaciones: `HogarTotal`, `HogarTotalPlus`, `MapfreMas`, `Multirriesgo`, etc.
+  - Nuevas vistas en Viewer: `Dashboard`, `Formio`, `crud`.
+- **Scripts y estilos**: Se actualiza `core.js`, `core.ui.js`, `core.frm.js` y estilos CSS para soporte de traducción dinámica.
+- **Componentes de terceros**: Se agregan dependencias para Dropzone y Animate.css; se actualiza Formio.js a versión más reciente.
+- **Configuración del proyecto**: Se actualiza `aliados.csproj` y `packages.config` con nuevas dependencias.
+
+#### Cambios menores:
+
+- Limpieza de `Web.config` y `connectionstring`.
+- Se corriges el logging para traducciones.
+- Actualización de reglas de productos MapfreMas y MapfreMasPlus.
+- Limpieza de archivos temporales y sesiones de prueba.
+
 #### Dependencias:
 
 1. 260504a.TrackRequest.alter.sql
+
+#### Archivos principales modificados: 
+- 45+ vistas CSHTML con traducción multilenguaje
+- Scripts de interfaz (`core.js`, `core.ui.js`, `core.frm.js`)
+- Librerías de terceros (Formio.js, Dropzone, Animate.css)
+- Configuración del proyecto (`aliados.csproj`, `packages.config`)
 
 ---
 

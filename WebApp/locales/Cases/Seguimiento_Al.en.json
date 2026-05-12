@@ -1,10 +1,16 @@
 {
+  "Buscador": {
+    "placeholder": "Search cases"
+  },
   "BuscadorLabel": "Search",
   "Estado": "Status",
   "EstadoOptionAll": "All",
   "EstadoOptionInicio": "Started",
   "EstadoOptionEnProgreso": "In progress",
   "EstadoOptionFinalizado": "Completed",
+  "Inicio": "Started",
+  "En progreso": "In progress",
+  "Finalizado": "Completed",
   "CasesListTitle": "Cases",
   "CasesColumnCode": "Code",
   "CasesColumnSubject": "Subject",
