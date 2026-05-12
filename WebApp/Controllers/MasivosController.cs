@@ -34,7 +34,7 @@ namespace aliados.Controllers
                 return HttpNotFound();
             }
 
-            string plantillasPath = Server.MapPath("~/Masivos/plantillas");
+            string plantillasPath = Server.MapPath("~/Masivos/Plantillas");
             string fullPath = Path.Combine(plantillasPath, safeFileName);
 
             if (!System.IO.File.Exists(fullPath))
@@ -42,8 +42,7 @@ namespace aliados.Controllers
                 return HttpNotFound();
             }
 
-            string mimeType = MimeMapping.GetMimeMapping(fullPath);
-            return File(fullPath, mimeType, safeFileName);
+            return File(fullPath, "application/octet-stream", safeFileName);
         }
 
         [ChildActionOnly]
@@ -54,7 +53,7 @@ namespace aliados.Controllers
 
         private static List<PlantillaDocumentoViewModel> GetPlantillas()
         {
-            string plantillasPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Masivos/plantillas");
+            string plantillasPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Masivos/Plantillas");
             if (string.IsNullOrWhiteSpace(plantillasPath) || !Directory.Exists(plantillasPath))
             {
                 return new List<PlantillaDocumentoViewModel>();
