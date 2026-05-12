@@ -48,6 +48,10 @@ namespace Architect.API.Core.Business.Security
                         if (item.Code.IsNotEmpty() && translationMap.TryGetValue(item.Code, out string translatedTitle))
                         {
                             item.Title = translatedTitle;
+                            if (item.MenuTitle.IsNotEmpty())
+                            {
+                                item.MenuTitle = translatedTitle;
+                            }
                         }
                     }
                 }
