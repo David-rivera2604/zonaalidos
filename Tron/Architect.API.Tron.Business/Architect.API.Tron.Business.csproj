@@ -144,6 +144,7 @@
     <Compile Include="HogarTotal\Handler\Request.cs" />
     <Compile Include="Info.cs" />
     <Compile Include="Integraciones\FacturaElectronica.cs" />
+    <Compile Include="Masivos\MasivosBusiness.cs" />
     <Compile Include="Multirriesgo\Common.cs" />
     <Compile Include="Multirriesgo\Handler\Compliance.cs" />
     <Compile Include="Multirriesgo\Handler\Request.cs" />
