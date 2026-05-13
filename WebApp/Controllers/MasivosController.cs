@@ -68,7 +68,7 @@ namespace aliados.Controllers
                 {
                     NombreDocumento = Path.GetFileNameWithoutExtension(fileInfo.Name),
                     NombreArchivo = fileInfo.Name,
-                    UrlDescarga = $"/Masivos/DownloadPlantilla?fileName={Uri.EscapeDataString(fileInfo.Name)}"
+                    UrlDescarga = $"/Aliados/Masivos/DownloadPlantilla?fileName={Uri.EscapeDataString(fileInfo.Name)}"
                 })
                 .ToList();
 
