@@ -25,7 +25,7 @@ namespace Architect.API.Tron.Business.Masivos
 
             try
             {
-                string codEstructura = string.Format("EA_COTIZA:{0}", codRamo);
+                string codEstructura = string.Format("EA_COTIZA_{0}", codRamo);
 
                 string contenidoCsv = Encoding.UTF8.GetString(fileBytes);
 
