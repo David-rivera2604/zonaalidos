@@ -19,14 +19,13 @@ namespace Architect.API.Tron.DataAccess.Masivos
         /// </summary>
         /// <param name="carga">Datos de la carga masiva.</param>
         /// <returns>True si la inserción fue exitosa.</returns>
-        public static bool Insert(MasivoCarga carga)
+        public static int Insert(MasivoCarga carga)
         {
-            bool result = false;
-            int affected = 0;
+            int resultado = 0;
 
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
-                affected = Database.Procedure("EM_MASIVOS.p_insert_masivos")
+                Database.Procedure("EM_MASIVOS.p_insert_masivos")
                     .AddParameter("p_cod_cia", DbType.Int32, 2, carga.cod_cia)
                     .AddParameter("p_cod_ramo", DbType.Int32, 5, carga.cod_ramo)
                     .AddParameter("p_cod_estructura", DbType.String, 100, carga.cod_estructura)
@@ -34,13 +33,18 @@ namespace Architect.API.Tron.DataAccess.Masivos
                     .AddParameter("p_num_tam_archivo", DbType.Int64, 0, carga.num_tam_archivo)
                     .AddParameter("p_archivo_carga", DbType.Binary, 0, Encoding.UTF8.GetBytes(carga.archivo_carga ?? string.Empty))
                     .AddParameter("p_updateusercode", DbType.Int32, 9, carga.cod_usr)
-                    .AddParameter("p_resultado", DbType.Int32, 9, ParameterDirection.Output)
-                    .Execute(currentConnection, "Tron");
-
-                result = (affected >= 0);
+                    .AddParameter("p_resultado", DbType.Int32, 9, 0, ParameterDirection.InputOutput)
+                    .Execute(currentConnection, "Tron", new Action<System.Data.Common.DbCommand>((command) =>
+                    {
+                        var param = command.Parameters["p_resultado"];
+                        if (param != null && param.Value != null && param.Value != DBNull.Value)
+                        {
+                            resultado = Convert.ToInt32(param.Value);
+                        }
+                    }));
             }
 
-            return result;
+            return resultado;
         }
 
         /// <summary>
@@ -68,9 +72,11 @@ namespace Architect.API.Tron.DataAccess.Masivos
                                 cod_estructura = reader.StringValue("cod_estructura"),
                                 txt_archivo_carga = reader.StringValue("txt_archivo_carga"),
                                 num_tam_archivo = reader.IntegerValue("num_tam_archivo"),
+                                archivo_carga = reader.StringValue("archivo_carga"),
                                 cod_usr = reader.IntegerValue("updateusercode"),
                                 fec_actu = reader.DateTimeValue("fec_actu"),
-                                estado = reader.StringValue("estado")
+                                estado = reader.StringValue("estado"),
+                                resultado_proceso = reader.StringValue("resultado_proceso")
                             });
                         }
                     }));

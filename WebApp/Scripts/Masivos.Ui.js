@@ -107,29 +107,39 @@ app.Masivos.Ui = (function () {
 
     function masivos_table_setup() {
         $('#masivosTbl').bootstrapTable({
-            uniqueId: 'Id',
+            uniqueId: 'cod_ramo',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: true,
             smartDisplay: true,
             search: true,
             searchAlign: 'left',
             columns: [
-                { field: 'Id', title: 'ID', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.IntegerFormatter' },
-                { field: 'Ramo', title: 'Ramo', sortable: false, halign: 'center', align: 'center', formatter: 'app.ui.StringFormatter' },
-                { field: 'Estructura', title: 'Estructura', sortable: false, halign: 'center', align: 'left', formatter: 'app.ui.StringFormatter' },
-                { field: 'Archivo', title: 'Archivo', sortable: false, halign: 'center', align: 'left', formatter: 'app.ui.StringFormatter' },
-                { field: 'Tamano', title: 'Tamaño', sortable: false, halign: 'center', align: 'center', formatter: function (value) { return value ? parseInt(value / 1024) + 'kb' : ''; } },
-                { field: 'Usuario', title: 'Usuario', sortable: false, halign: 'center', align: 'left', formatter: 'app.ui.StringFormatter' },
-                { field: 'Fecha', title: 'Fecha', sortable: false, halign: 'center', align: 'center', formatter: 'app.ui.DateAndTimeFormatter' },
+                { field: 'cod_ramo', title: 'C&oacute;digo Ramo', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.IntegerFormatter' },
+                { field: 'txt_archivo_carga', title: 'Archivo', sortable: false, halign: 'center', align: 'left', formatter: 'app.ui.StringFormatter' },
+                { field: 'num_tam_archivo', title: 'Tama&ntilde;o', sortable: false, halign: 'center', align: 'center', formatter: function (value) { return value ? (value >= 1024 ? parseInt(value / 1024) + ' KB' : value + ' bytes') : ''; } },
+                { field: 'fec_actu', title: 'Fecha Carga', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.DateAndTimeFormatter' },
                 {
-                    field: 'Estado', title: 'Estado', sortable: false, halign: 'center', align: 'center',
+                    field: 'archivo_carga', title: 'Descarga CSV', sortable: false, halign: 'center', align: 'center',
+                    formatter: function (value, row) {
+                        if (!value) return '';
+                        return '<button class="btn btn-xs btn-white" title="Descargar archivo CSV" onclick="app.Masivos.Ui.DescargarCsv(this)" data-content="' + encodeURIComponent(value) + '" data-filename="' + (row.txt_archivo_carga || 'archivo.csv') + '"><i class="fa fa-download"></i> Descargar</button>';
+                    }
+                },
+                {
+                    field: 'estado', title: 'Estado', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value) {
                         if (value === 'Procesado') return '<span class="label label-success">Procesado</span>';
                         if (value === 'Error') return '<span class="label label-danger">Error</span>';
                         return '<span class="label label-warning">' + (value || 'Pendiente') + '</span>';
                     }
                 },
-                { field: 'Accion', title: 'Acción', sortable: false, halign: 'center', align: 'center', formatter: 'app.ui.StringFormatter' }
+                {
+                    field: 'resultado_proceso', title: 'Resultado', sortable: false, halign: 'center', align: 'center',
+                    formatter: function (value, row) {
+                        if (!value) return '<span class="text-muted">-</span>';
+                        return '<button class="btn btn-xs btn-white" title="Descargar resultado del proceso" onclick="app.Masivos.Ui.DescargarResultado(this)" data-content="' + encodeURIComponent(value) + '" data-filename="resultado_' + (row.txt_archivo_carga || 'proceso') + '"><i class="fa fa-download"></i> Descargar</button>';
+                    }
+                }
             ]
         });
     }
@@ -209,7 +219,37 @@ app.Masivos.Ui = (function () {
             });
     }
 
+    function descargarCsv(btn) {
+        var content = decodeURIComponent($(btn).data('content'));
+        var filename = $(btn).data('filename') || 'archivo.csv';
+        if (!filename.toLowerCase().endsWith('.csv')) filename += '.csv';
+        var blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    function descargarResultado(btn) {
+        var content = decodeURIComponent($(btn).data('content'));
+        var filename = $(btn).data('filename') || 'resultado.csv';
+        if (!filename.toLowerCase().endsWith('.csv')) filename += '.csv';
+        var blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    }
+
     return {
-        Init: Init
+        Init: Init,
+        DescargarCsv: descargarCsv,
+        DescargarResultado: descargarResultado
     };
 })();

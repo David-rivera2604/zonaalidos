@@ -50,9 +50,9 @@ namespace Architect.API.Tron.Business.Masivos
                     cod_usr = codUsr
                 };
 
-                bool inserted = DataAccess.Masivos.MasivosDataAccess.Insert(carga);
+                int resultado = DataAccess.Masivos.MasivosDataAccess.Insert(carga);
 
-                if (inserted)
+                if (resultado > 0)
                 {
                     result.Exitoso = true;
                     result.Mensaje = "Archivo cargado exitosamente.";
@@ -60,7 +60,7 @@ namespace Architect.API.Tron.Business.Masivos
                 else
                 {
                     result.Exitoso = false;
-                    result.Mensaje = "No se pudo registrar la carga del archivo.";
+                    result.Mensaje = "No se pudo registrar la carga del archivo. Resultado: " + resultado;
                 }
             }
             catch (Exception ex)
