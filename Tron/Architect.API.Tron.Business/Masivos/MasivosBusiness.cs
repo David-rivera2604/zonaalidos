@@ -10,6 +10,14 @@ namespace Architect.API.Tron.Business.Masivos
     /// </summary>
     public static class MasivosBusiness
     {
+
+        public static IDictionary<int, string> EA_COTIZA = new Dictionary<int, string>
+        {
+            {302,"EA_EMISION_302" },
+            {207,"ED_EMISION_207" },
+            {202,"ED_EMISION_201" },
+            {201,"ED_EMISION_202" },
+        };
         /// <summary>
         /// Registra una carga masiva de archivo CSV.
         /// </summary>
@@ -19,13 +27,15 @@ namespace Architect.API.Tron.Business.Masivos
         /// <param name="fileSize">Tamaño del archivo en bytes.</param>
         /// <param name="codUsr">Código del usuario que realiza la carga.</param>
         /// <returns>Resultado de la operación de carga.</returns>
-        public static MasivoResult Cargar(int codRamo, string fileName, byte[] fileBytes, int fileSize, string codUsr)
+        public static MasivoResult Cargar(int codRamo, string fileName, byte[] fileBytes, int fileSize, int codUsr)
         {
             MasivoResult result = new MasivoResult();
 
             try
             {
-                string codEstructura = string.Format("EA_COTIZA_{0}", codRamo);
+                if (!EA_COTIZA.ContainsKey(codRamo)) throw new NotImplementedException("Codigo del ramo no existe");
+                
+                string codEstructura = EA_COTIZA[codRamo];
 
                 string contenidoCsv = Encoding.UTF8.GetString(fileBytes);
 
@@ -111,5 +121,7 @@ namespace Architect.API.Tron.Business.Masivos
 
             return result;
         }
+
+
     }
 }

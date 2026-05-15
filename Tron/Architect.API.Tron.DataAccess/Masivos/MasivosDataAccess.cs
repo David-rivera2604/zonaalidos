@@ -26,14 +26,15 @@ namespace Architect.API.Tron.DataAccess.Masivos
 
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
-                affected = Database.Procedure("p_insert_masivos")
+                affected = Database.Procedure("EM_MASIVOS.p_insert_masivos")
                     .AddParameter("p_cod_cia", DbType.Int32, 2, carga.cod_cia)
                     .AddParameter("p_cod_ramo", DbType.Int32, 5, carga.cod_ramo)
                     .AddParameter("p_cod_estructura", DbType.String, 100, carga.cod_estructura)
                     .AddParameter("p_txt_archivo_carga", DbType.String, 255, carga.txt_archivo_carga)
                     .AddParameter("p_num_tam_archivo", DbType.Int64, 0, carga.num_tam_archivo)
                     .AddParameter("p_archivo_carga", DbType.Binary, 0, Encoding.UTF8.GetBytes(carga.archivo_carga ?? string.Empty))
-                    .AddParameter("p_cod_usr", DbType.String, 50, carga.cod_usr)
+                    .AddParameter("p_updateusercode", DbType.Int32, 9, carga.cod_usr)
+                    .AddParameter("p_resultado", DbType.Int32, 9, ParameterDirection.Output)
                     .Execute(currentConnection, "Tron");
 
                 result = (affected >= 0);
@@ -67,7 +68,7 @@ namespace Architect.API.Tron.DataAccess.Masivos
                                 cod_estructura = reader.StringValue("cod_estructura"),
                                 txt_archivo_carga = reader.StringValue("txt_archivo_carga"),
                                 num_tam_archivo = reader.IntegerValue("num_tam_archivo"),
-                                cod_usr = reader.StringValue("cod_usr"),
+                                cod_usr = reader.IntegerValue("updateusercode"),
                                 fec_actu = reader.DateTimeValue("fec_actu"),
                                 estado = reader.StringValue("estado")
                             });

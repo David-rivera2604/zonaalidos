@@ -87,7 +87,7 @@ namespace Architect.API.Tron.Controllers
 
             await Task.Run(() =>
             {
-                result = Business.Masivos.MasivosBusiness.Cargar(codRamo, fileName, fileBytes, fileSize, tokenInfo.UserName);
+                result = Business.Masivos.MasivosBusiness.Cargar(codRamo, fileName, fileBytes, fileSize, tokenInfo.UserId);
             }).ConfigureAwait(false);
 
             if (result.Exitoso)
