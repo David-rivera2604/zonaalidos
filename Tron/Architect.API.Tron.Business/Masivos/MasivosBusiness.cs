@@ -15,8 +15,8 @@ namespace Architect.API.Tron.Business.Masivos
         {
             {302,"EA_EMISION_302" },
             {207,"ED_EMISION_207" },
-            {202,"ED_EMISION_201" },
-            {201,"ED_EMISION_202" },
+            {202,"ED_EMISION_202" },
+            {201,"ED_EMISION_201" },
         };
         /// <summary>
         /// Registra una carga masiva de archivo CSV.

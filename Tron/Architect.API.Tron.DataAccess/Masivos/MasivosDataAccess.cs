@@ -21,7 +21,7 @@ namespace Architect.API.Tron.DataAccess.Masivos
         /// <returns>True si la inserción fue exitosa.</returns>
         public static int Insert(MasivoCarga carga)
         {
-            int resultado = 0;
+            
 
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
@@ -33,18 +33,11 @@ namespace Architect.API.Tron.DataAccess.Masivos
                     .AddParameter("p_num_tam_archivo", DbType.Int64, 0, carga.num_tam_archivo)
                     .AddParameter("p_archivo_carga", DbType.Binary, 0, Encoding.UTF8.GetBytes(carga.archivo_carga ?? string.Empty))
                     .AddParameter("p_updateusercode", DbType.Int32, 9, carga.cod_usr)
-                    .AddParameter("p_resultado", DbType.Int32, 9, 0, ParameterDirection.InputOutput)
-                    .Execute(currentConnection, "Tron", new Action<System.Data.Common.DbCommand>((command) =>
-                    {
-                        var param = command.Parameters["p_resultado"];
-                        if (param != null && param.Value != null && param.Value != DBNull.Value)
-                        {
-                            resultado = Convert.ToInt32(param.Value);
-                        }
-                    }));
+                    .AddParameter("p_resultado", DbType.Int32, 9, 0, ParameterDirection.Output)
+                    .Execute(currentConnection, "Tron");
             }
 
-            return resultado;
+            return 1;
         }
 
         /// <summary>
