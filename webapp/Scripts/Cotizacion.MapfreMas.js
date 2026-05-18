@@ -1083,7 +1083,11 @@ app.CotizacionMapfreMas = (function () {
         let cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
         let tipo_prod = app.ui.GetRadioStringValue('tipo_prod');
         //31 HYUNDAI, 74 TOYOTA, 73 SUZUKI, 55 MITSUBISHI, 40 KIA, 50 MAZDA, 13 CHEVROLET, 30 HONDA
-        if ((tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
+        if (tipo_prod === 'trebolbc' || tipo_prod === 'trebolpr') {
+            // Ramo 302 MAPFRE Más: para Trébol Basic y Trébol Premium no se permite ajuste comercial
+            app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
+            $('#PCT_AJUSTE_GEN').prop('disabled', true);
+        } else if ((tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
             (cod_marca === 31 || cod_marca === 74 || cod_marca === 73 || cod_marca === 55 || cod_marca === 40 || cod_marca === 50 || cod_marca === 13 || cod_marca === 30)) {
             if (!localStorage.getItem('Roles').includes('Privilegios')) {
                 app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);

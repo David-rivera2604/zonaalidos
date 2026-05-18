@@ -322,6 +322,11 @@ app.EmisionMapfreMas = (function () {
         app.ui.SetRadioStringValue('Vehiculo_Otra_Poliza', data.Vehiculo_Otra_Poliza);
         app.ui.SetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO', data.MCA_DESC_CLIENTE_NUEVO);
         app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
+        // Ramo 302 MAPFRE Más: para Trébol Basic y Trébol Premium no se permite ajuste comercial
+        if (data.tipo_prod === 'trebolbc' || data.tipo_prod === 'trebolpr') {
+            app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
+            $('#PCT_AJUSTE_GEN').prop('disabled', true);
+        }
         app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
 
         if (data.terceros != null)

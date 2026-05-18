@@ -1,5 +1,23 @@
 ﻿# Release Notes - Aliados
- 
+
+## Versión 1.6.186 - MAPFRE Más: Restricción de ajuste comercial para planes Trébol Basic y Trébol Premium.
+
+### Aliados - MAPFRE Más (Ramo 302): Se bloquea el ajuste comercial para planes específicos.
+
+#### Cambios implementados:
+
+- Se restringe la modificación del campo "Porcentaje de ajuste comercial" (PCT_AJUSTE_GEN) en la sección de datos del vehículo para los planes Trébol Basic y Trébol Premium.
+- El campo es deshabilitado y forzado a 0% cuando se selecciona alguno de estos planes, tanto en cotización como en emisión.
+
+#### Alcance:
+- Aplica únicamente al ramo 302 (MAPFRE Más).
+- Afecta exclusivamente los planes Trébol Basic y Trébol Premium.
+
+#### Dependencias:
+- No aplica.
+
+---
+
 ## Versión 1.6.185 - Compliance: Se habilita la trazabilidad para Compliance (SNAP).
 
 ### Compliance - Se actualiza el flujo de integración de Compliance (SNAP) para registrar trazabilidad completa.
