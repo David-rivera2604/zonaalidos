@@ -25,14 +25,14 @@ namespace Architect.API.Tron.Controllers
         /// <returns>Lista de cargas registradas.</returns>
         [HttpGet]
         [Route("Cargas")]
-        public async Task<IHttpActionResult> Cargas(int? codRamo = null)
+        public async Task<IHttpActionResult> Cargas(int? codRamo = null, int? codCia = null, string codEstructura = null, string txtArchivoCarga = null)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<MasivoCarga> result = null;
 
             await Task.Run(() =>
             {
-                result = Business.Masivos.MasivosBusiness.Consultar(codRamo);
+                result = Business.Masivos.MasivosBusiness.Consultar(tokenInfo.UserId, codCia, codRamo, codEstructura, txtArchivoCarga);
             }).ConfigureAwait(false);
 
             return Ok(result);

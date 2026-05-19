@@ -52,15 +52,19 @@ namespace Architect.API.Tron.DataAccess.Masivos
         /// </summary>
         /// <param name="codRamo">Código de ramo (opcional).</param>
         /// <returns>Lista de cargas registradas.</returns>
-        public static List<MasivoCarga> Consultar(int? codRamo)
+        public static List<MasivoCarga> Consultar(int? codCia, int? codRamo, string codEstructura, string txtArchivoCarga, int codUsr)
         {
             List<MasivoCarga> result = new List<MasivoCarga>();
 
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
-                Database.Procedure("p_consultar_masivos")
+                Database.Procedure("EM_MASIVOS.p_lee_masivos")
+                    .AddParameter("p_cod_cia", DbType.Int32, 2, codCia)
                     .AddParameter("p_cod_ramo", DbType.Int32, 5, codRamo)
-                    .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                    .AddParameter("p_cod_estructura", DbType.String, 100, codEstructura)
+                    .AddParameter("p_txt_archivo_carga", DbType.String, 255, txtArchivoCarga)
+                    .AddParameter("p_updateusercode", DbType.Int32, 9, codUsr)
+                    .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
                     .Query(currentConnection, "Tron", new Action<IDataReader, string>((reader, key) =>
                     {
                         if (key == "rc1")

@@ -11,7 +11,6 @@ app.Masivos.Ui = (function () {
         app.ui.CommonBehaviour();
         masivos_table_setup();
         setupEvents();
-        consultarCargas();
     }
 
     function setupEvents() {
@@ -20,6 +19,15 @@ app.Masivos.Ui = (function () {
         $('#cod_ramo').on('change', function () {
             state.uploadedFileName = '';
             cleanFileSelection();
+        });
+
+        $('#btnGuia').on('click', function (e) {
+            e.preventDefault();
+            $('#guiaModal').modal('show');
+        });
+
+        $('#btnRefrescar').on('click', function (e) {
+            e.preventDefault();
             consultarCargas();
         });
 

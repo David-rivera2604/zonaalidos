@@ -86,6 +86,9 @@
                                                 </div>
 
                                                 <div class="col-sm-12 col-md-12 text-right" style="margin-top: 8px;">
+                                                    <button id="btnGuia" type="button" class="btn btn-info">
+                                                        <i class="fa fa-question-circle"></i> Gu&iacute;a
+                                                    </button>
                                                     <button id="btnVerPlantillas" type="button" class="btn btn-white">
                                                         <i class="fa fa-list"></i> Ver plantillas
                                                     </button>
@@ -94,6 +97,9 @@
                                                     </button>
                                                     <button id="btnProcesar" type="button" class="btn btn-primary">
                                                         <i class="fa fa-gears"></i> Procesar
+                                                    </button>
+                                                    <button id="btnRefrescar" type="button" class="btn btn-white">
+                                                        <i class="fa fa-refresh"></i> Refrescar
                                                     </button>
                                                 </div>
                                             </div>
@@ -141,6 +147,37 @@
 </div>
 
 @Html.Partial("_PlantillasModal", Model)
+
+<!-- Modal Guia del Proceso -->
+<div class="modal fade" id="guiaModal" tabindex="-1" role="dialog" aria-labelledby="guiaModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="guiaModalLabel"><i class="fa fa-question-circle"></i> Gu&iacute;a del proceso de carga masiva</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h5><strong>Pasos para realizar una carga masiva:</strong></h5>
+                <ol style="font-size: 14px; line-height: 2.2;">
+                    <li><i class="fa fa-hand-pointer-o text-info"></i> <strong>Seleccione el c&oacute;digo de ramo:</strong> Elija el ramo correspondiente en el desplegable seg&uacute;n el tipo de emisi&oacute;n masiva que desea realizar.</li>
+                    <li><i class="fa fa-file-text-o text-info"></i> <strong>Seleccione el archivo CSV:</strong> Haga clic en <em>Examinar...</em> y escoja el archivo con el formato requerido seg&uacute;n la plantilla del ramo. Puede descargar la plantilla desde el bot&oacute;n <em>Ver plantillas</em>.</li>
+                    <li><i class="fa fa-cloud-upload text-primary"></i> <strong>Cargue el archivo:</strong> Presione el bot&oacute;n <strong>Cargar CSV</strong> para subir el archivo al sistema. La tabla se actualizar&aacute; autom&aacute;ticamente con el registro insertado.</li>
+                    <li><i class="fa fa-gears text-primary"></i> <strong>Procese los registros:</strong> Una vez cargado el archivo, presione <strong>Procesar</strong> para iniciar el procesamiento de los registros contenidos en el CSV.</li>
+                    <li><i class="fa fa-refresh text-success"></i> <strong>Consulte el estado:</strong> Use el bot&oacute;n <strong>Refrescar</strong> para actualizar la tabla y verificar el estado de la carga en cualquier momento.</li>
+                </ol>
+                <div class="alert alert-info" style="margin-top: 15px;">
+                    <i class="fa fa-info-circle"></i> <strong>Importante:</strong> Aseg&uacute;rese de que el archivo CSV cumpla con el formato de la plantilla correspondiente al ramo seleccionado. Los campos y el orden de columnas deben coincidir exactamente con la plantilla.
+                </div>
+                <div class="alert alert-warning">
+                    <i class="fa fa-exclamation-triangle"></i> <strong>Nota:</strong> El proceso puede tardar varios minutos dependiendo de la cantidad de registros. Utilice el bot&oacute;n <em>Refrescar</em> para consultar el avance.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
