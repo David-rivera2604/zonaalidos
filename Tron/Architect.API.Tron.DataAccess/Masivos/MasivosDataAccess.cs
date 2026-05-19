@@ -57,10 +57,12 @@ namespace Architect.API.Tron.DataAccess.Masivos
                     .AddParameter("p_cod_estructura", DbType.String, 100, codEstructura)
                     .AddParameter("p_txt_archivo_carga", DbType.String, 255, txtArchivoCarga)
                     .AddParameter("p_updateusercode", DbType.Int32, 9, codUsr)
-                    .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                    //.AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                    .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+
                     .Query(currentConnection, "Tron", new Action<IDataReader, string>((reader, key) =>
                     {
-                        if (key == "rc1")
+                        if (key == "RC1")
                         {
                             result.Add(new MasivoCarga
                             {
