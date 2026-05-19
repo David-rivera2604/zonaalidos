@@ -68,17 +68,17 @@ namespace Architect.API.Core.Business.General
 
         public static void SendByTemplate(string mailServer, string templateKey, int companyId, int userId, object entity, Dictionary<string, string> toAddressList, string[] attachments = null)
         {
-            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend(mailServer, companyId, userId, 0, templateKey, toAddressList, null, null, entity, attachments));
+            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend(mailServer, companyId, userId, 0, templateKey, toAddressList, null, null, entity, attachments, false));
         }
 
         public static void SendByTemplate(string templateKey, int companyId, object entity, Dictionary<string, string> toAddressList = null, string[] attachments = null)
         {
-            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, 0, 0, templateKey, toAddressList, null, null, entity, attachments));
+            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, 0, 0, templateKey, toAddressList, null, null, entity, attachments, false));
         }
 
         public static void SendByTemplate(string templateKey, int companyId, int userId, int ownerId, object entity, Dictionary<string, string> toAddressList = null, string[] attachments = null)
         {
-            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, userId, ownerId, templateKey, toAddressList, null, null, entity, attachments));
+            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, userId, ownerId, templateKey, toAddressList, null, null, entity, attachments, false));
         }
 
         public static void SendEmail(Dictionary<string, string> toAddressList, string subject, string body, string[] attachments = null)
@@ -89,13 +89,13 @@ namespace Architect.API.Core.Business.General
         }
 
         [AutomaticRetry(Attempts = 0)]
-        public static void EnqueueSend(string mailServer, int companyId, int userId, int ownerId, string templateKey, Dictionary<string, string> toAddressList, string subject, string body, object entity, string[] attachments)
+        public static void EnqueueSend(string mailServer, int companyId, int userId, int ownerId, string templateKey, Dictionary<string, string> toAddressList, string subject, string body, object entity, string[] attachments, bool direct )
         {
 
             Architect.API.Core.Contracts.Security.UserMember currentUserInfo = new Contracts.Security.UserMember();
             Architect.API.Core.Contracts.Security.UserMember ownerUserInfo = new Contracts.Security.UserMember();
             Core.Contracts.General.Tenant tenantInfo = new Contracts.General.Tenant();
-            string testEmail =  "EMail.Test".StringValue(companyId);
+            string testEmail = "EMail.Test".StringValue(companyId);
 
             if (toAddressList == null)
             {
@@ -361,6 +361,11 @@ namespace Architect.API.Core.Business.General
             {
                 Architect.Utilities.Log.WarningLog("Fail", ex.Message, "Mail");
                 Architect.Utilities.Log.ErrorLog("SendMail", $"Server setting: MailServer: {mailServer}, Host: {SmtpServer.Host}, Port: {SmtpServer.Port}, SSL: {SmtpServer.EnableSsl}, Username: {mailUsername}", ex);
+
+                if (direct)
+                {
+                    throw;
+                }
             }
             mail.Dispose();
             SmtpServer.Dispose();
@@ -478,30 +483,31 @@ namespace Architect.API.Core.Business.General
                 {
                     if (IsBase64(attachmentFile))
                     {
-                            byte[] fileBytes = Convert.FromBase64String(attachmentFile);
-                            var memoryStream = new MemoryStream(fileBytes);
-                            string fileName = "attachment_" + Guid.NewGuid().ToString() + ".pdf";  // Generamos un nombre único para el archivo
+                        byte[] fileBytes = Convert.FromBase64String(attachmentFile);
+                        var memoryStream = new MemoryStream(fileBytes);
+                        string fileName = "attachment_" + Guid.NewGuid().ToString() + ".pdf";  // Generamos un nombre único para el archivo
 
-                            // Aquí puedes ponerle la extensión correcta si la conoces
-                            attachment = new System.Net.Mail.Attachment(memoryStream, fileName);
+                        // Aquí puedes ponerle la extensión correcta si la conoces
+                        attachment = new System.Net.Mail.Attachment(memoryStream, fileName);
                     }
-                    else { 
-                           if (attachmentFile.IndexOf(';') == -1)
-                            {
-                                attachment = new System.Net.Mail.Attachment(attachmentFile);
-                            }
-                            else
-                            {
-                                attachment = new System.Net.Mail.Attachment(attachmentFile.Split(';')[0]);
-                                attachment.Name = attachmentFile.Split(';')[1];
-                            }
+                    else
+                    {
+                        if (attachmentFile.IndexOf(';') == -1)
+                        {
+                            attachment = new System.Net.Mail.Attachment(attachmentFile);
+                        }
+                        else
+                        {
+                            attachment = new System.Net.Mail.Attachment(attachmentFile.Split(';')[0]);
+                            attachment.Name = attachmentFile.Split(';')[1];
+                        }
                     }
 
                     mail.Attachments.Add(attachment);
-                    
+
                 }
             }
-        
+
             SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["EMail.Host"])
             {
                 Port = Convert.ToInt32(ConfigurationManager.AppSettings["EMail.Port"]),

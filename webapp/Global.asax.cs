@@ -117,11 +117,26 @@ namespace aliados
                         Architect.Utilities.Helpers.Settings.StringValue("Viajero.MonitorRecibosCobrado.ExecutionTime"));
                 }
 
+                // Despachador de Jobs programados definidos en la tabla BO_SCHEDULED_JOB.
+                // Por defecto se ejecuta cada hora; puede sobreescribirse con el setting
+                // 'ScheduledJobs.Dispatcher.ExecutionTime' (cron).
+                {
+                    string scheduledJobsCron = Architect.Utilities.Helpers.Settings.StringValue("ScheduledJobs.Dispatcher.ExecutionTime");
+                    if (string.IsNullOrWhiteSpace(scheduledJobsCron))
+                    {
+                        scheduledJobsCron = Cron.Hourly();
+                    }
+                    RecurringJob.AddOrUpdate("ScheduledJobs.Dispatcher",
+                        () => Architect.API.Core.Business.General.ScheduledJobs.ExecuteDue(),
+                        scheduledJobsCron);
+                }
+
                 // Let's also create a sample background job
                 //BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
                 // BackgroundJob.Enqueue(() => test());
-                //var recurringJobs = Hangfire.JobStorage.Current.GetConnection().GetRecurringJobs().ToList();
+                //var recurringJobs = Hangfire.JobStorage.Current.GetConnection().GetRecurringJobs().ToList();                
             }
+
         }
 
 

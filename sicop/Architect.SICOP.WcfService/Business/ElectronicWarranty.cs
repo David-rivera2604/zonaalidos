@@ -58,7 +58,7 @@ namespace Architect.SICOP.WcfService.Business
                         API.Core.Business.General.Mail.EnqueueSend("Default",
                             Utilities.Helpers.Settings.IntegerValue("Default.CompanyId", 100),
                             Utilities.Helpers.Settings.IntegerValue("Default.UserId", 0),
-                            0, "Notify_ReleaseGuarantee", null, null, null, value, null);
+                            0, "Notify_ReleaseGuarantee", null, null, null, value, null, false);
 
                         result.Confirmation = "0";
                         result.Msg_err = "La solicitud fue procesada de forma exitosa";

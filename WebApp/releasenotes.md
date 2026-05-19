@@ -1,5 +1,24 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.187 - Compliance: Se habilita el reporte de la trazabilidad para Compliance (SNAP).
+
+### Aliados - Scheduler: Manejo de ejecuciones recurrentes, se habilita el manejo de la tabla `ScheduledJob` y la persistencia del resultado de ejecución.
+
+#### Cambios implementados:
+
+- Por medio de la tabla `ScheduledJob` y el tipo `REPORT_EMAIL` se determina la tarea a ejecutar.
+- Se ejecutar la generación del reporte en forma excel según la columna `resultado_snap`.
+- Se envía por correo por medio de la plantilla indicada en la columna `mail_template` y se anexa el excel generado con el nombre según  `output_file_name`.
+
+#### Dependencias:
+
+1. 261107a.BO_SCHEDULED_JOB.sql
+2. 260518a.visualization.resultado_snap.sql
+3. 260518b.template.resultado_snap.sql
+4. 260518c.scheduledjob.resultado_snap.sql
+
+---
+
 ## Versión 1.6.186 - MAPFRE Más: Restricción de ajuste comercial para planes Trébol Basic y Trébol Premium.
 
 ### Aliados - MAPFRE Más (Ramo 302): Se bloquea el ajuste comercial para planes específicos.

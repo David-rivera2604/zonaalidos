@@ -89,6 +89,10 @@ app.frm = (() => {
         },
         NumericWidget: function (selector, options) {
 
+            if (options ==  undefined) {
+                options = {};
+            }
+
             if (options.options == null) {
                 options.options = '';
             }
@@ -506,6 +510,8 @@ app.frm = (() => {
                     case 'hiddennumeric':
                     case 'documentnumbertype':
                     case 'typeahead':
+                    case 'dropdownmulti':
+                    case 'radioboolean':
                         break;
                     default:
                         throw new Error(`El tipo ${dataType}" no esta implementado`)
