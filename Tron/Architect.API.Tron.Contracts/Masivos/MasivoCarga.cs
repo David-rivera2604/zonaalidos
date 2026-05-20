@@ -12,10 +12,10 @@ namespace Architect.API.Tron.Contracts.Masivos
         public string cod_estructura { get; set; }
         public string txt_archivo_carga { get; set; }
         public int num_tam_archivo { get; set; }
-        public string archivo_carga { get; set; }
+        public byte[] archivo_carga { get; set; }
         public string txt_archivo_rta { get; set; }
         public int num_tam_archivo_rta { get; set; }
-        public string archivo_rta { get; set; }
+        public byte[] archivo_rta { get; set; }
         public int cod_usr { get; set; }
         public DateTime fec_actu { get; set; }
         public string estado { get; set; }

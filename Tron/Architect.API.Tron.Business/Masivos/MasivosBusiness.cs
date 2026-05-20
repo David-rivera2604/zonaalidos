@@ -37,8 +37,6 @@ namespace Architect.API.Tron.Business.Masivos
                 
                 string codEstructura = EA_COTIZA[codRamo];
 
-                string contenidoCsv = Encoding.UTF8.GetString(fileBytes);
-
                 MasivoCarga carga = new MasivoCarga
                 {
                     cod_cia = 1,
@@ -46,7 +44,7 @@ namespace Architect.API.Tron.Business.Masivos
                     cod_estructura = codEstructura,
                     txt_archivo_carga = fileName,
                     num_tam_archivo = fileSize,
-                    archivo_carga = contenidoCsv,
+                    archivo_carga = fileBytes,
                     cod_usr = codUsr
                 };
 
