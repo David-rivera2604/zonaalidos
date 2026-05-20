@@ -32,7 +32,7 @@ namespace Architect.API.Tron.Controllers
 
             await Task.Run(() =>
             {
-                result = Business.Masivos.MasivosBusiness.Consultar(tokenInfo.UserId, codCia);
+                result = Business.Masivos.MasivosBusiness.Consultar(tokenInfo.UserId, 1);
             }).ConfigureAwait(false);
 
             return Ok(result);
