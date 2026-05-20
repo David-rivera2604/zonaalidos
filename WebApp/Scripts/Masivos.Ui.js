@@ -14,6 +14,11 @@ app.Masivos.Ui = (function () {
     }
 
     function setupEvents() {
+        $('#MasivosEdtForm').on('submit', function (e) {
+            e.preventDefault();
+            return false;
+        });
+
         $('#fileUpload').on('change', onFileSelected);
 
         $('#cod_ramo').on('change', function () {
@@ -130,7 +135,7 @@ app.Masivos.Ui = (function () {
                     field: 'archivo_carga', title: 'Descarga CSV', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value, row) {
                         if (!value) return '';
-                        return '<button class="btn btn-xs btn-white" title="Descargar archivo CSV" onclick="app.Masivos.Ui.DescargarCsv(this)" data-content="' + encodeURIComponent(value) + '" data-filename="' + (row.txt_archivo_carga || 'archivo.csv') + '"><i class="fa fa-download"></i> Descargar</button>';
+                        return '<button type="button" class="btn btn-xs btn-white" title="Descargar archivo CSV" onclick="app.Masivos.Ui.DescargarCsv(this); return false;" data-content="' + encodeURIComponent(value) + '" data-filename="' + (row.txt_archivo_carga || 'archivo.csv') + '"><i class="fa fa-download"></i> Descargar</button>';
                     }
                 },
                 {
@@ -145,7 +150,7 @@ app.Masivos.Ui = (function () {
                     field: 'resultado_proceso', title: 'Resultado', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value, row) {
                         if (!value) return '<span class="text-muted">-</span>';
-                        return '<button class="btn btn-xs btn-white" title="Descargar resultado del proceso" onclick="app.Masivos.Ui.DescargarResultado(this)" data-content="' + encodeURIComponent(value) + '" data-filename="resultado_' + (row.txt_archivo_carga || 'proceso') + '"><i class="fa fa-download"></i> Descargar</button>';
+                        return '<button type="button" class="btn btn-xs btn-white" title="Descargar resultado del proceso" onclick="app.Masivos.Ui.DescargarResultado(this); return false;" data-content="' + encodeURIComponent(value) + '" data-filename="resultado_' + (row.txt_archivo_carga || 'proceso') + '"><i class="fa fa-download"></i> Descargar</button>';
                     }
                 }
             ]
