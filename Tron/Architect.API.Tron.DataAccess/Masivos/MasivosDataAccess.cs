@@ -54,11 +54,11 @@ namespace Architect.API.Tron.DataAccess.Masivos
                 Database.Procedure("EM_MASIVOS.p_lee_masivos")
                     .AddParameter("p_cod_cia", DbType.Int32, 2, codCia)
                     .AddParameter("p_updateusercode", DbType.Int32, 9, codUsr)
-                    .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
+                    .AddParameter("rc1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.Output)
 
                     .Query(currentConnection, "Tron", new Action<IDataReader, string>((reader, key) =>
                     {
-                        if (key == "RC1")
+                        if (key == "rc1")
                         {
                             result.Add(new MasivoCarga
                             {
