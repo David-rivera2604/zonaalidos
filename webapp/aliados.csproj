@@ -1441,6 +1441,7 @@
     <Compile Include="Controllers\FunerarioController.cs" />
     <Compile Include="Controllers\HogatTotalController.cs" />
     <Compile Include="Controllers\MultirriesgoController.cs" />
+    <Compile Include="Controllers\OktaController.cs" />
     <Compile Include="Controllers\PurdyController.cs" />
     <Compile Include="Controllers\DocuSignController.cs" />
     <Compile Include="Controllers\AvisosController.cs" />
@@ -2143,6 +2144,8 @@
     <Content Include="Views\Acceso\aliados.cshtml" />
     <Content Include="Views\Acceso\mapfre.cshtml" />
     <Content Include="Views\Acceso\purdy.cshtml" />
+    <Content Include="Views\Acceso\Bayer.cshtml" />
+    <Content Include="Views\Acceso\Clientes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

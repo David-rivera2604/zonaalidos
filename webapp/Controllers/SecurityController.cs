@@ -160,11 +160,13 @@ namespace aliados.Controllers
         /// <summary>
         /// Cierra la sesión del usuario. 
         /// Si el login fue realizado vía Entra ID (sesión contiene entraid_tenant),
-        /// realiza logout federado de Entra ID; de lo contrario, solo logout local.
+        /// realiza logout federado de Entra ID; si fue vía Okta (sesión contiene okta_tenant),
+        /// realiza logout federado de Okta; de lo contrario, solo logout local.
         /// </summary>
         /// <returns>
         /// Objeto JSON con { success: true, url: logoutUrl } donde logoutUrl es:
         /// - URL de logout federado de Entra ID si la sesión contiene entraid_tenant.
+        /// - URL de logout federado de Okta si la sesión contiene okta_tenant.
         /// - Ruta de login local en caso contrario.
         /// </returns>
         [IsConnected]
@@ -172,14 +174,22 @@ namespace aliados.Controllers
         public ActionResult Logout()
         {
             var entraIdTenant = Session["entraid_tenant"]?.ToString();
-            string normalizedTenant = EntraIDController.NormalizeTenant(entraIdTenant);
-            
+            string normalizedEntraTenant = EntraIDController.NormalizeTenant(entraIdTenant);
+
+            var oktaTenant = Session["okta_tenant"]?.ToString();
+            string normalizedOktaTenant = OktaController.NormalizeTenant(oktaTenant);
+            string oktaIdToken = Session["okta_id_token"]?.ToString();
+
             string logoutUrl = ClearLocalSession();
 
             // Si el login fue por Entra ID, hacer logout federado
-            if (normalizedTenant != null)
+            if (normalizedEntraTenant != null)
             {
-                logoutUrl = EntraIDController.Logout(normalizedTenant);
+                logoutUrl = EntraIDController.Logout(normalizedEntraTenant);
+            }
+            else if (normalizedOktaTenant != null)
+            {
+                logoutUrl = OktaController.Logout(normalizedOktaTenant, oktaIdToken);
             }
 
             return Json(new { success = true, mensaje = "Sesión cerrada exitosamente", url = logoutUrl }, JsonRequestBehavior.AllowGet);

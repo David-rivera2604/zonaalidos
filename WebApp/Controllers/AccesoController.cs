@@ -45,5 +45,25 @@ namespace aliados.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Muestra la vista de acceso para el tenant Clientes.
+        /// Esta vista usa exclusivamente la autenticación federada por Okta.
+        /// </summary>
+        /// <returns>Vista de acceso <c>Clientes.cshtml</c>.</returns>
+        public ActionResult Clientes()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Muestra la vista de acceso para el tenant Bayer.
+        /// Esta vista usa exclusivamente la autenticación federada por Okta.
+        /// </summary>
+        /// <returns>Vista de acceso <c>Bayer.cshtml</c>.</returns>
+        public ActionResult Bayer()
+        {
+            return View();
+        }
     }
 }

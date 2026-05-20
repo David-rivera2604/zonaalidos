@@ -1,5 +1,47 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.188 - Autenticación Okta - OAuth 2.0 (OIDC) con sincronización de usuarios.
+
+### Aliados - Integración de inicio de sesión federado con Okta mediante el flujo Authorization Code de OAuth 2.0.
+
+#### Cambios implementados:
+
+- Nuevo controlador `OktaController` para gestionar el flujo de autorización OAuth 2.0 con Okta: inicio de sesión (`Login`), callback de autorización (`Callback`), intercambio de código por tokens y consulta del endpoint `userinfo`.
+- Nueva clase `OktaUserManagement` en Core para sincronizar usuarios con la Users API de Okta: crear, actualizar (perfil y contraseña) y eliminar usuarios, con autenticación vía `private_key_jwt` (RFC 7523).
+- Nuevo método `AuthenticationByOkta` en `Accounts.cs` para autenticar usuarios cuya identidad fue verificada por Okta sin requerir validación de contraseña local.
+- Se habilita la gestión de grupos en Okta: los usuarios creados o actualizados son asignados automáticamente al grupo configurado (`Okta.ServiceApp.AssignGroupName`).
+- Se sincroniza el password en Okta cuando el usuario lo modifica desde la UI de Aliados.
+- Nuevas vistas de login para tenants `Clientes` y `Bayer` con botón de inicio de sesión con Okta.
+
+#### Nuevos puntos de acceso:
+
+- Clientes: `{webapp}/acceso/clientes` → inicia flujo Okta para el tenant de clientes.
+- Bayer: `{webapp}/acceso/bayer` → inicia flujo Okta para el tenant de Bayer.
+
+#### Nuevos settings de configuración requeridos (`Web.config`):
+
+| Setting | Descripción |
+|---|---|
+| `Okta.Domain` | URL base del tenant Okta (ej. `https://loginpre.mapfrecr.com`). |
+| `Okta.ClientId` | Client ID de la aplicación Okta. |
+| `Okta.RedirectUri` | URI de redirección registrada en Okta. Debe coincidir exactamente con la configurada en el portal. |
+| `Okta.AuthorizationServerId` | ID del servidor de autorización de Okta (usa `default` si aplica). |
+| `Okta.ServiceApp.ClientId` | Client ID de la Service App utilizada para sincronización de usuarios. |
+| `Okta.ServiceApp.PrivateKeyJwk` | Clave privada en formato JWK (Base64) para firmar el `client_assertion`. |
+| `Okta.ServiceApp.Scopes` | Scopes solicitados (ej. `okta.users.manage okta.groups.read okta.groups.manage`). |
+| `Okta.ServiceApp.AssignGroupName` | Nombre del grupo en Okta al que se asignan los usuarios (opcional). |
+| `Okta.SyncUsers.Tenants` | Lista de `CompanyId` (separados por `;`) cuyos usuarios se sincronizan con Okta. |
+
+> ⚠️ Ajustar `Okta.RedirectUri` según el ambiente (desarrollo, QA, producción). El valor debe coincidir exactamente con la URI registrada en el portal de Okta.
+
+#### Dependencias:
+
+- Registro de la aplicación en el portal de Okta.
+- Service App en Okta con permiso de gestión de usuarios (`okta.users.manage`) y grupos.
+- Clave privada JWK generada y configurada en `Okta.ServiceApp.PrivateKeyJwk`.
+
+---
+
 ## Versión 1.6.187 - Compliance: Se habilita el reporte de la trazabilidad para Compliance (SNAP).
 
 ### Aliados - Scheduler: Manejo de ejecuciones recurrentes, se habilita el manejo de la tabla `ScheduledJob` y la persistencia del resultado de ejecución.

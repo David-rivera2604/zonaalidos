@@ -17,6 +17,7 @@ namespace Architect.API.Core.Business.Security
         public static Architect.API.Core.Contracts.Security.UserMember Create(int companyId, int userId, Architect.API.Core.Contracts.Security.UserMember item, int cod_agt = 0)
         {
             Architect.API.Core.Contracts.Security.UserMember result = item;
+            string originalPassword = item.Password;
             if (result.UserId.IsEmpty())
                 result.UserId = Architect.API.Core.DataAccess.Security.UserMember.RetrieveLastKeyCustom() + 1;
 
@@ -100,6 +101,25 @@ namespace Architect.API.Core.Business.Security
 
             }
 
+            //Se sincroniza el usuario con Okta para los tenants habilitados
+            if (Architect.API.Core.Business.Security.OktaUserManagement.IsTenantEnabled(companyId))
+            {
+                var oktaItem = new Architect.API.Core.Contracts.Security.UserMember
+                {
+                    EMail = item.EMail,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    PhoneNumber = item.PhoneNumber,
+                    Password = originalPassword
+                };
+
+                string oktaMsg = Architect.API.Core.Business.Security.OktaUserManagement.Create(oktaItem);
+                if (string.IsNullOrEmpty(result.responseTronSubAgent))
+                    result.responseTronSubAgent = oktaMsg;
+                else
+                    result.responseTronSubAgent = result.responseTronSubAgent + " | " + oktaMsg;
+            }
+
             if (affectedRows > 0 )
             {
                 SynchronizeUserRoleMember(companyId, userId, result.UserId, item.Roles);
@@ -149,8 +169,9 @@ namespace Architect.API.Core.Business.Security
 
         public static Architect.API.Core.Contracts.Security.UserMember Update(int companyId, int userId, int id, Architect.API.Core.Contracts.Security.UserMember item, int cod_agt = 0)
         {
-            Architect.API.Core.Contracts.Security.UserMember result = Architect.API.Core.DataAccess.Security.UserMember.Retrieve(id, companyId);
 
+            Architect.API.Core.Contracts.Security.UserMember result = Architect.API.Core.DataAccess.Security.UserMember.Retrieve(id, companyId);
+            string originalPassword = item.Password;
             result.UserName = item.UserName;
             result.EMail = item.EMail;
             if (item.Password != "XXXX")
@@ -275,6 +296,25 @@ namespace Architect.API.Core.Business.Security
                 }
 
             }
+            //Se sincroniza el usuario con Okta para los tenants habilitados
+            if (Architect.API.Core.Business.Security.OktaUserManagement.IsTenantEnabled(companyId))
+            {
+                var oktaItem = new Architect.API.Core.Contracts.Security.UserMember
+                {
+                    EMail = item.EMail,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    PhoneNumber = item.PhoneNumber,
+                    Password = originalPassword
+                };
+
+                string oktaMsg = Architect.API.Core.Business.Security.OktaUserManagement.Update(oktaItem);
+                if (string.IsNullOrEmpty(result.responseTronSubAgent))
+                    result.responseTronSubAgent = oktaMsg;
+                else
+                    result.responseTronSubAgent = result.responseTronSubAgent + " | " + oktaMsg;
+            }
+
             if (affectedRows > 0 )
             {
                 SynchronizeUserRoleMember(companyId, userId, id, item.Roles);
@@ -352,6 +392,12 @@ namespace Architect.API.Core.Business.Security
                 affectedRows = Architect.API.Core.DataAccess.Security.UserMember.Delete(id, companyId);
                 if (affectedRows > 0)
                 {
+                    //Se sincroniza la eliminación del usuario con Okta para los tenants habilitados
+                    if (Architect.API.Core.Business.Security.OktaUserManagement.IsTenantEnabled(companyId))
+                    {
+                        Architect.API.Core.Business.Security.OktaUserManagement.Delete(result.EMail);
+                    }
+
                     Core.Business.General.ChangeSet.Create(1002, id, companyId, "Eliminar", string.Format("Se eliminó el usuario '{0}'", result.UserName), userId, result);
                     Architect.Utilities.Cache.RemoveStartWith("SpecFlow");
                 }
