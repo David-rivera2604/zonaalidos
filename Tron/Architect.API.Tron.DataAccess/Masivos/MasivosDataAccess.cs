@@ -45,7 +45,7 @@ namespace Architect.API.Tron.DataAccess.Masivos
         /// </summary>
         /// <param name="codRamo">Código de ramo (opcional).</param>
         /// <returns>Lista de cargas registradas.</returns>
-        public static List<MasivoCarga> Consultar(int? codCia, int? codRamo, string codEstructura, string txtArchivoCarga, int codUsr)
+        public static List<MasivoCarga> Consultar(int? codCia, int codUsr)
         {
             List<MasivoCarga> result = new List<MasivoCarga>();
 
@@ -53,11 +53,7 @@ namespace Architect.API.Tron.DataAccess.Masivos
             {
                 Database.Procedure("EM_MASIVOS.p_lee_masivos")
                     .AddParameter("p_cod_cia", DbType.Int32, 2, codCia)
-                    .AddParameter("p_cod_ramo", DbType.Int32, 5, codRamo)
-                    .AddParameter("p_cod_estructura", DbType.String, 100, codEstructura)
-                    .AddParameter("p_txt_archivo_carga", DbType.String, 255, txtArchivoCarga)
                     .AddParameter("p_updateusercode", DbType.Int32, 9, codUsr)
-                    //.AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
                     .AddParameter("RC1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.InputOutput)
 
                     .Query(currentConnection, "Tron", new Action<IDataReader, string>((reader, key) =>
@@ -72,10 +68,11 @@ namespace Architect.API.Tron.DataAccess.Masivos
                                 txt_archivo_carga = reader.StringValue("txt_archivo_carga"),
                                 num_tam_archivo = reader.IntegerValue("num_tam_archivo"),
                                 archivo_carga = reader.StringValue("archivo_carga"),
+                                txt_archivo_rta = reader.StringValue("txt_archivo_rta"),
+                                num_tam_archivo_rta = reader.IntegerValue("num_tam_archivo_rta"),
+                                archivo_rta = reader.StringValue("archivo_rta"),
                                 cod_usr = reader.IntegerValue("updateusercode"),
-                                fec_actu = reader.DateTimeValue("fec_actu"),
-                                estado = reader.StringValue("estado"),
-                                resultado_proceso = reader.StringValue("resultado_proceso")
+                                fec_actu = reader.DateTimeValue("updatedate")
                             });
                         }
                     }));

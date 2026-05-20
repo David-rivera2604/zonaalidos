@@ -3,9 +3,8 @@ var app = app || {};
 app.Masivos = app.Masivos || {};
 app.Masivos.Api = (function () {
 
-    function ConsultarCargas(codRamo) {
-        var query = codRamo ? ('?codRamo=' + encodeURIComponent(codRamo)) : '';
-        return app.core.Get(app.setting.apipath + 'v1/Masivos/Cargas' + query);
+    function ConsultarCargas() {
+        return app.core.Get(app.setting.apipath + 'v1/Masivos/Cargas');
     }
 
     function CargarCsv(codRamo, file) {

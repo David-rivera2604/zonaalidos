@@ -154,7 +154,7 @@ app.Masivos.Ui = (function () {
 
     function consultarCargas() {
         $('#masivosTbl').bootstrapTable('showLoading');
-        app.Masivos.Api.ConsultarCargas($('#cod_ramo').val())
+        app.Masivos.Api.ConsultarCargas()
             .done(function (data) {
                 if (data != null && data.Mensaje != null) {
                     app.ui.ShowAlert('generalNotify', 'alert-danger', data.Mensaje);

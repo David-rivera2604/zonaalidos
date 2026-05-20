@@ -79,13 +79,13 @@ namespace Architect.API.Tron.Business.Masivos
         /// </summary>
         /// <param name="codRamo">Código del ramo (opcional).</param>
         /// <returns>Lista de cargas registradas.</returns>
-        public static List<MasivoCarga> Consultar(int codUsr, int? codCia = null, int? codRamo = null, string codEstructura = null, string txtArchivoCarga = null)
+        public static List<MasivoCarga> Consultar(int codUsr, int? codCia = null)
         {
             List<MasivoCarga> result = new List<MasivoCarga>();
 
             try
             {
-                result = DataAccess.Masivos.MasivosDataAccess.Consultar(codCia, codRamo, codEstructura, txtArchivoCarga, codUsr);
+                result = DataAccess.Masivos.MasivosDataAccess.Consultar(codCia, codUsr);
             }
             catch (Exception ex)
             {
