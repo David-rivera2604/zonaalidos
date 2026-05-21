@@ -98,16 +98,18 @@ namespace Architect.API.Tron.Business.Masivos
         /// </summary>
         /// <param name="codRamo">Código del ramo.</param>
         /// <param name="fileName">Nombre del archivo a procesar.</param>
-        /// <returns>Resultado del procesamiento.</returns>
+        /// <returns>Resultado del procesamiento con detalle de errores por registro.</returns>
         public static MasivoResult Procesar(int codRamo, string fileName)
         {
             MasivoResult result = new MasivoResult();
 
             try
             {
-                string codEstructura = string.Format("EA_COTIZA:{0}", codRamo);
+                if (!EA_COTIZA.ContainsKey(codRamo)) throw new NotImplementedException("Codigo del ramo no existe");
 
-                result = DataAccess.Masivos.MasivosDataAccess.Procesar(1, codRamo, codEstructura);
+                string codEstructura = EA_COTIZA[codRamo];
+
+                result = DataAccess.Masivos.MasivosDataAccess.Procesar(1, codRamo, codEstructura, fileName);
             }
             catch (Exception ex)
             {

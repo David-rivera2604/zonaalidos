@@ -81,6 +81,7 @@
     <Compile Include="Emision\Estudiantil.cs" />
     <Compile Include="Comun\ConoceTuCliente.cs" />
     <Compile Include="Masivos\MasivoCarga.cs" />
+    <Compile Include="Masivos\MasivoErrorDetalle.cs" />
     <Compile Include="Masivos\MasivoProcesarRequest.cs" />
     <Compile Include="Masivos\MasivoResult.cs" />
     <Compile Include="Pagos\RecibosParaRecobro.cs" />

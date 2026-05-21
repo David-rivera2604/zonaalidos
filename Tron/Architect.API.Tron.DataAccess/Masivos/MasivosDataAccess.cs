@@ -83,37 +83,48 @@ namespace Architect.API.Tron.DataAccess.Masivos
 
         /// <summary>
         /// Ejecuta el procesamiento de una carga masiva previamente registrada.
+        /// Si el cursor devuelve registros indica errores por registro; si viene vacío el proceso fue exitoso.
         /// </summary>
         /// <param name="codCia">Código de compañía.</param>
         /// <param name="codRamo">Código de ramo.</param>
         /// <param name="codEstructura">Código de estructura.</param>
-        /// <returns>Resultado del procesamiento.</returns>
-        public static MasivoResult Procesar(int codCia, int codRamo, string codEstructura)
+        /// <param name="txtArchivoCarga">Nombre del archivo cargado.</param>
+        /// <returns>Resultado del procesamiento con detalle de errores por registro.</returns>
+        public static MasivoResult Procesar(int codCia, int codRamo, string codEstructura, string txtArchivoCarga)
         {
             MasivoResult result = new MasivoResult();
 
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
-                Database.Procedure("p_procesar_masivos")
+                Database.Procedure("EM_MASIVOS.p_procesar_archivo")
                     .AddParameter("p_cod_cia", DbType.Int32, 2, codCia)
                     .AddParameter("p_cod_ramo", DbType.Int32, 5, codRamo)
                     .AddParameter("p_cod_estructura", DbType.String, 100, codEstructura)
-                    .AddParameter("rc1", DbType.RefCursor, 0, null, ParameterDirection.Output)
+                    .AddParameter("p_txt_archivo_carga", DbType.String, 255, txtArchivoCarga)
+                    .AddParameter("rc1", Architect.DataFactory.Enumerations.DbType.RefCursor, 0, null, ParameterDirection.Output)
                     .Query(currentConnection, "Tron", new Action<IDataReader, string>((reader, key) =>
                     {
                         if (key == "rc1")
                         {
-                            string error = reader.StringValue("txt_error");
-                            if (!string.IsNullOrEmpty(error))
+                            result.Detalles.Add(new Contracts.Masivos.MasivoErrorDetalle
                             {
-                                result.Errores.Add(error);
-                            }
+                                num_proceso    = reader.IntegerValue("num_proceso"),
+                                cod_estructura = reader.StringValue("cod_estructura"),
+                                num_registro   = reader.IntegerValue("num_registro"),
+                                tip_error      = reader.StringValue("tip_error"),
+                                txt_error      = reader.StringValue("txt_error"),
+                                txt_ruta_error = reader.StringValue("txt_ruta_error"),
+                                cod_usr        = reader.IntegerValue("cod_usr"),
+                                fec_actu       = reader.DateTimeValue("fec_actu")
+                            });
                         }
                     }));
             }
 
-            result.Exitoso = (result.Errores.Count == 0);
-            result.Mensaje = result.Exitoso ? "Procesamiento completado exitosamente." : "Se encontraron errores durante el procesamiento.";
+            result.Exitoso = (result.Detalles.Count == 0);
+            result.Mensaje = result.Exitoso
+                ? "Procesamiento completado exitosamente."
+                : string.Format("Se encontraron {0} error(es) durante el procesamiento.", result.Detalles.Count);
 
             return result;
         }
