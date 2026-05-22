@@ -236,6 +236,15 @@ namespace aliados.Controllers
         }
 
         /// <summary>
+        /// Muestra la vista de login para usuarios de Mapfre en modo empleado.
+        /// </summary>
+        /// <returns>Vista de Login configurada para modo empleado Mapfre.</returns>
+        public ActionResult Mapfre()
+        {
+            return View("Login");
+        }
+
+        /// <summary>
         /// Redirige a la página de login with el tenant "Carrofácil" preconfigurado.
         /// </summary>
         /// <returns>Redirección a la acción Login con tenant = "Carrofácil".</returns>
