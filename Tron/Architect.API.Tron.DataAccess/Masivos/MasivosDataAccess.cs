@@ -31,7 +31,7 @@ namespace Architect.API.Tron.DataAccess.Masivos
                     .AddParameter("p_cod_estructura", DbType.String, 100, carga.cod_estructura)
                     .AddParameter("p_txt_archivo_carga", DbType.String, 255, carga.txt_archivo_carga)
                     .AddParameter("p_num_tam_archivo", DbType.Int64, 0, carga.num_tam_archivo)
-                    .AddParameter("p_archivo_carga", DbType.Binary, 0, Encoding.UTF8.GetBytes(Encoding.UTF8.GetString(carga.archivo_carga ?? new byte[0])))
+                    .AddParameter("p_archivo_carga", DbType.Binary, 0, carga.archivo_carga)
                     .AddParameter("p_updateusercode", DbType.Int32, 9, carga.cod_usr)
                     .AddParameter("p_resultado", DbType.Int32, 9, 0, ParameterDirection.Output)
                     .Execute(currentConnection, "Tron");
