@@ -24,7 +24,7 @@ app.Masivos.Ui = (function () {
 
         $('#cod_ramo').on('change', function () {
             if (state.pendingProcess) {
-                toastr.warning('Debe presionar <strong>Procesar</strong> antes de cambiar el ramo.', 'Acción bloqueada', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
+                toastr.warning('Debe presionar <strong>Procesar</strong> antes de cambiar el ramo.', 'Aviso', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
                 var prev = $(this).data('prev') || '';
                 $(this).val(prev);
                 return;
@@ -64,7 +64,7 @@ app.Masivos.Ui = (function () {
         var input = e.target;
 
         if (state.pendingProcess) {
-            toastr.warning('Debe presionar <strong>Procesar</strong> antes de seleccionar un nuevo archivo.', 'Acción bloqueada', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
+            toastr.warning('Debe presionar <strong>Procesar</strong> antes de seleccionar un nuevo archivo.', 'Aviso', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
             $(input).val('');
             return;
         }
@@ -77,7 +77,7 @@ app.Masivos.Ui = (function () {
         }
 
         if (!isCsvFile(file.name)) {
-            toastr.error('Solo se permiten archivos con formato .csv', 'Validación', { timeOut: 9000, closeButton: true, progressBar: true });
+            toastr.error('Solo se permiten archivos con formato .csv', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
             cleanFileSelection();
             return;
         }
@@ -123,22 +123,22 @@ app.Masivos.Ui = (function () {
 
     function validateUpload() {
         if (state.pendingProcess) {
-            toastr.warning('Debe presionar <strong>Procesar</strong> antes de cargar un nuevo archivo.', 'Acción bloqueada', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
+            toastr.warning('Debe presionar <strong>Procesar</strong> antes de cargar un nuevo archivo.', 'Aviso', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
             return false;
         }
         var codRamo = $('#cod_ramo').val();
         if (!codRamo) {
-            toastr.error('Debe seleccionar el código de ramo', 'Validación', { timeOut: 9000, closeButton: true, progressBar: true });
+            toastr.error('Debe seleccionar el código de ramo', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
             return false;
         }
 
         if (!state.selectedFile) {
-            toastr.error('Debe seleccionar un archivo CSV para cargar', 'Validación', { timeOut: 9000, closeButton: true, progressBar: true });
+            toastr.error('Debe seleccionar un archivo CSV para cargar', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
             return false;
         }
 
         if (!isCsvFile(state.selectedFile.name)) {
-            toastr.error('El archivo seleccionado no tiene formato .csv', 'Validación', { timeOut: 9000, closeButton: true, progressBar: true });
+            toastr.error('El archivo seleccionado no tiene formato .csv', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
             return false;
         }
 
@@ -148,12 +148,12 @@ app.Masivos.Ui = (function () {
     function validateProcess() {
         var codRamo = $('#cod_ramo').val();
         if (!codRamo) {
-            toastr.error('Debe seleccionar el código de ramo', 'Validación', { timeOut: 9000, closeButton: true, progressBar: true });
+            toastr.error('Debe seleccionar el código de ramo', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
             return false;
         }
 
         if (!state.uploadedFileName && !state.selectedFile) {
-            toastr.error('Debe cargar un archivo CSV antes de procesar', 'Validación', { timeOut: 9000, closeButton: true, progressBar: true });
+            toastr.error('Debe cargar un archivo CSV antes de procesar', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
             return false;
         }
 
