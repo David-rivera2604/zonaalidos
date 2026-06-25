@@ -330,7 +330,7 @@ app.CentralCase = (function () {
                 })
         },
         New: function (row) {
-            let newRow = { Id: 0, Title: null, Description: null, Priority: 4, InstanceId: 0, Reference1: null, Reference2: null, Reference3: null, Reference4: null, Reference5: null, ContactMainName: null, ContactMainEmail: null, Status: 0, Label: null, SubStatus: 0, SubLabel: null, FlowId: null, UserId: null }
+            let newRow = { Id: 0, Title: null, Description: null, Priority: null, InstanceId: 0, Reference1: null, Reference2: null, Reference3: null, Reference4: null, Reference5: null, ContactMainName: null, ContactMainEmail: null, Status: 0, Label: null, SubStatus: 0, SubLabel: null, FlowId: null, UserId: null }
             if (row !== undefined) {
                 row.Id = 0;
                 newRow = row;
