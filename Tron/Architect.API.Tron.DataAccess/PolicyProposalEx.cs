@@ -114,6 +114,19 @@ namespace Architect.API.Tron.DataAccess
                                 .AddParameter("ProposalId", DbType.AnsiString, 13, proposalId)
                                 .Execute(null, "Research");
         }
+
+        /// <summary>
+        /// Elimina un registro en la tabla PolicyProposal por medio del numero de propuesta.
+        /// </summary>
+        /// <returns>Cantidad de registros eliminados.</returns>
+        public static int Delete(string proposalId, int companyId)
+        {
+            return Database.Delete("DELETE FROM PolicyProposal " +
+                                    "WHERE CompanyId=:CompanyId AND ProposalId=:ProposalId")
+                                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                                .AddParameter("ProposalId", DbType.AnsiString, 13, proposalId)
+                                .Execute(null, "Research");
+        }
     }
 
 }

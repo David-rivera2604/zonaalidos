@@ -118,6 +118,7 @@
     <Compile Include="Presupuesto\API\Riesgo.cs" />
     <Compile Include="Presupuesto\API\Tercero.cs" />
     <Compile Include="Presupuesto\DesgloseEconomico.cs" />
+    <Compile Include="Presupuesto\PresupuestoResult.cs" />
     <Compile Include="Ramo\A1001800.cs" />
     <Compile Include="Ramo\A1002150.cs" />
     <Compile Include="Ramo\G2000010.cs" />
