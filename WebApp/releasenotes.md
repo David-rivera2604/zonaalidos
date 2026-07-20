@@ -2,7 +2,7 @@
 
 ## Versión 1.6.189
 
-### Aliados : Eliminación de presupuestyos en Zona de Aliados.
+### Aliados : Eliminación de presupuestos en Zona de Aliados.
 
 #### Funcionalidades implementadas:
 
