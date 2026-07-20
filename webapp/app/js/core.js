@@ -287,7 +287,7 @@ app.core = (function () {
                     xhr.setRequestHeader('Accept-Language', language);
             }
         }).done(function (data, textStatus, jqXHR) {
-            if (data != null && data.Success !== undefined) {
+            if (data != null && data.Success !== undefined && data.Reason !== undefined) {
                 if (data.Success) {
                     toastr.success(data.Reason, '', { timeOut: 7000, closeButton: true, progressBar: true });
                 } else {

@@ -3,6 +3,37 @@
 app.Extend = (function () {
 
     return {
+        PresupuestoFormatter: function (value, row, index, field) {
+            var ramo = row.PROPOSALID.substring(0, 3);
+            var producto = '';
+            if (ramo == 302) { producto = 'mapfremas'; }
+            if (ramo == 201) { producto = 'hogartotal'; }
+            if (ramo == 202) { producto = 'multirriesgo'; }
+            if (ramo == 401) { producto = 'SaldoDeudor'; }
+            return (row.STATUS === 33 ?
+                `<a href='${app.setting.basepath}emision/${producto}?mode=continue&presupuesto=${row.PROPOSALID}'>${value}</a>`
+                : `<span>${value}</span>`) 
+                + `<button type='button' name='deleteprop' class='btn btn-sm btn-link event' title='Permite eliminar el presupuesto #${row.PROPOSALID}'><i class='fa fa-close text-danger'></i></button>`;
+
+        },
+        EliminarPresupuesto: function (row) {
+            toastr.warning(`Si está seguro de querer eliminar el presupuesto '${row.PROPOSALID}' haga clic aquí`, null,
+                {
+                    timeOut: 5000, closeButton: true, progressBar: true,
+                    onclick: function () {                        
+                        $('.ibox-content').toggleClass('sk-loading');
+
+                        app.core.Delete(`${app.setting.apipath}v1/Presupuestos/${row.PROPOSALID}`)
+                            .done(function (data, textStatus, jqXHR) {
+                                toastr.success(`el presupuesto '${row.PROPOSALID}' fue eliminado`, "", { timeOut: 5000, closeButton: true, progressBar: true });
+                                app.ViewerQuery.Refresh(undefined, $('#RoleMemberGridTbl'), 333, '', 1);
+                            }).always(function () {
+                                $('.ibox-content').toggleClass('sk-loading');
+                            });
+                    }
+                });
+            
+        },
         EmisionFormatter: function (value, row, index, field) {
             let quote = '', mode = 'resume';
             //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||

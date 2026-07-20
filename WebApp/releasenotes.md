@@ -1,5 +1,14 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.189
+
+### Aliados : Eliminación de presupuestyos en Zona de Aliados.
+
+#### Funcionalidades implementadas:
+
+- Se habilita por medio de un icono rojo al lado del número de presupuesto, la posibilidad de eliminar el presupuesto.
+
+---
 ## Versión 1.6.188 - Autenticación Okta - OAuth 2.0 (OIDC) con sincronización de usuarios.
 
 ### Aliados - Integración de inicio de sesión federado con Okta mediante el flujo Authorization Code de OAuth 2.0.
