@@ -3,6 +3,17 @@
 app.Extend = (function () {
 
     return {
+        AccionesClienteFormatter: function (value, row, index, field) {
+            let html = [];
+            html.push('<span class=columnBtn>');
+            html.push('<button name=\"printr\" type=\"button\"class=\"btn btn-sm btn-white event\" title=\"Permite imprimir el recibo\"><i class=\"fa fa-print\"></i></button>');
+            if (row.POS_RECIBO === 1) {
+                html.push('<button type=\"button\" name=\"payment\" class=\"btn btn-sm btn-white event\" title=\"Permite pagar el recibo actual\"><i class=\"fa fa-shopping-cart\"></i></button>');
+            }
+            html.push('</span>');
+
+            return html.join('');
+        },
         PresupuestoFormatter: function (value, row, index, field) {
             var ramo = row.PROPOSALID.substring(0, 3);
             var producto = '';

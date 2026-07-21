@@ -1,5 +1,15 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.190
+
+### Aliados : Zona Clientes, consulta de recibos pendientes.
+
+#### Funcionalidades implementadas:
+
+- Se habilita la posibilidad de pagar solo el primer recibo pendiente.
+
+---
+
 ## Versión 1.6.189
 
 ### Aliados : Eliminación de presupuestos en Zona de Aliados.
