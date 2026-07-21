@@ -1072,6 +1072,7 @@ a {
     z-index: 100;
     transition: padding 0.5s ease 0s, background 0.5s ease 0s;
     padding-top: 10px !important;
+    pointer-events: none;
 }
 
 
@@ -1086,6 +1087,11 @@ a {
         z-index: 101;
         transition: border-top 0.5s ease 0s;
     }
+
+.menu:hover > .menu-dropdown,
+.inputche:checked ~ ul.menu-dropdown {
+    pointer-events: auto;
+}
 
 .menu:not(:hover) > .menu-dropdown {
     padding: 0px;

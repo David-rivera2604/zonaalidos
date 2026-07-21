@@ -1,5 +1,14 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.191
+
+### Aliados : Boton de agregar usuarios no se habilita en Aliados DES-QA.
+
+#### Funcionalidades implementadas:
+
+- Al agregar la opcion del menejo de lenguaje se bloque la zona del click para los botones de agregar de los mantenimientos.
+
+---
 ## Versión 1.6.190
 
 ### Aliados : Zona Clientes, consulta de recibos pendientes.
