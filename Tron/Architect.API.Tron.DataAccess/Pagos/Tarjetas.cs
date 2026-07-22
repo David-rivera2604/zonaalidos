@@ -4,6 +4,7 @@ using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
+
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Tron.DataAccess.Pagos
@@ -57,7 +58,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
 
             int recordCount = (int)Database.Select("SELECT COUNT(COD_DOCUM) " +
                               "FROM BOVEDA " +
-                             "WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA AND NUM_SPTO=:NUM_SPTO")
+                             "WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA AND NUM_SPTO=:NUM_SPTO AND STATUS<9")
                             .AddParameter("TIP_DOCUM", DbType.AnsiString, 3, TIP_DOCUM)
                             .AddParameter("COD_DOCUM", DbType.AnsiString, 20, COD_DOCUM)
                             .AddParameter("NUM_POLIZA", DbType.String, 13, num_poliza)
@@ -97,37 +98,43 @@ namespace Architect.API.Tron.DataAccess.Pagos
             return result;
         }
 
-        public static int UpdateRejectionCount(string num_poliza, string tip_docum, string cod_docum, int numberOfRetries, string reasonLastRejected, int status, DateTime nextCollectAttempt,  IDbConnection connection = null)
+        public static int UpdateRejectionCount(string num_poliza, string tip_docum, string cod_docum, int numberOfRetries, string reasonLastRejected, int status, DateTime nextCollectAttempt, IDbConnection connection = null)
         {
-            return (int)Database.Update("BOVEDA", DataFactory.Enumerations.ExecuteMode.CommandBuilder)
-                            .Column("NumberOfRetries", DbType.Int32, 3, numberOfRetries)
-                            .Column("ReasonLastRejected", DbType.AnsiString, 100, reasonLastRejected)
-                            .Column("Status", DbType.Int32, 1, status)
-                            .Column("NextCollectAttempt", DbType.DateTime, 0, nextCollectAttempt)
-                            .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
-                            .Filter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
-                            .Filter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
-                            .Filter("NUM_POLIZA", DbType.String, 13, num_poliza)
-                            .FilterCustom("STATUS", DbType.Int32, 1, 0, ">")
+            string statement = @"UPDATE BOVEDA 
+SET NumberOfRetries=:NumberOfRetries, ReasonLastRejected=:ReasonLastRejected, Status=:Status, NextCollectAttempt=:NextCollectAttempt, UpdateDate=:UpdateDate 
+WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA AND STATUS>0 AND STATUS<9";
+
+            return Database.Update(statement)
+                            .AddParameter("NumberOfRetries", DbType.Int32, 3, numberOfRetries)
+                            .AddParameter("ReasonLastRejected", DbType.AnsiString, 100, reasonLastRejected)
+                            .AddParameter("Status", DbType.Int32, 1, status)
+                            .AddParameter("NextCollectAttempt", DbType.DateTime, 0, nextCollectAttempt)
+                            .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                            .AddParameter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
+                            .AddParameter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
+                            .AddParameter("NUM_POLIZA", DbType.String, 13, num_poliza)
                             .Execute(connection, "Research");
         }
-    
+
         public static int UpdateRejectionCount(string num_poliza, string tip_docum, string cod_docum, int numberOfRetries, string reasonLastRejected, IDbConnection connection = null)
         {
-            return (int)Database.Update("BOVEDA", DataFactory.Enumerations.ExecuteMode.CommandBuilder)
-                            .Column("NumberOfRetries", DbType.Int32, 3, numberOfRetries)
-                            .Column("ReasonLastRejected", DbType.AnsiString, 100, reasonLastRejected)
-                            .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
-                            .Filter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
-                            .Filter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
-                            .Filter("NUM_POLIZA", DbType.String, 13, num_poliza)
-                            .FilterCustom("STATUS", DbType.Int32, 1, 0, ">")
+            string statement = @"UPDATE BOVEDA 
+SET NumberOfRetries=:NumberOfRetries, ReasonLastRejected=:ReasonLastRejected, UpdateDate=:UpdateDate 
+WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA AND STATUS>0 AND STATUS<9";
+
+            return Database.Update(statement)
+                            .AddParameter("NumberOfRetries", DbType.Int32, 3, numberOfRetries)
+                            .AddParameter("ReasonLastRejected", DbType.AnsiString, 100, reasonLastRejected)
+                            .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                            .AddParameter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
+                            .AddParameter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
+                            .AddParameter("NUM_POLIZA", DbType.String, 13, num_poliza)
                             .Execute(connection, "Research");
         }
 
         public static int RetrieveNumberOfRetries(string num_poliza, string tip_docum, string cod_docum, IDbConnection connection = null)
         {
-            return (int)Database.Select("SELECT NVL(NumberOfRetries, 0) FROM BOVEDA WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA")
+            return (int)Database.Select("SELECT NVL(NumberOfRetries, 0) FROM BOVEDA WHERE TIP_DOCUM=:TIP_DOCUM AND COD_DOCUM=:COD_DOCUM AND NUM_POLIZA=:NUM_POLIZA AND STATUS>0 AND STATUS<9")
                             .AddParameter("TIP_DOCUM", DbType.AnsiString, 3, tip_docum)
                             .AddParameter("COD_DOCUM", DbType.AnsiString, 20, cod_docum)
                             .AddParameter("NUM_POLIZA", DbType.String, 13, num_poliza)

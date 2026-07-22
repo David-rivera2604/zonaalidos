@@ -1,5 +1,15 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.193
+
+### Aliados : Cuando se suscribe una tarjeta, reemplazar la anterior en boveda.
+
+#### Funcionalidades implementadas:
+
+- Cuando se hacen nuevas suscripciones de tarjetas, la tarjeta anterior en boveda queda con estado igual a nueve.
+- Se ajustaron los proceso que controlan los reintentos para recurrencia ya que no estaban conciderando el estado nueve y procedian a cambiarlo a 1.
+
+---
 ## Versión 1.6.192
 
 ### Aliados : Cambio de Contraseña desde el Login.
