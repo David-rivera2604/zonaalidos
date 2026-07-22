@@ -126,7 +126,7 @@ app.login = (function () {
                 $('#ForgotSend').prop("disabled", true);
                 $('#ForgotSend').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ' + app.language.getTranslationText('ForgotSendLoadingValidating', 'Validando...'));
 
-                app.core.Post(app.setting.apipath + 'v1/Security/SendOTP', JSON.stringify({ Tenant: $('#Tenant').val(), EMail: $('#ForgotMail').val() }))
+                app.core.Post(app.setting.apipath + 'v1/Security/SendOTP', JSON.stringify({ Tenant: $('#Tenant').val(), EMail: $('#ForgotMail').val() }), undefined, undefined, false)
                     .done(function (data, textStatus, jqXHR) {
                         if (!data.Successful)
                             toastr.error(data.Reason, app.language.getTranslationText('GenericErrorTitle', 'Ha ocurrido un error'), { timeOut: 10000, closeButton: true, progressBar: true });

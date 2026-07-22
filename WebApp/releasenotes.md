@@ -1,5 +1,14 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.192
+
+### Aliados : Cambio de Contraseña desde el Login.
+
+#### Funcionalidades implementadas:
+
+- Se ajusta los llamados del servicio para poder recuperar la contraseña desde el login.
+
+---
 ## Versión 1.6.191
 
 ### Aliados : Boton de agregar usuarios no se habilita en Aliados DES-QA.
