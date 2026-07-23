@@ -1,5 +1,25 @@
 ﻿# Release Notes - Aliados
 
+## Versión 1.6.194
+
+### Aliados: Configuración multi-tenant para Okta.
+
+#### Funcionalidades implementadas:
+
+- La configuración de dominio Okta ahora se resuelve dinámicamente según el tenant de acceso, permitiendo diferentes instancias de Okta por tenant.
+- Se elimina el setting único `Okta.Domain` y se reemplaza con settings específicos por tenant: `Okta.Domain.{tenant}` (ej. `Okta.Domain.clientes`, `Okta.Domain.bayer`).
+
+#### Nuevos settings de configuración requeridos (`Web.config`):
+
+| Setting | Descripción | Ejemplo |
+|---|---|---|
+| `Okta.Domain.clientes` | URL base del tenant Okta para el tenant **clientes**. | `https://loginpre.mapfrecr.com` |
+| `Okta.Domain.bayer` | URL base del tenant Okta para el tenant **bayer**. | `https://loginpre.mapfrecr.com` |
+
+> ℹ️ **Nota:** El setting anterior `Okta.Domain` ha sido eliminado. Cada tenant debe contar con su propio setting `Okta.Domain.{tenant}`.
+
+---
+
 ## Versión 1.6.193
 
 ### Aliados : Cuando se suscribe una tarjeta, reemplazar la anterior en boveda.

@@ -22,7 +22,8 @@ namespace aliados.Controllers
     /// propaga a través de la sesión hasta completar el flujo de autenticación.
     ///
     /// Settings requeridos en Web.config:
-    /// - Okta.Domain                : URL base del tenant de Okta (ej. https://your-org.okta.com).
+    /// - Okta.Domain                : URL base del tenant de Okta (fallback si no existe Okta.Domain.{tenant}).
+    /// - Okta.Domain.{tenant}       : URL base específica por tenant (ej. Okta.Domain.clientes, Okta.Domain.bayer).
     /// - Okta.ClientId              : ID de la aplicación registrada en Okta.
     /// - Okta.ClientSecret          : Secreto de cliente de la app registrada.
     /// - Okta.RedirectUri           : URI de redirección registrada en Okta.
@@ -69,7 +70,7 @@ namespace aliados.Controllers
             Session["okta_tenant"] = tenant;
 
             string authorizeUrl =
-                $"{GetAuthorizationServerBaseUrl()}/v1/authorize" +
+                $"{GetAuthorizationServerBaseUrl(tenant)}/v1/authorize" +
                 $"?client_id={Uri.EscapeDataString(clientId)}" +
                 "&response_type=code" +
                 $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
@@ -118,7 +119,7 @@ namespace aliados.Controllers
                 return Redirect(loginUrl);
             }
 
-            var tokens = await ExchangeCodeForTokensAsync(code);
+            var tokens = await ExchangeCodeForTokensAsync(code, tenant);
             if (tokens == null)
             {
                 TempData["OktaError"] = "No fue posible obtener el token de Okta. Intente nuevamente.";
@@ -130,7 +131,7 @@ namespace aliados.Controllers
 
             if (string.IsNullOrEmpty(email) || !email.Contains("@"))
             {
-                email = await GetEmailFromUserInfoAsync(tokens.AccessToken);
+                email = await GetEmailFromUserInfoAsync(tokens.AccessToken, tenant);
             }
 
             if (string.IsNullOrEmpty(email) || !email.Contains("@"))
@@ -203,7 +204,7 @@ namespace aliados.Controllers
             string aliadosBaseUrl = WebConfigurationManager.AppSettings["Aliados.URL.Base"];
             string postLogoutRedirect = aliadosBaseUrl + "/Acceso/" + tenant;
 
-            string url = $"{GetAuthorizationServerBaseUrl()}/v1/logout" +
+            string url = $"{GetAuthorizationServerBaseUrl(tenant)}/v1/logout" +
                 $"?post_logout_redirect_uri={Uri.EscapeDataString(postLogoutRedirect)}";
 
             if (!string.IsNullOrEmpty(idTokenHint))
@@ -217,15 +218,16 @@ namespace aliados.Controllers
         /// el endpoint de token de Okta.
         /// </summary>
         /// <param name="code">Código de autorización devuelto por Okta tras la autenticación del usuario.</param>
+        /// <param name="tenant">Nombre del tenant para resolver el dominio Okta correcto.</param>
         /// <returns>
         /// Objeto con <c>AccessToken</c> e <c>IdToken</c> si el intercambio fue exitoso; <c>null</c> en caso contrario.
         /// </returns>
-        private async Task<OktaTokens> ExchangeCodeForTokensAsync(string code)
+        private async Task<OktaTokens> ExchangeCodeForTokensAsync(string code, string tenant)
         {
             string clientId = WebConfigurationManager.AppSettings["Okta.ClientId"];
             string clientSecret = WebConfigurationManager.AppSettings["Okta.ClientSecret"];
             string redirectUri = ResolveRedirectUri();
-            string tokenEndpoint = $"{GetAuthorizationServerBaseUrl()}/v1/token";
+            string tokenEndpoint = $"{GetAuthorizationServerBaseUrl(tenant)}/v1/token";
 
             using (var client = new HttpClient())
             {
@@ -259,14 +261,16 @@ namespace aliados.Controllers
         /// Consulta el endpoint userinfo de Okta para obtener el email del usuario
         /// cuando no es posible extraerlo del JWT.
         /// </summary>
-        private async Task<string> GetEmailFromUserInfoAsync(string accessToken)
+        /// <param name="accessToken">Access Token de Okta devuelto en el intercambio de código.</param>
+        /// <param name="tenant">Nombre del tenant para resolver el dominio Okta correcto.</param>
+        private async Task<string> GetEmailFromUserInfoAsync(string accessToken, string tenant)
         {
             if (string.IsNullOrEmpty(accessToken))
                 return null;
 
             try
             {
-                string userInfoEndpoint = $"{GetAuthorizationServerBaseUrl()}/v1/userinfo";
+                string userInfoEndpoint = $"{GetAuthorizationServerBaseUrl(tenant)}/v1/userinfo";
 
                 using (var client = new HttpClient())
                 {
@@ -321,11 +325,21 @@ namespace aliados.Controllers
 
         /// <summary>
         /// Construye la URL base del Authorization Server de Okta a partir de los settings.
+        /// Resuelve dinámicamente el dominio según el tenant: intenta Okta.Domain.{tenant}, 
+        /// si no existe usa el fallback Okta.Domain.
         /// Formato: {Okta.Domain}/oauth2/{Okta.AuthorizationServerId}
         /// </summary>
-        private static string GetAuthorizationServerBaseUrl()
+        private static string GetAuthorizationServerBaseUrl(string tenant)
         {
-            string domain = (WebConfigurationManager.AppSettings["Okta.Domain"] ?? string.Empty).TrimEnd('/');
+            string key = $"Okta.Domain.{tenant}";
+            string domain = WebConfigurationManager.AppSettings[key];
+
+            // Si no existe la clave específica del tenant, usar fallback Okta.Domain
+            if (string.IsNullOrEmpty(domain))
+                domain = WebConfigurationManager.AppSettings["Okta.Domain"] ?? string.Empty;
+
+            domain = domain.TrimEnd('/');
+
             string authServerId = WebConfigurationManager.AppSettings["Okta.AuthorizationServerId"];
             if (string.IsNullOrWhiteSpace(authServerId))
                 authServerId = "default";

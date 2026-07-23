@@ -22,7 +22,8 @@ namespace Architect.API.Core.Business.Security
     /// envía como Bearer a la Users API.
     ///
     /// Settings requeridos en Web.config:
-    ///  - Okta.Domain                     : URL base del tenant (ej. https://loginpre.mapfrecr.com).
+    ///  - Okta.Domain                     : URL base del tenant (fallback si no existe Okta.Domain.{tenant}).
+    ///  - Okta.Domain.{tenant}           : URL base específica por tenant (ej. Okta.Domain.clientes).
     ///  - Okta.ServiceApp.ClientId        : Client ID de la Service App.
     ///  - Okta.ServiceApp.PrivateKeyJwk   : Clave privada en formato JWK (JSON serializado, incluye kid)
     ///                                      codificada en Base64 en una sola línea.
@@ -487,7 +488,29 @@ namespace Architect.API.Core.Business.Security
 
         private static string BaseUrl()
         {
-            return (ConfigurationManager.AppSettings["Okta.Domain"] ?? string.Empty).TrimEnd('/');
+            return BaseUrl(null);
+        }
+
+        /// <summary>
+        /// Obtiene la URL base del tenant de Okta.
+        /// Si se proporciona un tenant, intenta resolver Okta.Domain.{tenant}.
+        /// Si no existe o tenant es nulo, usa el fallback Okta.Domain.
+        /// </summary>
+        private static string BaseUrl(string tenant)
+        {
+            string domain = null;
+
+            if (!string.IsNullOrEmpty(tenant))
+            {
+                string key = $"Okta.Domain.{tenant}";
+                domain = ConfigurationManager.AppSettings[key];
+            }
+
+            // Si no existe la clave específica del tenant, usar fallback Okta.Domain
+            if (string.IsNullOrEmpty(domain))
+                domain = ConfigurationManager.AppSettings["Okta.Domain"] ?? string.Empty;
+
+            return domain.TrimEnd('/');
         }
 
         /// <summary>
