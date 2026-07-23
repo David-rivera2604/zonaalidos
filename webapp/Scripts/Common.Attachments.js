@@ -595,7 +595,7 @@ app.Attachments = (function () {
             cache: false,
             timeout: 600000,
             beforeSend: function (xhr) {
-                if (_data.AlternateToken != null && _data.AlternateToken != '' && _data.AlternateToken != 'null') {
+                if (_data?.AlternateToken != null && _data.AlternateToken != '' && _data.AlternateToken != 'null') {
                     xhr.setRequestHeader('Authorization', 'Bearer ' + _data.AlternateToken);
                 }
                 else {

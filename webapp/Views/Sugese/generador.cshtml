@@ -7,7 +7,7 @@
 
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Generador de archivos SUGESE</h5>
+        <h5>Procesar archivo Excel</h5>
         <div class="ibox-tools">
             <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
         </div>
@@ -17,7 +17,7 @@
         <div id="generalNotify"></div>
 
         <div class='col-md-12 Title'>
-            <span>Datos para la generación</span>
+            <span>Genera el archivo XML requerido para su envío a partir de un archivo Excel, conforme al modelo SUGESE indicado.</span>
 
             <!-- Single button -->
             <div class="btn-group pull-right">
@@ -35,14 +35,14 @@
         </div>
 
         <!-- IMPORTANTE: El JS requiere un formulario con id="MainForm" -->
-        <form id="MainForm" class="form-horizontal" enctype="multipart/form-data">
+        <form id="MainForm" class="form-horizontal" enctype="multipart/form-data" style="padding-top: 18px">
             <fieldset>
                 <div class="form-row">
 
                     <!-- Modelo -->
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group">
-                            <label for="modelo" class="control-label">Tipo de modelo *</label>
+                            <label for="modelo" class="control-label">Modelo<span class='required-mark'>*</span></label>
                             <select id="modelo" name="modelo" class="form-control" required>
                                 <option value="">Seleccione…</option>
                                 <option value="Bomberos">Aporte bomberos</option>
@@ -70,7 +70,7 @@
                     <!-- Mes -->
                     <div class="col-sm-6 col-md-2" id="div_periodo_mensual">
                         <div class="form-group">
-                            <label for="pediodo_mensual">Mes *</label>
+                            <label for="pediodo_mensual" class="control-label">Mes <span class='required-mark'>*</span></label>
                             <select id="pediodo_mensual" name="pediodo_mensual" class="form-control">
                                 <option value="1">Enero</option>
                                 <option value="2">Febrero</option>
@@ -92,7 +92,7 @@
                     <!-- Trimestre -->
                     <div class="col-sm-6 col-md-2" id="div_pediodo_trimestral">
                         <div class="form-group">
-                            <label for="pediodo_trimestral">Trimestre *</label>
+                            <label for="pediodo_trimestral" class="control-label">Trimestre <span class='required-mark'>*</span></label>
                             <select id="pediodo_trimestral" name="pediodo_trimestral" class="form-control hidden">
                                 <option value="1">Trimestre 1</option>
                                 <option value="2">Trimestre 2</option>
@@ -106,7 +106,7 @@
                     <!-- Año -->
                     <div class="col-sm-6 col-md-2">
                         <div class="form-group">
-                            <label for="ano">Año *</label>
+                            <label for="ano" class="control-label">Año <span class='required-mark'>*</span></label>
                             <input id="ano" name="ano" type="number" class="form-control" />
                             <div id="ano_validate"></div>
                         </div>
@@ -115,7 +115,7 @@
                     <!-- Archivo -->
                     <div class="col-sm-12 col-md-4">
                         <div class="form-group">
-                            <label for="fileUpload">Archivo Excel *</label>
+                            <label for="fileUpload" class="control-label">Archivo Excel <span class='required-mark'>*</span></label>
                             <div class="input-group">
                                 <input id="fileNameUpload" name="fileNameUpload" type="text" class="form-control" readonly />
                                 <input id="fileServerNameUpload" name="fileServerNameUpload" type="hidden" />
