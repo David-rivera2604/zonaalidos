@@ -87,7 +87,11 @@ INSERT INTO VISUALIZATIONS (ID,"SEQUENCE","TYPE",CAPTION,DESCRIPTION,ICON,ICONCL
       }
     ]
   }
-}'),'Tron',1,NULL,NULL,NULL,NULL,TO_CLOB('SELECT row_number() OVER (ORDER BY a.num_recibo ASC) AS pos_recibo, a.num_poliza, a.num_recibo, a.fec_efec_recibo, a.fec_vcto_recibo,a.fec_vcto_pago, a.cod_mon, a.imp_recibo,
+}'),'Tron',1,NULL,NULL,NULL,NULL,TO_CLOB('SELECT CASE 
+	WHEN a.tip_situacion != ''CT'' THEN
+	row_number() OVER (PARTITION BY CASE WHEN a.tip_situacion = ''CT'' THEN 1 ELSE 0 END ORDER BY a.num_recibo ASC) 
+	ELSE 0
+END  AS pos_recibo, a.num_poliza, a.num_recibo, a.fec_efec_recibo, a.fec_vcto_recibo,a.fec_vcto_pago, a.cod_mon, a.imp_recibo,
      a.tip_situacion, b.nom_situacion situacion_recibo, decode(a.tip_situacion, ''CT'', ''Cobrado'', ''Pendiente'') tip_situacion_desc, bo.card
   FROM a2990700 a
   LEFT JOIN a5020500 b ON b.tip_situacion = a.tip_situacion
