@@ -20,6 +20,11 @@ namespace aliados.Controllers
             return View();
         }
 
+        public ActionResult ModelSupervisor()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult ProcesaArchivo(string modelo, int pediodoMensual, int pediodoTrimestral, int ano, string excelFileName, string internalFileName)
         {

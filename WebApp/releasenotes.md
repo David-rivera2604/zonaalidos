@@ -1,53 +1,24 @@
 ﻿# Release Notes - Aliados
 
-## Versión 1.6.194
-
-### Aliados: Configuración multi-tenant para Okta.
-
-#### Funcionalidades implementadas:
-
-- La configuración de dominio Okta ahora se resuelve dinámicamente según el tenant de acceso, permitiendo diferentes instancias de Okta por tenant.
-- Se elimina el setting único `Okta.Domain` y se reemplaza con settings específicos por tenant: `Okta.Domain.{tenant}` (ej. `Okta.Domain.clientes`, `Okta.Domain.bayer`).
-
-#### Nuevos settings de configuración requeridos (`Web.config`):
-
-| Setting | Descripción | Ejemplo |
-|---|---|---|
-| `Okta.Domain.clientes` | URL base del tenant Okta para el tenant **clientes**. | `https://loginpre.mapfrecr.com` |
-| `Okta.Domain.bayer` | URL base del tenant Okta para el tenant **bayer**. | `https://loginpre.mapfrecr.com` |
-
-> ℹ️ **Nota:** El setting anterior `Okta.Domain` ha sido eliminado. Cada tenant debe contar con su propio setting `Okta.Domain.{tenant}`.
-
----
-
-## Versión 1.6.193
-
-### Aliados : Cuando se suscribe una tarjeta, reemplazar la anterior en boveda.
-
-#### Funcionalidades implementadas:
-
-- Cuando se hacen nuevas suscripciones de tarjetas, la tarjeta anterior en boveda queda con estado igual a nueve.
-- Se ajustaron los proceso que controlan los reintentos para recurrencia ya que no estaban conciderando el estado nueve y procedian a cambiarlo a 1.
-
----
-## Versión 1.6.192
-
-### Aliados : Cambio de Contraseña desde el Login.
-
-#### Funcionalidades implementadas:
-
-- Se ajusta los llamados del servicio para poder recuperar la contraseña desde el login.
-
----
 ## Versión 1.6.191
 
-### Aliados : Boton de agregar usuarios no se habilita en Aliados DES-QA.
+### Aliados - SUGESE: Unificación de generación y envío en "Modelos de supervisión".
 
 #### Funcionalidades implementadas:
 
-- Al agregar la opcion del menejo de lenguaje se bloque la zona del click para los botones de agregar de los mantenimientos.
+- Se crea la vista `sugese/modelsupervisor`, que unifica en una sola pantalla las funciones de `sugese/generador` y `sugese/envio`, con un selector de modo **Generador** / **Envío**.
+- En modo Generador el botón **Enviar a SUGESE** aparece tras generar con éxito, y el envío pide **confirmación** con un resumen antes de transmitir.
+- Se corrige la lectura del XML a enviar (carpeta `files`), el manejo de errores de comunicación con SUGESE y la validación de archivos XML (`FileSanitizer`).
+- Se agrega el manual de usuario de la pantalla en `technical_documets/modelos.de.supervision.sugese.html`.
+
+#### Dependencias:
+
+- No aplica.
+
+Commit: 913c55c7 — 2026-07-24
 
 ---
+
 ## Versión 1.6.190
 
 ### Aliados : Zona Clientes, consulta de recibos pendientes.

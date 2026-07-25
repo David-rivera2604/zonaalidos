@@ -252,7 +252,9 @@ namespace Architect.Sugese.Manager
                 Reason = string.Empty
             };
 
-            string serverPath = HttpContext.Current.Server.MapPath("../uploads");
+            // Los archivos subidos se almacenan en la carpeta "files" (igual que en ProcesaArchivo),
+            // no en "uploads". Por eso el envío debe leer el XML desde "files".
+            string serverPath = HttpContext.Current.Server.MapPath("../files");
             xmlFileName = string.Format(@"{0}\{1}", serverPath, internalFileName);
 
             try
@@ -269,15 +271,36 @@ namespace Architect.Sugese.Manager
                 //    " el archivo " + excelFileName + " para el modelo " + modelo
                 //);
             }
+            catch (System.ServiceModel.CommunicationException comEx)
+            {
+                // Falla al comunicarse con el webservice de SUGESE (canal en estado Faulted,
+                // endpoint inaccesible, fault SOAP, TLS/certificado, etc.)
+                result.Success = false;
+                result.Code = -200;
+                result.Reason = "Error de comunicación con SUGESE. No fue posible establecer o completar la conexión con el servicio.";
+                result.Detail = $"{comEx.GetType().Name}: {comEx.Message}";
+
+                Architect.Utilities.Log.ErrorLog("EnviarArchivo", "Error de comunicación con SUGESE", comEx);
+            }
+            catch (TimeoutException toEx)
+            {
+                // El servicio de SUGESE no respondió dentro del tiempo esperado
+                result.Success = false;
+                result.Code = -201;
+                result.Reason = "Error de comunicación con SUGESE. El servicio no respondió en el tiempo esperado.";
+                result.Detail = $"{toEx.GetType().Name}: {toEx.Message}";
+
+                Architect.Utilities.Log.ErrorLog("EnviarArchivo", "Timeout de comunicación con SUGESE", toEx);
+            }
             catch (Exception ex)
             {
                 result.Success = false;
-                result.Code = -999; 
-                result.Reason = "Ha ocurrido un error al tratar de procesar el archivo excel";
-                result.Detail = $"{ex.GetType().Name}: {ex.Message}"; 
-            }
+                result.Code = -999;
+                result.Reason = "Ha ocurrido un error al tratar de enviar el archivo a SUGESE.";
+                result.Detail = $"{ex.GetType().Name}: {ex.Message}";
 
-            //Architect.Common.Helpers.LogHandler.TraceLog("ProcesaArchivo result", result.Reason);
+                Architect.Utilities.Log.ErrorLog("EnviarArchivo", result.Reason, ex);
+            }
 
             return result;
         }

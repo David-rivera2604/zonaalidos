@@ -21,7 +21,7 @@ namespace Architect.API.Core.Business.General
         private static readonly byte[] ZipHeader = { 0x50, 0x4B, 0x03, 0x04 }; // ZIP (DOCX, XLSX, PPTX)
         private static readonly byte[] XlsHeader = { 0xD0, 0xCF, 0x11, 0xE0 }; // XLS (OLE)
         private static readonly byte[] PngHeader = { 0x89, 0x50, 0x4E, 0x47 }; // PNG
-        private static readonly byte[] XmlHeader = { 0x3C, 0x3F, 0x78, 0x6D };
+        private static readonly byte[] XmlHeader = { 0x3C, 0x3F, 0x78, 0x6D }; // <?xm
 
         // JPG puede tener distintos headers
         private static readonly byte[] JpgHeader1 = { 0xFF, 0xD8, 0xFF, 0xE0 }; // EXIF
@@ -69,8 +69,15 @@ namespace Architect.API.Core.Business.General
             { "application/json", (file, header) =>
                 IsValidJsonFile(file)
             },
+            // XML: se valida el magic number (<?xm) para evitar archivos falsos y además
+            // se parsea el documento. Según el navegador el XML puede llegar como
+            // "text/xml" o "application/xml". La validación del magic number (tolerante a BOM)
+            // y del contenido se hace dentro de IsValidXmlFile.
             { "text/xml", (file, header) =>
-                header.SequenceEqual(XmlHeader) &&     IsValidXmlFile(file)
+                IsValidXmlFile(file)
+            },
+            { "application/xml", (file, header) =>
+                IsValidXmlFile(file)
             }
         };
 
@@ -78,6 +85,26 @@ namespace Architect.API.Core.Business.General
         {
             try
             {
+                if (file.InputStream.CanSeek)
+                    file.InputStream.Position = 0;
+
+                // Leer el inicio del archivo tolerando un BOM UTF-8 (EF BB BF),
+                // que de lo contrario haría fallar el magic number del XML.
+                byte[] start = new byte[8];
+                int read = file.InputStream.Read(start, 0, start.Length);
+
+                int offset = 0;
+                if (read >= 3 && start[0] == 0xEF && start[1] == 0xBB && start[2] == 0xBF)
+                    offset = 3; // BOM UTF-8
+
+                // Magic number "<?xm" (después del posible BOM)
+                bool firmaValida = (read - offset) >= XmlHeader.Length &&
+                    start.Skip(offset).Take(XmlHeader.Length).SequenceEqual(XmlHeader);
+
+                if (!firmaValida)
+                    return false;
+
+                // Validación de estructura: debe ser un XML bien formado
                 file.InputStream.Position = 0;
                 var xml = new System.Xml.XmlDocument();
                 xml.Load(file.InputStream);

@@ -1288,6 +1288,7 @@
     <Content Include="Scripts\Form.Ext.ExcludedPolicies.js" />
     <Content Include="Scripts\Sugese.Send.js" />
     <Content Include="Scripts\Sugese.Generador.js" />
+    <Content Include="Scripts\Sugese.Manager.js" />
     <Content Include="Scripts\Variaciones.Multirriesgo.js" />
     <Content Include="Scripts\Variaciones.HogarTotalPlus.js" />
     <Content Include="Scripts\Variaciones.HogarTotal.js" />
@@ -2009,6 +2010,7 @@
     <Content Include="Sugese\plantillas\RunOff.xlsx" />
     <Content Include="Sugese\plantillas\SaldosContables.xlsx" />
     <Content Include="Views\Sugese\Envio.cshtml" />
+    <Content Include="Views\Sugese\ModelSupervisor.cshtml" />
     <Content Include="releasenotes.md" />
     <Content Include="Views\Viewer\Formio.cshtml" />
     <Content Include="Views\Viewer\crud.cshtml" />

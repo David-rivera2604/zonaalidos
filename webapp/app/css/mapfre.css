@@ -1097,6 +1097,11 @@ a {
     padding: 0px;
     background: rgb(148 12 12 / 0%);
     z-index: 99;
+    pointer-events: none;
+}
+
+.menu:hover > .menu-dropdown {
+    pointer-events: auto;
 }
 
     .menu:not(:hover) > .menu-dropdown::after {
@@ -3574,12 +3579,12 @@ ul.Observaciones {
 }
 
 
-/* Observación (1ª línea) */
+/* Observaciï¿½n (1ï¿½ lï¿½nea) */
 .obs-text {
     white-space: pre-wrap
 }
 
-/* Meta (2ª línea: usuario + fecha, izquierda) */
+/* Meta (2ï¿½ lï¿½nea: usuario + fecha, izquierda) */
 .meta-line {
     font-size: 10px;
     color: #6c757d;

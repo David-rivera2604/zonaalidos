@@ -1,0 +1,285 @@
+<!-- Archivo GeneradorEnvio.cshtml - Formulario unificado: Generar XML / Enviar a SUGESE -->
+<!--
+    ITERACIÓN 3 (solo interfaz, layout UX/UI):
+    - Jerarquía: 1) modo (Generador/Envío) como decisión primaria; 2) formulario en un panel
+      con las descargas como barra de recursos contextual; 3) acción; 4) alertas.
+    - Se respeta el tema del sistema (Inspinia/Bootstrap: ibox, btn, btn-group, form-control).
+    - Catálogo "modelo" con clave interna (value) + data-sugese-codigo para el envío.
+    - Los botones aún NO llaman al backend: se conecta en el siguiente paso.
+-->
+@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/cssCRUD")
+
+<style>
+    /* ---- Selector de modo ---- */
+    .sugese-mode-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 12px; }
+    .sugese-mode-caption { color: #999; margin: 0; }
+    .sugese-mode-caption .fa { margin-right: 4px; }
+    /* El tema flota los .btn a la derecha (invierte el orden) y muestra el radio nativo:
+       forzamos el orden natural y ocultamos el círculo del radio. */
+    .sugese-mode-group { display: inline-flex; }
+    .sugese-mode-group > label.btn { float: none !important; margin: 0; }
+    .sugese-mode-group input[type="radio"] {
+        position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
+    }
+
+    /* ---- Panel de formulario ---- */
+    .sugese-panel {
+        border: 1px solid #e7eaec;
+        border-radius: 4px;
+        background: #fff;
+        margin-top: 6px;
+    }
+    .sugese-panel-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #e7eaec;
+        background: #f9fafb;
+        border-radius: 4px 4px 0 0;
+    }
+    .sugese-panel-head .panel-title { font-weight: 600; }
+    .sugese-panel-body { padding: 16px; }
+
+    /* ---- Descargas (barra de recursos compacta) ---- */
+    .sugese-downloads { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .sugese-downloads .dl-label { color: #999; font-size: 85%; margin-right: 2px; }
+    .sugese-dl-card {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 5px 10px; background: #fff;
+        border: 1px solid #e7eaec; border-radius: 4px;
+        cursor: pointer; text-decoration: none; color: inherit;
+        transition: border-color .12s ease, box-shadow .12s ease;
+    }
+    .sugese-dl-card:hover, .sugese-dl-card:focus {
+        text-decoration: none; color: inherit;
+        border-color: #d0d6da; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    }
+    .sugese-dl-ico {
+        flex: 0 0 auto; width: 26px; height: 26px; border-radius: 4px;
+        display: flex; align-items: center; justify-content: center; color: #fff;
+    }
+    .sugese-dl-ico-tpl   { background: #1c84c6; }
+    .sugese-dl-ico-excel { background: #1ab394; }
+    .sugese-dl-ico-xml   { background: #f8ac59; }
+    .sugese-dl-title { font-weight: 600; }
+
+    /* ---- Barra de acción ---- */
+    .sugese-actions {
+        display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+        padding-top: 16px; margin-top: 16px; border-top: 1px solid #e7eaec;
+    }
+    /* Ambos botones con el mismo tamaño (mismo alto y ancho mínimo) */
+    .sugese-actions .btn {
+        float: none !important;
+        min-width: 190px;
+        height: 38px;
+        line-height: 1.4;
+        margin: 0;
+    }
+
+    @@media (max-width: 767px) {
+        .sugese-panel-head { align-items: flex-start; }
+    }
+</style>
+
+<div class="ibox">
+    <div class="ibox-title">
+        <h5><i class="fa fa-file-text-o"></i> Modelos de supervisión</h5>
+        <div class="ibox-tools">
+            <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+
+    <div class="ibox-content">
+        <div id="generalNotify"></div>
+
+        <!-- ============ 1. MODO (decisión primaria) ============ -->
+        <div class="sugese-mode-bar">
+            <div class="btn-group sugese-mode-group" role="radiogroup" aria-label="Modo de operación">
+                <label class="btn btn-primary" id="lbl_modo_generar">
+                    <input type="radio" name="modo" id="modo_generar" value="generar" checked="checked" autocomplete="off" />
+                    <i class="fa fa-cogs"></i> Generador
+                </label>
+                <label class="btn btn-white" id="lbl_modo_envio">
+                    <input type="radio" name="modo" id="modo_envio" value="envio" autocomplete="off" />
+                    <i class="fa fa-paper-plane"></i> Envío
+                </label>
+            </div>
+            <p class="sugese-mode-caption" id="modoCaption">
+                <i class="fa fa-info-circle"></i> Modo Generador: suba un archivo Excel para generar el XML del modelo seleccionado.
+            </p>
+        </div>
+
+        <div class="alert alert-warning" id="avisoSinEnvio" hidden="hidden" style="margin-top: 14px;">
+            <i class="fa fa-exclamation-triangle"></i>
+            Este modelo todavía no tiene confirmado su código de envío a SUGESE. En modo Envío quedará
+            deshabilitado hasta confirmarlo.
+        </div>
+
+        <!-- ============ 2. PANEL DE FORMULARIO ============ -->
+        <div class="sugese-panel">
+            <div class="sugese-panel-head">
+                <span class="panel-title" id="tituloSeccion">Datos para la generación</span>
+
+                <!-- Descargas como barra de recursos contextual -->
+                <div class="sugese-downloads">
+                    <span class="dl-label">Descargas:</span>
+                    <a id="NewFile" href="#" class="sugese-dl-card" title="Descargar una plantilla nueva del modelo seleccionado">
+                        <span class="sugese-dl-ico sugese-dl-ico-tpl"><i class="fa fa-file-excel-o"></i></span>
+                        <span class="sugese-dl-title">Plantilla</span>
+                    </a>
+                    <a id="LastExcel" href="#" class="sugese-dl-card" title="Descargar el último archivo Excel procesado">
+                        <span class="sugese-dl-ico sugese-dl-ico-excel"><i class="fa fa-table"></i></span>
+                        <span class="sugese-dl-title">Último Excel</span>
+                    </a>
+                    <a id="LastXml" href="#" class="sugese-dl-card" title="Descargar el último archivo XML generado">
+                        <span class="sugese-dl-ico sugese-dl-ico-xml"><i class="fa fa-file-code-o"></i></span>
+                        <span class="sugese-dl-title">Último XML</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="sugese-panel-body">
+                <form id="MainForm" class="form-horizontal" enctype="multipart/form-data">
+                    <fieldset>
+                        <div class="form-row">
+
+                            <!-- Modelo -->
+                            <div class="col-sm-12 col-md-5">
+                                <div class="form-group">
+                                    <label for="modelo" class="control-label">Tipo de modelo *</label>
+                                    <select id="modelo" name="modelo" class="form-control" required>
+                                        <option value="">Seleccione…</option>
+                                        <option value="Bomberos" data-sugese-codigo="ModeloAporteBomberos">Aporte bomberos</option>
+                                        <option value="BalanceGeneral" data-sugese-codigo="ModeloBalanceGeneral">Balance general</option>
+                                        <option value="Patrimonio" data-sugese-codigo="ModeloEstadoCambiosPatrimonioPropio">Cambios de patrimonio</option>
+                                        <option value="Canales" data-sugese-codigo="ModeloCanales">Canales de comercialización</option>
+                                        <option value="Inversiones" data-sugese-codigo="ModeloInversionesFinancieras">Detalle de inversión</option>
+                                        <option value="Resultados" data-sugese-codigo="ModeloEstadoResultados">Estado de resultados</option>
+                                        <option value="RUB" data-sugese-codigo="ModeloPolizas">Registro único de beneficiarios</option>
+                                        <option value="Produccion" data-sugese-codigo="ModeloProduccion">Producción y población asegurada</option>
+                                        <option value="RunOff" data-sugese-codigo="ModeloRunOff">Run off</option>
+                                        <option value="AportesINEC" data-sugese-codigo="ModeloAportesINEC">Aportes INEC</option>
+                                        <option value="PrimasSiniestros" data-sugese-codigo="ModeloPrimasSiniestros">Primas y siniestros</option>
+                                        <option value="CuentasTecnicas" data-sugese-codigo="">Cuentas técnicas (envío pendiente de confirmar)</option>
+                                        <option value="SaldosContables" data-sugese-codigo="">Saldos contables (envío pendiente de confirmar)</option>
+                                        <option value="NIFF17SaldosContables" data-sugese-codigo="NIFF17ModeloSaldosContables">NIIF17 - Saldos contables</option>
+                                        <option value="NIFF17CuentaTecnicaFinanciera" data-sugese-codigo="NIFF17CuentaTecnicaFinanciera">NIIF17 - Cuentas técnicas financiera</option>
+                                        <option value="NIFF17RendimientoFinanciero" data-sugese-codigo="NIFF17RendimientoFinanciero">NIIF17 - Rendimiento financiero</option>
+                                        <option value="NIFF17SituacionFinanciera" data-sugese-codigo="NIFF17SituacionFinanciera">NIIF17 - Situación financiera</option>
+                                    </select>
+                                    <div id="modelo_validate"></div>
+                                </div>
+                            </div>
+
+                            <!-- Mes -->
+                            <div class="col-sm-6 col-md-3" id="div_periodo_mensual">
+                                <div class="form-group">
+                                    <label for="pediodo_mensual"><span id="periodoLabel">Mes</span> *</label>
+                                    <select id="pediodo_mensual" name="pediodo_mensual" class="form-control">
+                                        <option value="1">Enero</option>
+                                        <option value="2">Febrero</option>
+                                        <option value="3">Marzo</option>
+                                        <option value="4">Abril</option>
+                                        <option value="5">Mayo</option>
+                                        <option value="6">Junio</option>
+                                        <option value="7">Julio</option>
+                                        <option value="8">Agosto</option>
+                                        <option value="9">Septiembre</option>
+                                        <option value="10">Octubre</option>
+                                        <option value="11">Noviembre</option>
+                                        <option value="12">Diciembre</option>
+                                    </select>
+                                    <div id="pediodo_mensual_validate"></div>
+                                </div>
+                            </div>
+
+                            <!-- Trimestre -->
+                            <div class="col-sm-6 col-md-3" id="div_pediodo_trimestral">
+                                <div class="form-group">
+                                    <label for="pediodo_trimestral">Trimestre *</label>
+                                    <select id="pediodo_trimestral" name="pediodo_trimestral" class="form-control hidden">
+                                        <option value="1">Enero-Marzo</option>
+                                        <option value="2">Abril-Junio</option>
+                                        <option value="3">Julio-Setiembre</option>
+                                        <option value="4">Octubre-Diciembre</option>
+                                    </select>
+                                    <div id="pediodo_trimestral_validate"></div>
+                                </div>
+                            </div>
+
+                            <!-- Año -->
+                            <div class="col-sm-6 col-md-2">
+                                <div class="form-group">
+                                    <label for="ano">Año *</label>
+                                    <input id="ano" name="ano" type="number" class="form-control" />
+                                    <div id="ano_validate"></div>
+                                </div>
+                            </div>
+
+                            <!-- Archivo -->
+                            <div class="col-sm-12 col-md-7">
+                                <div class="form-group">
+                                    <label for="fileUpload"><span id="archivoLabel">Archivo Excel</span> *</label>
+                                    <div class="input-group">
+                                        <input id="fileNameUpload" name="fileNameUpload" type="text" class="form-control" placeholder="Ningún archivo seleccionado" readonly />
+                                        <input id="fileServerNameUpload" name="fileServerNameUpload" type="hidden" />
+                                        <span class="input-group-btn">
+                                            <label class="btn btn-default mb-0" style="cursor:pointer; margin:0;">
+                                                <i class="fa fa-folder-open-o"></i> Examinar…
+                                                <input id="fileUpload" type="file" style="display:none;" />
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div id="fileNameUpload_validate"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </form>
+
+                <!-- ============ 3. ACCIÓN ============ -->
+                <div class="sugese-actions">
+                    <button id="btnGenerar" class="btn btn-primary"><i class="fa fa-cogs"></i> Generar Archivo</button>
+                    <button id="btnEnviar" class="btn btn-success"><i class="fa fa-paper-plane"></i> Enviar a SUGESE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 4. ALERTAS ============ -->
+        <div id="alertSuccess" class="alert alert-success" style="display:none; margin-top: 16px;">
+            <p class="text-center">
+                El archivo Excel fue procesado de forma <strong>exitosa</strong>, si desea descargar el xml generado por favor haga click sobre el siguiente enlace <a id="xml" href="#" class="alert-link">Bomberos.xml</a>.
+            </p>
+        </div>
+
+        <div id="alertError" class="alert alert-danger" style="display:none; margin-top: 16px;">
+            <p class="text-center">
+                El archivo excel fue procesado pero existen varias <strong>fallas</strong> de validación, el detalle de las fallas encontradas fueron agregadas como una hoja al archivo Excel procesado, si desea descargar el Excel con el detalle de las fallas por favor haga click sobre el siguiente enlace <a id="excel" href="#" class="alert-link">Bomberos.xlsx</a>, el archivo xml usado en las validaciones es <a id="xml2" href="#" class="alert-link">Bomberos.xml</a>.
+            </p>
+        </div>
+
+        <div id="alertEnvioSuccess" class="alert alert-success" style="display:none; margin-top: 16px;">
+            <p class="text-center">El archivo fue enviado <strong>exitosamente</strong> a SUGESE.</p>
+        </div>
+
+        <div id="alertEnvioError" class="alert alert-danger" style="display:none; margin-top: 16px;">
+            <p class="text-center">Ocurrió un problema al enviar el archivo a SUGESE. Revise el detalle del error.</p>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="~/Scripts/Common.Attachments.js"></script>
+    <script src="~/Scripts/Sugese.Manager.js"></script>
+}

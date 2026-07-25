@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de uso — Modelos de supervisión (SUGESE)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e2001a;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #c0392b;
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .info {
+            background-color: #e8f4fd;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        ol li { margin-bottom: 6px; }
+
+        figure {
+            margin: 20px 0;
+            text-align: center;
+        }
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+        figcaption {
+            color: #777;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manual de uso — Modelos de supervisión (SUGESE)</h1>
+
+        <div class="info">
+            <strong>Novedad:</strong> las pantallas de <em>Generador</em> y <em>Envío</em> se <strong>unificaron</strong> en una sola: <strong>Modelos de supervisión</strong>. Desde ahí se genera el XML y se envía a SUGESE sin cambiar de pantalla.
+        </div>
+
+        <h2>1. Iniciar sesión</h2>
+        <ol>
+            <li>Abra la Zona de Aliados en el navegador.</li>
+            <li>Complete los datos de acceso:
+                <table>
+                    <tr><th>Campo</th><th>Valor</th></tr>
+                    <tr><td>Compañía</td><td>Mapfre</td></tr>
+                    <tr><td>Usuario</td><td>sugesetest</td></tr>
+                    <tr><td>Clave</td><td>Sugesetest@1</td></tr>
+                </table>
+            </li>
+            <li>Presione <strong>Iniciar Sesión</strong>.</li>
+        </ol>
+
+        <figure>
+            <img src="login.png" alt="Pantalla de inicio de sesión de la Zona de Aliados" />
+            <figcaption>Pantalla de inicio de sesión</figcaption>
+        </figure>
+
+        <h2>2. Abrir la pantalla</h2>
+        <p>En el menú, ingrese a <strong>Modelos de supervisión</strong>.</p>
+
+        <h2>3. Elegir el modo</h2>
+        <p>Arriba encontrará un selector con dos opciones:</p>
+        <table>
+            <tr><th>Modo</th><th>Cuándo usarlo</th></tr>
+            <tr><td><strong>Generador</strong></td><td>Tiene el Excel y necesita generar el XML del modelo.</td></tr>
+            <tr><td><strong>Envío</strong></td><td>Ya tiene el XML y solo necesita enviarlo a SUGESE.</td></tr>
+        </table>
+
+        <h2>4. Generar el archivo (modo Generador)</h2>
+        <p>En el modo <strong>Generador</strong>, la pantalla toma el archivo <strong>Excel</strong> del modelo, lo procesa y genera el archivo <strong>XML</strong> correspondiente, validando la información. En la parte superior el selector queda marcado en <strong>Generador</strong> y, debajo, se muestran los campos de modelo, periodo, año y la carga del archivo, junto con la barra de descargas.</p>
+        <ol>
+            <li>Seleccione el modo <strong>Generador</strong>.</li>
+            <li>Elija el <strong>modelo</strong> a procesar.</li>
+            <li>Indique el <strong>periodo</strong>: según el modelo se muestra <strong>Mes</strong> o <strong>Trimestre</strong>.</li>
+            <li>Indique el <strong>año</strong>.</li>
+            <li>Presione <strong>Examinar…</strong> y seleccione el archivo <strong>Excel</strong>.</li>
+            <li>Haga clic en <strong>Generar Archivo</strong>.</li>
+        </ol>
+        <p>Si es correcto, verá un mensaje de éxito con el enlace para descargar el XML. Si hubo observaciones de validación, se le indicará y podrá descargar el Excel con el detalle de las fallas encontradas.</p>
+        <div class="info">
+            Tras generar con éxito aparece el botón <strong>Enviar a SUGESE</strong> para transmitir el archivo cuando lo desee.
+        </div>
+
+        <figure>
+            <img src="Generar.png" alt="Pantalla Modelos de supervisión en modo Generador" />
+            <figcaption>Modo Generador — generación del XML a partir del Excel</figcaption>
+        </figure>
+
+        <h3>Generación exitosa</h3>
+        <p>Cuando la generación finaliza correctamente, aparece un mensaje de éxito con un <strong>enlace del archivo XML</strong>. Al hacer <strong>clic en el enlace, el archivo XML se descarga</strong> directamente en su equipo (no se abre en una pestaña nueva). Además, en ese momento se habilita el botón <strong>Enviar a SUGESE</strong>, de modo que puede transmitir el archivo recién generado sin salir de la pantalla.</p>
+
+        <figure>
+            <img src="Generar_exitoso.png" alt="Mensaje de generación exitosa con enlace de descarga y botón Enviar a SUGESE" />
+            <figcaption>Generación exitosa — enlace de descarga del XML y opción de enviar a SUGESE</figcaption>
+        </figure>
+
+        <h2>5. Enviar a SUGESE</h2>
+        <p>En el modo <strong>Envío</strong>, la pantalla toma un archivo <strong>XML</strong> ya generado y lo transmite al webservice de SUGESE. Al elegir este modo, el selector superior queda marcado en <strong>Envío</strong> y el campo de archivo cambia para solicitar un <strong>XML</strong> (en lugar del Excel). Los campos de modelo, periodo y año siguen disponibles, así como la barra de descargas.</p>
+
+        <figure>
+            <img src="Envio.png" alt="Pantalla Modelos de supervisión en modo Envío" />
+            <figcaption>Modo Envío — carga del XML a transmitir</figcaption>
+        </figure>
+
+        <ol>
+            <li>Use el modo <strong>Envío</strong> (o el botón <strong>Enviar a SUGESE</strong> que aparece luego de generar).</li>
+            <li>En modo Envío, presione <strong>Examinar…</strong> y seleccione el archivo <strong>XML</strong>.</li>
+            <li>Verifique modelo, periodo y año.</li>
+            <li>Presione <strong>Enviar a SUGESE</strong>.</li>
+            <li>En la <strong>ventana de confirmación</strong>, revise el resumen y presione <strong>Confirmar envío</strong>.</li>
+        </ol>
+        <p>El sistema le informará si el envío fue exitoso o si ocurrió algún problema.</p>
+
+        <h3>Ventana de confirmación</h3>
+        <p>Antes de transmitir, se abre la ventana <strong>Confirmar envío a SUGESE</strong> con un resumen de lo que se enviará, para verificar los datos antes de continuar:</p>
+        <ul>
+            <li><strong>Modelo</strong> (por ejemplo, <em>Aporte bomberos</em>).</li>
+            <li><strong>Periodo</strong> (mes o trimestre, por ejemplo <em>Julio</em>).</li>
+            <li><strong>Año</strong>.</li>
+            <li><strong>Archivo</strong> (por ejemplo, <em>Bomberos.xml</em>).</li>
+        </ul>
+        <p>Presione <strong>Confirmar envío</strong> para transmitir, o <strong>Cancelar</strong> para cerrar sin enviar.</p>
+        <div class="warning">
+            <strong>Recomendación:</strong> revise siempre el resumen de la ventana de confirmación antes de enviar; la presentación a SUGESE es un trámite oficial.
+        </div>
+
+        <figure>
+            <img src="Envio_confirmacion.png" alt="Ventana de confirmación de envío a SUGESE" />
+            <figcaption>Ventana de confirmación con el resumen del envío</figcaption>
+        </figure>
+
+        <h2>6. Descargas disponibles</h2>
+        <ul>
+            <li><strong>Plantilla:</strong> formato Excel en blanco del modelo.</li>
+            <li><strong>Último Excel:</strong> el último archivo Excel procesado.</li>
+            <li><strong>Último XML:</strong> el último archivo XML generado.</li>
+        </ul>
+        <p>Las descargas se guardan directamente en su equipo.</p>
+
+        <hr>
+        <footer>
+            <small>Manual de usuario — Modelos de supervisión (SUGESE)</small>
+        </footer>
+    </div>
+</body>
+</html>
