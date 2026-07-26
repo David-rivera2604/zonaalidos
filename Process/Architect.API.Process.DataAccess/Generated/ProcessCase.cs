@@ -146,6 +146,22 @@ SELECT T2.ID CASEID FROM ALIADOS.PROCESSCASE T2 JOIN ALIADOS.PROCESSINSTANCE T1 
         }
 
 
+
+        /// <summary>
+        /// Actualiza unicamente USERASSIGNED y USERASSIGNEDDATE en PROCESSCASE por CaseId.
+        /// Se usa cuando cambia de etapa automaticamente para mantener sincronizado el caso.
+        /// </summary>
+        public static int UpdateUserAssigned(int caseId, int companyId, int userAssigned, DateTime userAssignedDate, IDbConnection connection = null)
+        {
+            return Database.Update("ProcessCase", ExecuteMode.CommandBuilder)
+                .Column("UserAssigned",     DbType.Decimal,  9, userAssigned)
+                .Column("UserAssignedDate", DbType.DateTime, 9, userAssignedDate)
+                .Column("UpdateDate",       DbType.DateTime, 9, DateTime.Now)
+                .Filter("Id",              DbType.Decimal,  9, caseId)
+                .Filter("CompanyId",       DbType.Decimal,  5, companyId)
+                .Execute(connection, "Research");
+        }
+
     }
 
 }

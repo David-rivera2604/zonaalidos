@@ -1,0 +1,24 @@
+@* _NotificationDropdown.cshtml - Aliados Notification Center v1.0
+   USO: @Html.Partial("_NotificationDropdown") en _Layout.cshtml
+*@
+<li class="dropdown notification-dropdown" id="notificationDropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Notificaciones">
+        <i class="fa fa-bell" aria-hidden="true"></i>
+        <span class="notif-badge" id="notifBadge" style="display:none">0</span>
+        <span class="sr-only">Notificaciones</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right notification-panel" role="menu">
+        <li class="notif-header" role="presentation">
+            <span>Notificaciones</span>
+            <a href="#" id="markAllRead" tabindex="-1">Marcar todas como leidas</a>
+        </li>
+        <li role="presentation">
+            <ul id="notifList" class="notif-list" role="menu">
+                <li class="notif-loading"><i class="fa fa-spinner fa-spin"></i> Cargando...</li>
+            </ul>
+        </li>
+        <li class="notif-footer" role="presentation">
+            <a href="#" onclick="Aliados.Notifications.reload(); return false;"><i class="fa fa-refresh"></i> Actualizar</a>
+        </li>
+    </ul>
+</li>

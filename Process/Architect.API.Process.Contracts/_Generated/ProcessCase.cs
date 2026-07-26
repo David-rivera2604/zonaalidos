@@ -154,6 +154,10 @@ namespace Architect.API.Process.Contracts.General
         /// </summary>
         [DataMember(), JsonProperty()] public int UserAssigned { get; set; }
         /// <summary>
+        /// Descripción del usuario asignado — resuelto vía LookupMaster "Users".
+        /// </summary>
+        [DataMember(), JsonProperty()] public string UserAssignedDescription { get; set; }
+        /// <summary>
         /// Fecha en que se asignó el usuario a la etapa.
         /// </summary>
         [DataMember(), JsonProperty()] public DateTime UserAssignedDate { get; set; }

@@ -104,6 +104,12 @@
     <Reference Include="Microsoft.AspNet.OData, Version=7.6.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.OData.7.6.5\lib\net45\Microsoft.AspNet.OData.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.WebApi.Versioning, Version=5.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Versioning.5.1.0\lib\net45\Microsoft.AspNet.WebApi.Versioning.dll</HintPath>
     </Reference>
@@ -421,9 +427,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\css\carnet.css" />
+    <Content Include="Content\notifications.css" />
     <Content Include="app\css\Login.css" />
     <Content Include="app\img\ajax-loader.gif" />
     <Content Include="app\js\core.frm.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
+    <Content Include="Scripts\notifications.service.js" />
     <Content Include="app\js\core.language.js" />
     <Content Include="app\js\core.ui.components.js" />
     <Content Include="app\js\core.ui.js" />
@@ -1273,6 +1283,7 @@
     <Content Include="Scripts\AdministrarCliente.js" />
     <Content Include="Scripts\AvisosCobro.Recibos.js" />
     <Content Include="Scripts\Bayer.Carnet.js" />
+    <Content Include="Scripts\Cases\Ext.CaseAssignment.js" />
     <Content Include="Scripts\Clientes.Index.js" />
     <Content Include="Scripts\Common.Notes.js" />
     <Content Include="Scripts\Common.Attachments.js" />
@@ -1286,6 +1297,7 @@
     <Content Include="Scripts\Envio.js" />
     <Content Include="Scripts\Extend.CobrosRechazados.js" />
     <Content Include="Scripts\Form.Ext.ExcludedPolicies.js" />
+    <Content Include="Scripts\Security\Ext.UserMembers.js" />
     <Content Include="Scripts\Sugese.Send.js" />
     <Content Include="Scripts\Sugese.Generador.js" />
     <Content Include="Scripts\Sugese.Manager.js" />
@@ -1430,6 +1442,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AddAuthTokenHeaderParameter.cs" />
+    <Compile Include="App_Start\SignalRStartup.cs" />
+    <Compile Include="Hubs\NotificationHub.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\GlobalExceptionHandler.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -1523,6 +1537,7 @@
     <Content Include="assets\css\plugins\footable\fonts\footable.eot" />
     <Content Include="assets\css\plugins\footable\fonts\footable.ttf" />
     <Content Include="assets\css\plugins\footable\fonts\footable.woff" />
+    <Content Include="Views\_NotificationDropdown.cshtml" />
     <Content Include="Views\View.cshtml" />
     <Content Include="assets\js\plugins\autonumeric\autoNumeric.js.map" />
     <Content Include="assets\js\plugins\autonumeric\autoNumeric.min.js.gz" />
@@ -2369,6 +2384,10 @@
   </Target>
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
+  <Target Name="CopyRoslynCompilerFilesToWebRoot" AfterTargets="Build" DependsOnTargets="SetRoslynCompilerFiles">
+    <MakeDir Directories="$(ProjectDir)roslyn" />
+    <Copy SourceFiles="@(RoslynCompilerFiles)" DestinationFolder="$(ProjectDir)roslyn" SkipUnchangedFiles="true" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

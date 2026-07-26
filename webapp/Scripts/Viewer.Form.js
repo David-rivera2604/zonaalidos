@@ -1,4 +1,4 @@
-﻿var app = app || {};
+var app = app || {};
 
 app.ViewerForm = (function () {
 
@@ -197,6 +197,7 @@ app.ViewerForm = (function () {
 
                                     //Se debe cambiar desde el servicio
                                     code = app.core.ReplaceAll(code, 'app.Security/', 'app.');
+                                    code = app.core.ReplaceAll(code, 'app.Cases/', 'app.');
 
                                     code = app.core.ReplaceAll(code, '\t\t\t\tSetup();', '');
                                     let viewerContext = createViewerContext(formId, normalizedControlType);

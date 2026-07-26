@@ -294,10 +294,9 @@ namespace Architect.API.Process.Business.General
         /// <param name="item">Instancia de ProcessCase</param>
         private static void MapLookups(int companyId, Architect.API.Process.Contracts.General.ProcessCase item)
         {
-            if (item.IsEmpty())
-            {
+            if (item.IsEmpty()) 
                 return;
-            }
+            
             if (item.Priority.IsNotEmpty())
                 item.PriorityDesc = Core.Business.Common.LkpDescription(companyId, "CasePriority", item.Priority.ToString());
             if (item.Status.IsNotEmpty())
@@ -306,6 +305,8 @@ namespace Architect.API.Process.Business.General
                 item.FlowIdDesc = Core.Business.Common.LkpDescription(companyId, "Process", item.FlowId.ToString());
             if (item.UserId.IsNotEmpty())
                 item.UserIdDesc = Core.Business.Common.LkpDescription(companyId, "Users", item.UserId.ToString());
+            if (item.UserAssigned.IsNotEmpty())
+                item.UserAssignedDescription = Core.Business.Common.LkpDescription(companyId, "Users", item.UserAssigned.ToString());
             if (item.SLA.IsNotEmpty())
                 item.SLADesc = Core.Business.Common.LkpDescription(companyId, "SLA", item.SLA.ToString());
 

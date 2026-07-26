@@ -826,6 +826,7 @@ app.ViewerQuery = (function () {
         spec.onPostBody = function (data) {
             app.ui.CommonBehaviour();
             TranslateViewerTarget(gridControlName, spec.entity);
+            $(gridControlName).find('td').children().css('float', 'none');
             let extendName = spec.extendName != undefined ? spec.extendName : "Extend";
             if (app[extendName] != undefined && app[extendName]['EventHandler'] != undefined && app[extendName]['EventHandler'] !== null) {
                 app[extendName]['EventHandler'](spec.key, spec.index, 'onPostBody', spec);

@@ -55,6 +55,8 @@
     <Compile Include="General\ProcessSpecStep.cs" />
     <Compile Include="General\ProcessSpecStepRole.cs" />
     <Compile Include="General\ProcessSpecTask.cs" />
+    <Compile Include="General\ReassignmentState.cs" />
+    <Compile Include="General\ProcessConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="_Generated\ProcessCase.cs" />
     <Compile Include="_Generated\ProcessCaseComplement.cs" />
@@ -76,6 +78,8 @@
     <Compile Include="_Generated\ProcessSpecStepRoleResult.cs" />
     <Compile Include="_Generated\ProcessSpecTask.cs" />
     <Compile Include="_Generated\ProcessSpecTaskResult.cs" />
+    <Compile Include="_Generated\Reassignment.cs" />
+    <Compile Include="_Generated\ReassignmentResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

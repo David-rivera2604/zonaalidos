@@ -1,9 +1,10 @@
-﻿using Architect.DataFactory;
+using Architect.DataFactory;
 using Architect.DataFactory.Enumerations;
 using Architect.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using DbType = Architect.DataFactory.Enumerations.DbType;
 
 namespace Architect.API.Process.DataAccess.General
@@ -13,6 +14,99 @@ namespace Architect.API.Process.DataAccess.General
     /// </summary>
     public sealed partial class ProcessInstance
     {
+        /// <summary>
+        /// Retorna los usuarios asignables a un caso, filtrados por los roles
+        /// del step activo que coincidan con los roles del usuario logueado.
+        /// Ordenados por cantidad de casos activos asignados (menor a mayor).
+        /// </summary>
+        public static List<Architect.API.Core.Contracts.Security.UserMember> RetrieveAssignableUsers(
+            int companyId, int caseId, int loggedUserId)
+        {
+            var result = new List<Architect.API.Core.Contracts.Security.UserMember>();
+
+            Database.Select(@"
+SELECT DISTINCT
+       UM.USERID,
+       UM.FIRSTNAME,
+       UM.LASTNAME,
+       UM.EMAIL,
+       (SELECT COUNT(*)
+          FROM PROCESSCASE PC2
+         WHERE PC2.COMPANYID = :CompanyId
+           AND PC2.USERASSIGNED = UM.USERID
+           AND PC2.STATUS NOT IN (3, 4)) AS CASECOUNT
+  FROM PROCESSSPECSTEPROLE PSR
+  JOIN ROLEMEMBER RM
+       ON RM.ROLEID    = PSR.ROLEID
+      AND RM.COMPANYID = :CompanyId
+  JOIN USERROLEMEMBER URM
+       ON URM.ROLEID    = RM.ROLEID
+      AND URM.COMPANYID = :CompanyId
+  JOIN USERMEMBER UM
+       ON UM.USERID      = URM.USERID
+      AND UM.COMPANYID   = :CompanyId
+      AND UM.RECORDSTATUS = 1
+ WHERE PSR.COMPANYID = :CompanyId
+   AND PSR.ID = (
+       SELECT PI.STEPID
+         FROM PROCESSINSTANCE PI
+         JOIN PROCESSCASE PC ON PC.INSTANCEID = PI.INSTANCEID
+                             AND PC.COMPANYID  = PI.COMPANYID
+        WHERE PC.ID          = :CaseId
+          AND PI.COMPANYID   = :CompanyId
+          AND PI.STEPID      > 0
+          AND PI.TASKID      = 0
+          AND PI.STARTDATE   IS NOT NULL
+          AND PI.FINISHDATE  IS NULL
+          AND ROWNUM         = 1
+   )
+   AND RM.ROLEID IN (
+       SELECT URM2.ROLEID
+         FROM USERROLEMEMBER URM2
+        WHERE URM2.USERID    = :LoggedUserId
+          AND URM2.COMPANYID = :CompanyId
+   )
+ ORDER BY CASECOUNT ASC, UM.LASTNAME ASC, UM.FIRSTNAME ASC")
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("CaseId", DbType.Decimal, 9, caseId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("LoggedUserId", DbType.Decimal, 9, loggedUserId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .Query(null, "Research", reader =>
+                {
+                    result.Add(new Architect.API.Core.Contracts.Security.UserMember
+                    {
+                        UserId = reader.IntegerValue("USERID"),
+                        FirstName = reader.StringValue("FIRSTNAME"),
+                        LastName = reader.StringValue("LASTNAME"),
+                        EMail = reader.StringValue("EMAIL"),
+                        FailedPasswordCount = reader.IntegerValue("CASECOUNT")
+                    });
+                });
+
+            return result;
+        }
+
+        /// <summary>
+        /// Actualiza el usuario asignado a una actividad específica de ProcessInstance.
+        /// </summary>
+        /// <param name="activityId">ID de la actividad.</param>
+        /// <param name="userAssigned">ID del usuario a asignar.</param>
+        /// <param name="userAssignedDate">Fecha de la asignación.</param>
+        /// <param name="connection">Conexión compartida opcional.</param>
+        /// <returns>Cantidad de filas afectadas.</returns>
+        public static int UpdateUserAssigned(int activityId, int userAssigned, DateTime userAssignedDate, IDbConnection connection = null)
+        {
+            return Database.Update("ProcessInstance", ExecuteMode.CommandBuilder)
+                .Column("UserAssigned", DbType.Decimal, 9, userAssigned)
+                .Column("UserAssignedDate", DbType.DateTime, 9, userAssignedDate)
+                .Filter("ActivityId", DbType.Decimal, 9, activityId)
+                .Execute(connection, "Research");
+        }
 
         /// <summary>
         /// Actualiza la fecha de la ultima notificación por concepto de SLA.
@@ -151,7 +245,6 @@ namespace Architect.API.Process.DataAccess.General
 
         public static int RetrieveLastInstanceId(IDbConnection currentConnection = null)
         {
-
             return Convert.ToInt32(Database.Select("SELECT NVL(MAX(instanceId),0) " +
                                      "FROM ProcessInstance")
                                 .QueryScalar<Decimal>(currentConnection, "Research"));
@@ -178,39 +271,68 @@ namespace Architect.API.Process.DataAccess.General
                                 .Execute(connection, "Research");
         }
 
-
-        public static List<Architect.API.Core.Contracts.Security.UserMember> EmailInfoByRoleName(int companyid, string rolename1, string rolename2, string rolename3, IDbConnection connection = null)
+        /// <summary>
+        /// <summary>
+        /// Retorna los usuarios activos de los roles indicados con su carga de tareas pendientes,
+        /// ordenados de menor a mayor carga para facilitar la asignacion automatica.
+        /// Acepta cualquier cantidad de roles sin limite fijo.
+        /// </summary>
+        /// <param name="companyId">Identificacion de la compania.</param>
+        /// <param name="roleNames">Lista dinamica de nombres de roles.</param>
+        /// <returns>Lista de tuplas (UserId, FullName, Email, TaskCount) ordenadas por carga ASC.</returns>
+        public static List<(int UserId, string FullName, string Email, int TaskCount)> EmailInfoByRoleName(int companyId, IEnumerable<string> roleNames, IDbConnection connection = null)
         {
-            List<Architect.API.Core.Contracts.Security.UserMember> result = new List<Architect.API.Core.Contracts.Security.UserMember>();
-            Database.Select(
-@"SELECT UM.USERID, UM.FIRSTNAME || ' ' || UM.LASTNAME AS NOMBRE_USUARIO, UM.EMAIL, COUNT(PI.ACTIVITYID) AS TOTAL_TAREAS_PENDIENTES
-  FROM ALIADOS.ROLEMEMBER RM
-  JOIN ALIADOS.USERROLEMEMBER URM ON URM.COMPANYID = 100 AND RM.ROLEID = URM.ROLEID 
-  JOIN ALIADOS.USERMEMBER UM ON UM.COMPANYID = :CompanyId AND URM.USERID = UM.USERID 
-  LEFT JOIN ALIADOS.PROCESSINSTANCE PI ON PI.COMPANYID = :CompanyId AND UM.USERID = PI.USERASSIGNED AND PI.STEPID > 0 AND PI.TASKID = 0 AND PI.FINISHDATE IS NULL 
- WHERE RM.COMPANYID = :CompanyId AND RM.ROLENAME IN (:Rolename1,:Rolename2,:Rolename3) 
- GROUP BY UM.USERID, UM.FIRSTNAME, UM.LASTNAME, UM.EMAIL
- ORDER BY TOTAL_TAREAS_PENDIENTES ASC, NOMBRE_USUARIO ASC")
-                .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
-                .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
-                .AddParameter("CompanyId", DbType.Decimal, 5, companyid)
-                .AddParameter("Rolename1", DbType.AnsiString, 255, rolename1)
-                .AddParameter("Rolename2", DbType.AnsiString, 255, rolename2)
-                .AddParameter("Rolename3", DbType.AnsiString, 255, rolename3)
-                .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
-                {
-                    result.Add(new Architect.API.Core.Contracts.Security.UserMember()
-                    {
-                        UserId = reader.IntegerValue("USERID"),
-                        FirstName = reader.StringValue("NOMBRE_USUARIO"),
-                        FailedPasswordCount = reader.IntegerValue("TOTAL_TAREAS_PENDIENTES"),
-                        EMail = reader.StringValue("EMail")
-                    });
-                }));
+            var result = new List<(int UserId, string FullName, string Email, int TaskCount)>();
+
+            if (roleNames == null) return result;
+            var roles = roleNames.Where(r => !string.IsNullOrWhiteSpace(r)).Distinct().ToList();
+            if (roles.Count == 0) return result;
+
+            // Construir IN (:R0, :R1, ...) dinamicamente segun la cantidad de roles
+            string inClause = string.Join(", ", Enumerable.Range(0, roles.Count).Select(i => $":R{i}"));
+
+            var query = Database.Select($@"
+                                            SELECT UM.USERID,
+                                                    UM.FIRSTNAME || ' ' || UM.LASTNAME AS NOMBRE_USUARIO,
+                                                    UM.EMAIL,
+                                                    COUNT(PI.ACTIVITYID)               AS TOTAL_TAREAS_PENDIENTES
+                                                FROM ALIADOS.ROLEMEMBER RM
+                                                JOIN ALIADOS.USERROLEMEMBER URM
+                                                    ON  URM.COMPANYID  = :CompanyId
+                                                    AND RM.ROLEID      = URM.ROLEID
+                                                JOIN ALIADOS.USERMEMBER UM
+                                                    ON  UM.COMPANYID   = :CompanyId
+                                                    AND URM.USERID     = UM.USERID
+                                                    AND UM.RECORDSTATUS = 1
+                                                LEFT JOIN ALIADOS.PROCESSINSTANCE PI
+                                                    ON  PI.COMPANYID   = :CompanyId
+                                                    AND UM.USERID      = PI.USERASSIGNED
+                                                    AND PI.STEPID      > 0
+                                                    AND PI.TASKID      = 0
+                                                    AND PI.FINISHDATE  IS NULL
+                                                WHERE RM.COMPANYID = :CompanyId
+                                                AND RM.ROLENAME  IN ({inClause})
+                                                GROUP BY UM.USERID, UM.FIRSTNAME, UM.LASTNAME, UM.EMAIL
+                                                ORDER BY TOTAL_TAREAS_PENDIENTES ASC, NOMBRE_USUARIO ASC")
+            .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId);
+
+            for (int i = 0; i < roles.Count; i++)
+                query = query.AddParameter($"R{i}", DbType.AnsiString, 255, roles[i]);
+
+            query.Query(connection, "Research", reader =>
+            {
+                result.Add((
+                    UserId: reader.IntegerValue("USERID"),
+                    FullName: reader.StringValue("NOMBRE_USUARIO"),
+                    Email: reader.StringValue("EMAIL"),
+                    TaskCount: reader.IntegerValue("TOTAL_TAREAS_PENDIENTES")
+                ));
+            });
+
             return result;
         }
-
     }
-
 }
-

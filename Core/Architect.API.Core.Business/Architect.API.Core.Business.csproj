@@ -167,6 +167,7 @@
     <Compile Include="General\ScheduledJobs.cs" />
     <Compile Include="General\Translation.cs" />
     <Compile Include="General\Tron.cs" />
+    <Compile Include="Notifications\NotificationBusiness.cs" />
     <Compile Include="Security\AccountSupport.cs" />
     <Compile Include="Security\OktaUserManagement.cs" />
     <Compile Include="Security\OTP.cs" />
@@ -205,6 +206,7 @@
     <Compile Include="_Generated\Template.cs" />
     <Compile Include="_Generated\UserMember.cs" />
     <Compile Include="_Generated\Visualizations.cs" />
+    <Compile Include="Notifications\NotificationPush.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kernel\Architect.DataFactory\Architect.DataFactory.csproj">

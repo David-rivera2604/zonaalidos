@@ -66,6 +66,128 @@ app.frm = (() => {
     }
 
     return {
+        /**
+         * Construye y renderiza un timeline de Inspinia en un contenedor.
+         *
+         * @param {string} container    - Selector jQuery del contenedor destino.
+         * @param {Array}  items        - Array { UserName, UserAssignedDate, State, StateDesc }
+         * @param {Object} [stateConfig] - Config opcional de estados: { icon, bg, label } por State.
+         *
+         * @example
+         *   app.frm.RenderTimeline('#TimelineHistorial', historyArray);
+         */
+        /**
+         * Renderiza un timeline en el contenedor indicado.
+         *
+         * @param {string} container     - Selector jQuery del contenedor destino.
+         * @param {Array}  items         - Array { UserName, UserAssignedDate, State, StateDesc }
+         * @param {Object} [options]     - Opciones:
+         *                                  horizontal: true  → timeline horizontal compacto (default)
+         *                                  horizontal: false → timeline vertical Inspinia
+         *                                  stateConfig: {}   → override de icono/color por State
+         */
+        RenderTimeline: function (container, items, options) {
+            const opts = Object.assign({ horizontal: true, stateConfig: {} }, options || {});
+            const defaults = {
+                1: { icon: 'fa-cog',     color: '#676a6c', label: 'Automatico'         },
+                2: { icon: 'fa-user',    color: '#1ab394', label: 'Primera asignacion'  },
+                3: { icon: 'fa-refresh', color: '#23c6c8', label: 'Reasignacion'        }
+            };
+            const config = Object.assign({}, defaults, opts.stateConfig);
+            const $target = $(container);
+            if (!$target.length) return;
+
+            if (!items || items.length === 0) {
+                $target.html('<p class="text-muted m-t-sm"><em>Sin historial de asignaciones.</em></p>');
+                return;
+            }
+
+            if (opts.horizontal) {
+                // Timeline horizontal compacto
+                const steps = items.map(function (item, idx) {
+                    const cfg  = config[item.State] || defaults[2];
+                    const name = item.UserName  || 'Desconocido';
+                    const desc = item.StateDesc || cfg.label;
+                    const date = item.UserAssignedDate
+                        ? new Date(item.UserAssignedDate).toLocaleString('es-CR', {
+                              day:    '2-digit', month:  '2-digit', year: 'numeric',
+                              hour:   '2-digit', minute: '2-digit'
+                          })
+                        : '';
+
+                    let connector = '';
+                    if (idx > 0) {
+                        var prev    = items[idx - 1];
+                        var diffMs  = (prev.UserAssignedDate && item.UserAssignedDate) ? new Date(item.UserAssignedDate) - new Date(prev.UserAssignedDate) : 0;
+                        var diffMin = Math.floor(Math.abs(diffMs) / 60000);
+                        var elapsed = diffMin < 60 ? diffMin + ' min' : diffMin < 1440 ? Math.floor(diffMin/60) + ' h' : Math.floor(diffMin/1440) + ' d';
+                        connector =
+                            '<div style="flex:1;display:flex;align-items:center;align-self:center;min-width:70px;margin:0 2px;">' +
+                                '<div style="flex:1;height:2px;background:#e7eaec;"></div>' +
+                                '<div style="background:#f5f5f5;border:1px solid #e0e0e0;border-radius:10px;padding:2px 7px;font-size:10px;color:#999;white-space:nowrap;flex-shrink:0;line-height:1.4;" title="Tiempo entre asignaciones">' +
+                                    '<i class="fa fa-clock-o" style="font-size:9px;margin-right:2px;"></i>' + elapsed +
+                                '</div>' +
+                                '<div style="flex:1;height:2px;background:#e7eaec;"></div>' +
+                            '</div>';
+                    }
+
+                    return `${connector}
+                    <div style="display:flex;flex-direction:column;align-items:center;
+                                min-width:100px;max-width:140px;margin-bottom:4px;">
+                        <div style="width:34px;height:34px;border-radius:50%;
+                                    background:${cfg.color};flex-shrink:0;
+                                    display:flex;align-items:center;justify-content:center;
+                                    box-shadow:0 2px 6px rgba(0,0,0,.18);">
+                            <i class="fa ${cfg.icon}" style="color:#fff;font-size:13px;"></i>
+                        </div>
+                        <div style="margin-top:7px;text-align:center;width:100%;padding:0 4px;">
+                            <div style="font-size:11px;font-weight:600;color:#333;
+                                        word-break:break-word;line-height:1.3;"
+                                 title="${name}">${name}</div>
+                            <div style="font-size:10px;color:#888;margin-top:2px;
+                                        font-style:italic;">${desc}</div>
+                            <div style="font-size:10px;color:#aaa;margin-top:2px;">${date}</div>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // Liberar el overflow del div readonly para que el timeline no se corte
+                $target.css({ 'overflow': 'visible', 'min-height': '100px' });
+                $target.closest('.form-group').css('overflow', 'visible');
+
+                $target.html(
+                    `<div style="display:flex;align-items:flex-start;flex-wrap:wrap;
+                                 gap:8px;width:100%;padding:10px 0;">${steps}</div>`
+                );
+            } else {
+                // Timeline vertical Inspinia (original)
+                const blocks = items.map(function (item) {
+                    const cfg  = config[item.State] || defaults[2];
+                    const name = item.UserName  || 'Usuario desconocido';
+                    const desc = item.StateDesc || cfg.label;
+                    const date = item.UserAssignedDate
+                        ? new Date(item.UserAssignedDate).toLocaleString('es-CR', {
+                              day: '2-digit', month: '2-digit', year: 'numeric',
+                              hour: '2-digit', minute: '2-digit'
+                          })
+                        : '';
+                    return `<div class="vertical-timeline-block">
+                        <div class="vertical-timeline-icon" style="background:${cfg.color};">
+                            <i class="fa ${cfg.icon}"></i>
+                        </div>
+                        <div class="vertical-timeline-content">
+                            <h2>${name}</h2>
+                            <p class="text-muted m-b-xs">${desc}</p>
+                            <span class="vertical-date"><small>${date}</small></span>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                $target.html(
+                    `<div id="vertical-timeline" class="light-timeline no-margins">${blocks}</div>`
+                );
+            }
+        },
         PhoneNumberWidget: function (selector) {
             return $(selector).formatter({
                 pattern: '{{9999}}-{{9999}}',
@@ -87,7 +209,7 @@ app.frm = (() => {
             const settings = { ...conf, ...options };
             return $(selector + '_group').datetimepicker(settings);
         },
-        NumericWidget: function (selector, options) {
+        NumericWidget: function (selector, options = {}) {
 
             if (options ==  undefined) {
                 options = {};
@@ -505,6 +627,7 @@ app.frm = (() => {
                     case 'string':
                     case 'email':
                     case 'dropdownnumeric':
+                    case 'dropdownmulti':
                     case 'dropdownstring':
                     case 'radionumeric':
                     case 'hiddennumeric':

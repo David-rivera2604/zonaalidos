@@ -7,6 +7,7 @@
     <title>Zona de Aliados</title>
 
     @Styles.Render("~/Content/cssMaster")
+    <link href='@Url.Content("~/Content/notifications.css")' rel='stylesheet' type='text/css' />
     @Scripts.Render("~/bundles/jsMaster")
 
     <script src="@Url.Content("~/assets/js/plugins/jqueryformatter/jquery.formatter.js")"></script>
@@ -77,6 +78,30 @@
                         </div>
                     </div>
                     <div class="aliados">
+
+                        <div class="dropdown" id="notificationDropdown" style="position:relative; display:flex; align-items:center; margin-right:8px;">
+                            <a class="count-info" href="#" id="notifToggle" style="cursor:pointer;">
+                                <i class="fa fa-envelope" id="notifIcon" style="font-size:22px;"></i>
+                                <span class="label label-primary" id="notifBadge" style="display:none;">0</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-alerts dropdown-menu-right" id="notifPanel">
+                                <li>
+                                    <div style="padding:8px 12px; display:flex; justify-content:space-between; align-items:center;">
+                                        <strong style="font-size:13px;">Notificaciones</strong>
+                                        <a href="#" id="markAllRead" style="font-size:11px; color:#1ab394;">Marcar leidas</a>
+                                    </div>
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <div id="notifList"></div>
+                                <li class="dropdown-divider"></li>
+                                <li>
+                                    <a class="text-center dropdown-item" href="#" onclick="Aliados.Notifications.reload();return false;" style="font-size:12px;">
+                                        <strong>Ver todas</strong> <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                         <div class="usua_head">
                             <span class="block m-t-xs" id="UserNameMaster"></span>
                             <ul class="hList">
@@ -86,7 +111,7 @@
                                         <label class="level_1__item level_2__small" for="Aliados"> <a class="level_1__link  dropdown-toggle" title=""> <span><span id="TenantMaster">menu</span></span></a></label>
                                         <ul class="menu-dropdown" aria-expanded="false">
                                             <li>
-                                                <a id="UserMenuLogoutLink" href="#" onclick="app.security().logout();  return false;" title="Permite terminar la sesión del usuario">
+                                                <a id="UserMenuLogoutLink" href="#" onclick="app.security().logout();  return false;" title="Permite terminar la sesion del usuario">
                                                     <i class="fa fa-sign-out"></i> <span id="UserMenuLogoutText" class="d-sm-inline">Desconectar </span>
                                                 </a>
                                             </li>
@@ -103,27 +128,7 @@
                                         </ul>
                                     </div>
                                 </nav>
-                                @*<nav id="megamenu" class="megamenu megamenu_desktop">
-                                        <div href="#click" class="menu dropdown">
-                                            <ul id="megamenu_level__1" class="level_1 sf-js-enabled sf-arrows">
-                                                <li class="level_1__item level_2__small" style="display: inline-block;">
-                                                    <a data-toggle="dropdown" class="level_1__link sf-with-ul " href="#">
-                                                        <span class="block dropdown-toggle"><span id="TenantMaster">menu</span></span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <ul class="menu-dropdown">
-                                                <li>
-                                                    <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
-                                                        <i class="fa fa-sign-out"></i> <span class="d-sm-inline">Desconectar </span>
-                                                    </a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
-                                            </ul>
-                                        </div>
-                                    </nav>*@
                             </ul>
-
                         </div>
 
                         <div class="circulo">
@@ -131,10 +136,7 @@
                                 <img alt="image" src="~/logos/logo-core-alt.svg" id="tenantLogo">
                             </div>
                         </div>
-                        <a href="#" class="quest_mob" id="showHelp" title="Despliega la ayuda de la aplicación" style="
-						position: absolute;
-						right: 25px;
-						top:10px;">
+                        <a href="#" class="quest_mob" id="showHelp" title="Despliega la ayuda de la aplicacion" style="position: absolute; right: 25px; top:10px;">
                             <i class="fa fa-question"></i>
                         </a>
                     </div>
@@ -196,6 +198,34 @@
         });
     </script>
 
+    <script src='@Url.Content("~/Scripts/jquery.signalR-2.4.3.min.js")'></script>
+    <script src='@Url.Content("~/signalr/hubs")'></script>
+    <script src='@Url.Content("~/Scripts/notifications.service.js")'></script>
+    <script>
+        $(function() {
+            function getTokenPayload() {
+                try {
+                    var token = localStorage.getItem("Token");
+                    if (!token) return null;
+                    var base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+                    return JSON.parse(atob(base64));
+                } catch(e) { return null; }
+            }
+            var payload   = getTokenPayload();
+            var userId    = payload ? parseInt(payload.UserId    || payload.userId    || 0, 10) : 0;
+            var companyId = payload ? parseInt(payload.CompanyId || payload.companyId || 0, 10) : 0;
+            if (userId > 0) { Aliados.Notifications.init(userId, companyId); }
+            // Toggle manual del panel de notificaciones (sin hover)
+            $(document).on('click', '#notifToggle', function(e) {
+                e.preventDefault(); e.stopPropagation();
+                var p = $('#notifPanel');
+                if (p.is(':visible')) { p.hide(); } else { p.show(); Aliados.Notifications.reload(); }
+            });
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#notificationDropdown').length) { $('#notifPanel').hide(); }
+            });
+        });
+    </script>
     <script src="@Url.Content("~/Scripts/LayoutView.js")"></script> 
 </body>
 

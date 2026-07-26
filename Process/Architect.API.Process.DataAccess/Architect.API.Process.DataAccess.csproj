@@ -65,6 +65,7 @@
     <Compile Include="_Generated\ProcessSpecStep.cs" />
     <Compile Include="_Generated\ProcessSpecStepRole.cs" />
     <Compile Include="_Generated\ProcessSpecTask.cs" />
+    <Compile Include="_Generated\Reassignment.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Contracts\Architect.API.Core.Contracts.csproj">

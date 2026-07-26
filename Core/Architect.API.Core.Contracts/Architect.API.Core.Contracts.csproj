@@ -74,6 +74,8 @@
     <Compile Include="General\Error.cs" />
     <Compile Include="General\RuleContext.cs" />
     <Compile Include="General\Translation.cs" />
+    <Compile Include="Notifications\Notification.cs" />
+    <Compile Include="Notifications\NotificationResult.cs" />
     <Compile Include="Security\AOTPResponse.cs" />
     <Compile Include="Security\ClientInformation.cs" />
     <Compile Include="Security\AgentInformation.cs" />

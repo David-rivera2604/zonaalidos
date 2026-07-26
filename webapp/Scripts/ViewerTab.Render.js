@@ -318,6 +318,13 @@ app.ViewerQuery = (function () {
             if (column.colorstate != undefined) {
                 app.ViewerQuery.state[column.field] = column.colorstate;
             }
+            // Convertir cellStyle de objeto a funcion para Bootstrap Table
+            if (column.cellStyle != undefined && typeof column.cellStyle === 'object') {
+                const cellStyleDef = column.cellStyle;
+                column.cellStyle = function (value, row, index, field) {
+                    return cellStyleDef;
+                };
+            }
         });
 
         spec.icons = {

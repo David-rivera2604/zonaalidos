@@ -172,7 +172,12 @@ app.GeneralCase = (function () {
                     $('.references-section').addClass('d-none');
                 }
 
-                $('#TotalDays').html(data.TotalDays);
+                // Mostrar usuario asignado y días que lleva asignado
+        let assignedText = data.UserAssignedDescription
+            ? app.ui.UpdateDateFormatter(data.UserAssignedDescription, data.UserAssignedDate, false)
+            : '<span class="text-muted">Sin asignar</span>';
+        $('#AssignedUser').html(assignedText);
+        $('#TotalDays').html(data.TotalDays);
 
                 app.Notes.Init({
                     EntityType: 1304,

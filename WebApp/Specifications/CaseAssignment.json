@@ -1,0 +1,59 @@
+{
+  "Name": "CaseAssignment",
+  "ConnectionString": "Research",
+  "Title": "Asignacion de Caso",
+  "Columns": [
+    {
+      "Name": "CaseId",
+      "Alias": "No. Caso",
+      "IsNullable": false,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": true,
+      "AutoIncrement": false,
+      "Precision": 9,
+      "ReadOnly": true,
+      "Comments": "Identificador del caso",
+      "Domain": ""
+    },
+    {
+      "Name": "CaseTitle",
+      "Alias": "Asunto",
+      "IsNullable": true,
+      "Type": "varchar2",
+      "Length": 130,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "ReadOnly": true,
+      "Comments": "Titulo del caso",
+      "Domain": ""
+    },
+    {
+      "Name": "CurrentAssignee",
+      "Alias": "Asignado actualmente",
+      "IsNullable": true,
+      "Type": "varchar2",
+      "Length": 256,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 0,
+      "ReadOnly": true,
+      "Comments": "Usuario actualmente asignado a la etapa",
+      "Domain": ""
+    },
+    {
+      "Name": "UserAssigned",
+      "Alias": "Asignar a",
+      "IsNullable": false,
+      "Type": "number",
+      "Length": 22,
+      "PrimaryKey": false,
+      "AutoIncrement": false,
+      "Precision": 9,
+      "ReadOnly": false,
+      "Comments": "Usuario a asignar al caso",
+      "Domain": "Users.UserId"
+    }
+  ]
+}

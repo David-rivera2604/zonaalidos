@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace Architect.API.Process.Contracts.General
@@ -7,7 +8,7 @@ namespace Architect.API.Process.Contracts.General
     /// <summary>
     /// Procesos ejecutados o en ejecución.
     /// </summary>
-    [Serializable(), DataContract()]
+    [Serializable(), DataContract(), DebuggerDisplay("ActivityId:{ActivityId}, InstanceId:{InstanceId}, CompanyId:{CompanyId}")] 
     public partial class ProcessInstance
     {
         [DataMember(), JsonProperty()] public int ActivityId { get; set; }

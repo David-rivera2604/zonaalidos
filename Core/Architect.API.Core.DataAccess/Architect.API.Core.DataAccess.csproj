@@ -114,6 +114,7 @@
     <Compile Include="General\Navigation.cs" />
     <Compile Include="General\Notes.cs" />
     <Compile Include="General\Translation.cs" />
+    <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

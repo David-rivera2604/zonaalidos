@@ -313,6 +313,13 @@ app.ViewerQuery = (function () {
                     if (column.events != undefined) {
                         column.events = 'Local_Events';
                     }
+                    // Convertir cellStyle de objeto a funcion para Bootstrap Table
+                    if (column.cellStyle != undefined && typeof column.cellStyle === 'object') {
+                        const cellStyleDef = column.cellStyle;
+                        column.cellStyle = function (value, row, index, field) {
+                            return cellStyleDef;
+                        };
+                    }
                 });
             });
         }
@@ -526,6 +533,13 @@ app.ViewerQuery = (function () {
                     }
                     if (column.events != undefined) {
                         column.events = 'Local_Events';
+                    }
+                    // Convertir cellStyle de objeto a funcion para Bootstrap Table
+                    if (column.cellStyle != undefined && typeof column.cellStyle === 'object') {
+                        const cellStyleDef = column.cellStyle;
+                        column.cellStyle = function (value, row, index, field) {
+                            return cellStyleDef;
+                        };
                     }
                 });
 

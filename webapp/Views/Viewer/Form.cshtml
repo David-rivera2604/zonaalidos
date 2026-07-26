@@ -1,4 +1,4 @@
-﻿@{
+@{
     Layout = "~/Views/_Layout.cshtml";
 }
 
@@ -8,6 +8,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/app/js/core.frm.js")"></script>
     <script src="@Url.Content("~/Scripts/Viewer.Form.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

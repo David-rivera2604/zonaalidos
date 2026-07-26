@@ -1,4 +1,29 @@
-﻿# Release Notes - Aliados
+# Release Notes - Aliados
+
+## Versión 1.6.196
+
+### Aliados - Trazabilidad: Permite al supervisor asignar y reasignar colaboradores a los casos activos según sus roles, con historial completo de asignaciones.
+
+#### Cambios implementados:
+
+- Nueva pantalla **Gestión de Asignación de Casos**: el supervisor visualiza los casos activos de su equipo y reasigna colaboradores según carga de trabajo, con historial de asignaciones.
+- Se agrega sistema de notificaciones en tiempo real: el usuario asignado o reasignado a un caso recibe un aviso inmediato (campana en el navbar).
+- Ajustes de estabilidad y limpieza de código en el manejo de asignaciones y notificaciones.
+
+#### Dependencias:
+1. `260504a.sql` — CREATE TABLE `REASSIGNMENTS`
+2. `260504b.sql` — INSERT/UPDATE visualizaciones 200002 y 200003
+3. `260504c.sql` — Navegacion CASE005 y permisos de roles para visualizacion 200002
+4. `260504d.sql` — CREATE TABLE Notification + SEQ_NOTIFICATION + indices
+5. `260504e.sql` — LOOKUPMASTER ProcessState (KEY=ProcessState, ID dinamico) + LOOKUP valores estados
+6. `260504f.sql` — Agrega PIS.USERASSIGNED al SELECT de visualizacion 200002 (preseleccion del combobox en formulario de reasignacion)
+7. `260509a.sql` — UPDATE VISUALIZATIONS ID=4000: agrega `USUARIOETAPA` (STATEMENT: LEFT JOIN USERMEMBER sobre PIS.USERASSIGNED; SPECIFICATION: columna "Usuario etapa" visible despues de "Etapa actual")
+
+## Documentos técnicos  
+- `technical_documets/SignalR-IIS-Checklist.pdf` — Versión PDF lista para imprimir
+  o compartir.
+
+---
 
 ## Versión 1.6.191
 
@@ -203,6 +228,15 @@ Commit: 913c55c7 — 2026-07-24
 
 > ⚠️ Ajustar `EntraId.RedirectUri` según el ambiente (desarrollo, QA, producción). El valor debe coincidir exactamente con la URI registrada en el portal de Entra ID.
 
+- `RenderTimeline`: nodo de tiempo transcurrido entre puntos del timeline — muestra minutos, horas o días entre asignaciones consecutivas, posicionado sobre la línea conectora (`── ⏱ 3 días ──`).
+- `Ext.CaseAssignment.js`: preselección automática del usuario actualmente asignado al abrir el formulario de reasignación, usando `setTimeout(80ms)` + `.trigger('change')` para compatibilidad con Select2.
+- `Ext.CaseAssignment.js`: refactorización de arrow functions a `function()` con `self = this` para compatibilidad con el contexto de eval del viewer.
+- Mensajes de notificación con hipervínculo `Ir al caso →` (`target="_blank"`) separado por `<br/>` del texto del mensaje.
+- Ícono de notificaciones cambiado a `fa-envelope` estilo Inspinia con animación `swing` de `animate.css` al recibir notificación nueva.
+- Toast de notificaciones con animaciones `bounceInRight` / `bounceOutRight` de `animate.css`.
+- `_buildItem` en `notifications.service.js`: corregido `return $(li)` faltante que impedía mostrar los items al abrir el panel.
+- `_Layout.cshtml` y `_LayoutEx.cshtml`: campana visible en todas las vistas del sistema.
+
 #### Dependencias:
 - Registro de la aplicación en Microsoft Entra ID.
 
@@ -222,6 +256,15 @@ Commit: 913c55c7 — 2026-07-24
 - Se ajusta definición de forma EmitirPoliza de la tabla visualization.
 - Ajustes al javascript de soporte Form.Ext.Altas.js.
 
+- `RenderTimeline`: nodo de tiempo transcurrido entre puntos del timeline — muestra minutos, horas o días entre asignaciones consecutivas, posicionado sobre la línea conectora (`── ⏱ 3 días ──`).
+- `Ext.CaseAssignment.js`: preselección automática del usuario actualmente asignado al abrir el formulario de reasignación, usando `setTimeout(80ms)` + `.trigger('change')` para compatibilidad con Select2.
+- `Ext.CaseAssignment.js`: refactorización de arrow functions a `function()` con `self = this` para compatibilidad con el contexto de eval del viewer.
+- Mensajes de notificación con hipervínculo `Ir al caso →` (`target="_blank"`) separado por `<br/>` del texto del mensaje.
+- Ícono de notificaciones cambiado a `fa-envelope` estilo Inspinia con animación `swing` de `animate.css` al recibir notificación nueva.
+- Toast de notificaciones con animaciones `bounceInRight` / `bounceOutRight` de `animate.css`.
+- `_buildItem` en `notifications.service.js`: corregido `return $(li)` faltante que impedía mostrar los items al abrir el panel.
+- `_Layout.cshtml` y `_LayoutEx.cshtml`: campana visible en todas las vistas del sistema.
+
 #### Dependencias:
 1. 260421a.visualization.emitirpoliza.sql
 
@@ -238,6 +281,15 @@ Commit: 913c55c7 — 2026-07-24
 - ✅ **Refrescado de traducciones en tablas:** Nueva función `refreshBootstrapTableTranslations()` para actualizar traducciones en tiempo de ejecución en grillas Bootstrap.
 - ✅ **Mejora de filtros de labels:** Control mejorado para evitar traducción duplicada en etiquetas con ID definido.
 - ✅ **Sincronización automática:** Las tablas Bootstrap se actualizan automáticamente cuando se cargan nuevas traducciones.
+
+- `RenderTimeline`: nodo de tiempo transcurrido entre puntos del timeline — muestra minutos, horas o días entre asignaciones consecutivas, posicionado sobre la línea conectora (`── ⏱ 3 días ──`).
+- `Ext.CaseAssignment.js`: preselección automática del usuario actualmente asignado al abrir el formulario de reasignación, usando `setTimeout(80ms)` + `.trigger('change')` para compatibilidad con Select2.
+- `Ext.CaseAssignment.js`: refactorización de arrow functions a `function()` con `self = this` para compatibilidad con el contexto de eval del viewer.
+- Mensajes de notificación con hipervínculo `Ir al caso →` (`target="_blank"`) separado por `<br/>` del texto del mensaje.
+- Ícono de notificaciones cambiado a `fa-envelope` estilo Inspinia con animación `swing` de `animate.css` al recibir notificación nueva.
+- Toast de notificaciones con animaciones `bounceInRight` / `bounceOutRight` de `animate.css`.
+- `_buildItem` en `notifications.service.js`: corregido `return $(li)` faltante que impedía mostrar los items al abrir el panel.
+- `_Layout.cshtml` y `_LayoutEx.cshtml`: campana visible en todas las vistas del sistema.
 
 #### Dependencias:
 1. 260416a.visualization.upd.des.57c14536.sql
@@ -332,6 +384,15 @@ Commit: 913c55c7 — 2026-07-24
 
 - Se cambia la lógica para obtener el nombre del programa que genera el certificado por ramo, de forma que no esté fija en código y que dicho nombre se obtenga de la tabla `settings` usando como clave la siguiente interpolación (`tron.prog.certificado.{ramo}`).
 
+- `RenderTimeline`: nodo de tiempo transcurrido entre puntos del timeline — muestra minutos, horas o días entre asignaciones consecutivas, posicionado sobre la línea conectora (`── ⏱ 3 días ──`).
+- `Ext.CaseAssignment.js`: preselección automática del usuario actualmente asignado al abrir el formulario de reasignación, usando `setTimeout(80ms)` + `.trigger('change')` para compatibilidad con Select2.
+- `Ext.CaseAssignment.js`: refactorización de arrow functions a `function()` con `self = this` para compatibilidad con el contexto de eval del viewer.
+- Mensajes de notificación con hipervínculo `Ir al caso →` (`target="_blank"`) separado por `<br/>` del texto del mensaje.
+- Ícono de notificaciones cambiado a `fa-envelope` estilo Inspinia con animación `swing` de `animate.css` al recibir notificación nueva.
+- Toast de notificaciones con animaciones `bounceInRight` / `bounceOutRight` de `animate.css`.
+- `_buildItem` en `notifications.service.js`: corregido `return $(li)` faltante que impedía mostrar los items al abrir el panel.
+- `_Layout.cshtml` y `_LayoutEx.cshtml`: campana visible en todas las vistas del sistema.
+
 #### Dependencias:
 
 1. 260314a.settings.tron.prog.certificado.sql
@@ -369,6 +430,15 @@ Commit: 913c55c7 — 2026-07-24
 #### Funcionalidades implementadas:
 
 - Reporte de casos descargable para rol agente / Purdy / corredurías que contenga los siguientes campos: #caso / fecha ingreso / asunto / estado - urgente / usuario de creación (contacto).
+
+- `RenderTimeline`: nodo de tiempo transcurrido entre puntos del timeline — muestra minutos, horas o días entre asignaciones consecutivas, posicionado sobre la línea conectora (`── ⏱ 3 días ──`).
+- `Ext.CaseAssignment.js`: preselección automática del usuario actualmente asignado al abrir el formulario de reasignación, usando `setTimeout(80ms)` + `.trigger('change')` para compatibilidad con Select2.
+- `Ext.CaseAssignment.js`: refactorización de arrow functions a `function()` con `self = this` para compatibilidad con el contexto de eval del viewer.
+- Mensajes de notificación con hipervínculo `Ir al caso →` (`target="_blank"`) separado por `<br/>` del texto del mensaje.
+- Ícono de notificaciones cambiado a `fa-envelope` estilo Inspinia con animación `swing` de `animate.css` al recibir notificación nueva.
+- Toast de notificaciones con animaciones `bounceInRight` / `bounceOutRight` de `animate.css`.
+- `_buildItem` en `notifications.service.js`: corregido `return $(li)` faltante que impedía mostrar los items al abrir el panel.
+- `_Layout.cshtml` y `_LayoutEx.cshtml`: campana visible en todas las vistas del sistema.
 
 #### Dependencias:
 
@@ -444,6 +514,15 @@ Commit: 913c55c7 — 2026-07-24
 - Habilitar para rol de agentes y rol de Purdy, en la pestaña de seguimiento, la vista de los comentarios colocados en seguimiento de etapas, fechas de la gestión y realizado por. Vista desde tenant Aliados y Purdy.
 - Abrir casilla para que los casos seleccionados con prioridad "reprocesos" deban colocar de forma obligatoria el número de caso anterior. Se agrega la capacidad de poder hacer visibles o no los campos de referencia, con lo cual se puede agregar un par de campos y manejarlo por visibilidad.
 
+- `RenderTimeline`: nodo de tiempo transcurrido entre puntos del timeline — muestra minutos, horas o días entre asignaciones consecutivas, posicionado sobre la línea conectora (`── ⏱ 3 días ──`).
+- `Ext.CaseAssignment.js`: preselección automática del usuario actualmente asignado al abrir el formulario de reasignación, usando `setTimeout(80ms)` + `.trigger('change')` para compatibilidad con Select2.
+- `Ext.CaseAssignment.js`: refactorización de arrow functions a `function()` con `self = this` para compatibilidad con el contexto de eval del viewer.
+- Mensajes de notificación con hipervínculo `Ir al caso →` (`target="_blank"`) separado por `<br/>` del texto del mensaje.
+- Ícono de notificaciones cambiado a `fa-envelope` estilo Inspinia con animación `swing` de `animate.css` al recibir notificación nueva.
+- Toast de notificaciones con animaciones `bounceInRight` / `bounceOutRight` de `animate.css`.
+- `_buildItem` en `notifications.service.js`: corregido `return $(li)` faltante que impedía mostrar los items al abrir el panel.
+- `_Layout.cshtml` y `_LayoutEx.cshtml`: campana visible en todas las vistas del sistema.
+
 #### Dependencias:
 
 1. 20251215a.process.alter.sql
@@ -462,6 +541,15 @@ Commit: 913c55c7 — 2026-07-24
 - Se ajusta la creación de registros en las tablas AuthenticationTrace y ChangeSet por medio de sequence propios de Oracle.
 - Se habilitan validaciones para las cotizaciones de viajero.
 - Se agrega manejo de dos reintentos en caso de existir algún error en la emisión, con una pausa de 0.5 segundos entre intentos.
+
+- `RenderTimeline`: nodo de tiempo transcurrido entre puntos del timeline — muestra minutos, horas o días entre asignaciones consecutivas, posicionado sobre la línea conectora (`── ⏱ 3 días ──`).
+- `Ext.CaseAssignment.js`: preselección automática del usuario actualmente asignado al abrir el formulario de reasignación, usando `setTimeout(80ms)` + `.trigger('change')` para compatibilidad con Select2.
+- `Ext.CaseAssignment.js`: refactorización de arrow functions a `function()` con `self = this` para compatibilidad con el contexto de eval del viewer.
+- Mensajes de notificación con hipervínculo `Ir al caso →` (`target="_blank"`) separado por `<br/>` del texto del mensaje.
+- Ícono de notificaciones cambiado a `fa-envelope` estilo Inspinia con animación `swing` de `animate.css` al recibir notificación nueva.
+- Toast de notificaciones con animaciones `bounceInRight` / `bounceOutRight` de `animate.css`.
+- `_buildItem` en `notifications.service.js`: corregido `return $(li)` faltante que impedía mostrar los items al abrir el panel.
+- `_Layout.cshtml` y `_LayoutEx.cshtml`: campana visible en todas las vistas del sistema.
 
 #### Dependencias:
 
@@ -501,6 +589,15 @@ Implementación de nuevos parámetros de configuración (tabla `settings`) para 
 2. **Advertencia**: A los (ExpiresIn - WarningTime) minutos, se muestra la notificación emergente
 3. **Reactivación automática**: Si el usuario mueve el mouse o interactúa con el sistema, la sesión se extiende automáticamente por InactiveTime minutos
 4. **Expiración**: Si no hay actividad, la sesión expira y redirige al login
+
+- `RenderTimeline`: nodo de tiempo transcurrido entre puntos del timeline — muestra minutos, horas o días entre asignaciones consecutivas, posicionado sobre la línea conectora (`── ⏱ 3 días ──`).
+- `Ext.CaseAssignment.js`: preselección automática del usuario actualmente asignado al abrir el formulario de reasignación, usando `setTimeout(80ms)` + `.trigger('change')` para compatibilidad con Select2.
+- `Ext.CaseAssignment.js`: refactorización de arrow functions a `function()` con `self = this` para compatibilidad con el contexto de eval del viewer.
+- Mensajes de notificación con hipervínculo `Ir al caso →` (`target="_blank"`) separado por `<br/>` del texto del mensaje.
+- Ícono de notificaciones cambiado a `fa-envelope` estilo Inspinia con animación `swing` de `animate.css` al recibir notificación nueva.
+- Toast de notificaciones con animaciones `bounceInRight` / `bounceOutRight` de `animate.css`.
+- `_buildItem` en `notifications.service.js`: corregido `return $(li)` faltante que impedía mostrar los items al abrir el panel.
+- `_Layout.cshtml` y `_LayoutEx.cshtml`: campana visible en todas las vistas del sistema.
 
 #### Dependencias:
 

@@ -281,10 +281,8 @@ namespace Architect.API.Core.Business
             List<Contracts.General.LookupValues> lookups = Lkps(key, url, new Contracts.Security.Token() { CompanyId = companyId });
 
             if (lookups?.Count > 0 && lookups[0].Lkp.Exists(x => x.Code == code))
-            {
-
                 result = lookups[0].Lkp.Find(x => x.Code == code).Description;
-            }
+            
             return result;
         }
 

@@ -37,12 +37,17 @@ namespace aliados
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
+
+            // Registrar delegados SignalR. owin:AutomaticAppStartup=false por eso va aqui.
+            Architect.API.Core.Business.Notifications.NotificationPush.ToUser      = (userId, notification) => aliados.Hubs.NotificationHub.PushToUser(userId, notification);
+            Architect.API.Core.Business.Notifications.NotificationPush.UnreadCount = (userId, count)        => aliados.Hubs.NotificationHub.PushUnreadCount(userId, count);
             AreaRegistration.RegisterAllAreas();
 
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
 
             HangfireAspNet.Use(GetHangfireServers);
 

@@ -1,4 +1,4 @@
-﻿@{
+@{
     Layout = "~/Views/_Layout.cshtml";
 }
 @Styles.Render("~/Content/cssCRUD")
@@ -91,7 +91,7 @@
                                 <!-- Description -->
                                 <div class='col-sm-8 col-md-8'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='Description'>Descripción</label>
+                                        <label class='control-label' for='Description'>Descripci�n</label>
                                         <input id='Description' name='Description' type='text' class='form-control' size='256' maxlength='256'>
                                     </div>
                                 </div>
@@ -100,7 +100,7 @@
                                     <div class='form-group'>
                                         <label class='control-label' for='StepOrder'>Orden<span class='required-mark'>*</span></label>
                                         <input id='StepOrder' name='StepOrder' type='text' class='form-control text-right' size='5' maxlength='5'>
-                                        <small class="form-text text-muted">En caso de que el valor sea cero, el Sistema lo calculará de forma automática.</small>
+                                        <small class="form-text text-muted">En caso de que el valor sea cero, el Sistema lo calcular� de forma autom�tica.</small>
                                     </div>
                                 </div>
                                 <!-- Roles -->
@@ -121,7 +121,7 @@
                                 <!-- EnableComment -->
                                 <div class='col-sm-4 col-md-4 progressmode-visible d-none'>
                                     <div class='form-group'>
-                                        <label class='control-label' for='EnableComment'>¿Solicitar un comentario al seleccionar una opción?</label>
+                                        <label class='control-label' for='EnableComment'>�Solicitar un comentario al seleccionar una opci�n?</label>
                                         <div style="padding-top: 6px;">
                                             <div class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" id="EnableComment_1" name="EnableComment" value="true">
@@ -169,13 +169,13 @@
                                         <label class='control-label' for='References'>Campos personalizados</label>
                                         <select id='References' name='References' class='form-control' multiple></select>
                                         <div id='References_validate'></div>
-                                        <small class="form-text text-muted">Lista de campos personalizados que se podrán editar en la etapa actual.</small>
+                                        <small class="form-text text-muted">Lista de campos personalizados que se podr�n editar en la etapa actual.</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-lg-12">
-                                    <h4> Notificación al contacto principal</h4>
+                                    <h4> Notificaci�n al contacto principal</h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                     <div class="form-row">
                                         <!-- MailToContact -->
@@ -188,9 +188,9 @@
                                         <!-- MailToContactCustom -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='MailToContactCustom'>Personalización</label>
+                                                <label class='control-label' for='MailToContactCustom'>Personalizaci�n</label>
                                                 <input id='MailToContactCustom' name='MailToContactCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
-                                                <small class="form-text text-muted">Se puede indicar una lista de correo separado por coma, también se pueden usar las variables especiales {contact} y {user} para hacer referencia a la dirección de correo del contacto, así como la del usuario que está realizando el cambio.</small>
+                                                <small class="form-text text-muted">Se puede indicar una lista de correo separado por coma, tambi�n se pueden usar las variables especiales {contact} y {user} para hacer referencia a la direcci�n de correo del contacto, as� como la del usuario que est� realizando el cambio.</small>
                                             </div>
                                         </div>
                                         <!-- MailToContactTmpl -->
@@ -206,7 +206,7 @@
 
                             <div class="form-row role-notify-visible d-none">
                                 <div class="col-lg-12">
-                                    <h4> Notificación a los usuario de los roles responsables de la etapa</h4>
+                                    <h4>Notificar a usuario asignado a la etapa</h4>
                                     <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                     <div class="form-row">
                                         <!-- MailToStepResponsible -->
@@ -219,9 +219,9 @@
                                         <!-- MailToStepResponsibleCustom -->
                                         <div class='col-sm-4 col-md-4'>
                                             <div class='form-group'>
-                                                <label class='control-label' for='MailToStepResponsibleCustom'>Personalización</label>
+                                                <label class='control-label' for='MailToStepResponsibleCustom'>Personalizaci�n</label>
                                                 <input id='MailToStepResponsibleCustom' name='MailToStepResponsibleCustom' type='text' class='form-control' size='256' maxlength='256' disabled>
-                                                <small class="form-text text-muted">Se puede indicar una lista de correo separado por coma, también se pueden usar las variables especiales {Roles}, {contact} y {user} para hacer referencia a los correos de los usuarios asociados al rol o roles responsables de la tarea, o la dirección de correo del contacto, así como la del usuario que está realizando el cambio.</small>
+                                                <small class="form-text text-muted">Se puede indicar una lista de correo separado por coma, tambi�n se pueden usar las variables especiales {Roles}, {contact} y {user} para hacer referencia a los correos de los usuarios asociados al rol o roles responsables de la tarea, o la direcci�n de correo del contacto, as� como la del usuario que est� realizando el cambio.</small>
                                             </div>
                                         </div>
                                         <!-- MailToStepResponsibleTmpl -->
@@ -268,8 +268,8 @@
                                     <button id="ProcessSpecStepEdtFormSave" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios">Guardar</button>
                                     <button id="ProcessSpecStepEdtFormSaveContinue" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y continuar</button>
                                     <button id="ProcessSpecStepEdtFormSaveCopy" type="button" class="btn btn-primary btn-sm d-none formbtn" data-doing="Guardando cambios..." title="Guardar cambios y continuar">Guardar y copiar</button>
-                                    <button id="ProcessSpecStepEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la información actual">Duplicar</button>
-                                    <button id="ProcessSpecStepEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la información actual">Eliminar</button>
+                                    <button id="ProcessSpecStepEdtFormDuplicate" type="button" class="btn btn-info btn-sm d-none formbtn" data-doing="Duplicando..." title="Duplica la informaci�n actual">Duplicar</button>
+                                    <button id="ProcessSpecStepEdtFormDelete" type="button" class="btn btn-danger btn-sm d-none formbtn" data-doing="Eliminando..." title="Elimina la informaci�n actual">Eliminar</button>
                                     <button id="ProcessSpecStepEdtFormCancel" type="button" class="btn btn-white btn-sm d-none formbtn">Cancelar</button>
 
                                 </div>

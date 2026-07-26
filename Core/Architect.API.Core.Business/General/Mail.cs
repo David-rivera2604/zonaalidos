@@ -82,10 +82,8 @@ namespace Architect.API.Core.Business.General
         }
 
         public static void SendEmail(Dictionary<string, string> toAddressList, string subject, string body, string[] attachments = null)
-        {
-
+        { 
             Hangfire.BackgroundJob.Enqueue(() => SendAngular(toAddressList, subject, body, attachments));
-
         }
 
         [AutomaticRetry(Attempts = 0)]
@@ -97,22 +95,18 @@ namespace Architect.API.Core.Business.General
             Core.Contracts.General.Tenant tenantInfo = new Contracts.General.Tenant();
             string testEmail = "EMail.Test".StringValue(companyId);
 
-            if (toAddressList == null)
-            {
+            if (toAddressList == null) 
                 toAddressList = new Dictionary<string, string>();
-            }
-            if (userId != 0)
-            {
+            
+            if (userId != 0)            
                 currentUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, userId);
-            }
-            if (ownerId != 0)
-            {
+            
+            if (ownerId != 0)            
                 ownerUserInfo = Architect.API.Core.Business.Security.UserMember.RetrieveById(companyId, ownerId);
-            }
-            if (companyId != 0)
-            {
+            
+            if (companyId != 0)            
                 tenantInfo = Core.Business.General.Tenant.Information(companyId);
-            }
+            
             object context = new
             {
                 Today = DateTime.Now,
@@ -124,34 +118,56 @@ namespace Architect.API.Core.Business.General
                 app = new { url = ConfigurationManager.AppSettings["Aliados.URL.Base"] }
             };
 
-            if (templateKey.IsNotEmpty() && subject.IsEmpty())
+            // If a templateKey is provided and no explicit subject, resolve template
+            if (!string.IsNullOrEmpty(templateKey) && string.IsNullOrEmpty(subject))
             {
-
                 Contracts.General.InternalTemplate tmpl = DataAccess.General.InternalTemplate.Retrieve(companyId, templateKey);
-                if (tmpl.Subject == "Plantilla no encontrada")
+                if (tmpl == null)
+                {
+                    Architect.Utilities.Log.ErrorLog("SendMail", $"La plantilla {templateKey} no fue encontrada (null)");
+                    return;
+                }
+                if (string.Equals(tmpl.Subject, "Plantilla no encontrada", StringComparison.OrdinalIgnoreCase))
                 {
                     Architect.Utilities.Log.ErrorLog("SendMail", $"La plantilla {templateKey} no fue encontrada");
                 }
-                if (tmpl.MasterTemplateId.IsNotEmpty())
+                if (tmpl.MasterTemplateId != 0)
                 {
                     Contracts.General.InternalTemplate tmplMaster = DataAccess.General.InternalTemplate.RetrieveById(companyId, tmpl.MasterTemplateId);
-
-                    tmpl.Body = tmplMaster.Body.Replace("{Content}", tmpl.Body);
+                    if (tmplMaster != null && tmplMaster.Body != null)
+                    {
+                        tmpl.Body = (tmplMaster.Body ?? string.Empty).Replace("{Content}", tmpl.Body ?? string.Empty);
+                    }
                 }
 
-                subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), tmpl.Subject, context);
+                subject = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), tmpl.Subject ?? string.Empty, context);
                 Smart.Default.Settings.Parser.ErrorAction = ParseErrorAction.Ignore;
-                body = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), tmpl.Body, context);
+                body = Smart.Format(CultureInfo.CreateSpecificCulture("es-ES"), tmpl.Body ?? string.Empty, context);
 
-                foreach (string emailToken in tmpl.EmailTo.Split(','))
+                string emailToRaw = tmpl.EmailTo ?? string.Empty;
+                foreach (string rawToken in emailToRaw.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
+                    string emailToken = rawToken?.Trim();
+                    if (string.IsNullOrEmpty(emailToken))
+                        continue;
+
                     switch (emailToken)
                     {
                         case "{Owner}":
-                            toAddressList.Add(ownerUserInfo.EMail, string.Format("{0} {1}", ownerUserInfo.FirstName, ownerUserInfo.LastName));
+                            {
+                                string ownerEmail = ownerUserInfo?.EMail;
+                                string ownerName = string.Format("{0} {1}", ownerUserInfo?.FirstName ?? string.Empty, ownerUserInfo?.LastName ?? string.Empty).Trim();
+                                if (!string.IsNullOrEmpty(ownerEmail) && !toAddressList.ContainsKey(ownerEmail))
+                                    toAddressList.Add(ownerEmail, ownerName);
+                            }
                             break;
                         case "{User}":
-                            toAddressList.Add(currentUserInfo.EMail, string.Format("{0} {1}", currentUserInfo.FirstName, currentUserInfo.LastName));
+                            {
+                                string userEmail = currentUserInfo?.EMail;
+                                string userName = string.Format("{0} {1}", currentUserInfo?.FirstName ?? string.Empty, currentUserInfo?.LastName ?? string.Empty).Trim();
+                                if (!string.IsNullOrEmpty(userEmail) && !toAddressList.ContainsKey(userEmail))
+                                    toAddressList.Add(userEmail, userName);
+                            }
                             break;
                         default:
                             if (emailToken.StartsWith("{UserRoleList.App.", StringComparison.CurrentCultureIgnoreCase))
@@ -160,7 +176,7 @@ namespace Architect.API.Core.Business.General
                                 string settingValue = ConfigurationManager.AppSettings[key];
                                 foreach (var item in Architect.API.Core.Business.Security.UserMember.EmailListByRolename(companyId, settingValue))
                                 {
-                                    if (!toAddressList.ContainsKey(item.Key))
+                                    if (!toAddressList.ContainsKey(item.Key) && !string.IsNullOrEmpty(item.Key))
                                     {
                                         toAddressList.Add(item.Key, item.Value);
                                     }
@@ -171,13 +187,13 @@ namespace Architect.API.Core.Business.General
                                 string rolelist = emailToken.Substring(14, emailToken.Length - 15).Trim();
                                 foreach (var item in Architect.API.Core.Business.Security.UserMember.EmailListByRolename(companyId, rolelist))
                                 {
-                                    if (!toAddressList.ContainsKey(item.Key))
+                                    if (!toAddressList.ContainsKey(item.Key) && !string.IsNullOrEmpty(item.Key))
                                     {
                                         toAddressList.Add(item.Key, item.Value);
                                     }
                                 }
                             }
-                            else if (emailToken.IsNotEmpty())
+                            else
                             {
                                 if (!toAddressList.ContainsKey(emailToken))
                                 {
