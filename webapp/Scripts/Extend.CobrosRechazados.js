@@ -8,7 +8,7 @@ app.CobrosRechazados = (function () {
                     text: 'Enviar a cobro los recibos seleccionados',
                     icon: 'fa-shopping-cart',
                     event: function () {
-                        let data = this.data;
+                        let data = $(this.gridId).bootstrapTable('getData');
                         if (data.filter(i => i.SEL).length > 0) {
                             let datasel = data.filter(i => i.SEL);
                             let payload = { NUM_RECIBO: data.filter(i => i.SEL).map(u => u.BILLNUMBER) };

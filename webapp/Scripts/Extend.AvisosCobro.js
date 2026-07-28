@@ -40,7 +40,7 @@ app.Ex_AvisosCobro = (function () {
                     text: 'Excluir recibos seleccionados',
                     icon: 'fa-chain-broken',
                     event: function () {
-                        let data = this.data;
+                        let data = $('#RecibosGridTbl').bootstrapTable('getData');
                         if (data.filter(i => i.SEL).length > 0) {
                             let datasel = data.filter(i => i.SEL);
                             let payload = {
