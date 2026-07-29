@@ -1,5 +1,20 @@
 # Release Notes - Aliados
 
+## Versión 1.6.198
+
+### Aliados - Casos: Mejora visual y funcional en la carga de adjuntos.
+
+#### Cambios implementados:
+
+- Se mejoró el diseño de las tarjetas de adjuntos para una visualización más limpia y profesional.
+- Se agregó visualización de quién cargó el archivo y cuándo se cargó (formato relativo, por ejemplo: "hace 10 minutos").
+- Se ajustó el comportamiento responsive de las tarjetas para móviles y pantallas intermedias.
+- Se unificó la lógica de iconos para que archivos nuevos y precargados muestren el mismo tipo de iconografía.
+- Se agregó fallback para imágenes sin preview disponible, mostrando un icono genérico de imagen.
+- Se removió el borde punteado del área de adjuntos.
+
+---
+
 ## Versión 1.6.197
 
 ### Aliados - Entra ID: Sincronización de usuarios con EntraIdUserManagement.

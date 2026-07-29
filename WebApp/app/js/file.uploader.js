@@ -31,6 +31,239 @@ function getMimeType(filename) {
     return mimeTypes[ext] || 'application/octet-stream';
 }
 
+function injectFileUploaderStyles() {
+    if (document.getElementById('fileUploaderProfessionalStyles'))
+        return;
+
+    var style = document.createElement('style');
+    style.id = 'fileUploaderProfessionalStyles';
+    style.type = 'text/css';
+    style.textContent = '.dropzone .dz-message{width:100%;}' +
+        '.dropzone .dz-preview.dz-professional-card{' +
+        'display:inline-flex;vertical-align:top;flex-direction:column;width:220px;max-width:100%;min-height:250px;background:#fff;border:1px solid #dfe6ef;border-radius:14px;box-shadow:0 8px 22px rgba(15,23,42,.08);overflow:hidden;margin:10px;transition:transform .2s ease,box-shadow .2s ease;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card:hover{' +
+        'transform:translateY(-3px);box-shadow:0 14px 28px rgba(15,23,42,.14);' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-image{' +
+        'width:100%!important;height:120px!important;margin:0!important;border-radius:14px 14px 0 0!important;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f8fafc,#eef3f8);' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-image img{' +
+        'width:100%;height:100%;object-fit:cover;display:block;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-details{' +
+        'position:static!important;opacity:1!important;min-height:95px;padding:12px;background:#fff;text-align:left!important;color:#2c3a4b!important;display:flex;flex-direction:column;gap:6px;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-size{' +
+        'margin:0!important;order:1;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-size span{' +
+        'display:inline-block;background:#eef3f8;color:#415268;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;box-shadow:none!important;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-filename{' +
+        'order:2;max-width:100%;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-filename span{' +
+        'display:block;max-width:100%;font-size:13px;font-weight:600;color:#2f3a4a;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-upload-meta{' +
+        'order:3;margin-top:2px;min-height:30px;font-size:12px;color:#64748b;line-height:1.35;white-space:normal;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-upload-meta .dz-user{' +
+        'font-weight:600;color:#334155;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-actions{' +
+        'margin-top:auto;display:flex;justify-content:flex-end;gap:8px;padding:9px 10px;border-top:1px solid #edf2f7;background:#f8fafc;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-actions .dz-action-btn{' +
+        'display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:9px;transition:all .2s ease;text-decoration:none;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-actions .dz-action-btn:hover{' +
+        'background:#e7eef6;' +
+        '}' +
+        '.dropzone .dz-preview.dz-professional-card .dz-success-mark,.dropzone .dz-preview.dz-professional-card .dz-error-mark,.dropzone .dz-preview.dz-professional-card .dz-progress{' +
+        'display:none!important;' +
+        '}' +
+        '@media (max-width:991px){.dropzone .dz-preview.dz-professional-card{width:calc(50% - 22px);min-width:170px;}}' +
+        '@media (max-width:575px){.dropzone .dz-preview.dz-professional-card{width:100%;min-width:0;margin:8px 0;}}';
+
+    document.head.appendChild(style);
+}
+
+function escapeUploaderHtml(value) {
+    if (value === null || value === undefined)
+        return '';
+
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function getCurrentUploaderName() {
+    var userName = localStorage.getItem('Username');
+    if (userName && userName.trim())
+        return userName;
+
+    return '';
+}
+
+function getUploaderAuditValue(fileData, keys) {
+    if (!fileData)
+        return null;
+
+    for (var i = 0; i < keys.length; i++) {
+        var value = fileData[keys[i]];
+        if (value !== undefined && value !== null && value !== '')
+            return value;
+    }
+
+    return null;
+}
+
+function normalizeUploaderDate(dateValue) {
+    if (!dateValue || dateValue === '0001-01-01T00:00:00')
+        return null;
+
+    if (typeof moment !== 'undefined' && moment(dateValue).isValid())
+        return dateValue;
+
+    return null;
+}
+
+function getUploaderIconData(fileType) {
+    var type = (fileType || '').toLowerCase();
+
+    if (type.indexOf('image/') === 0)
+        return { className: 'fa fa-file-image-o', color: '#28a745' };
+    if (type === 'application/pdf')
+        return { className: 'fa fa-file-pdf-o', color: '#dc3545' };
+    if (type.indexOf('word') >= 0 || type.indexOf('document') >= 0)
+        return { className: 'fa fa-file-word-o', color: '#2b579a' };
+    if (type.indexOf('excel') >= 0 || type.indexOf('sheet') >= 0)
+        return { className: 'fa fa-file-excel-o', color: '#217346' };
+    if (type.indexOf('powerpoint') >= 0 || type.indexOf('presentation') >= 0)
+        return { className: 'fa fa-file-powerpoint-o', color: '#d24726' };
+    if (type.indexOf('zip') >= 0 || type.indexOf('compressed') >= 0 || type.indexOf('rar') >= 0)
+        return { className: 'fa fa-file-archive-o', color: '#f59e0b' };
+    if (type.indexOf('text') >= 0 || type.indexOf('csv') >= 0)
+        return { className: 'fa fa-file-text-o', color: '#007bff' };
+
+    return { className: 'fa fa-file-o', color: '#6c757d' };
+}
+
+function applyUploaderFileVisual(file) {
+    if (!file || !file.previewElement)
+        return;
+
+    var dzImage = file.previewElement.querySelector('.dz-image');
+    if (!dzImage)
+        return;
+
+    var mimeType = (file.type || getMimeType(file.name || '') || '').toLowerCase();
+
+    function renderGenericIcon() {
+        dzImage.innerHTML = '';
+
+        var iconData = getUploaderIconData(mimeType);
+        var iconElement = document.createElement('i');
+        iconElement.className = iconData.className;
+        iconElement.style.fontSize = '58px';
+        iconElement.style.color = iconData.color;
+        iconElement.style.display = 'flex';
+        iconElement.style.alignItems = 'center';
+        iconElement.style.justifyContent = 'center';
+        iconElement.style.width = '100%';
+        iconElement.style.height = '100%';
+
+        dzImage.appendChild(iconElement);
+    }
+
+    var imageElement = dzImage.querySelector('img');
+    if (imageElement && mimeType.indexOf('image/') === 0) {
+        var imageSrc = imageElement.getAttribute('src') || '';
+
+        if (!imageSrc) {
+            renderGenericIcon();
+            return;
+        }
+
+        if (imageElement.complete) {
+            if (imageElement.naturalWidth > 0) {
+                imageElement.style.width = '100%';
+                imageElement.style.height = '100%';
+                imageElement.style.objectFit = 'cover';
+                return;
+            }
+
+            renderGenericIcon();
+            return;
+        }
+
+        imageElement.onload = function () {
+            imageElement.style.width = '100%';
+            imageElement.style.height = '100%';
+            imageElement.style.objectFit = 'cover';
+        };
+
+        imageElement.onerror = function () {
+            renderGenericIcon();
+        };
+
+        return;
+    }
+
+    renderGenericIcon();
+}
+
+function renderUploaderAuditInfo(file) {
+    if (!file || !file.previewElement)
+        return;
+
+    var fileData = file.serverResponse || {};
+    var userName = getUploaderAuditValue(fileData, ['UpdateUserName', 'UPDATEUSERNAME', 'CreatedByName', 'CreatedUserName', 'UploadUserName', 'UserName']) || getCurrentUploaderName();
+    var updateDate = normalizeUploaderDate(getUploaderAuditValue(fileData, ['UpdateDate', 'UPDATEDATE', 'CreatedDate', 'CreateDate', 'UploadDate', 'UploadedAt']));
+
+    if (!updateDate && file.manuallyAdded !== true)
+        updateDate = new Date().toISOString();
+
+    var details = file.previewElement.querySelector('.dz-details');
+    if (!details)
+        return;
+
+    var auditElement = file.previewElement.querySelector('.dz-upload-meta');
+    if (!auditElement) {
+        auditElement = document.createElement('div');
+        auditElement.className = 'dz-upload-meta';
+        details.appendChild(auditElement);
+    }
+
+    if (!userName && !updateDate) {
+        auditElement.innerHTML = '';
+        return;
+    }
+
+    var relativeDate = '';
+    var formattedDate = '';
+    if (updateDate && typeof moment !== 'undefined' && moment(updateDate).isValid()) {
+        relativeDate = moment(updateDate).fromNow();
+        formattedDate = moment(updateDate).format('DD/MM/YYYY hh:mm:ssa');
+    }
+
+    var content = '';
+    if (userName)
+        content += '<span class="dz-user">' + escapeUploaderHtml(userName) + '</span>';
+
+    if (relativeDate)
+        content += (content ? ' ' : '') + '<span class="dz-time">' + escapeUploaderHtml(relativeDate) + '</span>';
+
+    auditElement.innerHTML = content;
+    if (formattedDate)
+        auditElement.setAttribute('title', formattedDate);
+}
+
 function resolveUploaderTranslationPath($element) {
     if ($element.closest('#AttachmentGrid, .AttachmentGrid').length > 0)
         return 'Common/AttachmentGrid';
@@ -242,6 +475,7 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     localizedSettings = localizeUploaderSettings(settings, translations);
                     applyUploaderTranslations(translationScope, translations);
                     applyUploaderPreviewTranslations($el, translations);
+                    injectFileUploaderStyles();
 
                     var responses = [];
                     var hasError = false;
@@ -255,57 +489,22 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     function setupFileActions(file, dzInstance) {
                         if (!file.previewElement) return;
 
-                        // Aplicar estilos al preview element para que crezca con transicion
-                        file.previewElement.style.borderRadius = '20px';
-                        file.previewElement.style.overflow = 'hidden';
-                        file.previewElement.style.position = 'relative';
-                        file.previewElement.style.transition = 'all 0.3s ease';
+                        file.previewElement.classList.add('dz-professional-card');
 
-                        // Aplicar border-radius al dz-image
-                        var dzImage = file.previewElement.querySelector('.dz-image');
-                        if (dzImage) {
-                            dzImage.style.borderRadius = '20px 20px 0 0';
-                        }
-
-                        // Aplicar border-radius al dz-details
-                        var dzDetails = file.previewElement.querySelector('.dz-details');
-                        if (dzDetails) {
-                            dzDetails.style.borderRadius = '20px 20px 0 0';
-                        }
-
-                        // Buscar o crear el contenedor de acciones
                         var actionsContainer = file.previewElement.querySelector('.dz-actions');
                         if (!actionsContainer) {
                             actionsContainer = document.createElement('div');
                             actionsContainer.className = 'dz-actions';
-                            // Usar max-height para animar el crecimiento, sin position absolute
-                            actionsContainer.style.cssText = 'display: flex; justify-content: center; gap: 15px; padding: 0; background: linear-gradient(to bottom, #f8f9fa, #e9ecef); border-radius: 0 0 20px 20px; box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1); max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;';
-
-                            // Insertar al final del preview element (flujo normal, no absoluto)
                             file.previewElement.appendChild(actionsContainer);
-
-                            // Configurar eventos de hover en el preview element
-                            $(file.previewElement).on('mouseenter', function () {
-                                // Expandir el contenedor de acciones
-                                actionsContainer.style.maxHeight = '50px';
-                                actionsContainer.style.padding = '10px 5px';
-                            }).on('mouseleave', function () {
-                                // Contraer el contenedor de acciones
-                                actionsContainer.style.maxHeight = '0';
-                                actionsContainer.style.padding = '0';
-                            });
                         }
 
-                        // Limpiar contenido previo
                         actionsContainer.innerHTML = '';
 
-                        // Crear icono de descarga
                         var downloadIcon = document.createElement('a');
                         downloadIcon.href = 'javascript:void(0)';
-                        downloadIcon.className = 'dz-download';
+                        downloadIcon.className = 'dz-download dz-action-btn';
                         downloadIcon.title = getUploaderTranslationAttribute(translations, 'dzDownload', 'title') || 'Descargar';
-                        downloadIcon.innerHTML = '<i class="fa fa-download" style="font-size: 18px; color: #28a745;"></i>';
-                        downloadIcon.style.cssText = 'cursor: pointer; padding: 5px; display: inline-block;';
+                        downloadIcon.innerHTML = '<i class="fa fa-download" style="font-size: 16px; color: #178a3f;"></i>';
 
                         downloadIcon.onclick = function (e) {
                             e.preventDefault();
@@ -332,13 +531,11 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                             return false;
                         };
 
-                        // Crear icono de eliminar
                         var deleteIcon = document.createElement('a');
                         deleteIcon.href = 'javascript:void(0)';
-                        deleteIcon.className = 'dz-remove';
+                        deleteIcon.className = 'dz-remove dz-action-btn';
                         deleteIcon.title = getUploaderTranslationAttribute(translations, 'dzRemove', 'title') || 'Eliminar';
-                        deleteIcon.innerHTML = '<i class="fa fa-trash" style="font-size: 18px; color: #dc3545;"></i>';
-                        deleteIcon.style.cssText = 'cursor: pointer; padding: 5px; display: inline-block;';
+                        deleteIcon.innerHTML = '<i class="fa fa-trash" style="font-size: 16px; color: #c73340;"></i>';
 
                         deleteIcon.onclick = function (e) {
                             e.preventDefault();
@@ -348,9 +545,10 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                             return false;
                         };
 
-                        // Agregar iconos al contenedor
                         actionsContainer.appendChild(downloadIcon);
                         actionsContainer.appendChild(deleteIcon);
+
+                        renderUploaderAuditInfo(file);
                     }
 
                     var dz = new Dropzone(this, {
@@ -374,8 +572,8 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                         init: function () {
                             var self = this;
 
-                            // Aplicar borde verde para indicar zona de carga activa
-                            $el.css('border', '2px dashed #d81e05');
+                            // Remover borde punteado del contenedor
+                            $el.css('border', 'none');
 
                             // Aplicar color rojo al icono de carga
                             $el.find('.fa-cloud-upload').css('color', '#d81e05');
@@ -424,6 +622,9 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                                         }
 
                                         if (file) {
+                                            response.UpdateUserName = response.UpdateUserName || getCurrentUploaderName();
+                                            response.UpdateDate = response.UpdateDate || new Date().toISOString();
+
                                             file.status = Dropzone.SUCCESS;
                                             file.serverResponse = response;
                                             self.emit('success', file, response);
@@ -498,8 +699,10 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                             }
 
                             self.on('success', function (file, response) {
-                                // Configurar iconos de descarga y eliminar
-                                setupFileActions(file, self);
+                                setTimeout(function () {
+                                    applyUploaderFileVisual(file);
+                                    setupFileActions(file, self);
+                                }, 10);
                             });
 
                             self.on('error', function (file, error) {
@@ -963,6 +1166,8 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                         DocumentTypeDesc: fileData.DocumentTypeDesc || 'General',
                         Description: fileData.Description || fileData.FileName,
                         FileContent: fileData.StoredFileName || fileData.Stored || fileData.FileContent,
+                        UpdateUserName: fileData.UpdateUserName || fileData.UPDATEUSERNAME || fileData.CreatedByName || fileData.UserName || '',
+                        UpdateDate: fileData.UpdateDate || fileData.UPDATEDATE || fileData.CreatedDate || fileData.CreateDate || fileData.UploadDate || null,
                         IsLoaded: true // Indica que este archivo ya está cargado
                     };
 
@@ -994,66 +1199,9 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     inst.dz.files.push(mockFile);
                     inst.dz.emit("addedfile", mockFile);
 
-                    // Para archivos precargados, usar ícono de Font Awesome en lugar de thumbnail
                     setTimeout(function () {
-                        // Buscar el elemento de preview del archivo recién agregado
-                        var previewElement = mockFile.previewElement;
-                        if (previewElement) {
-                            var dzImage = previewElement.querySelector('.dz-image');
-                            if (dzImage) {
-                                // Limpiar contenido existente
-                                dzImage.innerHTML = '';
-
-                                // Determinar el ícono según el tipo de archivo
-                                var iconClass = 'fa fa-file-o'; // Ícono por defecto
-                                var iconColor = '#6c757d'; // Gris por defecto
-
-                                if (mockFile.type) {
-                                    if (mockFile.type.startsWith('image/')) {
-                                        iconClass = 'fa fa-file-image-o';
-                                        iconColor = '#28a745'; // Verde
-                                    } else if (mockFile.type === 'application/pdf') {
-                                        iconClass = 'fa fa-file-pdf-o';
-                                        iconColor = '#dc3545'; // Rojo
-                                    } else if (mockFile.type.includes('word') || mockFile.type.includes('document')) {
-                                        iconClass = 'fa fa-file-word-o';
-                                        iconColor = '#2b579a'; // Azul Word
-                                    } else if (mockFile.type.includes('excel') || mockFile.type.includes('sheet')) {
-                                        iconClass = 'fa fa-file-excel-o';
-                                        iconColor = '#217346'; // Verde Excel
-                                    } else if (mockFile.type.includes('powerpoint') || mockFile.type.includes('presentation')) {
-                                        iconClass = 'fa fa-file-powerpoint-o';
-                                        iconColor = '#d24726'; // Naranja PowerPoint
-                                    } else if (mockFile.type.includes('zip') || mockFile.type.includes('compressed') || mockFile.type.includes('rar')) {
-                                        iconClass = 'fa fa-file-archive-o';
-                                        iconColor = '#ffc107'; // Amarillo
-                                    } else if (mockFile.type.includes('text')) {
-                                        iconClass = 'fa fa-file-text-o';
-                                        iconColor = '#007bff'; // Azul
-                                    }
-                                }
-
-                                // Crear el ícono
-                                var iconElement = document.createElement('i');
-                                iconElement.className = iconClass;
-                                iconElement.style.fontSize = '60px';
-                                iconElement.style.color = iconColor;
-                                iconElement.style.display = 'flex';
-                                iconElement.style.alignItems = 'center';
-                                iconElement.style.justifyContent = 'center';
-                                iconElement.style.width = '100%';
-                                iconElement.style.height = '100%';
-
-                                // Agregar el ícono al contenedor
-                                dzImage.appendChild(iconElement);
-                                dzImage.style.display = 'flex';
-                                dzImage.style.alignItems = 'center';
-                                dzImage.style.justifyContent = 'center';
-
-                                // Configurar iconos de descarga y eliminar
-                                inst.setupFileActions(mockFile, inst.dz);
-                            }
-                        }
+                        applyUploaderFileVisual(mockFile);
+                        inst.setupFileActions(mockFile, inst.dz);
                     }, 10); // Pequeño delay para asegurar que el DOM esté listo
 
                     // Marcar como completo (esto evita que Dropzone intente subirlo)

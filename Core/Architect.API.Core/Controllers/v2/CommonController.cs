@@ -209,7 +209,9 @@ namespace Architect.API.Process.WebApi.Controllers.v2
                     FileName = uploadedFile.FileName,
                     StoredFileName = storedFileName,
                     Size = size,
-                    Id = attachmentId
+                    Id = attachmentId,
+                    UpdateUserName = tokenInfo?.UserName,
+                    UpdateDate = DateTime.Now
                 };
             }
             catch (Exception ex)
