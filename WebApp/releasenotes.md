@@ -1,5 +1,25 @@
 # Release Notes - Aliados
 
+## Versión 1.6.197
+
+### Aliados - Entra ID: Sincronización de usuarios con EntraIdUserManagement.
+
+#### Cambios implementados:
+
+- Se agrega la sincronización de usuarios de Aliados con **EntraIdUserManagement** para crear, actualizar y desactivar usuarios invitados en Entra ID según los tenants habilitados.
+- La sincronización queda condicionada por un nuevo setting global para activar o desactivar la funcionalidad sin requerir cambios de código.
+
+#### Nuevos settings de configuración requeridos (`Web.config`):
+
+| Setting | Descripción |
+|---|---|
+| `EntraId.SyncUsers.Enabled` | Habilita o deshabilita globalmente la sincronización de usuarios con Entra ID. |
+| `EntraId.SyncUsers.Tenants` | Lista de `CompanyId` (separados por `;`) cuyos usuarios se sincronizan con Entra ID. |
+| `EntraId.BaseUrl` | URL base del AppServer de EntraIdUserManagement / One Identity. |
+| `EntraId.AuthString` | Cadena de autenticación utilizada para abrir sesión contra el AppServer de EntraIdUserManagement. |
+
+--
+
 ## Versión 1.6.196
 
 ### Aliados - Trazabilidad: Permite al supervisor asignar y reasignar colaboradores a los casos activos según sus roles, con historial completo de asignaciones.

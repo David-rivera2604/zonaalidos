@@ -98,6 +98,16 @@
     <Compile Include="Security\ResetPasswordRequest.cs" />
     <Compile Include="Security\Token.cs" />
     <Compile Include="Security\AuthenticationResponse.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BAuthRequest.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BDeactivateRequest.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BDeactivateValues.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BDeleteRequest.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BEntityResponse.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BEntityValuesResponse.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BLookupCriteria.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BPersonRequest.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BPersonValuesDto.cs" />
+    <Compile Include="Security\EntraId\EntraIdB2BUserSyncRequest.cs" />
     <Compile Include="Security\UserMemberResult.cs" />
     <Compile Include="Security\UserMember.cs" />
     <Compile Include="General\CustomData.cs" />
@@ -153,3 +163,5 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
+
+

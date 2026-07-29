@@ -120,6 +120,16 @@ namespace Architect.API.Core.Business.Security
                     result.responseTronSubAgent = result.responseTronSubAgent + " | " + oktaMsg;
             }
 
+            //Se sincroniza el usuario con Invitados B2B Cloud para los tenants habilitados
+            if (Architect.API.Core.Business.Security.EntraIdUserManagement.IsTenantEnabled(companyId))
+            {
+                string entraMsg = Architect.API.Core.Business.Security.EntraIdUserManagement.Create(item);
+                if (string.IsNullOrEmpty(result.responseTronSubAgent))
+                    result.responseTronSubAgent = entraMsg;
+                else
+                    result.responseTronSubAgent = result.responseTronSubAgent + " | " + entraMsg;
+            }
+
             if (affectedRows > 0 )
             {
                 SynchronizeUserRoleMember(companyId, userId, result.UserId, item.Roles);
@@ -315,6 +325,16 @@ namespace Architect.API.Core.Business.Security
                     result.responseTronSubAgent = result.responseTronSubAgent + " | " + oktaMsg;
             }
 
+            //Se sincroniza el usuario con Invitados B2B Cloud para los tenants habilitados
+            if (Architect.API.Core.Business.Security.EntraIdUserManagement.IsTenantEnabled(companyId))
+            {
+                string entraMsg = Architect.API.Core.Business.Security.EntraIdUserManagement.Update(item);
+                if (string.IsNullOrEmpty(result.responseTronSubAgent))
+                    result.responseTronSubAgent = entraMsg;
+                else
+                    result.responseTronSubAgent = result.responseTronSubAgent + " | " + entraMsg;
+            }
+
             if (affectedRows > 0 )
             {
                 SynchronizeUserRoleMember(companyId, userId, id, item.Roles);
@@ -396,6 +416,12 @@ namespace Architect.API.Core.Business.Security
                     if (Architect.API.Core.Business.Security.OktaUserManagement.IsTenantEnabled(companyId))
                     {
                         Architect.API.Core.Business.Security.OktaUserManagement.Delete(result.EMail);
+                    }
+
+                    //Se sincroniza la eliminación del usuario con Invitados B2B Cloud para los tenants habilitados
+                    if (Architect.API.Core.Business.Security.EntraIdUserManagement.IsTenantEnabled(companyId))
+                    {
+                        Architect.API.Core.Business.Security.EntraIdUserManagement.Delete(result);
                     }
 
                     Core.Business.General.ChangeSet.Create(1002, id, companyId, "Eliminar", string.Format("Se eliminó el usuario '{0}'", result.UserName), userId, result);

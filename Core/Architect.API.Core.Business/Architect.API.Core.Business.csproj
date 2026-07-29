@@ -169,6 +169,7 @@
     <Compile Include="General\Tron.cs" />
     <Compile Include="Notifications\NotificationBusiness.cs" />
     <Compile Include="Security\AccountSupport.cs" />
+    <Compile Include="Security\EntraIdUserManagement.cs" />
     <Compile Include="Security\OktaUserManagement.cs" />
     <Compile Include="Security\OTP.cs" />
     <Compile Include="Settings.cs" />
@@ -232,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Manual de la API – Invitados B2B Cloud.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -248,3 +250,7 @@
   </Target>
   <Import Project="..\..\packages\Scriban.5.7.0\build\Scriban.targets" Condition="Exists('..\..\packages\Scriban.5.7.0\build\Scriban.targets')" />
 </Project>
+
+
+
+
