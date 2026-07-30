@@ -67,4 +67,3 @@ BEGIN
     COMMIT;
     DBMS_OUTPUT.PUT_LINE('ProcessState creado con LOOKUPID=' || v_id);
 END;
-/
