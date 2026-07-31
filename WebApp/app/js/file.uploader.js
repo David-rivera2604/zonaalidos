@@ -85,10 +85,38 @@ function injectFileUploaderStyles() {
         'display:none!important;' +
         '}' +
         '@media (max-width:991px){.dropzone .dz-preview.dz-professional-card{width:calc(50% - 22px);min-width:170px;}}' +
-        '@media (max-width:575px){.dropzone .dz-preview.dz-professional-card{width:100%;min-width:0;margin:8px 0;}}';
+        '@media (max-width:575px){.dropzone .dz-preview.dz-professional-card{width:100%;min-width:0;margin:8px 0;}}' +
+        /* Estilos para documentos esperados (NUEVA FUNCIONALIDAD) */
+        '.expected-documents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:20px;width:100%;flex:1 1 100%;box-sizing:border-box;}' +
+        '.expected-document-card{display:flex;flex-direction:column;min-height:280px;background:#fff;border:2px dashed #ccc;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .25s cubic-bezier(0.4,0,0.2,1);position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.08);}' +
+        '.expected-document-card:hover{border-color:#0087F7;box-shadow:0 8px 24px rgba(0,135,247,0.15);transform:translateY(-2px);}' +
+        '.expected-document-card.dz-drag-hover{border-color:#ffc107;background:#fffbf0;box-shadow:inset 0 0 10px rgba(255,193,7,0.3),0 8px 24px rgba(255,193,7,0.25);border-width:2px;}' +
+        '.expected-document-card.has-file{border:1px solid #dfe6ef;background:#f8fbff;}' +
+        '.expected-document-card .edc-header{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#f8fafc 0%,#eef3f8 100%);padding:20px 12px;text-align:center;min-height:140px;}' +
+        '.expected-document-card.has-file .edc-header{background:linear-gradient(135deg,#f8fafc 0%,#eef3f8 100%);}' +
+        '.expected-document-card .edc-icon{font-size:40px;color:#0087F7;margin-bottom:8px;}' +
+        '.expected-document-card .edc-name{font-size:12px;font-weight:600;color:#2f3a4a;max-width:100%;white-space:normal;line-height:1.3;word-wrap:break-word;word-break:break-word;}' +
+        '.expected-document-card .edc-description{font-size:10px;color:#999;margin-top:4px;white-space:normal;line-height:1.2;}' +
+        '.expected-document-card .edc-status{padding:10px 12px;border-top:1px solid #e0e0e0;background:#fafafa;text-align:center;}' +
+        '.expected-document-card .edc-status.pending{background:#fff3cd;border-top-color:#ffeaa7;}' +
+        '.expected-document-card .edc-status.completed{background:#d4edda;border-top-color:#c3e6cb;}' +
+        '.expected-document-card .status-badge{display:inline-block;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap;}' +
+        '.expected-document-card .status-badge.pending{background:#ffc107;color:#000;}' +
+        '.expected-document-card .status-badge.completed{background:#28a745;color:#fff;}' +
+        '.expected-document-card .edc-file-info{padding:8px 12px;border-top:1px solid #e0e0e0;background:#f8f9fa;font-size:12px;}' +
+        '.expected-document-card .edc-file-name{font-weight:600;color:#2f3a4a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}' +
+        '.expected-document-card .edc-file-meta{font-size:10px;color:#999;line-height:1.4;margin-top:4px;white-space:normal;}' +
+        '.expected-document-card .edc-actions{display:flex;gap:6px;justify-content:center;padding:8px 12px;border-top:1px solid #e0e0e0;background:#f8f9fa;}' +
+        '.expected-document-card .edc-action-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;border:none;background:#e7eef6;color:#0087F7;cursor:pointer;transition:all .2s ease;padding:0;}' +
+        '.expected-document-card .edc-action-btn:hover{background:#d0dff0;transform:scale(1.05);}' +
+        '.expected-document-card .edc-action-btn i{font-size:14px;}' +
+        '.dropzone.dropzone-expected-mode{min-height:0!important;border:0!important;padding:0!important;margin:0!important;background:transparent!important;}' +
+        '.dropzone.dropzone-expected-mode .dz-message{display:none!important;}' +
+        '.dropzone.dropzone-expected-mode .dz-preview{display:none!important;}';
 
     document.head.appendChild(style);
 }
+
 
 function escapeUploaderHtml(value) {
     if (value === null || value === undefined)
@@ -106,6 +134,18 @@ function getCurrentUploaderName() {
     var userName = localStorage.getItem('Username');
     if (userName && userName.trim())
         return userName;
+
+    try {
+        var userInfoRaw = localStorage.getItem('UserInfo');
+        if (userInfoRaw) {
+            var userInfo = JSON.parse(userInfoRaw);
+            var resolved = userInfo.FullName || userInfo.UserName || userInfo.Name || userInfo.Email || '';
+            if (resolved && String(resolved).trim())
+                return resolved;
+        }
+    } catch (e) {
+        // Ignore JSON parse errors and continue fallback chain
+    }
 
     return '';
 }
@@ -152,6 +192,15 @@ function getUploaderIconData(fileType) {
         return { className: 'fa fa-file-text-o', color: '#007bff' };
 
     return { className: 'fa fa-file-o', color: '#6c757d' };
+}
+
+function getAttachmentCardIconData(fileType, fileName) {
+    var resolvedType = fileType || '';
+
+    if (!resolvedType && fileName)
+        resolvedType = getMimeType(fileName);
+
+    return getUploaderIconData(resolvedType);
 }
 
 function applyUploaderFileVisual(file) {
@@ -264,6 +313,109 @@ function renderUploaderAuditInfo(file) {
         auditElement.setAttribute('title', formattedDate);
 }
 
+function normalizeAttachmentPayload(file) {
+    if (!file || typeof file !== 'object') {
+        return null;
+    }
+
+    var storedFileName = file.StoredFileName || file.Stored || file.FileContent || file.storedFileName || file.storage || '';
+    var fileContent = file.FileContent || file.Stored || file.StoredFileName || file.storedFileName || storedFileName || '';
+    var fileName = file.FileName || file.fileName || file.name || '';
+    var fileSize = file.FileSize != null ? file.FileSize : (file.Size != null ? file.Size : (file.size != null ? file.size : 0));
+    var description = file.Description || (fileName ? fileName.replace(/\.[^/.]+$/, '') : '');
+
+    return {
+        Id: file.Id,
+        FileName: fileName,
+        StoredFileName: storedFileName,
+        Stored: storedFileName,
+        FileContent: fileContent,
+        FileSize: fileSize,
+        Size: fileSize,
+        DocumentType: file.DocumentType || 1,
+        DocumentTypeDesc: file.DocumentTypeDesc || 'General',
+        Description: description,
+        UpdateUserName: file.UpdateUserName || '',
+        UpdateDate: file.UpdateDate || null,
+        IsLoaded: file.IsLoaded === true
+    };
+}
+
+function buildAttachmentFileInfoHtml(fileName, sizeText, userName, dateText, fileId, storedFileName) {
+    var safeFileName = escapeUploaderHtml(fileName || 'Archivo');
+    var attrs = '';
+
+    if (fileId) {
+        attrs += ' data-file-id="' + escapeUploaderHtml(fileId) + '"';
+    }
+
+    if (storedFileName) {
+        attrs += ' data-stored-file-name="' + escapeUploaderHtml(storedFileName) + '"';
+    }
+
+    return '<div class="edc-file-info"' + attrs + '>'
+        + '<div class="edc-file-name" title="' + safeFileName + '">' + safeFileName.substring(0, 35) + '</div>'
+        + '<div class="edc-file-meta">'
+        + (sizeText ? '<div>' + escapeUploaderHtml(sizeText) + '</div>' : '')
+        + (userName ? '<div><strong>' + escapeUploaderHtml(userName) + '</strong></div>' : '')
+        + (dateText ? '<div>' + escapeUploaderHtml(dateText) + '</div>' : '')
+        + '</div>'
+        + '<div class="edc-actions">'
+        + '<a href="#" class="edc-action-btn edc-download" title="Descargar"><i class="fa fa-download"></i></a>'
+        + '<a href="#" class="edc-action-btn edc-delete" title="Eliminar"><i class="fa fa-trash"></i></a>'
+        + '</div>'
+        + '</div>';
+}
+
+function buildAttachmentCardHtml(options) {
+    var cardClasses = ['expected-document-card'];
+    var cardClass = options.cardClass || '';
+
+    if (cardClass) {
+        cardClasses = cardClasses.concat(cardClass.split(/\s+/));
+    }
+
+    if (options.hasFile) {
+        cardClasses.push('has-file');
+    }
+
+    var html = '<div class="' + cardClasses.join(' ') + '"' + (options.attrs || '') + '>';
+
+    var iconData = options.iconData || null;
+    var iconClass = options.iconClass || (iconData && iconData.className ? iconData.className.replace(/^fa\s+/, '') : 'fa-file-o');
+    var iconColor = options.iconColor || (iconData && iconData.color ? iconData.color : '');
+
+    html += '<div class="edc-header">'
+        + '<i class="fa ' + escapeUploaderHtml(iconClass) + ' edc-icon"' + (iconColor ? ' style="color:' + escapeUploaderHtml(iconColor) + '"' : '') + '></i>'
+        + '<span class="edc-name">' + escapeUploaderHtml(options.title || '') + '</span>'
+        + (options.description ? '<span class="edc-description">' + escapeUploaderHtml(options.description) + '</span>' : '')
+        + '</div>';
+
+    if (options.fileInfoHtml) {
+        html += options.fileInfoHtml;
+    } else {
+        html += '<div class="edc-status ' + escapeUploaderHtml(options.statusClass || 'pending') + '">'
+            + '<span class="status-badge ' + escapeUploaderHtml(options.statusClass || 'pending') + '">' + escapeUploaderHtml(options.statusText || 'Pendiente') + '</span>'
+            + '</div>';
+    }
+
+    html += '</div>';
+    return html;
+}
+
+function showUploaderDeleteConfirmation(message, onConfirm) {
+    toastr.warning(message, null, {
+        timeOut: 5000,
+        closeButton: true,
+        progressBar: true,
+        onclick: function () {
+            if ($.isFunction(onConfirm)) {
+                onConfirm();
+            }
+        }
+    });
+}
+
 function resolveUploaderTranslationPath($element) {
     if ($element.closest('#AttachmentGrid, .AttachmentGrid').length > 0)
         return 'Common/AttachmentGrid';
@@ -288,8 +440,7 @@ function getUploaderTranslations() {
 }
 
 function runUploaderTranslation($scope, translationPath, onComplete) {
-    if (!app.language || !app.language.translate || !translationPath)
-    {
+    if (!app.language || !app.language.translate || !translationPath) {
         if ($.isFunction(onComplete))
             onComplete({});
         return;
@@ -414,6 +565,56 @@ function updateDropzoneDictionary(dz, settings) {
     dz.options.dictMaxFilesExceeded = settings.dictMaxFilesExceeded;
 }
 
+function getFriendlyUploadErrorMessage(fileName, rawError) {
+    var normalizedName = fileName || 'El archivo';
+    var message = '';
+
+    if (rawError) {
+        if (typeof rawError === 'string') {
+            message = rawError;
+        } else if (rawError.Message) {
+            message = rawError.Message;
+        } else if (rawError.error) {
+            message = rawError.error;
+        }
+    }
+
+    var lowerMessage = (message || '').toLowerCase();
+    var isUnsupportedType = lowerMessage.indexOf('tipo') !== -1 ||
+        lowerMessage.indexOf('formato') !== -1 ||
+        lowerMessage.indexOf('extens') !== -1 ||
+        lowerMessage.indexOf('unsupported') !== -1 ||
+        lowerMessage.indexOf('not allowed') !== -1 ||
+        lowerMessage.indexOf('no admit') !== -1 ||
+        lowerMessage.indexOf('no está permitido') !== -1;
+
+    if (isUnsupportedType) {
+        return "No se pudo subir '<strong>" + normalizedName + "</strong>'. El tipo o formato de archivo no está admitido.";
+    }
+
+    if (message) {
+        return "No se pudo subir '<strong>" + normalizedName + "</strong>'. " + message;
+    }
+
+    return "No se pudo subir '<strong>" + normalizedName + "</strong>'. Revisa el tipo de archivo e inténtalo de nuevo.";
+}
+
+function buildUploadErrorSummary(errorMessages) {
+    if (!errorMessages || errorMessages.length === 0) {
+        return '';
+    }
+
+    if (errorMessages.length === 1) {
+        return errorMessages[0];
+    }
+
+    var listItems = errorMessages.map(function (item) {
+        return '<li>' + item + '</li>';
+    }).join('');
+
+    return '<ul style="margin: 6px 0 0 16px; padding: 0;">' + listItems + '</ul>';
+}
+
 function applyUploaderTranslationState($el, translationScope, dz, instance, settings, translations) {
     var translatedValues = translations || {};
     var translatedSettings = localizeUploaderSettings(settings, translatedValues);
@@ -436,7 +637,7 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
             dictDefaultMessage: "Arrastra archivos aquí o haz clic para seleccionar",
             dictFallbackMessage: "Tu navegador no soporta drag and drop de archivos.",
             dictFileTooBig: "El archivo es muy grande ({{filesize}}MB). Tamaño máximo: {{maxFilesize}}MB.",
-            dictInvalidFileType: "No puedes subir archivos de este tipo.",
+            dictInvalidFileType: "El tipo de archivo no es admitido. Revisa la extensión o el formato e inténtalo de nuevo.",
             dictResponseError: "El servidor respondió con código {{statusCode}}.",
             dictCancelUpload: "Cancelar subida",
             dictUploadCanceled: "Subida cancelada.",
@@ -444,10 +645,627 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
             dictRemoveFile: "Eliminar archivo",
             dictMaxFilesExceeded: "No puedes subir más archivos.",
             enableDownloadButtons: true, // Auto-configurar botones de descarga
+            // Configuración para documentos esperados (NUEVA FUNCIONALIDAD)
+            expectedDocuments: [], // Array de documentos esperados: [{id, name, status, description}, ...]
+            showExpectedDocuments: true, // La vista nueva es la única vista del plugin
+            showGeneralUploadCard: true, // Mostrar tarjeta general para carga múltiple
             done: function () { },
             fail: function () { },
             always: function () { }
         };
+
+        // Función helper para renderizar grid de documentos esperados (NUEVA FUNCIONALIDAD)
+        function renderExpectedDocumentsGrid($el, expectedDocuments, showGeneralUploadCard) {
+            var docs = expectedDocuments || [];
+            var showGeneralCard = showGeneralUploadCard !== false;
+
+            if (docs.length === 0 && !showGeneralCard) {
+                return;
+            }
+
+            // Buscar el contenedor de documentos esperados
+            var $container = $el.closest('#AttachmentGrid').find('#expectedDocumentsContainer');
+            if ($container.length === 0) {
+                $container = $('#expectedDocumentsContainer');
+            }
+
+            // Si no existe el contenedor específico, buscar el AttachmentGrid
+            if ($container.length === 0) {
+                $container = $el.closest('#AttachmentGrid');
+                if ($container.length === 0) {
+                    $container = $el.closest('.AttachmentGrid');
+                }
+            }
+
+            // Verificar si ya existe el grid
+            var $existing = $container.find('.expected-documents-grid');
+            if ($existing.length > 0) {
+                $existing.remove();
+            }
+
+            var gridHtml = '<div class="expected-documents-grid">';
+
+            if (showGeneralCard) {
+                gridHtml += buildAttachmentCardHtml({
+                    cardClass: 'general-upload-card',
+                    attrs: ' data-doc-id=""',
+                    iconClass: 'fa-file-o',
+                    title: 'Subir adjuntos',
+                    description: 'Haz clic o arrastra uno o varios archivos',
+                    statusClass: 'pending',
+                    statusText: 'Carga general'
+                });
+            }
+
+            for (var i = 0; i < docs.length; i++) {
+                var doc = docs[i];
+                var isCompleted = doc.status === 'completed' || doc.status === 'Listo' || doc.IsLoaded === true;
+                var statusClass = isCompleted ? 'completed' : 'pending';
+                var statusText = isCompleted ? 'Listo' : 'Pendiente';
+
+                var uploadedFile = isCompleted && doc.uploadedFile ? doc.uploadedFile : null;
+                var uploadedFileIdAttr = uploadedFile && uploadedFile.id ? ' data-file-id="' + escapeUploaderHtml(uploadedFile.id) + '"' : '';
+                var uploadedStoredAttr = uploadedFile && uploadedFile.storedFileName ? ' data-stored-file-name="' + escapeUploaderHtml(uploadedFile.storedFileName) + '"' : '';
+                var uploadedIconData = uploadedFile ? getAttachmentCardIconData(uploadedFile.type || uploadedFile.FileType || uploadedFile.ContentType || '', uploadedFile.name || uploadedFile.FileName || '') : null;
+                var fileInfoHtml = uploadedFile
+                    ? buildAttachmentFileInfoHtml(
+                        uploadedFile.name || 'Archivo',
+                        uploadedFile.size ? (uploadedFile.size > 1024 ? (uploadedFile.size / 1024).toFixed(1) + ' KB' : uploadedFile.size + ' B') : '',
+                        uploadedFile.user || '',
+                        uploadedFile.date || '',
+                        uploadedFile.id || '',
+                        uploadedFile.storedFileName || ''
+                    )
+                    : null;
+
+                gridHtml += buildAttachmentCardHtml({
+                    hasFile: !!fileInfoHtml,
+                    attrs: ' data-doc-id="' + escapeUploaderHtml(doc.id) + '"' + uploadedFileIdAttr + uploadedStoredAttr,
+                    iconData: uploadedIconData,
+                    title: doc.name,
+                    description: doc.description || '',
+                    fileInfoHtml: fileInfoHtml,
+                    statusClass: statusClass,
+                    statusText: statusText
+                });
+            }
+
+            gridHtml += '</div>';
+
+            // Insertar en el contenedor de documentos esperados
+            if ($container.length > 0) {
+                // El elemento del uploader ($el / #dropzone) suele vivir dentro del contenedor.
+                // $container.html() lo desconectaría del DOM y dejaría a Dropzone adjunto a un nodo
+                // huérfano, impidiendo que la selección de archivos dispare la carga. Lo preservamos.
+                var uploaderInsideContainer = $el.length > 0 && $container[0].contains($el[0]);
+                $container.html(gridHtml);
+                if (uploaderInsideContainer) {
+                    $el.css('display', 'none');
+                    $container.append($el);
+                }
+            } else {
+                // Fallback: insertar antes del dropzone
+                var $dropzone = $el.closest('#dropzone');
+                if ($dropzone.length === 0) {
+                    $dropzone = $el.closest('.dropzone');
+                }
+                if ($dropzone.length === 0) {
+                    $dropzone = $('#dropzone');
+                }
+                if ($dropzone.length > 0) {
+                    $dropzone.before(gridHtml);
+                } else {
+                    $el.before(gridHtml);
+                }
+            }
+        }
+
+        // Función helper para vincular documentos esperados con el dropzone (NUEVA FUNCIONALIDAD)
+        function bindExpectedDocumentCards($el, dz, expectedDocuments, expectedDocIdMap) {
+            function clearCardFileState($card) {
+                if (!$card || $card.length === 0)
+                    return;
+
+                $card.removeClass('has-file');
+                $card.find('.edc-file-info').remove();
+                $card.removeAttr('data-file-id data-stored-file-name data-file-name');
+
+                var $status = $card.find('.edc-status');
+                if ($status.length === 0) {
+                    $card.append('<div class="edc-status pending"><span class="status-badge pending">Pendiente</span></div>');
+                } else {
+                    $status.find('.status-badge')
+                        .removeClass('completed pending')
+                        .addClass('pending')
+                        .text('Pendiente');
+                    $status.removeClass('completed').addClass('pending');
+                }
+            }
+
+            function getCardFileData($card) {
+                if (!$card || $card.length === 0)
+                    return null;
+
+                var fileId = $card.attr('data-file-id') || '';
+                var storedFileName = $card.attr('data-stored-file-name') || '';
+                var fileName = $card.attr('data-file-name') || '';
+
+                if (!fileName) {
+                    fileName = ($card.find('.edc-file-name').first().text() || '').trim();
+                }
+
+                return {
+                    fileId: fileId,
+                    storedFileName: storedFileName,
+                    fileName: fileName
+                };
+            }
+
+            // Buscar las tarjetas de documentos esperados
+            var $cards = $('.expected-document-card');
+
+            if ($cards.length === 0) {
+                return;
+            }
+
+            $cards.each(function () {
+                var $card = $(this);
+                var docId = $card.data('doc-id');
+
+                // Evita apilar handlers cuando bindExpectedDocumentCards corre en cada render
+                $card.off('.expcard');
+
+                // === CLICK: Abrir selector de archivos ===
+                $card.on('click.expcard', function (e) {
+                    // Solo si no es click en botones de acción
+                    if ($(e.target).closest('.edc-action-btn').length > 0) {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    console.log('📋 Click en tarjeta esperada, docId:', docId);
+
+                    if (!dz) {
+                        console.error('❌ Dropzone no inicializado al hacer click en tarjeta esperada');
+                        return;
+                    }
+
+                    // Guardar temporalmente la referencia al documento esperado (si aplica)
+                    if (docId !== undefined && docId !== null && docId !== '') {
+                        expectedDocIdMap['_lastDocId'] = docId;
+                    } else {
+                        expectedDocIdMap['_lastDocId'] = null;
+                    }
+                    console.log('✅ DocId guardado en map:', expectedDocIdMap);
+
+                    // La forma correcta: usar dz.hiddenFileInput que Dropzone ya tiene
+                    if (dz && dz.hiddenFileInput) {
+                        console.log('📂 Usando hiddenFileInput de Dropzone');
+                        dz.hiddenFileInput.value = '';
+                        dz.hiddenFileInput.click();
+                    } else {
+                        console.log('📂 Creando input file temporal');
+                        // Fallback: crear un input y simularlo
+                        var fileInput = document.createElement('input');
+                        fileInput.type = 'file';
+                        fileInput.multiple = true;
+                        fileInput.style.display = 'none';
+
+                        fileInput.onchange = function () {
+                            console.log('✅ Archivo seleccionado, files:', fileInput.files);
+                            if (fileInput.files && fileInput.files.length > 0) {
+                                dz.handleFiles(fileInput.files);
+                            }
+                        };
+
+                        document.body.appendChild(fileInput);
+                        fileInput.click();
+
+                        // Limpiar después
+                        setTimeout(function () {
+                            if (document.body.contains(fileInput)) {
+                                document.body.removeChild(fileInput);
+                            }
+                        }, 1000);
+                    }
+                });
+
+                // === DRAGOVER: Mostrar efecto visual ===
+                $card.on('dragover.expcard', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var dt = e.originalEvent.dataTransfer;
+                    if (dt) {
+                        dt.dropEffect = 'copy';
+                    }
+
+                    $card.addClass('dz-drag-hover');
+                });
+
+                // === DRAGLEAVE: Remover efecto visual ===
+                $card.on('dragleave.expcard', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Solo remover si realmente salimos de la tarjeta
+                    var rect = this.getBoundingClientRect();
+                    var x = e.originalEvent.clientX;
+                    var y = e.originalEvent.clientY;
+
+                    if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
+                        $card.removeClass('dz-drag-hover');
+                    }
+                });
+
+                // === DROP: Procesar archivo ===
+                $card.on('drop.expcard', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $card.removeClass('dz-drag-hover');
+
+                    var dataTransfer = e.originalEvent.dataTransfer;
+                    if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
+                        if (dz) {
+                            var files = dataTransfer.files;
+                            // Marcar docId temporalmente para el siguiente addedfile (si aplica)
+                            if (docId !== undefined && docId !== null && docId !== '') {
+                                expectedDocIdMap['_lastDocId'] = docId;
+                            } else {
+                                expectedDocIdMap['_lastDocId'] = null;
+                            }
+                            // Procesar archivos con Dropzone
+                            dz.handleFiles(files);
+                        }
+                    }
+                });
+
+                // === DESCARGAR: Evento para botón de descarga ===
+                $card.on('click.expcard', '.edc-download', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var fileData = getCardFileData($card);
+                    if (!fileData || (!fileData.fileId && !fileData.storedFileName)) {
+                        Logger.log('No hay información suficiente para descargar el documento esperado. docId=' + docId);
+                        toastr.warning('No se encontró un archivo para descargar en este documento.', '', {
+                            timeOut: 3500,
+                            closeButton: true
+                        });
+                        return;
+                    }
+
+                    var downloadUrl;
+                    if (fileData.fileId) {
+                        downloadUrl = app.setting.apipath + 'v2/Common/Download?id=' + fileData.fileId;
+                    } else {
+                        downloadUrl = app.setting.apipath + 'v2/Common/Download?fileName=' + encodeURIComponent(fileData.storedFileName);
+                    }
+
+                    var expectedToken = app.security ? app.security().getCookie('Token') : localStorage.getItem('Token');
+                    app.core.GetPDF(downloadUrl, true, fileData.fileName || ('documento_' + docId), undefined, expectedToken);
+                });
+
+                // === BORRAR: Evento para botón de eliminar ===
+                $card.on('click.expcard', '.edc-delete', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var fileData = getCardFileData($card);
+                    var deleteLabel = fileData && fileData.fileName ? fileData.fileName : ('documento_' + docId);
+
+                    showUploaderDeleteConfirmation("Si está seguro de querer eliminar el archivo '" + deleteLabel + "' haga clic aquí", function () {
+                        var removedFromDropzone = false;
+                        var deleteUrl = fileData && fileData.fileId
+                            ? app.setting.apipath + 'v1/Common/Attachments/' + fileData.fileId
+                            : '';
+
+                        function removeExpectedFileFromDropzone() {
+                            if (dz && dz.files && dz.files.length > 0) {
+                                for (var i = dz.files.length - 1; i >= 0; i--) {
+                                    var dzFile = dz.files[i];
+                                    if (String(dzFile.expectedDocId) === String(docId) && dzFile.manuallyAdded !== true) {
+                                        dz.removeFile(dzFile);
+                                        removedFromDropzone = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            clearCardFileState($card);
+
+                            if (!removedFromDropzone) {
+                                Logger.log('Tarjeta de documento esperado limpiada sin archivo asociado en dropzone. docId=' + docId);
+                            }
+                        }
+
+                        if (deleteUrl) {
+                            $('.ibox-content').toggleClass('sk-loading');
+                            app.core.Delete(deleteUrl)
+                                .done(function () {
+                                    toastr.success("El archivo '" + deleteLabel + "' fue eliminado", '', {
+                                        timeOut: 5000,
+                                        closeButton: true,
+                                        progressBar: true
+                                    });
+                                    removeExpectedFileFromDropzone();
+                                })
+                                .always(function () {
+                                    $('.ibox-content').toggleClass('sk-loading');
+                                });
+                        } else {
+                            removeExpectedFileFromDropzone();
+                        }
+                    });
+                });
+            });
+        }
+
+        function bindGeneralUploadResultActions(elementId, dz) {
+            var downloadNs = '.fileUploaderGeneralDownload_' + elementId;
+            var deleteNs = '.fileUploaderGeneralDelete_' + elementId;
+
+            $(document)
+                .off('click' + downloadNs, '.general-upload-result-card .edc-download')
+                .on('click' + downloadNs, '.general-upload-result-card .edc-download', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var $card = $(this).closest('.general-upload-result-card');
+                    var fileId = $card.attr('data-file-id') || '';
+                    var storedFileName = $card.attr('data-stored-file-name') || '';
+                    var fileName = $card.attr('data-file-name') || 'documento';
+
+                    if (!fileId && !storedFileName) {
+                        toastr.warning('No se encontró información para descargar este archivo.', '', {
+                            timeOut: 3500,
+                            closeButton: true
+                        });
+                        return;
+                    }
+
+                    var downloadUrl = fileId
+                        ? app.setting.apipath + 'v2/Common/Download?id=' + fileId
+                        : app.setting.apipath + 'v2/Common/Download?fileName=' + encodeURIComponent(storedFileName);
+
+                    var token = app.security ? app.security().getCookie('Token') : localStorage.getItem('Token');
+                    app.core.GetPDF(downloadUrl, true, fileName, undefined, token);
+                });
+
+            $(document)
+                .off('click' + deleteNs, '.general-upload-result-card .edc-delete')
+                .on('click' + deleteNs, '.general-upload-result-card .edc-delete', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var $card = $(this).closest('.general-upload-result-card');
+                    var fileId = $card.attr('data-file-id') || '';
+                    var storedFileName = $card.attr('data-stored-file-name') || '';
+                    var fileName = $card.attr('data-file-name') || storedFileName || 'documento';
+
+                    showUploaderDeleteConfirmation("Si está seguro de querer eliminar el adjunto '" + fileName + "' haga clic aquí", function () {
+                        var deleteUrl = fileId
+                            ? app.setting.apipath + 'v1/Common/Attachments/' + fileId
+                            : '';
+
+                        function removeGeneralFileFromDropzone() {
+                            if (dz && dz.files && dz.files.length > 0) {
+                                for (var i = dz.files.length - 1; i >= 0; i--) {
+                                    var dzFile = dz.files[i];
+                                    if (dzFile.expectedDocId) {
+                                        continue;
+                                    }
+
+                                    var serverId = dzFile.serverResponse && dzFile.serverResponse.Id ? String(dzFile.serverResponse.Id) : '';
+                                    var serverStored = dzFile.serverResponse && dzFile.serverResponse.StoredFileName ? dzFile.serverResponse.StoredFileName : '';
+
+                                    if ((fileId && serverId === String(fileId)) || (!fileId && storedFileName && serverStored === storedFileName)) {
+                                        dz.removeFile(dzFile);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            $card.remove();
+
+                            var $generalCard = $('.expected-document-card.general-upload-card').first();
+                            var previousCount = parseInt($generalCard.attr('data-upload-count') || '0', 10);
+                            if (isNaN(previousCount)) {
+                                previousCount = 0;
+                            }
+
+                            var newCount = Math.max(0, previousCount - 1);
+                            $generalCard.attr('data-upload-count', String(newCount));
+                            $generalCard.find('.status-badge').text(newCount > 0 ? 'Carga general (' + newCount + ')' : 'Carga general');
+                            if (newCount === 0) {
+                                $generalCard.removeClass('has-file');
+                            }
+                        }
+                        if (deleteUrl) {
+                            $('.ibox-content').toggleClass('sk-loading');
+                            app.core.Delete(deleteUrl)
+                                .done(function () {
+                                    toastr.success("El adjunto '" + fileName + "' fue eliminado", '', {
+                                        timeOut: 5000,
+                                        closeButton: true,
+                                        progressBar: true
+                                    });
+                                    removeGeneralFileFromDropzone();
+                                })
+                                .always(function () {
+                                    $('.ibox-content').toggleClass('sk-loading');
+                                });
+                        } else {
+                            removeGeneralFileFromDropzone();
+                        }
+                    });
+                });
+        }
+
+        function refreshExpectedDocumentsUi($el, responses) {
+            if (!responses || responses.length === 0) {
+                return;
+            }
+
+            var $grid = $el.closest('#AttachmentGrid').find('.expected-documents-grid');
+            if ($grid.length === 0) {
+                $grid = $('#expectedDocumentsContainer .expected-documents-grid');
+            }
+            if ($grid.length === 0) {
+                return;
+            }
+
+            $grid.find('.general-upload-result-card').remove();
+
+            function resolveUserName(file) {
+                var userName = getUploaderAuditValue(file, ['UpdateUserName', 'UPDATEUSERNAME', 'CreatedByName', 'UserName']) || '';
+                if (!userName) {
+                    userName = getCurrentUploaderName();
+                }
+                return userName || 'Usuario';
+            }
+
+            function formatDateText() {
+                var now = new Date();
+                return now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' '
+                    + now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+            }
+
+            function appendGeneralUploadCards(files) {
+                var $generalCard = $grid.find('.general-upload-card').first();
+                if (!$generalCard.length || !files || files.length === 0) {
+                    return;
+                }
+
+                var previousCount = parseInt($generalCard.attr('data-upload-count') || '0', 10);
+                if (isNaN(previousCount)) {
+                    previousCount = 0;
+                }
+                var newCount = previousCount + files.length;
+
+                $generalCard.addClass('has-file');
+                $generalCard.attr('data-upload-count', String(newCount));
+                $generalCard.find('.status-badge').text('Carga general (' + newCount + ')');
+
+                var cardsHtml = '';
+                files.forEach(function (file) {
+                    var safeFileName = escapeUploaderHtml((file && file.FileName) ? file.FileName : 'Archivo');
+                    var fileSize = file && file.FileSize ? file.FileSize : 0;
+                    var sizeText = fileSize > 1024 ? (fileSize / 1024).toFixed(1) + ' KB' : fileSize + ' B';
+                    var userName = resolveUserName(file);
+                    var dateStr = formatDateText();
+                    var fileIdAttr = file.Id ? ' data-file-id="' + escapeUploaderHtml(file.Id) + '"' : '';
+                    var storedAttr = file.StoredFileName ? ' data-stored-file-name="' + escapeUploaderHtml(file.StoredFileName) + '"' : '';
+                    var iconData = getAttachmentCardIconData(file.type || file.FileType || file.ContentType || '', file.FileName || '');
+                    var fileInfoHtml = buildAttachmentFileInfoHtml(
+                        file.FileName || 'Archivo',
+                        sizeText,
+                        userName,
+                        dateStr,
+                        file.Id || '',
+                        file.StoredFileName || ''
+                    );
+
+                    cardsHtml += buildAttachmentCardHtml({
+                        cardClass: 'has-file general-upload-result-card',
+                        attrs: ' data-doc-id="" data-file-name="' + safeFileName + '"' + fileIdAttr + storedAttr,
+                        iconData: iconData,
+                        title: 'Adjunto general',
+                        description: 'Archivo subido desde carga general',
+                        hasFile: true,
+                        fileInfoHtml: fileInfoHtml
+                    });
+                });
+
+                var $pendingCards = $grid.find('.expected-document-card')
+                    .not('.general-upload-card')
+                    .not('.general-upload-result-card')
+                    .filter(function () {
+                        return $(this).find('.edc-status .status-badge.pending').length > 0;
+                    });
+
+                if ($pendingCards.length > 0) {
+                    $pendingCards.last().after(cardsHtml);
+                } else {
+                    $generalCard.after(cardsHtml);
+                }
+            }
+
+            function updateExpectedCard(file) {
+                var $card = $grid.find('.expected-document-card[data-doc-id="' + file.expectedDocId + '"]');
+                if (!$card.length) {
+                    return;
+                }
+
+                $card.addClass('has-file');
+                $card.find('.edc-status').remove();
+                $card.find('.edc-file-info').remove();
+
+                var userName = resolveUserName(file);
+                var dateStr = formatDateText();
+                var sizeText = '';
+                if (file.FileSize) {
+                    sizeText = file.FileSize > 1024 ? (file.FileSize / 1024).toFixed(1) + ' KB' : file.FileSize + ' B';
+                }
+
+                var fileInfoHtml = buildAttachmentFileInfoHtml(
+                    file.FileName || 'Archivo',
+                    sizeText,
+                    userName,
+                    dateStr,
+                    file.Id || '',
+                    file.StoredFileName || ''
+                );
+                var iconData = getAttachmentCardIconData(file.type || file.FileType || file.ContentType || '', file.FileName || '');
+
+                $card.find('.edc-header').after(fileInfoHtml);
+                $card.find('.edc-icon').attr('class', 'fa ' + (iconData.className || 'fa-file-o').replace(/^fa\s+/, '') + ' edc-icon');
+                if (iconData.color) {
+                    $card.find('.edc-icon').css('color', iconData.color);
+                }
+
+                if (file.Id) {
+                    $card.attr('data-file-id', file.Id);
+                } else {
+                    $card.removeAttr('data-file-id');
+                }
+                if (file.StoredFileName) {
+                    $card.attr('data-stored-file-name', file.StoredFileName);
+                } else {
+                    $card.removeAttr('data-stored-file-name');
+                }
+                $card.attr('data-file-name', file.FileName || '');
+
+                var $generalCard = $grid.find('.general-upload-card').first();
+                var $pendingCards = $grid.find('.expected-document-card')
+                    .not('.general-upload-card')
+                    .not('.general-upload-result-card')
+                    .filter(function () {
+                        return $(this).find('.status-badge.pending').length > 0;
+                    });
+
+                if ($pendingCards.length > 0) {
+                    $card.insertAfter($pendingCards.last());
+                } else if ($generalCard.length > 0) {
+                    $card.insertAfter($generalCard);
+                }
+            }
+
+            var generalFiles = responses.filter(function (file) {
+                return file && !file.expectedDocId;
+            });
+            if (generalFiles.length > 0) {
+                appendGeneralUploadCards(generalFiles);
+            }
+
+            responses.forEach(function (file) {
+                if (file && file.expectedDocId) {
+                    updateExpectedCard(file);
+                }
+            });
+        }
 
         var methods = {
             init: function (options) {
@@ -460,6 +1278,7 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     var translationScope = resolveUploaderTranslationScope($el);
                     var translations = getUploaderTranslations();
                     var localizedSettings = localizeUploaderSettings(settings, translations);
+                    settings.showExpectedDocuments = true;
 
                     // Prevenir inicialización duplicada
                     if ($el.data('fileUploader')) {
@@ -477,13 +1296,26 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     applyUploaderPreviewTranslations($el, translations);
                     injectFileUploaderStyles();
 
+                    // Renderizar documentos esperados si están configurados (NUEVA FUNCIONALIDAD)
+                    if (settings.showExpectedDocuments) {
+                        renderExpectedDocumentsGrid($el, settings.expectedDocuments, settings.showGeneralUploadCard);
+                    }
+
+                    if (settings.showExpectedDocuments) {
+                        $el.addClass('dropzone-expected-mode');
+                    } else {
+                        $el.removeClass('dropzone-expected-mode');
+                    }
+
                     var responses = [];
                     var hasError = false;
                     var pendingUploads = 0;
                     var filesToUpload = [];
+                    var lastDoneIndex = 0;
                     var uploadTimer = null;
                     var parentData = null; // Datos del parent para enviar en uploads
                     var tokenData = '';
+                    var expectedDocIdMap = {}; // Mapeo temporal de docId para archivos de tarjetas esperadas
 
                     // Funcion helper para configurar los iconos de descarga y eliminar en un archivo
                     function setupFileActions(file, dzInstance) {
@@ -579,9 +1411,24 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                             $el.find('.fa-cloud-upload').css('color', '#d81e05');
 
                             self.on('addedfile', function (file) {
+                                console.log('📤 Archivo añadido a Dropzone:', file.name, 'expectedDocId:', expectedDocIdMap['_lastDocId']);
+
+                                if (settings.showExpectedDocuments && file && file.previewElement && file.previewElement.parentNode) {
+                                    file.previewElement.parentNode.removeChild(file.previewElement);
+                                    file.previewElement = null;
+                                }
+
                                 // ⚠️ CRÍTICO: Ignorar archivos cargados manualmente (ya subidos previamente)
                                 if (file.manuallyAdded === true) {
+                                    console.log('⏭️  Archivo ignorado (manuallyAdded=true)');
                                     return; // No procesar, solo mostrar en UI
+                                }
+
+                                // ✅ Capturar expectedDocId si fue click desde tarjeta esperada
+                                if (expectedDocIdMap['_lastDocId']) {
+                                    file.expectedDocId = expectedDocIdMap['_lastDocId'];
+                                    console.log('✅ expectedDocId asignado al file:', file.expectedDocId);
+                                    expectedDocIdMap['_lastDocId'] = null; // Limpiar
                                 }
 
                                 filesToUpload.push(file);
@@ -649,8 +1496,10 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                                         }
 
                                         if (failedFile) {
+                                            var friendlyMessage = getFriendlyUploadErrorMessage(failedFile.name, failedItem.Error);
+
                                             // Acumular el error para mostrar en un solo toast
-                                            errorMessages.push('<strong>' + failedFile.name + ':</strong><br>' + failedItem.Error);
+                                            errorMessages.push(friendlyMessage);
 
                                             // REMOVER el archivo de Dropzone (desaparece de la UI)
                                             self.removeFile(failedFile);
@@ -666,6 +1515,15 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
 
                                     // Si hay archivos fallidos, marcar como error general
                                     if (failedList.length > 0) {
+                                        var summaryMessage = buildUploadErrorSummary(errorMessages);
+                                        if (summaryMessage) {
+                                            toastr.error(summaryMessage, 'No se pudo subir el archivo', {
+                                                timeOut: 8000,
+                                                closeButton: true,
+                                                positionClass: 'toast-top-right'
+                                            });
+                                        }
+
                                         hasError = true;
                                         localizedSettings.fail(failedList, batch);
                                     }
@@ -679,8 +1537,10 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                                     for (var i = 0; i < failedFiles.length; i++) {
                                         var file = failedFiles[i];
 
+                                        var friendlyMessage = getFriendlyUploadErrorMessage(file.name, error);
+
                                         // Acumular el error para mostrar en un solo toast
-                                        ajaxErrorMessages.push('<strong>' + file.name + '</strong>');
+                                        ajaxErrorMessages.push(friendlyMessage);
 
                                         // REMOVER de la interfaz
                                         self.removeFile(file);
@@ -693,12 +1553,27 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                                         Logger.log('Error AJAX al subir ' + ajaxErrorMessages.length + ' archivo(s): ' + error + ' - ' + JSON.stringify(ajaxErrorMessages));
                                     }
 
+                                    if (ajaxErrorMessages.length > 0) {
+                                        toastr.error(buildUploadErrorSummary(ajaxErrorMessages), 'No se pudo subir uno o varios archivos', {
+                                            timeOut: 8000,
+                                            closeButton: true,
+                                            positionClass: 'toast-top-right'
+                                        });
+                                    }
+
                                     localizedSettings.fail(error, failedFiles);
                                     checkQueueComplete();
                                 });
                             }
 
                             self.on('success', function (file, response) {
+                                // En modo de documentos esperados, la UI visible son las tarjetas.
+                                // Se ocultan previews del dropzone para evitar ruido visual.
+                                if (settings.showExpectedDocuments && file && file.previewElement && file.previewElement.parentNode) {
+                                    file.previewElement.parentNode.removeChild(file.previewElement);
+                                    file.previewElement = null;
+                                }
+
                                 setTimeout(function () {
                                     applyUploaderFileVisual(file);
                                     setupFileActions(file, self);
@@ -711,17 +1586,28 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
 
                             function checkQueueComplete() {
                                 if (pendingUploads === 0) {
+                                    var newResponses = responses.slice(lastDoneIndex);
+                                    var hasNewResponses = newResponses.length > 0;
+
                                     var result = {
                                         success: !hasError,
                                         data: responses
                                     };
 
-                                    if (!hasError) {
-                                        localizedSettings.done(responses);
+                                    console.log('🎉 Queue complete! Responses:', responses);
+
+                                    if (hasNewResponses) {
+                                        if (settings.showExpectedDocuments) {
+                                            refreshExpectedDocumentsUi($el, responses);
+                                        }
+                                        console.log('📞 Llamando a done callback con nuevos resultados:', newResponses);
+                                        localizedSettings.done(newResponses);
+                                        lastDoneIndex = responses.length;
                                     }
 
                                     localizedSettings.always(result);
                                     self.emit('queuecomplete');
+                                    hasError = false;
                                 }
                             }
 
@@ -871,7 +1757,20 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                             var normalizedSuccessList = [];
                             for (var i = 0; i < successList.length; i++) {
                                 var response = successList[i];
-                                var file = files[i]; // Asociar por índice
+                                var file = null;
+
+                                // Asociar por nombre para soportar respuestas parciales/desordenadas del backend
+                                for (var j = 0; j < files.length; j++) {
+                                    if (files[j].name === response.FileName) {
+                                        file = files[j];
+                                        break;
+                                    }
+                                }
+
+                                // Fallback a índice si no se encontró coincidencia por nombre
+                                if (!file) {
+                                    file = files[i];
+                                }
 
                                 // Normalizar la respuesta con propiedades adicionales
                                 response.FileSize = response.Size;
@@ -881,8 +1780,16 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                                 response.Description = file ? file.name.replace(/\.[^/.]+$/, "") : '';
                                 response.FileContent = response.Stored;
 
-                                responses.push(response);
-                                normalizedSuccessList.push(response);
+                                var normalizedResponse = normalizeAttachmentPayload(response);
+
+                                // ✅ IMPORTANTÍSIMO: Preservar expectedDocId si está definido en el archivo
+                                if (file && file.expectedDocId) {
+                                    normalizedResponse.expectedDocId = file.expectedDocId;
+                                    console.log('✅ expectedDocId copiado a response:', normalizedResponse.expectedDocId);
+                                }
+
+                                responses.push(normalizedResponse);
+                                normalizedSuccessList.push(normalizedResponse);
                             }
 
                             // Log de exito
@@ -918,11 +1825,17 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     var instance = {
                         dz: dz,
                         elementId: elementId,
+                        showExpectedDocuments: settings.showExpectedDocuments === true,
+                        showGeneralUploadCard: settings.showGeneralUploadCard !== false,
                         translations: translations,
                         responses: responses,
                         setupFileActions: setupFileActions, // Exponer funcion para uso en load()
                         getFiles: function () {
-                            return responses.slice();
+                            return (responses || []).map(function (file) {
+                                return normalizeAttachmentPayload(file);
+                            }).filter(function (item) {
+                                return item !== null;
+                            });
                         },
                         getParent: function () {
                             return parentData;
@@ -1076,7 +1989,20 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                         }
                     };
 
+                    // Guardar la instancia del Dropzone y el mapa de expectedDocId en la instancia
+                    instance.dz = dz;
+                    instance.expectedDocIdMap = expectedDocIdMap;
+
                     $el.data('fileUploader', instance);
+
+                    // Vincular tarjetas de documentos esperados (NUEVA FUNCIONALIDAD)
+                    if (settings.showExpectedDocuments) {
+                        setTimeout(function () {
+                            bindExpectedDocumentCards($el, dz, settings.expectedDocuments, expectedDocIdMap);
+                            bindGeneralUploadResultActions(elementId, dz);
+                        }, 50);
+                    }
+
                     runUploaderTranslation(translationScope, translationPath, function (translatedValues) {
                         translations = translatedValues || {};
                         localizedSettings = localizeUploaderSettings(settings, translations);
@@ -1199,10 +2125,19 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     inst.dz.files.push(mockFile);
                     inst.dz.emit("addedfile", mockFile);
 
-                    setTimeout(function () {
-                        applyUploaderFileVisual(mockFile);
-                        inst.setupFileActions(mockFile, inst.dz);
-                    }, 10); // Pequeño delay para asegurar que el DOM esté listo
+                    // En modo documentos esperados, ocultar previews históricos del dropzone
+                    // para que la UI se concentre en las tarjetas esperadas.
+                    if (inst.showExpectedDocuments && mockFile.previewElement && mockFile.previewElement.parentNode) {
+                        mockFile.previewElement.parentNode.removeChild(mockFile.previewElement);
+                        mockFile.previewElement = null;
+                    }
+
+                    if (!inst.showExpectedDocuments) {
+                        setTimeout(function () {
+                            applyUploaderFileVisual(mockFile);
+                            inst.setupFileActions(mockFile, inst.dz);
+                        }, 10); // Pequeño delay para asegurar que el DOM esté listo
+                    }
 
                     // Marcar como completo (esto evita que Dropzone intente subirlo)
                     inst.dz.emit("complete", mockFile);
@@ -1210,6 +2145,11 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     // Restaurar configuración original
                     inst.dz.options.autoProcessQueue = originalAddedFile;
                 });
+
+                if (inst.showExpectedDocuments) {
+                    refreshExpectedDocumentsUi(this.first(), inst.responses.slice());
+                    bindExpectedDocumentCards(this.first(), inst.dz, [], inst.expectedDocIdMap);
+                }
 
                 return this;
             },
@@ -1230,6 +2170,22 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                 return this.each(function () {
                     var inst = $(this).data('fileUploader');
                     if (inst) inst.destroy();
+                });
+            },
+
+            // Método para actualizar documentos esperados (NUEVA FUNCIONALIDAD)
+            setExpectedDocuments: function (expectedDocuments, show) {
+                return this.each(function () {
+                    var $el = $(this);
+                    var inst = $el.data('fileUploader');
+                    if (!inst) return;
+
+                    if ((expectedDocuments && expectedDocuments.length > 0) || inst.showGeneralUploadCard) {
+                        renderExpectedDocumentsGrid($el, expectedDocuments, inst.showGeneralUploadCard);
+                        if (show !== false) { // Por defecto mostrar
+                            bindExpectedDocumentCards($el, inst.dz, expectedDocuments, inst.expectedDocIdMap);
+                        }
+                    }
                 });
             }
         };
