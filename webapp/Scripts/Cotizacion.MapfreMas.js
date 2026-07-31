@@ -254,6 +254,8 @@ app.CotizacionMapfreMas = (function () {
             MCA_AUTO_GPS: app.ui.GetRadioNumericValue('MCA_AUTO_GPS'),
             MCA_AUTO_GPS_CMS: app.ui.GetRadioNumericValue('MCA_AUTO_GPS_CMS'),
             ext_garantia: app.ui.GetRadioNumericValue('ext_garantia'),
+            rc_alcohol: app.ui.GetRadioStringValue('rc_alcohol'),
+            rc_conductor: app.ui.GetRadioStringValue('rc_conductor'),
             MCA_MONITOREO_GPS: app.ui.GetRadioNumericValue('MCA_MONITOREO_GPS'),
             MCA_PRA: app.ui.GetRadioNumericValue('MCA_PRA'),
             MCA_VR: app.ui.GetRadioNumericValue('MCA_VR'),
@@ -324,6 +326,8 @@ app.CotizacionMapfreMas = (function () {
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
         app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);
         app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
+        app.ui.SetRadioStringValue('rc_alcohol', data.rc_alcohol);
+        app.ui.SetRadioStringValue('rc_conductor', data.rc_conductor);
         app.ui.SetRadioNumericValue('MCA_PRA', data.MCA_PRA);
         app.ui.SetRadioNumericValue('MCA_VR', data.MCA_VR);
         app.ui.SetNumericValue('#IMP_VR', data.IMP_VR);
