@@ -367,6 +367,7 @@ namespace Architect.API.Tron.Contracts.Batch
         /// Tipo de combustion Vehiculo
         /// </summary>
         public string COD_TIP_COM_VEHI { get; set; } = "1";
+        public string rc_conductor { get; set; } = "N";
 
     }
 }

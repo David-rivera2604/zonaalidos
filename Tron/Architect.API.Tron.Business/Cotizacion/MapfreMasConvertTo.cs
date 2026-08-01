@@ -105,6 +105,7 @@ namespace Architect.API.Tron.Business.Cotizacion
             }
 
             result.rc_alcohol = quoteInfo.rc_alcohol;
+            result.rc_conductor = quoteInfo.rc_conductor;
 
             if (quoteInfo.coberturas.IsNotEmpty())
             {
