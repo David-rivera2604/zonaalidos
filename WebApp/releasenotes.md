@@ -1,5 +1,18 @@
 # Release Notes - Aliados
 
+## Versión 1.6.199
+
+### Aliados - EmitirPoliza: Se agrega el campo email para el asegurado.
+
+#### Cambios implementados:
+
+- Se agrega el campo email para el asegurado.
+
+#### Dependencias:
+1. `EmitirPoliza.9105.1.sql`.
+
+--
+
 ## Versión 1.6.198
 
 ### Aliados - Casos: Mejora visual y funcional en la carga de adjuntos.

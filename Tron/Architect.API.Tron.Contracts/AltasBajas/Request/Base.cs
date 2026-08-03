@@ -126,6 +126,11 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         /// Código del plan AP.
         /// </summary>
         public string COD_PLAN_AP { get; set; }
+
+        /// <summary>
+        /// Correo electrónico del asegurado.
+        /// </summary>
+        public string EMAIL_ASEG { get; set; }
     }
 
 }

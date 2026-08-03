@@ -13,6 +13,7 @@ Datos del asegurado|zona|columns=4|width=6
  Fecha de nacimiento|Nacimiento|name=NAC_ASEG
  Sexo|radio|name=MCA_SEXO_ASEG|values=0->Femenino,1->Masculino
  Número de teléfono+|Teléfono|name=TLF_NUMERO_ASEG|modo=simple
+ Correo electrónico+|Correo|name=EMAIL_ASEG 
  Ocupación|lista|name=OCUPACION_ASEG|lookup=TRON_G1000100
  Nacionalidad|tron.País|name=NACIONALIDAD_ASEG
  Provincia|tron.Provincia|name=COD_ESTADO

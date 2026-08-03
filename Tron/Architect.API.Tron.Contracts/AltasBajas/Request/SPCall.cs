@@ -58,7 +58,7 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         /// <summary>
         /// Teléfono del asegurado.
         /// </summary>
-        public string TTL_NUMERO_ASEG { get; set; }
+        public string TLF_NUMERO_ASEG { get; set; }
 
         /// <summary>
         /// Colección de beneficiarios en el formato requerido por el procedimiento almacenado.

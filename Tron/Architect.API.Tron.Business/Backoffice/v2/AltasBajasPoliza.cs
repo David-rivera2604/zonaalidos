@@ -61,7 +61,8 @@ namespace Architect.API.Tron.Business.Backoffice
                 COD_PLAN_AP = poliza.COD_PLAN_AP,
                 TIP_DE_PROCESO = alta ? "N" : "A",
                 OCUPACION_ASEG = poliza.OCUPACION_ASEG,
-                TTL_NUMERO_ASEG = poliza.TTL_NUMERO_ASEG,
+                TLF_NUMERO_ASEG = poliza.TLF_NUMERO_ASEG,
+                EMAIL_ASEG = poliza.EMAIL_ASEG,
                 BENEFICIARIOS = poliza.Beneficiarios?.Select(b => new Contracts.AltasBajas.Request.SPCallBeneficiario
                 {
                     TIP_DOCUM_BENEF = b.TIP_DOCUM_BENEF,
