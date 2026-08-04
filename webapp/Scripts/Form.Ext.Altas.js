@@ -120,7 +120,7 @@ app.Form_Ext_Altas = (function () {
         html.push(`</div></div>`);
         app.ui.ShowSideBar({ title: 'PÓLIZA #{NUM_POLIZA}', subtitle: 'La póliza fue emitida de forma exitosa', isHTML: true, HTML: html.join(''), data: row, width: '380px' });
 
-        $('.sidebar-content').toggleClass('sk-loading');
+       // $('.sidebar-content').toggleClass('sk-loading');
     }
 
     function update_info_poliza_grupo() {
@@ -229,6 +229,9 @@ app.Form_Ext_Altas = (function () {
                     if (data != null) {
                         $('#NOM_TERCERO_ASEG').val(data.FirstName);
                         $('#APE_TERCERO_ASEG').val(data.LastName);
+                        $('#EMAIL_ASEG').val(data.PrimaryEmailAddress);
+                        $('#TLF_NUMERO_ASEG').val(data.PhoneNumber);
+                        
                         app.ui.SetDateValue('#NAC_ASEG', data.BirthDate);
                         app.ui.SetRadioNumericValue('MCA_SEXO_ASEG', data.Gender === 2 ? 0 : 1);
                         app.ui.SetDropDownStringValue('#NACIONALIDAD_ASEG', data.CountryOfNationalityISO, false);
@@ -243,6 +246,8 @@ app.Form_Ext_Altas = (function () {
                     } else {
                         $('#NOM_TERCERO_ASEG').val('');
                         $('#APE_TERCERO_ASEG').val('');
+                        $('#EMAIL_ASEG').val('');
+                        $('#TLF_NUMERO_ASEG').val('');
                         app.ui.SetDateValue('#NAC_ASEG', null);
                         app.ui.SetRadioNumericValue('MCA_SEXO_ASEG', null);
                         app.ui.SetDropDownStringValue('#NACIONALIDAD_ASEG', 'CRI', true);

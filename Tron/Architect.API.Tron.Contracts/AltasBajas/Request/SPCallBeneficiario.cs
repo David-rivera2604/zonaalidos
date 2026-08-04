@@ -15,6 +15,11 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
     {
 
         /// <summary>
+        /// Tipo de documento del beneficiario.
+        /// </summary>
+        public string TIP_DOCUM_BENEF { get; set; }
+
+        /// <summary>
         /// Fecha de nacimiento del beneficiario en formato DIAMESAÑO (ejemplo: 07122004).
         /// </summary>
         public string FEC_NAC_BENEF { get; set; }

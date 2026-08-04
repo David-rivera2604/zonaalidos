@@ -18,6 +18,10 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         /// </summary>
         public DateTime FEC_NAC_BENEF { get; set; }
 
+        /// <summary>
+        /// Tipo de documento del beneficiario.
+        /// </summary>
+        public string COD_DOCUM_BENEFType { get; set; }
     }
 
 }

@@ -65,8 +65,8 @@ namespace Architect.API.Tron.Business.Backoffice
                 EMAIL_ASEG = poliza.EMAIL_ASEG,
                 BENEFICIARIOS = poliza.Beneficiarios?.Select(b => new Contracts.AltasBajas.Request.SPCallBeneficiario
                 {
-                    TIP_DOCUM_BENEF = b.TIP_DOCUM_BENEF,
-                    COD_DOCUM_BENEF = b.COD_DOCUM_BENEF,
+                    TIP_DOCUM_BENEF = b.COD_DOCUM_BENEFType.IdentificationType(),
+                    COD_DOCUM_BENEF = b.COD_DOCUM_BENEF.DocumentNumber(b.COD_DOCUM_BENEFType),
                     NOM_TERCERO_BENEF = b.NOM_TERCERO_BENEF,
                     NOM2_TERCERO_BENEF = b.NOM2_TERCERO_BENEF,
                     APE1_TERCERO_BENEF = b.APE1_TERCERO_BENEF,
@@ -82,6 +82,7 @@ namespace Architect.API.Tron.Business.Backoffice
                     FEC_NAC_BENEF = b.FEC_NAC_BENEF.ToString("ddMMyyyy")
                 }).ToList()
             };
+
 
             string json = JsonConvert.SerializeObject(sp);
             string resultjson = DataAccess.PorRamo.EM_K_ALTA_BAJA_POLIZA_WEB_MCR(json);

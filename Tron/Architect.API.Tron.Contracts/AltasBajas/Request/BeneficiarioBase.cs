@@ -15,11 +15,6 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
     {
 
         /// <summary>
-        /// Tipo de documento del beneficiario.
-        /// </summary>
-        public string TIP_DOCUM_BENEF { get; set; }
-
-        /// <summary>
         /// Número de documento del beneficiario.
         /// </summary>
         public string COD_DOCUM_BENEF { get; set; }
