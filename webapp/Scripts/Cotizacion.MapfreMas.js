@@ -847,7 +847,14 @@ app.CotizacionMapfreMas = (function () {
                 },]
         });
 
-        $('#coberturasTbl').on('check.bs.table', function () {
+        $('#coberturasTbl').on('check.bs.table', function (e, row) {
+            if (!validarCoberturaSeleccionable(row)) {
+                $('#coberturasTbl').bootstrapTable('uncheckBy', {
+                    field: 'codigo',
+                    values: [row.codigo]
+                });
+                return;
+            }
             Coberturas_ManejoDeCapital();
         });
         $('#coberturasTbl').on('check-all.bs.table', function () {
@@ -1308,6 +1315,27 @@ app.CotizacionMapfreMas = (function () {
             $('[name=btSelectItem][data-index=' + index + ']').prop('disabled', value.requerida);
         });
         $('[name=btSelectAll]').prop('disabled', true);
+    }
+
+    function validarCoberturaSeleccionable(row) {
+        const tipoCombustible = $("#COD_TIP_COM_VEHI option:selected").val();
+        var roles = localStorage.getItem('Roles'); 
+
+        if (roles.includes('Veinsa')) {
+            // Eléctrico
+            if (tipoCombustible == "2" && row.codigo == 3010) {
+                toastr.warning('La cobertura 3010 no aplica para vehículos eléctricos.');
+                return false;
+            }
+
+            // Combustible o Híbrido
+            if ((tipoCombustible == "1" || tipoCombustible == "3") && row.codigo == 1060) {
+                toastr.warning('La cobertura 1060 solo aplica para vehículos eléctricos.');
+                return false;
+            }
+        }
+            return true;
+        
     }
 
     function initializeDateTimePicker() {
