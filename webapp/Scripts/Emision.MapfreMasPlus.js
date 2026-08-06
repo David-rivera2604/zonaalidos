@@ -10,6 +10,7 @@ app.EmisionMapfreMasPlus = (function () {
     let showCalculate = false;
     let rowDocumentosrequeridos = null;
     let mca_cuotas_gratis = 'N';
+    let mca_banca_desarrollo = '2';
     const lstlowCostDev_Contract = [17100, 17101];
 
     function Setup() {
@@ -70,6 +71,7 @@ app.EmisionMapfreMasPlus = (function () {
         //$('#NUM_MOTOR').replaceWith('<div>' + $('#NUM_MOTOR').val() + '</div>');
         //$('#VAL_CAPACIDAD').replaceWith('<div>' + $('#VAL_CAPACIDAD').val() + '</div>');
         $('label[for=MCA_CERO_KM').next().replaceWith('<div>' + $('label[for=MCA_CERO_KM_' + app.ui.GetRadioNumericValue('MCA_CERO_KM') + '').html() + '</div>');
+        $('label[for=MCA_BANCA_DESARROLLO').next().replaceWith('<div>' + $('label[for=MCA_BANCA_DESARROLLO_' + app.ui.GetRadioNumericValue('MCA_BANCA_DESARROLLO') + '').html() + '</div>');
         $('label[for=MCA_AUTO_GPS').next().replaceWith('<div>' + $('label[for=MCA_AUTO_GPS_' + app.ui.GetRadioNumericValue('MCA_AUTO_GPS') + '').html() + '</div>');
         $('label[for=MCA_AUTO_GPS_CMS').next().replaceWith('<div>' + $('label[for=MCA_AUTO_GPS_CMS_' + app.ui.GetRadioNumericValue('MCA_AUTO_GPS_CMS') + '').html() + '</div>');
         $('label[for=MCA_MONITOREO_GPS').next().replaceWith('<div>' + $('label[for=MCA_MONITOREO_GPS_' + app.ui.GetRadioNumericValue('MCA_MONITOREO_GPS') + '').html() + '</div>');
@@ -326,6 +328,7 @@ app.EmisionMapfreMasPlus = (function () {
         $('#COD_COLOR').val(data.COD_COLOR);
         app.ui.SetNumericValue('#VAL_CAPACIDAD', data.VAL_CAPACIDAD);
         app.ui.SetRadioNumericValue('MCA_CERO_KM', data.MCA_CERO_KM);
+        app.ui.SetRadioNumericValue('MCA_BANCA_DESARROLLO', data.MCA_BANCA_DESARROLLO);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS', data.MCA_AUTO_GPS);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
         app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);
@@ -357,6 +360,7 @@ app.EmisionMapfreMasPlus = (function () {
 
         TipoTercero_Filtro();
         mca_cuotas_gratis = data.mc_cuotas_gratis;
+        mca_banca_desarrollo = data.MCA_BANCA_DESARROLLO;
     }
 
     function MapObjectToInput(data) {
@@ -866,6 +870,7 @@ app.EmisionMapfreMasPlus = (function () {
             let insured = terceros.filter(i => i.tipodetercero === 2);
             let driver = terceros.filter(i => i.tipodetercero === 3);
             let bene = terceros.filter(i => i.tipodetercero === 6);
+            let acreedor = terceros.filter(i => i.tipodetercero === 8);
             let pagador = terceros.filter(i => i.tipodetercero === 21);
 
             if (holder.length === 0) {
@@ -886,6 +891,11 @@ app.EmisionMapfreMasPlus = (function () {
                     terceroserrors = true;
                 }
             }
+            if (acreedor.length === 0 && mca_banca_desarrollo == '1' ) {
+                message += ', indique el acreedor';
+                terceroserrors = true;
+            }
+
             if ((pagador.length == 0) && (mca_cuotas_gratis == 'S')) {
                 message += ', Si posee cuotas gratis , indique el pagador.';
                 terceroserrors = true;

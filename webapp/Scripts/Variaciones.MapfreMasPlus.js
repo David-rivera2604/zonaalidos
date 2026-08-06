@@ -107,6 +107,7 @@ app.VariacionMapfreMasPlus = (function () {
         $('#NUM_MOTOR').replaceWith('<div>' + $('#NUM_MOTOR').val() + '</div>');
         $('#VAL_CAPACIDAD').replaceWith('<div>' + $('#VAL_CAPACIDAD').val() + '</div>');
         $('label[for=MCA_CERO_KM').next().replaceWith('<div>' + $('label[for=MCA_CERO_KM_' + app.ui.GetRadioNumericValue('MCA_CERO_KM') + '').html() + '</div>');
+        $('label[for=MCA_BANCA_DESARROLLO').next().replaceWith('<div>' + $('label[for=MCA_BANCA_DESARROLLO_' + app.ui.GetRadioNumericValue('MCA_BANCA_DESARROLLO') + '').html() + '</div>');
         $('label[for=MCA_AUTO_GPS').next().replaceWith('<div>' + $('label[for=MCA_AUTO_GPS_' + app.ui.GetRadioNumericValue('MCA_AUTO_GPS') + '').html() + '</div>');
         $('label[for=MCA_AUTO_GPS_CMS').next().replaceWith('<div>' + $('label[for=MCA_AUTO_GPS_CMS_' + app.ui.GetRadioNumericValue('MCA_AUTO_GPS_CMS') + '').html() + '</div>');
         $('label[for=MCA_MONITOREO_GPS').next().replaceWith('<div>' + $('label[for=MCA_MONITOREO_GPS_' + app.ui.GetRadioNumericValue('MCA_MONITOREO_GPS') + '').html() + '</div>');
@@ -490,6 +491,7 @@ app.VariacionMapfreMasPlus = (function () {
         $('#COD_COLOR').val(data.COD_COLOR);
         app.ui.SetNumericValue('#VAL_CAPACIDAD', data.VAL_CAPACIDAD);
         app.ui.SetRadioNumericValue('MCA_CERO_KM', data.MCA_CERO_KM);
+        app.ui.SetRadioNumericValue('MCA_BANCA_DESARROLLO', data.MCA_BANCA_DESARROLLO);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS', data.MCA_AUTO_GPS);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
         app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);

@@ -105,6 +105,11 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// ¿Es cero km?.
         /// </summary>
         [DataMember(), JsonProperty()] public int MCA_CERO_KM { get; set; }
+
+        /// <summary>
+        /// ¿Aplica banca desarrollo?.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int MCA_BANCA_DESARROLLO { get; set; }
         /// <summary>
         /// ¿Tiene GPS?.
         /// </summary>

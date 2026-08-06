@@ -154,6 +154,11 @@ namespace Architect.API.Tron.Contracts.Batch
         /// <summary>
         ///
         /// </summary>
+        public string mca_banca_desarrollo { get; set; } = " ";
+
+        /// <summary>
+        ///
+        /// </summary>
         public int pct_dcto_auto_par { get; set; } = 0;
 
         /// <summary>

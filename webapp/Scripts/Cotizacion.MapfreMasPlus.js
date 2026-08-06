@@ -201,6 +201,7 @@ app.CotizacionMapfreMasPlus = (function () {
 
         $('#COD_PLAN_AUTO, #cod_tip_vehi, #cod_uso_vehi').on('change', function () {
             CoverageReload();
+            SetRButtonMcaBancaDesarrollo($("#cod_uso_vehi").val());
         });
 
         $('#cod_mon').on('change', function () {
@@ -256,6 +257,7 @@ app.CotizacionMapfreMasPlus = (function () {
             cod_uso_vehiDesc: $("#cod_uso_vehi option:selected").text(),
             COD_TIP_COM_VEHI_DESC: $("#COD_TIP_COM_VEHI option:selected").text(),
             MCA_CERO_KM: app.ui.GetRadioNumericValue('MCA_CERO_KM'),
+            MCA_BANCA_DESARROLLO: app.ui.GetRadioNumericValue('MCA_BANCA_DESARROLLO'),
             MCA_AUTO_GPS: app.ui.GetRadioNumericValue('MCA_AUTO_GPS'),
             MCA_AUTO_GPS_CMS: app.ui.GetRadioNumericValue('MCA_AUTO_GPS_CMS'),
             ext_garantia: app.ui.GetRadioNumericValue('ext_garantia'),
@@ -313,6 +315,7 @@ app.CotizacionMapfreMasPlus = (function () {
         $('#cod_modelo').val(data.cod_modelo);
         $('#cod_tip_vehi').val(data.cod_tip_vehi);
         $('#cod_uso_vehi').val(data.cod_uso_vehi);
+        SetRButtonMcaBancaDesarrollo(data.cod_uso_vehi);
         app.ui.SetRadioStringValue('tipo_prod', data.tipo_prod);
         app.ui.SetDateValue('#fec_efec_poliza', data.fec_efec_poliza);
         $('#fec_vcto_poliza_group').data("DateTimePicker").minDate($('#fec_efec_poliza_group').data("DateTimePicker").date());
@@ -327,6 +330,7 @@ app.CotizacionMapfreMasPlus = (function () {
 
         app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
         app.ui.SetRadioNumericValue('MCA_CERO_KM', data.MCA_CERO_KM);
+        app.ui.SetRadioNumericValue('MCA_BANCA_DESARROLLO', data.MCA_BANCA_DESARROLLO);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS', data.MCA_AUTO_GPS);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
         app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);
@@ -1238,7 +1242,17 @@ app.CotizacionMapfreMasPlus = (function () {
         
 
     }
+    function SetRButtonMcaBancaDesarrollo(codAuto) {
+        let rdButton = "MCA_BANCA_DESARROLLO";
+        if (codAuto == '1') {
+            app.ui.SetRadioNumericValue(rdButton, 2);
+            $(`input[name="${rdButton}"]`).prop("disabled", true);
+        } else { 
+            $(`input[name="${rdButton}"]`).prop("disabled", false);
+        }
 
+
+    }
     function CoverageReload() {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto
         var param = SettingParameter();

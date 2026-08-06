@@ -43,6 +43,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 Rotu_CristSA = quoteInfo.IMP_AUTO_CRI,
                 coberturas = string.Empty,
                 mca_cero_km = quoteInfo.MCA_CERO_KM == 1 ? "S" : "N",
+                mca_banca_desarrollo = quoteInfo.MCA_BANCA_DESARROLLO == 1 ? "S" : "N",
                 cod_modelo = quoteInfo.cod_modelo,
                 mca_HogarTotal = "N",
                 Auto_NeumSA = quoteInfo.IMP_AUTO_NEUM,

@@ -152,6 +152,9 @@ namespace Architect.API.Tron.Business.Variaciones
                     case "MCA_CERO_KM":
                         quoteInfo.MCA_CERO_KM = item.val_campo == "N" ? 2 : 1;
                         break;
+                    case "MCA_BANCA_DESARROLLO":
+                        quoteInfo.MCA_BANCA_DESARROLLO = item.val_campo == "N" ? 2 : 1;
+                        break;
                     case "MCA_AUTO_GPS":
                         quoteInfo.MCA_AUTO_GPS = item.val_campo == "N" ? 2 : 1;
                         break;
