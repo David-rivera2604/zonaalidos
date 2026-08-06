@@ -30,6 +30,7 @@ namespace Architect.API.Tron.DataAccess
                 .AddParameter("P_COD_MARCA", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000030Instance.cod_marca)
                 .AddParameter("P_COD_TIP_VEHI", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000030Instance.cod_tip_vehi)
                 .AddParameter("P_COD_USO_VEHI", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000030Instance.cod_uso_vehi)
+                .AddParameter("p_mca_banca_desarrollo", Architect.DataFactory.Enumerations.DbType.String, 0, p2000030Instance.mca_banca_desarrollo)
                 .AddParameter("P_ANIO_VEH", Architect.DataFactory.Enumerations.DbType.Int32, 22, p2000030Instance.anio_Veh)
                 .AddParameter("P_TIP_VALORACION", Architect.DataFactory.Enumerations.DbType.String, 1, p2000030Instance.Tip_Valoracion)
                 .AddParameter("P_MCA_DESC_CLIENT_NUEVO", Architect.DataFactory.Enumerations.DbType.String, 1, p2000030Instance.mca_desc_client_nuevo)

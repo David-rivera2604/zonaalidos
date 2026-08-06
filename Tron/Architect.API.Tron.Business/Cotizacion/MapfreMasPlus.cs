@@ -44,6 +44,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                 cod_tip_vehi = 3,
                 cod_uso_vehi = 1,
                 MCA_CERO_KM = 2,
+                MCA_BANCA_DESARROLLO = 2,
                 MCA_AUTO_GPS = 2,
                 MCA_MONITOREO_GPS = 2,
                 ext_garantia = 2,
