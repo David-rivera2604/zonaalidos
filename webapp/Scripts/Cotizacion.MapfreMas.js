@@ -214,6 +214,10 @@ app.CotizacionMapfreMas = (function () {
 
         });
 
+        $('#COD_TIP_COM_VEHI').on('change', function () {
+            LimpiarCoberturasPorCambioCombustible();
+        });
+
     }
 
     function MapInputToObject() {
@@ -1337,6 +1341,25 @@ app.CotizacionMapfreMas = (function () {
             return true;
         
     }
+
+    function LimpiarCoberturasPorCambioCombustible() {
+        var roles = localStorage.getItem('Roles');
+
+        if (roles.includes('Veinsa')) {
+            $('#coberturasTbl').bootstrapTable('uncheckBy', {
+                field: 'codigo',
+                values: [3010]
+            });
+
+            $('#coberturasTbl').bootstrapTable('uncheckBy', {
+                field: 'codigo',
+                values: [1060]
+            });
+
+            Coberturas_ManejoDeCapital();
+        }
+    }
+
 
     function initializeDateTimePicker() {
         var contratoValue = app.ui.GetDropDownNumericValue('#contrato');
