@@ -6,7 +6,8 @@ INSERT INTO VISUALIZATIONS (ID,"SEQUENCE","TYPE",CAPTION,DESCRIPTION,ICON,ICONCL
         "showToggle": false,
         "showRefresh": true,
         "showColumns": false,
-        "showExport": false,
+        "showExport": true,
+        "exportTypes": ["csv", "excel"],
         "showPaginationSwitch": false,
         "detailView": false,
         "columns": [
@@ -58,8 +59,8 @@ INSERT INTO VISUALIZATIONS (ID,"SEQUENCE","TYPE",CAPTION,DESCRIPTION,ICON,ICONCL
             {
                 "field": "Filial",
                 "title": "Filial",
-                "sortable": true,
-                "halign"')||TO_CLOB(': "center",
+                "s')||TO_CLOB('ortable": true,
+                "halign": "center",
                 "align": "left",
                 "formatter": "app.ui.StringFormatter",
                 "visible": true
