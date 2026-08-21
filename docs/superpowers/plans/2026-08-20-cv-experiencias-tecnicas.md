@@ -20,7 +20,7 @@
 - [ ] Record the source PDF SHA-256 before editing.
 - [ ] Add an immutable list of 22 experience dictionaries containing project, professional title, company, location, scope bullets, metraje, and crew size from the approved spec.
 - [ ] Group entries into page distributions `4 / 7 / 7 / 4` for pages 1-4.
-- [ ] Add a failing verifier that requires all 22 project labels, four independent Los Robles metrajes, five A4 pages, and a new output filename.
+- [ ] Add a failing verifier that stores the approved normalized text for every entry and compares project, cargo, company, location, and both bullets; also require four independent Los Robles metrajes, five A4 pages, and a new output filename.
 - [ ] Run the verifier before generation and confirm it fails because the new output does not yet exist.
 
 ### Task 2: Redraw all experience regions
@@ -41,9 +41,10 @@
 - Create: `tmp/pdfs/cv_heiner_2026/professional-final/page-*.png`
 - Test: `tmp/pdfs/verify_cv_professional.py`
 
-- [ ] Run the verifier and require exact project/company/location/metraje/crew inventory checks.
+- [ ] Run the verifier and require an exact normalized-text comparison for project, professional cargo, company, location, and both bullets for every entry, plus metraje and crew inventory checks.
 - [ ] Confirm the source SHA-256 is unchanged.
 - [ ] Confirm the final PDF has five A4 pages and the 22 experiences appear once each.
-- [ ] Render all five pages at 140 DPI with `pdftoppm`.
+- [ ] Render the source and final PDFs at 140 DPI with bundled Poppler: `C:/Users/jeffr/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/Library/bin/pdftoppm.exe`.
+- [ ] Run an automated masked image comparison that ignores only the rewritten experience text rectangles and requires all preserved regions (header, profile, left section labels, yellow timeline, formation, references, and page backgrounds) to remain pixel-identical within a small antialiasing tolerance.
 - [ ] Inspect every PNG for clipping, overlap, broken glyphs, timeline damage, and formation/reference preservation.
 - [ ] Deliver only the verified professional PDF.
