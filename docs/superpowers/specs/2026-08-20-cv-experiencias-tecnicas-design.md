@@ -37,7 +37,7 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 
 **Cargo:** Maestro de obras general - coordinación de obra hospitalaria  
 **Empresa:** Navarro y Avilés  
-**Ubicación:** La Fortuna, San Carlos - 2024-2025
+**Ubicación:** Fortuna, San Carlos - 2024-2025
 
 - Supervisión integral de obra gris y acabados, coordinación de actividades constructivas y seguimiento de instalaciones eléctricas, pluviales y mecánicas.
 - Coordinación de plantas de tratamiento, carreteras y muros, con dirección de una cuadrilla de más de 40 trabajadores.
@@ -49,34 +49,34 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Ubicación:** Cartago, Costa Rica
 
 - Ejecución de carreteras internas en concreto, cordones de caño, aceras, rampas, losas para equipos de aire acondicionado y parqueos vehiculares.
-- Lectura y análisis de planos constructivos, control de ejecución y coordinación de una cuadrilla de más de 10 trabajadores.
+- Lectura, revisión y análisis de planos constructivos, control de ejecución y coordinación de una cuadrilla de más de 10 trabajadores.
 
 ### 5. Hospital San Carlos
 
-**Cargo:** Supervisor técnico de instalación de revestimientos de piso  
+**Cargo:** Contratista especializado en instalación de revestimientos de piso  
 **Empresa:** Navarro y Avilés  
 **Ubicación:** San Carlos, Costa Rica
 
 - Coordinación y ejecución de 1.200 m² de terrazo y revestimiento cerámico, incluyendo instalación, fraguado y detallado de acabados.
-- Supervisión de una cuadrilla de más de 10 trabajadores y control de calidad de los trabajos ejecutados.
+- Manejo de una cuadrilla de más de 10 trabajadores durante la ejecución de los revestimientos.
 
 ### 6. Centro de Diagnóstico para Cáncer - Universidad de Costa Rica
 
-**Cargo:** Coordinador de pavimentos, acabados y concreto arquitectónico  
+**Cargo:** Encargado técnico de instalación de pisos y acabados en concreto  
 **Empresa:** Navarro y Avilés  
 **Ubicación:** San Pedro, Costa Rica
 
-- Coordinación de instalación de pisos y ejecución de concreto lavado en las gradas de los cinco niveles del edificio.
-- Organización de frentes de trabajo y supervisión de una cuadrilla de más de 6 trabajadores.
+- Instalación de pisos y ejecución de concreto lavado en las gradas de los cinco niveles del edificio.
+- Manejo de una cuadrilla de más de 6 trabajadores.
 
 ### 7. Proyecto Sportiva Skyhomes
 
-**Cargo:** Supervisor de acabados y control de calidad residencial  
+**Cargo:** Encargado de detallado y reparación de acabados residenciales  
 **Empresa:** Eliseo Vargas y Asociados  
 **Ubicación:** Cariari, Heredia, Costa Rica
 
-- Inspección y corrección de acabados en apartamentos, incluyendo pintura, pisos, mobiliario y detalles interiores.
-- Coordinación de reparaciones derivadas de inspecciones y supervisión de una cuadrilla de más de 5 trabajadores.
+- Detallado y revisión de pintura, pisos, mobiliario y acabados interiores en apartamentos.
+- Reparación de detalles identificados durante inspecciones y manejo de una cuadrilla de más de 5 trabajadores.
 
 ### 8. Condominio Cedros del Este
 
@@ -103,7 +103,7 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Ubicación:** San Joaquín de Flores, Costa Rica
 
 - Ejecución de revestimientos cerámicos, cordones de caño, cajas de registro y trabajos complementarios de instalación.
-- Coordinación de una cuadrilla de más de 5 trabajadores y control del acabado final.
+- Manejo de una cuadrilla de más de 5 trabajadores durante la ejecución de los trabajos.
 
 ### 11. Beneficio Cafetero Ecológico Don Pancho
 
@@ -116,12 +116,12 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 
 ### 12. Proyecto KALMA
 
-**Cargo:** Coordinador de acabados y control de calidad residencial  
+**Cargo:** Encargado de detallado y reparación de acabados residenciales  
 **Empresa:** Eliseo Vargas y Asociados  
 **Ubicación:** Coyol, Alajuela, Costa Rica - 2023
 
-- Inspección, detallado y corrección de acabados en apartamentos, incluyendo pintura, pisos y mobiliario.
-- Coordinación de reparaciones identificadas durante inspecciones y supervisión de una cuadrilla de más de 5 trabajadores.
+- Detallado y revisión de pintura, pisos y mobiliario en apartamentos.
+- Reparación de detalles identificados durante inspecciones y manejo de una cuadrilla de más de 5 trabajadores.
 
 ### 13. Vivienda residencial de 250 m²
 
@@ -139,7 +139,7 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Ubicación:** Sector Occidente, Costa Rica
 
 - Ejecución de 1.500 m² de proyectos residenciales, incluyendo obra gris, sistemas pluviales, mecánicos y eléctricos, acabados y pintura.
-- Dirección de una cuadrilla de más de 5 trabajadores y coordinación de frentes constructivos.
+- Manejo de una cuadrilla de más de 5 trabajadores.
 
 ### 15. Hangar para avionetas
 
@@ -166,7 +166,7 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Ubicación:** Naranjo, Alajuela, Costa Rica
 
 - Dirección de un proyecto de aproximadamente 800 m², incluyendo bodegas, gimnasio, recepción y levantamiento integral de obra gris.
-- Revisión de planos constructivos, coordinación de la estructura general y dirección de una cuadrilla de más de 30 trabajadores.
+- Estructuración general, revisión de planos constructivos, dirección del proyecto durante la construcción y manejo de una cuadrilla de más de 30 trabajadores.
 
 ### 18. Vivienda llave en mano de 120 m²
 
@@ -175,7 +175,7 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Ubicación:** San Jerónimo, Naranjo, Alajuela, Costa Rica
 
 - Coordinación integral de una vivienda de 120 m² bajo modalidad llave en mano.
-- Supervisión de instalaciones eléctricas, mecánicas y pluviales, lectura de planos y dirección de una cuadrilla de más de 5 trabajadores.
+- Responsabilidad sobre todas las instalaciones eléctricas, mecánicas y pluviales; lectura, revisión y análisis de planos constructivos; y manejo de una cuadrilla de más de 5 trabajadores.
 
 ### 19. Vivienda llave en mano de 100 m²
 
@@ -183,8 +183,8 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Empresa:** Constructora Madrigal  
 **Ubicación:** Los Robles, Naranjo, Alajuela, Costa Rica
 
-- Coordinación integral de una vivienda de 100 m², incluyendo instalaciones eléctricas, mecánicas y pluviales.
-- Lectura de planos constructivos y dirección de una cuadrilla de más de 5 trabajadores.
+- Coordinación integral de una vivienda de 100 m², con responsabilidad sobre todas las instalaciones eléctricas, mecánicas y pluviales.
+- Lectura y análisis de planos constructivos y manejo de una cuadrilla de más de 5 trabajadores.
 
 ### 20. Vivienda llave en mano de 90 m²
 
@@ -192,8 +192,8 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Empresa:** Constructora Madrigal  
 **Ubicación:** Los Robles, Naranjo, Alajuela, Costa Rica
 
-- Coordinación integral de una vivienda de 90 m², incluyendo instalaciones eléctricas, mecánicas y pluviales y acabados finos.
-- Lectura de planos constructivos y dirección de una cuadrilla de más de 5 trabajadores.
+- Coordinación integral de una vivienda de 90 m², con responsabilidad sobre todas las instalaciones eléctricas, mecánicas y pluviales y ejecución de acabados finos.
+- Lectura y análisis de planos constructivos y manejo de una cuadrilla de más de 5 trabajadores.
 
 ### 21. Vivienda llave en mano de 130 m²
 
@@ -201,8 +201,8 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Empresa:** Constructora Madrigal  
 **Ubicación:** Los Robles, Naranjo, Alajuela, Costa Rica
 
-- Coordinación integral de una vivienda de 130 m², incluyendo instalaciones eléctricas, mecánicas y pluviales y acabados finos.
-- Lectura de planos constructivos y dirección de una cuadrilla de más de 5 trabajadores.
+- Coordinación integral de una vivienda de 130 m², con responsabilidad sobre todas las instalaciones eléctricas, mecánicas y pluviales y ejecución de acabados finos.
+- Lectura y análisis de planos constructivos y manejo de una cuadrilla de más de 5 trabajadores.
 
 ### 22. Vivienda llave en mano de 150 m²
 
@@ -210,8 +210,8 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 **Empresa:** Constructora Madrigal  
 **Ubicación:** Los Robles, Naranjo, Alajuela, Costa Rica
 
-- Coordinación integral de una vivienda de 150 m², incluyendo instalaciones eléctricas, mecánicas y pluviales y acabados finos.
-- Lectura de planos constructivos y dirección de una cuadrilla de más de 5 trabajadores.
+- Coordinación integral de una vivienda de 150 m², con responsabilidad sobre todas las instalaciones eléctricas, mecánicas y pluviales y ejecución de acabados finos.
+- Lectura y análisis de planos constructivos y manejo de una cuadrilla de más de 5 trabajadores.
 
 ## Diseño y verificación
 
@@ -219,3 +219,6 @@ Profesionalizar todos los cargos y descripciones de experiencia del currículum 
 - Distribuir las experiencias en las páginas 1 a 4 sin recortes ni superposiciones.
 - Mantener la tipografía y jerarquía visual; se permite ajustar moderadamente el tamaño y espaciado del texto de experiencia para acomodar el contenido.
 - Verificar visualmente las cinco páginas y comprobar por extracción que las 22 experiencias estén presentes una sola vez.
+- Comparar el inventario fuente contra el PDF final por nombre del proyecto, empresa, ubicación, metraje y tamaño de cuadrilla para detectar pérdidas, intercambios o cambios de datos.
+- Confirmar individualmente que las viviendas de 100, 90, 130 y 150 m² de Los Robles aparezcan una vez cada una.
+- Confirmar que el PDF final sea un archivo nuevo y que el PDF fuente permanezca sin modificaciones.
