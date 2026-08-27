@@ -22,6 +22,22 @@ INSERT INTO VISUALIZATIONS (ID,"SEQUENCE","TYPE",CAPTION,DESCRIPTION,ICON,ICONCL
       "formatter": "app.ui.StringFormatter"
    },
    {
+      "field": "FEC_EFEC_POLIZA",
+      "title": "Inicio de vigencia",
+      "sortable": true,
+      "halign": "center",
+      "align": "center",
+      "formatter": "app.ui.DateFormatter"
+   },
+   {
+      "field": "FEC_VCTO_POLIZA",
+      "title": "Fin de vigencia",
+      "sortable": true,
+      "halign": "center",
+      "align": "center",
+      "formatter": "app.ui.DateFormatter"
+   },   
+   {
       "field": "NOM_COMPLETO2",
       "title": "Contratante",
       "sortable": true,
@@ -70,7 +86,7 @@ INSERT INTO VISUALIZATIONS (ID,"SEQUENCE","TYPE",CAPTION,DESCRIPTION,ICON,ICONCL
    },
    {
       "field": "IMP_COMIS",
-      "title": "Comisión",
+      "title": "Comisión')||TO_CLOB('",
       "sortable": true,
       "halign": "center",
       "align": "right",
@@ -85,9 +101,17 @@ INSERT INTO VISUALIZATIONS (ID,"SEQUENCE","TYPE",CAPTION,DESCRIPTION,ICON,ICONCL
       "formatter": "app.ui.DateFormatter"
    },
    {
+      "field": "NOM_FRACC_PAGO",
+      "title": "Frecuencia de pago",
+      "sortable": true,
+      "halign": "center",
+      "align": "left",
+      "formatter": "app.ui.StringFormatter"
+   },   
+   {
       "field": "EMAIL",
       "title": "Email",
-      "sortable"')||TO_CLOB(': true,
+      "sortable": true,
       "halign": "center",
       "align": "left",
       "formatter": "app.ui.StringFormatter"

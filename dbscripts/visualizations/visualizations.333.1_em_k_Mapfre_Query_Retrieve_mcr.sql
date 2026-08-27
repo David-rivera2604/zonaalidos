@@ -63,7 +63,8 @@ CREATE OR REPLACE PACKAGE TRON2000.em_k_Mapfre_Query_Retrieve_mcr AS
                         nom_domicilio2                 a1001331.nom_domicilio2            %TYPE,
                         nom_domicilio3                 a1001331.nom_domicilio3            %TYPE,
                         nom_mon                        a1000400.nom_mon                   %TYPE,
-                        tip_gestor_recibo              a2990700.tip_gestor                %TYPE
+                        tip_gestor_recibo              a2990700.tip_gestor                %TYPE,
+                        nom_fracc_pago                 a1001402.nom_fracc_pago            %TYPE
                         );
     TYPE RCTpending_receipts IS REF CURSOR RETURN RTpending_receipts;  
 --
@@ -217,5 +218,3 @@ TYPE RTpinfoextra IS RECORD (email    a1001300.email %TYPE);
 TYPE RCTpinfoextra IS REF CURSOR RETURN RTpinfoextra;
 --
 END;
-
- 

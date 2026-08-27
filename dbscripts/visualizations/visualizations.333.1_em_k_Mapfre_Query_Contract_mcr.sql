@@ -688,12 +688,14 @@ BEGIN
              nom_domicilio2,
              nom_domicilio3,
              a400.cod_mon_iso nom_mon,
-             c.tip_gestor  tip_gestor_recibo
+             c.tip_gestor  tip_gestor_recibo,
+             a1402.nom_fracc_pago
         FROM a2000030 a,
              a2990700 c,
              v1001390 d,
              a1001331 a1331,
-             a1000400 a400
+             a1000400 a400, 
+             a1001402 a1402 
        WHERE a.cod_cia             = p_cod_cia
          AND a.cod_agt             = p_cod_agt
         -- AND a.mca_spto_anulado    = 'N'
@@ -712,6 +714,8 @@ BEGIN
          AND a1331.cod_docum = d.COD_DOCUM
          --
          AND c.cod_mon = a400.cod_mon
+         --
+         AND a.cod_cia = a1402.cod_cia  and a.cod_fracc_pago  = a1402.cod_fracc_pago         
          --
          AND c.cod_cia  = a.cod_cia
          --AND c.num_spto  = a.num_spto
@@ -754,7 +758,8 @@ BEGIN
              nom_domicilio2,
              nom_domicilio3,
              a400.cod_mon_iso,
-             c.tip_gestor
+             c.tip_gestor,
+             a1402.nom_fracc_pago
        ORDER BY c.fec_efec_recibo;
 
 END p_pending_receipts;
@@ -810,12 +815,14 @@ BEGIN
              nom_domicilio2,
              nom_domicilio3,
              a400.cod_mon_iso nom_mon,
-             c.tip_gestor tip_gestor_recibo
+             c.tip_gestor tip_gestor_recibo,
+             a1402.nom_fracc_pago
         FROM a2000030 a,
              a2990700 c,
              v1001390 d,
              a1001331 a1331,
-             a1000400 a400
+             a1000400 a400, 
+             a1001402 a1402 
        WHERE a.cod_cia             = p_cod_cia
          AND a.cod_agt             = p_cod_agt
         -- AND a.mca_spto_anulado    = 'N'
@@ -834,6 +841,8 @@ BEGIN
          AND a1331.cod_docum = d.COD_DOCUM
          --
          AND c.cod_mon = a400.cod_mon
+         --
+         AND a.cod_cia = a1402.cod_cia  and a.cod_fracc_pago  = a1402.cod_fracc_pago         
          --
          AND c.cod_cia  = a.cod_cia
          --AND c.num_spto  = a.num_spto
@@ -879,7 +888,8 @@ BEGIN
              nom_domicilio2,
              nom_domicilio3,
              a400.cod_mon_iso,
-             c.tip_gestor
+             c.tip_gestor,
+             a1402.nom_fracc_pago
        ORDER BY c.fec_efec_recibo;
 
 END p_pending_receipts;
