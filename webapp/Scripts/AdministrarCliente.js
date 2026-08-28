@@ -1,4 +1,4 @@
-﻿var app = app || {};
+﻿var app = app || {}; 
 
 function clientes_documentNumberCallBack(data) {
     if (data != null) {
@@ -27,8 +27,34 @@ function clientes_documentNumberCallBack(data) {
 }
 
 function DocumentNumberTypeMenu() {
-    app.ui.DocumentNumberHandler('#DocumentNumber', clientes_documentNumberCallBack);
     app.ui.DocumentNumberHandlerJDC('#DocumentNumber', clientes_documentNumberCallBack);
+    $('#DocumentNumberTypeMenu a').click(function () {
+        $('#DocumentNumber').data('current', '');
+        app.ui.DocumentTypeHandler(this, '#DocumentNumber', 'Identification');
+    });
+    $('#DocumentNumber').on('blur', function () {
+        var oldValue = $('#DocumentNumber').data('current');
+        var documentNumber = $('#DocumentNumber').val();
+        var docType = $('#DocumentNumberType').data('value');
+        if (oldValue != documentNumber && documentNumber) {
+            var validation = app.ui.IsDocumentNumberValid(docType, documentNumber);
+            if (validation.result) {
+                $('#DocumentNumber').data('current', documentNumber);
+                $('#DocumentNumber').addClass('loading');
+                var documentoSinGuiones = documentNumber.replace(/-/g, '');
+                app.core.Get(app.setting.apipath + 'v1/Insured/Tron/' + documentoSinGuiones + '?docType=' + docType)
+                    .done(function (data, textStatus, jqXHR) {
+                        clientes_documentNumberCallBack(data);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        toastr.error("No se encontró el cliente en Tron.", '', { closeButton: true, progressBar: true });
+                    })
+                    .always(function () {
+                        $('#DocumentNumber').removeClass('loading');
+                    });
+            }
+        }
+    });
 }
 
 function clientes_controls_setup() {
@@ -147,13 +173,18 @@ $("#actualizarCambios").click(function () {
         $('#actualizarCambios').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando Cambios...');
         status = 'redirect';
         var datos = MapInputs();
+        var documentoSinGuiones = datos.DocumentNumber.replace(/-/g, '');
         app.core.Post(app.setting.apipath + 'v1/Insured/PostCambiosCliente?type=' + datos.DocumentType, JSON.stringify(datos))
             .done(function (data, textStatus, jqXHR) {
-                app.core.Get(app.setting.apipath + 'v1/Insured/')
+                app.core.Get(app.setting.apipath + 'v1/Insured/Tron/' + documentoSinGuiones + '?docType=' + datos.DocumentType)
                     .done(function (data, textStatus, jqXHR) {
-                        objectlist = data;
+                        clientes_documentNumberCallBack(data);
                         toastr.success("Cambios actualizados correctamente", '', { timeOut: 3000, closeButton: true, progressBar: true });
-                    }).always(function () {
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        toastr.warning("Los cambios se guardaron, pero no se pudo refrescar la pantalla. Recargue la página.", '', { closeButton: true, progressBar: true });
+                    })
+                    .always(function () {
                         if (status === 'redirect') {
                             setTimeout(function () {
                                 $('#actualizarCambios').html('<i class="fa fa-check"></i> Listo');

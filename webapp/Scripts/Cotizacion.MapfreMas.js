@@ -26,8 +26,8 @@ app.CotizacionMapfreMas = (function () {
 
         //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
         //    localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
-            $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
-            workMode = '&mode=draft';
+        $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
+        workMode = '&mode=draft';
         //}
         //else {
         //    $('#emitir').html("<i class='fa fa-check'></i> Emitir");
@@ -148,6 +148,7 @@ app.CotizacionMapfreMas = (function () {
             if (contracto > 0) {
                 setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
             }
+            AplicarRestriccionTipoProductoPorContrato(contracto);
             initializeDateTimePicker();
             SettingReload();
             app.core.LookupDependency($('select#contrato').val(), 'subcontrato', 'MM_SUB_CONTRATOS', '', null, true,
@@ -157,10 +158,24 @@ app.CotizacionMapfreMas = (function () {
                     if (lkpData.length != 0) {
                         $('select#subcontrato').val(app.ui.GetDropDownNumericValue('#cod_mon'));
                         $('select#subcontrato').change();
-                    }
+                    } { }
                 },
                 `cod_ramo=${setupData.cod_ramo}:num_contrato=`);
         });
+
+        // Contratos 99780 y 99781 solo se permite el tipo de producto "Trébol"
+        function AplicarRestriccionTipoProductoPorContrato(contratoValue) {
+            var contratosSoloTrebol = [99780, 99781];
+
+            if (contratosSoloTrebol.indexOf(contratoValue) !== -1) {
+                $('input:radio[name=tipo_prod]').not('#tipo_prod_6').closest('.custom-control').addClass('d-none');
+                if (!$('#tipo_prod_6').prop('checked')) {
+                    $('#tipo_prod_6').prop('checked', true);
+                }
+            } else {
+                $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
+            }
+        }
 
         $('input:radio[name=tipo_prod]').change(function () {
             var data = {
@@ -1102,13 +1117,28 @@ app.CotizacionMapfreMas = (function () {
             // Ramo 302 MAPFRE Más: para Trébol Basic y Trébol Premium no se permite ajuste comercial
             app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
             $('#PCT_AJUSTE_GEN').prop('disabled', true);
-        } else if ((tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
-            (cod_marca === 31 || cod_marca === 74 || cod_marca === 73 || cod_marca === 55 || cod_marca === 40 || cod_marca === 50 || cod_marca === 13 || cod_marca === 30)) {
+            $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').addClass('d-none');
+        }
+        else if (
+            (tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
+            (cod_marca === 31 ||
+                cod_marca === 74 ||
+                cod_marca === 73 ||
+                cod_marca === 55 ||
+                cod_marca === 40 ||
+                cod_marca === 50 ||
+                cod_marca === 13 ||
+                cod_marca === 30)
+        ) {
+            $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').removeClass('d-none');
+
             if (!localStorage.getItem('Roles').includes('Privilegios')) {
                 app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
                 $('#PCT_AJUSTE_GEN').prop('disabled', true);
             }
-        } else {
+        }
+        else {
+            $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').removeClass('d-none');
             $('#PCT_AJUSTE_GEN').prop('disabled', false);
         }
 
@@ -1405,12 +1435,12 @@ app.CotizacionMapfreMas = (function () {
             plandepagoporfrecuencia_table_setup();
 
             Controls_Events();
-                if (app.language && app.language.translate) {
-                    app.language.translate('#quoteBlock', '_resumen')();
-                    app.language.translate('#DatosGeneralesTitle', '_datosgenerales')();
-                    app.language.translate('#coberturasTbl', '_coberturaPlan')();
-                    app.language.translate('#polizagrupoZone', '_polizagrupo')();
-                }
+            if (app.language && app.language.translate) {
+                app.language.translate('#quoteBlock', '_resumen')();
+                app.language.translate('#DatosGeneralesTitle', '_datosgenerales')();
+                app.language.translate('#coberturasTbl', '_coberturaPlan')();
+                app.language.translate('#polizagrupoZone', '_polizagrupo')();
+            }
             app.language.translate('body', 'MapfreMas')();
             Setup(mode);
         }
