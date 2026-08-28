@@ -533,6 +533,10 @@ app.CotizacionMapfreMasPlus = (function () {
         $('#print').click(function (e) {
             e.preventDefault();
             let data = MapInputToObject();
+            if (data.cod_uso_vehi == 2 && data.MCA_BANCA_DESARROLLO == 2) {
+                data.cod_uso_vehiDesc = "BANCA Y DESARROLLO";
+            }
+
             data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
             data.presupuesto = quoteData.presupuesto;
             data.Agente = setupData.Agente;
