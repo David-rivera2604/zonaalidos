@@ -1,5 +1,31 @@
 # Release Notes - Aliados
 
+## Versión 1.6.201
+
+### Aliados : Cmabio en la consulta Gestión de Cobros (317).
+
+#### Cambios implementados:
+
+- Se agregan las columnas, frecuencia de pago y fechas de inicio y fin de vigencia de la póliza, tanto en la consulta como en Excel.
+
+#### Dependencias:
+1. `visualizations.317.1.sql`.
+2. `visualizations.333.1_em_k_Mapfre_Query_Retrieve_mcr.sql`.
+3. `visualizations.333.1_em_k_Mapfre_Query_Contract_mcr.sql`.
+
+--
+## Versión 1.6.200
+
+### Aliados : Habilitar export a Excel en la consulta 42.
+
+#### Cambios implementados:
+
+- Se habilita la opción de exportar a Excel en la consulta 42.
+
+#### Dependencias:
+1. `visualizations.42.1.sql`.
+
+--
 ## Versión 1.6.199
 
 ### Aliados - EmitirPoliza: Se agrega el campo email para el asegurado.
