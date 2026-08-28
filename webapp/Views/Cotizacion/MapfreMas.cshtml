@@ -59,9 +59,12 @@
                         <div id="VisualizationsEdt" class="animated fadeInRight">
                             <form id='VisualizationsEdtForm' class='form-horizontal' data-toggle='validator'>
                                 <fieldset>
+                                    <!-- polizagrupo Zone -->
+                                    @Html.Partial("_polizagrupo")
+
                                     <!-- tipodeproducto Zone -->
                                     <div class="form-row">
-                                        <div class="col-md-4 tipodeproductoZone role-Purdy-notvisible role-Veinsa-notvisible">
+                                        <div class="col-md-4 tipodeproductoZone">
                                             <h4><i class="fa fa-th"></i> <span id="MapfreMasTipoProductoTitle">Tipo de producto</span></h4>
                                             <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
                                             <div class="form-row">
@@ -149,9 +152,6 @@
 
                                     <!-- datosgenerales Zone -->
                                     @Html.Partial("_datosgenerales")
-
-                                    <!-- polizagrupo Zone -->
-                                    @Html.Partial("_polizagrupo")
 
                                     <!-- datosdelvehiculo Zone -->
                                     <div class="form-row">
@@ -267,13 +267,13 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- COD_TIP_COM_VEHI DropDownList -->
-                                                <div class='col-sm-3 col-md-3'>
-                                                    <div class='form-group'>
-                                                        <label class='control-label' for='COD_TIP_COM_VEHI'>Tipo de Combustión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
-                                                        <select id='COD_TIP_COM_VEHI' name='COD_TIP_COM_VEHI' class='form-control'></select>
-                                                    </div>
-                                                </div>
+                                                 <!-- COD_TIP_COM_VEHI DropDownList -->
+                                                 <div class='col-sm-3 col-md-3'>
+                                                     <div class='form-group'>
+                                                         <label class='control-label' for='COD_TIP_COM_VEHI'>Tipo de Combustión<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span></label>
+                                                         <select id='COD_TIP_COM_VEHI' name='COD_TIP_COM_VEHI' class='form-control'></select>
+                                                     </div>
+                                                 </div>
 
                                                 <!-- cod_uso_vehi DropDownList -->
                                                 <div class='col-sm-3 col-md-3'>
@@ -478,25 +478,25 @@
                                                 </div>
                                                 <!-- Num Meses Gratis DropDownList -->
                                                 @*<div class='col-sm-3 col-md-3 role-Purdy-visible d-none'>
-            <div class='form-group'>
-                <label class='control-label' for='num_cuotas_gratis'>Número de Cuotas Gratis</label>
-                <select id='num_cuotas_gratis' name='num_cuotas_gratis' class='form-control' disabled>
-                    <option value=0>CERO MESES</option>
-                    <option value=1>UN MES</option>
-                    <option value=2>DOS MESES</option>
-                    <option value=3>TRES MESES</option>
-                    <option value=4>CUATRO MESES</option>
-                    <option value=5>CINCO MESES</option>
-                    <option value=6>SEIS MESES</option>
-                    <option value=7>SIETE MESES</option>
-                    <option value=8>OCHO MESES</option>
-                    <option value=9>NUEVE MESES</option>
-                    <option value=10>DIEZ MESES</option>
-                    <option value=11>ONCE MESES</option>
-                    <option value=12>DOCE MESES</option>
-                </select>
-            </div>
-        </div>*@
+                        <div class='form-group'>
+                            <label class='control-label' for='num_cuotas_gratis'>Número de Cuotas Gratis</label>
+                            <select id='num_cuotas_gratis' name='num_cuotas_gratis' class='form-control' disabled>
+                                <option value=0>CERO MESES</option>
+                                <option value=1>UN MES</option>
+                                <option value=2>DOS MESES</option>
+                                <option value=3>TRES MESES</option>
+                                <option value=4>CUATRO MESES</option>
+                                <option value=5>CINCO MESES</option>
+                                <option value=6>SEIS MESES</option>
+                                <option value=7>SIETE MESES</option>
+                                <option value=8>OCHO MESES</option>
+                                <option value=9>NUEVE MESES</option>
+                                <option value=10>DIEZ MESES</option>
+                                <option value=11>ONCE MESES</option>
+                                <option value=12>DOCE MESES</option>
+                            </select>
+                        </div>
+                    </div>*@
                                                 <div class='col-sm-3 col-md-3 role-Purdy-visible d-none'>
                                                     <div class='form-group'>
                                                         <label class='control-label' for='num_cuotas_gratis'>Número de Cuotas Gratis</label>

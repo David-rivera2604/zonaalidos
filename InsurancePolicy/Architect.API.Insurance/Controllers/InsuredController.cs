@@ -23,7 +23,7 @@ namespace Architect.API.Insurance.Controllers
         /// Busqueda de información de residentes de Costa Rica.
         /// </summary>
         /// <param name="id">Identificación.</param>
-        /// <param name="docType">Tipo de identificación.</param>																 
+        /// <param name="docType">Tipo de identificación.</param>                 
         /// <returns>Información de la personal.</returns>
         [HttpGet]
         [Route("{id}")]
@@ -140,13 +140,44 @@ namespace Architect.API.Insurance.Controllers
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             List<Architect.API.Insurance.Contracts.Policy.RiskQuestionnaires> result = null;
             string verbose = string.Empty;
+            if (id.IsEmpty())
+
+
+
+                if (id.IsEmpty())
+                {
+                    return BadRequest("Debe indicar la identificación");
+                }
+
+            result = Architect.API.Insurance.Business.Policy.RiskQuestionnaires.RetrieveByDocumentNumber(id, name, tokenInfo.CompanyId);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Recupera la información de un cliente directamente desde Tron (sin consultar RiskRoles).
+        /// Usado por la pantalla de Administrar Cliente para reflejar cambios recién guardados.
+        /// </summary>
+        /// <param name="id">Número de documento del cliente</param>
+        /// <param name="docType">Tipo de documento</param>
+        [HttpGet]
+        [Route("Tron/{id}")]
+        [ResponseType(typeof(Contracts.Policy.Insured))]
+        public async Task<IHttpActionResult> InsuredByIdentificationTron([FromUri] string id, int docType = 1)
+        {
+            Contracts.Policy.Insured result = null;
 
             if (id.IsEmpty())
             {
                 return BadRequest("Debe indicar la identificación");
             }
 
-            result = Architect.API.Insurance.Business.Policy.RiskQuestionnaires.RetrieveByDocumentNumber(id, name, tokenInfo.CompanyId);
+            result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+
+            if (result != null)
+            {
+                result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
+            }
 
             return Ok(result);
         }
@@ -166,6 +197,7 @@ namespace Architect.API.Insurance.Controllers
         {
 
             public Insured CambioClienteResponse { get; set; }
+            public int RowsAffected { get; set; }
         }
 
         public static partial class ChangeDatosClientes
@@ -174,25 +206,17 @@ namespace Architect.API.Insurance.Controllers
             {
                 Insured result = item;
 
-                if (Architect.Extend.Integrations.Tron.UpdateCliente.UpdateDatosCliente(result) > 0)
-                {
+                int rows = Architect.Extend.Integrations.Tron.UpdateCliente.UpdateDatosCliente(result);
 
-
-                }
-
-                return new ChangeDatosResult() { CambioClienteResponse = result };
+                return new ChangeDatosResult() { CambioClienteResponse = result, RowsAffected = rows };
             }
             public static ChangeDatosResult UpdateClienteContacto(Insured item)
             {
                 Insured result = item;
 
-                if (Architect.Extend.Integrations.Tron.UpdateCliente.UpdateClienteContacto(result) > 0)
-                {
+                int rows = Architect.Extend.Integrations.Tron.UpdateCliente.UpdateClienteContacto(result);
 
-
-                }
-
-                return new ChangeDatosResult() { CambioClienteResponse = result };
+                return new ChangeDatosResult() { CambioClienteResponse = result, RowsAffected = rows };
             }
 
         }

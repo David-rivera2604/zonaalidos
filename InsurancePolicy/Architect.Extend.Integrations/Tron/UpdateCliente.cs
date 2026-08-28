@@ -22,18 +22,20 @@ namespace Architect.Extend.Integrations.Tron
                 var numberChanged = removeLine.Remove(0, 1);
                 DatosClientesItem.DocumentNumber = numberChanged;
             }
-            else if (DatosClientesItem.DocumentType == 2) {
+            else if (DatosClientesItem.DocumentType == 2)
+            {
                 var removeLine = DatosClientesItem.DocumentNumber.Replace("-", string.Empty);
                 DatosClientesItem.DocumentNumber = removeLine;
             }
 
             return Database.Update("UPDATE A1001399 A99 " +
                  "SET A99.COD_DOCUM=:DocumentNumber, A99.NOM_TERCERO=:FirstName, A99.APE1_TERCERO=:LastName, A99.APE2_TERCERO=:SecondLastName " +
-                 "WHERE A99.COD_CIA=1 AND A99.COD_DOCUM=:DocumentNumber")
+                 "WHERE A99.COD_CIA=1 AND A99.COD_DOCUM=:DocumentNumberWhere")
             .AddParameter("COD_DOCUM", DbType.String, 20, DatosClientesItem.DocumentNumber)
             .AddParameter("NOM_TERCERO", DbType.String, 180, DatosClientesItem.FirstName)
             .AddParameter("APE1_TERCERO", DbType.String, 30, DatosClientesItem.LastName)
             .AddParameter("APE2_TERCERO", DbType.String, 30, DatosClientesItem.SecondLastName)
+            .AddParameter("DocumentNumberWhere", DbType.String, 20, DatosClientesItem.DocumentNumber)
             .Execute(connection, "Research");
 
         }
@@ -67,7 +69,7 @@ namespace Architect.Extend.Integrations.Tron
             return Database.Update("UPDATE A1001331 A31 " +
                  "SET A31.COD_DOCUM=:DocumentNumber, A31.FEC_NACIMIENTO=:BirthDate, A31.MCA_SEXO=:Gender, A31.COD_EST_CIVIL=:CivilStatus, A31.TLF_NUMERO=:PhoneNumber, A31.EMAIL=:PrimaryEmailAddress, " +
                  "A31.COD_PAIS='CRI', A31.COD_ESTADO=:Province, A31.COD_PROV=:Canton, A31.COD_LOCALIDAD=:District, A31.NOM_DOMICILIO1=:AddressDetail " +
-                 "WHERE A31.COD_CIA=1 AND A31.COD_DOCUM=:DocumentNumber")
+                 "WHERE A31.COD_CIA=1 AND A31.COD_DOCUM=:DocumentNumberWhere")
             .AddParameter("COD_DOCUM", DbType.String, 20, DatosClientesItem.DocumentNumber)
             .AddParameter("FEC_NACIMIENTO", DbType.Date, 0, DatosClientesItem.BirthDate)
             .AddParameter("MCA_SEXO", DbType.String, 1, DatosClientesItem.Gender)
@@ -78,6 +80,7 @@ namespace Architect.Extend.Integrations.Tron
             .AddParameter("COD_PROV", DbType.Decimal, 6, DatosClientesItem.Canton)
             .AddParameter("COD_LOCALIDAD", DbType.Decimal, 6, DatosClientesItem.District)
             .AddParameter("NOM_DOMICILIO1", DbType.String, 40, DatosClientesItem.AddressDetail)
+            .AddParameter("DocumentNumberWhere", DbType.String, 20, DatosClientesItem.DocumentNumber)
             .Execute(connection, "Research");
         }
     }
