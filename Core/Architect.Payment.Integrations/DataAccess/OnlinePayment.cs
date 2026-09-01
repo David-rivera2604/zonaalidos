@@ -281,7 +281,7 @@ namespace Architect.Payment.Integrations.DataAccess
             List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
             Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
                               "FROM OnlinePayment " +
-                             "WHERE NVL(OnlinePayment.TronCode,0) = :TronCode")
+                             "WHERE (OnlinePayment.ProviderStatus = 'APPROVED' AND OnlinePayment.TronCode IS NULL) OR NVL(OnlinePayment.TronCode,0) = :TronCode")
                         .AddParameter("TronCode", DbType.Decimal, 5, tronCode)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {

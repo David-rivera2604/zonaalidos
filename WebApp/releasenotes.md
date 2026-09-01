@@ -1,8 +1,19 @@
 # Release Notes - Aliados
 
+## Versión 1.6.202
+
+### Pasarela : Se cobra en pasarela pero no se aplica en TRON, cuando es por link de pago o widget
+
+#### Cambios implementados:
+
+- Después de revisar detalladamente el código, se determina que el problema es algo que se ha padecido en el pasado con el manejo de funciones asíncronas desde el monitor
+- Se cambiar el bloque de funciones que almacena la tokenización así como el cobro en tron.
+
+--
+
 ## Versión 1.6.201
 
-### Aliados : Cmabio en la consulta Gestión de Cobros (317).
+### Aliados : Cambio en la consulta Gestión de Cobros (317).
 
 #### Cambios implementados:
 
