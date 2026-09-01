@@ -1,5 +1,17 @@
 # Release Notes - Aliados
 
+## Versión 1.6.203
+
+### Recobro : El proceso da exitoso pero se hace el recobro.
+
+#### Cambios implementados:
+
+- El proceso de recobro siempre se hace asincrono (como job) esto se podria cambiar segun el numero recibos a recobrar,
+- El cliente del recibo seleccionado no posee un email registrado en tron.
+- Se ajusta el proceso para cuando e lcliente no tenga correo, quede el tracking en onlinepayment indicado la causa.
+
+--
+
 ## Versión 1.6.202
 
 ### Pasarela : Se cobra en pasarela pero no se aplica en TRON, cuando es por link de pago o widget
