@@ -1,5 +1,54 @@
 # Release Notes - Aliados
 
+## Versión 1.6.203
+
+### Recobro : El proceso da exitoso pero se hace el recobro.
+
+#### Cambios implementados:
+
+- El proceso de recobro siempre se hace asincrono (como job) esto se podria cambiar segun el numero recibos a recobrar,
+- El cliente del recibo seleccionado no posee un email registrado en tron.
+- Se ajusta el proceso para cuando e lcliente no tenga correo, quede el tracking en onlinepayment indicado la causa.
+
+--
+
+## Versión 1.6.202
+
+### Pasarela : Se cobra en pasarela pero no se aplica en TRON, cuando es por link de pago o widget
+
+#### Cambios implementados:
+
+- Después de revisar detalladamente el código, se determina que el problema es algo que se ha padecido en el pasado con el manejo de funciones asíncronas desde el monitor
+- Se cambiar el bloque de funciones que almacena la tokenización así como el cobro en tron.
+
+--
+
+## Versión 1.6.201
+
+### Aliados : Cambio en la consulta Gestión de Cobros (317).
+
+#### Cambios implementados:
+
+- Se agregan las columnas, frecuencia de pago y fechas de inicio y fin de vigencia de la póliza, tanto en la consulta como en Excel.
+
+#### Dependencias:
+1. `visualizations.317.1.sql`.
+2. `visualizations.333.1_em_k_Mapfre_Query_Retrieve_mcr.sql`.
+3. `visualizations.333.1_em_k_Mapfre_Query_Contract_mcr.sql`.
+
+--
+## Versión 1.6.200
+
+### Aliados : Habilitar export a Excel en la consulta 42.
+
+#### Cambios implementados:
+
+- Se habilita la opción de exportar a Excel en la consulta 42.
+
+#### Dependencias:
+1. `visualizations.42.1.sql`.
+
+--
 ## Versión 1.6.199
 
 ### Aliados - EmitirPoliza: Se agrega el campo email para el asegurado.

@@ -407,18 +407,28 @@ namespace Architect.API.Tron.Business.Cotizacion
             {
                 exclude = string.Empty;
                 exclude = Reglas.research.Apply_Listas("MapfreMas", data, itemValues.Key, tokenInfo);
+                System.Diagnostics.Debug.WriteLine(
+                    $"KEY={itemValues.Key} | TIPO={data.tipo_prod}"
+                );
+
+                exclude = Reglas.research.Apply_Listas(
+                    "MapfreMas",
+                    data,
+                    itemValues.Key,
+                    tokenInfo
+                );
 
                 if (exclude.IsNotEmpty())
                 {
                     Architect.Utilities.Log.TraceLog("Lookups", $"Excluir '{exclude}' de la lista '{itemValues.Key}'", "Decision");
-
+   
                     foreach (string item in exclude.Split(','))
                     {
                         itemValues.Lkp.Remove(itemValues.Lkp.Find(r => r.Code == item));
                     }
                 }
 
-                switch (itemValues.Key)
+            switch (itemValues.Key)
                 {
                     case "MM_MarcasVehiculos":
                         result.cod_marca = itemValues.Lkp;

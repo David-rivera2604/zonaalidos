@@ -1788,6 +1788,7 @@
     <Content Include="locales\Security\userrolemember.en.json" />
     <Content Include="locales\viewer\UserMembers.Forms.en.json" />
     <Content Include="locales\Common\Common.es.json" />
+    <Content Include="app.config" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>

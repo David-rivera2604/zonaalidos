@@ -1,0 +1,7 @@
+diff a/Tron/Architect.API.Tron.Business/Backoffice/Cotizacion/MapfreMas.cs b/Tron/Architect.API.Tron.Business/Backoffice/Cotizacion/MapfreMas.cs	(rejected hunks)
+@@ -1,4 +0,4 @@
+-﻿using Architect.Utilities.Extensions;
++﻿ using Architect.Utilities.Extensions;
+ using Architect.DataFactory.Handlers;
+ using System;
+ using System.Data;
