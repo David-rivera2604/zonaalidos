@@ -1,5 +1,16 @@
 # Release Notes - Aliados
 
+## Versión 1.6.204
+
+### ProcessSpecFlow : Corrección de errores al duplicar e importar un proceso.
+
+#### Cambios implementados:
+
+- Se corrige un error que provocaba que, al importar un proceso desde un archivo JSON, el archivo llegara vacío al servidor y no se pudiera completar la importación correctamente.
+- Se corrige un error que provocaba que el campo Condición de las referencias no se guardara al duplicar un proceso (incluye crear uno nuevo, duplicar uno existente o importarlo desde un archivo).
+
+--
+
 ## Versión 1.6.203
 
 ### Recobro : El proceso da exitoso pero se hace el recobro.
