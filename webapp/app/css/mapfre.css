@@ -7183,24 +7183,10 @@ ul.Observaciones {
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: center !important;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    gap: 3px !important;
-    height: auto !important;
-    min-height: 78px !important;
-    padding: 14px 16px 13px !important;
-=======
-    gap: 10px !important;
-    height: auto !important;
-    min-height: 150px !important;
-    padding: 20px 18px 18px !important;
->>>>>>> cc916859182aad8267fad54193366cd3f304ab6f
-=======
     gap: 12px !important;
     height: auto !important;
     min-height: 200px !important;
     padding: 24px 18px 20px !important;
->>>>>>> c1ba39585b97a1cf8549bddb332ef30c498f5e39
     border-bottom: 1px solid var(--mf-line) !important;
     background: #fff !important;
     position: relative !important;
@@ -7234,47 +7220,6 @@ ul.Observaciones {
         opacity: .6;
     }
 
-<<<<<<< HEAD
-    /* El contenedor del logo deja de ser circulo: el logo de una marca
-   es rectangular y recortarlo en circulo lo mutila. */
-    .Mapfre #imgHead .circulo.mf-brand {
-        width: auto !important;
-        max-width: 100% !important;
-        height: auto !important;
-        min-height: 30px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        background: none !important;
-        box-shadow: none !important;
-        display: flex !important;
-        align-items: center !important;
-        position: relative !important;
-        z-index: 1 !important;
-    }
-
-    .Mapfre #imgHead #logotenantHead {
-        display: flex !important;
-        align-items: center !important;
-        max-width: 100% !important;
-    }
-
-        .Mapfre #imgHead #logotenantHead img,
-        .Mapfre #imgHead #tenantLogo,
-        .Mapfre #imgHead .thumb {
-            width: auto !important;
-            max-width: 100% !important;
-            height: auto !important;
-            max-height: 32px !important;
-            padding: 0 !important;
-            border: 0 !important;
-            border-radius: 0 !important;
-            background: none !important;
-            box-shadow: none !important;
-            object-fit: contain !important;
-            object-position: left center !important;
-=======
     /* Logo fijo de MAPFRE, esquina superior izquierda. Es un <img>
        estático nada más -sin #logotenantHead ni #tenantLogo-, así que
        JS/master.js nunca lo toca y no puede quedar en blanco. El logo
@@ -7302,7 +7247,6 @@ ul.Observaciones {
             height: auto;
             object-fit: contain;
             object-position: left center;
->>>>>>> cc916859182aad8267fad54193366cd3f304ab6f
             animation: mfLogoIn .4s cubic-bezier(.2,.7,.3,1) both;
         }
 
