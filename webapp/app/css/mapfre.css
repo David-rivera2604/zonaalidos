@@ -7578,3 +7578,245 @@ ul.Observaciones {
         animation: none !important;
     }
 }
+
+/* ================================================================
+   V13 — REDISEÑO CORPORATIVO SÓLIDO (banca/seguros) + FORMULARIOS 10/10
+   ================================================================
+   Motivo: en pantalla real (capturas del usuario) el panel de inicio
+   se ve plano -las tarjetas de resumen (Cotizaciones vigentes, Pólizas
+   activas, etc.) nunca recibieron el rediseño de V1-V12 porque usan
+   clases propias (.res_bo, .iconboxes, .items, .info) heredadas del
+   tema original- y el menú lateral no muestra íconos porque el campo
+   SmallImage de cada item de menú (v1/Security/NavegationAllowed)
+   viene vacío en esta base de datos: el <i> se renderiza sin clase,
+   así que ningún CSS puede "inventar" un ícono que no existe.
+   Este bloque corrige ambos huecos y además le da a los formularios
+   una lectura más sólida y corporativa: cada sección se lee como un
+   bloque propio (barra de acento + fondo), no como texto corrido.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   TARJETAS DEL PANEL DE INICIO (Cotizaciones vigentes, Pólizas
+   activas, Siniestros activos, Recibos pendientes)
+   ----------------------------------------------------------------
+   Cada tarjeta ya trae su color semántico por inline-style en el
+   <label> y el <i> (azul/verde/amarillo/rojo). Se reusa ese mismo
+   color con currentColor + color-mix para el fondo del ícono, así
+   no hay que tocar la vista para que la insignia combine.
+   ---------------------------------------------------------------- */
+.Mapfre #page-wrapper .res_bo {
+    margin-bottom: 16px !important;
+    background: var(--mf-card, #fff) !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: var(--mf-radius, 10px) !important;
+    box-shadow: var(--mf-e1) !important;
+    transition: box-shadow .18s var(--mf-ease), transform .18s var(--mf-ease), border-color .18s ease !important;
+}
+
+    .Mapfre #page-wrapper .res_bo:hover {
+        box-shadow: var(--mf-e2) !important;
+        transform: translateY(-2px) !important;
+        border-color: #D8D3D3 !important;
+    }
+
+.Mapfre #page-wrapper .res_bo .ibox-content {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
+.Mapfre #page-wrapper .res_bo .items {
+    display: block !important;
+}
+
+    .Mapfre #page-wrapper .res_bo .items label {
+        float: none !important;
+        display: block !important;
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: none !important;
+        font-family: var(--mf-font-display);
+        font-size: 10.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: .06em !important;
+        text-transform: uppercase !important;
+        color: var(--mf-muted, #80868D) !important;
+    }
+
+.Mapfre #page-wrapper .res_bo .info {
+    padding: 0 !important;
+}
+
+    .Mapfre #page-wrapper .res_bo .info p {
+        display: flex !important;
+        align-items: center !important;
+        gap: 13px !important;
+        margin: 0 !important;
+    }
+
+.Mapfre #page-wrapper .res_bo .iconboxes {
+    flex: 0 0 auto !important;
+    width: 46px !important;
+    height: 46px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+    background: color-mix(in srgb, currentColor 13%, white) !important;
+    font-size: 19px !important;
+}
+
+.Mapfre #page-wrapper .res_bo .num {
+    margin: 0 !important;
+    font-family: var(--mf-font-display);
+    font-size: 25px !important;
+    font-weight: 800 !important;
+    letter-spacing: -.02em !important;
+    color: var(--mf-ink, #1A1D21) !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+@supports not (background: color-mix(in srgb, red 10%, white)) {
+    .Mapfre #page-wrapper .res_bo .iconboxes {
+        background: #F2F3F5 !important;
+    }
+}
+
+/* ----------------------------------------------------------------
+   MENÚ LATERAL: ícono ausente -> punto discreto en vez de hueco
+   ----------------------------------------------------------------
+   Cuando SmallImage viene vacío el <i class="mr-1 "></i> queda sin
+   ningún glifo: :empty lo detecta (no tiene ni texto ni hijos) y le
+   dibuja un punto pequeño en vez de dejar un espacio muerto. Si el
+   backend algún día llena SmallImage, esta regla deja de aplicar
+   sola (el <i> ya no estaría vacío) y se ve el ícono real.
+   ---------------------------------------------------------------- */
+.Mapfre #side-menu .level_1__link i:empty,
+.Mapfre #side-menu .menu-dropdown li > a i:empty,
+.Mapfre .items_ham_menu .level_1__link i:empty,
+.Mapfre .items_ham_menu .menu-dropdown li > a i:empty {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+    .Mapfre #side-menu .level_1__link i:empty::before,
+    .Mapfre #side-menu .menu-dropdown li > a i:empty::before,
+    .Mapfre .items_ham_menu .level_1__link i:empty::before,
+    .Mapfre .items_ham_menu .menu-dropdown li > a i:empty::before {
+        content: "" !important;
+        display: block !important;
+        width: 5px !important;
+        height: 5px !important;
+        border-radius: 50% !important;
+        background: currentColor !important;
+        opacity: .5 !important;
+    }
+
+/* ----------------------------------------------------------------
+   MENÚ LATERAL: estado activo sólido (no solo un lavado)
+   ---------------------------------------------------------------- */
+.Mapfre #side-menu > nav.active > .menu .level_1__link,
+.Mapfre #side-menu > nav.active > .menu > .level_1__item > a,
+.Mapfre #side-menu > nav.active > .menu .level_1__link:hover,
+.Mapfre #side-menu > nav.active > .menu > .level_1__item > a:hover {
+    background: var(--mf-red) !important;
+    color: #fff !important;
+    border-left-color: var(--mf-red-2, var(--mf-red)) !important;
+    box-shadow: var(--mf-e1) !important;
+}
+
+    .Mapfre #side-menu > nav.active > .menu .level_1__link i,
+    .Mapfre #side-menu > nav.active > .menu > .level_1__item > a i {
+        color: #fff !important;
+    }
+
+.Mapfre #side-menu .menu-dropdown li.active > a,
+.Mapfre #side-menu .menu-dropdown li.active > a:hover {
+    background: var(--mf-red-soft, #FBEAE8) !important;
+    color: var(--mf-red) !important;
+    font-weight: 700 !important;
+}
+
+/* ----------------------------------------------------------------
+   ENCABEZADO DE TARJETA: un poco más de peso, menos "solo blanco"
+   ---------------------------------------------------------------- */
+.Mapfre #page-wrapper .ibox-title {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--mf-red) 4%, #fff), #fff) !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+}
+
+/* ----------------------------------------------------------------
+   FORMULARIOS: cada sección es un bloque propio, no texto corrido
+   ----------------------------------------------------------------
+   Estructura real de cada cotizador/emisor: <fieldset> contiene una
+   secuencia de <div class="form-row"> (una por sección: "Datos
+   generales", "Información de póliza grupo", "Datos del hogar",
+   etc.), cada una con su <h4> + .hr-line-dashed + los campos. Se le
+   da a cada una tarjeta propia con barra de acento a la izquierda,
+   para que se lean como pasos/bloques y no como una lista plana.
+   ---------------------------------------------------------------- */
+.Mapfre #page-wrapper fieldset > .form-row {
+    margin: 0 0 20px !important;
+    padding: 18px 20px 16px !important;
+    background: #FBFBFC !important;
+    border: 1px solid var(--mf-line) !important;
+    border-left: 3px solid var(--mf-red) !important;
+    border-radius: 0 10px 10px 0 !important;
+}
+
+    .Mapfre #page-wrapper fieldset > .form-row:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    /* El título de sección ya no necesita su propio borde inferior:
+       ahora lo da la tarjeta que lo envuelve. */
+    .Mapfre #page-wrapper fieldset > .form-row > .col-lg-12 > h4,
+    .Mapfre #page-wrapper fieldset > .form-row > .col-lg-12 > .titulosMant {
+        margin-top: 2px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .Mapfre #page-wrapper fieldset > .form-row .hr-line-dashed {
+        margin: 0 0 16px !important;
+    }
+
+/* Campos: un poco más de peso y una sombra interior muy sutil para
+   que no se confundan con texto plano sobre el fondo de la tarjeta. */
+.Mapfre #page-wrapper fieldset .form-control,
+.Mapfre #page-wrapper fieldset select.form-control {
+    background-color: #fff !important;
+    box-shadow: inset 0 1px 2px rgba(20, 24, 29, .04) !important;
+}
+
+.Mapfre #page-wrapper fieldset .form-control:focus {
+    box-shadow: inset 0 1px 2px rgba(20, 24, 29, .04), 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
+}
+
+/* Botones de acción (cotizar/limpiar/emitir/guardar cambios, etc.):
+   más presencia. Viven dentro de una tarjeta de sección como
+   cualquier otra fila, así que solo se refuerza el botón en sí, no
+   el contenedor. Se excluyen los botones que en realidad son
+   controles inline (selector de archivo, toggle de dropdown) para
+   no ensancharlos de más. */
+.Mapfre #page-wrapper fieldset .btn-primary:not(.btn-sm):not(.btn-xs):not(.dropdown-toggle),
+.Mapfre #page-wrapper fieldset .btn-default:not(.btn-sm):not(.btn-xs):not(.dropdown-toggle):not(.fileinput-button) {
+    min-width: 132px !important;
+    font-weight: 700 !important;
+}
+
+@media (max-width: 767px) {
+    .Mapfre #page-wrapper fieldset > .form-row {
+        padding: 14px 14px 12px !important;
+    }
+
+    .Mapfre #page-wrapper .res_bo .num {
+        font-size: 21px !important;
+    }
+}
