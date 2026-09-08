@@ -7183,10 +7183,10 @@ ul.Observaciones {
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: center !important;
-    gap: 3px !important;
+    gap: 6px !important;
     height: auto !important;
-    min-height: 78px !important;
-    padding: 14px 16px 13px !important;
+    min-height: 92px !important;
+    padding: 16px 18px 15px !important;
     border-bottom: 1px solid var(--mf-line) !important;
     background: #fff !important;
     position: relative !important;
@@ -7221,17 +7221,29 @@ ul.Observaciones {
     }
 
     /* El contenedor del logo deja de ser circulo: el logo de una marca
-   es rectangular y recortarlo en circulo lo mutila. */
+   es rectangular y recortarlo en circulo lo mutila.
+
+   Respaldo a prueba de fallos: master.js reemplaza el <img> de adentro
+   (#logotenantHead) con el logo que devuelva la cuenta, y ese
+   reemplazo no siempre trae un src utilizable (vacío, "null",
+   "undefined" o una ruta que simplemente no existe en este ambiente).
+   En vez de tratar de adivinar cada caso posible, este contenedor
+   -que JS nunca toca, solo le cambia el contenido a su hijo- siempre
+   lleva el logo de MAPFRE como fondo. Si el <img> de adentro carga
+   una imagen real, se pinta encima y lo tapa; si no carga (por
+   cualquier motivo), el fondo se seguía viendo y el logo nunca
+   desaparece. */
     .Mapfre #imgHead .circulo.mf-brand {
-        width: auto !important;
+        width: 150px !important;
         max-width: 100% !important;
-        height: auto !important;
-        min-height: 30px !important;
+        height: 46px !important;
+        min-height: 46px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
         border-radius: 0 !important;
-        background: none !important;
+        background: url('../../images/Mapfre-logo.png') no-repeat left center !important;
+        background-size: contain !important;
         box-shadow: none !important;
         display: flex !important;
         align-items: center !important;
@@ -7242,7 +7254,8 @@ ul.Observaciones {
     .Mapfre #imgHead #logotenantHead {
         display: flex !important;
         align-items: center !important;
-        max-width: 100% !important;
+        width: 100% !important;
+        height: 100% !important;
     }
 
         .Mapfre #imgHead #logotenantHead img,
@@ -7251,7 +7264,7 @@ ul.Observaciones {
             width: auto !important;
             max-width: 100% !important;
             height: auto !important;
-            max-height: 32px !important;
+            max-height: 46px !important;
             padding: 0 !important;
             border: 0 !important;
             border-radius: 0 !important;
@@ -7260,30 +7273,6 @@ ul.Observaciones {
             object-fit: contain !important;
             object-position: left center !important;
             animation: mfLogoIn .4s cubic-bezier(.2,.7,.3,1) both;
-        }
-
-        /* Si la cuenta no trae logo propio, master.js igual inyecta un
-           <img>, pero con src vacío/"null"/"undefined" y sin manejo de
-           error, lo que se ve como un hueco en blanco. Se detecta ese
-           caso por CSS -sin tocar el JS- y se muestra el logo de MAPFRE
-           como respaldo; si la cuenta sí trae un logo válido, esta
-           regla simplemente no aplica y se ve el logo real. */
-        .Mapfre #imgHead #logotenantHead img[src=""],
-        .Mapfre #imgHead #logotenantHead img[src="null"],
-        .Mapfre #imgHead #logotenantHead img[src="undefined"],
-        .Mapfre #imgHead #logotenantHead img:not([src]) {
-            visibility: hidden !important;
-        }
-
-        .Mapfre #imgHead #logotenantHead:has(img[src=""]),
-        .Mapfre #imgHead #logotenantHead:has(img[src="null"]),
-        .Mapfre #imgHead #logotenantHead:has(img[src="undefined"]),
-        .Mapfre #imgHead #logotenantHead:has(img:not([src])) {
-            display: inline-block !important;
-            width: 110px !important;
-            height: 32px !important;
-            background: url('../../images/Mapfre-logo.png') no-repeat left center !important;
-            background-size: contain !important;
         }
 
 @keyframes mfLogoIn {
@@ -7557,6 +7546,12 @@ ul.Observaciones {
             display: none !important;
         }
 
+        .Mapfre #imgHead .circulo.mf-brand {
+            width: 108px !important;
+            height: 32px !important;
+            min-height: 32px !important;
+        }
+
         .Mapfre #imgHead #logotenantHead img,
         .Mapfre #imgHead #tenantLogo,
         .Mapfre #imgHead .thumb {
@@ -7584,6 +7579,12 @@ ul.Observaciones {
     .Mapfre #imgHead {
         max-width: 46vw !important;
     }
+
+        .Mapfre #imgHead .circulo.mf-brand {
+            width: 92px !important;
+            height: 24px !important;
+            min-height: 24px !important;
+        }
 
         .Mapfre #imgHead #logotenantHead img,
         .Mapfre #imgHead #tenantLogo,
