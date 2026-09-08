@@ -7811,3 +7811,136 @@ ul.Observaciones {
         font-size: 21px !important;
     }
 }
+
+/* ================================================================
+   V14 — "ÚLTIMAS COTIZACIONES" / "ÚLTIMAS PÓLIZAS EMITIDAS" (inicio)
+   ================================================================
+   Estas dos listas del panel de inicio no usan bootstrap-table (esa
+   ya tenía su propio rediseño: encabezado en mayúsculas, hover,
+   paginación, scroll con cabecera fija, etc.) — son HTML armado a
+   mano en JS (Inicio/agente.cshtml) con clases .info_table_top/
+   _body/_footer (y su variante "2" para pólizas), heredadas del
+   tema original sin ningún retoque: bordes finos, texto a 0.9em,
+   fechas con float:right. Se les da lectura de lista de tarjetas,
+   con el mismo lenguaje visual del resto de la app (tipografía de
+   marca en las cabeceras, tokens --mf-*, hover sutil).
+   ================================================================ */
+
+.Mapfre #page-wrapper .ult_in {
+    max-height: 420px !important;
+}
+
+    .Mapfre #page-wrapper .ult_in .ibox-content {
+        margin-right: 0 !important;
+        padding: 6px 4px !important;
+    }
+
+/* Cada item real son 3 elementos hermanos (top+body+footer) sin un
+   contenedor propio; se simula la tarjeta con un borde arriba en
+   cada "top" (menos el primero) en vez de envolverlos. */
+.Mapfre #page-wrapper .info_table_top,
+.Mapfre #page-wrapper .info_table_top2 {
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 14px 10px 2px !important;
+    border: 0 !important;
+    border-top: 1px solid var(--mf-line, #E7EAEC) !important;
+}
+
+    .Mapfre #page-wrapper .ult_in > div > .info_table_top:first-child,
+    .Mapfre #page-wrapper .ult_in > div > .info_table_top2:first-child {
+        border-top: 0 !important;
+        padding-top: 2px !important;
+    }
+
+    .Mapfre #page-wrapper .info_table_top strong,
+    .Mapfre #page-wrapper .info_table_top2 strong {
+        font-family: var(--mf-font-display);
+        font-size: 12.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: -.01em !important;
+        color: var(--mf-ink, #1A1D21) !important;
+    }
+
+    .Mapfre #page-wrapper .info_table_top small,
+    .Mapfre #page-wrapper .info_table_top2 small {
+        float: none !important;
+        flex: 0 0 auto !important;
+        font-size: 10.5px !important;
+        font-weight: 600 !important;
+        color: var(--mf-muted, #80868D) !important;
+        white-space: nowrap !important;
+    }
+
+.Mapfre #page-wrapper .info_table_body,
+.Mapfre #page-wrapper .info_table_body2 {
+    padding: 2px 10px 6px !important;
+}
+
+    .Mapfre #page-wrapper .info_table_body p,
+    .Mapfre #page-wrapper .info_table_body2 p {
+        margin: 0 0 6px !important;
+        font-size: 11.5px !important;
+        line-height: 1.45 !important;
+        color: var(--mf-text, #3C424A) !important;
+    }
+
+    .Mapfre #page-wrapper .title_table_body {
+        display: inline-block !important;
+        margin: 0 6px 4px 0 !important;
+        font-size: 9.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: .05em !important;
+        text-transform: uppercase !important;
+        color: var(--mf-red) !important;
+    }
+
+.Mapfre #page-wrapper .info_table_footer,
+.Mapfre #page-wrapper .info_table_footer2 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    padding: 8px 10px 12px !important;
+    border: 0 !important;
+    font-size: 10.5px !important;
+}
+
+    .Mapfre #page-wrapper .info_table_footer strong,
+    .Mapfre #page-wrapper .info_table_footer2 strong {
+        padding: 3px 9px !important;
+        border-radius: 20px !important;
+        background: var(--mf-red-soft, #FBEAE8) !important;
+        color: var(--mf-red) !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+    }
+
+    .Mapfre #page-wrapper .info_table_footer small,
+    .Mapfre #page-wrapper .info_table_footer2 small,
+    .Mapfre #page-wrapper .small_dates {
+        float: none !important;
+        color: var(--mf-muted, #80868D) !important;
+        font-size: 10px !important;
+        white-space: nowrap !important;
+    }
+
+/* Fila completa resaltada al pasar el mouse (top+body+footer) */
+.Mapfre #page-wrapper .info_table_top:hover,
+.Mapfre #page-wrapper .info_table_top2:hover,
+.Mapfre #page-wrapper .info_table_body:hover,
+.Mapfre #page-wrapper .info_table_body2:hover,
+.Mapfre #page-wrapper .info_table_footer:hover,
+.Mapfre #page-wrapper .info_table_footer2:hover {
+    background: var(--mf-hover, #F6F6F7) !important;
+}
+
+/* La app agrega un <br> suelto entre items (heredado del template
+   original en JS): se colapsa para no duplicar el espaciado que ya
+   dan los paddings de arriba. */
+.Mapfre #page-wrapper .ult_in br {
+    display: none !important;
+}
