@@ -6081,14 +6081,22 @@ ul.Observaciones {
    FORMULARIOS — modernización de las pantallas de cotización
    ================================================================ */
 
-/* ---- Banner diagonal heredado: se vuelve una cabecera limpia ---- */
+/* ---- Banner diagonal heredado: se vuelve una tarjeta blanca ----
+   El fondo salía de var(--mapfrered1), el color que master.js fija
+   por cuenta (v1/Colors/GetColor). Para unas cuentas es rojo, para
+   otras el Color1 que tengan guardado puede ser un tono oscuro sin
+   relación con la marca, así que la tarjeta cambiaba de aspecto
+   según quién iniciaba sesión. Se deja en blanco con un acento fijo
+   en el rojo de marca, consistente sin importar la cuenta. */
 .Mapfre #page-wrapper .title_design {
     width: auto !important;
     min-width: 210px !important;
     clip-path: none !important;
     border-radius: 10px !important;
-    background: linear-gradient(135deg, var(--mf-red), var(--mf-red-2, var(--mf-red))) !important;
-    box-shadow: 0 6px 18px color-mix(in srgb, var(--mf-red) 26%, transparent) !important;
+    background: #fff !important;
+    border: 1px solid var(--mf-line) !important;
+    border-left: 3px solid var(--mf-red) !important;
+    box-shadow: var(--mf-shadow, 0 1px 2px rgba(20,24,29,.05)) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
@@ -6100,7 +6108,15 @@ ul.Observaciones {
         font-size: 17px !important;
         font-weight: 800 !important;
         letter-spacing: -.02em !important;
-        color: #fff !important;
+        color: var(--mf-ink, #1A1D21) !important;
+    }
+
+        .Mapfre #page-wrapper .title_design h5 i {
+            color: var(--mf-red) !important;
+        }
+
+    .Mapfre #page-wrapper .title_design small {
+        color: var(--mf-muted, #80868D) !important;
     }
 
 .Mapfre #page-wrapper .Title_Prin {
@@ -6534,9 +6550,13 @@ ul.Observaciones {
     line-height: 1.2 !important;
 }
 
-    /* Marcador (círculo / casilla) */
+    /* Marcador (círculo / casilla). .custom-control-label ya tiene
+       position:relative de Bootstrap, así que "left" se mide desde
+       el borde del texto de la etiqueta, no desde la pastilla -por
+       eso va en negativo, para caer en el hueco que .custom-control
+       reserva con su padding-left:32px, y no encima del texto. */
     .Mapfre #page-wrapper .custom-control-label::before {
-        left: 11px !important;
+        left: -21px !important;
         top: 50% !important;
         width: 15px !important;
         height: 15px !important;
@@ -6556,7 +6576,7 @@ ul.Observaciones {
 }
 
 .Mapfre #page-wrapper .custom-control-label::after {
-    left: 11px !important;
+    left: -21px !important;
     top: 50% !important;
     width: 15px !important;
     height: 15px !important;
