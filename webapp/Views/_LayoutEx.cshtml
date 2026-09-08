@@ -36,17 +36,12 @@
         <div id="page-wrapper" class="bg-white">
             <div class="head_prin">
                 <div id="imgHead" class="imgHeadMapfre">
-                    @* El logo se toma de la cuenta (v1/Colors/GetColor). master.js
-                       reemplaza el contenido de #logotenantHead. El id #tenantLogo
-                       debe existir al cargar: app.master.Init lo usa como condicion.
-                       Mientras esa llamada no resuelve (o si la cuenta no tiene logo
-                       propio configurado), se muestra el logo de MAPFRE en vez de
-                       quedar en blanco. *@
+                    @* Este es el logo fijo de la app (MAPFRE). No depende de la
+                       cuenta ni de GetColor/master.js: es siempre el mismo para
+                       todos. El logo por cuenta va aparte, junto al menú de
+                       usuario/logout (ver #logotenantHead más abajo). *@
                     <div class="circulo mf-brand">
-                        <div class="dropdown profile-element" id="logotenantHead">
-                            <img alt="MAPFRE" src="~/images/Mapfre-logo.png" id="tenantLogo"
-                                 onerror="this.onerror=null; this.style.display='none';">
-                        </div>
+                        <img alt="MAPFRE" src="~/images/Mapfre-logo.png">
                     </div>
                     <span class="mf-brand-name">Zona de Aliados</span>
                 </div>
@@ -123,6 +118,17 @@
                                     </nav>*@
                             </ul>
 
+                        </div>
+
+                        @* Logo de la cuenta conectada, junto al menú de usuario/
+                           logout. master.js reemplaza el contenido de
+                           #logotenantHead con el logo que devuelva
+                           v1/Colors/GetColor; el id #tenantLogo debe existir al
+                           cargar porque app.master.Init lo usa como condición. *@
+                        <div class="circulo">
+                            <div class="dropdown profile-element" id="logotenantHead">
+                                <img alt="Logo del aliado" src="~/logos/logo-aliados-alt.svg" id="tenantLogo">
+                            </div>
                         </div>
 
                         <a href="#" class="quest_mob" id="showHelp" title="Despliega la ayuda de la aplicación" style="
