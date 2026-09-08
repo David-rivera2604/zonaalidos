@@ -7183,10 +7183,10 @@ ul.Observaciones {
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: center !important;
-    gap: 12px !important;
+    gap: 7px !important;
     height: auto !important;
-    min-height: 200px !important;
-    padding: 24px 18px 20px !important;
+    min-height: 96px !important;
+    padding: 14px 14px 12px !important;
     border-bottom: 1px solid var(--mf-line) !important;
     background: #fff !important;
     position: relative !important;
@@ -7234,7 +7234,8 @@ ul.Observaciones {
        heredado no hay nada que anular: el logo se ve tal cual es,
        sobre el fondo blanco del sidebar, sin ninguna forma detrás. */
     .Mapfre #imgHead .mf-brand-logo {
-        width: 100%;
+        width: calc(100% + 20px);
+        margin: 0 -10px;
         display: flex;
         align-items: center;
         position: relative;
@@ -7521,10 +7522,14 @@ ul.Observaciones {
             display: none !important;
         }
 
-        .Mapfre #imgHead #logotenantHead img,
-        .Mapfre #imgHead #tenantLogo,
-        .Mapfre #imgHead .thumb {
-            max-height: 24px !important;
+        .Mapfre #imgHead .mf-brand-logo {
+            width: auto !important;
+            margin: 0 !important;
+        }
+
+        .Mapfre #imgHead .mf-brand-logo img {
+            width: auto !important;
+            max-height: 26px !important;
         }
 
     .Mapfre .mf-brand-name {
@@ -7549,10 +7554,8 @@ ul.Observaciones {
         max-width: 46vw !important;
     }
 
-        .Mapfre #imgHead #logotenantHead img,
-        .Mapfre #imgHead #tenantLogo,
-        .Mapfre #imgHead .thumb {
-            max-height: 21px !important;
+        .Mapfre #imgHead .mf-brand-logo img {
+            max-height: 22px !important;
         }
 }
 
