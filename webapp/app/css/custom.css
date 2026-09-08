@@ -96,8 +96,8 @@
     float: right;
 }
 
-    #xxx > tfoot > tr > td > div > span
-    .footable-pagination-wrapper > .divider, .footable-pagination-wrapper > .label {
+    .footable-pagination-wrapper > .divider,
+    .footable-pagination-wrapper > .label {
         display: none;
     }
 
@@ -672,23 +672,6 @@ span.columnBtn {
 
 /*Contenido agregado por practicante*/
 
-
-html, body {
-    flex-direction: column;
-    height: 100%;
-}
-
-#cont_log {
-    flex: 1;
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}
 
 .caja_prin {
     display: flex;
