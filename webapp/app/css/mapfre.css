@@ -7234,8 +7234,8 @@ ul.Observaciones {
        heredado no hay nada que anular: el logo se ve tal cual es,
        sobre el fondo blanco del sidebar, sin ninguna forma detrás. */
     .Mapfre #imgHead .mf-brand-logo {
-        width: calc(100% + 20px);
-        margin: 0 -10px;
+        width: calc(100% + 28px);
+        margin: 0 -14px;
         display: flex;
         align-items: center;
         position: relative;
@@ -7944,3 +7944,80 @@ ul.Observaciones {
 .Mapfre #page-wrapper .ult_in br {
     display: none !important;
 }
+
+/* Selector de fecha: seguía en azul de Bootstrap por defecto */
+.Mapfre .bootstrap-datetimepicker-widget {
+    border: 1px solid var(--mf-line, #E7EAEC) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--mf-shadow-hover, 0 10px 24px rgba(20,24,29,.12)) !important;
+    padding: 6px !important;
+    font-size: 12px !important;
+}
+
+.Mapfre .bootstrap-datetimepicker-widget table th.picker-switch,
+.Mapfre .bootstrap-datetimepicker-widget table th.prev,
+.Mapfre .bootstrap-datetimepicker-widget table th.next {
+    border-radius: 7px !important;
+    color: var(--mf-ink, #1A1D21) !important;
+    font-weight: 700 !important;
+}
+
+.Mapfre .bootstrap-datetimepicker-widget table th:hover {
+    background: var(--mf-red-soft, #FBEAE8) !important;
+    color: var(--mf-red) !important;
+}
+
+.Mapfre .bootstrap-datetimepicker-widget table td span:hover,
+.Mapfre .bootstrap-datetimepicker-widget table td.day:hover {
+    background: var(--mf-red-soft, #FBEAE8) !important;
+}
+
+.Mapfre .bootstrap-datetimepicker-widget table td.active,
+.Mapfre .bootstrap-datetimepicker-widget table td.active:hover,
+.Mapfre .bootstrap-datetimepicker-widget table td span.active {
+    background: var(--mf-red, #C31F09) !important;
+    color: #fff !important;
+    text-shadow: none !important;
+}
+
+.Mapfre .bootstrap-datetimepicker-widget table td.today:before {
+    border-bottom-color: var(--mf-red, #C31F09) !important;
+}
+
+.Mapfre .bootstrap-datetimepicker-widget table td.active.today:before {
+    border-bottom-color: #fff !important;
+}
+
+/* Avisos toastr: seguían con los colores e íconos de plantilla de 2013 */
+.Mapfre #toast-container > div {
+    border-radius: 10px !important;
+    padding: 13px 16px 13px 46px !important;
+    background-image: none !important;
+    box-shadow: 0 10px 28px rgba(20, 24, 29, .18) !important;
+    opacity: 1 !important;
+}
+
+.Mapfre #toast-container > div:hover {
+    box-shadow: 0 14px 32px rgba(20, 24, 29, .24) !important;
+    opacity: 1 !important;
+}
+
+.Mapfre .toast-success { background-color: #1F8A4C !important; }
+.Mapfre .toast-error { background-color: var(--mf-red, #C31F09) !important; }
+.Mapfre .toast-info { background-color: #2072A6 !important; }
+.Mapfre .toast-warning { background-color: #B4790C !important; }
+
+.Mapfre .toast-success::before,
+.Mapfre .toast-error::before,
+.Mapfre .toast-info::before,
+.Mapfre .toast-warning::before {
+    font: normal normal normal 17px/1 FontAwesome !important;
+    position: absolute !important;
+    left: 15px !important;
+    top: 15px !important;
+}
+
+.Mapfre .toast-success::before { content: "\f058" !important; }
+.Mapfre .toast-error::before { content: "\f057" !important; }
+.Mapfre .toast-info::before { content: "\f05a" !important; }
+.Mapfre .toast-warning::before { content: "\f071" !important; }
