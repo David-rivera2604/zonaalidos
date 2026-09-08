@@ -362,22 +362,9 @@ app.master = (function () {
             name = name == null ? '' : name.replace('á', 'a');
 
             if ($('#tenantLogo').length > 0) {
-                app.core.Get(app.setting.apipath + 'v1/Colors/GetColor', undefined, undefined,  false )
-                    .done(function (data, textStatus, jqXHR) {
-                        ListaElementos = data;
-                        var Tenant = localStorage.getItem("Tenant")
-                        for (var a in ListaElementos) {
-                            for (var prop in ListaElementos[a]) {
-                                var object = ListaElementos[a]
-                                if (object[prop] == Tenant) {
-                                    document.getElementById('logotenantHead').innerHTML = ['<img class="thumb" src= "' + object['Logo'] + '"/>']
-                                }
-                            }
-                        }
-
-                    })
-
-
+                // El logo del sidebar ya no depende de la cuenta: es el mismo
+                // para todos (el que trae _Layout.cshtml/_LayoutEx.cshtml por
+                // defecto), así que aquí ya no se reemplaza con el de GetColor.
 
                 $('#UserNameMaster').html(localStorage.getItem('Username'));
                 $('#TenantMaster').html(localStorage.getItem('Tenant'));
