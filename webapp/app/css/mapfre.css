@@ -5361,7 +5361,7 @@ ul.Observaciones {
 /* ---------- DENSIDAD: se recupera el ancho que liberaron los 3
    puntos y se ajusta el sidebar a una medida más eficiente ---- */
 .Mapfre #wrapper {
-    --mf-sidebar: 228px;
+    --mf-sidebar: 240px;
     --mf-radius: 10px;
 }
 
@@ -7205,8 +7205,8 @@ ul.Observaciones {
     justify-content: center !important;
     gap: 7px !important;
     height: auto !important;
-    min-height: 96px !important;
-    padding: 14px 14px 12px !important;
+    min-height: 100px !important;
+    padding: 16px 14px 12px !important;
     border-bottom: 1px solid var(--mf-line) !important;
     background: #fff !important;
     position: relative !important;
