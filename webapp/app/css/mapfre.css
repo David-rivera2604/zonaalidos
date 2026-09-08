@@ -7184,6 +7184,7 @@ ul.Observaciones {
     align-items: flex-start !important;
     justify-content: center !important;
 <<<<<<< HEAD
+<<<<<<< HEAD
     gap: 3px !important;
     height: auto !important;
     min-height: 78px !important;
@@ -7194,6 +7195,12 @@ ul.Observaciones {
     min-height: 150px !important;
     padding: 20px 18px 18px !important;
 >>>>>>> cc916859182aad8267fad54193366cd3f304ab6f
+=======
+    gap: 12px !important;
+    height: auto !important;
+    min-height: 200px !important;
+    padding: 24px 18px 20px !important;
+>>>>>>> c1ba39585b97a1cf8549bddb332ef30c498f5e39
     border-bottom: 1px solid var(--mf-line) !important;
     background: #fff !important;
     position: relative !important;
@@ -7282,9 +7289,7 @@ ul.Observaciones {
        heredado no hay nada que anular: el logo se ve tal cual es,
        sobre el fondo blanco del sidebar, sin ninguna forma detrás. */
     .Mapfre #imgHead .mf-brand-logo {
-        width: auto;
-        max-width: 100%;
-        height: 96px;
+        width: 100%;
         display: flex;
         align-items: center;
         position: relative;
@@ -7293,10 +7298,8 @@ ul.Observaciones {
 
         .Mapfre #imgHead .mf-brand-logo img {
             display: block;
-            width: auto;
-            max-width: 100%;
+            width: 100%;
             height: auto;
-            max-height: 96px;
             object-fit: contain;
             object-position: left center;
 >>>>>>> cc916859182aad8267fad54193366cd3f304ab6f
