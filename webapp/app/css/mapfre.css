@@ -1,3 +1,24 @@
+/* ================================================================
+   COLOR BASE DE MARCA (fallback) — Zona de Aliados
+   ================================================================
+   Los colores reales por tipo de cuenta YA se aplican en tiempo de
+   ejecución: master.js llama a v1/Colors/GetColor, encuentra el
+   registro cuyo Tenant coincide con localStorage('Tenant') y hace
+   document.documentElement.style.setProperty('--mapfrered1', Color1)
+   / --mapfrered2 (líneas ~441-455 de master.js). Eso YA funciona y
+   no hay que tocarlo.
+   El problema es que --mapfrered1/--mapfrered2 no tenían NINGÚN
+   valor por defecto en el CSS, así que hasta que esa llamada a la
+   API responde (o si llega a fallar) todo lo que depende de esas
+   variables (botones, títulos, bordes...) se quedaba sin color.
+   Este bloque solo pone un valor base; el que pone master.js manda
+   siempre porque un estilo inline (setProperty) tiene más prioridad
+   que cualquier regla de un archivo .css. */
+:root {
+    --mapfrered1: #C31F09;
+    --mapfrered2: #A11A08;
+}
+
 label {
     margin-bottom: 0px;
 }
@@ -141,7 +162,6 @@ body.Mapfre {
 }
 
 .Mapfre .btn-primary {
-    margin: 0px 0px 0px 5px;
     float: right;
     background-color: var(--mapfrered1);
     border-color: var(--mapfrered1);
@@ -245,9 +265,20 @@ body.Mapfre {
     color: rgb(248, 249, 250);
 }
 
-.Mapfre body.mini-navbar.fixed-sidebar .profile-element, .Mapfre .block {
+.Mapfre body.mini-navbar.fixed-sidebar .profile-element {
     display: block !important;
 }
+
+/* BUGFIX: esta regla incluía también ".block" a secas, forzando
+   "display:block !important" a CUALQUIER elemento con esa clase en
+   toda la aplicación (por ejemplo <span class="block" id="UserNameMaster">
+   en el layout). Si algún desplegable llega a reutilizar esa misma
+   clase utilitaria para marcar su estado "abierto", este !important
+   lo dejaría visible para siempre sin importar el checkbox/estado
+   que lo controla. Si hace falta un utilitario ".block" genérico,
+   que NO lleve !important:
+.block { display: block; }
+*/
 
 .Mapfre a {
     color: currentcolor;
@@ -393,7 +424,7 @@ body.mini-navbar .nav-header {
 
 #LoginEdtForm {
     margin: -2%;
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .wellcome-info {
@@ -1097,11 +1128,6 @@ a {
     padding: 0px;
     background: rgb(148 12 12 / 0%);
     z-index: 99;
-    pointer-events: none;
-}
-
-.menu:hover > .menu-dropdown {
-    pointer-events: auto;
 }
 
     .menu:not(:hover) > .menu-dropdown::after {
@@ -1110,14 +1136,6 @@ a {
 
 .menu:not(:hover) > .menu-title::after {
     border-bottom-color: rgb(221, 221, 221);
-}
-
-.menu-dropdown > * {
-    overflow: hidden;
-    height: 30px;
-    padding: 5px 10px;
-    white-space: nowrap;
-    transition: height 0.5s cubic-bezier(0.73, 0.32, 0.34, 1.5) 0s, padding 0.5s cubic-bezier(0.73, 0.32, 0.34, 1.5) 0s, margin 0.5s cubic-bezier(0.73, 0.32, 0.34, 1.5) 0s, color 0.5s ease 0.2s, background-color 0.2s ease 0s;
 }
 
 .menu-dropdown > :hover {
@@ -1133,6 +1151,8 @@ a {
 }
 
 .menu-dropdown > * {
+    overflow: hidden;
+    white-space: nowrap;
     visibility: hidden;
     height: 0px;
     padding-top: 0px;
@@ -1188,21 +1208,13 @@ a {
 
 .circulo {
     margin-bottom: 3px;
-    width: 46px;
-    height: 46px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: #fff;
+    background: rgb(255 255 255 / 0%);
     overflow: hidden;
     margin-left: 5px;
-    border: 2px solid rgb(231, 234, 236);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
-    transition: border-color .2s ease, transform .2s ease;
 }
-
-    .circulo:hover {
-        border-color: var(--mapfrered1);
-        transform: scale(1.05);
-    }
 
     .circulo img {
         width: 100% !important;
@@ -1219,20 +1231,6 @@ a {
     flex-wrap: nowrap;
     margin: 0;
     border-top: 6px solid var(--mapfrered1);
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
-}
-
-.imgHeadMapfre {
-    display: flex;
-    align-items: center;
-    padding: 10px 18px;
-}
-
-.mapfre-header-logo {
-    height: 32px;
-    width: auto;
-    display: block;
 }
 
 .head_prin_preview {
@@ -1475,17 +1473,12 @@ a {
 
     .circulo {
         margin-bottom: 3px;
-        width: 42px;
-        height: 42px;
-        background: #fff;
+        height: 60px;
+        background: rgb(255 255 255 / 0%);
         overflow: hidden;
     }
 
     .imgHeadMapfre {
-        padding: 8px 12px;
-    }
-
-    .mapfre-header-logo {
         height: auto;
         width: 25px !important;
     }
@@ -3601,9 +3594,9 @@ ul.Observaciones {
     padding: 6px 0;
 }
 
-.stream .stream-panel {
-    margin-left: 42px;
-}
+    .stream .stream-panel {
+        margin-left: 42px;
+    }
 
 
 /* Observaci�n (1� l�nea) */
@@ -3690,185 +3683,3898 @@ ul.Observaciones {
     transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
-.language-selector-menu__button + .language-selector-menu__button {
-    border-left: 1px solid currentColor;
+    .language-selector-menu__button + .language-selector-menu__button {
+        border-left: 1px solid currentColor;
+    }
+
+    .language-selector-menu__button:hover,
+    .language-selector-menu__button:focus {
+        background: rgba(103, 106, 108, 0.12);
+        outline: none;
+        transform: translateY(-1px);
+    }
+
+    .language-selector-menu__button.is-active {
+        background: rgba(103, 106, 108, 0.18);
+        box-shadow: inset 0 0 0 1px rgba(103, 106, 108, 0.18);
+    }
+/* ================================================================
+   MAPFRE ZONA DE ALIADOS — REDESIGN V5 "EXPEDIENTE"
+   Scope: application shell only. Login is intentionally excluded.
+
+   Idea del diseño: blanco + rojo, como pediste, pero sin caer en la
+   plantilla típica de "sidebar blanco con pastilla degradada". La
+   referencia es el expediente/folder de seguros: una franja roja fija
+   en el canto izquierdo (el "lomo" del expediente) es la única pieza
+   decorativa; todo lo demás se resuelve con tipografía, líneas finas
+   y densidad de información — nada de sombras difusas ni degradados.
+
+   También se aprovecha mejor el espacio de navegación:
+   - Se quitó la etiqueta "NAVEGACIÓN" (ocupaba una fila entera para
+     no decir nada que el usuario no supiera ya).
+   - Los renglones del menú bajan de 42px a 38px y el encabezado del
+     sidebar baja de 78px a 60px: en una pantalla de 900px de alto
+     eso son ~4 ítems de menú adicionales visibles sin hacer scroll.
+   - El contenido principal reduce su margen exterior (antes 32/40,
+     ahora 24/28) para dejar más ancho útil a tablas y formularios.
+
+   IMPORTANTE — no cambia ninguna regla de negocio:
+   - Mismos selectores/IDs que las versiones anteriores (#wrapper,
+     #page-wrapper, .head_prin, #imgHead, #side-menu, .menu-dropdown,
+     .inputche, .aliados, .circulo, #right-sidebar, .footer, etc.)
+   - El color sigue viniendo 100% de --mapfrered1/--mapfrered2 (los
+     pone master.js según la cuenta conectada vía v1/Colors/GetColor).
+     Mapfre por defecto usa su rojo característico (#C31F09/#A11A08)
+     como respaldo; cualquier otra cuenta (Purdy, etc.) hereda su
+     propio color y su propio logo automáticamente, sin tocar nada
+     de este archivo — eso ya lo resuelve tu API + master.js.
+   - El logo ya NO se invierte a blanco (filter: invert): con fondo
+     blanco eso lo hacía invisible. Ahora se muestra en sus colores
+     reales, que es lo correcto para cualquier logo entrante.
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&display=swap');
+/* Solo para marca/menú/títulos. Si tu red bloquea fonts.googleapis.com,
+   borra esta línea: cae de vuelta a la pila de sistema de abajo. */
+
+.Mapfre #wrapper {
+    --mf-red: var(--mapfrered1, #C31F09);
+    --mf-red-2: var(--mapfrered2, #A11A08);
+    --mf-red-soft: #FBEAE8;
+    --mf-red-soft: color-mix(in srgb, var(--mf-red) 9%, white);
+    --mf-ink: #1A1D21;
+    --mf-hover: #F6F3F3;
+    --mf-hover: color-mix(in srgb, var(--mf-red) 4%, #F6F6F7);
+    --mf-text: #3C424A;
+    --mf-muted: #80868D;
+    --mf-canvas: #F5F6F6;
+    --mf-card: #FFFFFF;
+    --mf-line: #E6E2E2;
+    --mf-line: color-mix(in srgb, var(--mf-red) 6%, #E7E8E9);
+    --mf-shadow: 0 1px 2px rgba(20, 24, 29, .05);
+    --mf-shadow-hover: 0 10px 24px rgba(20, 24, 29, .10);
+    --mf-radius: 8px;
+    --mf-sidebar: 244px;
+    --mf-top: 0px;
+    --mf-font-display: "Manrope", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+    --mf-font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-.language-selector-menu__button:hover,
-.language-selector-menu__button:focus {
-    background: rgba(103, 106, 108, 0.12);
-    outline: none;
-    transform: translateY(-1px);
+/* ================================================================
+   FONDO DE MARCA (discreto) — se extrae de la cuenta, igual que el
+   logo y los colores de acento.
+   ================================================================
+   --mf-red viene de var(--mapfrered1, #C31F09) (línea 3741), y
+   --mapfrered1 es la variable que master.js ya sobreescribe por
+   cuenta/tenant con setProperty(). No se toca nada de JS: en cuanto
+   esa variable cambia de valor, este degradado cambia de color solo.
+   Son dos manchas radiales muy suaves (7% y 5% de mezcla con
+   transparente) en las esquinas, sobre el gris neutro de siempre
+   (--mf-canvas), para que no compita con el contenido ni con las
+   tarjetas blancas (--mf-card) que van encima.
+   ================================================================ */
+.Mapfre #wrapper,
+.Mapfre #page-wrapper {
+    background-color: var(--mf-canvas) !important;
+    background-image: radial-gradient(1100px 620px at 100% -10%, color-mix(in srgb, var(--mf-red) 7%, transparent) 0%, transparent 60%), radial-gradient(900px 520px at -8% 110%, color-mix(in srgb, var(--mf-red) 5%, transparent) 0%, transparent 60%) !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
 }
 
-.language-selector-menu__button.is-active {
-    background: rgba(103, 106, 108, 0.18);
-    box-shadow: inset 0 0 0 1px rgba(103, 106, 108, 0.18);
-}
-========================================= */
-
-/* =========================================
-   Form polish: Cotización, Emisión y demás
-   formularios que usan .ibox / .form-control
-   ========================================= */
-
-.Mapfre .ibox {
-    background: #fff;
-    border: 1px solid #e7eaec;
-    border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
-    margin-bottom: 22px;
-    overflow: hidden;
+/* ---------- APP SHELL / SIDEBAR ---------- */
+.Mapfre #page-wrapper {
+    min-height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.Mapfre .ibox-title {
-    background: #fbfbfc;
-    border-top: none;
-    border-bottom: 1px solid #e7eaec;
-    border-radius: 10px 10px 0 0;
-    padding: 14px 90px 14px 18px;
+.Mapfre .head_prin {
+    position: fixed !important;
+    inset: 0 auto 0 0 !important;
+    width: var(--mf-sidebar) !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    z-index: 2000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-left: 4px solid var(--mf-red) !important;
+    background: #fff !important;
+    box-shadow: 1px 0 0 var(--mf-line) !important;
+    overflow: hidden !important;
 }
 
-.Mapfre .ibox-content {
-    border: none;
-    padding: 22px 20px;
+.Mapfre #imgHead {
+    width: 100% !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 0 18px !important;
+    background: #fff !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
 
-.Mapfre .ibox-footer {
-    border-radius: 0 0 10px 10px;
+    .Mapfre #imgHead img {
+        width: 128px !important;
+        height: auto !important;
+        max-height: 34px !important;
+        margin: 0 !important;
+        position: relative;
+        z-index: 1;
+        filter: none !important;
+        object-fit: contain;
+    }
+
+.Mapfre .head_line {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    padding: 8px 8px 8px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+    overflow: hidden !important;
 }
 
-/* Section titles inside a form (icon + text, followed by .hr-line-dashed) */
-.Mapfre .ibox-content h4 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
-    color: var(--mapfregray1, #333);
-    margin: 6px 0 4px;
+    .Mapfre .head_line::before {
+        content: none;
+    }
+
+.Mapfre #side-menu {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: auto !important;
+    scrollbar-width: thin;
+    scrollbar-color: #E1E3E4 transparent;
 }
 
-.Mapfre .ibox-content h4 > .fa {
-    flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
+    .Mapfre #side-menu::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .Mapfre #side-menu::-webkit-scrollbar-thumb {
+        background: #E1E3E4;
+        border-radius: 20px;
+    }
+
+    .Mapfre #side-menu::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .Mapfre #side-menu > nav {
+        width: 100% !important;
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .Mapfre #side-menu .menu,
+    .Mapfre #side-menu .level_1,
+    .Mapfre #side-menu .level_1__item {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .Mapfre #side-menu .level_1__item {
+        display: block !important;
+    }
+
+    .Mapfre #side-menu .level_1__link,
+    .Mapfre #side-menu .menu > .level_1__item > a {
+        min-height: 38px !important;
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 8px 14px 8px 16px !important;
+        border-radius: 0 !important;
+        border-left: 3px solid transparent !important;
+        color: #4B5058 !important;
+        background: transparent !important;
+        font-family: var(--mf-font-display);
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        line-height: 1.15 !important;
+        text-decoration: none !important;
+        transition: color .13s ease, border-color .13s ease, background-color .13s ease !important;
+    }
+
+        .Mapfre #side-menu .level_1__link i,
+        .Mapfre #side-menu .menu > .level_1__item > a i {
+            width: 17px !important;
+            min-width: 17px !important;
+            text-align: center !important;
+            color: #9AA0A6 !important;
+            font-size: 13px !important;
+            transition: color .13s ease !important;
+        }
+
+    .Mapfre #side-menu > nav:hover > .menu .level_1__link,
+    .Mapfre #side-menu > nav:hover > .menu > .level_1__item > a {
+        background: var(--mf-hover) !important;
+        color: var(--mf-ink) !important;
+    }
+
+        .Mapfre #side-menu > nav:hover > .menu .level_1__link i,
+        .Mapfre #side-menu > nav:hover > .menu > .level_1__item > a i {
+            color: #6B7075 !important;
+        }
+
+    .Mapfre #side-menu > nav.active > .menu .level_1__link,
+    .Mapfre #side-menu > nav.active > .menu > .level_1__item > a,
+    .Mapfre #side-menu > nav.active > .menu .level_1__link:hover,
+    .Mapfre #side-menu > nav.active > .menu > .level_1__item > a:hover {
+        background: var(--mf-red-soft) !important;
+        border-left-color: var(--mf-red) !important;
+        color: var(--mf-red) !important;
+        box-shadow: none !important;
+    }
+
+        .Mapfre #side-menu > nav.active > .menu .level_1__link i,
+        .Mapfre #side-menu > nav.active > .menu > .level_1__item > a i {
+            color: var(--mf-red) !important;
+        }
+
+    .Mapfre #side-menu .dropdown-toggle::after {
+        margin-left: auto !important;
+        border-top-color: currentColor !important;
+        opacity: .6;
+    }
+
+    .Mapfre #side-menu .menu-dropdown {
+        position: static !important;
+        float: none !important;
+        width: calc(100% - 16px) !important;
+        margin: 0 0 2px 33px !important;
+        padding: 0 0 0 13px !important;
+        border: 0 !important;
+        border-left: 1px solid var(--mf-line) !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+        .Mapfre #side-menu .menu-dropdown li {
+            width: 100% !important;
+            margin: 0 !important;
+            list-style: none !important;
+        }
+
+        /* Refuerzo del acordeón dentro del sidebar: mismo criterio abierto/
+   cerrado que ya define el mecanismo base (checkbox .inputche), solo
+   que aquí con !important para que ningún otro estilo futuro pueda
+   "pegar" el submenú abierto sin querer, como pasaba con la regla
+   ".block" que se corrigió antes. No cambia el comportamiento normal:
+   son los mismos valores (oculto/alto 0 vs visible/28px). */
+        .Mapfre #side-menu .menu-dropdown li {
+            height: 0 !important;
+            overflow: hidden !important;
+            visibility: hidden !important;
+        }
+
+    .Mapfre #side-menu .inputche:checked ~ ul.menu-dropdown li {
+        height: 28px !important;
+        visibility: visible !important;
+    }
+
+    .Mapfre #side-menu .menu-dropdown li > a {
+        display: flex !important;
+        align-items: center !important;
+        min-height: 28px !important;
+        padding: 5px 9px !important;
+        border-radius: 5px !important;
+        color: #82888E !important;
+        font-size: 11.5px !important;
+        font-weight: 500 !important;
+        text-decoration: none !important;
+    }
+
+        .Mapfre #side-menu .menu-dropdown li > a:hover,
+        .Mapfre #side-menu .menu-dropdown li.active > a {
+            background: var(--mf-hover) !important;
+            color: var(--mf-ink) !important;
+        }
+
+    .Mapfre #side-menu .menu-dropdown li.active > a {
+        color: var(--mf-red) !important;
+    }
+
+    .Mapfre #side-menu .menu-dropdown li > a i {
+        width: 16px;
+        margin-right: 6px !important;
+        color: currentColor !important;
+    }
+
+.Mapfre .aliados {
+    width: 100% !important;
+    min-height: 62px !important;
+    margin: auto 0 0 !important;
+    padding: 10px 12px !important;
+    border-top: 1px solid var(--mf-line) !important;
+    background: #fff !important;
+    display: grid !important;
+    grid-template-columns: 1fr 36px !important;
+    align-items: center !important;
+    gap: 9px !important;
+}
+
+.Mapfre .usua_head {
+    min-width: 0 !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    line-height: 1.2 !important;
+}
+
+.Mapfre #UserNameMaster {
+    width: 100% !important;
+    color: var(--mf-ink) !important;
+    font-family: var(--mf-font-display);
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.Mapfre .megamenu_desktop .menu-dropdown {
+    z-index: 2100 !important;
+}
+
+.Mapfre .circulo {
+    width: 34px !important;
+    height: 34px !important;
+    margin: 0 !important;
+    border: 1.5px solid var(--mf-red) !important;
+    border-radius: 50% !important;
+    background: var(--mf-red-soft) !important;
+    box-shadow: none !important;
+}
+
+    .Mapfre .circulo img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        border-radius: 50% !important;
+    }
+
+.Mapfre .quest_mob {
+    display: none !important;
+}
+
+.Mapfre .head_prin > #ham-menu,
+.Mapfre .head_prin > .ham-icon,
+.Mapfre .head_prin > .ham-menu,
+.Mapfre .head_prin > .min_menu {
+    display: none !important;
+}
+
+/* ---------- MAIN WORK AREA ---------- */
+.Mapfre .wrapper.wrapper-content,
+.Mapfre .wrapper-content {
+    margin: 0 !important;
+    padding: 24px 28px !important;
+    min-height: 100vh !important;
+    width: calc(100% - var(--mf-sidebar)) !important;
+    margin-left: var(--mf-sidebar) !important;
+    background-color: var(--mf-canvas) !important;
+    background-image: radial-gradient(1100px 620px at 100% -10%, color-mix(in srgb, var(--mf-red) 7%, transparent) 0%, transparent 60%), radial-gradient(900px 520px at -8% 110%, color-mix(in srgb, var(--mf-red) 5%, transparent) 0%, transparent 60%) !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+}
+
+    .Mapfre .wrapper-content > .row,
+    .Mapfre .wrapper-content > .row > .col-lg-12 {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+.Mapfre .page-heading {
+    padding: 0 0 14px !important;
+    margin: 0 0 18px !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+    position: relative;
+}
+
+    .Mapfre .page-heading h2,
+    .Mapfre .page-heading h3,
+    .Mapfre .page-heading h4,
+    .Mapfre .dashboard-header h2,
+    .Mapfre .dashboard-header h3 {
+        margin: 0 !important;
+        color: var(--mf-ink) !important;
+        font-family: var(--mf-font-display);
+        font-weight: 800 !important;
+        letter-spacing: -.02em !important;
+    }
+
+.Mapfre .breadcrumb {
+    margin: 5px 0 0 !important;
+    padding: 0 !important;
+    color: var(--mf-muted) !important;
+    font-size: 11px !important;
+    background: transparent !important;
+}
+
+    .Mapfre .breadcrumb a {
+        color: var(--mf-red) !important;
+        font-weight: 600;
+    }
+
+/* ---------- CARDS / IBOX ---------- */
+.Mapfre #page-wrapper .ibox {
+    margin-bottom: 16px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: var(--mf-radius) !important;
+    background: var(--mf-card) !important;
+    box-shadow: var(--mf-shadow) !important;
+    overflow: hidden !important;
+    transition: box-shadow .15s ease, border-color .15s ease !important;
+}
+
+    .Mapfre #page-wrapper .ibox:hover {
+        border-color: #D8D3D3 !important;
+        box-shadow: var(--mf-shadow-hover) !important;
+    }
+
+.Mapfre #page-wrapper .ibox-title {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px 16px !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+    background: #fff !important;
+}
+
+    .Mapfre #page-wrapper .ibox-title h5 {
+        margin: 0 !important;
+        color: var(--mf-ink) !important;
+        font-family: var(--mf-font-display);
+        font-size: 12.5px !important;
+        line-height: 1.3 !important;
+        font-weight: 800 !important;
+    }
+
+.Mapfre #page-wrapper .ibox-tools {
+    margin-left: auto !important;
+}
+
+    .Mapfre #page-wrapper .ibox-tools a {
+        color: #9aa1a9 !important;
+    }
+
+        .Mapfre #page-wrapper .ibox-tools a:hover {
+            color: var(--mf-red) !important;
+        }
+
+.Mapfre #page-wrapper .ibox-content {
+    padding: 16px !important;
+    border: 0 !important;
+    background: #fff !important;
+    color: var(--mf-text) !important;
+}
+
+/* ---------- DASHBOARD WIDGETS ---------- */
+.Mapfre #page-wrapper .widget.style1 {
+    min-height: 96px !important;
+    padding: 15px 16px !important;
+    margin-bottom: 16px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-left: 3px solid var(--mf-red) !important;
+    border-radius: var(--mf-radius) !important;
+    background: var(--mf-card) !important;
+    box-shadow: var(--mf-shadow) !important;
+    color: var(--mf-ink) !important;
+}
+
+    .Mapfre #page-wrapper .widget.style1 .row {
+        height: 100% !important;
+        align-items: center !important;
+    }
+
+    .Mapfre #page-wrapper .widget.style1 .fa {
+        width: 40px !important;
+        height: 40px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 50% !important;
+        background: var(--mf-red-soft) !important;
+        color: var(--mf-red) !important;
+        font-size: 17px !important;
+    }
+
+    .Mapfre #page-wrapper .widget.style1 span {
+        color: var(--mf-muted) !important;
+        font-size: 10.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: .01em !important;
+    }
+
+    .Mapfre #page-wrapper .widget.style1 h2 {
+        margin: 3px 0 0 !important;
+        color: var(--mf-ink) !important;
+        font-family: var(--mf-font-mono);
+        font-size: 23px !important;
+        font-weight: 700 !important;
+    }
+
+/* ---------- FORMULARIOS ---------- */
+.Mapfre #page-wrapper form:not(#LoginEdtForm),
+.Mapfre #page-wrapper fieldset {
+    border: 0;
+}
+
+.Mapfre #page-wrapper .form-group {
+    margin-bottom: 14px !important;
+}
+
+.Mapfre #page-wrapper .control-label,
+.Mapfre #page-wrapper label.control-label,
+.Mapfre #page-wrapper .form-label {
+    display: block !important;
+    margin: 0 0 5px !important;
+    color: #4B5058 !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    font-weight: 700 !important;
+    letter-spacing: .01em !important;
+}
+
+    .Mapfre #page-wrapper .required-mark,
+    .Mapfre #page-wrapper .required,
+    .Mapfre #page-wrapper .control-label .required-mark {
+        color: var(--mf-red) !important;
+    }
+
+.Mapfre #page-wrapper .form-control,
+.Mapfre #page-wrapper select.form-control,
+.Mapfre #page-wrapper textarea.form-control,
+.Mapfre #page-wrapper input.form-control {
+    min-height: 38px !important;
+    width: 100% !important;
+    padding: 8px 12px !important;
+    border: 1px solid #D6DADD !important;
+    border-radius: 6px !important;
+    background: #fff !important;
+    color: var(--mf-ink) !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+    transition: border-color .14s ease, box-shadow .14s ease !important;
+}
+
+.Mapfre #page-wrapper textarea.form-control {
+    min-height: 84px !important;
+    resize: vertical !important;
+}
+
+.Mapfre #page-wrapper .form-control:hover {
+    border-color: #B7BCC0 !important;
+}
+
+.Mapfre #page-wrapper .form-control:focus {
+    border-color: var(--mf-red) !important;
+    background: #fff !important;
+    box-shadow: 0 0 0 3px var(--mf-red-soft) !important;
+    outline: none !important;
+}
+
+.Mapfre #page-wrapper .form-control::placeholder {
+    color: #A5ABB2 !important;
+}
+
+.Mapfre #page-wrapper .input-group {
+    width: 100% !important;
+}
+
+    .Mapfre #page-wrapper .input-group .form-control {
+        z-index: 1 !important;
+    }
+
+.Mapfre #page-wrapper .input-group-text,
+.Mapfre #page-wrapper .input-group-prepend .input-group-text,
+.Mapfre #page-wrapper .input-group-append .input-group-text {
+    border-color: #D6DADD !important;
+    background: #F4F5F6 !important;
+    color: #777F88 !important;
+    border-radius: 6px !important;
+}
+
+.Mapfre #page-wrapper .custom-select,
+.Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection {
+    min-height: 38px !important;
+    border-radius: 6px !important;
+    border-color: #D6DADD !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+.Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection--single {
+    height: 38px !important;
+    padding: 6px 12px !important;
+}
+
+.Mapfre #page-wrapper .select2-container--bootstrap4.select2-container--focus .select2-selection,
+.Mapfre #page-wrapper .select2-container--bootstrap4.select2-container--open .select2-selection {
+    border-color: var(--mf-red) !important;
+    box-shadow: 0 0 0 3px var(--mf-red-soft) !important;
+}
+
+.Mapfre #page-wrapper .custom-control-input:checked ~ .custom-control-label::before {
+    border-color: var(--mf-red) !important;
+    background-color: var(--mf-red) !important;
+}
+
+.Mapfre #page-wrapper .custom-control-label {
+    color: #555c64 !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+}
+
+.Mapfre #page-wrapper .hr-line-dashed {
+    margin: 16px 0 !important;
+    border-top: 1px dashed #DDE0E3 !important;
+}
+
+.Mapfre #page-wrapper .form-text,
+.Mapfre #page-wrapper .help-block,
+.Mapfre #page-wrapper .error {
+    margin-top: 4px !important;
+    color: #8a9199 !important;
+    font-size: 10px !important;
+}
+
+.Mapfre #page-wrapper .has-error .form-control,
+.Mapfre #page-wrapper .form-control.error {
+    border-color: #C23A3A !important;
+    box-shadow: 0 0 0 3px rgba(194,58,58,.09) !important;
+}
+
+.Mapfre #page-wrapper .has-success .form-control,
+.Mapfre #page-wrapper .form-control.valid {
+    border-color: #2E8B4F !important;
+    box-shadow: 0 0 0 3px rgba(46,139,79,.08) !important;
+}
+
+/* Section headings commonly used by the existing forms */
+.Mapfre #page-wrapper .ibox-heading,
+.Mapfre #page-wrapper .title_partner {
+    padding: 10px 14px !important;
+    margin: 4px 0 14px !important;
+    border: 0 !important;
+    border-left: 3px solid var(--mf-red) !important;
+    border-radius: 0 6px 6px 0 !important;
+    background: #F7F7F7 !important;
+}
+
+    .Mapfre #page-wrapper .ibox-heading h5,
+    .Mapfre #page-wrapper .title_partner h5,
+    .Mapfre #page-wrapper .title_partner p {
+        margin: 0 !important;
+        color: var(--mf-ink) !important;
+        font-family: var(--mf-font-display);
+        font-weight: 800 !important;
+    }
+
+/* ---------- BOTONES ---------- */
+.Mapfre #page-wrapper .btn {
+    min-height: 35px !important;
+    padding: 7px 15px !important;
+    border-radius: 6px !important;
+    border-width: 1px !important;
+    font-family: var(--mf-font-display);
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    box-shadow: none !important;
+    transition: background-color .14s ease, border-color .14s ease, color .14s ease !important;
+}
+
+    .Mapfre #page-wrapper .btn:active {
+        transform: scale(.98);
+    }
+
+.Mapfre #page-wrapper .btn-primary,
+.Mapfre #page-wrapper .btn-danger,
+.Mapfre #page-wrapper .btn-success {
+    color: #fff !important;
+    border-color: var(--mf-red) !important;
+    background: var(--mf-red) !important;
+    box-shadow: none !important;
+}
+
+    .Mapfre #page-wrapper .btn-primary:hover,
+    .Mapfre #page-wrapper .btn-danger:hover,
+    .Mapfre #page-wrapper .btn-success:hover,
+    .Mapfre #page-wrapper .btn-primary:focus,
+    .Mapfre #page-wrapper .btn-danger:focus,
+    .Mapfre #page-wrapper .btn-success:focus {
+        border-color: var(--mf-red-2) !important;
+        background: var(--mf-red-2) !important;
+    }
+
+.Mapfre #page-wrapper .btn-white,
+.Mapfre #page-wrapper .btn-default,
+.Mapfre #page-wrapper .btn-secondary {
+    color: #4B5058 !important;
+    border-color: #D6DADD !important;
+    background: #fff !important;
+}
+
+    .Mapfre #page-wrapper .btn-white:hover,
+    .Mapfre #page-wrapper .btn-default:hover,
+    .Mapfre #page-wrapper .btn-secondary:hover {
+        color: var(--mf-red) !important;
+        border-color: var(--mf-red) !important;
+        background: var(--mf-red-soft) !important;
+    }
+
+.Mapfre #page-wrapper .btn-info {
+    color: #fff !important;
+    border-color: #52596F !important;
+    background: #52596F !important;
+}
+
+.Mapfre #page-wrapper .btn-warning {
+    color: #4d3b00 !important;
+    border-color: #E0A93A !important;
+    background: #E0A93A !important;
+}
+
+.Mapfre #page-wrapper .btn-sm {
+    min-height: 32px !important;
+    padding: 6px 12px !important;
+}
+
+.Mapfre #page-wrapper .btn-xs {
+    min-height: 27px !important;
+    padding: 4px 9px !important;
+    font-size: 10px !important;
+}
+
+/* ---------- TABLES ---------- */
+.Mapfre #page-wrapper .table-responsive {
+    border: 1px solid var(--mf-line) !important;
+    border-radius: var(--mf-radius) !important;
+    background: #fff !important;
+    overflow-x: auto !important;
+    box-shadow: var(--mf-shadow) !important;
+}
+
+.Mapfre #page-wrapper .table {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    color: #3C424A !important;
+    font-size: 11.5px !important;
+}
+
+    .Mapfre #page-wrapper .table thead th,
+    .Mapfre #page-wrapper .bootstrap-table .fixed-table-container thead th {
+        padding: 9px 12px !important;
+        border: 0 !important;
+        border-bottom: 2px solid var(--mf-red) !important;
+        background: #FAFAFA !important;
+        color: #565C63 !important;
+        font-family: var(--mf-font-display);
+        font-size: 10px !important;
+        font-weight: 700 !important;
+        letter-spacing: .02em !important;
+        white-space: nowrap !important;
+    }
+
+    .Mapfre #page-wrapper .table tbody td,
+    .Mapfre #page-wrapper .bootstrap-table .table tbody td {
+        padding: 9px 12px !important;
+        border-top: 1px solid #EEF0F1 !important;
+        border-bottom: 0 !important;
+        vertical-align: middle !important;
+        background: #fff !important;
+    }
+
+    .Mapfre #page-wrapper .table tbody tr {
+        transition: background .12s ease;
+    }
+
+        .Mapfre #page-wrapper .table tbody tr:hover td {
+            background: var(--mf-red-soft) !important;
+        }
+
+    .Mapfre #page-wrapper .table a {
+        color: var(--mf-red) !important;
+        font-weight: 650 !important;
+    }
+
+.Mapfre #page-wrapper .tablesimple {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 6px !important;
+}
+
+    .Mapfre #page-wrapper .tablesimple tr td {
+        padding: 10px !important;
+        border: 1px solid var(--mf-line) !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        background: #fff !important;
+    }
+
+        .Mapfre #page-wrapper .tablesimple tr td:first-child {
+            width: 55px !important;
+            border-left: 3px solid var(--mf-line) !important;
+            border-radius: 6px 0 0 6px !important;
+        }
+
+        .Mapfre #page-wrapper .tablesimple tr td:last-child {
+            border-right: 1px solid var(--mf-line) !important;
+            border-radius: 0 6px 6px 0 !important;
+        }
+
+    .Mapfre #page-wrapper .tablesimple tr {
+        box-shadow: none;
+    }
+
+.Mapfre #page-wrapper .fixed-table-toolbar {
+    padding: 0 0 12px !important;
+}
+
+    .Mapfre #page-wrapper .fixed-table-toolbar .btn,
+    .Mapfre #page-wrapper .fixed-table-pagination .btn {
+        min-height: 32px !important;
+    }
+
+.Mapfre #page-wrapper .pagination > li > a,
+.Mapfre #page-wrapper .pagination > li > span {
+    min-width: 29px !important;
+    height: 29px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 2px !important;
+    padding: 5px 8px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: 6px !important;
+    color: #6e757d !important;
+    background: #fff !important;
+    font-family: var(--mf-font-mono);
+}
+
+.Mapfre #page-wrapper .pagination > .active > a,
+.Mapfre #page-wrapper .pagination > .active > span {
+    border-color: var(--mf-red) !important;
+    background: var(--mf-red) !important;
+    color: #fff !important;
+}
+
+/* ---------- ALERTAS / BADGES ---------- */
+.Mapfre #page-wrapper .alert {
+    border: 1px solid transparent !important;
+    border-left: 3px solid currentColor !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    font-size: 11px !important;
+}
+
+.Mapfre #page-wrapper .alert-danger {
+    color: #A9182D !important;
+    background: #FCF0F1 !important;
+    border-color: #F5D4D8 !important;
+}
+
+.Mapfre #page-wrapper .alert-success {
+    color: #256B41 !important;
+    background: #EFF7F1 !important;
+    border-color: #D3E9D9 !important;
+}
+
+.Mapfre #page-wrapper .alert-warning {
+    color: #8A6300 !important;
+    background: #FDF6E4 !important;
+    border-color: #F1E1AE !important;
+}
+
+.Mapfre #page-wrapper .alert-info {
+    color: #295F73 !important;
+    background: #EEF5F8 !important;
+    border-color: #CFE1E8 !important;
+}
+
+.Mapfre #page-wrapper .badge,
+.Mapfre #page-wrapper .label {
+    border-radius: 5px !important;
+    padding: 3px 7px !important;
+    font-family: var(--mf-font-mono);
+    font-size: 9.5px !important;
+    font-weight: 600 !important;
+}
+
+/* ---------- TABS ---------- */
+.Mapfre #page-wrapper .nav-tabs {
+    gap: 2px !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+}
+
+    .Mapfre #page-wrapper .nav-tabs > li > a {
+        padding: 9px 14px !important;
+        border: 0 !important;
+        border-bottom: 2px solid transparent !important;
+        border-radius: 0 !important;
+        color: #737a82 !important;
+        background: transparent !important;
+        font-family: var(--mf-font-display);
+        font-size: 11px !important;
+        font-weight: 700 !important;
+    }
+
+        .Mapfre #page-wrapper .nav-tabs > li > a:hover {
+            color: var(--mf-red) !important;
+            background: transparent !important;
+        }
+
+    .Mapfre #page-wrapper .nav-tabs > li.active > a,
+    .Mapfre #page-wrapper .nav-tabs > li.active > a:hover,
+    .Mapfre #page-wrapper .nav-tabs > li.active > a:focus {
+        border: 0 !important;
+        border-bottom: 2px solid var(--mf-red) !important;
+        color: var(--mf-red) !important;
+        background: transparent !important;
+    }
+
+/* ---------- MODALES ---------- */
+.Mapfre #page-wrapper .modal-content {
+    border: 0 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    box-shadow: 0 20px 55px rgba(20,24,29,.18) !important;
+}
+
+.Mapfre #page-wrapper .modal-header,
+.Mapfre #page-wrapper .inmodal .modal-header {
+    padding: 15px 20px !important;
+    border: 0 !important;
+    border-bottom: 3px solid var(--mf-red) !important;
+    background: #fff !important;
+    color: var(--mf-ink) !important;
+}
+
+    .Mapfre #page-wrapper .modal-title,
+    .Mapfre #page-wrapper .modal-header span {
+        color: var(--mf-ink) !important;
+        font-family: var(--mf-font-display);
+        font-weight: 800 !important;
+    }
+
+.Mapfre #page-wrapper .modal-body {
+    padding: 20px !important;
+    background: #fff !important;
+}
+
+.Mapfre #page-wrapper .modal-footer {
+    padding: 13px 20px !important;
+    border-top: 1px solid var(--mf-line) !important;
+    background: #fafbfc !important;
+}
+
+/* ---------- DROPDOWNS ---------- */
+.Mapfre #page-wrapper .dropdown-menu,
+.Mapfre .head_prin .menu-dropdown {
+    border: 1px solid var(--mf-line) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 14px 32px rgba(20,24,29,.10) !important;
+    background: #fff !important;
+}
+
+.Mapfre #page-wrapper .dropdown-item {
+    padding: 7px 12px !important;
+    border-radius: 5px !important;
+    color: #555d65 !important;
+    font-size: 11px !important;
+}
+
+    .Mapfre #page-wrapper .dropdown-item:hover {
+        color: var(--mf-red) !important;
+        background: var(--mf-red-soft) !important;
+    }
+
+/* ---------- RIGHT SIDEBAR ---------- */
+.Mapfre #right-sidebar {
+    top: 0 !important;
+    height: 100vh !important;
+    border-left: 1px solid var(--mf-line) !important;
+    box-shadow: -12px 0 30px rgba(20,24,29,.07) !important;
+}
+
+    .Mapfre #right-sidebar .sidebar-title {
+        background: #fff !important;
+        color: var(--mf-ink) !important;
+        border-bottom: 3px solid var(--mf-red) !important;
+    }
+
+        .Mapfre #right-sidebar .sidebar-title h5,
+        .Mapfre #right-sidebar .sidebar-title a {
+            color: var(--mf-ink) !important;
+        }
+
+/* ---------- FOOTER ---------- */
+.Mapfre .footer {
+    width: calc(100% - var(--mf-sidebar)) !important;
+    margin-left: var(--mf-sidebar) !important;
+    min-height: 40px !important;
+    padding: 11px 28px !important;
+    border-top: 1px solid var(--mf-line) !important;
+    background: #fff !important;
+    color: #8a9199 !important;
+    font-size: 10px !important;
+}
+
+    .Mapfre .footer strong {
+        color: var(--mf-red) !important;
+    }
+
+/* ---------- SPECIAL FILTER / TOOL AREAS ---------- */
+.Mapfre #page-wrapper .tool-filter,
+.Mapfre #page-wrapper .filter-row {
+    padding: 13px !important;
+    margin-bottom: 14px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: var(--mf-radius) !important;
+    background: #fff !important;
+    box-shadow: var(--mf-shadow) !important;
+}
+
+    .Mapfre #page-wrapper .filter-row .form-group {
+        margin-bottom: 0 !important;
+    }
+
+.Mapfre #page-wrapper .filter-btn {
+    float: none !important;
+    margin: 21px 0 0 !important;
+}
+
+.Mapfre #page-wrapper .search-col {
+    float: none !important;
+    margin: 0 !important;
+}
+
+/* ---------- LOADING / SPINNERS ---------- */
+.Mapfre #page-wrapper .sk-spinner-wave > div {
+    background-color: var(--mf-red) !important;
+}
+
+.Mapfre #page-wrapper .pace .pace-progress {
+    background: var(--mf-red) !important;
+}
+
+/* ---------- SCROLLBAR ---------- */
+.Mapfre #page-wrapper ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+.Mapfre #page-wrapper ::-webkit-scrollbar-track {
+    background: #EFF0F0;
+}
+
+.Mapfre #page-wrapper ::-webkit-scrollbar-thumb {
+    background: #C9CDD2;
+    border-radius: 20px;
+}
+
+    .Mapfre #page-wrapper ::-webkit-scrollbar-thumb:hover {
+        background: var(--mf-red);
+    }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 1199px) {
+    .Mapfre #wrapper {
+        --mf-sidebar: 215px;
+    }
+
+    .Mapfre .wrapper.wrapper-content,
+    .Mapfre .wrapper-content {
+        padding: 22px 20px !important;
+    }
+
+    .Mapfre #imgHead {
+        padding-left: 16px !important;
+    }
+
+        .Mapfre #imgHead img {
+            width: 112px !important;
+        }
+}
+
+@media (max-width: 991px) {
+    .Mapfre #wrapper {
+        --mf-sidebar: 0px;
+    }
+
+    .Mapfre .head_prin {
+        width: 100% !important;
+        height: 56px !important;
+        min-height: 56px !important;
+        bottom: auto !important;
+        flex-direction: row !important;
+        padding: 0 !important;
+        box-shadow: 0 3px 14px rgba(20,24,29,.10) !important;
+        overflow: visible !important;
+        border-bottom: 3px solid var(--mf-red) !important;
+    }
+
+    .Mapfre #imgHead {
+        width: 180px !important;
+        height: 56px !important;
+        min-height: 56px !important;
+        padding: 0 16px !important;
+        border-bottom: 0 !important;
+    }
+
+        .Mapfre #imgHead img {
+            width: 108px !important;
+        }
+
+    .Mapfre .head_line {
+        display: none !important;
+    }
+
+    .Mapfre .head_prin > .ham-icon {
+        display: flex !important;
+        position: absolute !important;
+        right: 14px !important;
+        top: 12px !important;
+        width: 32px !important;
+        height: 30px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 6px !important;
+        cursor: pointer !important;
+        z-index: 2200 !important;
+    }
+
+    .Mapfre .trigger,
+    .Mapfre .trigger::before,
+    .Mapfre .trigger::after {
+        width: 19px !important;
+        height: 2px !important;
+        background: var(--mf-ink) !important;
+        position: relative !important;
+    }
+
+        .Mapfre .trigger::before,
+        .Mapfre .trigger::after {
+            content: "";
+            position: absolute !important;
+            left: 0 !important;
+        }
+
+        .Mapfre .trigger::before {
+            top: -6px !important;
+        }
+
+        .Mapfre .trigger::after {
+            top: 6px !important;
+        }
+
+    .Mapfre .head_prin > .ham-menu {
+        display: flex !important;
+        width: min(290px, 88vw) !important;
+        top: 56px !important;
+        bottom: 0 !important;
+        height: calc(100vh - 56px) !important;
+        transform: translateX(-105%) !important;
+        visibility: hidden !important;
+        padding: 10px !important;
+        border: 0 !important;
+        background: #fff !important;
+        box-shadow: 12px 0 30px rgba(20,24,29,.12) !important;
+        transition: transform .2s ease, visibility .2s ease !important;
+    }
+
+    .Mapfre #ham-menu:checked ~ .ham-menu {
+        transform: translateX(0) !important;
+        visibility: visible !important;
+    }
+
+    .Mapfre .items_ham_menu {
+        margin-top: 0 !important;
+        text-align: left !important;
+    }
+
+        .Mapfre .items_ham_menu .linside {
+            display: none !important;
+        }
+
+        .Mapfre .items_ham_menu .level_1__link {
+            display: flex !important;
+            min-height: 38px !important;
+            padding: 8px 11px !important;
+            border-radius: 6px !important;
+            color: #4B5058 !important;
+        }
+
+    .Mapfre .wrapper.wrapper-content,
+    .Mapfre .wrapper-content {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 78px 18px 22px !important;
+    }
+
+    .Mapfre .footer {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 11px 18px !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .Mapfre #imgHead {
+        width: 150px !important;
+    }
+
+        .Mapfre #imgHead img {
+            width: 96px !important;
+        }
+
+    .Mapfre .wrapper.wrapper-content,
+    .Mapfre .wrapper-content {
+        padding: 72px 12px 16px !important;
+    }
+
+    .Mapfre #page-wrapper .ibox-title {
+        padding: 10px 13px !important;
+    }
+
+    .Mapfre #page-wrapper .ibox-content {
+        padding: 13px !important;
+    }
+
+    .Mapfre #page-wrapper .row {
+        margin-left: -6px !important;
+        margin-right: -6px !important;
+    }
+
+        .Mapfre #page-wrapper .row > [class*="col-"] {
+            padding-left: 6px !important;
+            padding-right: 6px !important;
+        }
+
+    .Mapfre #page-wrapper .form-group {
+        margin-bottom: 12px !important;
+    }
+
+    .Mapfre #page-wrapper .btn {
+        width: auto;
+        max-width: 100%;
+    }
+
+    .Mapfre .footer {
+        text-align: center !important;
+    }
+}
+
+/* ================================================================
+   FIX — Menú de usuario (Desconectar / Cambio de clave) invisible
+   ================================================================
+   Causa: el rediseño V5 convirtió .head_prin y .head_line en
+   contenedores con overflow:hidden (para lograr el sidebar fijo).
+   El <ul class="menu-dropdown"> de "Aliados" (logout) usa
+   position:fixed por la regla genérica de .menu-dropdown (línea
+   ~1099), y al ser descendiente en el DOM de esos contenedores
+   overflow:hidden, el navegador lo recorta aunque sea "fixed":
+   el checkbox #Aliados se marca pero el cuadro nunca se pinta.
+
+   Solución: para este menú en particular (dentro de .aliados) se
+   cambia a position:absolute, anclado al propio bloque .aliados,
+   y se abre hacia arriba (bottom:100%) para quedar siempre dentro
+   del rectángulo visible del sidebar. No se toca ningún otro
+   .menu-dropdown de la app (side-menu, ham-menu, etc.), solo el
+   que vive dentro de .aliados.
+   No se modifica JavaScript: el mecanismo de apertura/cierre sigue
+   siendo el mismo checkbox .inputche#Aliados de siempre.
+   ================================================================ */
+.Mapfre .aliados {
+    position: relative !important;
+}
+
+    .Mapfre .aliados .menu.dropdown {
+        position: static !important;
+    }
+
+    .Mapfre .aliados ul.menu-dropdown {
+        position: absolute !important;
+        left: 10px !important;
+        right: 10px !important;
+        top: auto !important;
+        bottom: 100% !important;
+        width: auto !important;
+        margin: 0 0 8px 0 !important;
+    }
+
+        /* La flechita decorativa (::after) apuntaba hacia abajo asumiendo que
+   el menú se abría hacia abajo; ahora se abre hacia arriba, así que
+   se oculta para no dejar un triángulo suelto y fuera de lugar. */
+        .Mapfre .aliados ul.menu-dropdown::after {
+            display: none !important;
+        }
+
+/* ================================================================
+   FIX — En móvil/tablet (≤991px) es IMPOSIBLE cerrar sesión
+   ================================================================
+   Causa: la media query "@media (max-width: 991px)" pone
+   ".Mapfre .head_line { display: none !important; }" para
+   reemplazar el menú principal por el flyout de la hamburguesa.
+   Pero .aliados (usuario, logo y el menú de Desconectar /
+   Cambio de clave) vive DENTRO de .head_line, así que también
+   desaparece — y el flyout de la hamburguesa (#MenuVertical) solo
+   pinta los items de navegación, nunca el logout. Resultado: en
+   celular/tablet no hay forma de ver ese menú.
+
+   Solución: en vez de ocultar TODO .head_line, solo se ocultan
+   #side-menu y .min_menu (que sí están cubiertos por el flyout de
+   la hamburguesa) y .aliados se re-posiciona como una pastilla
+   flotante en la barra superior de 56px, a la izquierda del ícono
+   de hamburguesa, para que el logout siga siendo accesible.
+   ================================================================ */
+@media (max-width: 991px) {
+    .Mapfre .head_line {
+        display: flex !important;
+        position: absolute !important;
+        top: 0 !important;
+        right: 52px !important;
+        height: 56px !important;
+        width: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+    }
+
+        .Mapfre .head_line > #side-menu,
+        .Mapfre .head_line > .min_menu {
+            display: none !important;
+        }
+
+    .Mapfre .aliados {
+        width: auto !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        grid-template-columns: auto 34px !important;
+        gap: 8px !important;
+    }
+
+    .Mapfre .usua_head #UserNameMaster {
+        max-width: 110px !important;
+        font-size: 10.5px !important;
+    }
+
+    .Mapfre .aliados ul.menu-dropdown {
+        left: auto !important;
+        right: 0 !important;
+        bottom: auto !important;
+        top: 100% !important;
+        width: 230px !important;
+        margin: 8px 0 0 !important;
+    }
+}
+
+/* ================================================================
+   FIX — El menú de "3 puntos" (more menu) nunca debió aparecer en
+   el rediseño vertical, y encima ocupa una franja completa
+   ================================================================
+   Causa 1 (selector muerto): el rediseño intentaba ocultarlo con
+   ".Mapfre .head_prin > .min_menu", pero #moremenubox NO es hijo
+   directo de .head_prin — vive dentro de .head_line. El selector
+   con ">" nunca hace match, así que los 3 puntos seguían visibles.
+
+   Causa 2 (lógica heredada del menú horizontal): rendmoremenu() de
+   master.js mueve al "more menu" todo item cuyo offsetTop > 31px.
+   Eso tenía sentido cuando el menú era una barra horizontal (lo que
+   no cabía en la línea se iba a los 3 puntos). Con el menú ahora
+   vertical, TODOS los items a partir del segundo tienen offsetTop
+   mayor a 31 — o sea, el JS los duplica dentro de los 3 puntos.
+   Por eso "se desperdicia espacio": era una copia del menú entero.
+
+   Solución (sin tocar JS): se oculta el bloque completo con el
+   selector correcto. El JS puede seguir clonando lo que quiera
+   dentro; simplemente ya no se pinta, y el menú vertical del
+   sidebar queda como única navegación, ganando esa franja de ancho.
+   ================================================================ */
+.Mapfre .head_line > .min_menu,
+.Mapfre .head_line > #moremenubox,
+.Mapfre #container_moremenu {
+    display: none !important;
+}
+
+/* ================================================================
+   FONDO DE MARCA — ahora sí visible, y sin depender de color-mix()
+   ================================================================
+   Por qué no se veía antes:
+   1) Se pintaba sobre #page-wrapper, pero encima va .wrapper-content
+      con su propio fondo opaco, que lo tapaba por completo.
+   2) Se usaba color-mix() al 5-7%. Si el navegador no soporta
+      color-mix (o si la mezcla queda casi blanca), la declaración
+      entera se descarta o resulta imperceptible.
+
+   Solución: una capa propia (::before) fija detrás del contenido,
+   pintada con el color puro de la cuenta y atenuada con "opacity".
+   Eso funciona en cualquier navegador y el color sale directo de
+   var(--mapfrered1), la misma variable que master.js sobreescribe
+   por cuenta/tenant. Cambia la cuenta -> cambia el fondo. Sin JS.
+   Para subirlo o bajarlo, mover el "opacity" de abajo.
+   ================================================================ */
+.Mapfre .wrapper.wrapper-content,
+.Mapfre .wrapper-content {
+    position: relative !important;
+    background-color: var(--mf-canvas) !important;
+    background-image: none !important;
+}
+
+    .Mapfre .wrapper-content::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: .17;
+        background-color: transparent;
+        background-image: radial-gradient(760px 520px at 88% 4%, var(--mf-red) 0%, transparent 62%), radial-gradient(680px 460px at 4% 96%, var(--mf-red) 0%, transparent 62%), linear-gradient(180deg, transparent 0%, var(--mf-red) 240%);
+        background-repeat: no-repeat;
+    }
+
+    /* Trama muy fina encima del degradado: le da textura sin ruido
+   visual. También toma el color de la cuenta. */
+    .Mapfre .wrapper-content::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: .05;
+        background-image: repeating-linear-gradient(135deg, var(--mf-red) 0 1px, transparent 1px 15px);
+    }
+
+    /* El contenido debe quedar por encima de esas dos capas. */
+    .Mapfre .wrapper-content > .row,
+    .Mapfre .wrapper-content > * {
+        position: relative;
+        z-index: 1;
+    }
+
+/* ================================================================
+   MENÚ DE USUARIO — rediseño (era un bloque blanco plano)
+   ================================================================
+   Problemas que se corrigen aquí:
+   - Fondo blanco duro: venía de la regla global
+     ".inputche:checked ~ ul.menu-dropdown > * { background:#fff }",
+     que pinta cada <li> de blanco y deja el borde redondeado del
+     contenedor tapado por las esquinas cuadradas de los <li>.
+   - Alto fijo de 30px en TODOS los <li>: aplastaba el selector de
+     idioma (que necesita ~50px) y le cortaba los botones.
+   - Hover gris apagado que no seguía el color de la cuenta.
+   ================================================================ */
+.Mapfre .aliados ul.menu-dropdown {
+    padding: 6px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+    box-shadow: 0 18px 44px rgba(20,24,29,.16), 0 2px 6px rgba(20,24,29,.06) !important;
+    overflow: hidden !important;
+}
+
+    /* Filete superior con el color de la cuenta */
+    .Mapfre .aliados ul.menu-dropdown::before {
+        content: "";
+        display: block;
+        height: 3px;
+        margin: -6px -6px 6px !important;
+        background: linear-gradient(90deg, var(--mf-red), var(--mf-red-2, var(--mf-red)));
+    }
+
+    /* Se anula el alto fijo/fondo blanco global de los <li> */
+    .Mapfre .aliados .inputche:checked ~ ul.menu-dropdown > li,
+    .Mapfre .aliados ul.menu-dropdown > li {
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 1px 0 !important;
+        padding: 0 !important;
+        border-radius: 8px !important;
+        background: transparent !important;
+        overflow: visible !important;
+    }
+
+        .Mapfre .aliados ul.menu-dropdown > li > a {
+            display: flex !important;
+            align-items: center !important;
+            gap: 9px !important;
+            min-height: 36px !important;
+            padding: 8px 11px !important;
+            border-radius: 8px !important;
+            color: #4B5058 !important;
+            background: transparent !important;
+            font-family: var(--mf-font-display);
+            font-size: 12px !important;
+            font-weight: 650 !important;
+            text-decoration: none !important;
+            transition: background .13s ease, color .13s ease !important;
+        }
+
+            .Mapfre .aliados ul.menu-dropdown > li > a i {
+                width: 15px !important;
+                color: var(--mf-red) !important;
+                font-size: 13px !important;
+            }
+
+            .Mapfre .aliados ul.menu-dropdown > li:hover,
+            .Mapfre .aliados ul.menu-dropdown > li > a:hover {
+                background: var(--mf-red-soft, #FBEAE8) !important;
+                color: var(--mf-red) !important;
+            }
+
+            .Mapfre .aliados ul.menu-dropdown > li > a:focus {
+                background: var(--mf-red-soft, #FBEAE8) !important;
+                color: var(--mf-red) !important;
+            }
+
+        /* Selector de idioma: necesita alto propio, no los 30px del resto */
+        .Mapfre .aliados ul.menu-dropdown > li.language-selector-menu-item {
+            height: auto !important;
+            min-height: 0 !important;
+            margin-top: 4px !important;
+            padding: 9px 11px 8px !important;
+            border-top: 1px solid var(--mf-line) !important;
+            border-radius: 0 0 8px 8px !important;
+            background: #FAFAFB !important;
+        }
+
+            .Mapfre .aliados ul.menu-dropdown > li.language-selector-menu-item:hover {
+                background: #FAFAFB !important;
+            }
+
+.Mapfre .language-selector-menu__label {
+    color: var(--mf-muted, #80868D) !important;
+    font-family: var(--mf-font-display);
+    letter-spacing: .06em !important;
+}
+
+.Mapfre .language-selector-menu__actions {
+    display: flex !important;
+    gap: 5px !important;
+    margin-top: 6px !important;
+}
+
+.Mapfre .language-selector-menu__button {
+    flex: 1 1 0 !important;
+    min-height: 28px !important;
+    padding: 5px 8px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: 7px !important;
+    background: #fff !important;
+    color: #6E757D !important;
+    font-family: var(--mf-font-display);
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all .13s ease !important;
+}
+
+    .Mapfre .language-selector-menu__button:hover {
+        border-color: var(--mf-red) !important;
+        color: var(--mf-red) !important;
+    }
+
+    /* Estado activo que ya marca master.js con la clase .is-active
+   (applyLanguageButtonState). No se toca el JS: solo se le da
+   apariencia a la clase que ya existe. */
+    .Mapfre .language-selector-menu__button.is-active {
+        border-color: var(--mf-red) !important;
+        background: var(--mf-red) !important;
+        color: #fff !important;
+    }
+
+/* ---- Disparador del menú (nombre de la cuenta) ---- */
+.Mapfre .aliados .usua_head .hList {
+    margin: 2px 0 0 !important;
+    padding: 0 !important;
+}
+
+.Mapfre .aliados .level_1__link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 3px 7px 3px 0 !important;
+    border-radius: 7px !important;
+    color: var(--mf-muted, #80868D) !important;
+    font-family: var(--mf-font-display);
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: color .13s ease !important;
+}
+
+    .Mapfre .aliados .level_1__link:hover {
+        color: var(--mf-red) !important;
+    }
+
+.Mapfre .aliados #TenantMaster {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    max-width: 150px !important;
+    display: inline-block !important;
+}
+
+/* ================================================================
+   V6 — CAPA DE ACABADO
+   ================================================================
+   Todo lo de aquí abajo es solo presentación: no cambia estructura
+   HTML, IDs, clases ni nada que master.js consulte. El color sigue
+   saliendo siempre de --mapfrered1 / --mapfrered2 (las que escribe
+   master.js por cuenta), así que cada tenant hereda su propia
+   identidad automáticamente.
+   ================================================================ */
+
+/* ---------- DENSIDAD: se recupera el ancho que liberaron los 3
+   puntos y se ajusta el sidebar a una medida más eficiente ---- */
+.Mapfre #wrapper {
+    --mf-sidebar: 228px;
+    --mf-radius: 10px;
+}
+
+/* ---------- SIDEBAR: cabecera de marca ---------- */
+.Mapfre #imgHead {
+    height: 64px !important;
+    min-height: 64px !important;
+    padding: 0 16px !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+    background: #fff !important;
+}
+
+    .Mapfre #imgHead::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: -1px;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--mf-red), transparent 78%);
+        opacity: .55;
+    }
+
+.Mapfre .head_prin {
+    border-left: 0 !important;
+    box-shadow: 1px 0 0 var(--mf-line), 12px 0 34px rgba(20,24,29,.045) !important;
+}
+
+    /* Lomo de color de la cuenta, ahora como degradado vertical */
+    .Mapfre .head_prin::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, var(--mf-red), var(--mf-red-2, var(--mf-red)));
+        z-index: 2;
+    }
+
+.Mapfre .head_line {
+    padding: 10px 9px 6px !important;
+}
+
+/* ---------- SIDEBAR: items de navegación ---------- */
+.Mapfre #side-menu .level_1__link,
+.Mapfre #side-menu .menu > .level_1__item > a {
+    min-height: 37px !important;
+    margin: 1px 0 !important;
+    padding: 8px 12px !important;
+    border-left: 0 !important;
+    border-radius: 9px !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
+    letter-spacing: -.005em !important;
+    position: relative !important;
+}
+
+.Mapfre #side-menu > nav:hover > .menu .level_1__link,
+.Mapfre #side-menu > nav:hover > .menu > .level_1__item > a {
+    background: var(--mf-hover) !important;
+}
+
+/* Activo: pastilla suave + marca lateral, en el color de la cuenta */
+.Mapfre #side-menu > nav.active > .menu .level_1__link,
+.Mapfre #side-menu > nav.active > .menu > .level_1__item > a,
+.Mapfre #side-menu > nav.active > .menu .level_1__link:hover,
+.Mapfre #side-menu > nav.active > .menu > .level_1__item > a:hover {
+    background: var(--mf-red-soft, #FBEAE8) !important;
+    border-left: 0 !important;
+    color: var(--mf-red) !important;
+    font-weight: 750 !important;
+}
+
+    .Mapfre #side-menu > nav.active > .menu .level_1__link::before,
+    .Mapfre #side-menu > nav.active > .menu > .level_1__item > a::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 17px;
+        border-radius: 0 3px 3px 0;
+        background: var(--mf-red);
+    }
+
+.Mapfre #side-menu .menu-dropdown {
+    margin: 1px 0 3px 24px !important;
+    padding: 0 0 0 11px !important;
+    border-left: 1px dashed var(--mf-line) !important;
+}
+
+    .Mapfre #side-menu .menu-dropdown li > a {
+        border-radius: 7px !important;
+        font-size: 11.5px !important;
+    }
+
+        .Mapfre #side-menu .menu-dropdown li > a:hover {
+            padding-left: 12px !important;
+            transition: padding .13s ease, background .13s ease !important;
+        }
+
+/* ---------- SIDEBAR: tarjeta de usuario al pie ---------- */
+.Mapfre .aliados {
+    min-height: 66px !important;
+    margin: auto 8px 9px !important;
+    padding: 9px 10px !important;
+    width: calc(100% - 16px) !important;
+    border: 1px solid var(--mf-line) !important;
+    border-top: 1px solid var(--mf-line) !important;
+    border-radius: 11px !important;
+    background: linear-gradient(180deg, #fff, #FCFBFB) !important;
+    box-shadow: 0 1px 2px rgba(20,24,29,.04) !important;
+    grid-template-columns: 1fr 38px !important;
+    transition: border-color .14s ease, box-shadow .14s ease !important;
+}
+
+    .Mapfre .aliados:hover {
+        border-color: color-mix(in srgb, var(--mf-red) 22%, var(--mf-line));
+        box-shadow: 0 4px 14px rgba(20,24,29,.07) !important;
+    }
+
+.Mapfre #UserNameMaster {
+    font-size: 12px !important;
+    letter-spacing: -.01em !important;
+}
+
+.Mapfre .circulo {
+    width: 38px !important;
+    height: 38px !important;
+    border: 0 !important;
+    padding: 2px !important;
+    background: linear-gradient(135deg, var(--mf-red), var(--mf-red-2, var(--mf-red))) !important;
+    box-shadow: 0 2px 7px rgba(20,24,29,.13) !important;
+}
+
+    .Mapfre .circulo img {
+        background: #fff !important;
+        padding: 3px !important;
+        object-fit: contain !important;
+    }
+
+/* ---------- ÁREA DE TRABAJO ---------- */
+.Mapfre .wrapper.wrapper-content,
+.Mapfre .wrapper-content {
+    padding: 22px 26px 30px !important;
+}
+
+/* Encabezado de página con acento de marca */
+.Mapfre .page-heading {
+    padding: 0 0 13px !important;
+    margin: 0 0 20px !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+}
+
+    .Mapfre .page-heading::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 46px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--mf-red);
+    }
+
+    .Mapfre .page-heading h2,
+    .Mapfre .page-heading h3 {
+        font-size: 19px !important;
+        letter-spacing: -.025em !important;
+    }
+
+/* ---------- TARJETAS ---------- */
+.Mapfre #page-wrapper .ibox {
+    border-radius: var(--mf-radius) !important;
+    box-shadow: 0 1px 2px rgba(20,24,29,.05), 0 0 0 0 transparent !important;
+    transition: box-shadow .16s ease, border-color .16s ease, transform .16s ease !important;
+}
+
+    .Mapfre #page-wrapper .ibox:hover {
+        transform: translateY(-1px) !important;
+        border-color: color-mix(in srgb, var(--mf-red) 18%, var(--mf-line)) !important;
+        box-shadow: 0 10px 26px rgba(20,24,29,.09) !important;
+    }
+
+.Mapfre #page-wrapper .ibox-title {
+    min-height: 46px !important;
+    padding: 11px 17px !important;
+    background: linear-gradient(180deg, #fff, #FCFCFD) !important;
+    position: relative !important;
+}
+
+    .Mapfre #page-wrapper .ibox-title h5 {
+        display: flex !important;
+        align-items: center !important;
+        gap: 9px !important;
+        font-size: 12.5px !important;
+        letter-spacing: -.012em !important;
+    }
+
+        /* Punto de acento antes del título de cada tarjeta */
+        .Mapfre #page-wrapper .ibox-title h5::before {
+            content: "";
+            width: 3px;
+            height: 14px;
+            border-radius: 3px;
+            background: var(--mf-red);
+            flex: 0 0 auto;
+        }
+
+.Mapfre #page-wrapper .ibox-content {
+    padding: 17px !important;
+}
+
+/* ---------- WIDGETS ---------- */
+.Mapfre #page-wrapper .widget.style1 {
+    border-left: 0 !important;
+    border-radius: var(--mf-radius) !important;
+    background: linear-gradient(180deg, #fff, #FCFBFB) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: transform .16s ease, box-shadow .16s ease !important;
+}
+
+    .Mapfre #page-wrapper .widget.style1::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--mf-red), var(--mf-red-2, var(--mf-red)));
+    }
+
+    .Mapfre #page-wrapper .widget.style1:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 10px 26px rgba(20,24,29,.09) !important;
+    }
+
+    .Mapfre #page-wrapper .widget.style1 .fa {
+        color: var(--mf-red) !important;
+        opacity: .9 !important;
+    }
+
+/* ---------- BOTONES ---------- */
+.Mapfre #page-wrapper .btn {
+    border-radius: 8px !important;
+    font-family: var(--mf-font-display);
+    font-weight: 700 !important;
+    letter-spacing: -.005em !important;
+    transition: transform .12s ease, box-shadow .14s ease, background .14s ease, border-color .14s ease !important;
+}
+
+.Mapfre #page-wrapper .btn-primary,
+.Mapfre #page-wrapper .btn-danger,
+.Mapfre #page-wrapper .btn-success {
+    border: 0 !important;
+    background: linear-gradient(180deg, var(--mf-red), var(--mf-red-2, var(--mf-red))) !important;
+    box-shadow: 0 1px 2px rgba(20,24,29,.14) !important;
+}
+
+    .Mapfre #page-wrapper .btn-primary:hover,
+    .Mapfre #page-wrapper .btn-danger:hover,
+    .Mapfre #page-wrapper .btn-success:hover {
+        box-shadow: 0 6px 16px color-mix(in srgb, var(--mf-red) 34%, transparent) !important;
+        transform: translateY(-1px) !important;
+    }
+
+.Mapfre #page-wrapper .btn:focus-visible {
+    outline: 0 !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mf-red) 26%, transparent) !important;
+}
+
+.Mapfre #page-wrapper .btn-white,
+.Mapfre #page-wrapper .btn-default,
+.Mapfre #page-wrapper .btn-secondary {
+    border-radius: 8px !important;
+}
+
+    .Mapfre #page-wrapper .btn-white:hover,
+    .Mapfre #page-wrapper .btn-default:hover,
+    .Mapfre #page-wrapper .btn-secondary:hover {
+        border-color: var(--mf-red) !important;
+        color: var(--mf-red) !important;
+    }
+
+/* ---------- FORMULARIOS ---------- */
+.Mapfre #page-wrapper .form-control {
+    border-radius: 8px !important;
+    transition: border-color .13s ease, box-shadow .13s ease !important;
+}
+
+    .Mapfre #page-wrapper .form-control:focus {
+        border-color: var(--mf-red) !important;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--mf-red) 15%, transparent) !important;
+    }
+
+.Mapfre #page-wrapper .control-label,
+.Mapfre #page-wrapper label.control-label {
+    font-family: var(--mf-font-display);
+    font-weight: 700 !important;
+    letter-spacing: .01em !important;
+    color: #5A6169 !important;
+}
+
+/* ---------- TABLAS ---------- */
+.Mapfre #page-wrapper .table thead th,
+.Mapfre #page-wrapper .bootstrap-table .fixed-table-container thead th {
+    background: #FAFAFB !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+    color: #6A7178 !important;
+    font-family: var(--mf-font-display);
+    font-size: 10.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: .045em !important;
+    text-transform: uppercase !important;
+}
+
+.Mapfre #page-wrapper .table tbody tr:hover td {
+    background: color-mix(in srgb, var(--mf-red) 5%, #fff) !important;
+}
+
+.Mapfre #page-wrapper .table-responsive {
+    border-radius: var(--mf-radius) !important;
+}
+
+/* ---------- PAGINACIÓN ---------- */
+.Mapfre #page-wrapper .pagination > li > a,
+.Mapfre #page-wrapper .pagination > li > span {
+    border-radius: 7px !important;
+}
+
+.Mapfre #page-wrapper .pagination > .active > a,
+.Mapfre #page-wrapper .pagination > .active > span {
+    border: 0 !important;
+    background: linear-gradient(180deg, var(--mf-red), var(--mf-red-2, var(--mf-red))) !important;
+    box-shadow: 0 2px 7px color-mix(in srgb, var(--mf-red) 30%, transparent) !important;
+}
+
+/* ---------- TABS ---------- */
+.Mapfre #page-wrapper .nav-tabs > li > a {
+    font-size: 11.5px !important;
+    letter-spacing: -.005em !important;
+}
+
+/* ---------- PIE ---------- */
+.Mapfre .footer {
+    background: transparent !important;
+    border-top: 1px solid var(--mf-line) !important;
+    letter-spacing: .02em !important;
+}
+
+/* ---------- MOVIMIENTO REDUCIDO (accesibilidad) ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .Mapfre * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ================================================================
+   V7 — REFINAMIENTO FINAL
+   ================================================================
+   Ajustes de oficio sobre la capa V6: sistema de sombras en capas,
+   profundidad del sidebar, micro-interacciones y detalles de
+   tipografía. Sigue siendo 100% presentación y 100% derivado de
+   --mapfrered1 / --mapfrered2.
+   ================================================================ */
+
+.Mapfre #wrapper {
+    /* Sombras en dos capas (contacto + difusión): se ven mucho más
+       naturales que una sola sombra grande y difusa. */
+    --mf-e1: 0 1px 1px rgba(20,24,29,.04), 0 2px 6px rgba(20,24,29,.04);
+    --mf-e2: 0 1px 2px rgba(20,24,29,.05), 0 8px 22px rgba(20,24,29,.07);
+    --mf-e3: 0 2px 4px rgba(20,24,29,.06), 0 18px 44px rgba(20,24,29,.11);
+    --mf-ease: cubic-bezier(.2,.7,.3,1);
+}
+
+/* ---------- SIDEBAR: más profundidad y aire ---------- */
+.Mapfre .head_prin {
+    background: linear-gradient(180deg, #fff 0%, #FDFDFD 62%, #FBFAFA 100%) !important;
+    box-shadow: 1px 0 0 var(--mf-line), 16px 0 44px rgba(20,24,29,.05) !important;
+}
+
+/* Halo tenue del color de la cuenta detrás del logo */
+.Mapfre #imgHead::before {
+    content: "";
+    position: absolute;
+    left: -30px;
+    top: -46px;
+    width: 150px;
+    height: 110px;
     border-radius: 50%;
-    background: rgba(255, 0, 45, .1);
-    color: var(--mapfrered1);
-    font-size: 13px;
+    background: var(--mf-red);
+    opacity: .06;
+    filter: blur(12px);
+    pointer-events: none;
 }
 
-.Mapfre .hr-line-dashed {
-    border-top: 2px solid var(--mapfrered1) !important;
-    opacity: .15;
-    margin: 6px 0 22px !important;
+.Mapfre #imgHead img {
+    max-height: 32px !important;
 }
 
-/* Fields */
-.Mapfre .form-group {
-    margin-bottom: 22px;
+/* Iconos del menú: acompañan el estado activo con un leve empuje */
+.Mapfre #side-menu .level_1__link i,
+.Mapfre #side-menu .menu > .level_1__item > a i {
+    transition: transform .18s var(--mf-ease), color .14s ease !important;
 }
 
-.Mapfre .control-label {
-    display: block;
-    color: #6b7280;
-    font-weight: 600;
+.Mapfre #side-menu > nav:hover > .menu .level_1__link i,
+.Mapfre #side-menu > nav:hover > .menu > .level_1__item > a i {
+    transform: translateX(1px) scale(1.06) !important;
+    color: var(--mf-red) !important;
+}
+
+.Mapfre #side-menu .level_1__link,
+.Mapfre #side-menu .menu > .level_1__item > a {
+    transition: background .16s var(--mf-ease), color .16s ease !important;
+}
+
+/* La pastilla activa entra con un gesto corto en vez de aparecer seca */
+.Mapfre #side-menu > nav.active > .menu .level_1__link::before,
+.Mapfre #side-menu > nav.active > .menu > .level_1__item > a::before {
+    animation: mfMarkIn .26s var(--mf-ease) both;
+}
+
+@keyframes mfMarkIn {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+
+    to {
+        height: 17px;
+        opacity: 1;
+    }
+}
+
+/* Scrollbar del menú: casi invisible hasta que se usa */
+.Mapfre #side-menu::-webkit-scrollbar-thumb {
+    background: transparent;
+    transition: background .2s ease;
+}
+
+.Mapfre #side-menu:hover::-webkit-scrollbar-thumb {
+    background: #DEDFE1;
+}
+
+/* ---------- TARJETA DE USUARIO ---------- */
+.Mapfre .aliados {
+    box-shadow: var(--mf-e1) !important;
+}
+
+    .Mapfre .aliados:hover {
+        box-shadow: var(--mf-e2) !important;
+    }
+
+.Mapfre .circulo {
+    transition: transform .18s var(--mf-ease), box-shadow .18s ease !important;
+}
+
+.Mapfre .aliados:hover .circulo {
+    transform: scale(1.05) rotate(-2deg) !important;
+}
+
+/* ---------- MENÚ DE USUARIO: entrada animada ---------- */
+.Mapfre .aliados ul.menu-dropdown {
+    box-shadow: var(--mf-e3) !important;
+    transform-origin: bottom center;
+}
+
+.Mapfre .aliados .inputche:checked ~ ul.menu-dropdown {
+    animation: mfPopUp .2s var(--mf-ease) both;
+}
+
+@keyframes mfPopUp {
+    from {
+        opacity: 0;
+        transform: translateY(7px) scale(.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.Mapfre .aliados ul.menu-dropdown > li > a:hover i {
+    transform: translateX(1px);
+    transition: transform .14s var(--mf-ease);
+}
+
+/* ---------- TARJETAS: luz superior y sombra en capas ---------- */
+.Mapfre #page-wrapper .ibox {
+    box-shadow: var(--mf-e1) !important;
+    transition: box-shadow .18s var(--mf-ease), border-color .18s ease, transform .18s var(--mf-ease) !important;
+}
+
+    .Mapfre #page-wrapper .ibox:hover {
+        box-shadow: var(--mf-e2) !important;
+    }
+
+.Mapfre #page-wrapper .ibox-title {
+    overflow: hidden !important;
+}
+
+    /* Lavado muy leve del color de la cuenta en la esquina del encabezado */
+    .Mapfre #page-wrapper .ibox-title::after {
+        content: "";
+        position: absolute;
+        right: -40px;
+        top: -60px;
+        width: 190px;
+        height: 120px;
+        border-radius: 50%;
+        background: var(--mf-red);
+        opacity: .045;
+        filter: blur(10px);
+        pointer-events: none;
+    }
+
+    .Mapfre #page-wrapper .ibox-title h5::before {
+        background: linear-gradient(180deg, var(--mf-red), var(--mf-red-2, var(--mf-red)));
+        box-shadow: 0 1px 3px color-mix(in srgb, var(--mf-red) 40%, transparent);
+    }
+
+/* ---------- WIDGETS ---------- */
+.Mapfre #page-wrapper .widget.style1 {
+    box-shadow: var(--mf-e1) !important;
+}
+
+    .Mapfre #page-wrapper .widget.style1:hover {
+        box-shadow: var(--mf-e2) !important;
+    }
+
+    .Mapfre #page-wrapper .widget.style1 h2 {
+        font-family: var(--mf-font-display);
+        font-weight: 800 !important;
+        letter-spacing: -.03em !important;
+        font-variant-numeric: tabular-nums !important;
+    }
+
+/* ---------- BOTONES: brillo superior sutil ---------- */
+.Mapfre #page-wrapper .btn-primary,
+.Mapfre #page-wrapper .btn-danger,
+.Mapfre #page-wrapper .btn-success {
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 1px 2px rgba(20,24,29,.16) !important;
+}
+
+    .Mapfre #page-wrapper .btn-primary:hover,
+    .Mapfre #page-wrapper .btn-danger:hover,
+    .Mapfre #page-wrapper .btn-success:hover {
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 7px 18px color-mix(in srgb, var(--mf-red) 32%, transparent) !important;
+    }
+
+    .Mapfre #page-wrapper .btn-primary:active,
+    .Mapfre #page-wrapper .btn-danger:active,
+    .Mapfre #page-wrapper .btn-success:active {
+        transform: translateY(0) scale(.985) !important;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,.16) !important;
+    }
+
+/* ---------- TABLAS: números alineados y cabecera fija ---------- */
+.Mapfre #page-wrapper .table tbody td {
+    font-variant-numeric: tabular-nums !important;
+}
+
+.Mapfre #page-wrapper .table thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+}
+
+.Mapfre #page-wrapper .table tbody tr {
+    transition: background .13s ease !important;
+}
+
+/* ---------- FOCO VISIBLE CONSISTENTE (accesibilidad) ---------- */
+.Mapfre a:focus-visible,
+.Mapfre button:focus-visible,
+.Mapfre .level_1__link:focus-visible,
+.Mapfre .language-selector-menu__button:focus-visible {
+    outline: 2px solid var(--mf-red) !important;
+    outline-offset: 2px !important;
+    border-radius: 7px !important;
+}
+
+/* ---------- SELECCIÓN DE TEXTO EN EL COLOR DE LA CUENTA ---------- */
+.Mapfre ::selection {
+    background: color-mix(in srgb, var(--mf-red) 82%, #000);
+    color: #fff;
+}
+
+/* ---------- SCROLLBAR GENERAL ---------- */
+.Mapfre #page-wrapper ::-webkit-scrollbar-thumb {
+    background: #D2D5D9;
+    border-radius: 20px;
+}
+
+    .Mapfre #page-wrapper ::-webkit-scrollbar-thumb:hover {
+        background: var(--mf-red);
+    }
+
+/* ---------- ENTRADA DEL CONTENIDO ---------- */
+.Mapfre .wrapper-content > .row {
+    animation: mfRise .3s var(--mf-ease) both;
+}
+
+@keyframes mfRise {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================================================
+   V8 — CORRECCIONES SOBRE PANTALLAS REALES
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   BUG: cuadro blanco vacío flotando sobre la tarjeta de usuario
+   ----------------------------------------------------------------
+   Causa: al menú de usuario (ul.menu-dropdown) se le dio tarjeta
+   propia — fondo blanco, borde, radio y sombra — pero ese estilo se
+   aplicaba SIEMPRE, no solo al abrirlo. Cerrado, sus <li> quedan en
+   alto 0, así que el <ul> se seguía pintando como un rectángulo
+   blanco vacío justo encima del nombre del usuario. Eso es el cuadro
+   que aparece en pantalla.
+   Solución: el contenedor solo existe visualmente cuando el checkbox
+   #Aliados está marcado. Mismo mecanismo de siempre, sin JS.
+   ---------------------------------------------------------------- */
+.Mapfre .aliados ul.menu-dropdown {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    padding: 0 !important;
+    border-width: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    transition: opacity .16s ease, visibility .16s ease !important;
+}
+
+.Mapfre .aliados .inputche:checked ~ ul.menu-dropdown {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    padding: 6px !important;
+    border: 1px solid var(--mf-line) !important;
+    background: #fff !important;
+    box-shadow: var(--mf-e3, 0 18px 44px rgba(20,24,29,.16)) !important;
+}
+
+/* El filete de color solo debe verse con el menú abierto */
+.Mapfre .aliados ul.menu-dropdown::before {
+    display: none !important;
+}
+
+.Mapfre .aliados .inputche:checked ~ ul.menu-dropdown::before {
+    display: block !important;
+}
+
+/* ----------------------------------------------------------------
+   Se retira la trama diagonal del fondo: en monitores reales se
+   confundía con ruido/moiré de pantalla. Queda solo el degradado
+   suave del color de la cuenta, que es lo que se buscaba.
+   ---------------------------------------------------------------- */
+.Mapfre .wrapper-content::after {
+    display: none !important;
+}
+
+.Mapfre .wrapper-content::before {
+    opacity: .13;
+}
+
+/* ----------------------------------------------------------------
+   LOGO ROTO: mientras la ruta del archivo no exista, el navegador
+   pinta el icono de imagen rota y desborda el texto alternativo
+   sobre dos líneas (justo lo que se ve arriba del menú).
+   Esto NO crea el archivo — hay que subirlo o corregir la ruta —
+   pero evita que se vea roto: se recorta a una sola línea, se
+   oculta el icono de imagen fallida y el contenedor mantiene su
+   altura para que el menú no se desplace.
+   ---------------------------------------------------------------- */
+.Mapfre #imgHead {
+    line-height: 0 !important;
+}
+
+    .Mapfre #imgHead img {
+        max-width: 100% !important;
+        overflow: hidden !important;
+        font-size: 11px !important;
+        line-height: 34px !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+        color: var(--mf-red) !important;
+        font-family: var(--mf-font-display);
+        font-weight: 800 !important;
+        letter-spacing: -.02em !important;
+    }
+
+/* Igual para el logo de la cuenta dentro del círculo */
+.Mapfre .circulo img {
+    overflow: hidden !important;
+    font-size: 0 !important;
+}
+
+/* ================================================================
+   FORMULARIOS — modernización de las pantallas de cotización
+   ================================================================ */
+
+/* ---- Banner diagonal heredado: se vuelve una cabecera limpia ---- */
+.Mapfre #page-wrapper .title_design {
+    width: auto !important;
+    min-width: 210px !important;
+    clip-path: none !important;
+    border-radius: 10px !important;
+    background: linear-gradient(135deg, var(--mf-red), var(--mf-red-2, var(--mf-red))) !important;
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--mf-red) 26%, transparent) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 4px 0 !important;
+}
+
+    .Mapfre #page-wrapper .title_design h5 {
+        font-family: var(--mf-font-display);
+        font-size: 17px !important;
+        font-weight: 800 !important;
+        letter-spacing: -.02em !important;
+        color: #fff !important;
+    }
+
+.Mapfre #page-wrapper .Title_Prin {
+    min-height: 0 !important;
+    gap: 16px !important;
+    align-items: stretch !important;
+    margin-bottom: 18px !important;
+}
+
+.Mapfre #page-wrapper .T2 {
+    width: auto !important;
+    flex: 1 1 auto !important;
+    padding-right: 16px !important;
+    border-right: 1px solid var(--mf-line) !important;
+}
+
+.Mapfre #page-wrapper .title_partner p {
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: var(--mf-text) !important;
+    text-align: left !important;
+}
+
+.Mapfre #page-wrapper .T3 {
+    width: auto !important;
+    min-width: 165px !important;
+    padding: 12px 14px !important;
+    border-radius: 10px !important;
+    background: var(--mf-red-soft, #FBEAE8) !important;
+}
+
+/* ---- Encabezados de sección ("Datos del contratante", etc.) ---- */
+.Mapfre #page-wrapper h4,
+.Mapfre #page-wrapper .titulosMant {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    margin: 22px 0 12px !important;
+    padding-bottom: 9px !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+    color: var(--mf-ink) !important;
+    font-family: var(--mf-font-display);
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: -.015em !important;
+}
+
+    .Mapfre #page-wrapper h4 i,
+    .Mapfre #page-wrapper .titulosMant i {
+        color: var(--mf-red) !important;
+        font-size: 13px !important;
+    }
+
+/* ---- Campos ---- */
+.Mapfre #page-wrapper .form-control,
+.Mapfre #page-wrapper select.form-control {
+    min-height: 38px !important;
+    padding: 8px 12px !important;
+    border: 1px solid #DCDEE1 !important;
+    border-radius: 9px !important;
+    background-color: #fff !important;
+    font-size: 12.5px !important;
+    color: var(--mf-ink) !important;
+}
+
+    .Mapfre #page-wrapper .form-control:hover {
+        border-color: #BFC3C8 !important;
+    }
+
+/* Selects con flecha propia (la nativa se ve anticuada) */
+.Mapfre #page-wrapper select.form-control,
+.Mapfre #page-wrapper .custom-select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    padding-right: 32px !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'><path d='M1 1l4.5 4.5L10 1' fill='none' stroke='%238A9099' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+}
+
+    /* Estado "Cargando..." más discreto */
+    .Mapfre #page-wrapper select.form-control option:first-child {
+        color: #A5ABB2 !important;
+    }
+
+/* Fechas: el icono de calendario nativo toma el color de la cuenta */
+.Mapfre #page-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: .55;
+    transition: opacity .13s ease;
+}
+
+.Mapfre #page-wrapper input[type="date"]:hover::-webkit-calendar-picker-indicator {
+    opacity: 1;
+}
+
+/* Asterisco de obligatorio */
+.Mapfre #page-wrapper .required-mark {
+    color: var(--mf-red) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+/* ---- Radios y checkboxes: los controles nativos son lo que más
+   "envejece" el formulario. Se agrandan, toman el color de la
+   cuenta y ganan una zona clicable con hover. ---- */
+.Mapfre #page-wrapper input[type="radio"],
+.Mapfre #page-wrapper input[type="checkbox"] {
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: 7px !important;
+    accent-color: var(--mf-red) !important;
+    cursor: pointer !important;
+    vertical-align: middle !important;
+}
+
+.Mapfre #page-wrapper .radio,
+.Mapfre #page-wrapper .checkbox,
+.Mapfre #page-wrapper .form-check,
+.Mapfre #page-wrapper .custom-control {
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 34px !important;
+    margin: 3px 8px 3px 0 !important;
+    padding: 4px 12px 4px 10px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+    cursor: pointer !important;
+    transition: border-color .13s ease, background .13s ease !important;
+}
+
+    .Mapfre #page-wrapper .radio:hover,
+    .Mapfre #page-wrapper .checkbox:hover,
+    .Mapfre #page-wrapper .form-check:hover,
+    .Mapfre #page-wrapper .custom-control:hover {
+        border-color: var(--mf-red) !important;
+        background: var(--mf-red-soft, #FBEAE8) !important;
+    }
+
+    .Mapfre #page-wrapper .radio label,
+    .Mapfre #page-wrapper .checkbox label,
+    .Mapfre #page-wrapper .form-check label {
+        margin: 0 !important;
+        cursor: pointer !important;
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+        color: var(--mf-text) !important;
+    }
+
+/* ---- Separadores punteados heredados -> línea fina ---- */
+.Mapfre #page-wrapper .hr-line-dashed {
+    border: 0 !important;
+    border-top: 1px solid var(--mf-line) !important;
+    margin: 18px 0 !important;
+    background: none !important;
+}
+
+/* ================================================================
+   V9 — ORDEN Y RITMO EN FORMULARIOS
+   ================================================================
+   Nota importante: el ORDEN real de los campos vive en la vista
+   (.cshtml de cada cotizador), no aquí. Lo que este bloque hace es
+   darles una retícula, una alineación y un ritmo consistentes para
+   que se lean ordenados aunque el marcado venga desparejo.
+   ================================================================ */
+
+/* ---- Cada sección se lee como un bloque con aire propio ---- */
+.Mapfre #page-wrapper .ibox-content > h4,
+.Mapfre #page-wrapper .ibox-content > .titulosMant {
+    margin-top: 26px !important;
+}
+
+    .Mapfre #page-wrapper .ibox-content > h4:first-child,
+    .Mapfre #page-wrapper .ibox-content > .titulosMant:first-child {
+        margin-top: 2px !important;
+    }
+
+/* ---- Alineación: etiquetas e inputs en la misma línea base ----
+   El problema visual típico de estos formularios es que una etiqueta
+   de dos líneas empuja su campo hacia abajo y rompe la fila. Con la
+   columna en flex y el campo empujado al fondo, todos los inputs de
+   una misma fila quedan perfectamente alineados. */
+.Mapfre #page-wrapper .row > [class*="col-"] > .form-group,
+.Mapfre #page-wrapper .form-row > [class*="col-"] > .form-group {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    margin-bottom: 16px !important;
+}
+
+.Mapfre #page-wrapper .form-group > .control-label,
+.Mapfre #page-wrapper .form-group > label {
+    display: block !important;
+    min-height: 15px !important;
+    margin-bottom: 5px !important;
+    line-height: 1.3 !important;
+}
+
+.Mapfre #page-wrapper .form-group > .form-control,
+.Mapfre #page-wrapper .form-group > .input-group,
+.Mapfre #page-wrapper .form-group > select {
+    margin-top: auto !important;
+}
+
+/* ---- Grupos de radios/checkbox: set ordenado, no sopa de bolitas ---- */
+.Mapfre #page-wrapper .form-group > .radio,
+.Mapfre #page-wrapper .form-group > .checkbox,
+.Mapfre #page-wrapper .form-group > .form-check {
+    margin-top: 0 !important;
+}
+
+/* Contenedor opcional: agrégalo en la vista alrededor de un set de
+   opciones para que se acomoden en rejilla pareja en vez de en
+   renglones irregulares. Uso: <div class="mf-options"> ... </div> */
+.Mapfre #page-wrapper .mf-options {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin: 2px 0 4px !important;
+}
+
+    .Mapfre #page-wrapper .mf-options .radio,
+    .Mapfre #page-wrapper .mf-options .checkbox,
+    .Mapfre #page-wrapper .mf-options .form-check {
+        margin: 0 !important;
+    }
+
+/* ---- Retícula automática (opcional pero recomendada) ----
+   Agrega la clase mf-grid al <div class="row"> de una sección y los
+   campos se acomodan solos en columnas parejas, sin depender de que
+   cada uno traiga el col-md-* correcto. Se adapta al ancho: 4 / 3 /
+   2 / 1 columnas según la pantalla, sin media queries. */
+.Mapfre #page-wrapper .row.mf-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)) !important;
+    gap: 0 16px !important;
+    margin: 0 !important;
+}
+
+    .Mapfre #page-wrapper .row.mf-grid > [class*="col-"] {
+        width: auto !important;
+        max-width: none !important;
+        flex: none !important;
+        padding: 0 !important;
+    }
+
+    /* Un campo que deba ocupar toda la fila (direcciones, observaciones) */
+    .Mapfre #page-wrapper .row.mf-grid > .mf-full {
+        grid-column: 1 / -1 !important;
+    }
+
+    /* Y uno que ocupe el doble de ancho (nombres largos, razón social) */
+    .Mapfre #page-wrapper .row.mf-grid > .mf-wide {
+        grid-column: span 2 !important;
+    }
+
+@media (max-width: 575px) {
+    .Mapfre #page-wrapper .row.mf-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+        .Mapfre #page-wrapper .row.mf-grid > .mf-wide {
+            grid-column: 1 / -1 !important;
+        }
+}
+
+/* ---- Textareas y campos largos ---- */
+.Mapfre #page-wrapper textarea.form-control {
+    min-height: 88px !important;
+    line-height: 1.5 !important;
+}
+
+/* ---- Barra de acciones: los botones dejan de flotar sueltos al
+   final y quedan agrupados a la derecha sobre una línea. ---- */
+.Mapfre #page-wrapper .ibox-content > .row:last-child .btn-primary,
+.Mapfre #page-wrapper .mf-actions {
+    /* marcador para la regla de abajo */
+}
+
+.Mapfre #page-wrapper .mf-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    gap: 9px !important;
+    margin-top: 22px !important;
+    padding-top: 16px !important;
+    border-top: 1px solid var(--mf-line) !important;
+}
+
+    .Mapfre #page-wrapper .mf-actions .btn {
+        float: none !important;
+        margin: 0 !important;
+    }
+
+/* El btn-primary heredado trae float:right y margen suelto; dentro
+   de una fila normal eso descuadra la última línea del formulario. */
+.Mapfre #page-wrapper .btn-primary {
+    margin: 6px 0 6px 8px !important;
+}
+
+/* ---- Mensajes de error: bajo el campo, sin descuadrar la fila ---- */
+.Mapfre #page-wrapper .form-group .error,
+.Mapfre #page-wrapper .form-group .LabelValidate {
+    display: block !important;
+    margin-top: 4px !important;
+    color: #C0392B !important;
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+}
+
+/* ---- Bloques informativos laterales (el texto de producto) ---- */
+.Mapfre #page-wrapper .T3 a {
+    display: block !important;
+    margin-bottom: 5px !important;
+    font-family: var(--mf-font-display);
+    font-size: 12.5px !important;
+    font-weight: 800 !important;
+    color: var(--mf-red) !important;
+    text-decoration: none !important;
+}
+
+.Mapfre #page-wrapper .T3 p {
+    margin: 0 !important;
+    font-size: 10.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: var(--mf-text) !important;
+    text-align: left !important;
+}
+
+/* ================================================================
+   V10 — FONDO NUEVO + CONTROLES REALES DE LOS COTIZADORES
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   FONDO: se reemplaza el anterior por una malla de luz suave.
+   Sin patrones repetidos (líneas/puntos) porque en monitores reales
+   producen moiré. Son tres focos de luz del color de la cuenta,
+   de distinta intensidad, sobre un lienzo cálido neutro, más un
+   velado blanco arriba que da sensación de profundidad.
+   Todo sale de --mapfrered1, así que cambia con la cuenta.
+   ---------------------------------------------------------------- */
+.Mapfre #wrapper {
+    --mf-canvas: #F4F5F7;
+}
+
+.Mapfre .wrapper-content::before {
+    opacity: 1 !important;
+    filter: none !important;
+    background-color: var(--mf-canvas) !important;
+    background-image:
+    /* velado claro superior: da profundidad y despeja la zona de trabajo */
+    linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.45) 32%, rgba(255,255,255,0) 65%),
+    /* foco principal, esquina superior derecha */
+    radial-gradient(920px 660px at 92% -6%, color-mix(in srgb, var(--mf-red) 30%, transparent) 0%, transparent 65%),
+    /* foco de apoyo, inferior izquierda */
+    radial-gradient(760px 620px at -4% 102%, color-mix(in srgb, var(--mf-red) 22%, transparent) 0%, transparent 62%),
+    /* acento cálido central que rompe la simetría */
+    radial-gradient(560px 420px at 62% 58%, color-mix(in srgb, var(--mf-red) 11%, transparent) 0%, transparent 70%) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+/* Respaldo para navegadores sin color-mix(): el color plano de la
+   cuenta atenuado, que igual se ve bien. */
+@supports not (color: color-mix(in srgb, red 10%, transparent)) {
+    .Mapfre .wrapper-content::before {
+        opacity: .14 !important;
+        background-color: transparent !important;
+        background-image: radial-gradient(920px 660px at 92% -6%, var(--mf-red) 0%, transparent 65%), radial-gradient(760px 620px at -4% 102%, var(--mf-red) 0%, transparent 62%) !important;
+    }
+}
+
+/* Las tarjetas se separan del fondo con un blanco puro */
+.Mapfre #page-wrapper .ibox,
+.Mapfre #page-wrapper .ibox-content,
+.Mapfre #page-wrapper .ibox-title {
+    background-color: #fff !important;
+}
+
+/* ----------------------------------------------------------------
+   RADIOS/CHECKS REALES: los cotizadores usan el patrón Bootstrap 4
+   "custom-control custom-radio custom-control-inline". Ahí el input
+   nativo está oculto y el círculo visible se dibuja en el ::before
+   de la etiqueta. Por eso el estilo anterior (accent-color sobre el
+   input) no se veía, y además el padding de la pastilla pisaba el
+   marcador. Esto lo corrige y le da estado seleccionado real.
+   ---------------------------------------------------------------- */
+.Mapfre #page-wrapper .custom-control {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 34px !important;
+    margin: 3px 7px 3px 0 !important;
+    padding: 4px 14px 4px 32px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+    cursor: pointer !important;
+    transition: border-color .14s ease, background .14s ease, box-shadow .14s ease !important;
+}
+
+    .Mapfre #page-wrapper .custom-control:hover {
+        border-color: var(--mf-red) !important;
+        background: var(--mf-red-soft, #FBEAE8) !important;
+    }
+
+/* El input oculto debe seguir oculto y cubrir la pastilla completa
+   para que toda ella sea clicable. */
+.Mapfre #page-wrapper .custom-control-input {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    left: 0 !important;
+    top: 0 !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+    cursor: pointer !important;
+    z-index: 1 !important;
+}
+
+.Mapfre #page-wrapper .custom-control-label {
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: var(--mf-text) !important;
+    line-height: 1.2 !important;
+}
+
+    /* Marcador (círculo / casilla) */
+    .Mapfre #page-wrapper .custom-control-label::before {
+        left: 11px !important;
+        top: 50% !important;
+        width: 15px !important;
+        height: 15px !important;
+        transform: translateY(-50%) !important;
+        border: 1.6px solid #C6CACE !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        transition: border-color .14s ease, background .14s ease !important;
+    }
+
+.Mapfre #page-wrapper .custom-radio .custom-control-label::before {
+    border-radius: 50% !important;
+}
+
+.Mapfre #page-wrapper .custom-checkbox .custom-control-label::before {
+    border-radius: 4px !important;
+}
+
+.Mapfre #page-wrapper .custom-control-label::after {
+    left: 11px !important;
+    top: 50% !important;
+    width: 15px !important;
+    height: 15px !important;
+    transform: translateY(-50%) !important;
+}
+
+/* Estado seleccionado */
+.Mapfre #page-wrapper .custom-control-input:checked ~ .custom-control-label::before {
+    border-color: var(--mf-red) !important;
+    background: var(--mf-red) !important;
+}
+
+.Mapfre #page-wrapper .custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><circle cx='6' cy='6' r='2.6' fill='%23fff'/></svg>") !important;
+}
+
+.Mapfre #page-wrapper .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M2.5 6.3l2.3 2.3 4.7-4.9' fill='none' stroke='%23fff' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/></svg>") !important;
+}
+
+.Mapfre #page-wrapper .custom-control-input:checked ~ .custom-control-label {
+    color: var(--mf-red) !important;
+    font-weight: 700 !important;
+}
+
+/* La pastilla completa se marca cuando la opción está elegida */
+.Mapfre #page-wrapper .custom-control:has(.custom-control-input:checked) {
+    border-color: var(--mf-red) !important;
+    background: var(--mf-red-soft, #FBEAE8) !important;
+    box-shadow: 0 0 0 1px var(--mf-red) inset !important;
+}
+
+/* Foco por teclado */
+.Mapfre #page-wrapper .custom-control-input:focus-visible ~ .custom-control-label::before {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mf-red) 25%, transparent) !important;
+}
+
+/* Deshabilitado */
+.Mapfre #page-wrapper .custom-control-input:disabled ~ .custom-control-label {
+    color: #A8ADB3 !important;
+    cursor: not-allowed !important;
+}
+
+.Mapfre #page-wrapper .custom-control:has(.custom-control-input:disabled) {
+    background: #F7F8F9 !important;
+    border-color: #E9EAEC !important;
+    cursor: not-allowed !important;
+}
+
+/* Se anula la regla anterior que agrandaba el input nativo: en este
+   patrón el input está oculto y no debe tener medidas propias. */
+.Mapfre #page-wrapper .custom-control input[type="radio"],
+.Mapfre #page-wrapper .custom-control input[type="checkbox"] {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+}
+
+/* ---- Cabecera de los cotizadores: el bloque Title_Prin ---- */
+.Mapfre #page-wrapper .ibox-title.p-0 {
+    padding: 14px 17px !important;
+}
+
+.Mapfre #page-wrapper .Title_Prin .T1 {
+    flex: 0 0 auto !important;
+}
+
+.Mapfre #page-wrapper .title_partner h4 {
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    color: var(--mf-red) !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+}
+
+@media (max-width: 991px) {
+    .Mapfre #page-wrapper .Title_Prin {
+        flex-direction: column !important;
+    }
+
+    .Mapfre #page-wrapper .T2 {
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--mf-line) !important;
+        padding: 0 0 12px !important;
+    }
+}
+
+/* ================================================================
+   V11 — MÓVIL (bloque final, va al final a propósito)
+   ================================================================
+   Importante: las capas V6–V10 añadieron reglas de escritorio con
+   !important que aparecen DESPUÉS del bloque móvil anterior, así que
+   lo estaban pisando (misma especificidad, gana la última). Todo lo
+   de móvil se reescribe aquí, al final del archivo, para que gane
+   siempre. Objetivos: una barra superior real, menú lateral que se
+   desliza, áreas táctiles de 44px, cero desbordes horizontales y
+   sin zoom automático en iOS.
+   ================================================================ */
+
+@media (max-width: 991px) {
+
+    /* ---- Nada debe desbordar a lo ancho ---- */
+    .Mapfre,
+    .Mapfre #wrapper,
+    .Mapfre #page-wrapper {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+        /* ---- BARRA SUPERIOR ---- */
+        .Mapfre .head_prin {
+            position: fixed !important;
+            inset: 0 0 auto 0 !important;
+            width: 100% !important;
+            height: 56px !important;
+            min-height: 56px !important;
+            padding: 0 !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            background: #fff !important;
+            border: 0 !important;
+            border-bottom: 2px solid var(--mf-red) !important;
+            box-shadow: 0 2px 12px rgba(20,24,29,.08) !important;
+            overflow: visible !important;
+            padding-top: env(safe-area-inset-top) !important;
+            height: calc(56px + env(safe-area-inset-top)) !important;
+        }
+
+            /* La franja vertical de marca no aplica en horizontal */
+            .Mapfre .head_prin::before {
+                display: none !important;
+            }
+
+        .Mapfre #imgHead {
+            width: auto !important;
+            max-width: 44vw !important;
+            height: 56px !important;
+            min-height: 56px !important;
+            padding: 0 0 0 14px !important;
+            border: 0 !important;
+            background: transparent !important;
+            flex: 0 0 auto !important;
+        }
+
+            .Mapfre #imgHead::before,
+            .Mapfre #imgHead::after {
+                display: none !important;
+            }
+
+            .Mapfre #imgHead img {
+                width: auto !important;
+                max-width: 100% !important;
+                max-height: 26px !important;
+            }
+
+        /* ---- BOTÓN HAMBURGUESA (área táctil de 44px) ---- */
+        .Mapfre .head_prin > .ham-icon {
+            display: flex !important;
+            position: absolute !important;
+            right: 8px !important;
+            top: calc(6px + env(safe-area-inset-top)) !important;
+            width: 44px !important;
+            height: 44px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 10px !important;
+            cursor: pointer !important;
+            z-index: 2300 !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
+            .Mapfre .head_prin > .ham-icon:active {
+                background: var(--mf-hover) !important;
+            }
+
+        .Mapfre .trigger,
+        .Mapfre .trigger::before,
+        .Mapfre .trigger::after {
+            width: 20px !important;
+            height: 2px !important;
+            border-radius: 2px !important;
+            background: var(--mf-ink) !important;
+            position: relative !important;
+            transition: transform .22s ease, opacity .18s ease !important;
+        }
+
+            .Mapfre .trigger::before,
+            .Mapfre .trigger::after {
+                content: "" !important;
+                position: absolute !important;
+                left: 0 !important;
+            }
+
+            .Mapfre .trigger::before {
+                top: -6px !important;
+            }
+
+            .Mapfre .trigger::after {
+                top: 6px !important;
+            }
+
+            /* Se convierte en "X" al abrir (usa la clase .active que ya
+       alterna el script inline del layout) */
+            .Mapfre .trigger.active {
+                background: transparent !important;
+            }
+
+                .Mapfre .trigger.active::before {
+                    transform: translateY(6px) rotate(45deg) !important;
+                }
+
+                .Mapfre .trigger.active::after {
+                    transform: translateY(-6px) rotate(-45deg) !important;
+                }
+
+        /* ---- MENÚ LATERAL DESLIZANTE ---- */
+        .Mapfre .head_prin > .ham-menu {
+            display: block !important;
+            position: fixed !important;
+            left: 0 !important;
+            top: calc(56px + env(safe-area-inset-top)) !important;
+            bottom: 0 !important;
+            width: min(300px, 86vw) !important;
+            height: auto !important;
+            padding: 10px 10px calc(18px + env(safe-area-inset-bottom)) !important;
+            border: 0 !important;
+            background: #fff !important;
+            box-shadow: 14px 0 34px rgba(20,24,29,.16) !important;
+            transform: translateX(-102%) !important;
+            visibility: hidden !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            overscroll-behavior: contain !important;
+            transition: transform .24s cubic-bezier(.2,.7,.3,1), visibility .24s !important;
+            z-index: 2200 !important;
+        }
+
+        .Mapfre #ham-menu:checked ~ .ham-menu {
+            transform: translateX(0) !important;
+            visibility: visible !important;
+        }
+
+        /* Velo oscuro detrás del menú abierto */
+        .Mapfre #ham-menu:checked ~ .ham-icon::after {
+            content: "" !important;
+            position: fixed !important;
+            inset: calc(56px + env(safe-area-inset-top)) 0 0 0 !important;
+            background: rgba(15,18,22,.42) !important;
+            z-index: -1 !important;
+        }
+
+        .Mapfre .items_ham_menu {
+            margin: 0 !important;
+            text-align: left !important;
+        }
+
+            .Mapfre .items_ham_menu .linside {
+                display: none !important;
+            }
+
+            .Mapfre .items_ham_menu nav {
+                margin: 0 !important;
+                border: 0 !important;
+            }
+
+            .Mapfre .items_ham_menu .level_1__link,
+            .Mapfre .items_ham_menu .level_1__item > a {
+                display: flex !important;
+                align-items: center !important;
+                gap: 11px !important;
+                min-height: 46px !important;
+                width: 100% !important;
+                padding: 10px 12px !important;
+                border-radius: 10px !important;
+                color: #40454C !important;
+                font-family: var(--mf-font-display);
+                font-size: 14px !important;
+                font-weight: 650 !important;
+                text-decoration: none !important;
+            }
+
+                .Mapfre .items_ham_menu .level_1__link:active {
+                    background: var(--mf-red-soft, #FBEAE8) !important;
+                    color: var(--mf-red) !important;
+                }
+
+                .Mapfre .items_ham_menu .level_1__link i {
+                    color: #8E949B !important;
+                    width: 19px !important;
+                }
+
+            .Mapfre .items_ham_menu .menu-dropdown {
+                margin: 0 0 4px 26px !important;
+                padding-left: 11px !important;
+                border-left: 1px dashed var(--mf-line) !important;
+            }
+
+                .Mapfre .items_ham_menu .menu-dropdown li > a {
+                    min-height: 42px !important;
+                    font-size: 13px !important;
+                    padding: 9px 11px !important;
+                }
+
+        /* ---- BLOQUE DE USUARIO: pasa a la barra superior ---- */
+        .Mapfre .head_line {
+            display: flex !important;
+            position: absolute !important;
+            top: env(safe-area-inset-top) !important;
+            right: 58px !important;
+            left: auto !important;
+            width: auto !important;
+            height: 56px !important;
+            min-width: 0 !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            overflow: visible !important;
+        }
+
+            .Mapfre .head_line > #side-menu,
+            .Mapfre .head_line > .min_menu,
+            .Mapfre .head_line > #moremenubox {
+                display: none !important;
+            }
+
+        .Mapfre .aliados {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            width: auto !important;
+            min-height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            position: relative !important;
+        }
+
+        .Mapfre .usua_head {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-end !important;
+            min-width: 0 !important;
+        }
+
+        .Mapfre #UserNameMaster {
+            max-width: 34vw !important;
+            font-size: 11px !important;
+            text-align: right !important;
+        }
+
+        .Mapfre .aliados .level_1__link {
+            font-size: 10.5px !important;
+            padding: 0 !important;
+        }
+
+        .Mapfre .aliados #TenantMaster {
+            max-width: 30vw !important;
+        }
+
+        .Mapfre .circulo {
+            width: 34px !important;
+            height: 34px !important;
+            flex: 0 0 34px !important;
+        }
+
+        /* El menú de usuario se abre hacia abajo, anclado a la derecha */
+        .Mapfre .aliados .inputche:checked ~ ul.menu-dropdown {
+            position: fixed !important;
+            top: calc(60px + env(safe-area-inset-top)) !important;
+            right: 8px !important;
+            left: auto !important;
+            bottom: auto !important;
+            width: min(268px, calc(100vw - 16px)) !important;
+            margin: 0 !important;
+            z-index: 2400 !important;
+        }
+
+        .Mapfre .aliados ul.menu-dropdown > li > a {
+            min-height: 44px !important;
+            font-size: 13px !important;
+        }
+
+        .Mapfre .language-selector-menu__button {
+            min-height: 36px !important;
+            font-size: 12px !important;
+        }
+
+        /* ---- ÁREA DE CONTENIDO ---- */
+        .Mapfre .wrapper.wrapper-content,
+        .Mapfre .wrapper-content {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: calc(70px + env(safe-area-inset-top)) 14px calc(26px + env(safe-area-inset-bottom)) !important;
+        }
+
+        .Mapfre .footer {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 12px 14px calc(12px + env(safe-area-inset-bottom)) !important;
+            text-align: center !important;
+        }
+
+        /* ---- CABECERA DE COTIZADORES ---- */
+        .Mapfre #page-wrapper .Title_Prin {
+            flex-direction: column !important;
+            gap: 12px !important;
+        }
+
+        .Mapfre #page-wrapper .title_design {
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+
+        .Mapfre #page-wrapper .T2,
+        .Mapfre #page-wrapper .T3 {
+            width: 100% !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 0 12px !important;
+            border-right: 0 !important;
+        }
+
+        .Mapfre #page-wrapper .T2 {
+            border-bottom: 1px solid var(--mf-line) !important;
+        }
+
+        .Mapfre #page-wrapper .T3 {
+            padding: 12px 14px !important;
+        }
+
+        /* ---- FORMULARIOS EN UNA COLUMNA ---- */
+        .Mapfre #page-wrapper .form-row > [class*="col-"],
+        .Mapfre #page-wrapper .row > [class*="col-"] {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+
+        .Mapfre #page-wrapper .row.mf-grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        /* 16px evita que iOS haga zoom automático al enfocar un campo */
+        .Mapfre #page-wrapper .form-control,
+        .Mapfre #page-wrapper select.form-control,
+        .Mapfre #page-wrapper textarea.form-control,
+        .Mapfre #page-wrapper input.form-control {
+            font-size: 16px !important;
+            min-height: 44px !important;
+        }
+
+        .Mapfre #page-wrapper .control-label {
+            font-size: 12px !important;
+        }
+
+        /* Opciones a lo ancho, cómodas para el dedo */
+        .Mapfre #page-wrapper .custom-control {
+            min-height: 44px !important;
+            margin: 4px 6px 4px 0 !important;
+            padding: 6px 16px 6px 34px !important;
+        }
+
+        .Mapfre #page-wrapper .custom-control-label {
+            font-size: 13.5px !important;
+        }
+
+        /* ---- BOTONES ---- */
+        .Mapfre #page-wrapper .btn {
+            min-height: 44px !important;
+            padding: 11px 16px !important;
+            font-size: 13px !important;
+        }
+
+        .Mapfre #page-wrapper .mf-actions {
+            flex-direction: column-reverse !important;
+        }
+
+            .Mapfre #page-wrapper .mf-actions .btn {
+                width: 100% !important;
+            }
+
+        /* ---- TABLAS: desplazamiento horizontal en vez de romper ---- */
+        .Mapfre #page-wrapper .table-responsive,
+        .Mapfre #page-wrapper .fixed-table-container {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+
+        .Mapfre #page-wrapper .table {
+            min-width: 520px !important;
+        }
+
+            .Mapfre #page-wrapper .table thead th {
+                position: static !important;
+            }
+
+        /* ---- TARJETAS ---- */
+        .Mapfre #page-wrapper .ibox {
+            margin-bottom: 13px !important;
+        }
+
+            .Mapfre #page-wrapper .ibox:hover {
+                transform: none !important;
+            }
+
+        .Mapfre #page-wrapper .ibox-title {
+            padding: 11px 14px !important;
+        }
+
+        .Mapfre #page-wrapper .ibox-content {
+            padding: 14px !important;
+        }
+
+        /* ---- PANEL LATERAL DERECHO: a pantalla completa ---- */
+        .Mapfre #right-sidebar {
+            top: calc(56px + env(safe-area-inset-top)) !important;
+            height: calc(100vh - 56px - env(safe-area-inset-top)) !important;
+            width: 100% !important;
+            right: -100% !important;
+        }
+
+            .Mapfre #right-sidebar.sidebar-open {
+                right: 0 !important;
+            }
+
+        /* ---- MODALES ---- */
+        .Mapfre #page-wrapper .modal-dialog {
+            margin: 10px !important;
+            max-width: calc(100% - 20px) !important;
+        }
+
+        /* Sin efectos de hover en pantallas táctiles */
+        .Mapfre #page-wrapper .widget.style1:hover {
+            transform: none !important;
+        }
+}
+
+/* ---- Teléfonos pequeños ---- */
+@media (max-width: 575px) {
+    .Mapfre #imgHead {
+        max-width: 38vw !important;
+        padding-left: 12px !important;
+    }
+
+        .Mapfre #imgHead img {
+            max-height: 23px !important;
+        }
+
+    /* En pantallas muy angostas se oculta el nombre y queda la cuenta,
+       que es lo que identifica la sesión, más el logo. */
+    .Mapfre #UserNameMaster {
+        display: none !important;
+    }
+
+    .Mapfre .aliados #TenantMaster {
+        max-width: 24vw !important;
+        font-size: 11px !important;
+    }
+
+    .Mapfre .wrapper.wrapper-content,
+    .Mapfre .wrapper-content {
+        padding: calc(68px + env(safe-area-inset-top)) 10px calc(20px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .Mapfre #page-wrapper .ibox-content {
+        padding: 12px !important;
+    }
+
+    .Mapfre #page-wrapper .custom-control {
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+
+    .Mapfre #page-wrapper .title_design h5 {
+        font-size: 15px !important;
+    }
+
+    .Mapfre #page-wrapper h4,
+    .Mapfre #page-wrapper .titulosMant {
+        font-size: 12.5px !important;
+    }
+}
+
+/* ---- Dispositivos sin puntero fino: se anulan los hover ---- */
+@media (hover: none) {
+    .Mapfre #page-wrapper .ibox:hover,
+    .Mapfre #page-wrapper .widget.style1:hover,
+    .Mapfre .aliados:hover .circulo {
+        transform: none !important;
+        box-shadow: var(--mf-e1) !important;
+    }
+
+    .Mapfre #page-wrapper .btn:hover {
+        transform: none !important;
+    }
+}
+
+
+/* ================================================================
+   V12 — IDENTIDAD POR CUENTA, FONDO Y MOVIMIENTO
+   ================================================================
+   Este bloque va DESPUES de V11 (movil) solo en lo que no es
+   responsive; las reglas moviles propias de V12 estan al final del
+   propio bloque para no reabrir el problema de orden.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   CABECERA DEL SIDEBAR: el logo de la cuenta, arriba
+   ----------------------------------------------------------------
+   Antes habia un JPG de MAPFRE fijo en el codigo. Eso es incorrecto
+   en una aplicacion multi-marca: al entrar con otra cuenta seguia
+   viendose MAPFRE. Ahora arriba va el logo que devuelve
+   v1/Colors/GetColor para la cuenta conectada (el mismo que master.js
+   inyecta en #logotenantHead), y debajo un rotulo neutro.
+   ---------------------------------------------------------------- */
+.Mapfre #imgHead {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    height: auto !important;
+    min-height: 78px !important;
+    padding: 14px 16px 13px !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+    background: #fff !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+    /* Halo del color de la cuenta */
+    .Mapfre #imgHead::before {
+        content: "";
+        position: absolute;
+        left: -34px;
+        top: -54px;
+        width: 168px;
+        height: 122px;
+        border-radius: 50%;
+        background: var(--mf-red);
+        opacity: .07;
+        filter: blur(14px);
+        pointer-events: none;
+    }
+
+    .Mapfre #imgHead::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: -1px;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--mf-red), transparent 76%);
+        opacity: .6;
+    }
+
+    /* El contenedor del logo deja de ser circulo: el logo de una marca
+   es rectangular y recortarlo en circulo lo mutila. */
+    .Mapfre #imgHead .circulo.mf-brand {
+        width: auto !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 30px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: none !important;
+        box-shadow: none !important;
+        display: flex !important;
+        align-items: center !important;
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+    .Mapfre #imgHead #logotenantHead {
+        display: flex !important;
+        align-items: center !important;
+        max-width: 100% !important;
+    }
+
+        .Mapfre #imgHead #logotenantHead img,
+        .Mapfre #imgHead #tenantLogo,
+        .Mapfre #imgHead .thumb {
+            width: auto !important;
+            max-width: 100% !important;
+            height: auto !important;
+            max-height: 32px !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: none !important;
+            box-shadow: none !important;
+            object-fit: contain !important;
+            object-position: left center !important;
+            animation: mfLogoIn .4s cubic-bezier(.2,.7,.3,1) both;
+        }
+
+@keyframes mfLogoIn {
+    from {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.Mapfre .mf-brand-name {
+    position: relative;
+    z-index: 1;
+    font-family: var(--mf-font-display);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .13em;
     text-transform: uppercase;
-    letter-spacing: .03em;
+    color: var(--mf-muted, #80868D);
+    white-space: nowrap;
 }
 
-.Mapfre .required-mark {
-    color: var(--mapfrered1);
-    font-weight: bold;
+/* ----------------------------------------------------------------
+   TARJETA DE USUARIO: ya no lleva logo duplicado abajo
+   ---------------------------------------------------------------- */
+.Mapfre .aliados {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    grid-template-columns: none !important;
 }
 
-.Mapfre .form-control,
-.Mapfre .single-line {
-    height: 38px;
-    padding: 6px 12px;
-    border: 1px solid #dde1e6;
-    border-radius: 7px;
-    background-color: #fbfbfc;
-    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+    .Mapfre .aliados .usua_head {
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+    }
+
+    .Mapfre .aliados .level_1__link {
+        justify-content: space-between !important;
+        width: 100% !important;
+    }
+
+.Mapfre .mf-caret {
+    margin-left: 6px !important;
+    font-size: 13px !important;
+    color: var(--mf-muted, #80868D) !important;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), color .16s ease !important;
 }
 
-.Mapfre select.form-control:not([size]):not([multiple]) {
-    height: 38px;
+.Mapfre .aliados .inputche:checked ~ label .mf-caret,
+.Mapfre .aliados label:hover .mf-caret {
+    color: var(--mf-red) !important;
 }
 
-.Mapfre textarea.form-control {
-    height: auto;
-    padding-top: 8px;
+.Mapfre .aliados .inputche:checked ~ label .mf-caret {
+    transform: rotate(180deg) !important;
 }
 
-.Mapfre .form-control:hover {
-    border-color: #c7ccd1;
+/* ----------------------------------------------------------------
+   FONDO: aurora lenta en el color de la cuenta
+   ----------------------------------------------------------------
+   Tres focos de luz que se desplazan muy despacio (60s). El
+   movimiento es casi imperceptible pero le quita la sensacion de
+   imagen estatica. Se desactiva por completo si el sistema pide
+   movimiento reducido, y en moviles (ahorro de bateria).
+   ---------------------------------------------------------------- */
+.Mapfre .wrapper-content::before {
+    background-image: linear-gradient(180deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 62%), radial-gradient(980px 700px at 90% -8%, color-mix(in srgb, var(--mf-red) 32%, transparent) 0%, transparent 64%), radial-gradient(820px 660px at -6% 104%, color-mix(in srgb, var(--mf-red) 24%, transparent) 0%, transparent 62%), radial-gradient(600px 460px at 58% 52%, color-mix(in srgb, var(--mf-red) 12%, transparent) 0%, transparent 70%) !important;
+    background-size: 100% 100%, 140% 140%, 140% 140%, 130% 130% !important;
+    background-position: 0 0, 100% 0, 0 100%, 50% 50% !important;
+    animation: mfAurora 60s ease-in-out infinite alternate !important;
 }
 
-.Mapfre .form-control:focus,
-.Mapfre .single-line:focus {
-    background-color: #fff;
-    box-shadow: 0 0 0 3px rgba(255, 0, 45, .12);
+@keyframes mfAurora {
+    0% {
+        background-position: 0 0, 100% 0, 0 100%, 50% 50%;
+    }
+
+    50% {
+        background-position: 0 0, 88% 6%, 8% 94%, 44% 56%;
+    }
+
+    100% {
+        background-position: 0 0, 96% 2%, 2% 98%, 56% 46%;
+    }
 }
 
-.Mapfre .form-control:disabled {
-    background-color: #f1f2f4;
-    color: #9aa0a6;
+/* ----------------------------------------------------------------
+   MOVIMIENTO: entradas escalonadas y curvas mas naturales
+   ---------------------------------------------------------------- */
+.Mapfre #side-menu > nav {
+    animation: mfNavIn .34s cubic-bezier(.2,.7,.3,1) both;
 }
 
-.Mapfre .input-group .form-control {
-    border-radius: 7px 0 0 7px;
+    .Mapfre #side-menu > nav:nth-child(1) {
+        animation-delay: .02s;
+    }
+
+    .Mapfre #side-menu > nav:nth-child(2) {
+        animation-delay: .045s;
+    }
+
+    .Mapfre #side-menu > nav:nth-child(3) {
+        animation-delay: .07s;
+    }
+
+    .Mapfre #side-menu > nav:nth-child(4) {
+        animation-delay: .095s;
+    }
+
+    .Mapfre #side-menu > nav:nth-child(5) {
+        animation-delay: .12s;
+    }
+
+    .Mapfre #side-menu > nav:nth-child(6) {
+        animation-delay: .145s;
+    }
+
+    .Mapfre #side-menu > nav:nth-child(7) {
+        animation-delay: .17s;
+    }
+
+    .Mapfre #side-menu > nav:nth-child(8) {
+        animation-delay: .195s;
+    }
+
+    .Mapfre #side-menu > nav:nth-child(n+9) {
+        animation-delay: .22s;
+    }
+
+@keyframes mfNavIn {
+    from {
+        opacity: 0;
+        transform: translateX(-7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
 
-.Mapfre .input-group-addon {
-    border: 1px solid #dde1e6;
-    background: #fbfbfc;
-    border-radius: 0 7px 7px 0;
-    color: var(--mapfrered1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Los submenus se despliegan con altura animada en vez de aparecer */
+.Mapfre #side-menu .menu-dropdown {
+    overflow: hidden !important;
+    transition: max-height .28s cubic-bezier(.2,.7,.3,1), opacity .2s ease !important;
 }
 
-/* Buttons */
-.Mapfre .btn {
-    border-radius: 7px;
-    padding: 8px 18px;
-    transition: transform .12s ease, box-shadow .12s ease, background-color .15s ease;
+.Mapfre #side-menu .inputche:checked ~ .menu-dropdown {
+    animation: mfSubIn .28s cubic-bezier(.2,.7,.3,1) both !important;
 }
 
-.Mapfre .btn-primary,
-.Mapfre .btn-default,
-.Mapfre .btn-white {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+@keyframes mfSubIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
 
-.Mapfre .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(255, 0, 45, .25);
+/* Las tarjetas del contenido entran escalonadas */
+.Mapfre .wrapper-content .ibox,
+.Mapfre .wrapper-content .widget.style1 {
+    animation: mfCardIn .38s cubic-bezier(.2,.7,.3,1) both;
 }
 
-.Mapfre .btn-default:hover,
-.Mapfre .btn-white:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+.Mapfre .wrapper-content [class*="col-"]:nth-child(1) .ibox,
+.Mapfre .wrapper-content [class*="col-"]:nth-child(1) .widget.style1 {
+    animation-delay: .04s;
 }
 
-.Mapfre .btn:active {
-    transform: translateY(0);
+.Mapfre .wrapper-content [class*="col-"]:nth-child(2) .ibox,
+.Mapfre .wrapper-content [class*="col-"]:nth-child(2) .widget.style1 {
+    animation-delay: .09s;
 }
 
-/* "Todos los campos con asterisco rojo..." helper text */
-.Mapfre .ibox-content h4.text-muted {
-    display: block;
-    font-size: 12px;
-    font-weight: normal;
-    background: rgba(255, 0, 45, .06);
-    border: 1px solid rgba(255, 0, 45, .15);
-    border-radius: 7px;
-    padding: 8px 12px;
-    margin: 0 0 16px;
+.Mapfre .wrapper-content [class*="col-"]:nth-child(3) .ibox,
+.Mapfre .wrapper-content [class*="col-"]:nth-child(3) .widget.style1 {
+    animation-delay: .14s;
+}
+
+.Mapfre .wrapper-content [class*="col-"]:nth-child(n+4) .ibox {
+    animation-delay: .18s;
+}
+
+@keyframes mfCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(9px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ----------------------------------------------------------------
+   LEGIBILIDAD Y ORDEN
+   ---------------------------------------------------------------- */
+
+/* Separacion visual entre grupos del menu */
+.Mapfre #side-menu > nav + nav {
+    margin-top: 1px !important;
+}
+
+/* La flecha del desplegable gira al abrir el grupo */
+.Mapfre #side-menu .dropdown-toggle::after,
+.Mapfre #side-menu .level_1__link.dropdown-toggle::after {
+    transition: transform .24s cubic-bezier(.2,.7,.3,1) !important;
+}
+
+.Mapfre #side-menu .inputche:checked ~ label .dropdown-toggle::after {
+    transform: rotate(180deg) !important;
+}
+
+/* Jerarquia mas clara en migas de pan */
+.Mapfre .breadcrumb {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-weight: 600 !important;
+}
+
+/* Estado vacio / sin datos, mas amable */
+.Mapfre #page-wrapper .no-records-found td,
+.Mapfre #page-wrapper .text-muted-empty {
+    padding: 26px 14px !important;
+    color: var(--mf-muted, #80868D) !important;
+    font-size: 12px !important;
+    text-align: center !important;
+}
+
+/* Etiquetas de estado con mas presencia */
+.Mapfre #page-wrapper .label,
+.Mapfre #page-wrapper .badge {
+    padding: 4px 9px !important;
+    border-radius: 20px !important;
+    font-family: var(--mf-font-display);
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    letter-spacing: .03em !important;
+}
+
+/* ----------------------------------------------------------------
+   AJUSTES MOVILES DE ESTE BLOQUE (van al final para ganar orden)
+   ---------------------------------------------------------------- */
+@media (max-width: 991px) {
+    /* En movil la cabecera vuelve a ser horizontal dentro de la barra */
+    .Mapfre #imgHead {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 9px !important;
+        min-height: 56px !important;
+        height: 56px !important;
+        padding: 0 0 0 13px !important;
+        border-bottom: 0 !important;
+    }
+
+        .Mapfre #imgHead::before,
+        .Mapfre #imgHead::after {
+            display: none !important;
+        }
+
+        .Mapfre #imgHead #logotenantHead img,
+        .Mapfre #imgHead #tenantLogo,
+        .Mapfre #imgHead .thumb {
+            max-height: 24px !important;
+        }
+
+    .Mapfre .mf-brand-name {
+        display: none !important;
+    }
+
+    /* Sin aurora en movil: ahorra bateria y evita repintados */
+    .Mapfre .wrapper-content::before {
+        animation: none !important;
+    }
+
+    /* Entradas mas cortas para que la navegacion se sienta inmediata */
+    .Mapfre #side-menu > nav,
+    .Mapfre .wrapper-content .ibox,
+    .Mapfre .wrapper-content .widget.style1 {
+        animation-duration: .22s !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .Mapfre #imgHead {
+        max-width: 46vw !important;
+    }
+
+        .Mapfre #imgHead #logotenantHead img,
+        .Mapfre #imgHead #tenantLogo,
+        .Mapfre #imgHead .thumb {
+            max-height: 21px !important;
+        }
+}
+
+/* Accesibilidad: todo el movimiento se apaga si el sistema lo pide */
+@media (prefers-reduced-motion: reduce) {
+    .Mapfre .wrapper-content::before,
+    .Mapfre #side-menu > nav,
+    .Mapfre .wrapper-content .ibox,
+    .Mapfre .wrapper-content .widget.style1,
+    .Mapfre #imgHead img {
+        animation: none !important;
+    }
 }
