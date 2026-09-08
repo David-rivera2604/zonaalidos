@@ -7183,10 +7183,10 @@ ul.Observaciones {
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: center !important;
-    gap: 6px !important;
+    gap: 3px !important;
     height: auto !important;
-    min-height: 92px !important;
-    padding: 16px 18px 15px !important;
+    min-height: 78px !important;
+    padding: 14px 16px 13px !important;
     border-bottom: 1px solid var(--mf-line) !important;
     background: #fff !important;
     position: relative !important;
@@ -7220,18 +7220,13 @@ ul.Observaciones {
         opacity: .6;
     }
 
-    /* Logo fijo de MAPFRE, esquina superior izquierda. Es un <img>
-       estático nada más -sin #logotenantHead ni #tenantLogo-, así que
-       JS/master.js nunca lo toca y no puede quedar en blanco. El logo
-       por cuenta (dinámico, vía GetColor) vive aparte, junto al menú
-       de usuario/logout (.aliados .circulo, más abajo en este mismo
-       archivo). El logo de una marca es rectangular: recortarlo en
-       círculo lo mutila, por eso este contenedor ya no es redondo. */
+    /* El contenedor del logo deja de ser circulo: el logo de una marca
+   es rectangular y recortarlo en circulo lo mutila. */
     .Mapfre #imgHead .circulo.mf-brand {
         width: auto !important;
         max-width: 100% !important;
-        height: 46px !important;
-        min-height: 46px !important;
+        height: auto !important;
+        min-height: 30px !important;
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
@@ -7244,11 +7239,19 @@ ul.Observaciones {
         z-index: 1 !important;
     }
 
-        .Mapfre #imgHead .circulo.mf-brand img {
+    .Mapfre #imgHead #logotenantHead {
+        display: flex !important;
+        align-items: center !important;
+        max-width: 100% !important;
+    }
+
+        .Mapfre #imgHead #logotenantHead img,
+        .Mapfre #imgHead #tenantLogo,
+        .Mapfre #imgHead .thumb {
             width: auto !important;
             max-width: 100% !important;
             height: auto !important;
-            max-height: 46px !important;
+            max-height: 32px !important;
             padding: 0 !important;
             border: 0 !important;
             border-radius: 0 !important;
@@ -7257,6 +7260,30 @@ ul.Observaciones {
             object-fit: contain !important;
             object-position: left center !important;
             animation: mfLogoIn .4s cubic-bezier(.2,.7,.3,1) both;
+        }
+
+        /* Si la cuenta no trae logo propio, master.js igual inyecta un
+           <img>, pero con src vacío/"null"/"undefined" y sin manejo de
+           error, lo que se ve como un hueco en blanco. Se detecta ese
+           caso por CSS -sin tocar el JS- y se muestra el logo de MAPFRE
+           como respaldo; si la cuenta sí trae un logo válido, esta
+           regla simplemente no aplica y se ve el logo real. */
+        .Mapfre #imgHead #logotenantHead img[src=""],
+        .Mapfre #imgHead #logotenantHead img[src="null"],
+        .Mapfre #imgHead #logotenantHead img[src="undefined"],
+        .Mapfre #imgHead #logotenantHead img:not([src]) {
+            visibility: hidden !important;
+        }
+
+        .Mapfre #imgHead #logotenantHead:has(img[src=""]),
+        .Mapfre #imgHead #logotenantHead:has(img[src="null"]),
+        .Mapfre #imgHead #logotenantHead:has(img[src="undefined"]),
+        .Mapfre #imgHead #logotenantHead:has(img:not([src])) {
+            display: inline-block !important;
+            width: 110px !important;
+            height: 32px !important;
+            background: url('../../images/Mapfre-logo.png') no-repeat left center !important;
+            background-size: contain !important;
         }
 
 @keyframes mfLogoIn {
@@ -7490,6 +7517,8 @@ ul.Observaciones {
     font-weight: 600 !important;
 }
 
+
+
 /* Estado vacio / sin datos, mas amable */
 .Mapfre #page-wrapper .no-records-found td,
 .Mapfre #page-wrapper .text-muted-empty {
@@ -7530,12 +7559,9 @@ ul.Observaciones {
             display: none !important;
         }
 
-        .Mapfre #imgHead .circulo.mf-brand {
-            height: 24px !important;
-            min-height: 24px !important;
-        }
-
-        .Mapfre #imgHead .circulo.mf-brand img {
+        .Mapfre #imgHead #logotenantHead img,
+        .Mapfre #imgHead #tenantLogo,
+        .Mapfre #imgHead .thumb {
             max-height: 24px !important;
         }
 
@@ -7561,12 +7587,9 @@ ul.Observaciones {
         max-width: 46vw !important;
     }
 
-        .Mapfre #imgHead .circulo.mf-brand {
-            height: 21px !important;
-            min-height: 21px !important;
-        }
-
-        .Mapfre #imgHead .circulo.mf-brand img {
+        .Mapfre #imgHead #logotenantHead img,
+        .Mapfre #imgHead #tenantLogo,
+        .Mapfre #imgHead .thumb {
             max-height: 21px !important;
         }
 }
