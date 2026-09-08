@@ -7183,10 +7183,10 @@ ul.Observaciones {
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: center !important;
-    gap: 6px !important;
+    gap: 8px !important;
     height: auto !important;
-    min-height: 92px !important;
-    padding: 16px 18px 15px !important;
+    min-height: 110px !important;
+    padding: 18px 18px 16px !important;
     border-bottom: 1px solid var(--mf-line) !important;
     background: #fff !important;
     position: relative !important;
@@ -7225,37 +7225,32 @@ ul.Observaciones {
        JS/master.js nunca lo toca y no puede quedar en blanco. El logo
        por cuenta (dinámico, vía GetColor) vive aparte, junto al menú
        de usuario/logout (.aliados .circulo, más abajo en este mismo
-       archivo). El logo de una marca es rectangular: recortarlo en
-       círculo lo mutila, por eso este contenedor ya no es redondo. */
-    .Mapfre #imgHead .circulo.mf-brand {
-        width: auto !important;
-        max-width: 100% !important;
-        height: 46px !important;
-        min-height: 46px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        background: none !important;
-        box-shadow: none !important;
-        display: flex !important;
-        align-items: center !important;
-        position: relative !important;
-        z-index: 1 !important;
+       archivo).
+
+       Usa una clase propia (.mf-brand-logo) en vez de reusar .circulo:
+       esa clase ya trae fondo y border-radius:50% de otros lugares del
+       archivo, y como el logo de una marca es rectangular, recortarlo
+       en círculo/óvalo lo mutilaba. Con una clase sin ningún estilo
+       heredado no hay nada que anular: el logo se ve tal cual es,
+       sobre el fondo blanco del sidebar, sin ninguna forma detrás. */
+    .Mapfre #imgHead .mf-brand-logo {
+        width: auto;
+        max-width: 100%;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
     }
 
-        .Mapfre #imgHead .circulo.mf-brand img {
-            width: auto !important;
-            max-width: 100% !important;
-            height: auto !important;
-            max-height: 46px !important;
-            padding: 0 !important;
-            border: 0 !important;
-            border-radius: 0 !important;
-            background: none !important;
-            box-shadow: none !important;
-            object-fit: contain !important;
-            object-position: left center !important;
+        .Mapfre #imgHead .mf-brand-logo img {
+            display: block;
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 58px;
+            object-fit: contain;
+            object-position: left center;
             animation: mfLogoIn .4s cubic-bezier(.2,.7,.3,1) both;
         }
 
@@ -7530,13 +7525,12 @@ ul.Observaciones {
             display: none !important;
         }
 
-        .Mapfre #imgHead .circulo.mf-brand {
-            height: 24px !important;
-            min-height: 24px !important;
+        .Mapfre #imgHead .mf-brand-logo {
+            height: 26px !important;
         }
 
-        .Mapfre #imgHead .circulo.mf-brand img {
-            max-height: 24px !important;
+        .Mapfre #imgHead .mf-brand-logo img {
+            max-height: 26px !important;
         }
 
     .Mapfre .mf-brand-name {
@@ -7561,13 +7555,12 @@ ul.Observaciones {
         max-width: 46vw !important;
     }
 
-        .Mapfre #imgHead .circulo.mf-brand {
-            height: 21px !important;
-            min-height: 21px !important;
+        .Mapfre #imgHead .mf-brand-logo {
+            height: 22px !important;
         }
 
-        .Mapfre #imgHead .circulo.mf-brand img {
-            max-height: 21px !important;
+        .Mapfre #imgHead .mf-brand-logo img {
+            max-height: 22px !important;
         }
 }
 
