@@ -369,7 +369,7 @@ app.master = (function () {
                         for (var a in ListaElementos) {
                             for (var prop in ListaElementos[a]) {
                                 var object = ListaElementos[a]
-                                if (object[prop] == Tenant) {
+                                if (object[prop] == Tenant && object['Logo']) {
                                     document.getElementById('logotenantHead').innerHTML = ['<img class="thumb" src= "' + object['Logo'] + '"/>']
                                 }
                             }
