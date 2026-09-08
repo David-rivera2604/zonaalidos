@@ -838,8 +838,10 @@ body.mini-navbar .nav-header {
     }
 }
 
-@media (min-width: 768px) .col-md-12 {
-    bottom: 12px !important;
+@media (min-width: 768px) {
+    .col-md-12 {
+        bottom: 12px !important;
+    }
 }
 
 #page-wrapper {
