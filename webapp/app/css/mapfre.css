@@ -7262,6 +7262,30 @@ ul.Observaciones {
             animation: mfLogoIn .4s cubic-bezier(.2,.7,.3,1) both;
         }
 
+        /* Si la cuenta no trae logo propio, master.js igual inyecta un
+           <img>, pero con src vacío/"null"/"undefined" y sin manejo de
+           error, lo que se ve como un hueco en blanco. Se detecta ese
+           caso por CSS -sin tocar el JS- y se muestra el logo de MAPFRE
+           como respaldo; si la cuenta sí trae un logo válido, esta
+           regla simplemente no aplica y se ve el logo real. */
+        .Mapfre #imgHead #logotenantHead img[src=""],
+        .Mapfre #imgHead #logotenantHead img[src="null"],
+        .Mapfre #imgHead #logotenantHead img[src="undefined"],
+        .Mapfre #imgHead #logotenantHead img:not([src]) {
+            visibility: hidden !important;
+        }
+
+        .Mapfre #imgHead #logotenantHead:has(img[src=""]),
+        .Mapfre #imgHead #logotenantHead:has(img[src="null"]),
+        .Mapfre #imgHead #logotenantHead:has(img[src="undefined"]),
+        .Mapfre #imgHead #logotenantHead:has(img:not([src])) {
+            display: inline-block !important;
+            width: 110px !important;
+            height: 32px !important;
+            background: url('../../images/Mapfre-logo.png') no-repeat left center !important;
+            background-size: contain !important;
+        }
+
 @keyframes mfLogoIn {
     from {
         opacity: 0;
