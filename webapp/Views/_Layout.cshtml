@@ -43,10 +43,13 @@
                 <div id="imgHead" class="imgHeadMapfre">
                     @* El logo se toma de la cuenta (v1/Colors/GetColor). master.js
                         reemplaza el contenido de #logotenantHead. El id #tenantLogo
-                        debe existir al cargar: app.master.Init lo usa como condición. *@
+                        debe existir al cargar: app.master.Init lo usa como condición.
+                        Mientras esa llamada no resuelve (o si la cuenta no tiene logo
+                        propio configurado), se muestra el logo de MAPFRE en vez de
+                        quedar en blanco. *@
                     <div class="circulo mf-brand">
                         <div class="dropdown profile-element" id="logotenantHead">
-                            <img alt="" src="~/logos/logo-core-alt.svg" id="tenantLogo"
+                            <img alt="MAPFRE" src="~/images/Mapfre-logo.png" id="tenantLogo"
                                  onerror="this.onerror=null; this.style.display='none';">
                         </div>
                     </div>
