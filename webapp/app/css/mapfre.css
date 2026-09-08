@@ -7183,10 +7183,17 @@ ul.Observaciones {
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: center !important;
+<<<<<<< HEAD
     gap: 3px !important;
     height: auto !important;
     min-height: 78px !important;
     padding: 14px 16px 13px !important;
+=======
+    gap: 10px !important;
+    height: auto !important;
+    min-height: 150px !important;
+    padding: 20px 18px 18px !important;
+>>>>>>> cc916859182aad8267fad54193366cd3f304ab6f
     border-bottom: 1px solid var(--mf-line) !important;
     background: #fff !important;
     position: relative !important;
@@ -7220,6 +7227,7 @@ ul.Observaciones {
         opacity: .6;
     }
 
+<<<<<<< HEAD
     /* El contenedor del logo deja de ser circulo: el logo de una marca
    es rectangular y recortarlo en circulo lo mutila. */
     .Mapfre #imgHead .circulo.mf-brand {
@@ -7259,6 +7267,39 @@ ul.Observaciones {
             box-shadow: none !important;
             object-fit: contain !important;
             object-position: left center !important;
+=======
+    /* Logo fijo de MAPFRE, esquina superior izquierda. Es un <img>
+       estático nada más -sin #logotenantHead ni #tenantLogo-, así que
+       JS/master.js nunca lo toca y no puede quedar en blanco. El logo
+       por cuenta (dinámico, vía GetColor) vive aparte, junto al menú
+       de usuario/logout (.aliados .circulo, más abajo en este mismo
+       archivo).
+
+       Usa una clase propia (.mf-brand-logo) en vez de reusar .circulo:
+       esa clase ya trae fondo y border-radius:50% de otros lugares del
+       archivo, y como el logo de una marca es rectangular, recortarlo
+       en círculo/óvalo lo mutilaba. Con una clase sin ningún estilo
+       heredado no hay nada que anular: el logo se ve tal cual es,
+       sobre el fondo blanco del sidebar, sin ninguna forma detrás. */
+    .Mapfre #imgHead .mf-brand-logo {
+        width: auto;
+        max-width: 100%;
+        height: 96px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+
+        .Mapfre #imgHead .mf-brand-logo img {
+            display: block;
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: 96px;
+            object-fit: contain;
+            object-position: left center;
+>>>>>>> cc916859182aad8267fad54193366cd3f304ab6f
             animation: mfLogoIn .4s cubic-bezier(.2,.7,.3,1) both;
         }
 
