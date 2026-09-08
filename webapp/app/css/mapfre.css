@@ -8041,3 +8041,74 @@ ul.Observaciones {
 .Mapfre .toast-error::before { content: "\f057" !important; }
 .Mapfre .toast-info::before { content: "\f05a" !important; }
 .Mapfre .toast-warning::before { content: "\f071" !important; }
+
+/* Estados de validación (jquery-validator marca los campos con
+   was-validated/is-valid/is-invalid): seguían en el verde y rojo
+   de Bootstrap por defecto, con el iconito de check/equis incrustado
+   en el fondo del propio input. Se llevan al mismo lenguaje visual
+   del resto de los campos (mismo radio, foco en rojo de marca). */
+.Mapfre .was-validated .form-control:valid,
+.Mapfre .form-control.is-valid,
+.Mapfre .was-validated .custom-select:valid,
+.Mapfre .custom-select.is-valid {
+    border-color: #2E9D5C !important;
+    background-image: none !important;
+    padding-right: 12px !important;
+}
+
+.Mapfre .was-validated .form-control:valid:focus,
+.Mapfre .form-control.is-valid:focus,
+.Mapfre .was-validated .custom-select:valid:focus,
+.Mapfre .custom-select.is-valid:focus {
+    border-color: #2E9D5C !important;
+    box-shadow: 0 0 0 3px rgba(46, 157, 92, .16) !important;
+}
+
+.Mapfre .was-validated .form-control:invalid,
+.Mapfre .form-control.is-invalid,
+.Mapfre .was-validated .custom-select:invalid,
+.Mapfre .custom-select.is-invalid {
+    border-color: var(--mf-red, #C31F09) !important;
+    background-image: none !important;
+    padding-right: 12px !important;
+}
+
+.Mapfre .was-validated .form-control:invalid:focus,
+.Mapfre .form-control.is-invalid:focus,
+.Mapfre .was-validated .custom-select:invalid:focus,
+.Mapfre .custom-select.is-invalid:focus {
+    border-color: var(--mf-red, #C31F09) !important;
+    box-shadow: 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
+}
+
+.Mapfre .was-validated .custom-control-input:valid ~ .custom-control-label::before,
+.Mapfre .custom-control-input.is-valid ~ .custom-control-label::before {
+    border-color: #2E9D5C !important;
+}
+
+.Mapfre .was-validated .custom-control-input:valid:checked ~ .custom-control-label::before,
+.Mapfre .custom-control-input.is-valid:checked ~ .custom-control-label::before {
+    border-color: #2E9D5C !important;
+    background-color: #2E9D5C !important;
+}
+
+.Mapfre .was-validated .custom-control-input:invalid ~ .custom-control-label::before,
+.Mapfre .custom-control-input.is-invalid ~ .custom-control-label::before {
+    border-color: var(--mf-red, #C31F09) !important;
+}
+
+.Mapfre .was-validated .custom-control-input:invalid:checked ~ .custom-control-label::before,
+.Mapfre .custom-control-input.is-invalid:checked ~ .custom-control-label::before {
+    border-color: var(--mf-red, #C31F09) !important;
+    background-color: var(--mf-red, #C31F09) !important;
+}
+
+.Mapfre .was-validated .custom-control-input:valid ~ .custom-control-label,
+.Mapfre .custom-control-input.is-valid ~ .custom-control-label {
+    color: #2E9D5C !important;
+}
+
+.Mapfre .was-validated .custom-control-input:invalid ~ .custom-control-label,
+.Mapfre .custom-control-input.is-invalid ~ .custom-control-label {
+    color: var(--mf-red, #C31F09) !important;
+}
