@@ -3754,7 +3754,7 @@ ul.Observaciones {
     --mf-shadow: 0 1px 2px rgba(20, 24, 29, .05);
     --mf-shadow-hover: 0 10px 24px rgba(20, 24, 29, .10);
     --mf-radius: 8px;
-    --mf-sidebar: 244px;
+    --mf-sidebar: 264px;
     --mf-top: 0px;
     --mf-font-display: "Manrope", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
     --mf-font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
@@ -5361,7 +5361,6 @@ ul.Observaciones {
 /* ---------- DENSIDAD: se recupera el ancho que liberaron los 3
    puntos y se ajusta el sidebar a una medida más eficiente ---- */
 .Mapfre #wrapper {
-    --mf-sidebar: 240px;
     --mf-radius: 10px;
 }
 
