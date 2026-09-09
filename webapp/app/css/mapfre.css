@@ -6344,6 +6344,38 @@ body.Mapfre {
         font-size: 13px !important;
     }
 
+/* Botón "Quitar selección" de Mapfre Más (tipo de producto <-> contrato):
+   vive dentro del <h4> de la sección (que ya es flex), pegado a la derecha. */
+.Mapfre #page-wrapper h4 .mf-clear-selection {
+    margin-left: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 3px 9px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+    color: var(--mf-muted, #80868D) !important;
+    font-family: var(--mf-font-text, inherit) !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    transition: color .13s ease, border-color .13s ease, background .13s ease !important;
+}
+
+    .Mapfre #page-wrapper h4 .mf-clear-selection:hover {
+        color: var(--mf-red) !important;
+        border-color: var(--mf-red) !important;
+        background: var(--mf-red-soft, #FBEAE8) !important;
+    }
+
+    .Mapfre #page-wrapper h4 .mf-clear-selection i {
+        color: currentColor !important;
+        font-size: 11px !important;
+    }
+
 /* ---- Campos ---- */
 .Mapfre #page-wrapper .form-control,
 .Mapfre #page-wrapper select.form-control {
