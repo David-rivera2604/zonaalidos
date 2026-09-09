@@ -174,10 +174,31 @@ app.CotizacionMapfreMas = (function () {
                 }
             } else {
                 $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
+
+                // Exclusividad: "Tipo de producto" y "Contrato" son dos formas
+                // alternas de indicar el mismo plan. SettingParameter() manda
+                // siempre los dos juntos al backend (v1/Quote/MapfreMasSettings
+                // y MapfreMasCoverages), así que si ambos llegan con valor a la
+                // vez el backend recibe una combinación contradictoria y las
+                // tablas de coberturas/plan de pago pueden no cargar bien. Al
+                // elegir un contrato "normal" (fuera de los especiales de
+                // arriba, que ya fuerzan Trébol por su cuenta), se bloquea y
+                // limpia "Tipo de producto"; al quitar el contrato, se libera.
+                var bloquearTipoProd = contratoValue > 0;
+                $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
+                if (bloquearTipoProd) {
+                    $('input:radio[name=tipo_prod]').prop('checked', false);
+                }
             }
         }
 
         $('input:radio[name=tipo_prod]').change(function () {
+            // Exclusividad inversa: al elegir un tipo de producto, "Contrato"
+            // y "Sub contrato" dejan de poder elegirse (ver
+            // AplicarRestriccionTipoProductoPorContrato más arriba).
+            app.ui.DropDownDisabled('#contrato', true, true);
+            app.ui.DropDownDisabled('#subcontrato', true, true);
+
             var data = {
                 cod_ramo: setupData.cod_ramo,
                 edad: app.ui.GetNumericValue('#edad'),
