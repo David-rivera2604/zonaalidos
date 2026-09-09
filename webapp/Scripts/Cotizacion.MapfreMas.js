@@ -167,30 +167,32 @@ app.CotizacionMapfreMas = (function () {
         function AplicarRestriccionTipoProductoPorContrato(contratoValue) {
             var contratosSoloTrebol = [99780, 99781];
 
+            // Exclusividad: "Tipo de producto" y "Contrato" son dos formas
+            // alternas de indicar el mismo plan. SettingParameter() manda
+            // siempre los dos juntos al backend (v1/Quote/MapfreMasSettings y
+            // MapfreMasCoverages), así que si ambos llegan con valor a la vez
+            // el backend recibe una combinación contradictoria y las tablas
+            // de coberturas/plan de pago pueden no cargar bien. Cualquier
+            // contrato elegido bloquea "Tipo de producto" -incluidos 99780 y
+            // 99781, que además fuerzan "Trébol": ahí se bloquea igual pero
+            // sin desmarcarlo, porque esos dos contratos SÍ necesitan que
+            // quede fijo en Trébol.
+            var bloquearTipoProd = contratoValue > 0;
+
             if (contratosSoloTrebol.indexOf(contratoValue) !== -1) {
                 $('input:radio[name=tipo_prod]').not('#tipo_prod_6').closest('.custom-control').addClass('d-none');
                 if (!$('#tipo_prod_6').prop('checked')) {
                     $('#tipo_prod_6').prop('checked', true);
                 }
+                $('input:radio[name=tipo_prod]').prop('disabled', true);
             } else {
                 $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
-
-                // Exclusividad: "Tipo de producto" y "Contrato" son dos formas
-                // alternas de indicar el mismo plan. SettingParameter() manda
-                // siempre los dos juntos al backend (v1/Quote/MapfreMasSettings
-                // y MapfreMasCoverages), así que si ambos llegan con valor a la
-                // vez el backend recibe una combinación contradictoria y las
-                // tablas de coberturas/plan de pago pueden no cargar bien. Al
-                // elegir un contrato "normal" (fuera de los especiales de
-                // arriba, que ya fuerzan Trébol por su cuenta), se bloquea y
-                // limpia "Tipo de producto"; al quitar el contrato, se libera.
-                var bloquearTipoProd = contratoValue > 0;
                 $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
                 if (bloquearTipoProd) {
                     $('input:radio[name=tipo_prod]').prop('checked', false);
                 }
-                $('#contratoClearBtn').toggleClass('d-none', !bloquearTipoProd);
             }
+            $('#contratoClearBtn').toggleClass('d-none', !bloquearTipoProd);
         }
 
         // Botón "Quitar selección" junto a Contrato: limpia Contrato/Sub
@@ -200,7 +202,10 @@ app.CotizacionMapfreMas = (function () {
             e.preventDefault();
             $('#contrato').prop('selectedIndex', -1);
             $('#subcontrato').prop('selectedIndex', -1).prop('disabled', true);
-            $('input:radio[name=tipo_prod]').prop('disabled', false);
+            // Por si el contrato quitado era uno de los especiales (99780/
+            // 99781): se desmarca Trébol y se vuelven a mostrar todas las
+            // opciones de "Tipo de producto" que esos contratos ocultaban.
+            $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false).closest('.custom-control').removeClass('d-none');
             $('#contratoClearBtn').addClass('d-none');
             SettingReload();
         });
@@ -1291,6 +1296,21 @@ app.CotizacionMapfreMas = (function () {
                     $('#cod_fracc_pago').prop('disabled', true);
                 } else {
                     $('#cod_fracc_pago').prop('disabled', false);
+                }
+
+                // Si para la combinación actual (tipo de producto/contrato +
+                // datos del vehículo) el backend no devuelve ningún "Plan"
+                // válido, el campo queda sin opciones y la tabla de
+                // coberturas se termina pidiendo con un plan inválido -se ve
+                // como "la tabla no cargó", sin ninguna explicación. Esto no
+                // es un bug de este archivo: la lista de planes válidos la
+                // decide un motor de reglas externo (fuera de este código).
+                // Se avisa en vez de dejarlo en silencio.
+                if (settingData.PLAN_AUTO != null && settingData.PLAN_AUTO.length === 0) {
+                    toastr.warning(
+                        'No hay ningún plan disponible para la combinación de tipo de producto/contrato y datos del vehículo seleccionados. Revise esos datos.',
+                        '',
+                        { closeButton: true, progressBar: true });
                 }
 
                 if (callback !== undefined && callback !== null) {
