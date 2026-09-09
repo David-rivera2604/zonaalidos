@@ -1,25 +1,22 @@
-﻿/* Asegura que el body ocupe toda la altura visible */
+/* Asegura que el body ocupe toda la altura visible */
 html, body {
   height: 100%;
   margin: 0;
 }
 
 body {
-  font-family: "Open Sans", Arial, sans-serif;
+  font-family: "Manrope", "Open Sans", Arial, sans-serif;
 
   /* Imagen + overlay con transparencia */
   background-image:
     linear-gradient(
-      rgba(0, 0, 0, 0.20),   /* color/alpha del overlay (ajústalo) */
-      rgba(0, 0, 0, 0.20)
+      180deg,
+      rgba(15, 17, 20, 0.55),
+      rgba(15, 17, 20, 0.35)
     ),
     url('../../images/background.jpg');
 
-  /* Si quieres ver la imagen completa: */
   background-size: cover;
-  /* Si prefieres cubrir toda la pantalla (aunque recorte): */
-  /* background-size: cover; */
-
   background-repeat: no-repeat;
   background-position: center center;
   background-color: #000;   /* color para las bandas con contain */
@@ -34,61 +31,83 @@ body {
 }
 
 .logohorizontal {
-    width: 50%;
+    width: 58%;
+    max-width: 230px;
     background-size: cover;
-    opacity: 0.9;
+    margin-bottom: 6px;
 }
 
 .container {
     max-width: 400px;
-    padding: 20px; /* Agregamos un espacio interno para el contenedor */
+    padding: 34px 30px 28px;
     text-align: center;
-    border: 2px rgba(255, 255, 255, 0.8); /* Añadimos un borde */
-    border-radius: 5px; /* Le damos bordes redondeados */
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-    font-family: Open Sans, Arial, sans-serif;
-}z
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 14px;
+    background-color: #fff;
+    box-shadow: 0 24px 60px rgba(10, 12, 16, 0.35);
+    font-family: "Manrope", "Open Sans", Arial, sans-serif;
+}
 
 form, button {
     margin-top: 20px;
 }
 
 h1, h2, h3, h4, h5 {
-    color: #FF002D;
-    font-family: Open Sans, Arial, sans-serif;
+    color: #1A1D21;
+    font-family: "Manrope", "Open Sans", Arial, sans-serif;
+    font-weight: 700;
+}
+
+#LoginWelcomeTitle {
+    font-size: 17px;
+    margin-bottom: 4px;
 }
 
 input[type="text"], input[type="password"], input[type="email"], button {
     width: 90%;
-    padding: 10px;
-    margin-top: 30px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: Open Sans, Arial, sans-serif;
+    padding: 11px 14px;
+    margin-top: 14px;
+    border: 1px solid #E1E4E8;
+    border-radius: 8px;
+    font-family: "Manrope", "Open Sans", Arial, sans-serif;
     text-align: center;
-    font-size: medium;
+    font-size: 13px;
 }
 
     input[type="text"]:focus,
     input[type="password"]:focus,
     input[type="email"]:focus {
-        border-color: #FF002D; /* Cambia el color del borde cuando el input está activo */
-        box-shadow: 0 0 5px rgba(49, 48, 48, 0.416); /* Añade un sombreado cuando está activo */
+        border-color: var(--mapfrered1, #C31F09); /* Cambia el color del borde cuando el input está activo */
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--mapfrered1, #C31F09) 12%, transparent); /* Añade un sombreado cuando está activo */
         outline: none; /* Elimina el contorno predeterminado cuando está activo */
     }
 
 button {
-    background-color: #FF002D;
+    background-color: var(--mapfrered1, #C31F09);
     color: white;
     border: none;
     cursor: pointer;
+    font-weight: 700;
+    letter-spacing: .02em;
+    transition: background-color .16s ease, box-shadow .16s ease, transform .05s ease;
 }
 
     button:hover {
-        background-color: #FF002D;
-        border-color: #FF002D; /* Cambia el color del borde cuando el input está activo */
-        box-shadow: 0 0 25px rgba(49, 48, 48, 0.416); /* Añade un sombreado cuando está activo */
+        background-color: var(--mapfrered2, var(--mapfrered1, #C31F09));
+        border-color: var(--mapfrered1, #C31F09); /* Cambia el color del borde cuando el input está activo */
+        box-shadow: 0 10px 24px color-mix(in srgb, var(--mapfrered1, #C31F09) 30%, transparent); /* Añade un sombreado cuando está activo */
     }
+
+    button:active {
+        transform: scale(.98);
+    }
+
+#forgotlink,
+#reset {
+    display: inline-block;
+    margin-top: 14px;
+    color: #6E757D;
+}
 
 /* Modal */
 .modal {
@@ -102,17 +121,19 @@ button {
     width: 100%; /* Ancho del 100% del viewport */
     height: 100%; /* Altura del 100% del viewport */
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(10, 12, 16, 0.72);
 }
 
 .modal-content {
     background-color: #fefefe;
     margin: 2% auto;
-    padding: 15px;
-    border: 2px rgba(255, 255, 255, 0.8); /* Añadimos un borde */
-    border-radius: 10px;
+    padding: 24px 22px;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(10, 12, 16, 0.35);
     width: 50%;
-    font-family: Open Sans, Arial, sans-serif;
+    max-width: 420px;
+    font-family: "Manrope", "Open Sans", Arial, sans-serif;
 }
 
 .close {
@@ -124,7 +145,7 @@ button {
 
     .close:hover,
     .close:focus {
-        color: #FF002D;
+        color: var(--mapfrered1, #C31F09);
         text-decoration: none;
         cursor: pointer;
     }
