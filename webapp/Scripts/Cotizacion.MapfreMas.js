@@ -1298,6 +1298,21 @@ app.CotizacionMapfreMas = (function () {
                     $('#cod_fracc_pago').prop('disabled', false);
                 }
 
+                // Si para la combinación actual (tipo de producto/contrato +
+                // datos del vehículo) el backend no devuelve ningún "Plan"
+                // válido, el campo queda sin opciones y la tabla de
+                // coberturas se termina pidiendo con un plan inválido -se ve
+                // como "la tabla no cargó", sin ninguna explicación. Esto no
+                // es un bug de este archivo: la lista de planes válidos la
+                // decide un motor de reglas externo (fuera de este código).
+                // Se avisa en vez de dejarlo en silencio.
+                if (settingData.PLAN_AUTO != null && settingData.PLAN_AUTO.length === 0) {
+                    toastr.warning(
+                        'No hay ningún plan disponible para la combinación de tipo de producto/contrato y datos del vehículo seleccionados. Revise esos datos.',
+                        '',
+                        { closeButton: true, progressBar: true });
+                }
+
                 if (callback !== undefined && callback !== null) {
                     callback();
                 }
