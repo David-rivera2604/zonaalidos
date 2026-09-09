@@ -3735,9 +3735,182 @@ ul.Observaciones {
      reales, que es lo correcto para cualquier logo entrante.
    ================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&display=swap');
-/* Solo para marca/menú/títulos. Si tu red bloquea fonts.googleapis.com,
-   borra esta línea: cae de vuelta a la pila de sistema de abajo. */
+/* ================================================================
+   TIPOGRAFÍA DE MARCA — MapfreDisplay (títulos/marca) y MapfreText
+   (texto de cuerpo), auto-alojadas en /assets/fonts/mapfre/. No
+   dependen de ningún servicio externo (antes se traía "Manrope" de
+   Google Fonts): funcionan igual con o sin internet.
+   ================================================================ */
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-300-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-300-LightItalic.woff2") format("woff2");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-400-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-400-RegularItalic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-500-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-500-MediumItalic.woff2") format("woff2");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-700-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-700-BoldItalic.woff2") format("woff2");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-800-Extrabold.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreDisplay";
+    src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-800-ExtraboldItalic.woff2") format("woff2");
+    font-weight: 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-300-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-300-LightItalic.woff2") format("woff2");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-400-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-400-RegularItalic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-500-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-500-MediumItalic.woff2") format("woff2");
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-700-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-700-BoldItalic.woff2") format("woff2");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-800-Extrabold.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "MapfreText";
+    src: url("../../assets/fonts/mapfre/MapfreText/MapfreText-800-ExtraboldItalic.woff2") format("woff2");
+    font-weight: 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Disponibles en toda la app (no solo dentro de .Mapfre #wrapper):
+   el login vive fuera de #wrapper y también debe usarlas. */
+:root {
+    --mf-font-display: "MapfreDisplay", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+    --mf-font-text: "MapfreText", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+}
+
+body.Mapfre {
+    font-family: var(--mf-font-text);
+}
 
 .Mapfre #wrapper {
     --mf-red: var(--mapfrered1, #C31F09);
@@ -3758,9 +3931,8 @@ ul.Observaciones {
     --mf-radius: 8px;
     --mf-sidebar: 264px;
     --mf-top: 0px;
-    --mf-font-display: "Manrope", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
     --mf-font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: var(--mf-font-text);
 }
 
 /* ================================================================
