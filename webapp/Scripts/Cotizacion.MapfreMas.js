@@ -189,8 +189,31 @@ app.CotizacionMapfreMas = (function () {
                 if (bloquearTipoProd) {
                     $('input:radio[name=tipo_prod]').prop('checked', false);
                 }
+                $('#contratoClearBtn').toggleClass('d-none', !bloquearTipoProd);
             }
         }
+
+        // Botón "Quitar selección" junto a Contrato: limpia Contrato/Sub
+        // contrato y vuelve a habilitar Tipo de producto (mano a mano con
+        // AplicarRestriccionTipoProductoPorContrato, que hace el bloqueo).
+        $('#contratoClearBtn').on('click', function (e) {
+            e.preventDefault();
+            $('#contrato').prop('selectedIndex', -1);
+            $('#subcontrato').prop('selectedIndex', -1).prop('disabled', true);
+            $('input:radio[name=tipo_prod]').prop('disabled', false);
+            $('#contratoClearBtn').addClass('d-none');
+            SettingReload();
+        });
+
+        // Botón "Quitar selección" junto a Tipo de producto: lo despinta y
+        // vuelve a habilitar Contrato/Sub contrato.
+        $('#tipoProdClearBtn').on('click', function (e) {
+            e.preventDefault();
+            $('input:radio[name=tipo_prod]').prop('checked', false);
+            app.ui.DropDownDisabled('#contrato', false, false);
+            $('#tipoProdClearBtn').addClass('d-none');
+            CoverageReload();
+        });
 
         $('input:radio[name=tipo_prod]').change(function () {
             // Exclusividad inversa: al elegir un tipo de producto, "Contrato"
@@ -198,6 +221,7 @@ app.CotizacionMapfreMas = (function () {
             // AplicarRestriccionTipoProductoPorContrato más arriba).
             app.ui.DropDownDisabled('#contrato', true, true);
             app.ui.DropDownDisabled('#subcontrato', true, true);
+            $('#tipoProdClearBtn').removeClass('d-none');
 
             var data = {
                 cod_ramo: setupData.cod_ramo,
