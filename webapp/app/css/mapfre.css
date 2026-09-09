@@ -6302,8 +6302,13 @@ ul.Observaciones {
    El problema visual típico de estos formularios es que una etiqueta
    de dos líneas empuja su campo hacia abajo y rompe la fila. Con la
    columna en flex y el campo empujado al fondo, todos los inputs de
-   una misma fila quedan perfectamente alineados. */
-.Mapfre #page-wrapper .row > [class*="col-"] > .form-group,
+   una misma fila quedan perfectamente alineados.
+   Se limita a ".form-row" (la fila de campos de un fieldset) y no a
+   cualquier ".row": ".row" se usa en toda la app para layouts muy
+   distintos (bloques centrados de una sola columna, por ejemplo), y
+   ahí el "empujar al fondo" combinado con height:100% hacía que el
+   campo apareciera desplazado varias filas más abajo, superpuesto
+   con contenido de otra sección. */
 .Mapfre #page-wrapper .form-row > [class*="col-"] > .form-group {
     display: flex !important;
     flex-direction: column !important;
@@ -6319,9 +6324,9 @@ ul.Observaciones {
     line-height: 1.3 !important;
 }
 
-.Mapfre #page-wrapper .form-group > .form-control,
-.Mapfre #page-wrapper .form-group > .input-group,
-.Mapfre #page-wrapper .form-group > select {
+.Mapfre #page-wrapper .form-row .form-group > .form-control,
+.Mapfre #page-wrapper .form-row .form-group > .input-group,
+.Mapfre #page-wrapper .form-row .form-group > select {
     margin-top: auto !important;
 }
 
