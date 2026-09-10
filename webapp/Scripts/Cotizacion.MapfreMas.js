@@ -165,29 +165,14 @@ app.CotizacionMapfreMas = (function () {
 
         // Contratos 99780 y 99781 solo se permite el tipo de producto "Trébol"
         function AplicarRestriccionTipoProductoPorContrato(contratoValue) {
-            // Esta exclusividad solo aplica a cuentas Purdy: para el resto de
-            // cuentas PolizaGrupo, "Contrato" y "Tipo de producto" deben poder
-            // elegirse de forma independiente, porque bloquearlos rompe el
-            // flujo normal de cotización para esas cuentas.
-            if (!localStorage.getItem('Roles').includes('Purdy')) {
-                return;
-            }
-
             var contratosSoloTrebol = [99780, 99781];
+            var esContratoSoloTrebol = contratosSoloTrebol.indexOf(contratoValue) !== -1;
+            // Regla fija de negocio para Mapfre Más: los contratos 99780 y
+            // 99781 SOLO permiten el tipo de producto "Trébol". Aplica sin
+            // importar el rol de la cuenta.
+            var esPurdy = localStorage.getItem('Roles').includes('Purdy');
 
-            // Exclusividad: "Tipo de producto" y "Contrato" son dos formas
-            // alternas de indicar el mismo plan. SettingParameter() manda
-            // siempre los dos juntos al backend (v1/Quote/MapfreMasSettings y
-            // MapfreMasCoverages), así que si ambos llegan con valor a la vez
-            // el backend recibe una combinación contradictoria y las tablas
-            // de coberturas/plan de pago pueden no cargar bien. Cualquier
-            // contrato elegido bloquea "Tipo de producto" -incluidos 99780 y
-            // 99781, que además fuerzan "Trébol": ahí se bloquea igual pero
-            // sin desmarcarlo, porque esos dos contratos SÍ necesitan que
-            // quede fijo en Trébol.
-            var bloquearTipoProd = contratoValue > 0;
-
-            if (contratosSoloTrebol.indexOf(contratoValue) !== -1) {
+            if (esContratoSoloTrebol) {
                 $('input:radio[name=tipo_prod]').not('#tipo_prod_6').closest('.custom-control').addClass('d-none');
                 if (!$('#tipo_prod_6').prop('checked')) {
                     $('#tipo_prod_6').prop('checked', true);
@@ -195,12 +180,20 @@ app.CotizacionMapfreMas = (function () {
                 $('input:radio[name=tipo_prod]').prop('disabled', true);
             } else {
                 $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
+
+                // Exclusividad general: "Tipo de producto" y "Contrato" son
+                // dos formas alternas de indicar el mismo plan, y mandarlos
+                // juntos al backend puede hacer que las tablas de coberturas/
+                // plan de pago no carguen bien. Esto solo aplica a cuentas
+                // Purdy: para el resto de cuentas PolizaGrupo, bloquearlos
+                // rompe el flujo normal de cotización.
+                var bloquearTipoProd = esPurdy && contratoValue > 0;
                 $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
                 if (bloquearTipoProd) {
                     $('input:radio[name=tipo_prod]').prop('checked', false);
                 }
             }
-            $('#contratoClearBtn').toggleClass('d-none', !bloquearTipoProd);
+            $('#contratoClearBtn').toggleClass('d-none', !(esContratoSoloTrebol || (esPurdy && contratoValue > 0)));
         }
 
         // Botón "Quitar selección" junto a Contrato: limpia Contrato/Sub
