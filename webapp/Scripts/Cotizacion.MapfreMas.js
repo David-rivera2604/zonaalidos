@@ -15,6 +15,19 @@ app.CotizacionMapfreMas = (function () {
     var showCalculate = false;
     var coberturas = null;
 
+    // SettingReload()/CoverageReload() se disparan desde varios eventos
+    // (cambio de contrato, tipo de producto, moneda, marca/modelo, etc.) y
+    // no cancelan la llamada anterior. Si dos quedan en vuelo a la vez, las
+    // respuestas del servidor pueden llegar en un orden distinto al que se
+    // pidieron: la más reciente en LLEGAR gana, no la más reciente en
+    // pedirse. Con latencia alta o variable (como en producción) esto pinta
+    // el plan/coberturas de una selección vieja encima de la actual -por
+    // ejemplo, "se queda en básico" luego de elegir otro tipo de producto.
+    // Estos contadores descartan cualquier respuesta que ya no sea la del
+    // último pedido hecho.
+    var settingReloadSeq = 0;
+    var coverageReloadSeq = 0;
+
     function Setup(mode) {
         app.ui.CommonBehaviour();
         if (localStorage.getItem('Roles').includes('Purdy')) {
@@ -1269,9 +1282,18 @@ app.CotizacionMapfreMas = (function () {
 
     function SettingReload(callback) {
         var param = SettingParameter();
+        var mySeq = ++settingReloadSeq;
 
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
             .done(function (settingData) {
+                // Llegó una respuesta vieja: ya se pidió un SettingReload más
+                // reciente (p.ej. el usuario cambió de contrato o de tipo de
+                // producto mientras esta petición seguía en camino). Se
+                // descarta para no pintar datos de una selección anterior.
+                if (mySeq !== settingReloadSeq) {
+                    return;
+                }
+
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'));
                 if (fec_vcto_poliza_grupo == null) {
@@ -1337,9 +1359,16 @@ app.CotizacionMapfreMas = (function () {
     function CoverageReload() {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto
         var param = SettingParameter();
+        var mySeq = ++coverageReloadSeq;
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasCoverages?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&cod_agt=${param.cod_agt}`)
             .done(function (data) {
+                // Descarta respuestas de un CoverageReload anterior que
+                // llegaron después de uno más reciente (mismo motivo que en
+                // SettingReload).
+                if (mySeq !== coverageReloadSeq) {
+                    return;
+                }
                 if (data != null) {
                     $('#coberturasTbl').bootstrapTable('load', data);
                     Coberturas_Fijas(data);
@@ -1348,7 +1377,9 @@ app.CotizacionMapfreMas = (function () {
                 else
                     $('#coberturasTbl').bootstrapTable('load', {});
             }).always(function () {
-                $('#coberturasTbl').bootstrapTable('hideLoading');
+                if (mySeq === coverageReloadSeq) {
+                    $('#coberturasTbl').bootstrapTable('hideLoading');
+                }
             });
     }
 
