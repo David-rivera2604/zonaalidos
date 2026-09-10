@@ -17,6 +17,7 @@ app.CotizacionMapfreMas = (function () {
 
     var settingReloadSeq = 0;
     var coverageReloadSeq = 0;
+    var mfPlanUiSeq = 0;
 
     function Setup(mode) {
         app.ui.CommonBehaviour();
@@ -143,6 +144,7 @@ app.CotizacionMapfreMas = (function () {
         });
 
         $('#contrato').on('change', function () {
+            ++mfPlanUiSeq;
             let contracto = app.ui.GetDropDownNumericValue('#contrato');
 
             if (contracto > 0) {
@@ -205,6 +207,7 @@ app.CotizacionMapfreMas = (function () {
         });
 
         $('input:radio[name=tipo_prod]').change(function () {
+            var mySeq = ++mfPlanUiSeq;
             if (localStorage.getItem('Roles').includes('Purdy')) {
                 app.ui.DropDownDisabled('#contrato', true, true);
                 app.ui.DropDownDisabled('#subcontrato', true, true);
@@ -233,6 +236,9 @@ app.CotizacionMapfreMas = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
+                    if (mySeq !== mfPlanUiSeq) {
+                        return;
+                    }
                     if ($('#COD_PLAN_AUTO option').length > 0) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
