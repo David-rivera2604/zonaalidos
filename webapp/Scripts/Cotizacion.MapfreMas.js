@@ -267,7 +267,7 @@ app.CotizacionMapfreMas = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
-                    if ($('#COD_PLAN_AUTO option').length == 1) {
+                    if ($('#COD_PLAN_AUTO option').length > 0) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
                     SettingReload();
