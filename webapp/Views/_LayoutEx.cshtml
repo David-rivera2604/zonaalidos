@@ -36,10 +36,6 @@
         <div id="page-wrapper" class="bg-white">
             <div class="head_prin">
                 <div id="imgHead" class="imgHeadMapfre">
-                    @* Este es el logo fijo de la app (MAPFRE). No depende de la
-                       cuenta ni de GetColor/master.js: es siempre el mismo para
-                       todos. El logo por cuenta va aparte, junto al menú de
-                       usuario/logout (ver #logotenantHead más abajo). *@
                     <div class="mf-brand-logo">
                         <img alt="MAPFRE" src="~/images/logohorizontal.jpg">
                     </div>
@@ -120,11 +116,6 @@
 
                         </div>
 
-                        @* Logo de la cuenta conectada, junto al menú de usuario/
-                           logout. master.js reemplaza el contenido de
-                           #logotenantHead con el logo que devuelva
-                           v1/Colors/GetColor; el id #tenantLogo debe existir al
-                           cargar porque app.master.Init lo usa como condición. *@
                         <div class="circulo">
                             <div class="dropdown profile-element" id="logotenantHead">
                                 <img alt="Logo del aliado" src="~/logos/logo-aliados-alt.svg" id="tenantLogo">
