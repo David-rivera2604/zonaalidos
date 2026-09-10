@@ -31,10 +31,10 @@ body {
 }
 
 .logohorizontal {
-    width: 58%;
-    max-width: 230px;
+    width: 42%;
+    max-width: 165px;
     background-size: cover;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
 }
 
 .container {
