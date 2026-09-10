@@ -11,23 +11,24 @@ body {
 
 .mf-login-shell {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
     min-height: 100dvh;
     width: 100%;
-}
-
-.mf-login-hero {
-    flex: 1 1 56%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 48px;
+    padding: 0 64px;
     background-image:
-        linear-gradient(180deg, rgba(15, 17, 20, 0.55), rgba(15, 17, 20, 0.35)),
+        linear-gradient(90deg, rgba(10, 12, 16, .5) 0%, rgba(10, 12, 16, .28) 38%, rgba(255, 255, 255, .55) 66%, rgba(255, 255, 255, .97) 86%),
         url('../../images/background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     background-color: #000;
+}
+
+.mf-login-hero {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .mf-login-hero__brand {
@@ -41,12 +42,7 @@ body {
 }
 
 .mf-login-panel {
-    flex: 1 1 44%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 32px;
-    background: #F6F6F7;
+    flex: 0 0 auto;
 }
 
 .container {
@@ -171,11 +167,21 @@ button {
     }
 
 @media (max-width: 900px) {
+    .mf-login-shell {
+        flex-direction: column;
+        justify-content: center;
+        padding: 24px;
+        background-image:
+            linear-gradient(180deg, rgba(10, 12, 16, .55), rgba(10, 12, 16, .4)),
+            url('../../images/background.jpg');
+    }
+
     .mf-login-hero {
         display: none;
     }
 
     .mf-login-panel {
-        flex: 1 1 100%;
+        flex: 0 1 auto;
+        width: 100%;
     }
 }
