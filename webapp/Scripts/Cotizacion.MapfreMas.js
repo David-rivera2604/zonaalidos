@@ -15,16 +15,6 @@ app.CotizacionMapfreMas = (function () {
     var showCalculate = false;
     var coberturas = null;
 
-    // SettingReload()/CoverageReload() se disparan desde varios eventos
-    // (cambio de contrato, tipo de producto, moneda, marca/modelo, etc.) y
-    // no cancelan la llamada anterior. Si dos quedan en vuelo a la vez, las
-    // respuestas del servidor pueden llegar en un orden distinto al que se
-    // pidieron: la más reciente en LLEGAR gana, no la más reciente en
-    // pedirse. Con latencia alta o variable (como en producción) esto pinta
-    // el plan/coberturas de una selección vieja encima de la actual -por
-    // ejemplo, "se queda en básico" luego de elegir otro tipo de producto.
-    // Estos contadores descartan cualquier respuesta que ya no sea la del
-    // último pedido hecho.
     var settingReloadSeq = 0;
     var coverageReloadSeq = 0;
 
@@ -72,7 +62,6 @@ app.CotizacionMapfreMas = (function () {
                         $('#plandepagoFullTbl').bootstrapTable('load', data.plandepagoFull);
                     }
 
-
                     if (data.plandepagoporfrecuencia != null) {
                         $('.plandepagoporfrecuencia').removeClass('d-none');
                         $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', data.plandepagoporfrecuencia);
@@ -81,7 +70,6 @@ app.CotizacionMapfreMas = (function () {
                         $('.plandepagoporfrecuencia').addClass('d-none');
                         $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', {});
                     }
-
 
                     $('#mainBlock').removeClass('col-md-12');
                     $('#mainBlock').addClass('col-md-9');
@@ -100,7 +88,6 @@ app.CotizacionMapfreMas = (function () {
                         $('html,body').animate({ scrollTop: $('#quoteBlock').offset().top }, 'slow');
                     }
                 }
-
 
             }).always(function () {
                 app.ui.ButtonDone('#cotizar');
@@ -180,9 +167,6 @@ app.CotizacionMapfreMas = (function () {
         function AplicarRestriccionTipoProductoPorContrato(contratoValue) {
             var contratosSoloTrebol = [99780, 99781];
             var esContratoSoloTrebol = contratosSoloTrebol.indexOf(contratoValue) !== -1;
-            // Regla fija de negocio para Mapfre Más: los contratos 99780 y
-            // 99781 SOLO permiten el tipo de producto "Trébol". Aplica sin
-            // importar el rol de la cuenta.
             var esPurdy = localStorage.getItem('Roles').includes('Purdy');
 
             if (esContratoSoloTrebol) {
@@ -194,12 +178,6 @@ app.CotizacionMapfreMas = (function () {
             } else {
                 $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
 
-                // Exclusividad general: "Tipo de producto" y "Contrato" son
-                // dos formas alternas de indicar el mismo plan, y mandarlos
-                // juntos al backend puede hacer que las tablas de coberturas/
-                // plan de pago no carguen bien. Esto solo aplica a cuentas
-                // Purdy: para el resto de cuentas PolizaGrupo, bloquearlos
-                // rompe el flujo normal de cotización.
                 var bloquearTipoProd = esPurdy && contratoValue > 0;
                 $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
                 if (bloquearTipoProd) {
@@ -209,23 +187,15 @@ app.CotizacionMapfreMas = (function () {
             $('#contratoClearBtn').toggleClass('d-none', !(esContratoSoloTrebol || (esPurdy && contratoValue > 0)));
         }
 
-        // Botón "Quitar selección" junto a Contrato: limpia Contrato/Sub
-        // contrato y vuelve a habilitar Tipo de producto (mano a mano con
-        // AplicarRestriccionTipoProductoPorContrato, que hace el bloqueo).
         $('#contratoClearBtn').on('click', function (e) {
             e.preventDefault();
             $('#contrato').prop('selectedIndex', -1);
             $('#subcontrato').prop('selectedIndex', -1).prop('disabled', true);
-            // Por si el contrato quitado era uno de los especiales (99780/
-            // 99781): se desmarca Trébol y se vuelven a mostrar todas las
-            // opciones de "Tipo de producto" que esos contratos ocultaban.
             $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false).closest('.custom-control').removeClass('d-none');
             $('#contratoClearBtn').addClass('d-none');
             SettingReload();
         });
 
-        // Botón "Quitar selección" junto a Tipo de producto: lo despinta y
-        // vuelve a habilitar Contrato/Sub contrato.
         $('#tipoProdClearBtn').on('click', function (e) {
             e.preventDefault();
             $('input:radio[name=tipo_prod]').prop('checked', false);
@@ -235,10 +205,6 @@ app.CotizacionMapfreMas = (function () {
         });
 
         $('input:radio[name=tipo_prod]').change(function () {
-            // Exclusividad inversa: al elegir un tipo de producto, "Contrato"
-            // y "Sub contrato" dejan de poder elegirse (ver
-            // AplicarRestriccionTipoProductoPorContrato más arriba). Solo
-            // aplica a cuentas Purdy.
             if (localStorage.getItem('Roles').includes('Purdy')) {
                 app.ui.DropDownDisabled('#contrato', true, true);
                 app.ui.DropDownDisabled('#subcontrato', true, true);
@@ -710,8 +676,6 @@ app.CotizacionMapfreMas = (function () {
             }
         });
 
-
-
     }
 
     function Setup_Validations() {
@@ -783,7 +747,6 @@ app.CotizacionMapfreMas = (function () {
             }
         );
 
-
         $.validator.addMethod("ValidarAjusteConRol", function (value, element) {
             const tienePrivilegios = localStorage.getItem('Roles')?.includes('Privilegios');
             if (tienePrivilegios) return true; // No validar si tiene el rol
@@ -791,7 +754,6 @@ app.CotizacionMapfreMas = (function () {
             const num = parseFloat(value);
             return !isNaN(num) && num >= -15 && num <= 0;
         }, "El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %");
-
 
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
@@ -1235,7 +1197,6 @@ app.CotizacionMapfreMas = (function () {
             $('#mainBlock').removeClass('col-md-9');
             $('#quoteBlock').addClass('d-none');
 
-
             var coberturasLocal = $('#coberturasTbl').bootstrapTable('getData');
             for (var i = 0; i < coberturasLocal.length; i++) {
                 coberturasLocal[i].capital = 0;
@@ -1279,10 +1240,6 @@ app.CotizacionMapfreMas = (function () {
 
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
             .done(function (settingData) {
-                // Llegó una respuesta vieja: ya se pidió un SettingReload más
-                // reciente (p.ej. el usuario cambió de contrato o de tipo de
-                // producto mientras esta petición seguía en camino). Se
-                // descarta para no pintar datos de una selección anterior.
                 if (mySeq !== settingReloadSeq) {
                     return;
                 }
@@ -1324,14 +1281,6 @@ app.CotizacionMapfreMas = (function () {
                     $('#cod_fracc_pago').prop('disabled', false);
                 }
 
-                // Si para la combinación actual (tipo de producto/contrato +
-                // datos del vehículo) el backend no devuelve ningún "Plan"
-                // válido, el campo queda sin opciones y la tabla de
-                // coberturas se termina pidiendo con un plan inválido -se ve
-                // como "la tabla no cargó", sin ninguna explicación. Esto no
-                // es un bug de este archivo: la lista de planes válidos la
-                // decide un motor de reglas externo (fuera de este código).
-                // Se avisa en vez de dejarlo en silencio.
                 if (settingData.PLAN_AUTO != null && settingData.PLAN_AUTO.length === 0) {
                     toastr.warning(
                         'No hay ningún plan disponible para la combinación de tipo de producto/contrato y datos del vehículo seleccionados. Revise esos datos.',
@@ -1348,7 +1297,6 @@ app.CotizacionMapfreMas = (function () {
 
     }
 
-
     function CoverageReload() {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto
         var param = SettingParameter();
@@ -1356,9 +1304,6 @@ app.CotizacionMapfreMas = (function () {
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasCoverages?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&cod_agt=${param.cod_agt}`)
             .done(function (data) {
-                // Descarta respuestas de un CoverageReload anterior que
-                // llegaron después de uno más reciente (mismo motivo que en
-                // SettingReload).
                 if (mySeq !== coverageReloadSeq) {
                     return;
                 }
@@ -1490,7 +1435,6 @@ app.CotizacionMapfreMas = (function () {
         }
     }
 
-
     function initializeDateTimePicker() {
         var contratoValue = app.ui.GetDropDownNumericValue('#contrato');
         var roles = localStorage.getItem('Roles');
@@ -1546,5 +1490,4 @@ app.CotizacionMapfreMas = (function () {
         }
     };
 })();
-
 
