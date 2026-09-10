@@ -1,19 +1,3 @@
-/* ================================================================
-   COLOR BASE DE MARCA (fallback) — Zona de Aliados
-   ================================================================
-   Los colores reales por tipo de cuenta YA se aplican en tiempo de
-   ejecución: master.js llama a v1/Colors/GetColor, encuentra el
-   registro cuyo Tenant coincide con localStorage('Tenant') y hace
-   document.documentElement.style.setProperty('--mapfrered1', Color1)
-   / --mapfrered2 (líneas ~441-455 de master.js). Eso YA funciona y
-   no hay que tocarlo.
-   El problema es que --mapfrered1/--mapfrered2 no tenían NINGÚN
-   valor por defecto en el CSS, así que hasta que esa llamada a la
-   API responde (o si llega a fallar) todo lo que depende de esas
-   variables (botones, títulos, bordes...) se quedaba sin color.
-   Este bloque solo pone un valor base; el que pone master.js manda
-   siempre porque un estilo inline (setProperty) tiene más prioridad
-   que cualquier regla de un archivo .css. */
 :root {
     --mapfrered1: #C31F09;
     --mapfrered2: #A11A08;
@@ -197,7 +181,6 @@ body.Mapfre {
     color: rgb(255, 255, 255);
 }
 
-
 .Mapfre .loginBackground {
     background-image: url('../../images/background.jpg');
     background-size: cover;
@@ -206,7 +189,6 @@ body.Mapfre {
     justify-content: center;
     align-items: center;
 }
-
 
 .Mapfre .wellcome-info > p {
     color: black;
@@ -268,17 +250,6 @@ body.Mapfre {
 .Mapfre body.mini-navbar.fixed-sidebar .profile-element {
     display: block !important;
 }
-
-/* BUGFIX: esta regla incluía también ".block" a secas, forzando
-   "display:block !important" a CUALQUIER elemento con esa clase en
-   toda la aplicación (por ejemplo <span class="block" id="UserNameMaster">
-   en el layout). Si algún desplegable llega a reutilizar esa misma
-   clase utilitaria para marcar su estado "abierto", este !important
-   lo dejaría visible para siempre sin importar el checkbox/estado
-   que lo controla. Si hace falta un utilitario ".block" genérico,
-   que NO lleve !important:
-.block { display: block; }
-*/
 
 .Mapfre a {
     color: currentcolor;
@@ -390,12 +361,10 @@ body.mini-navbar .nav-header {
     color: currentcolor;
 }
 
-
 #documentosrequeridosTbl .fa-file-pdf-o {
     margin-bottom: 5px;
     font-size: 18px;
 }
-
 
 .bootstrap-table .fixed-table-container .table td, .bootstrap-table .fixed-table-container .table td:first-child {
     text-align: left;
@@ -607,7 +576,6 @@ body.mini-navbar .nav-header {
     }
 }
 
-
 .carousel-indicators li {
     width: 0.5rem !important;
     height: 0.5rem !important;
@@ -667,7 +635,6 @@ body.mini-navbar .nav-header {
         margin-left: 100px;
     }
 
-
 .ibox-register {
     width: 500px;
 }
@@ -688,7 +655,6 @@ body.mini-navbar .nav-header {
     position: absolute;
 }
 
-
 .img-login {
     width: 100%;
     height: 50vh;
@@ -698,7 +664,6 @@ body.mini-navbar .nav-header {
 .modal-footer-register {
     margin-bottom: 0px;
 }
-
 
 .info_table_top {
     border-top: none;
@@ -795,7 +760,6 @@ body.mini-navbar .nav-header {
     border-radius: 5px;
 }
 
-
 .prev_scroll::-webkit-scrollbar-thumb {
     background: var(--prewiew1) !important;
     border: 0px none;
@@ -807,7 +771,6 @@ body.mini-navbar .nav-header {
     border: 0px none rgb(255, 255, 255);
     border-radius: 50px;
 }
-
 
 .fixed-table-body::-webkit-scrollbar-thumb {
     background: var(--mapfrered1);
@@ -969,10 +932,6 @@ body.mini-navbar .nav-header {
     margin-bottom: -10px;
 }
 
-
-
-
-
 .part_noticias h3 {
     color: var(--mapfrered2);
     margin: 5px 0px 0px 8px;
@@ -1018,9 +977,6 @@ body.mini-navbar .nav-header {
 .part_noticias .container {
     background: rgb(232, 235, 237);
 }
-
-
-
 
 .megamenu_desktop h2 {
     display: none;
@@ -1108,7 +1064,6 @@ a {
     pointer-events: none;
 }
 
-
     .menu-dropdown::after {
         content: "";
         display: block;
@@ -1176,7 +1131,6 @@ a {
     transition: height 0.5s ease 0.1s, padding 0.5s ease 0.1s, margin 0.5s ease 0.1s, color 0.3s ease 0s, visibility 0.6s ease 0s;
     z-index: 99;
 }
-
 
 .hList > * {
     float: left;
@@ -1274,7 +1228,6 @@ a {
 .dropdown .dropdown-menu {
     display: none;
 }
-
 
 .inputche:checked ~ label > a.dropdown-toggle::after {
     transform: rotate(-180deg);
@@ -1434,10 +1387,7 @@ a {
     }
 }
 
-
-
 @media screen and (max-width: 640px) {
-
 
     .head_prin {
     }
@@ -1522,9 +1472,6 @@ a {
     }
 }
 
-
-
-
 @media screen and (max-width: 380px) {
     #ham-menu:checked ~ div.ham-menu {
         transform: translate(-35%) !important;
@@ -1545,7 +1492,6 @@ a {
     width: 150px
 }
 
-
 /*checkbox table*/
 
 .customcheckbox {
@@ -1560,7 +1506,6 @@ a {
     -ms-user-select: none;
     user-select: none;
 }
-
 
     .customcheckbox input {
         position: absolute;
@@ -1578,7 +1523,6 @@ a {
     border-radius: 5px;
 }
 
-
 .customcheckbox input:checked ~ .checkmark {
     background-color: var(--mapfrered2);
 }
@@ -1593,8 +1537,6 @@ a {
     font-size: 15px;
     width: 100%;
 }
-
-
 
 .input-bx {
     position: relative;
@@ -1665,11 +1607,9 @@ a {
     padding: 7px 13px;
 }
 
-
 .botonesvia {
     float: right
 }
-
 
 .usua_head {
     display: flex;
@@ -1703,7 +1643,6 @@ a {
     box-shadow: none;
 }
 
-
 .custom-radio {
     margin-top: 10px;
 }
@@ -1722,11 +1661,9 @@ a {
     margin-bottom: 40px !important;
 }
 
-
 div .input-group-prepend {
     margin-top: 0px !important;
 }
-
 
 .preview_page {
     width: 100%;
@@ -1839,7 +1776,6 @@ div .input-group-prepend {
         background-color: var(--mapfregray2)
     }
 
-
 .Column_Case {
     width: 20%;
     border-left: 2px solid var(--mapfregray2);
@@ -1847,7 +1783,6 @@ div .input-group-prepend {
     justify-content: center;
     height: 20px
 }
-
 
 .Asun {
     width: 85% !important;
@@ -1866,7 +1801,6 @@ div .input-group-prepend {
     .CodCase i {
         font-size: 1.5em !important;
     }
-
 
 .StatusDes p {
     color: white;
@@ -1985,7 +1919,6 @@ div .input-group-prepend {
     max-height: 125px !important;
 }
 
-
 /*-------DOUGLAS----*/
 /*-----COMPRA DE SEGUROS VIAJERO------*/
 .r_direccion {
@@ -2010,7 +1943,6 @@ div .input-group-prepend {
     grid-template-columns: repeat(2, 1fr)
 }
 
-
 .image-viajerocs img {
     max-height: 72vh;
     width: auto;
@@ -2030,7 +1962,6 @@ div .input-group-prepend {
     border: none;
     padding: 8px 25px !important;
 }
-
 
     .btnEmitir:hover {
         background: var(--mapfrered2) !important;
@@ -2060,14 +1991,9 @@ div .input-group-prepend {
     }
 }
 
-
-
-
-
 .design2 {
     width: 100%;
 }
-
 
 .content-left {
     width: 25% !important;
@@ -2093,9 +2019,6 @@ div .input-group-prepend {
         cursor: pointer
     }
 
-
-
-
 /*-----COMPRA DE SEGUROS VIAJERO------*/
 .r_direccion {
     width: 76px;
@@ -2119,7 +2042,6 @@ div .input-group-prepend {
     grid-template-columns: repeat(2, 1fr)
 }
 
-
 .image-viajerocs img {
     max-height: 72vh;
     width: auto;
@@ -2139,7 +2061,6 @@ div .input-group-prepend {
     border: none;
     padding: 8px 25px !important;
 }
-
 
     .btnEmitir:hover {
         background: var(--mapfrered2) !important;
@@ -2180,7 +2101,6 @@ div .input-group-prepend {
     object-position: center center;
 }
 
-
 .login-box {
     width: 58%;
     margin-top: 100px;
@@ -2219,7 +2139,6 @@ div .input-group-prepend {
         display: none
     }
 
-
     .login-box {
         margin-top: 80px
     }
@@ -2238,7 +2157,6 @@ div .input-group-prepend {
     .c2 {
         width: 100% !important;
     }
-
 
     .carousel-indicators {
         position: absolute;
@@ -2259,7 +2177,6 @@ div .input-group-prepend {
         margin-bottom: 10%;
     }
 }
-
 
 @media screen and (max-width: 1170px) {
     .Mapfre .wellcome-info > h3 {
@@ -2331,7 +2248,6 @@ body {
         font-size: 16px;
     }
 
-
     #buttonsToDisplay .fa-minus:hover {
         cursor: pointer;
         color: #676a6c;
@@ -2341,7 +2257,6 @@ body {
         cursor: pointer !important;
         color: #676a6c;
     }
-
 
     #buttonsToDisplay button {
         background-color: #e7eaec;
@@ -2356,9 +2271,6 @@ body {
     }
 */
 /*-------------Mapfre vertical menu---------------*/
-
-
-
 
 :root {
     --home-bg-color: #ffffff00;
@@ -2511,7 +2423,6 @@ div.ham-menu {
     width: 100%;
 }
 
-
 .trigger {
     cursor: pointer;
     display: inline-block;
@@ -2625,7 +2536,6 @@ div.ham-menu {
         transform: translateY(12px) rotate(0deg);
     }
 }
-
 
 @media screen and (max-width: 1280px) and (min-width: 648px) {
     .noticias .col iframe {
@@ -2783,7 +2693,6 @@ div.ham-menu {
     font-weight: 300;
 }
 
-
 /*////////////////Nuevo inicio/////////////////*/
 
 .carousel-control-prev {
@@ -2911,7 +2820,6 @@ div.ham-menu {
         height: 20rem !important;
     }
 }
-
 
 @media (max-width: 415px) {
     .box-img {
@@ -3144,7 +3052,6 @@ div.ham-menu {
     position: absolute;
 }
 
-
 .iputsMant {
     background: none;
     border: none;
@@ -3250,7 +3157,6 @@ div.ham-menu {
     opacity: 0;
 }
 
-
 .newEmision {
     text-align: center;
     display: flex;
@@ -3292,7 +3198,6 @@ div.ham-menu {
         box-shadow: inset 100em 0 0 0 var(--hover);
         transition: all 1.5s cubic-bezier(0.98, 0.38, 0.22, 1) 0s;
     }
-
 
 /*more menu*/
 .min_menu {
@@ -3377,8 +3282,6 @@ div#container_moremenu {
         width: 16px;
         height: 4px;
     }
-
-
 
 /*----------- Notification zone --------------*/
 
@@ -3557,8 +3460,6 @@ div#container_moremenu {
 
 /*End Modal Notification*/
 
-
-
 /*----------- End Notification zone --------- */
 
 #plandepagoTbl.Cafsa tr:nth-child(2) td:nth-child(7) {
@@ -3599,7 +3500,6 @@ ul.Observaciones {
     .stream .stream-panel {
         margin-left: 42px;
     }
-
 
 /* Observaci�n (1� l�nea) */
 .obs-text {
@@ -3662,7 +3562,6 @@ ul.Observaciones {
         color: #6c757d
     }
 
-
 /* Language selector */
 .language-selector-menu__actions {
     display: flex;
@@ -3700,47 +3599,7 @@ ul.Observaciones {
         background: rgba(103, 106, 108, 0.18);
         box-shadow: inset 0 0 0 1px rgba(103, 106, 108, 0.18);
     }
-/* ================================================================
-   MAPFRE ZONA DE ALIADOS — REDESIGN V5 "EXPEDIENTE"
-   Scope: application shell only. Login is intentionally excluded.
 
-   Idea del diseño: blanco + rojo, como pediste, pero sin caer en la
-   plantilla típica de "sidebar blanco con pastilla degradada". La
-   referencia es el expediente/folder de seguros: una franja roja fija
-   en el canto izquierdo (el "lomo" del expediente) es la única pieza
-   decorativa; todo lo demás se resuelve con tipografía, líneas finas
-   y densidad de información — nada de sombras difusas ni degradados.
-
-   También se aprovecha mejor el espacio de navegación:
-   - Se quitó la etiqueta "NAVEGACIÓN" (ocupaba una fila entera para
-     no decir nada que el usuario no supiera ya).
-   - Los renglones del menú bajan de 42px a 38px y el encabezado del
-     sidebar baja de 78px a 60px: en una pantalla de 900px de alto
-     eso son ~4 ítems de menú adicionales visibles sin hacer scroll.
-   - El contenido principal reduce su margen exterior (antes 32/40,
-     ahora 24/28) para dejar más ancho útil a tablas y formularios.
-
-   IMPORTANTE — no cambia ninguna regla de negocio:
-   - Mismos selectores/IDs que las versiones anteriores (#wrapper,
-     #page-wrapper, .head_prin, #imgHead, #side-menu, .menu-dropdown,
-     .inputche, .aliados, .circulo, #right-sidebar, .footer, etc.)
-   - El color sigue viniendo 100% de --mapfrered1/--mapfrered2 (los
-     pone master.js según la cuenta conectada vía v1/Colors/GetColor).
-     Mapfre por defecto usa su rojo característico (#C31F09/#A11A08)
-     como respaldo; cualquier otra cuenta (Purdy, etc.) hereda su
-     propio color y su propio logo automáticamente, sin tocar nada
-     de este archivo — eso ya lo resuelve tu API + master.js.
-   - El logo ya NO se invierte a blanco (filter: invert): con fondo
-     blanco eso lo hacía invisible. Ahora se muestra en sus colores
-     reales, que es lo correcto para cualquier logo entrante.
-   ================================================================ */
-
-/* ================================================================
-   TIPOGRAFÍA DE MARCA — MapfreDisplay (títulos/marca) y MapfreText
-   (texto de cuerpo), auto-alojadas en /assets/fonts/mapfre/. No
-   dependen de ningún servicio externo (antes se traía "Manrope" de
-   Google Fonts): funcionan igual con o sin internet.
-   ================================================================ */
 @font-face {
     font-family: "MapfreDisplay";
     src: url("../../assets/fonts/mapfre/MapfreDisplay/MapfreDisplay-300-Light.woff2") format("woff2");
@@ -3901,8 +3760,6 @@ ul.Observaciones {
     font-display: swap;
 }
 
-/* Disponibles en toda la app (no solo dentro de .Mapfre #wrapper):
-   el login vive fuera de #wrapper y también debe usarlas. */
 :root {
     --mf-font-display: "MapfreDisplay", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
     --mf-font-text: "MapfreText", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
@@ -3935,19 +3792,6 @@ body.Mapfre {
     font-family: var(--mf-font-text);
 }
 
-/* ================================================================
-   FONDO DE MARCA (discreto) — se extrae de la cuenta, igual que el
-   logo y los colores de acento.
-   ================================================================
-   --mf-red viene de var(--mapfrered1, #C31F09) (línea 3741), y
-   --mapfrered1 es la variable que master.js ya sobreescribe por
-   cuenta/tenant con setProperty(). No se toca nada de JS: en cuanto
-   esa variable cambia de valor, este degradado cambia de color solo.
-   Son dos manchas radiales muy suaves (7% y 5% de mezcla con
-   transparente) en las esquinas, sobre el gris neutro de siempre
-   (--mf-canvas), para que no compita con el contenido ni con las
-   tarjetas blancas (--mf-card) que van encima.
-   ================================================================ */
 .Mapfre #wrapper,
 .Mapfre #page-wrapper {
     background-color: var(--mf-canvas) !important;
@@ -3956,7 +3800,6 @@ body.Mapfre {
     background-attachment: fixed !important;
 }
 
-/* ---------- APP SHELL / SIDEBAR ---------- */
 .Mapfre #page-wrapper {
     min-height: 100vh;
     margin: 0 !important;
@@ -4150,12 +3993,6 @@ body.Mapfre {
             list-style: none !important;
         }
 
-        /* Refuerzo del acordeón dentro del sidebar: mismo criterio abierto/
-   cerrado que ya define el mecanismo base (checkbox .inputche), solo
-   que aquí con !important para que ningún otro estilo futuro pueda
-   "pegar" el submenú abierto sin querer, como pasaba con la regla
-   ".block" que se corrigió antes. No cambia el comportamiento normal:
-   son los mismos valores (oculto/alto 0 vs visible/28px). */
         .Mapfre #side-menu .menu-dropdown li {
             height: 0 !important;
             overflow: hidden !important;
@@ -4259,7 +4096,6 @@ body.Mapfre {
     display: none !important;
 }
 
-/* ---------- MAIN WORK AREA ---------- */
 .Mapfre .wrapper.wrapper-content,
 .Mapfre .wrapper-content {
     margin: 0 !important;
@@ -4315,7 +4151,6 @@ body.Mapfre {
         font-weight: 600;
     }
 
-/* ---------- CARDS / IBOX ---------- */
 .Mapfre #page-wrapper .ibox {
     margin-bottom: 16px !important;
     border: 1px solid var(--mf-line) !important;
@@ -4369,7 +4204,6 @@ body.Mapfre {
     color: var(--mf-text) !important;
 }
 
-/* ---------- DASHBOARD WIDGETS ---------- */
 .Mapfre #page-wrapper .widget.style1 {
     min-height: 96px !important;
     padding: 15px 16px !important;
@@ -4414,7 +4248,6 @@ body.Mapfre {
         font-weight: 700 !important;
     }
 
-/* ---------- FORMULARIOS ---------- */
 .Mapfre #page-wrapper form:not(#LoginEdtForm),
 .Mapfre #page-wrapper fieldset {
     border: 0;
@@ -4551,7 +4384,6 @@ body.Mapfre {
     box-shadow: 0 0 0 3px rgba(46,139,79,.08) !important;
 }
 
-/* Section headings commonly used by the existing forms */
 .Mapfre #page-wrapper .ibox-heading,
 .Mapfre #page-wrapper .title_partner {
     padding: 10px 14px !important;
@@ -4571,7 +4403,6 @@ body.Mapfre {
         font-weight: 800 !important;
     }
 
-/* ---------- BOTONES ---------- */
 .Mapfre #page-wrapper .btn {
     min-height: 35px !important;
     padding: 7px 15px !important;
@@ -4647,7 +4478,6 @@ body.Mapfre {
     font-size: 10px !important;
 }
 
-/* ---------- TABLES ---------- */
 .Mapfre #page-wrapper .table-responsive {
     border: 1px solid var(--mf-line) !important;
     border-radius: var(--mf-radius) !important;
@@ -4762,7 +4592,6 @@ body.Mapfre {
     color: #fff !important;
 }
 
-/* ---------- ALERTAS / BADGES ---------- */
 .Mapfre #page-wrapper .alert {
     border: 1px solid transparent !important;
     border-left: 3px solid currentColor !important;
@@ -4804,7 +4633,6 @@ body.Mapfre {
     font-weight: 600 !important;
 }
 
-/* ---------- TABS ---------- */
 .Mapfre #page-wrapper .nav-tabs {
     gap: 2px !important;
     border-bottom: 1px solid var(--mf-line) !important;
@@ -4836,7 +4664,6 @@ body.Mapfre {
         background: transparent !important;
     }
 
-/* ---------- MODALES ---------- */
 .Mapfre #page-wrapper .modal-content {
     border: 0 !important;
     border-radius: 10px !important;
@@ -4871,7 +4698,6 @@ body.Mapfre {
     background: #fafbfc !important;
 }
 
-/* ---------- DROPDOWNS ---------- */
 .Mapfre #page-wrapper .dropdown-menu,
 .Mapfre .head_prin .menu-dropdown {
     border: 1px solid var(--mf-line) !important;
@@ -4892,7 +4718,6 @@ body.Mapfre {
         background: var(--mf-red-soft) !important;
     }
 
-/* ---------- RIGHT SIDEBAR ---------- */
 .Mapfre #right-sidebar {
     top: 0 !important;
     height: 100vh !important;
@@ -4911,7 +4736,6 @@ body.Mapfre {
             color: var(--mf-ink) !important;
         }
 
-/* ---------- FOOTER ---------- */
 .Mapfre .footer {
     width: calc(100% - var(--mf-sidebar)) !important;
     margin-left: var(--mf-sidebar) !important;
@@ -4927,7 +4751,6 @@ body.Mapfre {
         color: var(--mf-red) !important;
     }
 
-/* ---------- SPECIAL FILTER / TOOL AREAS ---------- */
 .Mapfre #page-wrapper .tool-filter,
 .Mapfre #page-wrapper .filter-row {
     padding: 13px !important;
@@ -4952,7 +4775,6 @@ body.Mapfre {
     margin: 0 !important;
 }
 
-/* ---------- LOADING / SPINNERS ---------- */
 .Mapfre #page-wrapper .sk-spinner-wave > div {
     background-color: var(--mf-red) !important;
 }
@@ -4961,7 +4783,6 @@ body.Mapfre {
     background: var(--mf-red) !important;
 }
 
-/* ---------- SCROLLBAR ---------- */
 .Mapfre #page-wrapper ::-webkit-scrollbar {
     width: 7px;
     height: 7px;
@@ -4980,7 +4801,6 @@ body.Mapfre {
         background: var(--mf-red);
     }
 
-/* ---------- RESPONSIVE ---------- */
 @media (max-width: 1199px) {
     .Mapfre #wrapper {
         --mf-sidebar: 215px;
@@ -5168,26 +4988,6 @@ body.Mapfre {
     }
 }
 
-/* ================================================================
-   FIX — Menú de usuario (Desconectar / Cambio de clave) invisible
-   ================================================================
-   Causa: el rediseño V5 convirtió .head_prin y .head_line en
-   contenedores con overflow:hidden (para lograr el sidebar fijo).
-   El <ul class="menu-dropdown"> de "Aliados" (logout) usa
-   position:fixed por la regla genérica de .menu-dropdown (línea
-   ~1099), y al ser descendiente en el DOM de esos contenedores
-   overflow:hidden, el navegador lo recorta aunque sea "fixed":
-   el checkbox #Aliados se marca pero el cuadro nunca se pinta.
-
-   Solución: para este menú en particular (dentro de .aliados) se
-   cambia a position:absolute, anclado al propio bloque .aliados,
-   y se abre hacia arriba (bottom:100%) para quedar siempre dentro
-   del rectángulo visible del sidebar. No se toca ningún otro
-   .menu-dropdown de la app (side-menu, ham-menu, etc.), solo el
-   que vive dentro de .aliados.
-   No se modifica JavaScript: el mecanismo de apertura/cierre sigue
-   siendo el mismo checkbox .inputche#Aliados de siempre.
-   ================================================================ */
 .Mapfre .aliados {
     position: relative !important;
 }
@@ -5206,31 +5006,10 @@ body.Mapfre {
         margin: 0 0 8px 0 !important;
     }
 
-        /* La flechita decorativa (::after) apuntaba hacia abajo asumiendo que
-   el menú se abría hacia abajo; ahora se abre hacia arriba, así que
-   se oculta para no dejar un triángulo suelto y fuera de lugar. */
         .Mapfre .aliados ul.menu-dropdown::after {
             display: none !important;
         }
 
-/* ================================================================
-   FIX — En móvil/tablet (≤991px) es IMPOSIBLE cerrar sesión
-   ================================================================
-   Causa: la media query "@media (max-width: 991px)" pone
-   ".Mapfre .head_line { display: none !important; }" para
-   reemplazar el menú principal por el flyout de la hamburguesa.
-   Pero .aliados (usuario, logo y el menú de Desconectar /
-   Cambio de clave) vive DENTRO de .head_line, así que también
-   desaparece — y el flyout de la hamburguesa (#MenuVertical) solo
-   pinta los items de navegación, nunca el logout. Resultado: en
-   celular/tablet no hay forma de ver ese menú.
-
-   Solución: en vez de ocultar TODO .head_line, solo se ocultan
-   #side-menu y .min_menu (que sí están cubiertos por el flyout de
-   la hamburguesa) y .aliados se re-posiciona como una pastilla
-   flotante en la barra superior de 56px, a la izquierda del ícono
-   de hamburguesa, para que el logout siga siendo accesible.
-   ================================================================ */
 @media (max-width: 991px) {
     .Mapfre .head_line {
         display: flex !important;
@@ -5276,51 +5055,12 @@ body.Mapfre {
     }
 }
 
-/* ================================================================
-   FIX — El menú de "3 puntos" (more menu) nunca debió aparecer en
-   el rediseño vertical, y encima ocupa una franja completa
-   ================================================================
-   Causa 1 (selector muerto): el rediseño intentaba ocultarlo con
-   ".Mapfre .head_prin > .min_menu", pero #moremenubox NO es hijo
-   directo de .head_prin — vive dentro de .head_line. El selector
-   con ">" nunca hace match, así que los 3 puntos seguían visibles.
-
-   Causa 2 (lógica heredada del menú horizontal): rendmoremenu() de
-   master.js mueve al "more menu" todo item cuyo offsetTop > 31px.
-   Eso tenía sentido cuando el menú era una barra horizontal (lo que
-   no cabía en la línea se iba a los 3 puntos). Con el menú ahora
-   vertical, TODOS los items a partir del segundo tienen offsetTop
-   mayor a 31 — o sea, el JS los duplica dentro de los 3 puntos.
-   Por eso "se desperdicia espacio": era una copia del menú entero.
-
-   Solución (sin tocar JS): se oculta el bloque completo con el
-   selector correcto. El JS puede seguir clonando lo que quiera
-   dentro; simplemente ya no se pinta, y el menú vertical del
-   sidebar queda como única navegación, ganando esa franja de ancho.
-   ================================================================ */
 .Mapfre .head_line > .min_menu,
 .Mapfre .head_line > #moremenubox,
 .Mapfre #container_moremenu {
     display: none !important;
 }
 
-/* ================================================================
-   FONDO DE MARCA — ahora sí visible, y sin depender de color-mix()
-   ================================================================
-   Por qué no se veía antes:
-   1) Se pintaba sobre #page-wrapper, pero encima va .wrapper-content
-      con su propio fondo opaco, que lo tapaba por completo.
-   2) Se usaba color-mix() al 5-7%. Si el navegador no soporta
-      color-mix (o si la mezcla queda casi blanca), la declaración
-      entera se descarta o resulta imperceptible.
-
-   Solución: una capa propia (::before) fija detrás del contenido,
-   pintada con el color puro de la cuenta y atenuada con "opacity".
-   Eso funciona en cualquier navegador y el color sale directo de
-   var(--mapfrered1), la misma variable que master.js sobreescribe
-   por cuenta/tenant. Cambia la cuenta -> cambia el fondo. Sin JS.
-   Para subirlo o bajarlo, mover el "opacity" de abajo.
-   ================================================================ */
 .Mapfre .wrapper.wrapper-content,
 .Mapfre .wrapper-content {
     position: relative !important;
@@ -5340,8 +5080,6 @@ body.Mapfre {
         background-repeat: no-repeat;
     }
 
-    /* Trama muy fina encima del degradado: le da textura sin ruido
-   visual. También toma el color de la cuenta. */
     .Mapfre .wrapper-content::after {
         content: "";
         position: fixed;
@@ -5352,25 +5090,12 @@ body.Mapfre {
         background-image: repeating-linear-gradient(135deg, var(--mf-red) 0 1px, transparent 1px 15px);
     }
 
-    /* El contenido debe quedar por encima de esas dos capas. */
     .Mapfre .wrapper-content > .row,
     .Mapfre .wrapper-content > * {
         position: relative;
         z-index: 1;
     }
 
-/* ================================================================
-   MENÚ DE USUARIO — rediseño (era un bloque blanco plano)
-   ================================================================
-   Problemas que se corrigen aquí:
-   - Fondo blanco duro: venía de la regla global
-     ".inputche:checked ~ ul.menu-dropdown > * { background:#fff }",
-     que pinta cada <li> de blanco y deja el borde redondeado del
-     contenedor tapado por las esquinas cuadradas de los <li>.
-   - Alto fijo de 30px en TODOS los <li>: aplastaba el selector de
-     idioma (que necesita ~50px) y le cortaba los botones.
-   - Hover gris apagado que no seguía el color de la cuenta.
-   ================================================================ */
 .Mapfre .aliados ul.menu-dropdown {
     padding: 6px !important;
     border: 1px solid var(--mf-line) !important;
@@ -5380,7 +5105,6 @@ body.Mapfre {
     overflow: hidden !important;
 }
 
-    /* Filete superior con el color de la cuenta */
     .Mapfre .aliados ul.menu-dropdown::before {
         content: "";
         display: block;
@@ -5389,7 +5113,6 @@ body.Mapfre {
         background: linear-gradient(90deg, var(--mf-red), var(--mf-red-2, var(--mf-red)));
     }
 
-    /* Se anula el alto fijo/fondo blanco global de los <li> */
     .Mapfre .aliados .inputche:checked ~ ul.menu-dropdown > li,
     .Mapfre .aliados ul.menu-dropdown > li {
         height: auto !important;
@@ -5434,7 +5157,6 @@ body.Mapfre {
                 color: var(--mf-red) !important;
             }
 
-        /* Selector de idioma: necesita alto propio, no los 30px del resto */
         .Mapfre .aliados ul.menu-dropdown > li.language-selector-menu-item {
             height: auto !important;
             min-height: 0 !important;
@@ -5481,16 +5203,12 @@ body.Mapfre {
         color: var(--mf-red) !important;
     }
 
-    /* Estado activo que ya marca master.js con la clase .is-active
-   (applyLanguageButtonState). No se toca el JS: solo se le da
-   apariencia a la clase que ya existe. */
     .Mapfre .language-selector-menu__button.is-active {
         border-color: var(--mf-red) !important;
         background: var(--mf-red) !important;
         color: #fff !important;
     }
 
-/* ---- Disparador del menú (nombre de la cuenta) ---- */
 .Mapfre .aliados .usua_head .hList {
     margin: 2px 0 0 !important;
     padding: 0 !important;
@@ -5522,23 +5240,10 @@ body.Mapfre {
     display: inline-block !important;
 }
 
-/* ================================================================
-   V6 — CAPA DE ACABADO
-   ================================================================
-   Todo lo de aquí abajo es solo presentación: no cambia estructura
-   HTML, IDs, clases ni nada que master.js consulte. El color sigue
-   saliendo siempre de --mapfrered1 / --mapfrered2 (las que escribe
-   master.js por cuenta), así que cada tenant hereda su propia
-   identidad automáticamente.
-   ================================================================ */
-
-/* ---------- DENSIDAD: se recupera el ancho que liberaron los 3
-   puntos y se ajusta el sidebar a una medida más eficiente ---- */
 .Mapfre #wrapper {
     --mf-radius: 10px;
 }
 
-/* ---------- SIDEBAR: cabecera de marca ---------- */
 .Mapfre #imgHead {
     height: 64px !important;
     min-height: 64px !important;
@@ -5564,7 +5269,6 @@ body.Mapfre {
     box-shadow: 1px 0 0 var(--mf-line), 12px 0 34px rgba(20,24,29,.045) !important;
 }
 
-    /* Lomo de color de la cuenta, ahora como degradado vertical */
     .Mapfre .head_prin::before {
         content: "";
         position: absolute;
@@ -5580,7 +5284,6 @@ body.Mapfre {
     padding: 10px 9px 6px !important;
 }
 
-/* ---------- SIDEBAR: items de navegación ---------- */
 .Mapfre #side-menu .level_1__link,
 .Mapfre #side-menu .menu > .level_1__item > a {
     min-height: 37px !important;
@@ -5599,7 +5302,6 @@ body.Mapfre {
     background: var(--mf-hover) !important;
 }
 
-/* Activo: pastilla suave + marca lateral, en el color de la cuenta */
 .Mapfre #side-menu > nav.active > .menu .level_1__link,
 .Mapfre #side-menu > nav.active > .menu > .level_1__item > a,
 .Mapfre #side-menu > nav.active > .menu .level_1__link:hover,
@@ -5639,7 +5341,6 @@ body.Mapfre {
             transition: padding .13s ease, background .13s ease !important;
         }
 
-/* ---------- SIDEBAR: tarjeta de usuario al pie ---------- */
 .Mapfre .aliados {
     min-height: 66px !important;
     margin: auto 8px 9px !important;
@@ -5679,13 +5380,11 @@ body.Mapfre {
         object-fit: contain !important;
     }
 
-/* ---------- ÁREA DE TRABAJO ---------- */
 .Mapfre .wrapper.wrapper-content,
 .Mapfre .wrapper-content {
     padding: 22px 26px 30px !important;
 }
 
-/* Encabezado de página con acento de marca */
 .Mapfre .page-heading {
     padding: 0 0 13px !important;
     margin: 0 0 20px !important;
@@ -5709,7 +5408,6 @@ body.Mapfre {
         letter-spacing: -.025em !important;
     }
 
-/* ---------- TARJETAS ---------- */
 .Mapfre #page-wrapper .ibox {
     border-radius: var(--mf-radius) !important;
     box-shadow: 0 1px 2px rgba(20,24,29,.05), 0 0 0 0 transparent !important;
@@ -5737,7 +5435,6 @@ body.Mapfre {
         letter-spacing: -.012em !important;
     }
 
-        /* Punto de acento antes del título de cada tarjeta */
         .Mapfre #page-wrapper .ibox-title h5::before {
             content: "";
             width: 3px;
@@ -5751,7 +5448,6 @@ body.Mapfre {
     padding: 17px !important;
 }
 
-/* ---------- WIDGETS ---------- */
 .Mapfre #page-wrapper .widget.style1 {
     border-left: 0 !important;
     border-radius: var(--mf-radius) !important;
@@ -5781,7 +5477,6 @@ body.Mapfre {
         opacity: .9 !important;
     }
 
-/* ---------- BOTONES ---------- */
 .Mapfre #page-wrapper .btn {
     border-radius: 8px !important;
     font-family: var(--mf-font-display);
@@ -5823,7 +5518,6 @@ body.Mapfre {
         color: var(--mf-red) !important;
     }
 
-/* ---------- FORMULARIOS ---------- */
 .Mapfre #page-wrapper .form-control {
     border-radius: 8px !important;
     transition: border-color .13s ease, box-shadow .13s ease !important;
@@ -5842,7 +5536,6 @@ body.Mapfre {
     color: #5A6169 !important;
 }
 
-/* ---------- TABLAS ---------- */
 .Mapfre #page-wrapper .table thead th,
 .Mapfre #page-wrapper .bootstrap-table .fixed-table-container thead th {
     background: #FAFAFB !important;
@@ -5863,7 +5556,6 @@ body.Mapfre {
     border-radius: var(--mf-radius) !important;
 }
 
-/* ---------- PAGINACIÓN ---------- */
 .Mapfre #page-wrapper .pagination > li > a,
 .Mapfre #page-wrapper .pagination > li > span {
     border-radius: 7px !important;
@@ -5876,20 +5568,17 @@ body.Mapfre {
     box-shadow: 0 2px 7px color-mix(in srgb, var(--mf-red) 30%, transparent) !important;
 }
 
-/* ---------- TABS ---------- */
 .Mapfre #page-wrapper .nav-tabs > li > a {
     font-size: 11.5px !important;
     letter-spacing: -.005em !important;
 }
 
-/* ---------- PIE ---------- */
 .Mapfre .footer {
     background: transparent !important;
     border-top: 1px solid var(--mf-line) !important;
     letter-spacing: .02em !important;
 }
 
-/* ---------- MOVIMIENTO REDUCIDO (accesibilidad) ---------- */
 @media (prefers-reduced-motion: reduce) {
     .Mapfre * {
         transition: none !important;
@@ -5897,31 +5586,18 @@ body.Mapfre {
     }
 }
 
-/* ================================================================
-   V7 — REFINAMIENTO FINAL
-   ================================================================
-   Ajustes de oficio sobre la capa V6: sistema de sombras en capas,
-   profundidad del sidebar, micro-interacciones y detalles de
-   tipografía. Sigue siendo 100% presentación y 100% derivado de
-   --mapfrered1 / --mapfrered2.
-   ================================================================ */
-
 .Mapfre #wrapper {
-    /* Sombras en dos capas (contacto + difusión): se ven mucho más
-       naturales que una sola sombra grande y difusa. */
     --mf-e1: 0 1px 1px rgba(20,24,29,.04), 0 2px 6px rgba(20,24,29,.04);
     --mf-e2: 0 1px 2px rgba(20,24,29,.05), 0 8px 22px rgba(20,24,29,.07);
     --mf-e3: 0 2px 4px rgba(20,24,29,.06), 0 18px 44px rgba(20,24,29,.11);
     --mf-ease: cubic-bezier(.2,.7,.3,1);
 }
 
-/* ---------- SIDEBAR: más profundidad y aire ---------- */
 .Mapfre .head_prin {
     background: linear-gradient(180deg, #fff 0%, #FDFDFD 62%, #FBFAFA 100%) !important;
     box-shadow: 1px 0 0 var(--mf-line), 16px 0 44px rgba(20,24,29,.05) !important;
 }
 
-/* Halo tenue del color de la cuenta detrás del logo */
 .Mapfre #imgHead::before {
     content: "";
     position: absolute;
@@ -5940,7 +5616,6 @@ body.Mapfre {
     max-height: 32px !important;
 }
 
-/* Iconos del menú: acompañan el estado activo con un leve empuje */
 .Mapfre #side-menu .level_1__link i,
 .Mapfre #side-menu .menu > .level_1__item > a i {
     transition: transform .18s var(--mf-ease), color .14s ease !important;
@@ -5957,7 +5632,6 @@ body.Mapfre {
     transition: background .16s var(--mf-ease), color .16s ease !important;
 }
 
-/* La pastilla activa entra con un gesto corto en vez de aparecer seca */
 .Mapfre #side-menu > nav.active > .menu .level_1__link::before,
 .Mapfre #side-menu > nav.active > .menu > .level_1__item > a::before {
     animation: mfMarkIn .26s var(--mf-ease) both;
@@ -5975,7 +5649,6 @@ body.Mapfre {
     }
 }
 
-/* Scrollbar del menú: casi invisible hasta que se usa */
 .Mapfre #side-menu::-webkit-scrollbar-thumb {
     background: transparent;
     transition: background .2s ease;
@@ -5985,7 +5658,6 @@ body.Mapfre {
     background: #DEDFE1;
 }
 
-/* ---------- TARJETA DE USUARIO ---------- */
 .Mapfre .aliados {
     box-shadow: var(--mf-e1) !important;
 }
@@ -6002,7 +5674,6 @@ body.Mapfre {
     transform: scale(1.05) rotate(-2deg) !important;
 }
 
-/* ---------- MENÚ DE USUARIO: entrada animada ---------- */
 .Mapfre .aliados ul.menu-dropdown {
     box-shadow: var(--mf-e3) !important;
     transform-origin: bottom center;
@@ -6029,7 +5700,6 @@ body.Mapfre {
     transition: transform .14s var(--mf-ease);
 }
 
-/* ---------- TARJETAS: luz superior y sombra en capas ---------- */
 .Mapfre #page-wrapper .ibox {
     box-shadow: var(--mf-e1) !important;
     transition: box-shadow .18s var(--mf-ease), border-color .18s ease, transform .18s var(--mf-ease) !important;
@@ -6043,7 +5713,6 @@ body.Mapfre {
     overflow: hidden !important;
 }
 
-    /* Lavado muy leve del color de la cuenta en la esquina del encabezado */
     .Mapfre #page-wrapper .ibox-title::after {
         content: "";
         position: absolute;
@@ -6063,7 +5732,6 @@ body.Mapfre {
         box-shadow: 0 1px 3px color-mix(in srgb, var(--mf-red) 40%, transparent);
     }
 
-/* ---------- WIDGETS ---------- */
 .Mapfre #page-wrapper .widget.style1 {
     box-shadow: var(--mf-e1) !important;
 }
@@ -6079,7 +5747,6 @@ body.Mapfre {
         font-variant-numeric: tabular-nums !important;
     }
 
-/* ---------- BOTONES: brillo superior sutil ---------- */
 .Mapfre #page-wrapper .btn-primary,
 .Mapfre #page-wrapper .btn-danger,
 .Mapfre #page-wrapper .btn-success {
@@ -6101,7 +5768,6 @@ body.Mapfre {
         box-shadow: inset 0 2px 5px rgba(0,0,0,.16) !important;
     }
 
-/* ---------- TABLAS: números alineados y cabecera fija ---------- */
 .Mapfre #page-wrapper .table tbody td {
     font-variant-numeric: tabular-nums !important;
 }
@@ -6116,7 +5782,6 @@ body.Mapfre {
     transition: background .13s ease !important;
 }
 
-/* ---------- FOCO VISIBLE CONSISTENTE (accesibilidad) ---------- */
 .Mapfre a:focus-visible,
 .Mapfre button:focus-visible,
 .Mapfre .level_1__link:focus-visible,
@@ -6126,13 +5791,11 @@ body.Mapfre {
     border-radius: 7px !important;
 }
 
-/* ---------- SELECCIÓN DE TEXTO EN EL COLOR DE LA CUENTA ---------- */
 .Mapfre ::selection {
     background: color-mix(in srgb, var(--mf-red) 82%, #000);
     color: #fff;
 }
 
-/* ---------- SCROLLBAR GENERAL ---------- */
 .Mapfre #page-wrapper ::-webkit-scrollbar-thumb {
     background: #D2D5D9;
     border-radius: 20px;
@@ -6142,7 +5805,6 @@ body.Mapfre {
         background: var(--mf-red);
     }
 
-/* ---------- ENTRADA DEL CONTENIDO ---------- */
 .Mapfre .wrapper-content > .row {
     animation: mfRise .3s var(--mf-ease) both;
 }
@@ -6159,22 +5821,6 @@ body.Mapfre {
     }
 }
 
-/* ================================================================
-   V8 — CORRECCIONES SOBRE PANTALLAS REALES
-   ================================================================ */
-
-/* ----------------------------------------------------------------
-   BUG: cuadro blanco vacío flotando sobre la tarjeta de usuario
-   ----------------------------------------------------------------
-   Causa: al menú de usuario (ul.menu-dropdown) se le dio tarjeta
-   propia — fondo blanco, borde, radio y sombra — pero ese estilo se
-   aplicaba SIEMPRE, no solo al abrirlo. Cerrado, sus <li> quedan en
-   alto 0, así que el <ul> se seguía pintando como un rectángulo
-   blanco vacío justo encima del nombre del usuario. Eso es el cuadro
-   que aparece en pantalla.
-   Solución: el contenedor solo existe visualmente cuando el checkbox
-   #Aliados está marcado. Mismo mecanismo de siempre, sin JS.
-   ---------------------------------------------------------------- */
 .Mapfre .aliados ul.menu-dropdown {
     opacity: 0 !important;
     visibility: hidden !important;
@@ -6196,7 +5842,6 @@ body.Mapfre {
     box-shadow: var(--mf-e3, 0 18px 44px rgba(20,24,29,.16)) !important;
 }
 
-/* El filete de color solo debe verse con el menú abierto */
 .Mapfre .aliados ul.menu-dropdown::before {
     display: none !important;
 }
@@ -6205,11 +5850,6 @@ body.Mapfre {
     display: block !important;
 }
 
-/* ----------------------------------------------------------------
-   Se retira la trama diagonal del fondo: en monitores reales se
-   confundía con ruido/moiré de pantalla. Queda solo el degradado
-   suave del color de la cuenta, que es lo que se buscaba.
-   ---------------------------------------------------------------- */
 .Mapfre .wrapper-content::after {
     display: none !important;
 }
@@ -6218,15 +5858,6 @@ body.Mapfre {
     opacity: .13;
 }
 
-/* ----------------------------------------------------------------
-   LOGO ROTO: mientras la ruta del archivo no exista, el navegador
-   pinta el icono de imagen rota y desborda el texto alternativo
-   sobre dos líneas (justo lo que se ve arriba del menú).
-   Esto NO crea el archivo — hay que subirlo o corregir la ruta —
-   pero evita que se vea roto: se recorta a una sola línea, se
-   oculta el icono de imagen fallida y el contenedor mantiene su
-   altura para que el menú no se desplace.
-   ---------------------------------------------------------------- */
 .Mapfre #imgHead {
     line-height: 0 !important;
 }
@@ -6244,23 +5875,11 @@ body.Mapfre {
         letter-spacing: -.02em !important;
     }
 
-/* Igual para el logo de la cuenta dentro del círculo */
 .Mapfre .circulo img {
     overflow: hidden !important;
     font-size: 0 !important;
 }
 
-/* ================================================================
-   FORMULARIOS — modernización de las pantallas de cotización
-   ================================================================ */
-
-/* ---- Banner diagonal heredado: se vuelve una tarjeta blanca ----
-   El fondo salía de var(--mapfrered1), el color que master.js fija
-   por cuenta (v1/Colors/GetColor). Para unas cuentas es rojo, para
-   otras el Color1 que tengan guardado puede ser un tono oscuro sin
-   relación con la marca, así que la tarjeta cambiaba de aspecto
-   según quién iniciaba sesión. Se deja en blanco con un acento fijo
-   en el rojo de marca, consistente sin importar la cuenta. */
 .Mapfre #page-wrapper .title_design {
     width: auto !important;
     min-width: 210px !important;
@@ -6322,7 +5941,6 @@ body.Mapfre {
     background: var(--mf-red-soft, #FBEAE8) !important;
 }
 
-/* ---- Encabezados de sección ("Datos del contratante", etc.) ---- */
 .Mapfre #page-wrapper h4,
 .Mapfre #page-wrapper .titulosMant {
     display: flex !important;
@@ -6344,8 +5962,6 @@ body.Mapfre {
         font-size: 13px !important;
     }
 
-/* Botón "Quitar selección" de Mapfre Más (tipo de producto <-> contrato):
-   vive dentro del <h4> de la sección (que ya es flex), pegado a la derecha. */
 .Mapfre #page-wrapper h4 .mf-clear-selection {
     margin-left: auto !important;
     display: inline-flex !important;
@@ -6376,7 +5992,6 @@ body.Mapfre {
         font-size: 11px !important;
     }
 
-/* ---- Campos ---- */
 .Mapfre #page-wrapper .form-control,
 .Mapfre #page-wrapper select.form-control {
     min-height: 38px !important;
@@ -6392,7 +6007,6 @@ body.Mapfre {
         border-color: #BFC3C8 !important;
     }
 
-/* Selects con flecha propia (la nativa se ve anticuada) */
 .Mapfre #page-wrapper select.form-control,
 .Mapfre #page-wrapper .custom-select {
     -webkit-appearance: none !important;
@@ -6404,12 +6018,10 @@ body.Mapfre {
     background-position: right 12px center !important;
 }
 
-    /* Estado "Cargando..." más discreto */
     .Mapfre #page-wrapper select.form-control option:first-child {
         color: #A5ABB2 !important;
     }
 
-/* Fechas: el icono de calendario nativo toma el color de la cuenta */
 .Mapfre #page-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
     opacity: .55;
@@ -6420,16 +6032,12 @@ body.Mapfre {
     opacity: 1;
 }
 
-/* Asterisco de obligatorio */
 .Mapfre #page-wrapper .required-mark {
     color: var(--mf-red) !important;
     font-size: 12px !important;
     font-weight: 700 !important;
 }
 
-/* ---- Radios y checkboxes: los controles nativos son lo que más
-   "envejece" el formulario. Se agrandan, toman el color de la
-   cuenta y ganan una zona clicable con hover. ---- */
 .Mapfre #page-wrapper input[type="radio"],
 .Mapfre #page-wrapper input[type="checkbox"] {
     width: 16px !important;
@@ -6474,7 +6082,6 @@ body.Mapfre {
         color: var(--mf-text) !important;
     }
 
-/* ---- Separadores punteados heredados -> línea fina ---- */
 .Mapfre #page-wrapper .hr-line-dashed {
     border: 0 !important;
     border-top: 1px solid var(--mf-line) !important;
@@ -6482,16 +6089,6 @@ body.Mapfre {
     background: none !important;
 }
 
-/* ================================================================
-   V9 — ORDEN Y RITMO EN FORMULARIOS
-   ================================================================
-   Nota importante: el ORDEN real de los campos vive en la vista
-   (.cshtml de cada cotizador), no aquí. Lo que este bloque hace es
-   darles una retícula, una alineación y un ritmo consistentes para
-   que se lean ordenados aunque el marcado venga desparejo.
-   ================================================================ */
-
-/* ---- Cada sección se lee como un bloque con aire propio ---- */
 .Mapfre #page-wrapper .ibox-content > h4,
 .Mapfre #page-wrapper .ibox-content > .titulosMant {
     margin-top: 26px !important;
@@ -6502,17 +6099,6 @@ body.Mapfre {
         margin-top: 2px !important;
     }
 
-/* ---- Alineación: etiquetas e inputs en la misma línea base ----
-   El problema visual típico de estos formularios es que una etiqueta
-   de dos líneas empuja su campo hacia abajo y rompe la fila. Con la
-   columna en flex y el campo empujado al fondo, todos los inputs de
-   una misma fila quedan perfectamente alineados.
-   Se limita a ".form-row" (la fila de campos de un fieldset) y no a
-   cualquier ".row": ".row" se usa en toda la app para layouts muy
-   distintos (bloques centrados de una sola columna, por ejemplo), y
-   ahí el "empujar al fondo" combinado con height:100% hacía que el
-   campo apareciera desplazado varias filas más abajo, superpuesto
-   con contenido de otra sección. */
 .Mapfre #page-wrapper .form-row > [class*="col-"] > .form-group {
     display: flex !important;
     flex-direction: column !important;
@@ -6534,16 +6120,12 @@ body.Mapfre {
     margin-top: auto !important;
 }
 
-/* ---- Grupos de radios/checkbox: set ordenado, no sopa de bolitas ---- */
 .Mapfre #page-wrapper .form-group > .radio,
 .Mapfre #page-wrapper .form-group > .checkbox,
 .Mapfre #page-wrapper .form-group > .form-check {
     margin-top: 0 !important;
 }
 
-/* Contenedor opcional: agrégalo en la vista alrededor de un set de
-   opciones para que se acomoden en rejilla pareja en vez de en
-   renglones irregulares. Uso: <div class="mf-options"> ... </div> */
 .Mapfre #page-wrapper .mf-options {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -6557,11 +6139,6 @@ body.Mapfre {
         margin: 0 !important;
     }
 
-/* ---- Retícula automática (opcional pero recomendada) ----
-   Agrega la clase mf-grid al <div class="row"> de una sección y los
-   campos se acomodan solos en columnas parejas, sin depender de que
-   cada uno traiga el col-md-* correcto. Se adapta al ancho: 4 / 3 /
-   2 / 1 columnas según la pantalla, sin media queries. */
 .Mapfre #page-wrapper .row.mf-grid {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)) !important;
@@ -6576,12 +6153,10 @@ body.Mapfre {
         padding: 0 !important;
     }
 
-    /* Un campo que deba ocupar toda la fila (direcciones, observaciones) */
     .Mapfre #page-wrapper .row.mf-grid > .mf-full {
         grid-column: 1 / -1 !important;
     }
 
-    /* Y uno que ocupe el doble de ancho (nombres largos, razón social) */
     .Mapfre #page-wrapper .row.mf-grid > .mf-wide {
         grid-column: span 2 !important;
     }
@@ -6596,17 +6171,13 @@ body.Mapfre {
         }
 }
 
-/* ---- Textareas y campos largos ---- */
 .Mapfre #page-wrapper textarea.form-control {
     min-height: 88px !important;
     line-height: 1.5 !important;
 }
 
-/* ---- Barra de acciones: los botones dejan de flotar sueltos al
-   final y quedan agrupados a la derecha sobre una línea. ---- */
 .Mapfre #page-wrapper .ibox-content > .row:last-child .btn-primary,
 .Mapfre #page-wrapper .mf-actions {
-    /* marcador para la regla de abajo */
 }
 
 .Mapfre #page-wrapper .mf-actions {
@@ -6624,13 +6195,10 @@ body.Mapfre {
         margin: 0 !important;
     }
 
-/* El btn-primary heredado trae float:right y margen suelto; dentro
-   de una fila normal eso descuadra la última línea del formulario. */
 .Mapfre #page-wrapper .btn-primary {
     margin: 6px 0 6px 8px !important;
 }
 
-/* ---- Mensajes de error: bajo el campo, sin descuadrar la fila ---- */
 .Mapfre #page-wrapper .form-group .error,
 .Mapfre #page-wrapper .form-group .LabelValidate {
     display: block !important;
@@ -6640,7 +6208,6 @@ body.Mapfre {
     font-weight: 600 !important;
 }
 
-/* ---- Bloques informativos laterales (el texto de producto) ---- */
 .Mapfre #page-wrapper .T3 a {
     display: block !important;
     margin-bottom: 5px !important;
@@ -6660,18 +6227,6 @@ body.Mapfre {
     text-align: left !important;
 }
 
-/* ================================================================
-   V10 — FONDO NUEVO + CONTROLES REALES DE LOS COTIZADORES
-   ================================================================ */
-
-/* ----------------------------------------------------------------
-   FONDO: se reemplaza el anterior por una malla de luz suave.
-   Sin patrones repetidos (líneas/puntos) porque en monitores reales
-   producen moiré. Son tres focos de luz del color de la cuenta,
-   de distinta intensidad, sobre un lienzo cálido neutro, más un
-   velado blanco arriba que da sensación de profundidad.
-   Todo sale de --mapfrered1, así que cambia con la cuenta.
-   ---------------------------------------------------------------- */
 .Mapfre #wrapper {
     --mf-canvas: #F4F5F7;
 }
@@ -6681,20 +6236,14 @@ body.Mapfre {
     filter: none !important;
     background-color: var(--mf-canvas) !important;
     background-image:
-    /* velado claro superior: da profundidad y despeja la zona de trabajo */
     linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.45) 32%, rgba(255,255,255,0) 65%),
-    /* foco principal, esquina superior derecha */
     radial-gradient(920px 660px at 92% -6%, color-mix(in srgb, var(--mf-red) 30%, transparent) 0%, transparent 65%),
-    /* foco de apoyo, inferior izquierda */
     radial-gradient(760px 620px at -4% 102%, color-mix(in srgb, var(--mf-red) 22%, transparent) 0%, transparent 62%),
-    /* acento cálido central que rompe la simetría */
     radial-gradient(560px 420px at 62% 58%, color-mix(in srgb, var(--mf-red) 11%, transparent) 0%, transparent 70%) !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
 }
 
-/* Respaldo para navegadores sin color-mix(): el color plano de la
-   cuenta atenuado, que igual se ve bien. */
 @supports not (color: color-mix(in srgb, red 10%, transparent)) {
     .Mapfre .wrapper-content::before {
         opacity: .14 !important;
@@ -6703,21 +6252,12 @@ body.Mapfre {
     }
 }
 
-/* Las tarjetas se separan del fondo con un blanco puro */
 .Mapfre #page-wrapper .ibox,
 .Mapfre #page-wrapper .ibox-content,
 .Mapfre #page-wrapper .ibox-title {
     background-color: #fff !important;
 }
 
-/* ----------------------------------------------------------------
-   RADIOS/CHECKS REALES: los cotizadores usan el patrón Bootstrap 4
-   "custom-control custom-radio custom-control-inline". Ahí el input
-   nativo está oculto y el círculo visible se dibuja en el ::before
-   de la etiqueta. Por eso el estilo anterior (accent-color sobre el
-   input) no se veía, y además el padding de la pastilla pisaba el
-   marcador. Esto lo corrige y le da estado seleccionado real.
-   ---------------------------------------------------------------- */
 .Mapfre #page-wrapper .custom-control {
     position: relative !important;
     display: inline-flex !important;
@@ -6737,8 +6277,6 @@ body.Mapfre {
         background: var(--mf-red-soft, #FBEAE8) !important;
     }
 
-/* El input oculto debe seguir oculto y cubrir la pastilla completa
-   para que toda ella sea clicable. */
 .Mapfre #page-wrapper .custom-control-input {
     position: absolute !important;
     width: 100% !important;
@@ -6760,11 +6298,6 @@ body.Mapfre {
     line-height: 1.2 !important;
 }
 
-    /* Marcador (círculo / casilla). .custom-control-label ya tiene
-       position:relative de Bootstrap, así que "left" se mide desde
-       el borde del texto de la etiqueta, no desde la pastilla -por
-       eso va en negativo, para caer en el hueco que .custom-control
-       reserva con su padding-left:32px, y no encima del texto. */
     .Mapfre #page-wrapper .custom-control-label::before {
         left: -21px !important;
         top: 50% !important;
@@ -6793,7 +6326,6 @@ body.Mapfre {
     transform: translateY(-50%) !important;
 }
 
-/* Estado seleccionado */
 .Mapfre #page-wrapper .custom-control-input:checked ~ .custom-control-label::before {
     border-color: var(--mf-red) !important;
     background: var(--mf-red) !important;
@@ -6812,19 +6344,16 @@ body.Mapfre {
     font-weight: 700 !important;
 }
 
-/* La pastilla completa se marca cuando la opción está elegida */
 .Mapfre #page-wrapper .custom-control:has(.custom-control-input:checked) {
     border-color: var(--mf-red) !important;
     background: var(--mf-red-soft, #FBEAE8) !important;
     box-shadow: 0 0 0 1px var(--mf-red) inset !important;
 }
 
-/* Foco por teclado */
 .Mapfre #page-wrapper .custom-control-input:focus-visible ~ .custom-control-label::before {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--mf-red) 25%, transparent) !important;
 }
 
-/* Deshabilitado */
 .Mapfre #page-wrapper .custom-control-input:disabled ~ .custom-control-label {
     color: #A8ADB3 !important;
     cursor: not-allowed !important;
@@ -6836,8 +6365,6 @@ body.Mapfre {
     cursor: not-allowed !important;
 }
 
-/* Se anula la regla anterior que agrandaba el input nativo: en este
-   patrón el input está oculto y no debe tener medidas propias. */
 .Mapfre #page-wrapper .custom-control input[type="radio"],
 .Mapfre #page-wrapper .custom-control input[type="checkbox"] {
     width: 100% !important;
@@ -6845,7 +6372,6 @@ body.Mapfre {
     margin: 0 !important;
 }
 
-/* ---- Cabecera de los cotizadores: el bloque Title_Prin ---- */
 .Mapfre #page-wrapper .ibox-title.p-0 {
     padding: 14px 17px !important;
 }
@@ -6875,21 +6401,8 @@ body.Mapfre {
     }
 }
 
-/* ================================================================
-   V11 — MÓVIL (bloque final, va al final a propósito)
-   ================================================================
-   Importante: las capas V6–V10 añadieron reglas de escritorio con
-   !important que aparecen DESPUÉS del bloque móvil anterior, así que
-   lo estaban pisando (misma especificidad, gana la última). Todo lo
-   de móvil se reescribe aquí, al final del archivo, para que gane
-   siempre. Objetivos: una barra superior real, menú lateral que se
-   desliza, áreas táctiles de 44px, cero desbordes horizontales y
-   sin zoom automático en iOS.
-   ================================================================ */
-
 @media (max-width: 991px) {
 
-    /* ---- Nada debe desbordar a lo ancho ---- */
     .Mapfre,
     .Mapfre #wrapper,
     .Mapfre #page-wrapper {
@@ -6897,7 +6410,6 @@ body.Mapfre {
         overflow-x: hidden !important;
     }
 
-        /* ---- BARRA SUPERIOR ---- */
         .Mapfre .head_prin {
             position: fixed !important;
             inset: 0 0 auto 0 !important;
@@ -6916,7 +6428,6 @@ body.Mapfre {
             height: calc(56px + env(safe-area-inset-top)) !important;
         }
 
-            /* La franja vertical de marca no aplica en horizontal */
             .Mapfre .head_prin::before {
                 display: none !important;
             }
@@ -6943,7 +6454,6 @@ body.Mapfre {
                 max-height: 26px !important;
             }
 
-        /* ---- BOTÓN HAMBURGUESA (área táctil de 44px) ---- */
         .Mapfre .head_prin > .ham-icon {
             display: flex !important;
             position: absolute !important;
@@ -6989,8 +6499,6 @@ body.Mapfre {
                 top: 6px !important;
             }
 
-            /* Se convierte en "X" al abrir (usa la clase .active que ya
-       alterna el script inline del layout) */
             .Mapfre .trigger.active {
                 background: transparent !important;
             }
@@ -7003,7 +6511,6 @@ body.Mapfre {
                     transform: translateY(-6px) rotate(-45deg) !important;
                 }
 
-        /* ---- MENÚ LATERAL DESLIZANTE ---- */
         .Mapfre .head_prin > .ham-menu {
             display: block !important;
             position: fixed !important;
@@ -7030,7 +6537,6 @@ body.Mapfre {
             visibility: visible !important;
         }
 
-        /* Velo oscuro detrás del menú abierto */
         .Mapfre #ham-menu:checked ~ .ham-icon::after {
             content: "" !important;
             position: fixed !important;
@@ -7091,7 +6597,6 @@ body.Mapfre {
                     padding: 9px 11px !important;
                 }
 
-        /* ---- BLOQUE DE USUARIO: pasa a la barra superior ---- */
         .Mapfre .head_line {
             display: flex !important;
             position: absolute !important;
@@ -7158,7 +6663,6 @@ body.Mapfre {
             flex: 0 0 34px !important;
         }
 
-        /* El menú de usuario se abre hacia abajo, anclado a la derecha */
         .Mapfre .aliados .inputche:checked ~ ul.menu-dropdown {
             position: fixed !important;
             top: calc(60px + env(safe-area-inset-top)) !important;
@@ -7180,7 +6684,6 @@ body.Mapfre {
             font-size: 12px !important;
         }
 
-        /* ---- ÁREA DE CONTENIDO ---- */
         .Mapfre .wrapper.wrapper-content,
         .Mapfre .wrapper-content {
             width: 100% !important;
@@ -7195,7 +6698,6 @@ body.Mapfre {
             text-align: center !important;
         }
 
-        /* ---- CABECERA DE COTIZADORES ---- */
         .Mapfre #page-wrapper .Title_Prin {
             flex-direction: column !important;
             gap: 12px !important;
@@ -7223,7 +6725,6 @@ body.Mapfre {
             padding: 12px 14px !important;
         }
 
-        /* ---- FORMULARIOS EN UNA COLUMNA ---- */
         .Mapfre #page-wrapper .form-row > [class*="col-"],
         .Mapfre #page-wrapper .row > [class*="col-"] {
             flex: 0 0 100% !important;
@@ -7235,7 +6736,6 @@ body.Mapfre {
             grid-template-columns: 1fr !important;
         }
 
-        /* 16px evita que iOS haga zoom automático al enfocar un campo */
         .Mapfre #page-wrapper .form-control,
         .Mapfre #page-wrapper select.form-control,
         .Mapfre #page-wrapper textarea.form-control,
@@ -7248,7 +6748,6 @@ body.Mapfre {
             font-size: 12px !important;
         }
 
-        /* Opciones a lo ancho, cómodas para el dedo */
         .Mapfre #page-wrapper .custom-control {
             min-height: 44px !important;
             margin: 4px 6px 4px 0 !important;
@@ -7259,7 +6758,6 @@ body.Mapfre {
             font-size: 13.5px !important;
         }
 
-        /* ---- BOTONES ---- */
         .Mapfre #page-wrapper .btn {
             min-height: 44px !important;
             padding: 11px 16px !important;
@@ -7274,7 +6772,6 @@ body.Mapfre {
                 width: 100% !important;
             }
 
-        /* ---- TABLAS: desplazamiento horizontal en vez de romper ---- */
         .Mapfre #page-wrapper .table-responsive,
         .Mapfre #page-wrapper .fixed-table-container {
             overflow-x: auto !important;
@@ -7289,7 +6786,6 @@ body.Mapfre {
                 position: static !important;
             }
 
-        /* ---- TARJETAS ---- */
         .Mapfre #page-wrapper .ibox {
             margin-bottom: 13px !important;
         }
@@ -7306,7 +6802,6 @@ body.Mapfre {
             padding: 14px !important;
         }
 
-        /* ---- PANEL LATERAL DERECHO: a pantalla completa ---- */
         .Mapfre #right-sidebar {
             top: calc(56px + env(safe-area-inset-top)) !important;
             height: calc(100vh - 56px - env(safe-area-inset-top)) !important;
@@ -7318,19 +6813,16 @@ body.Mapfre {
                 right: 0 !important;
             }
 
-        /* ---- MODALES ---- */
         .Mapfre #page-wrapper .modal-dialog {
             margin: 10px !important;
             max-width: calc(100% - 20px) !important;
         }
 
-        /* Sin efectos de hover en pantallas táctiles */
         .Mapfre #page-wrapper .widget.style1:hover {
             transform: none !important;
         }
 }
 
-/* ---- Teléfonos pequeños ---- */
 @media (max-width: 575px) {
     .Mapfre #imgHead {
         max-width: 38vw !important;
@@ -7341,8 +6833,6 @@ body.Mapfre {
             max-height: 23px !important;
         }
 
-    /* En pantallas muy angostas se oculta el nombre y queda la cuenta,
-       que es lo que identifica la sesión, más el logo. */
     .Mapfre #UserNameMaster {
         display: none !important;
     }
@@ -7376,7 +6866,6 @@ body.Mapfre {
     }
 }
 
-/* ---- Dispositivos sin puntero fino: se anulan los hover ---- */
 @media (hover: none) {
     .Mapfre #page-wrapper .ibox:hover,
     .Mapfre #page-wrapper .widget.style1:hover,
@@ -7390,24 +6879,6 @@ body.Mapfre {
     }
 }
 
-
-/* ================================================================
-   V12 — IDENTIDAD POR CUENTA, FONDO Y MOVIMIENTO
-   ================================================================
-   Este bloque va DESPUES de V11 (movil) solo en lo que no es
-   responsive; las reglas moviles propias de V12 estan al final del
-   propio bloque para no reabrir el problema de orden.
-   ================================================================ */
-
-/* ----------------------------------------------------------------
-   CABECERA DEL SIDEBAR: el logo de la cuenta, arriba
-   ----------------------------------------------------------------
-   Antes habia un JPG de MAPFRE fijo en el codigo. Eso es incorrecto
-   en una aplicacion multi-marca: al entrar con otra cuenta seguia
-   viendose MAPFRE. Ahora arriba va el logo que devuelve
-   v1/Colors/GetColor para la cuenta conectada (el mismo que master.js
-   inyecta en #logotenantHead), y debajo un rotulo neutro.
-   ---------------------------------------------------------------- */
 .Mapfre #imgHead {
     display: flex !important;
     flex-direction: column !important;
@@ -7423,7 +6894,6 @@ body.Mapfre {
     overflow: hidden !important;
 }
 
-    /* Halo del color de la cuenta */
     .Mapfre #imgHead::before {
         content: "";
         position: absolute;
@@ -7450,19 +6920,6 @@ body.Mapfre {
         opacity: .6;
     }
 
-    /* Logo fijo de MAPFRE, esquina superior izquierda. Es un <img>
-       estático nada más -sin #logotenantHead ni #tenantLogo-, así que
-       JS/master.js nunca lo toca y no puede quedar en blanco. El logo
-       por cuenta (dinámico, vía GetColor) vive aparte, junto al menú
-       de usuario/logout (.aliados .circulo, más abajo en este mismo
-       archivo).
-
-       Usa una clase propia (.mf-brand-logo) en vez de reusar .circulo:
-       esa clase ya trae fondo y border-radius:50% de otros lugares del
-       archivo, y como el logo de una marca es rectangular, recortarlo
-       en círculo/óvalo lo mutilaba. Con una clase sin ningún estilo
-       heredado no hay nada que anular: el logo se ve tal cual es,
-       sobre el fondo blanco del sidebar, sin ninguna forma detrás. */
     .Mapfre #imgHead .mf-brand-logo {
         width: calc(100% + 28px);
         margin: 0 -14px;
@@ -7505,9 +6962,6 @@ body.Mapfre {
     white-space: nowrap;
 }
 
-/* ----------------------------------------------------------------
-   TARJETA DE USUARIO: ya no lleva logo duplicado abajo
-   ---------------------------------------------------------------- */
 .Mapfre .aliados {
     display: flex !important;
     align-items: center !important;
@@ -7542,14 +6996,6 @@ body.Mapfre {
     transform: rotate(180deg) !important;
 }
 
-/* ----------------------------------------------------------------
-   FONDO: aurora lenta en el color de la cuenta
-   ----------------------------------------------------------------
-   Tres focos de luz que se desplazan muy despacio (60s). El
-   movimiento es casi imperceptible pero le quita la sensacion de
-   imagen estatica. Se desactiva por completo si el sistema pide
-   movimiento reducido, y en moviles (ahorro de bateria).
-   ---------------------------------------------------------------- */
 .Mapfre .wrapper-content::before {
     background-image: linear-gradient(180deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 62%), radial-gradient(980px 700px at 90% -8%, color-mix(in srgb, var(--mf-red) 32%, transparent) 0%, transparent 64%), radial-gradient(820px 660px at -6% 104%, color-mix(in srgb, var(--mf-red) 24%, transparent) 0%, transparent 62%), radial-gradient(600px 460px at 58% 52%, color-mix(in srgb, var(--mf-red) 12%, transparent) 0%, transparent 70%) !important;
     background-size: 100% 100%, 140% 140%, 140% 140%, 130% 130% !important;
@@ -7571,9 +7017,6 @@ body.Mapfre {
     }
 }
 
-/* ----------------------------------------------------------------
-   MOVIMIENTO: entradas escalonadas y curvas mas naturales
-   ---------------------------------------------------------------- */
 .Mapfre #side-menu > nav {
     animation: mfNavIn .34s cubic-bezier(.2,.7,.3,1) both;
 }
@@ -7626,7 +7069,6 @@ body.Mapfre {
     }
 }
 
-/* Los submenus se despliegan con altura animada en vez de aparecer */
 .Mapfre #side-menu .menu-dropdown {
     overflow: hidden !important;
     transition: max-height .28s cubic-bezier(.2,.7,.3,1), opacity .2s ease !important;
@@ -7648,7 +7090,6 @@ body.Mapfre {
     }
 }
 
-/* Las tarjetas del contenido entran escalonadas */
 .Mapfre .wrapper-content .ibox,
 .Mapfre .wrapper-content .widget.style1 {
     animation: mfCardIn .38s cubic-bezier(.2,.7,.3,1) both;
@@ -7685,16 +7126,10 @@ body.Mapfre {
     }
 }
 
-/* ----------------------------------------------------------------
-   LEGIBILIDAD Y ORDEN
-   ---------------------------------------------------------------- */
-
-/* Separacion visual entre grupos del menu */
 .Mapfre #side-menu > nav + nav {
     margin-top: 1px !important;
 }
 
-/* La flecha del desplegable gira al abrir el grupo */
 .Mapfre #side-menu .dropdown-toggle::after,
 .Mapfre #side-menu .level_1__link.dropdown-toggle::after {
     transition: transform .24s cubic-bezier(.2,.7,.3,1) !important;
@@ -7704,7 +7139,6 @@ body.Mapfre {
     transform: rotate(180deg) !important;
 }
 
-/* Jerarquia mas clara en migas de pan */
 .Mapfre .breadcrumb {
     display: flex !important;
     align-items: center !important;
@@ -7712,7 +7146,6 @@ body.Mapfre {
     font-weight: 600 !important;
 }
 
-/* Estado vacio / sin datos, mas amable */
 .Mapfre #page-wrapper .no-records-found td,
 .Mapfre #page-wrapper .text-muted-empty {
     padding: 26px 14px !important;
@@ -7721,7 +7154,6 @@ body.Mapfre {
     text-align: center !important;
 }
 
-/* Etiquetas de estado con mas presencia */
 .Mapfre #page-wrapper .label,
 .Mapfre #page-wrapper .badge {
     padding: 4px 9px !important;
@@ -7732,11 +7164,7 @@ body.Mapfre {
     letter-spacing: .03em !important;
 }
 
-/* ----------------------------------------------------------------
-   AJUSTES MOVILES DE ESTE BLOQUE (van al final para ganar orden)
-   ---------------------------------------------------------------- */
 @media (max-width: 991px) {
-    /* En movil la cabecera vuelve a ser horizontal dentro de la barra */
     .Mapfre #imgHead {
         flex-direction: row !important;
         align-items: center !important;
@@ -7766,12 +7194,10 @@ body.Mapfre {
         display: none !important;
     }
 
-    /* Sin aurora en movil: ahorra bateria y evita repintados */
     .Mapfre .wrapper-content::before {
         animation: none !important;
     }
 
-    /* Entradas mas cortas para que la navegacion se sienta inmediata */
     .Mapfre #side-menu > nav,
     .Mapfre .wrapper-content .ibox,
     .Mapfre .wrapper-content .widget.style1 {
@@ -7789,7 +7215,6 @@ body.Mapfre {
         }
 }
 
-/* Accesibilidad: todo el movimiento se apaga si el sistema lo pide */
 @media (prefers-reduced-motion: reduce) {
     .Mapfre .wrapper-content::before,
     .Mapfre #side-menu > nav,
@@ -7800,31 +7225,6 @@ body.Mapfre {
     }
 }
 
-/* ================================================================
-   V13 — REDISEÑO CORPORATIVO SÓLIDO (banca/seguros) + FORMULARIOS 10/10
-   ================================================================
-   Motivo: en pantalla real (capturas del usuario) el panel de inicio
-   se ve plano -las tarjetas de resumen (Cotizaciones vigentes, Pólizas
-   activas, etc.) nunca recibieron el rediseño de V1-V12 porque usan
-   clases propias (.res_bo, .iconboxes, .items, .info) heredadas del
-   tema original- y el menú lateral no muestra íconos porque el campo
-   SmallImage de cada item de menú (v1/Security/NavegationAllowed)
-   viene vacío en esta base de datos: el <i> se renderiza sin clase,
-   así que ningún CSS puede "inventar" un ícono que no existe.
-   Este bloque corrige ambos huecos y además le da a los formularios
-   una lectura más sólida y corporativa: cada sección se lee como un
-   bloque propio (barra de acento + fondo), no como texto corrido.
-   ================================================================ */
-
-/* ----------------------------------------------------------------
-   TARJETAS DEL PANEL DE INICIO (Cotizaciones vigentes, Pólizas
-   activas, Siniestros activos, Recibos pendientes)
-   ----------------------------------------------------------------
-   Cada tarjeta ya trae su color semántico por inline-style en el
-   <label> y el <i> (azul/verde/amarillo/rojo). Se reusa ese mismo
-   color con currentColor + color-mix para el fondo del ícono, así
-   no hay que tocar la vista para que la insignia combine.
-   ---------------------------------------------------------------- */
 .Mapfre #page-wrapper .res_bo {
     margin-bottom: 16px !important;
     background: var(--mf-card, #fff) !important;
@@ -7909,15 +7309,6 @@ body.Mapfre {
     }
 }
 
-/* ----------------------------------------------------------------
-   MENÚ LATERAL: ícono ausente -> punto discreto en vez de hueco
-   ----------------------------------------------------------------
-   Cuando SmallImage viene vacío el <i class="mr-1 "></i> queda sin
-   ningún glifo: :empty lo detecta (no tiene ni texto ni hijos) y le
-   dibuja un punto pequeño en vez de dejar un espacio muerto. Si el
-   backend algún día llena SmallImage, esta regla deja de aplicar
-   sola (el <i> ya no estaría vacío) y se ve el ícono real.
-   ---------------------------------------------------------------- */
 .Mapfre #side-menu .level_1__link i:empty,
 .Mapfre #side-menu .menu-dropdown li > a i:empty,
 .Mapfre .items_ham_menu .level_1__link i:empty,
@@ -7940,9 +7331,6 @@ body.Mapfre {
         opacity: .5 !important;
     }
 
-/* ----------------------------------------------------------------
-   MENÚ LATERAL: estado activo sólido (no solo un lavado)
-   ---------------------------------------------------------------- */
 .Mapfre #side-menu > nav.active > .menu .level_1__link,
 .Mapfre #side-menu > nav.active > .menu > .level_1__item > a,
 .Mapfre #side-menu > nav.active > .menu .level_1__link:hover,
@@ -7965,24 +7353,11 @@ body.Mapfre {
     font-weight: 700 !important;
 }
 
-/* ----------------------------------------------------------------
-   ENCABEZADO DE TARJETA: un poco más de peso, menos "solo blanco"
-   ---------------------------------------------------------------- */
 .Mapfre #page-wrapper .ibox-title {
     background: linear-gradient(180deg, color-mix(in srgb, var(--mf-red) 4%, #fff), #fff) !important;
     border-bottom: 1px solid var(--mf-line) !important;
 }
 
-/* ----------------------------------------------------------------
-   FORMULARIOS: cada sección es un bloque propio, no texto corrido
-   ----------------------------------------------------------------
-   Estructura real de cada cotizador/emisor: <fieldset> contiene una
-   secuencia de <div class="form-row"> (una por sección: "Datos
-   generales", "Información de póliza grupo", "Datos del hogar",
-   etc.), cada una con su <h4> + .hr-line-dashed + los campos. Se le
-   da a cada una tarjeta propia con barra de acento a la izquierda,
-   para que se lean como pasos/bloques y no como una lista plana.
-   ---------------------------------------------------------------- */
 .Mapfre #page-wrapper fieldset > .form-row {
     margin: 0 0 20px !important;
     padding: 18px 20px 16px !important;
@@ -7996,8 +7371,6 @@ body.Mapfre {
         margin-bottom: 0 !important;
     }
 
-    /* El título de sección ya no necesita su propio borde inferior:
-       ahora lo da la tarjeta que lo envuelve. */
     .Mapfre #page-wrapper fieldset > .form-row > .col-lg-12 > h4,
     .Mapfre #page-wrapper fieldset > .form-row > .col-lg-12 > .titulosMant {
         margin-top: 2px !important;
@@ -8008,8 +7381,6 @@ body.Mapfre {
         margin: 0 0 16px !important;
     }
 
-/* Campos: un poco más de peso y una sombra interior muy sutil para
-   que no se confundan con texto plano sobre el fondo de la tarjeta. */
 .Mapfre #page-wrapper fieldset .form-control,
 .Mapfre #page-wrapper fieldset select.form-control {
     background-color: #fff !important;
@@ -8020,12 +7391,6 @@ body.Mapfre {
     box-shadow: inset 0 1px 2px rgba(20, 24, 29, .04), 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
 }
 
-/* Botones de acción (cotizar/limpiar/emitir/guardar cambios, etc.):
-   más presencia. Viven dentro de una tarjeta de sección como
-   cualquier otra fila, así que solo se refuerza el botón en sí, no
-   el contenedor. Se excluyen los botones que en realidad son
-   controles inline (selector de archivo, toggle de dropdown) para
-   no ensancharlos de más. */
 .Mapfre #page-wrapper fieldset .btn-primary:not(.btn-sm):not(.btn-xs):not(.dropdown-toggle),
 .Mapfre #page-wrapper fieldset .btn-default:not(.btn-sm):not(.btn-xs):not(.dropdown-toggle):not(.fileinput-button) {
     min-width: 132px !important;
@@ -8042,20 +7407,6 @@ body.Mapfre {
     }
 }
 
-/* ================================================================
-   V14 — "ÚLTIMAS COTIZACIONES" / "ÚLTIMAS PÓLIZAS EMITIDAS" (inicio)
-   ================================================================
-   Estas dos listas del panel de inicio no usan bootstrap-table (esa
-   ya tenía su propio rediseño: encabezado en mayúsculas, hover,
-   paginación, scroll con cabecera fija, etc.) — son HTML armado a
-   mano en JS (Inicio/agente.cshtml) con clases .info_table_top/
-   _body/_footer (y su variante "2" para pólizas), heredadas del
-   tema original sin ningún retoque: bordes finos, texto a 0.9em,
-   fechas con float:right. Se les da lectura de lista de tarjetas,
-   con el mismo lenguaje visual del resto de la app (tipografía de
-   marca en las cabeceras, tokens --mf-*, hover sutil).
-   ================================================================ */
-
 .Mapfre #page-wrapper .ult_in {
     max-height: 420px !important;
 }
@@ -8065,9 +7416,6 @@ body.Mapfre {
         padding: 6px 4px !important;
     }
 
-/* Cada item real son 3 elementos hermanos (top+body+footer) sin un
-   contenedor propio; se simula la tarjeta con un borde arriba en
-   cada "top" (menos el primero) en vez de envolverlos. */
 .Mapfre #page-wrapper .info_table_top,
 .Mapfre #page-wrapper .info_table_top2 {
     display: flex !important;
@@ -8158,7 +7506,6 @@ body.Mapfre {
         white-space: nowrap !important;
     }
 
-/* Fila completa resaltada al pasar el mouse (top+body+footer) */
 .Mapfre #page-wrapper .info_table_top:hover,
 .Mapfre #page-wrapper .info_table_top2:hover,
 .Mapfre #page-wrapper .info_table_body:hover,
@@ -8168,14 +7515,10 @@ body.Mapfre {
     background: var(--mf-hover, #F6F6F7) !important;
 }
 
-/* La app agrega un <br> suelto entre items (heredado del template
-   original en JS): se colapsa para no duplicar el espaciado que ya
-   dan los paddings de arriba. */
 .Mapfre #page-wrapper .ult_in br {
     display: none !important;
 }
 
-/* Selector de fecha: seguía en azul de Bootstrap por defecto */
 .Mapfre .bootstrap-datetimepicker-widget {
     border: 1px solid var(--mf-line, #E7EAEC) !important;
     border-radius: 10px !important;
@@ -8218,7 +7561,6 @@ body.Mapfre {
     border-bottom-color: #fff !important;
 }
 
-/* Avisos toastr: seguían con los colores e íconos de plantilla de 2013 */
 .Mapfre #toast-container > div {
     border-radius: 10px !important;
     padding: 13px 16px 13px 46px !important;
@@ -8252,11 +7594,6 @@ body.Mapfre {
 .Mapfre .toast-info::before { content: "\f05a" !important; }
 .Mapfre .toast-warning::before { content: "\f071" !important; }
 
-/* Estados de validación (jquery-validator marca los campos con
-   was-validated/is-valid/is-invalid): seguían en el verde y rojo
-   de Bootstrap por defecto, con el iconito de check/equis incrustado
-   en el fondo del propio input. Se llevan al mismo lenguaje visual
-   del resto de los campos (mismo radio, foco en rojo de marca). */
 .Mapfre .was-validated .form-control:valid,
 .Mapfre .form-control.is-valid,
 .Mapfre .was-validated .custom-select:valid,
