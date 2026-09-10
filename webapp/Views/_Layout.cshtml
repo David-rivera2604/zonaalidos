@@ -41,10 +41,6 @@
 
             <div class="head_prin">
                 <div id="imgHead" class="imgHeadMapfre">
-                    @* Este es el logo fijo de la app (MAPFRE). No depende de la
-                        cuenta ni de GetColor/master.js: es siempre el mismo para
-                        todos. El logo por cuenta va aparte, junto al menú de
-                        usuario/logout (ver #logotenantHead más abajo). *@
                     <div class="mf-brand-logo">
                         <img alt="MAPFRE" src="~/images/logohorizontal.jpg">
                     </div>
@@ -110,34 +106,10 @@
                                         </ul>
                                     </div>
                                 </nav>
-                                @*<nav id="megamenu" class="megamenu megamenu_desktop">
-                                        <div href="#click" class="menu dropdown">
-                                            <ul id="megamenu_level__1" class="level_1 sf-js-enabled sf-arrows">
-                                                <li class="level_1__item level_2__small" style="display: inline-block;">
-                                                    <a data-toggle="dropdown" class="level_1__link sf-with-ul " href="#">
-                                                        <span class="block dropdown-toggle"><span id="TenantMaster">menu</span></span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <ul class="menu-dropdown">
-                                                <li>
-                                                    <a href="~/Security/Login" title="Permite terminar la sesión del usuario">
-                                                        <i class="fa fa-sign-out"></i> <span class="d-sm-inline">Desconectar </span>
-                                                    </a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="~/Security/ChangePassword" title="Permite el cambio de la clave de acceso del usuario conectado">Cambio de clave de acceso</a></li>
-                                            </ul>
-                                        </div>
-                                    </nav>*@
                             </ul>
 
                         </div>
 
-                        @* Logo de la cuenta conectada, junto al menú de usuario/
-                            logout. master.js reemplaza el contenido de
-                            #logotenantHead con el logo que devuelva
-                            v1/Colors/GetColor; el id #tenantLogo debe existir al
-                            cargar porque app.master.Init lo usa como condición. *@
                         <div class="circulo">
                             <div class="dropdown profile-element" id="logotenantHead">
                                 <img alt="Logo del aliado" src="~/logos/logo-aliados-alt.svg" id="tenantLogo">
