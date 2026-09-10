@@ -31,16 +31,6 @@ body {
     min-width: 0;
 }
 
-.mf-login-hero__brand {
-    font-family: var(--mf-font-display, "Open Sans", Arial, sans-serif);
-    font-weight: 800;
-    font-size: clamp(40px, 6vw, 76px);
-    line-height: 1.02;
-    letter-spacing: -.02em;
-    color: #fff;
-    text-shadow: 0 4px 24px rgba(0, 0, 0, .25);
-}
-
 .mf-login-panel {
     flex: 0 0 auto;
 }
