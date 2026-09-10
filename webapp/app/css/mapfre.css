@@ -8322,3 +8322,98 @@ body.Mapfre {
 .Mapfre .custom-control-input.is-invalid ~ .custom-control-label {
     color: var(--mf-red, #C31F09) !important;
 }
+
+/* ================================================================
+   V11 — ACCESIBILIDAD: TEXTO Y CONTROLES MÁS GRANDES
+   ================================================================
+   Los formularios de cotización (Mapfre Más, Multirriesgo, Hogar
+   Total, etc.) los llena a veces gente de mucha edad, y el texto de
+   las versiones anteriores (11-12.5px en etiquetas, campos, radios/
+   checkboxes y botones) es demasiado pequeño para leerse cómodo.
+   Este bloque va al final del archivo a propósito: reescribe los
+   mismos selectores que ya existen arriba (con la misma o mayor
+   especificidad) para que estos tamaños ganen siempre, sin tener
+   que tocar cada declaración vieja una por una. Aplica a todos los
+   formularios (van por el mismo mapfre.css), en cualquier tamaño de
+   pantalla. */
+
+.Mapfre #page-wrapper {
+    font-size: 14.5px;
+}
+
+.Mapfre #page-wrapper label.control-label,
+.Mapfre #page-wrapper .form-label,
+.Mapfre #page-wrapper .control-label {
+    font-size: 13.5px !important;
+    line-height: 1.35 !important;
+}
+
+.Mapfre #page-wrapper .form-control,
+.Mapfre #page-wrapper select.form-control,
+.Mapfre #page-wrapper textarea.form-control,
+.Mapfre #page-wrapper input.form-control,
+.Mapfre #page-wrapper fieldset select.form-control {
+    min-height: 44px !important;
+    padding: 10px 12px !important;
+    font-size: 15px !important;
+}
+
+.Mapfre #page-wrapper .custom-select,
+.Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection,
+.Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection--single {
+    min-height: 44px !important;
+}
+
+.Mapfre #page-wrapper .required-mark {
+    font-size: 14px !important;
+}
+
+/* Radios/checkboxes "custom" de Bootstrap: texto y marcador más
+   grandes, con más zona clicable -clave para dedos o pulso menos
+   precisos. */
+.Mapfre #page-wrapper .custom-control-label {
+    font-size: 14.5px !important;
+    line-height: 1.35 !important;
+}
+
+.Mapfre #page-wrapper .custom-control-label::before,
+.Mapfre #page-wrapper .custom-control-label::after {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.Mapfre #page-wrapper .custom-control {
+    min-height: 44px !important;
+    padding-left: 34px !important;
+}
+
+/* Radios/checkboxes nativos (no envueltos en .custom-control) */
+.Mapfre #page-wrapper input[type="radio"],
+.Mapfre #page-wrapper input[type="checkbox"] {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.Mapfre #page-wrapper .radio label,
+.Mapfre #page-wrapper .checkbox label,
+.Mapfre #page-wrapper .form-check label {
+    font-size: 14.5px !important;
+}
+
+.Mapfre #page-wrapper .btn {
+    min-height: 44px !important;
+    padding: 10px 18px !important;
+    font-size: 14px !important;
+}
+
+.Mapfre #page-wrapper h4,
+.Mapfre #page-wrapper .titulosMant {
+    font-size: 15.5px !important;
+}
+
+.Mapfre #page-wrapper .form-group .error,
+.Mapfre #page-wrapper .form-group .LabelValidate,
+.Mapfre #page-wrapper .form-text,
+.Mapfre #page-wrapper .help-block {
+    font-size: 12.5px !important;
+}
