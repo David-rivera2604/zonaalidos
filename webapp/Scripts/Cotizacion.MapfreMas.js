@@ -267,7 +267,16 @@ app.CotizacionMapfreMas = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
-                    if ($('#COD_PLAN_AUTO option').length == 1) {
+                    // app.core.Lookups() solo autoselecciona una opción si el
+                    // <select> trae data-autoselect="true" en el markup (no es
+                    // el caso de #COD_PLAN_AUTO); si no, siempre lo deja en
+                    // blanco (val(-1)), aunque haya opciones. Antes solo se
+                    // corregía eso cuando quedaba exactamente 1 opción -con 2
+                    // o más, "Plan" se quedaba vacío esperando a que
+                    // SettingReload() lo completara por su cuenta más abajo.
+                    // Se selecciona la primera opción apenas llega el lookup,
+                    // sin depender de esa segunda llamada.
+                    if ($('#COD_PLAN_AUTO option').length > 0) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
                     SettingReload();
