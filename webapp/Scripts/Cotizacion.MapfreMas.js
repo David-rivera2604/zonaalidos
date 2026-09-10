@@ -165,6 +165,14 @@ app.CotizacionMapfreMas = (function () {
 
         // Contratos 99780 y 99781 solo se permite el tipo de producto "Trébol"
         function AplicarRestriccionTipoProductoPorContrato(contratoValue) {
+            // Esta exclusividad solo aplica a cuentas Purdy: para el resto de
+            // cuentas PolizaGrupo, "Contrato" y "Tipo de producto" deben poder
+            // elegirse de forma independiente, porque bloquearlos rompe el
+            // flujo normal de cotización para esas cuentas.
+            if (!localStorage.getItem('Roles').includes('Purdy')) {
+                return;
+            }
+
             var contratosSoloTrebol = [99780, 99781];
 
             // Exclusividad: "Tipo de producto" y "Contrato" son dos formas
@@ -223,10 +231,13 @@ app.CotizacionMapfreMas = (function () {
         $('input:radio[name=tipo_prod]').change(function () {
             // Exclusividad inversa: al elegir un tipo de producto, "Contrato"
             // y "Sub contrato" dejan de poder elegirse (ver
-            // AplicarRestriccionTipoProductoPorContrato más arriba).
-            app.ui.DropDownDisabled('#contrato', true, true);
-            app.ui.DropDownDisabled('#subcontrato', true, true);
-            $('#tipoProdClearBtn').removeClass('d-none');
+            // AplicarRestriccionTipoProductoPorContrato más arriba). Solo
+            // aplica a cuentas Purdy.
+            if (localStorage.getItem('Roles').includes('Purdy')) {
+                app.ui.DropDownDisabled('#contrato', true, true);
+                app.ui.DropDownDisabled('#subcontrato', true, true);
+                $('#tipoProdClearBtn').removeClass('d-none');
+            }
 
             var data = {
                 cod_ramo: setupData.cod_ramo,
