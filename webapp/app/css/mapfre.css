@@ -8323,20 +8323,6 @@ body.Mapfre {
     color: var(--mf-red, #C31F09) !important;
 }
 
-/* ================================================================
-   V11 — ACCESIBILIDAD: TEXTO Y CONTROLES MÁS GRANDES
-   ================================================================
-   Los formularios de cotización (Mapfre Más, Multirriesgo, Hogar
-   Total, etc.) los llena a veces gente de mucha edad, y el texto de
-   las versiones anteriores (11-12.5px en etiquetas, campos, radios/
-   checkboxes y botones) es demasiado pequeño para leerse cómodo.
-   Este bloque va al final del archivo a propósito: reescribe los
-   mismos selectores que ya existen arriba (con la misma o mayor
-   especificidad) para que estos tamaños ganen siempre, sin tener
-   que tocar cada declaración vieja una por una. Aplica a todos los
-   formularios (van por el mismo mapfre.css), en cualquier tamaño de
-   pantalla. */
-
 .Mapfre #page-wrapper {
     font-size: 14.5px;
 }
@@ -8368,9 +8354,6 @@ body.Mapfre {
     font-size: 14px !important;
 }
 
-/* Radios/checkboxes "custom" de Bootstrap: texto y marcador más
-   grandes, con más zona clicable -clave para dedos o pulso menos
-   precisos. */
 .Mapfre #page-wrapper .custom-control-label {
     font-size: 14.5px !important;
     line-height: 1.35 !important;
@@ -8387,7 +8370,6 @@ body.Mapfre {
     padding-left: 34px !important;
 }
 
-/* Radios/checkboxes nativos (no envueltos en .custom-control) */
 .Mapfre #page-wrapper input[type="radio"],
 .Mapfre #page-wrapper input[type="checkbox"] {
     width: 20px !important;
