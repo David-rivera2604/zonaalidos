@@ -1,5 +1,6 @@
 ﻿using Architect.API.Core.Business;
 using Architect.Payment.Integrations.Contracts;
+using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -58,8 +59,21 @@ namespace Architect.API.Tron.Business.Backoffice
         {
             try
             {
-                Architect.Payment.Integrations.Contracts.InformationRequest result = Payment.Integrations.Payment.VerifyUpdateStatusv2(currentRecord, currentRecord.UpdateUserCode, true);
+                Architect.Payment.Integrations.Contracts.InformationRequest result = null;
 
+                //Si el estado de pago es aprobado, pero tiene codigo de error de tron o cero, solo falta el cobro en tron.
+                if (currentRecord.ProviderStatus == "APPROVED" && (currentRecord.TronCode == 0 || currentRecord.TronCode == 500 ))
+                {
+                    result = Payment.Integrations.Business.OnlinePayment.Retrieve_By_RequestID(Convert.ToInt64(currentRecord.RequestID));
+                    if (result!=null)
+                    {
+                        result.changed = true;
+                    }
+                }
+                else
+                {
+                    result = Payment.Integrations.Payment.VerifyUpdateStatusv2(currentRecord, currentRecord.UpdateUserCode, true);
+                }
                 // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
                 if (result != null && result.changed && result.status == "APPROVED")
                 {
@@ -201,28 +215,30 @@ namespace Architect.API.Tron.Business.Backoffice
 
         internal static async Task PaymentApproved(InformationRequest result)
         {
-            if (result.subscribe)
-            {
-                await CambioTarjeta(result);
-            }
             if (IsEmployee)
             {
                 result.OnlinePayment.AgentCode = 999999;
             }
             bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty, false);
+
+            if (result.subscribe)
+            {
+                await CambioTarjeta(result);
+            }
         }
 
         internal static void PaymentApprovedv2(InformationRequest result)
         {
-            if (result.subscribe)
-            {
-                CambioTarjetav2(result);
-            }
             if (IsEmployee)
             {
                 result.OnlinePayment.AgentCode = 999999;
             }
             bool tronPayment = TronPaymentv2(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty, false);
+
+            if (result.subscribe)
+            {
+                CambioTarjetav2(result);
+            }
         }
 
         /// <summary>
@@ -453,6 +469,7 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 string card = "";
                 string token = "";
+                DateTime validUntil = DateTime.MinValue;
 
                 if (request.instrument != null)
                 {
@@ -466,13 +483,18 @@ namespace Architect.API.Tron.Business.Backoffice
                     {
                         token = ivalue.value;
                     }
+                    ivalue = request.instrument.Where(r => r.keyword == "validUntil").FirstOrDefault();
+                    if (ivalue != null)
+                    {
+                        DateTime.TryParse(ivalue.value, out validUntil);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(token))
                 {
                     int numSpto = DataAccess.Pagos.Recibos.Get_NumSpto(request.OnlinePayment.BillNumber);
                     DataAccess.Pagos.Tarjetas.Cancel_Previous_Tokens(request.OnlinePayment.PolicyId, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber);
-                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe");
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe", validUntil);
                 }
             }
             Utilities.Log.WarningLog("Pagos.CambioTarjeta", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
@@ -482,7 +504,7 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <summary>
         /// Realiza el cambio de tarjeta para el cliente de una póliza.
         /// </summary>
-        public  static bool CambioTarjetav2(Architect.Payment.Integrations.Contracts.InformationRequest request)
+        public static bool CambioTarjetav2(Architect.Payment.Integrations.Contracts.InformationRequest request)
         {
             string data = JsonConvert.SerializeObject(
                 new
@@ -497,6 +519,7 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 string card = "";
                 string token = "";
+                DateTime validUntil = DateTime.MinValue;
 
                 if (request.instrument != null)
                 {
@@ -510,13 +533,18 @@ namespace Architect.API.Tron.Business.Backoffice
                     {
                         token = ivalue.value;
                     }
+                    ivalue = request.instrument.Where(r => r.keyword == "validUntil").FirstOrDefault();
+                    if (ivalue != null)
+                    {
+                        DateTime.TryParse(ivalue.value, out validUntil);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(token))
                 {
                     int numSpto = DataAccess.Pagos.Recibos.Get_NumSpto(request.OnlinePayment.BillNumber);
                     DataAccess.Pagos.Tarjetas.Cancel_Previous_Tokens(request.OnlinePayment.PolicyId, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber);
-                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe");
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe", validUntil);
                 }
             }
             Utilities.Log.WarningLog("Pagos.CambioTarjeta", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");

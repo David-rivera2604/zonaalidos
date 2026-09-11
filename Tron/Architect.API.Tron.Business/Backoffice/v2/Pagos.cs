@@ -534,9 +534,10 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 client.DefaultRequestHeaders.Authorization = null;
 
                 List<DatosTarjeta> result = Architect.Payment.Integrations.Tokenize.Request(provider, client, datosTajetas).Result;
-
+                DateTime validUntil;
                 foreach (DatosTarjeta tarjeta in result)
                 {
+                    validUntil = new DateTime(tarjeta.expiry_year, tarjeta.expiry_month, DateTime.DaysInMonth(tarjeta.expiry_year, tarjeta.expiry_month));
                     var data = pendientes.Where(r => r.NUM_TARJETA == tarjeta.key).FirstOrDefault();
                     if (tarjeta.token != string.Empty)
                     {
@@ -544,7 +545,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         DataAccess.Pagos.Num_Tarjeta_mcr.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
                         data.NUM_TARJETA = tarjeta.card;
                     }
-                    DataAccess.Pagos.Tarjetas.CreateBoveda(data.NUM_POLIZA, data.NUM_SPTO, tarjeta.tip_docum, tarjeta.cod_docum, data.NUM_TARJETA, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason);
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(data.NUM_POLIZA, data.NUM_SPTO, tarjeta.tip_docum, tarjeta.cod_docum, data.NUM_TARJETA, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason, validUntil);
                     recordCount++;
                 }
             }

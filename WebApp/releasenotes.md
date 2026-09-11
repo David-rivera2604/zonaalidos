@@ -1,5 +1,23 @@
 # Release Notes - Aliados
 
+## Versión 1.6.205
+
+### Pasarela : Ajustes en pasarela.
+
+#### Cambios implementados:
+
+- En el reporte de cobros por suscripción, en la columna de denegadas acumulado por mes, solo reflejar ahi despues de los tres intentos.
+- No se esta aguardando la fecha de vencimiento de la tarjeta.
+- Corrección del PK de la tabal boveda para permitir los cambios de tarjetas para pólizas.
+- Se agrega a monitor la revisión de pago sin efecto en tron (falla en proceso de corrección).
+- Se cambia el orden para que primero se intente proceder con aplicar el pago en tron antes de procesar la suscripción de token de tarejtas.
+
+#### Dependencias:
+1. `Domiciliación Denegadas del mes.110.4.sql`.
+2. `20260910a.boveda.change_pk.sql`.
+
+--
+
 ## Versión 1.6.204
 
 ### ProcessSpecFlow : Corrección de errores al duplicar e importar un proceso.
@@ -19,7 +37,7 @@
 
 - El proceso de recobro siempre se hace asincrono (como job) esto se podria cambiar segun el numero recibos a recobrar,
 - El cliente del recibo seleccionado no posee un email registrado en tron.
-- Se ajusta el proceso para cuando e lcliente no tenga correo, quede el tracking en onlinepayment indicado la causa.
+- Se ajusta el proceso para cuando el cliente no tenga correo, quede el tracking en onlinepayment indicado la causa.
 
 --
 
