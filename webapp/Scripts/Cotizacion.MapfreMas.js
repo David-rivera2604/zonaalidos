@@ -367,6 +367,8 @@ app.CotizacionMapfreMas = (function () {
         $('#cod_modelo').val(data.cod_modelo);
         $('#cod_tip_vehi').val(data.cod_tip_vehi);
         $('#cod_uso_vehi').val(data.cod_uso_vehi);
+        app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
+        app.ui.SetNumericValue('#IMP_VR', data.IMP_VR);
         app.ui.SetRadioStringValue('tipo_prod', data.tipo_prod);
         app.ui.SetDateValue('#fec_efec_poliza', data.fec_efec_poliza);
         $('#fec_vcto_poliza_group').data("DateTimePicker").minDate($('#fec_efec_poliza_group').data("DateTimePicker").date());
@@ -378,7 +380,6 @@ app.CotizacionMapfreMas = (function () {
             data.COD_PLAN_AUTO = $("#COD_PLAN_AUTO option:first").val();
         }
         $('#COD_PLAN_AUTO').val(data.COD_PLAN_AUTO);
-        app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
         app.ui.SetRadioNumericValue('MCA_CERO_KM', data.MCA_CERO_KM);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS', data.MCA_AUTO_GPS);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
@@ -388,7 +389,6 @@ app.CotizacionMapfreMas = (function () {
         app.ui.SetRadioStringValue('rc_conductor', data.rc_conductor);
         app.ui.SetRadioNumericValue('MCA_PRA', data.MCA_PRA);
         app.ui.SetRadioNumericValue('MCA_VR', data.MCA_VR);
-        app.ui.SetNumericValue('#IMP_VR', data.IMP_VR);
         app.ui.SetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO', data.MCA_DESC_CLIENTE_NUEVO);
         app.ui.SetNumericValue('#PCT_AJUSTE_GEN', data.PCT_AJUSTE_GEN);
         app.ui.SetRadioStringValue('mc_cuotas_gratis', data.mc_cuotas_gratis);
