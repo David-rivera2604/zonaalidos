@@ -191,23 +191,23 @@ app.Masivos.Ui = (function () {
             columns: [
                 { field: 'id', title: 'ID', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.IntegerFormatter' },
                 { field: 'cod_ramo', title: 'Código Ramo', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.IntegerFormatter' },
-                { field: 'txt_archivo_carga', title: 'Archivo', sortable: false, halign: 'center', align: 'left', formatter: 'app.ui.StringFormatter' },
+                { field: 'txt_archivo_carga', title: 'Nombre Archivo', sortable: false, halign: 'center', align: 'left', formatter: 'app.ui.StringFormatter' },
                 { field: 'num_tam_archivo', title: 'Tamaño', sortable: false, halign: 'center', align: 'center', formatter: function (value) { return value ? (value >= 1024 ? parseInt(value / 1024) + ' KB' : value + ' bytes') : ''; } },
                 { field: 'fec_actu', title: 'Fecha Carga', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.DateAndTimeFormatter' },
                 {
-                    field: 'archivo_carga', title: 'Descargar', sortable: false, halign: 'center', align: 'center',
+                    field: 'archivo_carga', title: 'Descargar Carga', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value, row) {
                         return buildDownloadButton(value, row.txt_archivo_carga || 'archivo_carga.csv', 'Archivo carga');
                     }
                 },
                 {
-                    field: 'archivo_val', title: 'Validación', sortable: false, halign: 'center', align: 'center',
+                    field: 'archivo_val', title: 'Descargar Validación', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value, row) {
                         return buildDownloadButton(value, row.txt_archivo_val || 'archivo_validacion.csv', 'Archivo validación');
                     }
                 },
                 {
-                    field: 'archivo_rta', title: 'Respuesta', sortable: false, halign: 'center', align: 'center',
+                    field: 'archivo_rta', title: 'Descargar Respuesta', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value, row) {
                         return buildDownloadButton(value, row.txt_archivo_rta || 'archivo_respuesta.csv', 'Archivo respuesta');
                     }
