@@ -7684,9 +7684,7 @@ body.Mapfre {
 
 .Mapfre #page-wrapper select.form-control,
 .Mapfre #page-wrapper fieldset select.form-control {
-    line-height: 42px !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    min-height: auto !important;
 }
 
 .Mapfre #page-wrapper .custom-select,
