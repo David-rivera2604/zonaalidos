@@ -7681,7 +7681,7 @@ body.Mapfre {
 
 .Mapfre #page-wrapper select.form-control,
 .Mapfre #page-wrapper fieldset select.form-control {
-    min-height: auto !important;
+    min-height: 38px !important;
 }
 
 .Mapfre #page-wrapper .custom-select,
