@@ -6589,7 +6589,11 @@ body.Mapfre {
             .Mapfre .items_ham_menu .menu-dropdown {
                 margin: 0 0 4px 26px !important;
                 padding-left: 11px !important;
+                border: 0 !important;
                 border-left: 1px dashed var(--mf-line) !important;
+                border-radius: 0 !important;
+                background: transparent !important;
+                box-shadow: none !important;
             }
 
                 .Mapfre .items_ham_menu .menu-dropdown li > a {
