@@ -21,30 +21,67 @@ app.Masivos.Api = (function () {
             contentType: false,
             cache: false,
             timeout: 600000,
-            xhrFields: {
-                withCredentials: true
-            },
+            xhrFields: { withCredentials: true },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
             }
         });
     }
 
-    function Procesar(codRamo, fileName) {
-        var deferred = $.Deferred();
-        app.core.Post(app.setting.apipath + 'v1/Masivos/Procesar',
-            JSON.stringify({ codRamo: codRamo, fileName: fileName }),
-            function (data) {
-                deferred.resolve(data);
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                deferred.reject(jqXHR, textStatus, errorThrown);
-            });
-        return deferred.promise();
+    function Validar(id) {
+        return $.ajax({
+            type: 'POST',
+            url: app.setting.apipath + 'v1/Masivos/Validar',
+            data: JSON.stringify({ id: id }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            xhrFields: { withCredentials: true },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
+            }
+        });
+    }
+
+    function Procesar(id) {
+        return $.ajax({
+            type: 'POST',
+            url: app.setting.apipath + 'v1/Masivos/Procesar',
+            data: JSON.stringify({ id: id }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            xhrFields: { withCredentials: true },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
+            }
+        });
+    }
+
+    function ActualizarArchivo(id, file) {
+        var formData = new FormData();
+        formData.append('id', id);
+        formData.append('file', file);
+
+        return $.ajax({
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            url: app.setting.apipath + 'v1/Masivos/ActualizarArchivo',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            xhrFields: { withCredentials: true },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
+            }
+        });
     }
 
     return {
         ConsultarCargas: ConsultarCargas,
         CargarCsv: CargarCsv,
-        Procesar: Procesar
+        Validar: Validar,
+        Procesar: Procesar,
+        ActualizarArchivo: ActualizarArchivo
     };
 })();

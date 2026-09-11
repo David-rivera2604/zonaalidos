@@ -5,13 +5,20 @@ app.Masivos.Ui = (function () {
     var state = {
         selectedFile: null,
         uploadedFileName: '',
-        pendingProcess: false
+        rowUpdateId: null
     };
 
     function Init() {
         app.ui.CommonBehaviour();
         masivos_table_setup();
         setupEvents();
+        ensureUpdateInput();
+    }
+
+    function ensureUpdateInput() {
+        if ($('#masivoUpdateFile').length === 0) {
+            $('body').append('<input id="masivoUpdateFile" type="file" accept=".csv,text/csv" style="display:none;">');
+        }
     }
 
     function setupEvents() {
@@ -21,15 +28,9 @@ app.Masivos.Ui = (function () {
         });
 
         $('#fileUpload').on('change', onFileSelected);
+        $('#masivoUpdateFile').on('change', onUpdateSelected);
 
         $('#cod_ramo').on('change', function () {
-            if (state.pendingProcess) {
-                toastr.warning('Debe presionar <strong>Procesar</strong> antes de cambiar el ramo.', 'Aviso', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
-                var prev = $(this).data('prev') || '';
-                $(this).val(prev);
-                return;
-            }
-            $(this).data('prev', $(this).val());
             state.uploadedFileName = '';
             cleanFileSelection();
         });
@@ -54,21 +55,25 @@ app.Masivos.Ui = (function () {
             cargarCsv();
         });
 
-        $('#btnProcesar').on('click', function (e) {
+        $('#masivosTbl').on('click', '.btn-validar', function (e) {
             e.preventDefault();
-            procesarMasivo();
+            validarMasivo($(this).data('id'));
+        });
+
+        $('#masivosTbl').on('click', '.btn-procesar', function (e) {
+            e.preventDefault();
+            procesarMasivoPorRegistro($(this).data('id'));
+        });
+
+        $('#masivosTbl').on('click', '.btn-actualizar', function (e) {
+            e.preventDefault();
+            state.rowUpdateId = $(this).data('id');
+            $('#masivoUpdateFile').trigger('click');
         });
     }
 
     function onFileSelected(e) {
         var input = e.target;
-
-        if (state.pendingProcess) {
-            toastr.warning('Debe presionar <strong>Procesar</strong> antes de seleccionar un nuevo archivo.', 'Aviso', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
-            $(input).val('');
-            return;
-        }
-
         var file = input.files && input.files.length > 0 ? input.files[0] : null;
 
         if (!file) {
@@ -87,31 +92,36 @@ app.Masivos.Ui = (function () {
         $('#txt_archivo_carga').val(file.name);
     }
 
+    function onUpdateSelected(e) {
+        var input = e.target;
+        var file = input.files && input.files.length > 0 ? input.files[0] : null;
+
+        if (!file) {
+            input.value = '';
+            state.rowUpdateId = null;
+            return;
+        }
+
+        if (!isCsvFile(file.name)) {
+            toastr.error('Solo se permiten archivos con formato .csv', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
+            input.value = '';
+            state.rowUpdateId = null;
+            return;
+        }
+
+        if (!state.rowUpdateId) {
+            toastr.error('Debe seleccionar el registro a actualizar.', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
+            input.value = '';
+            return;
+        }
+
+        actualizarArchivoRegistro(state.rowUpdateId, file);
+        input.value = '';
+        state.rowUpdateId = null;
+    }
+
     function isCsvFile(fileName) {
         return !!fileName && fileName.toLowerCase().endsWith('.csv');
-    }
-
-    function _bloquearParaProcesar() {
-        state.pendingProcess = true;
-        $('#cod_ramo').prop('disabled', true);
-        $('#fileUpload').prop('disabled', true);
-        $('#archivoCsv').prop('disabled', true);
-        $('#btnCargarCsv').prop('disabled', true);
-        $('#btnVerPlantillas').prop('disabled', true);
-        app.ui.ShowAlert('generalNotify', 'alert-warning',
-            '<i class="fa fa-exclamation-triangle"></i> <strong>Archivo cargado.</strong> ' +
-            'Presione <strong>Procesar</strong> para continuar. ' +
-            'No es posible cargar otro archivo hasta completar el procesamiento.');
-    }
-
-    function _desbloquearControles() {
-        state.pendingProcess = false;
-        $('#cod_ramo').prop('disabled', false);
-        $('#fileUpload').prop('disabled', false);
-        $('#archivoCsv').prop('disabled', false);
-        $('#btnCargarCsv').prop('disabled', false);
-        $('#btnVerPlantillas').prop('disabled', false);
-        cleanFileSelection();
     }
 
     function cleanFileSelection() {
@@ -122,13 +132,9 @@ app.Masivos.Ui = (function () {
     }
 
     function validateUpload() {
-        if (state.pendingProcess) {
-            toastr.warning('Debe presionar <strong>Procesar</strong> antes de cargar un nuevo archivo.', 'Aviso', { timeOut: 9000, closeButton: true, progressBar: true, escapeHtml: false });
-            return false;
-        }
         var codRamo = $('#cod_ramo').val();
         if (!codRamo) {
-            toastr.error('Debe seleccionar el c骴igo de ramo', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
+            toastr.error('Debe seleccionar el c贸digo de ramo', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
             return false;
         }
 
@@ -145,54 +151,91 @@ app.Masivos.Ui = (function () {
         return true;
     }
 
-    function validateProcess() {
-        var codRamo = $('#cod_ramo').val();
-        if (!codRamo) {
-            toastr.error('Debe seleccionar el c骴igo de ramo', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
-            return false;
+    function getEstadoLabel(value) {
+        var estado = Number(value);
+        if (estado === 0) return 'Inicial';
+        if (estado === 1) return 'Validado';
+        if (estado === 2) return 'Validado con Errores';
+        if (estado === 3) return 'Validado OK';
+        if (estado === 4) return 'Procesando';
+        if (estado === 5) return 'Finalizado con Errores';
+        if (estado === 6) return 'Finalizado OK';
+        return value || 'Pendiente';
+    }
+
+    function getEstadoClass(value) {
+        var estado = Number(value);
+        if (estado === 1) return 'label-info';
+        if (estado === 2 || estado === 5) return 'label-danger';
+        if (estado === 3 || estado === 6) return 'label-success';
+        if (estado === 4) return 'label-primary';
+        return 'label-warning';
+    }
+
+    function buildDownloadButton(value, fileName, label) {
+        if (!value) {
+            return '<span class="text-muted">-</span>';
         }
 
-        if (!state.uploadedFileName && !state.selectedFile) {
-            toastr.error('Debe cargar un archivo CSV antes de procesar', 'Validacion', { timeOut: 9000, closeButton: true, progressBar: true });
-            return false;
-        }
-
-        return true;
+        return '<button type="button" class="btn btn-xs btn-white" title="Descargar ' + label + '" onclick="app.Masivos.Ui.DescargarCsv(this); return false;" data-content="' + encodeURIComponent(String(value)) + '" data-filename="' + (fileName || 'archivo.csv') + '"><i class="fa fa-download"></i> ' + label + '</button>';
     }
 
     function masivos_table_setup() {
         $('#masivosTbl').bootstrapTable({
-            uniqueId: 'cod_ramo',
+            uniqueId: 'id',
             classes: 'table table-bordered table-hover table-index table-in-form',
             pagination: true,
             smartDisplay: true,
             search: true,
             searchAlign: 'left',
             columns: [
-                { field: 'cod_ramo', title: 'C&oacute;digo Ramo', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.IntegerFormatter' },
+                { field: 'id', title: 'ID', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.IntegerFormatter' },
+                { field: 'cod_ramo', title: 'C贸digo Ramo', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.IntegerFormatter' },
                 { field: 'txt_archivo_carga', title: 'Archivo', sortable: false, halign: 'center', align: 'left', formatter: 'app.ui.StringFormatter' },
-                { field: 'num_tam_archivo', title: 'Tama&ntilde;o', sortable: false, halign: 'center', align: 'center', formatter: function (value) { return value ? (value >= 1024 ? parseInt(value / 1024) + ' KB' : value + ' bytes') : ''; } },
+                { field: 'num_tam_archivo', title: 'Tama帽o', sortable: false, halign: 'center', align: 'center', formatter: function (value) { return value ? (value >= 1024 ? parseInt(value / 1024) + ' KB' : value + ' bytes') : ''; } },
                 { field: 'fec_actu', title: 'Fecha Carga', sortable: true, halign: 'center', align: 'center', formatter: 'app.ui.DateAndTimeFormatter' },
                 {
-                    field: 'archivo_carga', title: 'Descarga CSV', sortable: false, halign: 'center', align: 'center',
+                    field: 'archivo_carga', title: 'Descargar', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value, row) {
-                        if (!value) return '';
-                        return '<button type="button" class="btn btn-xs btn-white" title="Descargar archivo CSV" onclick="app.Masivos.Ui.DescargarCsv(this); return false;" data-content="' + encodeURIComponent(value) + '" data-filename="' + (row.txt_archivo_carga || 'archivo.csv') + '"><i class="fa fa-download"></i> Descargar</button>';
+                        return buildDownloadButton(value, row.txt_archivo_carga || 'archivo_carga.csv', 'Archivo carga');
                     }
                 },
                 {
-                    field: 'estado', title: 'Estado', sortable: false, halign: 'center', align: 'center',
+                    field: 'archivo_val', title: 'Validaci贸n', sortable: false, halign: 'center', align: 'center',
+                    formatter: function (value, row) {
+                        return buildDownloadButton(value, row.txt_archivo_val || 'archivo_validacion.csv', 'Archivo validaci贸n');
+                    }
+                },
+                {
+                    field: 'archivo_rta', title: 'Respuesta', sortable: false, halign: 'center', align: 'center',
+                    formatter: function (value, row) {
+                        return buildDownloadButton(value, row.txt_archivo_rta || 'archivo_respuesta.csv', 'Archivo respuesta');
+                    }
+                },
+                {
+                    field: 'cod_estado', title: 'Estado', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value) {
-                        if (value === 'Procesado') return '<span class="label label-success">Procesado</span>';
-                        if (value === 'Error') return '<span class="label label-danger">Error</span>';
-                        return '<span class="label label-warning">' + (value || 'Pendiente') + '</span>';
+                        return '<span class="label ' + getEstadoClass(value) + '">' + getEstadoLabel(value) + '</span>';
                     }
                 },
                 {
-                    field: 'resultado_proceso', title: 'Resultado', sortable: false, halign: 'center', align: 'center',
+                    field: 'acciones', title: 'Acciones', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value, row) {
-                        if (!value) return '<span class="text-muted">-</span>';
-                        return '<button type="button" class="btn btn-xs btn-white" title="Descargar resultado del proceso" onclick="app.Masivos.Ui.DescargarResultado(this); return false;" data-content="' + encodeURIComponent(value) + '" data-filename="resultado_' + (row.txt_archivo_carga || 'proceso') + '"><i class="fa fa-download"></i> Descargar</button>';
+                        var estado = Number(row.cod_estado || 0);
+                        var html = [];
+
+                        html.push('<div class="btn-group btn-group-xs" role="group">');
+                        html.push('<button type="button" class="btn btn-xs btn-primary btn-validar" data-id="' + row.id + '" title="Validar archivo"><i class="fa fa-check"></i> Validar</button>');
+                        html.push('<button type="button" class="btn btn-xs btn-success btn-procesar" data-id="' + row.id + '" title="Procesar archivo"><i class="fa fa-gears"></i> Procesar</button>');
+
+                        if (estado === 0 || estado === 2) {
+                            html.push('<button type="button" class="btn btn-xs btn-warning btn-actualizar" data-id="' + row.id + '" title="Actualizar archivo"><i class="fa fa-upload"></i> Actualizar</button>');
+                        } else {
+                            html.push('<button type="button" class="btn btn-xs btn-default" disabled title="Actualizar archivo no disponible para este estado"><i class="fa fa-upload"></i> Actualizar</button>');
+                        }
+
+                        html.push('</div>');
+                        return html.join('');
                     }
                 }
             ]
@@ -207,14 +250,11 @@ app.Masivos.Ui = (function () {
                     app.ui.ShowAlert('generalNotify', 'alert-danger', data.Mensaje);
                     $('#masivosTbl').bootstrapTable('load', {});
                 } else {
-                    if (data != null)
-                        $('#masivosTbl').bootstrapTable('load', data);
-                    else
-                        $('#masivosTbl').bootstrapTable('load', {});
+                    $('#masivosTbl').bootstrapTable('load', Array.isArray(data) ? data : []);
                 }
             })
             .fail(function () {
-                $('#masivosTbl').bootstrapTable('load', {});
+                $('#masivosTbl').bootstrapTable('load', []);
             })
             .always(function () {
                 $('#masivosTbl').bootstrapTable('hideLoading');
@@ -230,10 +270,9 @@ app.Masivos.Ui = (function () {
         $('#masivosTbl').bootstrapTable('showLoading');
 
         app.Masivos.Api.CargarCsv($('#cod_ramo').val(), state.selectedFile)
-            .done(function (data) {
-                state.uploadedFileName = (data && (data.fileName || data.FileName)) || state.selectedFile.name;
+            .done(function () {
+                cleanFileSelection();
                 consultarCargas();
-                _bloquearParaProcesar();
             })
             .fail(function (jqXHR) {
                 var message = (jqXHR && jqXHR.responseJSON && (jqXHR.responseJSON.message || jqXHR.responseJSON.Message)) || 'No fue posible cargar el archivo CSV';
@@ -245,43 +284,89 @@ app.Masivos.Ui = (function () {
             });
     }
 
-    function procesarMasivo() {
-        if (!validateProcess()) {
-            return;
-        }
-
-        var fileName = state.uploadedFileName || (state.selectedFile ? state.selectedFile.name : '');
-
-        app.ui.ButtonDoing('#btnProcesar');
+    function validarMasivo(id) {
+        app.ui.ButtonDoing('[data-id="' + id + '"]');
         $('#masivosTbl').bootstrapTable('showLoading');
 
-        app.Masivos.Api.Procesar($('#cod_ramo').val(), fileName)
+        app.Masivos.Api.Validar(id)
             .done(function (data) {
-                if (data != null && data.Exitoso === false) {
-                    app.ui.ShowAlert('generalNotify', 'alert-danger',
-                        '<i class="fa fa-times-circle"></i> ' + (data.Mensaje || 'Se encontraron errores en el procesamiento.'));
-                } else {
-                    app.ui.ShowAlert('generalNotify', 'alert-success',
-                        '<b><i class="fa fa-check"></i> Proceso masivo ejecutado correctamente.</b>');
-                }
-                _desbloquearControles();
+                app.ui.ShowAlert('generalNotify', 'alert-success', '<i class="fa fa-check"></i> ' + (data && data.Mensaje ? data.Mensaje : 'Validaci贸n ejecutada correctamente.'));
                 consultarCargas();
             })
             .fail(function (jqXHR) {
-                var message = (jqXHR && jqXHR.responseJSON && (jqXHR.responseJSON.message || jqXHR.responseJSON.Message)) || 'No fue posible procesar la carga masiva';
+                var message = (jqXHR && jqXHR.responseJSON && (jqXHR.responseJSON.message || jqXHR.responseJSON.Message)) || 'No fue posible validar el archivo.';
                 app.ui.ShowAlert('generalNotify', 'alert-danger', message);
-                _desbloquearControles();
             })
             .always(function () {
                 $('#masivosTbl').bootstrapTable('hideLoading');
-                app.ui.ButtonDone('#btnProcesar');
+                app.ui.ButtonDone('[data-id="' + id + '"]');
+            });
+    }
+
+    function procesarMasivoPorRegistro(id) {
+        $('#masivosTbl').bootstrapTable('showLoading');
+
+        app.Masivos.Api.Procesar(id)
+            .done(function (data) {
+                app.ui.ShowAlert('generalNotify', 'alert-success', '<i class="fa fa-check"></i> ' + (data && data.Mensaje ? data.Mensaje : 'Procesamiento ejecutado correctamente.'));
+                consultarCargas();
+            })
+            .fail(function (jqXHR) {
+                var message = (jqXHR && jqXHR.responseJSON && (jqXHR.responseJSON.message || jqXHR.responseJSON.Message)) || 'No fue posible procesar la carga masiva.';
+                app.ui.ShowAlert('generalNotify', 'alert-danger', message);
+            })
+            .always(function () {
+                $('#masivosTbl').bootstrapTable('hideLoading');
+            });
+    }
+
+    function actualizarArchivoRegistro(id, file) {
+        app.ui.ButtonDoing('.btn-actualizar[data-id="' + id + '"]');
+        $('#masivosTbl').bootstrapTable('showLoading');
+
+        app.Masivos.Api.ActualizarArchivo(id, file)
+            .done(function (data) {
+                app.ui.ShowAlert('generalNotify', 'alert-success', '<i class="fa fa-check"></i> ' + (data && data.Mensaje ? data.Mensaje : 'Archivo actualizado correctamente.'));
+                consultarCargas();
+            })
+            .fail(function (jqXHR) {
+                var message = (jqXHR && jqXHR.responseJSON && (jqXHR.responseJSON.message || jqXHR.responseJSON.Message)) || 'No fue posible actualizar el archivo.';
+                app.ui.ShowAlert('generalNotify', 'alert-danger', message);
+            })
+            .always(function () {
+                $('#masivosTbl').bootstrapTable('hideLoading');
+                app.ui.ButtonDone('.btn-actualizar[data-id="' + id + '"]');
             });
     }
 
     function descargarCsv(btn) {
-        var content = decodeURIComponent($(btn).data('content'));
+        var serializedContent = $(btn).data('content');
         var filename = $(btn).data('filename') || 'archivo.csv';
         if (!filename.toLowerCase().endsWith('.csv')) filename += '.csv';
+
+        var content = serializedContent;
+
+        if (Array.isArray(content)) {
+            var bytes = new Uint8Array(content);
+            content = new TextDecoder('utf-8').decode(bytes);
+        } else if (typeof content === 'string') {
+            content = decodeURIComponent(content);
+
+            try {
+                var binary = atob(content);
+                var bytes = new Uint8Array(binary.length);
+                for (var i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                content = new TextDecoder('utf-8').decode(bytes);
+            } catch (e) {
+                var tokenized = content.split(',').map(function (part) { return parseInt(part, 10); }).filter(function (n) { return !isNaN(n); });
+                if (tokenized.length > 0) {
+                    content = new TextDecoder('utf-8').decode(new Uint8Array(tokenized));
+                }
+            }
+        }
+
         var blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a');
@@ -292,18 +377,8 @@ app.Masivos.Ui = (function () {
         URL.revokeObjectURL(url);
     }
 
-    function descargarResultado(btn) {
-        var content = decodeURIComponent($(btn).data('content'));
-        var filename = $(btn).data('filename') || 'resultado.csv';
-        if (!filename.toLowerCase().endsWith('.csv')) filename += '.csv';
-        var blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
+    function descargarResultado() {
+        return null;
     }
 
     return {

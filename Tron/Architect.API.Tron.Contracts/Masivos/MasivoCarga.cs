@@ -7,18 +7,24 @@ namespace Architect.API.Tron.Contracts.Masivos
     /// </summary>
     public class MasivoCarga
     {
+        public int id { get; set; }
         public int cod_cia { get; set; }
         public int cod_ramo { get; set; }
         public string cod_estructura { get; set; }
         public string txt_archivo_carga { get; set; }
         public int num_tam_archivo { get; set; }
         public byte[] archivo_carga { get; set; }
+        public string txt_archivo_val { get; set; }
+        public int num_tam_archivo_val { get; set; }
+        public byte[] archivo_val { get; set; }
         public string txt_archivo_rta { get; set; }
         public int num_tam_archivo_rta { get; set; }
         public byte[] archivo_rta { get; set; }
         public int cod_usr { get; set; }
         public DateTime fec_actu { get; set; }
+        public int cod_estado { get; set; }
         public string estado { get; set; }
+        public int num_proceso { get; set; }
         public string resultado_proceso { get; set; }
     }
 }
