@@ -6508,6 +6508,10 @@ body.Mapfre {
                     transform: translateY(-6px) rotate(-45deg) !important;
                 }
 
+            .Mapfre .trigger span {
+                display: none !important;
+            }
+
         .Mapfre .head_prin > .ham-menu {
             display: block !important;
             position: fixed !important;
