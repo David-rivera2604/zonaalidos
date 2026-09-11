@@ -6430,14 +6430,15 @@ body.Mapfre {
             }
 
         .Mapfre #imgHead {
-            width: auto !important;
-            max-width: 44vw !important;
+            width: calc(100% - 64px) !important;
+            max-width: none !important;
             height: 56px !important;
             min-height: 56px !important;
             padding: 0 0 0 14px !important;
             border: 0 !important;
             background: transparent !important;
-            flex: 0 0 auto !important;
+            flex: 1 1 auto !important;
+            justify-content: center !important;
         }
 
             .Mapfre #imgHead::before,
@@ -6476,7 +6477,7 @@ body.Mapfre {
             width: 20px !important;
             height: 2px !important;
             border-radius: 2px !important;
-            background: var(--mf-ink) !important;
+            background: var(--mf-red) !important;
             position: relative !important;
             transition: transform .22s ease, opacity .18s ease !important;
         }
@@ -7212,7 +7213,8 @@ body.Mapfre {
 
 @media (max-width: 575px) {
     .Mapfre #imgHead {
-        max-width: 46vw !important;
+        width: calc(100% - 58px) !important;
+        max-width: none !important;
     }
 
         .Mapfre #imgHead .mf-brand-logo img {
