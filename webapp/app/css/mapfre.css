@@ -1564,7 +1564,7 @@ a {
         transition: 0.6s;
     }
 
-    .input-bx input:valid ~ span,
+    .input-bx input:not(:placeholder-shown) ~ span,
     .input-bx input:focus ~ span {
         color: var(--mapfregray1);
         transform: translateX(10px) translateY(-8px);
@@ -1575,7 +1575,7 @@ a {
         /* letter-spacing: 0.1rem; */
     }
 
-    .input-bx input:valid,
+    .input-bx input:not(:placeholder-shown),
     .input-bx input:focus {
         color: var(--mapfregray1);
         border: 1px solid var(--mapfregray1);
@@ -1724,6 +1724,18 @@ div .input-group-prepend {
     margin-left: 10px;
 }
 
+.Casos_St {
+    border: 1px solid var(--mf-line, #E1E4E8);
+    border-radius: var(--mf-radius, 10px);
+    box-shadow: var(--mf-e1, 0 1px 2px rgba(20,24,29,.06));
+    padding: 18px;
+}
+
+.Casos_St .Inputs {
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
 .info_table_top2 p {
     margin: 10px
 }
@@ -1755,7 +1767,17 @@ div .input-group-prepend {
 .Title_Caso {
     display: flex;
     border-bottom: 1.5px solid var(--mapfregray2);
+    padding: 6px 0;
 }
+
+    .Title_Caso p {
+        margin: 0;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--mf-muted, #80868D);
+    }
 
 .Content_Case {
     margin: 0.5em 0px 0.4em;
@@ -1785,7 +1807,7 @@ div .input-group-prepend {
 }
 
 .Asun {
-    width: 85% !important;
+    width: 80% !important;
     justify-content: flex-start !important;
 }
 
@@ -1817,7 +1839,7 @@ div .input-group-prepend {
 }
 
 .Column_Conte {
-    width: 15%;
+    width: 20%;
     display: flex;
     align-items: center;
     justify-content: center;
