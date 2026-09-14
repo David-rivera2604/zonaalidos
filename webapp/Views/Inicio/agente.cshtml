@@ -416,13 +416,13 @@
                     .done(function (data) {
                         $('#RecibosPendientes').text(data[0]["RECIBOS"]);
                     });
-                app.core.Get(app.setting.apipath + 'v1/datasource/json?id=7000&sequence=10&url=NumRows=5')
+                app.core.Get(app.setting.apipath + 'v1/datasource/json?id=7000&sequence=10&url=NumRows=20')
                     .done(function (data) {
                         data.forEach(function (row, index, array) {
                             $('#UltimasCotizaciones').append(`<div class="info_table_top"><strong>${row.NUM_PRESUPUESTO}</strong><small class="">${moment(row.FEC_ACTU).from()}</small></div> <div class="info_table_body"> <h3 class="title_table_body fw-bold">Detalles: </h3> <p>${row.DETALLE}</p> </div> <div class="info_table_footer"> <strong> ${row.FRACCIONAMIENTODEPAGO}</strong><small class="">${moment(row.FEC_ACTU).format('hh:mma - DD/MM/YYYY')}</small></div> <br> </div>`);
                         });
                     });
-                app.core.Get(app.setting.apipath + 'v1/datasource/json?id=7000&sequence=11&url=NumRows=5')
+                app.core.Get(app.setting.apipath + 'v1/datasource/json?id=7000&sequence=11&url=NumRows=20')
                     .done(function (data) {
                         let phone = '';
                         let email = '';
