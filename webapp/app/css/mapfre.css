@@ -7482,7 +7482,9 @@ body.Mapfre {
 }
 
 .Mapfre #page-wrapper .ult_in {
-    max-height: 420px !important;
+    max-height: 560px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
 }
 
     .Mapfre #page-wrapper .ult_in .ibox-content {
