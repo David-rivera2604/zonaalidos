@@ -6501,10 +6501,10 @@ body.Mapfre {
             left: 0 !important;
             right: 0 !important;
             top: env(safe-area-inset-top) !important;
-            bottom: 0 !important;
+            bottom: auto !important;
             width: auto !important;
             max-width: none !important;
-            height: auto !important;
+            height: 56px !important;
             min-height: 0 !important;
             padding: 0 !important;
             margin: 0 !important;
