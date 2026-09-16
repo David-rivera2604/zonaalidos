@@ -6996,8 +6996,8 @@ body.Mapfre {
     }
 
     .Mapfre #imgHead .mf-brand-logo {
-        width: calc(100% + 28px);
-        margin: 0 -14px;
+        width: auto;
+        margin: 0;
         display: flex;
         align-items: center;
         position: relative;
