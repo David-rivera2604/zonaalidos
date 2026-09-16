@@ -3863,9 +3863,9 @@ body.Mapfre {
 }
 
     .Mapfre #imgHead img {
-        width: 166px !important;
+        width: 182px !important;
         height: auto !important;
-        max-height: 44px !important;
+        max-height: 48px !important;
         margin: 0 !important;
         position: relative;
         z-index: 1;
@@ -4883,7 +4883,7 @@ body.Mapfre {
     }
 
         .Mapfre #imgHead img {
-            width: 146px !important;
+            width: 160px !important;
         }
 }
 
@@ -5680,7 +5680,7 @@ body.Mapfre {
 }
 
 .Mapfre #imgHead img {
-    max-height: 42px !important;
+    max-height: 48px !important;
 }
 
 .Mapfre #side-menu .level_1__link i,
