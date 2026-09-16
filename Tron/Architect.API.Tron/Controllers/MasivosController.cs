@@ -194,7 +194,12 @@ namespace Architect.API.Tron.Controllers
                 result = Business.Masivos.MasivosBusiness.ActualizarArchivo(id, fileName, fileBytes, fileSize, tokenInfo.UserId);
             }).ConfigureAwait(false);
 
-            return result.Exitoso ? Ok(result) : Content(HttpStatusCode.InternalServerError, result);
+            if (result.Exitoso)
+            {
+                return Ok(result);
+            }
+
+            return Content(HttpStatusCode.InternalServerError, result);
         }
     }
 }
