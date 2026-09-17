@@ -434,7 +434,7 @@ body.mini-navbar .nav-header {
     }
 
 .Ilog {
-    color: #FF002D !important;
+    color: var(--mapfrered1, #C31F09) !important;
 }
 
 .lab_desi {
@@ -483,38 +483,41 @@ body.mini-navbar .nav-header {
 }
 
 .Des_bot:hover {
-    color: rgb(232, 235, 237);
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--mapfrered1, #C31F09) 36%, transparent);
+    transform: translateY(-1px);
 }
 
 .Des_bot {
-    color: rgb(103, 106, 108);
-    background-color: rgb(232, 235, 237);
-    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(180deg, var(--mapfrered1, #C31F09), var(--mapfrered2, var(--mapfrered1, #C31F09)));
+    font-weight: 700;
     border: none;
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 12px;
+    padding: 13px 16px;
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--mapfrered1, #C31F09) 24%, transparent);
+    transition: box-shadow .16s ease, transform .1s ease;
 }
 
     .Des_bot:active {
-        background-color: var(--mapfrered2);
-        color: rgb(232, 235, 237);
-        transform: scale(0.96);
-        transition: all 0.1s ease-out 0s;
+        transform: scale(0.98);
     }
 
 .bot_can {
-    background-color: rgb(103, 106, 108);
-    color: white;
+    color: var(--mapfregray1, #676a6c);
+    background: #fff;
+    border: 1px solid #E1E4E8;
+    box-shadow: none;
 }
 
-.slidee:hover {
-    box-shadow: inset 100em 0 0 0 var(--hover);
-    transition: all 0.5s cubic-bezier(0.98, 0.38, 0.22, 1) 0s;
-}
+    .bot_can:hover {
+        background: #F4F5F6;
+        box-shadow: none;
+        transform: none;
+    }
 
 .slidee {
-    --color: #FF002D;
-    --hover: #FF002D;
+    --color: var(--mapfrered1, #C31F09);
+    --hover: var(--mapfrered1, #C31F09);
 }
 
 .slideeCots:hover {
@@ -529,7 +532,6 @@ body.mini-navbar .nav-header {
 
 .for_olv {
     width: 100%;
-    min-width: 450px;
     margin: 0px auto;
     display: flex;
     flex-direction: column;
@@ -545,7 +547,7 @@ body.mini-navbar .nav-header {
 .forgot_info {
     width: 100%;
     max-width: 600px;
-    margin: 8% auto 0px;
+    margin: 0 auto 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -553,15 +555,15 @@ body.mini-navbar .nav-header {
 }
 
     .forgot_info p {
-        width: 60%;
-        margin-bottom: 10%;
+        width: 90%;
+        margin-bottom: 16px;
         font-weight: 600;
     }
 
     .forgot_info h3 {
-        color: #c31f09;
-        font-size: 1.7em;
-        margin-bottom: 5%;
+        color: var(--mapfrered1, #c31f09);
+        font-size: 1.5em;
+        margin-bottom: 10px;
     }
 
 .car_im img {
