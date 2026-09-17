@@ -16,7 +16,7 @@ body {
     gap: 24px;
     min-height: 100dvh;
     width: 100%;
-    padding: 0 64px;
+    padding: 32px 64px;
     background-image:
         linear-gradient(90deg, rgba(10, 12, 16, .5) 0%, rgba(10, 12, 16, .28) 38%, rgba(255, 255, 255, .55) 66%, rgba(255, 255, 255, .97) 86%),
         url('../../images/background.jpg');
@@ -33,6 +33,7 @@ body {
 
 .mf-login-panel {
     flex: 0 0 auto;
+    margin: auto 0;
 }
 
 .container {
