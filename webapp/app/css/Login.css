@@ -54,7 +54,7 @@ body {
     margin-bottom: 10px;
 }
 
-form, button {
+form, button:not(.btn) {
     margin-top: 18px;
 }
 
@@ -69,7 +69,7 @@ h1, h2, h3, h4, h5 {
     margin-bottom: 6px;
 }
 
-input[type="text"], input[type="password"], input[type="email"], button {
+input[type="text"], input[type="password"], input[type="email"], button:not(.btn) {
     width: 100%;
     padding: 13px 16px;
     margin-top: 14px;
@@ -88,7 +88,7 @@ input[type="text"], input[type="password"], input[type="email"], button {
         outline: none;
     }
 
-button {
+button:not(.btn) {
     background: linear-gradient(180deg, var(--mapfrered1, #C31F09), var(--mapfrered2, var(--mapfrered1, #C31F09)));
     color: white;
     border: none;
@@ -100,12 +100,12 @@ button {
     transition: box-shadow .16s ease, transform .1s ease;
 }
 
-    button:hover {
+    button:not(.btn):hover {
         box-shadow: 0 14px 30px color-mix(in srgb, var(--mapfrered1, #C31F09) 36%, transparent);
         transform: translateY(-1px);
     }
 
-    button:active {
+    button:not(.btn):active {
         transform: scale(.98);
     }
 
