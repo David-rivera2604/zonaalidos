@@ -122,6 +122,85 @@ button {
         color: var(--mapfrered1, #C31F09);
     }
 
+.mf-register-container {
+    max-width: 520px;
+    text-align: left;
+}
+
+    .mf-register-container h4 {
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .mf-register-container .control-label {
+        font-size: 13px;
+        color: #4B5058;
+        font-weight: 600;
+    }
+
+    .mf-register-container .input-group-addon {
+        border: 1px solid #E1E4E8;
+        border-right: none;
+        border-radius: 12px 0 0 12px;
+        background: #F4F5F6;
+        color: var(--mapfrered1, #C31F09);
+    }
+
+    .mf-register-container .input-group input[type="text"],
+    .mf-register-container .input-group input[type="password"] {
+        border-radius: 0 12px 12px 0;
+        margin-top: 0;
+        text-align: left;
+    }
+
+    .mf-register-container .input-group-prepend .btn.dropdown-toggle {
+        margin-top: 0;
+        width: auto;
+        border-radius: 0;
+        border-top: 1px solid #E1E4E8;
+        border-bottom: 1px solid #E1E4E8;
+        background: #fff;
+    }
+
+.mf-login-panel .btn-primary,
+.mf-login-panel .btn-white {
+    width: 100%;
+    padding: 13px 16px;
+    margin-top: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .02em;
+    cursor: pointer;
+    transition: box-shadow .16s ease, transform .1s ease;
+}
+
+.mf-login-panel .btn-primary {
+    background: linear-gradient(180deg, var(--mapfrered1, #C31F09), var(--mapfrered2, var(--mapfrered1, #C31F09)));
+    color: #fff;
+    border: none;
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--mapfrered1, #C31F09) 24%, transparent);
+}
+
+    .mf-login-panel .btn-primary:hover {
+        box-shadow: 0 14px 30px color-mix(in srgb, var(--mapfrered1, #C31F09) 36%, transparent);
+        transform: translateY(-1px);
+    }
+
+    .mf-login-panel .btn-primary:active {
+        transform: scale(.98);
+    }
+
+.mf-login-panel .btn-white {
+    background: #fff;
+    color: #6E757D;
+    border: 1px solid #E1E4E8;
+}
+
+    .mf-login-panel .btn-white:hover {
+        background: #F4F5F6;
+    }
+
 .modal {
     display: none;
     justify-content: center;
