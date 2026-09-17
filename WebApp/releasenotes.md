@@ -1,5 +1,20 @@
 # Release Notes - Aliados
 
+## Versión 1.6.206
+
+### Aliados : Incidentes de seguridad.
+
+#### Cambios implementados:
+
+- A1 - SQL_INJECTION. Se actualiza el servicio DataApi a la versión 1.10.0.19 para evitar esta vulnerabilidad.
+- A2 - INSUFFICIENT_AUTHORIZATION. Se cambian los end points '/insured/{id}' y 'datasource/excel={id}' para que requieran autorización.
+
+#### Dependencias:
+1. `Domiciliación Denegadas del mes.110.4.sql`.
+2. `20260910a.boveda.change_pk.sql`.
+
+--
+
 ## Versión 1.6.205
 
 ### Pasarela : Ajustes en pasarela.
