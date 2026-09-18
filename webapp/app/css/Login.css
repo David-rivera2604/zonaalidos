@@ -124,30 +124,35 @@ button:not(.btn) {
 
 .mf-register-container {
     max-width: 400px;
-    padding: 26px 32px 22px;
+    padding: 22px 28px 18px;
     text-align: left;
 }
 
-    .mf-register-container h4 {
-        text-align: center;
-        font-size: 16px;
+    .mf-register-container .logohorizontal {
         margin-bottom: 4px;
     }
 
+    .mf-register-container h4 {
+        text-align: center;
+        font-size: 15px;
+        margin-top: 0;
+        margin-bottom: 2px;
+    }
+
     .mf-register-container .form-group {
-        margin-bottom: 10px;
+        margin-bottom: 7px;
     }
 
     .mf-register-container .control-label {
-        font-size: 12px;
-        margin-bottom: 2px;
+        font-size: 11.5px;
+        margin-bottom: 1px;
         color: #4B5058;
         font-weight: 600;
     }
 
     .mf-register-container input.form-control {
         width: 100%;
-        padding: 9px 14px;
+        padding: 7px 14px;
         margin-top: 0;
         border: 1px solid #E1E4E8;
         border-radius: 12px;
@@ -181,7 +186,7 @@ button:not(.btn) {
 
     .mf-register-container .input-group-prepend .btn.dropdown-toggle {
         margin-top: 0;
-        padding: 9px 12px;
+        padding: 7px 12px;
         width: auto;
         font-size: 13.5px;
         border-radius: 0;
@@ -203,11 +208,15 @@ button:not(.btn) {
     .mf-register-container .modal-footer {
         padding: 6px 0 0;
         border-top: none;
+        flex-wrap: nowrap;
+        gap: 10px;
     }
 
     .mf-register-container .btn-primary,
     .mf-register-container .btn-white {
-        padding: 10px 16px;
+        width: auto;
+        flex: 1 1 0;
+        padding: 10px 12px;
         margin-top: 8px;
         font-size: 14px;
     }
