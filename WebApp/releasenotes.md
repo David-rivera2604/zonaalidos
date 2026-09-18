@@ -1,5 +1,17 @@
 # Release Notes - Aliados
 
+## Versión 1.6.207
+
+### Aliados - EmitirPoliza: Se ajusta para los beneficiarios el manejo de Provincia, Cantón y Distrito
+
+#### Cambios implementados:
+
+- Se alinean los campos Cantón -> PROVINCIA_BENEF y Distrito -> LOCALIDAD_BENEF.
+
+#### Dependencias:
+1. `EmitirPoliza.9105.1.sql`.
+
+--
 ## Versión 1.6.206
 
 ### Aliados : Incidentes de seguridad.

@@ -22,6 +22,11 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         /// Tipo de documento del beneficiario.
         /// </summary>
         public string COD_DOCUM_BENEFType { get; set; }
+
+        /// <summary>
+        /// Código de estado o provincia.
+        /// </summary>
+        public int ESTADO_BENEF { get; set; }
     }
 
 }

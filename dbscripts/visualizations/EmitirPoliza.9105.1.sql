@@ -45,6 +45,7 @@ Beneficiarios|tabla
  Correo electrónico+|Correo|name=EMAIL_BENEF 
  Parentesco|lista|name=TIP_RELAC|lookup=Relationship|tablevisible=false
  Porcentaje+|Porcentaje|name=PCT_PARTICIPACION
- Provincia+|tron.Provincia|name=PROVINCIA_BENEF|tablevisible=false
- Cantón+|tron.Cantón|name=LOCALIDAD_BENEF|tablevisible=false
+ Provincia+|tron.Provincia|name=ESTADO_BENEF
+ Cantón+|tron.Cantón|name=PROVINCIA_BENEF
+ Distrito+|tron.Distrito|name=LOCALIDAD_BENEF
 ',NULL,'EmitirPoliza','Form.Ext.Altas.js',NULL);

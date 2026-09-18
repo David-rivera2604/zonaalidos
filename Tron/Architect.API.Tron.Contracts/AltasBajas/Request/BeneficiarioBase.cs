@@ -59,6 +59,7 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         /// </summary>
         public int PROVINCIA_BENEF { get; set; }
 
+
         /// <summary>
         /// Localidad del beneficiario.
         /// </summary>
