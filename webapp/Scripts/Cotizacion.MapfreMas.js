@@ -179,15 +179,11 @@ app.CotizacionMapfreMas = (function () {
                 $('input:radio[name=tipo_prod]').prop('disabled', true);
             } else {
                 $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
-<<<<<<< HEAD
-=======
-
                 var bloquearTipoProd = esPurdy && contratoValue > 0;
                 $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
                 if (bloquearTipoProd) {
                     $('input:radio[name=tipo_prod]').prop('checked', false);
                 }
->>>>>>> e7af817f (Fix de purdy (contratos))
             }
             $('#contratoClearBtn').toggleClass('d-none', !(esContratoSoloTrebol || (esPurdy && contratoValue > 0)));
         }
@@ -210,16 +206,12 @@ app.CotizacionMapfreMas = (function () {
         });
 
         $('input:radio[name=tipo_prod]').change(function () {
-<<<<<<< HEAD
-=======
             var mySeq = ++mfPlanUiSeq;
             if (localStorage.getItem('Roles').includes('Purdy')) {
                 app.ui.DropDownDisabled('#contrato', true, true);
                 app.ui.DropDownDisabled('#subcontrato', true, true);
                 $('#tipoProdClearBtn').removeClass('d-none');
             }
-
->>>>>>> e7af817f (Fix de purdy (contratos))
             var data = {
                 cod_ramo: setupData.cod_ramo,
                 edad: app.ui.GetNumericValue('#edad'),
