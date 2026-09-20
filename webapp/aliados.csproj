@@ -427,6 +427,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\css\carnet.css" />
+    <Content Include="assets\js\plugins\msal-browser.min.js" />
     <Content Include="Content\notifications.css" />
     <Content Include="app\css\Login.css" />
     <Content Include="app\img\ajax-loader.gif" />

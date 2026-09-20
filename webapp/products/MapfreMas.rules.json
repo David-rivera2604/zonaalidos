@@ -194,17 +194,20 @@
         {
           "descripcion": "Cédula de cliente vigente por ambos lados",
           "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         },
         {
           "descripcion": "Formulario de Inspección",
           "archivo": "Formulario_de_Inspeccion.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 22
         }
       ]
     },
@@ -214,17 +217,20 @@
         {
           "descripcion": "Cédula de cliente vigente por ambos lados",
           "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         },
         {
           "descripcion": "Formulario de Inspección",
           "archivo": "Formulario_de_Inspeccion.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 22
         }
       ]
     },
@@ -234,7 +240,8 @@
         {
           "descripcion": "Documentación digitalizada",
           "archivo": "Documentos.docx",
-          "requerido": true
+          "requerido": true,
+          "documentType": 23
         }
       ]
     },
@@ -244,7 +251,8 @@
         {
           "descripcion": "Documentación digitalizada",
           "archivo": "Documentos.docx",
-          "requerido": true
+          "requerido": true,
+          "documentType": 23
         }
       ]
     },
@@ -255,7 +263,8 @@
         {
           "descripcion": "Expediente Póliza",
           "archivo": "Expendiente-Poliza.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 24
         }
       ]
     },
@@ -266,7 +275,8 @@
         {
           "descripcion": "Expediente Póliza",
           "archivo": "Expendiente-Poliza.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 24
         }
       ]
     },
@@ -276,12 +286,14 @@
         {
           "descripcion": "Carta Cumplimentada",
           "archivo": "Carta-Cumplimentada.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 25
         },
         {
           "descripcion": "Factura Proforma",
           "archivo": "Factura-Proforma.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 26
         }
       ]
     },
@@ -291,17 +303,20 @@
         {
           "descripcion": "Cédula de cliente vigente por ambos lados",
           "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         },
         {
           "descripcion": "Formulario de Inspección",
           "archivo": "Formulario_de_Inspeccion.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 22
         }
       ]
     }

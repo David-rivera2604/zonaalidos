@@ -1,5 +1,25 @@
 # Release Notes - Aliados
 
+## Versión 1.6.208
+
+### Aliados - OneDrive: Se habilita la carga de archivos por medio de OneDrive, en el manejo de trazabilidad y en emisión MapfreMas.
+
+#### Cambios implementados:
+
+- Se habilita la carga de archivos por medio de OneDrive en el manejo de trazabilidad.
+- Se habilita la carga de archivos por medio de OneDrive y en emisión MapfreMas.
+- Se habilita la carga de archivos por medio de arrastrar y soltar sobre la sección de documento requeridos.
+
+#### Nuevos settings de configuración requeridos (`Web.config`):
+
+| Setting | Descripción |
+|---|---|
+| `OneDriveClientId` |  Id. de aplicación (cliente) (Application (client) ID) — es un GUID |
+
+### Documentos técnicos  
+- `technical_documets/configuracion.onedrive.filepicker.html` — Manual — Configuración de OneDrive File Picker.
+
+--
 ## Versión 1.6.207
 
 ### Aliados - EmitirPoliza: Se ajusta para los beneficiarios el manejo de Provincia, Cantón y Distrito
