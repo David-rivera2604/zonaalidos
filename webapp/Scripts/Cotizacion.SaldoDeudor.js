@@ -662,6 +662,7 @@ app.CotizacionSaldoDeudor = (function () {
             pagination: false,
             smartDisplay: true,
             detailView: false,
+            cardView: true,
             columns: [
                 {
                     field: 'codigo',
@@ -671,7 +672,8 @@ app.CotizacionSaldoDeudor = (function () {
                     halign: 'center',
                     align: 'right',
                     formatter: 'app.ui.IntegerFormatter',
-                    visible: false
+                    visible: false,
+                    cardVisible: false
                 }, {
                     field: 'frecuencia',
                     title: 'Fraccionamiento',
