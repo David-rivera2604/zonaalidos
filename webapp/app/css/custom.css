@@ -320,6 +320,39 @@ fieldset[disabled] {
     font-size: 11px
 }
 
+#quoteBlock .ibox-content:has(#plandepagoporfrecuenciaTbl) {
+    padding: 10px !important;
+}
+
+#quoteBlock #plandepagoporfrecuenciaTbl td {
+    padding: 6px !important;
+    border-bottom: 1px solid #e7eaec !important;
+}
+
+#quoteBlock #plandepagoporfrecuenciaTbl .card-views {
+    padding: 0 !important;
+}
+
+#quoteBlock #plandepagoporfrecuenciaTbl .card-view {
+    display: block !important;
+    padding: 1px 0 !important;
+}
+
+#quoteBlock #plandepagoporfrecuenciaTbl .card-view-title {
+    display: block !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    font-size: 9px !important;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: #9199a1 !important;
+}
+
+#quoteBlock #plandepagoporfrecuenciaTbl .card-view-value {
+    display: block !important;
+    font-weight: 600;
+}
+
 .search-input {
     font-size: 11px
 }

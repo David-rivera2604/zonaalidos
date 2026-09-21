@@ -643,6 +643,7 @@ app.HogarTotal = (function () {
             pagination: false,
             smartDisplay: true,
             detailView: false,
+            cardView: true,
             columns: [
                 {
                     field: 'codigo',
@@ -652,7 +653,8 @@ app.HogarTotal = (function () {
                     halign: 'center',
                     align: 'right',
                     formatter: 'app.ui.IntegerFormatter',
-                    visible: false
+                    visible: false,
+                    cardVisible: false
                 }, {
                     field: 'frecuencia',
                     title: 'Fraccionamiento',
