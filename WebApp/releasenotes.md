@@ -1,8 +1,107 @@
 # Release Notes - Aliados
 
+## Versión 1.6.208
+
+### Aliados - OneDrive: Se habilita la carga de archivos por medio de OneDrive, en el manejo de trazabilidad y en emisión MapfreMas.
+
+#### Cambios implementados:
+
+- Se habilita la carga de archivos por medio de OneDrive en el manejo de trazabilidad.
+- Se habilita la carga de archivos por medio de OneDrive y en emisión MapfreMas.
+- Se habilita la carga de archivos por medio de arrastrar y soltar sobre la sección de documento requeridos.
+
+#### Nuevos settings de configuración requeridos (`Web.config`):
+
+| Setting | Descripción |
+|---|---|
+| `OneDriveClientId` |  Id. de aplicación (cliente) (Application (client) ID) — es un GUID |
+
+### Documentos técnicos  
+- `technical_documets/configuracion.onedrive.filepicker.html` — Manual — Configuración de OneDrive File Picker.
+
+--
+## Versión 1.6.207
+
+### Aliados - EmitirPoliza: Se ajusta para los beneficiarios el manejo de Provincia, Cantón y Distrito
+
+#### Cambios implementados:
+
+- Se alinean los campos Cantón -> PROVINCIA_BENEF y Distrito -> LOCALIDAD_BENEF.
+
+#### Dependencias:
+1. `EmitirPoliza.9105.1.sql`.
+
+--
+## Versión 1.6.206
+
+### Aliados : Incidentes de seguridad.
+
+#### Cambios implementados:
+
+- A1 - SQL_INJECTION. Se actualiza el servicio DataApi a la versión 1.10.0.19 para evitar esta vulnerabilidad.
+- A2 - INSUFFICIENT_AUTHORIZATION. Se cambian los end points '/insured/{id}' y 'datasource/excel={id}' para que requieran autorización.
+
+#### Dependencias:
+1. `Domiciliación Denegadas del mes.110.4.sql`.
+2. `20260910a.boveda.change_pk.sql`.
+
+--
+
+## Versión 1.6.205
+
+### Pasarela : Ajustes en pasarela.
+
+#### Cambios implementados:
+
+- En el reporte de cobros por suscripción, en la columna de denegadas acumulado por mes, solo reflejar ahi despues de los tres intentos.
+- No se esta aguardando la fecha de vencimiento de la tarjeta.
+- Corrección del PK de la tabal boveda para permitir los cambios de tarjetas para pólizas.
+- Se agrega a monitor la revisión de pago sin efecto en tron (falla en proceso de corrección).
+- Se cambia el orden para que primero se intente proceder con aplicar el pago en tron antes de procesar la suscripción de token de tarejtas.
+
+#### Dependencias:
+1. `Domiciliación Denegadas del mes.110.4.sql`.
+2. `20260910a.boveda.change_pk.sql`.
+
+--
+
+## Versión 1.6.204
+
+### ProcessSpecFlow : Corrección de errores al duplicar e importar un proceso.
+
+#### Cambios implementados:
+
+- Se corrige un error que provocaba que, al importar un proceso desde un archivo JSON, el archivo llegara vacío al servidor y no se pudiera completar la importación correctamente.
+- Se corrige un error que provocaba que el campo Condición de las referencias no se guardara al duplicar un proceso (incluye crear uno nuevo, duplicar uno existente o importarlo desde un archivo).
+
+--
+
+## Versión 1.6.203
+
+### Recobro : El proceso da exitoso pero se hace el recobro.
+
+#### Cambios implementados:
+
+- El proceso de recobro siempre se hace asincrono (como job) esto se podria cambiar segun el numero recibos a recobrar,
+- El cliente del recibo seleccionado no posee un email registrado en tron.
+- Se ajusta el proceso para cuando el cliente no tenga correo, quede el tracking en onlinepayment indicado la causa.
+
+--
+
+## Versión 1.6.202
+
+### Pasarela : Se cobra en pasarela pero no se aplica en TRON, cuando es por link de pago o widget
+
+#### Cambios implementados:
+
+- Después de revisar detalladamente el código, se determina que el problema es algo que se ha padecido en el pasado con el manejo de funciones asíncronas desde el monitor
+- Se cambiar el bloque de funciones que almacena la tokenización así como el cobro en tron.
+
+--
+
 ## Versión 1.6.201
 
-### Aliados : Cmabio en la consulta Gestión de Cobros (317).
+### Aliados : Cambio en la consulta Gestión de Cobros (317).
 
 #### Cambios implementados:
 

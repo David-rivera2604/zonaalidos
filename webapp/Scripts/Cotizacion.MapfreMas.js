@@ -179,7 +179,6 @@ app.CotizacionMapfreMas = (function () {
                 $('input:radio[name=tipo_prod]').prop('disabled', true);
             } else {
                 $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
-
                 var bloquearTipoProd = esPurdy && contratoValue > 0;
                 $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
                 if (bloquearTipoProd) {
@@ -213,7 +212,6 @@ app.CotizacionMapfreMas = (function () {
                 app.ui.DropDownDisabled('#subcontrato', true, true);
                 $('#tipoProdClearBtn').removeClass('d-none');
             }
-
             var data = {
                 cod_ramo: setupData.cod_ramo,
                 edad: app.ui.GetNumericValue('#edad'),
@@ -243,7 +241,7 @@ app.CotizacionMapfreMas = (function () {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
                     SettingReload();
-                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}:num_poliza_grupo=${setupData.polizagrupo == null ? '' : setupData.polizagrupo}`);
+                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`);
 
         });
 
@@ -1084,7 +1082,6 @@ app.CotizacionMapfreMas = (function () {
             pagination: false,
             smartDisplay: true,
             detailView: false,
-            cardView: true,
             columns: [
                 {
                     field: 'codigo',
@@ -1094,8 +1091,7 @@ app.CotizacionMapfreMas = (function () {
                     halign: 'center',
                     align: 'right',
                     formatter: 'app.ui.IntegerFormatter',
-                    visible: false,
-                    cardVisible: false
+                    visible: false
                 }, {
                     field: 'frecuencia',
                     title: 'Fraccionamiento',

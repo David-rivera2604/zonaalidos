@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Web;
 
@@ -136,7 +137,17 @@ namespace Architect.API.Core.Business.General
                 if (file.InputStream.CanSeek)
                     file.InputStream.Position = 0;
 
-                return _types[key](file, header);
+                try
+                {
+                    return _types[key](file, header);
+                }
+                finally
+                {
+                    // Los validadores de JSON/XML consumen el InputStream completo; hay que
+                    // dejarlo en la posición 0 para que el posterior SaveAs() no guarde un archivo vacío.
+                    if (file.InputStream.CanSeek)
+                        file.InputStream.Position = 0;
+                }
             }
 
             return false;
@@ -200,7 +211,7 @@ namespace Architect.API.Core.Business.General
             {
                 file.InputStream.Position = 0;
 
-                using (var reader = new StreamReader(file.InputStream))
+                using (var reader = new StreamReader(file.InputStream, Encoding.UTF8, true, 1024, leaveOpen: true))
                 {
                     string json = reader.ReadToEnd();
                     JsonDocument.Parse(json);

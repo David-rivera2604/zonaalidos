@@ -1,8 +1,6 @@
 ﻿using Architect.API.Core.Business;
-using Architect.API.Core.Business.General;
-using Architect.API.Tron.Contracts.Pagos;
-using Architect.DocuSign.Integrations.Providers.Evicertia.Contracts;
 using Architect.Payment.Integrations.Contracts;
+using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Payment.Integrations.Providers.Placetopay.Contracts;
 using Architect.Utilities.Extensions;
 using Newtonsoft.Json;
@@ -10,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static iTextSharp.text.pdf.PdfDocument;
 
 namespace Architect.API.Tron.Business.Backoffice
 {
@@ -48,34 +45,6 @@ namespace Architect.API.Tron.Business.Backoffice
             Utilities.Log.WarningLog("Payment.Monitor", "Fin - Proceso de sondeo", "payment");
         }
 
-        public static async Task Monitorv1()
-        {
-            Utilities.Log.WarningLog("Payment.Monitor", "Inicio - Proceso de sondeo", "payment");
-
-            try
-            {
-
-                List<Payment.Integrations.Contracts.OnlinePayment> pendingOnlinePayment = Payment.Integrations.DataAccess.OnlinePayment.RetrievePendings();
-                if (pendingOnlinePayment.IsNotEmpty())
-                {
-                    Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Online Payment", "payment");
-                    await VerifiyOnlinePaymentPending(pendingOnlinePayment);
-                }
-                List<Payment.Integrations.Contracts.OnlinePayment> pendingPaymentInTron = Payment.Integrations.DataAccess.OnlinePayment.RetrieveByTronCode(500);
-                if (pendingPaymentInTron.IsNotEmpty())
-                {
-                    Utilities.Log.WarningLog("Payment.Monitor", $"  {pendingOnlinePayment.Count} Pending Payment In Tron", "payment");
-                    await VerifiyOnlinePaymentPending(pendingPaymentInTron);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilities.Log.ErrorLog("Payment", "Monitor", ex);
-                throw ex;
-            }
-            Utilities.Log.WarningLog("Payment.Monitor", "Fin - Proceso de sondeo", "payment");
-        }
-
         private static void VerifiyOnlinePaymentPendingv2(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
         {
 
@@ -86,28 +55,25 @@ namespace Architect.API.Tron.Business.Backoffice
 
         }
 
-        private static async Task VerifiyOnlinePaymentPending(List<Payment.Integrations.Contracts.OnlinePayment> pendings)
-        {
-            try
-            {
-                foreach (Payment.Integrations.Contracts.OnlinePayment currentRecord in pendings)
-                {
-                    await Verify(currentRecord);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilities.Log.ErrorLog("Payment", "NewMethod", ex);
-                throw ex;
-            }
-
-        }
         private static void Verifyv2(Payment.Integrations.Contracts.OnlinePayment currentRecord)
         {
             try
             {
-                Architect.Payment.Integrations.Contracts.InformationRequest result = Payment.Integrations.Payment.VerifyUpdateStatusv2(currentRecord, currentRecord.UpdateUserCode, true);
+                Architect.Payment.Integrations.Contracts.InformationRequest result = null;
 
+                //Si el estado de pago es aprobado, pero tiene codigo de error de tron o cero, solo falta el cobro en tron.
+                if (currentRecord.ProviderStatus == "APPROVED" && (currentRecord.TronCode == 0 || currentRecord.TronCode == 500 ))
+                {
+                    result = Payment.Integrations.Business.OnlinePayment.Retrieve_By_RequestID(Convert.ToInt64(currentRecord.RequestID));
+                    if (result!=null)
+                    {
+                        result.changed = true;
+                    }
+                }
+                else
+                {
+                    result = Payment.Integrations.Payment.VerifyUpdateStatusv2(currentRecord, currentRecord.UpdateUserCode, true);
+                }
                 // Se verifica el cambio de estado y si el pago fue aprobado para proceder con el pago den tron.
                 if (result != null && result.changed && result.status == "APPROVED")
                 {
@@ -121,6 +87,7 @@ namespace Architect.API.Tron.Business.Backoffice
             }
 
         }
+
         private static async Task Verify(Payment.Integrations.Contracts.OnlinePayment currentRecord)
         {
             Architect.Payment.Integrations.Contracts.InformationRequest result = await Payment.Integrations.Payment.VerifyUpdateStatus(currentRecord, currentRecord.UpdateUserCode, true);
@@ -248,28 +215,30 @@ namespace Architect.API.Tron.Business.Backoffice
 
         internal static async Task PaymentApproved(InformationRequest result)
         {
-            if (result.subscribe)
-            {
-                await CambioTarjeta(result);
-            }
             if (IsEmployee)
             {
                 result.OnlinePayment.AgentCode = 999999;
             }
             bool tronPayment = await TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty, false);
+
+            if (result.subscribe)
+            {
+                await CambioTarjeta(result);
+            }
         }
 
         internal static void PaymentApprovedv2(InformationRequest result)
         {
-            if (result.subscribe)
-            {
-                CambioTarjeta(result);
-            }
             if (IsEmployee)
             {
                 result.OnlinePayment.AgentCode = 999999;
             }
-            bool tronPayment = TronPayment(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty, false).Result;
+            bool tronPayment = TronPaymentv2(result, result.OnlinePayment.AgentCode, "Placetopay", string.Empty, false);
+
+            if (result.subscribe)
+            {
+                CambioTarjetav2(result);
+            }
         }
 
         /// <summary>
@@ -358,6 +327,93 @@ namespace Architect.API.Tron.Business.Backoffice
             return (tronCobro.codigo_respuesta == "200");
         }
 
+        /// <summary>
+        /// Procesa el pago de un recibo en tron.
+        /// </summary>
+        public static bool TronPaymentv2(Architect.Payment.Integrations.Contracts.InformationRequest request, int agentCode, string source, string provider, bool sinpe, string pagadorReq = "")
+        {
+            string tipoPagador = "A";
+            string pagador = agentCode.ToString();
+            string cuenta = "";
+
+            switch (source)
+            {
+                case "RecurringReceipts":
+                    if (provider.Equals("Evertec", StringComparison.CurrentCultureIgnoreCase))
+                        cuenta = request.currency == "1" || request.currency == "CRC" ? "HSBC1" : "HSBC2";
+                    else
+                        cuenta = request.currency == "1" ? "BAC01" : "BAC02";
+                    break;
+                case "Widget&Link":
+                    cuenta = request.currency == "1" ? "HSBC1" : "HSBC2";
+                    break;
+
+                default:
+                    cuenta = request.currency == "1" || request.currency == "CRC" ? "HSBC1" : "HSBC2";
+                    break;
+            }
+
+            //En el caso de que no se trate de un agente, se asume que es un cliente tomador
+            if (pagadorReq.IsEmpty() && agentCode.IsEmpty() && request.OnlinePayment.UpdateUserCode.IsNotEmpty())
+            {
+                tipoPagador = "C";
+                var userInfo = Core.Business.Security.UserMember.RetrieveById(request.OnlinePayment.CompanyId, request.OnlinePayment.UpdateUserCode);
+                if (userInfo.IsNotEmpty())
+                {
+                    pagador = userInfo.IdentificationType.ToString().IdentificationType() + "-" + userInfo.Identification.DocumentNumber(userInfo.IdentificationType.ToString());
+                }
+            }
+            if (pagadorReq.IsNotEmpty())
+            {
+                tipoPagador = "C";
+                pagador = pagadorReq;
+            }
+
+
+            string data = JsonConvert.SerializeObject(
+                new
+                {
+                    guid = request.OnlinePayment.RequestID.ToString(),
+                    canal = "ALI",
+                    fechaPago = request.date,
+                    tipoPagador = tipoPagador,
+                    pagador = pagador,
+                    tipoPago = string.Empty,
+                    referenciaPago = request.authorization,
+                    montoTotal = request.total,
+                    moneda = request.currency,
+                    direccionIP = request.ipAddress,
+                    huellaNavegador = (string)null,
+                    cuenta = cuenta,
+                    tarjeta = new
+                    {
+                        bin = string.Empty,
+                        terminacion = request.lastDigits,
+                        nombre = string.Format("{0} {1}", request.payerName, request.payerSurname),
+                        mesExpira = string.Empty,
+                        annioExpira = string.Empty,
+                        marcaTarjeta = request.paymentMethodName
+                    },
+                    recibos = new[] {
+                        new {
+                            numPoliza = request.OnlinePayment.PolicyId,
+                            numRecibo = request.OnlinePayment.BillNumber.ToString(),
+                            tipoPago = string.Empty,
+                            monto = request.OnlinePayment.Amount
+                        }
+                    }
+                });
+
+            Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_proceso_cobro(1, Guid.NewGuid().ToString(), data, sinpe);
+            if (request.OnlinePayment.Id > 0)
+            {
+                Payment.Integrations.DataAccess.OnlinePayment.UpdateTronInformation(request.OnlinePayment.Id, Convert.ToInt16(tronCobro.codigo_respuesta), tronCobro.mensaje_respuesta);
+            }
+            Utilities.Log.WarningLog("Pagos.TronPayment", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
+            return (tronCobro.codigo_respuesta == "200");
+        }
+
+
         public async static Task<Payment.Integrations.Contracts.v2.PaymentInformation> SendPaymentLink(Core.Contracts.Security.Token tokenInfo, string ipAddress, string userAgent, string num_poliza, Int64 num_recibo, int agentCode, bool onlyInfo = false, string email = "")
         {
             Payment.Integrations.Contracts.v2.PaymentInformation result = null;
@@ -413,6 +469,7 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 string card = "";
                 string token = "";
+                DateTime validUntil = DateTime.MinValue;
 
                 if (request.instrument != null)
                 {
@@ -426,13 +483,68 @@ namespace Architect.API.Tron.Business.Backoffice
                     {
                         token = ivalue.value;
                     }
+                    ivalue = request.instrument.Where(r => r.keyword == "validUntil").FirstOrDefault();
+                    if (ivalue != null)
+                    {
+                        DateTime.TryParse(ivalue.value, out validUntil);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(token))
                 {
                     int numSpto = DataAccess.Pagos.Recibos.Get_NumSpto(request.OnlinePayment.BillNumber);
                     DataAccess.Pagos.Tarjetas.Cancel_Previous_Tokens(request.OnlinePayment.PolicyId, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber);
-                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe");
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe", validUntil);
+                }
+            }
+            Utilities.Log.WarningLog("Pagos.CambioTarjeta", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
+            return (tronCobro.codigo_respuesta == "200");
+        }
+
+        /// <summary>
+        /// Realiza el cambio de tarjeta para el cliente de una póliza.
+        /// </summary>
+        public static bool CambioTarjetav2(Architect.Payment.Integrations.Contracts.InformationRequest request)
+        {
+            string data = JsonConvert.SerializeObject(
+                new
+                {
+                    num_poliza = request.OnlinePayment.PolicyId,
+                    tip_benef = "0",
+                    datos = request.instrument
+                });
+
+            Contracts.Batch.Respuesta tronCobro = DataAccess.PorRamo.p_cambio_tarjeta(1, Guid.NewGuid().ToString(), data);
+            if (request.OnlinePayment.Id > 0)
+            {
+                string card = "";
+                string token = "";
+                DateTime validUntil = DateTime.MinValue;
+
+                if (request.instrument != null)
+                {
+                    InstrumentValue ivalue = request.instrument.Where(r => r.keyword == "lastDigits").FirstOrDefault();
+                    if (ivalue != null)
+                    {
+                        card = "************" + ivalue.value;
+                    }
+                    ivalue = request.instrument.Where(r => r.keyword == "token").FirstOrDefault();
+                    if (ivalue != null)
+                    {
+                        token = ivalue.value;
+                    }
+                    ivalue = request.instrument.Where(r => r.keyword == "validUntil").FirstOrDefault();
+                    if (ivalue != null)
+                    {
+                        DateTime.TryParse(ivalue.value, out validUntil);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    int numSpto = DataAccess.Pagos.Recibos.Get_NumSpto(request.OnlinePayment.BillNumber);
+                    DataAccess.Pagos.Tarjetas.Cancel_Previous_Tokens(request.OnlinePayment.PolicyId, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber);
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(request.OnlinePayment.PolicyId, numSpto, request.OnlinePayment.DocumentType.DocumentType(), request.OnlinePayment.DocumentNumber, card, token, string.Empty, true, "subscribe", validUntil);
                 }
             }
             Utilities.Log.WarningLog("Pagos.CambioTarjeta", string.Format("codigo_respuesta={0}, mensaje_respuesta={1}, recibo={2}", tronCobro.codigo_respuesta, tronCobro.mensaje_respuesta, request.OnlinePayment.BillNumber), "payment");
