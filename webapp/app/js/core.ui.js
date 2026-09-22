@@ -1066,8 +1066,9 @@ app.ui = (function () {
             }
 
             if (message != null && message != '') {
-                app.ui.ShowAlert('quoteNotify', 'alert-danger', message);
-                return true;
+                var isAuditWarning = /equipo especial/i.test(message) && /auditad/i.test(message);
+                app.ui.ShowAlert('quoteNotify', isAuditWarning ? 'alert-warning' : 'alert-danger', message);
+                return !isAuditWarning;
             }
 
 
