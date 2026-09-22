@@ -380,7 +380,7 @@ app.master = (function () {
 
 
                 $('#UserNameMaster').html(localStorage.getItem('Username'));
-                $('#TenantMaster').html(localStorage.getItem('Tenant'));
+                $('[id="TenantMaster"]').html(localStorage.getItem('Tenant'));
                 updateLanguageSelectorState();
                 updateLanguageOptionTexts();
 
@@ -399,7 +399,7 @@ app.master = (function () {
                     $('#right-sidebar').addClass('d-none');
                 });
 
-                $('#showHelp').click(function (e) {
+                $('[id="showHelp"]').click(function (e) {
                     e.preventDefault();
                     window.open(app.setting.viewpath + 'help/index', "Ayuda", "left=200, width=750, height=550, titlebar=no, location=NO,resizable,scrollbars,status");
                 });
