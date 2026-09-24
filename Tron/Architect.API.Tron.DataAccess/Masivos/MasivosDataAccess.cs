@@ -31,6 +31,7 @@ namespace Architect.API.Tron.DataAccess.Masivos
                     .AddParameter("p_archivo_carga", DbType.Binary, 0, carga.archivo_carga)
                     .AddParameter("p_updateusercode", DbType.Int32, 9, carga.cod_usr)
                     .AddParameter("p_resultado", DbType.Int32, 9, 0, ParameterDirection.Output)
+                    .AddParameter("p_id", DbType.Int32, 9, 0, ParameterDirection.Output)
                     .Execute(currentConnection, "Tron");
             }
 
