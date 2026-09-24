@@ -1189,13 +1189,19 @@ function oneDrivePick(settings) {
             // Insertar en el contenedor de documentos esperados
             if ($container.length > 0) {
                 // El elemento del uploader ($el / #dropzone) suele vivir dentro del contenedor.
-                // $container.html() lo desconectaría del DOM y dejaría a Dropzone adjunto a un nodo
-                // huérfano, impidiendo que la selección de archivos dispare la carga. Lo preservamos.
+                // Si usamos html() sin separarlo antes, jQuery limpia sus eventos/data.
+                // Lo detachamos primero para preservar la instancia fileUploader y Dropzone.
                 var uploaderInsideContainer = $el.length > 0 && $container[0].contains($el[0]);
-                $container.html(gridHtml);
+                var $preservedUploader = null;
                 if (uploaderInsideContainer) {
-                    $el.css('display', 'none');
-                    $container.append($el);
+                    $preservedUploader = $el.detach();
+                }
+
+                $container.html(gridHtml);
+
+                if ($preservedUploader && $preservedUploader.length > 0) {
+                    $preservedUploader.css('display', 'none');
+                    $container.append($preservedUploader);
                 }
             } else {
                 // Fallback: insertar antes del dropzone
@@ -1431,6 +1437,30 @@ function oneDrivePick(settings) {
                                     if (String(dzFile.expectedDocId) === String(docId) && dzFile.manuallyAdded !== true) {
                                         dz.removeFile(dzFile);
                                         removedFromDropzone = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            var inst = $el.data('fileUploader');
+                            if (inst && inst.responses && inst.responses.length > 0) {
+                                for (var r = inst.responses.length - 1; r >= 0; r--) {
+                                    var responseFile = inst.responses[r];
+                                    var sameExpectedDoc = responseFile && responseFile.expectedDocId && String(responseFile.expectedDocId) === String(docId);
+                                    var sameFileId = responseFile && fileData && fileData.fileId && String(responseFile.Id) === String(fileData.fileId);
+                                    var sameStoredName = responseFile && fileData && fileData.storedFileName && responseFile.StoredFileName === fileData.storedFileName;
+                                    if (sameExpectedDoc || sameFileId || sameStoredName) {
+                                        inst.responses.splice(r, 1);
+                                    }
+                                }
+                            }
+
+                            if (inst && inst.expectedDocuments && inst.expectedDocuments.length > 0) {
+                                for (var d = 0; d < inst.expectedDocuments.length; d++) {
+                                    var expectedDoc = inst.expectedDocuments[d];
+                                    if (expectedDoc && String(expectedDoc.id) === String(docId)) {
+                                        expectedDoc.status = 'pending';
+                                        expectedDoc.uploadedFile = null;
                                         break;
                                     }
                                 }
@@ -2325,6 +2355,7 @@ function oneDrivePick(settings) {
                         elementId: elementId,
                         showExpectedDocuments: settings.showExpectedDocuments === true,
                         showGeneralUploadCard: settings.showGeneralUploadCard !== false,
+                        expectedDocuments: (settings.expectedDocuments || []).slice(),
                         translations: translations,
                         responses: responses,
                         setupFileActions: setupFileActions, // Exponer funcion para uso en load()
@@ -2759,6 +2790,55 @@ function oneDrivePick(settings) {
                 return this;
             },
 
+            expectedDocumentsStatus: function () {
+                var inst = this.first().data('fileUploader');
+                if (!inst) return [];
+
+                var expected = inst.expectedDocuments || [];
+                var responses = inst.responses || [];
+
+                return expected.map(function (doc) {
+                    var responseMatch = responses.find(function (r) {
+                        return r && r.expectedDocId && String(r.expectedDocId) === String(doc.id);
+                    });
+
+                    var isLoaded = !!responseMatch;
+                    var uploadedFile = null;
+
+                    if (responseMatch) {
+                        uploadedFile = {
+                            id: responseMatch.Id || doc.id,
+                            name: responseMatch.FileName || doc.name || 'Archivo',
+                            size: responseMatch.FileSize || responseMatch.Size || 0,
+                            user: responseMatch.UpdateUserName || '',
+                            date: responseMatch.UpdateDate || null,
+                            storedFileName: responseMatch.StoredFileName || '',
+                            type: responseMatch.ContentType || 'application/octet-stream'
+                        };
+                    }
+
+                    return {
+                        id: doc.id,
+                        name: doc.name,
+                        description: doc.description || '',
+                        documentType: doc.documentType,
+                        documentTypeDesc: doc.documentTypeDesc || 'General',
+                        status: isLoaded ? 'completed' : 'pending',
+                        isLoaded: isLoaded,
+                        uploadedFile: uploadedFile
+                    };
+                });
+            },
+
+            pendingExpectedDocuments: function () {
+                var inst = this.first().data('fileUploader');
+                if (!inst) return [];
+
+                return methods.expectedDocumentsStatus.apply(this).filter(function (doc) {
+                    return !doc.isLoaded;
+                });
+            },
+
             destroy: function () {
                 return this.each(function () {
                     var inst = $(this).data('fileUploader');
@@ -2772,6 +2852,52 @@ function oneDrivePick(settings) {
                     var $el = $(this);
                     var inst = $el.data('fileUploader');
                     if (!inst) return;
+
+                    inst.expectedDocuments = (expectedDocuments || []).slice();
+
+                    if (inst.responses) {
+                        var generalFiles = inst.responses.filter(function (r) {
+                            return r && !r.expectedDocId;
+                        });
+
+                        inst.responses.length = 0;
+                        generalFiles.forEach(function (item) {
+                            inst.responses.push(item);
+                        });
+
+                        (expectedDocuments || []).forEach(function (doc) {
+                            var isCompleted = doc && (doc.status === 'completed' || doc.status === 'Listo' || !!doc.uploadedFile);
+                            if (!isCompleted || !doc.uploadedFile) {
+                                return;
+                            }
+
+                            var uploaded = doc.uploadedFile;
+                            var expectedNormalized = {
+                                Id: uploaded.id || doc.id,
+                                FileName: uploaded.name || doc.name || 'Archivo',
+                                StoredFileName: uploaded.storedFileName || '',
+                                Stored: uploaded.storedFileName || '',
+                                FileContent: uploaded.storedFileName || '',
+                                FileSize: uploaded.size || 0,
+                                Size: uploaded.size || 0,
+                                DocumentType: doc.documentType || 1,
+                                DocumentTypeDesc: doc.documentTypeDesc || 'General',
+                                Description: doc.description || doc.name || '',
+                                UpdateUserName: uploaded.user || '',
+                                UpdateDate: uploaded.date || null,
+                                IsLoaded: true,
+                                expectedDocId: doc.id
+                            };
+
+                            var exists = inst.responses.some(function (r) {
+                                return r && String(r.expectedDocId) === String(doc.id);
+                            });
+
+                            if (!exists) {
+                                inst.responses.push(expectedNormalized);
+                            }
+                        });
+                    }
 
                     if ((expectedDocuments && expectedDocuments.length > 0) || inst.showGeneralUploadCard) {
                         renderExpectedDocumentsGrid($el, expectedDocuments, inst.showGeneralUploadCard);
