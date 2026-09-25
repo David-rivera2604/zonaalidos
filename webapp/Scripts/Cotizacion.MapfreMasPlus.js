@@ -191,6 +191,11 @@ app.CotizacionMapfreMasPlus = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
+                    if (!localStorage.getItem('Roles').includes('Purdy')) {
+                        $('#COD_PLAN_AUTO option').filter(function () {
+                            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+                        }).remove();
+                    }
                     if ($('#COD_PLAN_AUTO option').length == 1) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
