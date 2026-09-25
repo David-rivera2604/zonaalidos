@@ -628,22 +628,22 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
 }
 
 // ============================================================================
-// OneDrive File Picker v8 (OneDrive personal / MSA) - 100% client-side.
-// No llama a ningun endpoint propio: solo a login.microsoftonline.com/consumers,
-// onedrive.live.com y graph.microsoft.com directo desde el navegador.
+// OneDrive File Picker v8 (OneDrive for Business / Microsoft 365) - 100% client-side.
+// No llama a ningun endpoint propio para tokenizar archivos: usa MSAL en el
+// navegador, Microsoft Graph y el File Picker hospedado en SharePoint/OneDrive
+// del tenant configurado.
 //
 // Requiere:
 //  - <script src="https://alcdn.msauth.net/browser/2.38.2/js/msal-browser.min.js">
 //    cargado ANTES de este archivo (MSAL v3 deprecó el bundle de CDN, por eso v2).
-//  - Un App Registration en Entra ID de tipo "Cuentas personales de Microsoft",
-//    plataforma "Single-page application", con permiso delegado Files.Read.
+//  - Un App Registration en Entra ID de tipo organizacional, plataforma
+//    "Single-page application", con permisos delegados como Files.Read.
+//  - Las keys OneDriveClientId y OneDrivePickerBaseUrl en el web.config.
 //    El clientId NO esta hardcodeado en ningun lado de este archivo. Se pide
-//    una sola vez a ConfigurationController.GetAppSettings (que lee la key
-//    "OneDriveClientId" del web.config) y se cachea en app.setting.OneDriveClientId
-//    - ver oneDriveGetClientId mas abajo - para que quede disponible como
-//    cualquier otro valor de app.setting (apibase/apipath/etc) para el resto
-//    de la sesion. Tambien se puede forzar otro clientId puntualmente pasando
-//    { oneDriveClientId: '...' } a .fileUploader({...}), sin pasar por el fetch.
+//    una sola vez a ConfigurationController.GetAppSettings y se cachea en
+//    app.setting para que quede disponible como cualquier otro valor del front.
+//    Tambien se puede forzar config puntual pasando { oneDriveClientId: '...',
+//    oneDriveAuthority: '...', oneDrivePickerBaseUrl: '...' } a .fileUploader(...).
 //
 // Se auto-inicializa sobre cualquier boton con:
 //   data-fileuploader-target="<id-del-dropzone>" data-fileuploader-action="oneDrivePicker"
@@ -652,31 +652,79 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
 
 var oneDriveMsalApp = null;
 var oneDriveMsalInitPromise = null;
-var oneDriveClientIdPromise = null;
+var oneDriveMsalSignature = null;
+var oneDriveConfigPromise = null;
 
-// Trae el OneDriveClientId una sola vez por carga de pagina y lo cachea en
-// app.setting.OneDriveClientId (asi queda disponible igual que apibase/apipath/
-// etc, por si algo mas en la app lo necesita despues). Si app.setting.OneDriveClientId
-// ya viene seteado (por ejemplo, si en el futuro se termina cargando en el login)
-// se usa ese valor directo y no se llama al endpoint de nuevo.
-function oneDriveGetClientId() {
-    if (window.app && app.setting && app.setting.OneDriveClientId) {
-        return Promise.resolve(app.setting.OneDriveClientId);
+// Trae la configuracion de OneDrive una sola vez por carga de pagina y la
+// cachea en app.setting para que quede disponible igual que el resto de la
+// configuracion del front. Si algun valor ya viene seteado localmente, se
+// respeta ese override por encima de lo que llegue del endpoint.
+function oneDriveGetConfig() {
+    if (window.app && app.setting && app.setting.OneDriveClientId && app.setting.OneDriveAuthority && app.setting.OneDrivePickerBaseUrl) {
+        return Promise.resolve({
+            clientId: app.setting.OneDriveClientId,
+            authority: app.setting.OneDriveAuthority,
+            pickerBaseUrl: app.setting.OneDrivePickerBaseUrl
+        });
     }
-    if (!oneDriveClientIdPromise) {
+    if (!oneDriveConfigPromise) {
         var basepath = (window.app && app.setting && app.setting.basepath) ? app.setting.basepath : '/Aliados/';
-        oneDriveClientIdPromise = fetch(basepath + 'Configuration/GetAppSettings', { credentials: 'same-origin' })
+        oneDriveConfigPromise = fetch(basepath + 'Configuration/GetAppSettings', { credentials: 'same-origin' })
             .then(function (response) { return response.ok ? response.json() : null; })
             .then(function (data) {
-                var clientId = (data && data.OneDriveClientId) ? data.OneDriveClientId : null;
-                if (clientId && window.app && app.setting) {
-                    app.setting.OneDriveClientId = clientId;
+                var config = {
+                    clientId: (data && data.OneDriveClientId) ? data.OneDriveClientId : null,
+                    authority: (data && data.OneDriveAuthority) ? data.OneDriveAuthority : 'https://login.microsoftonline.com/93ad25dd-8cdc-4066-9727-31a8a3024f80',
+                    pickerBaseUrl: (data && data.OneDrivePickerBaseUrl) ? data.OneDrivePickerBaseUrl : 'https://mapfrecorp-my.sharepoint.com'
+                };
+
+                if (window.app && app.setting) {
+                    if (config.clientId) app.setting.OneDriveClientId = config.clientId;
+                    if (config.authority) app.setting.OneDriveAuthority = config.authority;
+                    if (config.pickerBaseUrl) app.setting.OneDrivePickerBaseUrl = config.pickerBaseUrl;
                 }
-                return clientId;
+
+                return config;
             })
-            .catch(function () { return null; });
+            .catch(function () {
+                return {
+                    clientId: null,
+                    authority: 'https://login.microsoftonline.com/93ad25dd-8cdc-4066-9727-31a8a3024f80',
+                    pickerBaseUrl: 'https://mapfrecorp-my.sharepoint.com'
+                };
+            });
     }
-    return oneDriveClientIdPromise;
+    return oneDriveConfigPromise;
+}
+
+function oneDriveTrimTrailingSlash(url) {
+    return url ? url.replace(/\/+$/, '') : url;
+}
+
+function oneDriveGetPickerBaseUrl(settings) {
+    return oneDriveTrimTrailingSlash(
+        (settings && settings.oneDrivePickerBaseUrl) ||
+        (window.app && app.setting && app.setting.OneDrivePickerBaseUrl) ||
+        null
+    );
+}
+
+function oneDriveGetPickerResource(settings, resource) {
+    var pickerBaseUrl = oneDriveTrimTrailingSlash(resource || oneDriveGetPickerBaseUrl(settings));
+
+    if (!pickerBaseUrl) {
+        throw new Error('fileUploader/OneDrive: falta configurar OneDrivePickerBaseUrl (ConfigurationController.GetAppSettings / web.config).');
+    }
+
+    try {
+        return new URL(pickerBaseUrl).origin;
+    } catch (err) {
+        return pickerBaseUrl;
+    }
+}
+
+function oneDriveGetPickerScope(settings, resource) {
+    return oneDriveGetPickerResource(settings, resource) + '/.default';
 }
 
 // Nunca lanza de forma sincrona: cualquier problema de configuracion (script de
@@ -688,26 +736,27 @@ function oneDriveEnsureMsal(settings) {
             return;
         }
 
-        // settings.oneDriveClientId (default: null) permite forzar un clientId
-        // puntual sin pasar por el fetch; si no se pasa, se obtiene de
-        // ConfigurationController.GetAppSettings via oneDriveGetClientId().
-        var clientIdPromise = settings.oneDriveClientId ? Promise.resolve(settings.oneDriveClientId) : oneDriveGetClientId();
+        oneDriveGetConfig().then(function (config) {
+            var clientId = (settings && settings.oneDriveClientId) || config.clientId;
+            var authority = (settings && settings.oneDriveAuthority) || config.authority || 'https://login.microsoftonline.com/93ad25dd-8cdc-4066-9727-31a8a3024f80';
 
-        clientIdPromise.then(function (clientId) {
             if (!clientId) {
                 reject(new Error('fileUploader/OneDrive: falta configurar OneDriveClientId (ConfigurationController.GetAppSettings / web.config).'));
                 return;
             }
 
             try {
-                if (!oneDriveMsalApp) {
+                var signature = [clientId, authority, window.location.origin].join('|');
+                if (!oneDriveMsalApp || oneDriveMsalSignature !== signature) {
                     oneDriveMsalApp = new msal.PublicClientApplication({
                         auth: {
                             clientId: clientId,
-                            authority: settings.oneDriveAuthority,
+                            authority: authority,
                             redirectUri: window.location.origin
                         }
                     });
+                    oneDriveMsalInitPromise = null;
+                    oneDriveMsalSignature = signature;
                 }
 
                 // Algunas versiones de MSAL requieren initialize() antes de usarse;
@@ -731,21 +780,13 @@ function oneDriveEnsureMsal(settings) {
             } catch (err) {
                 reject(err);
             }
-        });
+        }).catch(reject);
     });
 }
 
 // Pide un token para el/los scope(s) indicados, reusando la cuenta ya
 // logueada si existe (acquireTokenSilent) y cayendo a loginPopup si hace
 // falta interaccion (primer login, o consentimiento nuevo para ese scope).
-//
-// 'forceRefresh' (opcional): confirmado en vivo que, para cuentas
-// personales/MSA, el cache de MSAL puede devolver -sin ningun error- un
-// token ya cacheado de OTRO scope (ej. el opaco de "OneDrive.ReadOnly") como
-// si sirviera para "Files.Read", con result.scopes listando ambos nombres.
-// Ese token opaco no es un JWT valido y Graph lo rechaza con 401
-// "InvalidAuthenticationToken: JWT is not well formed". forceRefresh:true
-// evita ese cache mezclado, pidiendo el token de nuevo contra el servidor.
 function oneDriveAcquireToken(settings, scopes, forceRefresh) {
     return oneDriveEnsureMsal(settings).then(function (app) {
         var request = { scopes: scopes };
@@ -771,24 +812,20 @@ function oneDriveAcquireToken(settings, scopes, forceRefresh) {
     });
 }
 
-// Token para el picker (bootstrap POST + comando 'authenticate'). Para
-// cuentas personales el scope siempre es el fijo de settings.oneDriveScope
-// ('OneDrive.ReadOnly'/'OneDrive.ReadWrite'), no depende del 'resource' que
-// venga en el comando 'authenticate' (eso solo aplica al flujo SharePoint/
-// negocio con scopes tipo "{resource}/.default"). Este token trae audiencia
-// OneDrive/SharePoint, NO Microsoft Graph.
-function oneDriveGetToken(settings) {
-    return oneDriveAcquireToken(settings, [settings.oneDriveScope]);
+// Token para el picker (bootstrap POST + comando 'authenticate'). En OneDrive
+// for Business el picker pide un token para el recurso SharePoint/OneDrive del
+// tenant, por eso el scope se arma dinamicamente como "{resource}/.default".
+function oneDriveGetToken(settings, resource) {
+    return oneDriveGetConfig().then(function () {
+        return oneDriveAcquireToken(settings, [oneDriveGetPickerScope(settings, resource)]);
+    });
 }
 
 // Token especifico para llamar a Microsoft Graph directamente (usado en
-// oneDriveResolvePickedItems). El token de oneDriveGetToken() NO sirve aqui:
-// confirmado en vivo que Graph responde 401 con ese token (trae audiencia
-// OneDrive/SharePoint, no graph.microsoft.com). Requiere el scope real
-// "Files.Read" registrado como permiso delegado de Graph en el App
-// Registration (no el nombre legacy "OneDrive.ReadOnly").
+// oneDriveResolvePickedItems). El token del picker NO sirve aqui: trae
+// audiencia SharePoint/OneDrive, no graph.microsoft.com.
 function oneDriveGetGraphToken(settings) {
-    return oneDriveAcquireToken(settings, ['Files.Read'], true);
+    return oneDriveAcquireToken(settings, [settings.oneDriveGraphScope || 'Files.Read'], true);
 }
 
 function oneDriveUuid() {
@@ -951,13 +988,19 @@ function oneDrivePick(settings) {
                 return;
             }
 
-            // "_layouts/15/FilePicker.aspx" es el path de SharePoint/organizacional
-            // (confirmado via Network tab: con ese path la peticion POST devuelve
-            // 404, y ESO es lo que produce la pantalla "This item might not exist").
-            // Para OneDrive personal/consumer el endpoint correcto es simplemente
-            // "https://onedrive.live.com/picker" (sin el sufijo _layouts/15/...).
+            var pickerBaseUrl;
+            try {
+                pickerBaseUrl = oneDriveGetPickerBaseUrl(settings);
+                if (!pickerBaseUrl) {
+                    throw new Error('fileUploader/OneDrive: falta configurar OneDrivePickerBaseUrl (ConfigurationController.GetAppSettings / web.config).');
+                }
+            } catch (err) {
+                reject(err);
+                return;
+            }
+
             var queryString = new URLSearchParams({ filePicker: JSON.stringify(pickerOptions) });
-            var url = 'https://onedrive.live.com/picker?' + queryString.toString();
+            var url = pickerBaseUrl + '/_layouts/15/FilePicker.aspx?' + queryString.toString();
 
             // Esperar a que el iframe realmente termine de navegar a
             // "about:blank" (panel.ready) antes de tocar win.document. Si no
@@ -1014,7 +1057,7 @@ function oneDrivePick(settings) {
 
                 switch (command.command) {
                     case 'authenticate':
-                        oneDriveGetToken(settings)
+                        oneDriveGetToken(settings, command.resource)
                             .then(function (token) {
                                 port.postMessage({
                                     type: 'result',
@@ -1086,17 +1129,17 @@ function oneDrivePick(settings) {
             dictRemoveFile: "Eliminar archivo",
             dictMaxFilesExceeded: "No puedes subir más archivos.",
             enableDownloadButtons: true, // Auto-configurar botones de descarga
-            // OneDrive File Picker v8 (OneDrive personal/MSA) - 100% client-side.
+            // OneDrive File Picker v8 (OneDrive for Business / Microsoft 365).
             // Se auto-configura sobre cualquier boton con
             // data-fileuploader-target="<id>" data-fileuploader-action="oneDrivePicker".
             enableOneDrivePicker: true,
-            // Sin valor hardcodeado: null = "no forzar clientId puntual". En ese
-            // caso oneDriveEnsureMsal() lo obtiene solo (una vez, cacheado en
-            // app.setting.OneDriveClientId) llamando a
-            // ConfigurationController.GetAppSettings via oneDriveGetClientId().
+            // Para prueba rápida, authority y pickerBaseUrl quedan hardcodeados
+            // a este tenant; el clientId se sigue leyendo desde
+            // ConfigurationController.GetAppSettings via oneDriveGetConfig().
             oneDriveClientId: null,
-            oneDriveAuthority: 'https://login.microsoftonline.com/consumers',
-            oneDriveScope: 'OneDrive.ReadOnly',
+            oneDriveAuthority: 'https://login.microsoftonline.com/93ad25dd-8cdc-4066-9727-31a8a3024f80',
+            oneDrivePickerBaseUrl: 'https://mapfrecorp-my.sharepoint.com',
+            oneDriveGraphScope: 'Files.Read',
             // Configuración para documentos esperados (NUEVA FUNCIONALIDAD)
             expectedDocuments: [], // Array de documentos esperados: [{id, name, status, description}, ...]
             showExpectedDocuments: true, // La vista nueva es la única vista del plugin
@@ -2554,7 +2597,7 @@ function oneDrivePick(settings) {
                                 $btn.prop('disabled', true);
 
                                 // Adquirir AHORA (todavia dentro del gesto de click real del
-                                // usuario) tanto el token del picker (OneDrive.ReadOnly) como
+                                // usuario) tanto el token del picker del tenant como
                                 // el de Microsoft Graph (Files.Read) que hace falta despues
                                 // para resolver el archivo elegido. Si se deja el token de
                                 // Graph para cuando el usuario le da "Seleccionar" DENTRO del
