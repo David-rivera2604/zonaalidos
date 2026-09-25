@@ -239,6 +239,11 @@ app.CotizacionMapfreMas = (function () {
                     if (mySeq !== mfPlanUiSeq) {
                         return;
                     }
+                    if (!localStorage.getItem('Roles').includes('Purdy')) {
+                        $('#COD_PLAN_AUTO option').filter(function () {
+                            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+                        }).remove();
+                    }
                     if ($('#COD_PLAN_AUTO option').length > 0) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
