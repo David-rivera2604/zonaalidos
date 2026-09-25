@@ -912,14 +912,35 @@ app.core = (function () {
                 url = app.core.DataToURL(app.Prototype.Data());
             }
             if (valid) {
+                url = app.setting.apipath + 'v1/DataSource/excel?id=' + id + '&url=' + lurl;
                 $('.ibox-content').toggleClass('sk-loading');
-                let a = document.createElement("a");
-                a.href = app.setting.apipath + 'v1/DataSource/excel?id=' + id + '&url=' + url;
-                console.log(a.href);
-                a.download = filename;
-                a.click();
-                a.remove()
-                $('.ibox-content').toggleClass('sk-loading');
+                let blobType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;';
+
+                let token = getAuthToken();
+                let headers = {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Authorization': 'Bearer ' + token
+                };
+                fetch(url, {
+                    body: null,
+                    method: 'GET',
+                    headers: headers,
+                }).then(response => {
+                    if (!response.ok) { throw response }
+                    return response.blob();
+                }).then(response => {
+                    let blob = new Blob([response], { type: blobType });
+                    let downloadUrl = URL.createObjectURL(blob);
+
+                    let a = document.createElement("a");
+                    a.href = downloadUrl;
+
+                    a.download = filename;
+                    a.click();
+                    a.remove()
+
+                    $('.ibox-content').toggleClass('sk-loading');
+                })
             }
         },
         ExternalCall: function (prefix, jsFile, code) {
