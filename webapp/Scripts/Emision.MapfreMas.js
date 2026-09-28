@@ -34,6 +34,9 @@ app.EmisionMapfreMas = (function () {
                     if (app.ui.HasRole('Banca')) {
                         $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').addClass('d-none');
                         $('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
+                        // Rol Banca: el plan Banca (cod_plan 39) es el unico disponible, se carga por defecto
+                        data.tipo_prod = 'banca';
+                        data.COD_PLAN_AUTO = 39;
                     } else {
                         $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
                         $('#tipo_prod_10').closest('.custom-control').addClass('d-none');

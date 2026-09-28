@@ -28,13 +28,9 @@ app.CotizacionMapfreMas = (function () {
         if (app.ui.HasRole('Banca')) {
             $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').addClass('d-none');
             $('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
-            $('#tipo_prod_10').prop('checked', true).change();
         } else {
             $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
             $('#tipo_prod_10').closest('.custom-control').addClass('d-none');
-            if ($('#tipo_prod_10').is(':checked')) {
-                $('#tipo_prod_1').prop('checked', true).change();
-            }
         }
 
         //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
@@ -50,6 +46,11 @@ app.CotizacionMapfreMas = (function () {
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSetup?mode=${mode}`)
             .done(function (data, textStatus, jqXHR) {
+                // Rol Banca: el plan Banca (cod_plan 39) es el unico disponible, se carga por defecto
+                if (app.ui.HasRole('Banca')) {
+                    data.tipo_prod = 'banca';
+                    data.COD_PLAN_AUTO = 39;
+                }
                 Init_Lookups(data);
             });
     }
