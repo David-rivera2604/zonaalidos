@@ -28,6 +28,15 @@ app.CotizacionMapfreMas = (function () {
             $("label[for='nombredelcontratante']").html($("label[for='nombredelcontratante']").html() + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>")
         }
 
+        // Plan Banca (cod_plan 39): con el rol Banca solo se visualiza este plan, el resto se oculta
+        if (app.ui.HasRole('Banca')) {
+            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').addClass('d-none');
+            $('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
+        } else {
+            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
+            $('#tipo_prod_10').closest('.custom-control').addClass('d-none');
+        }
+
         //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
         //    localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
         $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
@@ -41,6 +50,11 @@ app.CotizacionMapfreMas = (function () {
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSetup?mode=${mode}`)
             .done(function (data, textStatus, jqXHR) {
+                // Rol Banca: el plan Banca (cod_plan 39) es el unico disponible, se carga por defecto
+                if (app.ui.HasRole('Banca')) {
+                    data.tipo_prod = 'banca';
+                    data.COD_PLAN_AUTO = 39;
+                }
                 Init_Lookups(data);
             });
     }
