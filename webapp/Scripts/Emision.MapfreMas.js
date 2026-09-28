@@ -30,6 +30,15 @@ app.EmisionMapfreMas = (function () {
                         $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume'));
                     }
 
+                    // Plan Banca (cod_plan 39): con el rol Banca solo se visualiza este plan, el resto se oculta
+                    if (app.ui.HasRole('Banca')) {
+                        $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').addClass('d-none');
+                        $('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
+                    } else {
+                        $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
+                        $('#tipo_prod_10').closest('.custom-control').addClass('d-none');
+                    }
+
                     if (workMode === 'draft' || workMode === 'resume') {
                         $('#guardarenviar').removeClass('d-none');
                         $("#guardarenviar").appendTo("#GenericToolBar");

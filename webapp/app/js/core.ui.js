@@ -1520,6 +1520,11 @@ app.ui = (function () {
         LabelColorFormatter: function (value, row, index, field) {
             return '<span class="label label-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
         },
+        // Chequeo de rol insensible a mayusculas/minusculas
+        HasRole: function (roleName) {
+            let roles = JSON.parse(localStorage.getItem('Roles')) || [];
+            return roles.some(function (item) { return item.toLowerCase() === roleName.toLowerCase(); });
+        },
         CommonBehaviour: function (custom) {
             let roles = JSON.parse(localStorage.getItem('Roles'));
             let tenant = localStorage.getItem('Tenant');
