@@ -674,8 +674,8 @@ function oneDriveGetConfig() {
             .then(function (data) {
                 var config = {
                     clientId: (data && data.OneDriveClientId) ? data.OneDriveClientId : null,
-                    authority: (data && data.OneDriveAuthority) ? data.OneDriveAuthority : 'https://login.microsoftonline.com/93ad25dd-8cdc-4066-9727-31a8a3024f80',
-                    pickerBaseUrl: (data && data.OneDrivePickerBaseUrl) ? data.OneDrivePickerBaseUrl : 'https://mapfrecorp-my.sharepoint.com'
+                    authority: (data && data.OneDriveAuthority) ? data.OneDriveAuthority : 'https://login.microsoftonline.com/organizations',
+                    pickerBaseUrl: (data && data.OneDrivePickerBaseUrl) ? data.OneDrivePickerBaseUrl : null
                 };
 
                 if (window.app && app.setting) {
@@ -689,8 +689,8 @@ function oneDriveGetConfig() {
             .catch(function () {
                 return {
                     clientId: null,
-                    authority: 'https://login.microsoftonline.com/93ad25dd-8cdc-4066-9727-31a8a3024f80',
-                    pickerBaseUrl: 'https://mapfrecorp-my.sharepoint.com'
+                    authority: 'https://login.microsoftonline.com/organizations',
+                    pickerBaseUrl: null
                 };
             });
     }
@@ -738,7 +738,7 @@ function oneDriveEnsureMsal(settings) {
 
         oneDriveGetConfig().then(function (config) {
             var clientId = (settings && settings.oneDriveClientId) || config.clientId;
-            var authority = (settings && settings.oneDriveAuthority) || config.authority || 'https://login.microsoftonline.com/93ad25dd-8cdc-4066-9727-31a8a3024f80';
+            var authority = (settings && settings.oneDriveAuthority) || config.authority || 'https://login.microsoftonline.com/organizations';
 
             if (!clientId) {
                 reject(new Error('fileUploader/OneDrive: falta configurar OneDriveClientId (ConfigurationController.GetAppSettings / web.config).'));
@@ -1133,12 +1133,13 @@ function oneDrivePick(settings) {
             // Se auto-configura sobre cualquier boton con
             // data-fileuploader-target="<id>" data-fileuploader-action="oneDrivePicker".
             enableOneDrivePicker: true,
-            // Para prueba rápida, authority y pickerBaseUrl quedan hardcodeados
-            // a este tenant; el clientId se sigue leyendo desde
-            // ConfigurationController.GetAppSettings via oneDriveGetConfig().
+            // Sin valor hardcodeado: null = "no forzar valores puntuales". En ese
+            // caso oneDriveEnsureMsal() y oneDrivePick() usan la configuración
+            // devuelta por ConfigurationController.GetAppSettings via
+            // oneDriveGetConfig().
             oneDriveClientId: null,
-            oneDriveAuthority: 'https://login.microsoftonline.com/93ad25dd-8cdc-4066-9727-31a8a3024f80',
-            oneDrivePickerBaseUrl: 'https://mapfrecorp-my.sharepoint.com',
+            oneDriveAuthority: null,
+            oneDrivePickerBaseUrl: null,
             oneDriveGraphScope: 'Files.Read',
             // Configuración para documentos esperados (NUEVA FUNCIONALIDAD)
             expectedDocuments: [], // Array de documentos esperados: [{id, name, status, description}, ...]
