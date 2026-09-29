@@ -1199,6 +1199,12 @@ app.CotizacionMapfreMasPlus = (function () {
                 app.ui.LookupLoad('cod_tip_vehi', settingData.cod_tip_vehi, true);
                 app.ui.LookupLoad('COD_TIP_COM_VEHI', settingData.COD_TIP_COM_VEHI, true);
                 app.ui.LookupLoad('COD_PLAN_AUTO', settingData.PLAN_AUTO, true);
+                if (!localStorage.getItem('Roles').includes('Purdy')) {
+                    $('#COD_PLAN_AUTO option').filter(function () {
+                        return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+                    }).remove();
+                    $('#COD_PLAN_AUTO').val($('#COD_PLAN_AUTO option:first').val());
+                }
                 app.ui.LookupLoad('IMP_AUTO_RC', settingData.IMP_AUTO_RC, true);
                 app.ui.DropDownDisabled('#IMP_AUTO_RC', settingData.IMP_AUTO_RC.length == 0);
                 app.ui.LookupLoad('DED_AUTO_RC', settingData.DED_AUTO_RC, true);
