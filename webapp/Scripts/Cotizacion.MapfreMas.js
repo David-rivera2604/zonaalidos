@@ -19,6 +19,18 @@ app.CotizacionMapfreMas = (function () {
     var coverageReloadSeq = 0;
     var mfPlanUiSeq = 0;
 
+    function RemoveEspecialPlanIfNotPurdy() {
+        if (localStorage.getItem('Roles').includes('Purdy')) {
+            return;
+        }
+        $('#COD_PLAN_AUTO option').filter(function () {
+            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+        }).remove();
+        if ($('#COD_PLAN_AUTO option').length > 0 && !$('#COD_PLAN_AUTO option[value="' + $('#COD_PLAN_AUTO').val() + '"]').length) {
+            $('#COD_PLAN_AUTO').val($('#COD_PLAN_AUTO option:first').val());
+        }
+    }
+
     function Setup(mode) {
         app.ui.CommonBehaviour();
         if (localStorage.getItem('Roles').includes('Purdy')) {
@@ -119,6 +131,7 @@ app.CotizacionMapfreMas = (function () {
                 MapObjectToInput_First(data);
                 SettingReload(function () {
                     MapObjectToInput(data);
+                    RemoveEspecialPlanIfNotPurdy();
                     data_changed();
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
@@ -239,11 +252,7 @@ app.CotizacionMapfreMas = (function () {
                     if (mySeq !== mfPlanUiSeq) {
                         return;
                     }
-                    if (!localStorage.getItem('Roles').includes('Purdy')) {
-                        $('#COD_PLAN_AUTO option').filter(function () {
-                            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
-                        }).remove();
-                    }
+                    RemoveEspecialPlanIfNotPurdy();
                     if ($('#COD_PLAN_AUTO option').length > 0) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
@@ -1270,6 +1279,7 @@ app.CotizacionMapfreMas = (function () {
                 app.ui.LookupLoad('cod_tip_vehi', settingData.cod_tip_vehi, true);
                 app.ui.LookupLoad('COD_TIP_COM_VEHI', settingData.COD_TIP_COM_VEHI, true);
                 app.ui.LookupLoad('COD_PLAN_AUTO', settingData.PLAN_AUTO, true);
+                RemoveEspecialPlanIfNotPurdy();
                 app.ui.LookupLoad('IMP_AUTO_RC', settingData.IMP_AUTO_RC, true);
                 app.ui.DropDownDisabled('#IMP_AUTO_RC', settingData.IMP_AUTO_RC.length == 0);
                 app.ui.LookupLoad('DED_AUTO_RC', settingData.DED_AUTO_RC, true);
@@ -1411,7 +1421,7 @@ app.CotizacionMapfreMas = (function () {
 
     function validarCoberturaSeleccionable(row) {
         const tipoCombustible = $("#COD_TIP_COM_VEHI option:selected").val();
-        var roles = localStorage.getItem('Roles'); 
+        var roles = localStorage.getItem('Roles');
 
         if (roles.includes('Veinsa')) {
             // Eléctrico
@@ -1426,8 +1436,8 @@ app.CotizacionMapfreMas = (function () {
                 return false;
             }
         }
-            return true;
-        
+        return true;
+
     }
 
     function LimpiarCoberturasPorCambioCombustible() {
