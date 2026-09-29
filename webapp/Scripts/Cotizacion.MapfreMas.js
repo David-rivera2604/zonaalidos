@@ -40,6 +40,15 @@ app.CotizacionMapfreMas = (function () {
             $("label[for='nombredelcontratante']").html($("label[for='nombredelcontratante']").html() + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>")
         }
 
+        // Plan Banca (cod_plan 39): con el rol Banca solo se visualiza este plan, el resto se oculta
+        if (app.ui.HasRole('Banca')) {
+            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').addClass('d-none');
+            $('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
+        } else {
+            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
+            $('#tipo_prod_10').closest('.custom-control').addClass('d-none');
+        }
+
         //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
         //    localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
         $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
@@ -53,6 +62,11 @@ app.CotizacionMapfreMas = (function () {
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSetup?mode=${mode}`)
             .done(function (data, textStatus, jqXHR) {
+                // Rol Banca: el plan Banca (cod_plan 39) es el unico disponible, se carga por defecto
+                if (app.ui.HasRole('Banca')) {
+                    data.tipo_prod = 'banca';
+                    data.COD_PLAN_AUTO = 39;
+                }
                 Init_Lookups(data);
             });
     }
@@ -491,7 +505,7 @@ app.CotizacionMapfreMas = (function () {
             maximumValue: '0'
         };
         // Solo aplicar límites si NO tiene privilegios
-        if (!tienePrivilegios) {
+        if (!tienePrivilegios && !app.ui.HasRole('banca')) {
             opcionesAutoNumeric.minimumValue = '-15';
         }
         new AutoNumeric('#PCT_AJUSTE_GEN', opcionesAutoNumeric);
@@ -769,7 +783,8 @@ app.CotizacionMapfreMas = (function () {
 
         $.validator.addMethod("ValidarAjusteConRol", function (value, element) {
             const tienePrivilegios = localStorage.getItem('Roles')?.includes('Privilegios');
-            if (tienePrivilegios) return true; // No validar si tiene el rol
+            if (tienePrivilegios && app.ui.HasRole('banca'))
+                return true; // No validar si tiene el rol
 
             const num = parseFloat(value);
             return !isNaN(num) && num >= -15 && num <= 0;
@@ -1187,8 +1202,10 @@ app.CotizacionMapfreMas = (function () {
                 app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
                 $('#PCT_AJUSTE_GEN').prop('disabled', true);
             }
-        }
-        else {
+        } else if (tipo_prod === 'banca') {
+            app.ui.SetNumericValue('#PCT_AJUSTE_GEN', -30);
+            $('#PCT_AJUSTE_GEN').prop('disabled', true);
+        } else {
             $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').removeClass('d-none');
             $('#PCT_AJUSTE_GEN').prop('disabled', false);
         }
