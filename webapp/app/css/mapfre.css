@@ -7816,3 +7816,72 @@ body.Mapfre {
 }
 /* En caso de agregar mas lineas, considerablemente hacerlo separado para mejores manteninmientos 
 */
+/* Header movil: hamburguesa a la izquierda, logo al lado, cuenta a la derecha */
+@media (max-width: 991px) {
+    .Mapfre .head_prin > #imgHead {
+        position: absolute !important;
+        top: env(safe-area-inset-top) !important;
+        left: 54px !important;
+        right: auto !important;
+        width: auto !important;
+        height: 56px !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        overflow: visible !important;
+        justify-content: flex-start !important;
+    }
+
+        .Mapfre .head_prin > #imgHead .mf-brand-logo img {
+            max-height: 30px !important;
+            animation: none !important;
+        }
+
+    .Mapfre .head_prin > .ham-icon {
+        left: 6px !important;
+        right: auto !important;
+    }
+
+    .Mapfre .head_prin > .head_line {
+        right: 10px !important;
+    }
+
+    .Mapfre .head_line > .aliados {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    .Mapfre .aliados .usua_head {
+        flex: 0 1 auto !important;
+        position: static !important;
+        align-items: flex-end !important;
+        justify-content: center !important;
+        gap: 1px !important;
+    }
+
+    .Mapfre .aliados #UserNameMaster {
+        display: block !important;
+        width: auto !important;
+        max-width: calc(100vw - 230px) !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        color: #40454C !important;
+    }
+
+    .Mapfre .aliados #TenantMaster {
+        max-width: calc(100vw - 250px) !important;
+    }
+
+    .Mapfre .aliados .dropdown-toggle::after {
+        display: none !important;
+    }
+}
