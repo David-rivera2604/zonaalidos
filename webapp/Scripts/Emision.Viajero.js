@@ -1115,7 +1115,9 @@ app.EmisionViajero = (function () {
             if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
                 app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
             }
-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+            // El servicio usa 1=Masculino y 2=Femenino; el select usa 1=Masculino y 0=Femenino.
+            if (data.Gender == 1 || data.Gender == 2)
+                $('#tercerosMca_sexo').val(data.Gender == 2 ? '0' : '1');
             $('#TProvincia').val(data.Province);
             $('#correoelectronico').val(data.PrimaryEmailAddress);
             $('#numerodetelefono').val(data.PhoneNumber);
@@ -1163,7 +1165,7 @@ app.EmisionViajero = (function () {
     }
 
     function terceros_controls_Events() {
-        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack);
+        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack, 'credid');
 
         $('#tipodetercero').change(function () {
 

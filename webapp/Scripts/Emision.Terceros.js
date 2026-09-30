@@ -3,7 +3,6 @@ var app = app || {};
 app.EmisionTercero = (function () {
 
     let _callback = null;
-    let _source = null;
     let modelHelper = [];
 
     function terceros_table_setup() {
@@ -541,7 +540,7 @@ app.EmisionTercero = (function () {
     }
 
     function terceros_controls_Events() {
-        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack, _source);
+        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack);
 
         $('#tipodetercero').change(function () {
             switch ($('#tipodetercero').val()) {
@@ -632,8 +631,7 @@ app.EmisionTercero = (function () {
     }
 
     return {
-        Init: function (options) {
-            _source = options && options.source ? options.source : null;
+        Init: function () {
 
             terceros_controls_setup();
             terceros_table_setup();
