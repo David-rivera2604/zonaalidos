@@ -65,7 +65,7 @@ namespace Architect.API.Insurance.Controllers
             if (result == null && tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase))
             {
                 verbose += "->credid";
-                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id);
+                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType);
             }
             if (result == null)
             {

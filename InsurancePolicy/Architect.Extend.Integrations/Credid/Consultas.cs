@@ -33,7 +33,9 @@ namespace Architect.Extend.Integrations.Credid
         /// <summary>
         /// Permite recuperar la información de una persona física, extranjera o jurídica por medio de su identificación.
         /// </summary>
-        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion)
+        /// <param name="identificacion">Identificación tal como se digitó.</param>
+        /// <param name="docType">1 Cédula, 2 DIMEX, 3 Pasaporte, 4 Cédula jurídica.</param>
+        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion, int docType = 1)
         {
             Architect.API.Insurance.Contracts.Policy.Insured result = null;
             string token = Architect.Utilities.Helpers.Settings.StringValue("Credid.Token");
@@ -43,8 +45,7 @@ namespace Architect.Extend.Integrations.Credid
                 return result;
             }
 
-            // Credid espera la cédula sin el cero inicial que usa el formato 0X-XXXX-XXXX.
-            string cedula = identificacion.OnlyNumbers().TrimStart('0');
+            string cedula = IdentificacionCredid(identificacion, docType);
             if (cedula.IsEmpty())
             {
                 return result;
@@ -71,7 +72,7 @@ namespace Architect.Extend.Integrations.Credid
                             // Sin DateParseHandling.None, Json.NET convierte fechas ISO y cambia su formato al leerlas como texto.
                             using (JsonTextReader reader = new JsonTextReader(new StringReader(body)) { DateParseHandling = DateParseHandling.None })
                             {
-                                result = Convertir(JObject.Load(reader), cedula);
+                                result = Convertir(JObject.Load(reader), cedula, docType);
                             }
                         }
                     }
@@ -86,7 +87,21 @@ namespace Architect.Extend.Integrations.Credid
             return result;
         }
 
-        private static Architect.API.Insurance.Contracts.Policy.Insured Convertir(JObject reporte, string cedula)
+        /// <summary>
+        /// Credid recibe cédulas sin el cero inicial del formato 0X-XXXX-XXXX y, para pasaportes,
+        /// la identificación con el prefijo "ext-" (manual, parámetro cedula).
+        /// </summary>
+        private static string IdentificacionCredid(string identificacion, int docType)
+        {
+            if (docType == 3)
+            {
+                string pasaporte = new string(identificacion.Where(c => char.IsLetterOrDigit(c)).ToArray()).ToUpperInvariant();
+                return pasaporte.IsEmpty() ? string.Empty : "ext-" + pasaporte;
+            }
+            return identificacion.OnlyNumbers().TrimStart('0');
+        }
+
+        private static Architect.API.Insurance.Contracts.Policy.Insured Convertir(JObject reporte, string cedula, int docType)
         {
             Architect.API.Insurance.Contracts.Policy.Insured result = null;
             JObject persona = reporte["FiliacionFisica"] as JObject;
@@ -95,7 +110,7 @@ namespace Architect.Extend.Integrations.Credid
             if (persona == null)
             {
                 persona = reporte["FiliacionExtranjero"] as JObject;
-                documentType = 2;
+                documentType = docType == 3 ? 3 : 2;
             }
 
             if (persona != null)
