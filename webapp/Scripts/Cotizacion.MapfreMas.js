@@ -42,11 +42,11 @@ app.CotizacionMapfreMas = (function () {
 
         // Plan Banca (cod_plan 39): con el rol Banca solo se visualiza este plan, el resto se oculta
         if (app.ui.HasRole('Banca')) {
-            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').addClass('d-none');
-            $('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
+            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').hide();
+            $('#tipo_prod_10').closest('.custom-control').show();
         } else {
-            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
-            $('#tipo_prod_10').closest('.custom-control').addClass('d-none');
+            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').show();
+            $('#tipo_prod_10').closest('.custom-control').hide();
         }
 
         //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
