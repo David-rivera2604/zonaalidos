@@ -1204,7 +1204,10 @@ app.CotizacionMapfreMas = (function () {
             }
         } else if (tipo_prod === 'banca') {
             app.ui.SetNumericValue('#PCT_AJUSTE_GEN', -30);
-            $('#PCT_AJUSTE_GEN').prop('disabled', true);
+            $('#PCT_AJUSTE_GEN').hide(); app.ui.SetRadioStringValue('rc_alcohol', 'S');
+            $("#rc_alcohol_2").prop('disabled', true);
+            $("#rc_alcohol_1").prop('disabled', true);
+
         } else {
             $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').removeClass('d-none');
             $('#PCT_AJUSTE_GEN').prop('disabled', false);
