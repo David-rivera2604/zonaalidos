@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --mapfrered1: #C31F09;
     --mapfrered2: #A11A08;
 }
@@ -3525,12 +3525,12 @@ ul.Observaciones {
         margin-left: 42px;
     }
 
-/* Observaci�n (1� l�nea) */
+/* Observaci n (1  l nea) */
 .obs-text {
     white-space: pre-wrap
 }
 
-/* Meta (2� l�nea: usuario + fecha, izquierda) */
+/* Meta (2  l nea: usuario + fecha, izquierda) */
 .meta-line {
     font-size: 10px;
     color: #6c757d;

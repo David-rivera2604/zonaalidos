@@ -11,18 +11,6 @@ app.CotizacionMapfreMasPlus = (function () {
     let coberturas = null;
     const lstlowCostDev_Contract = [17100, 17101];
 
-    function RemoveEspecialPlanIfNotPurdy() {
-        if (localStorage.getItem('Roles').includes('Purdy')) {
-            return;
-        }
-        $('#COD_PLAN_AUTO option').filter(function () {
-            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
-        }).remove();
-        if ($('#COD_PLAN_AUTO option').length > 0 && !$('#COD_PLAN_AUTO option[value="' + $('#COD_PLAN_AUTO').val() + '"]').length) {
-            $('#COD_PLAN_AUTO').val($('#COD_PLAN_AUTO option:first').val());
-        }
-    }
-
     function Setup(mode) {
         app.ui.CommonBehaviour();
         if (localStorage.getItem('Roles').includes('Purdy')) {
@@ -125,7 +113,6 @@ app.CotizacionMapfreMasPlus = (function () {
                 MapObjectToInput_First(data);
                 SettingReload(function () {
                     MapObjectToInput(data);
-                    RemoveEspecialPlanIfNotPurdy();
                     data_changed();
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
@@ -204,12 +191,16 @@ app.CotizacionMapfreMasPlus = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
-                    RemoveEspecialPlanIfNotPurdy();
+                    if (!localStorage.getItem('Roles').includes('Purdy')) {
+                        $('#COD_PLAN_AUTO option').filter(function () {
+                            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+                        }).remove();
+                    }
                     if ($('#COD_PLAN_AUTO option').length == 1) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
                     SettingReload();
-                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`);
+                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}:num_poliza_grupo=${setupData.polizagrupo == null ? '' : setupData.polizagrupo}`);
 
         });
 
@@ -547,7 +538,7 @@ app.CotizacionMapfreMasPlus = (function () {
         $('#print').click(function (e) {
             e.preventDefault();
             let data = MapInputToObject();
-            if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "2") {
+            if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "1") {
                 data.cod_uso_vehiDesc = "BANCA Y DESARROLLO";
             }
 
@@ -1072,6 +1063,7 @@ app.CotizacionMapfreMasPlus = (function () {
             pagination: false,
             smartDisplay: true,
             detailView: false,
+            cardView: true,
             columns: [
                 {
                     field: 'codigo',
@@ -1081,7 +1073,8 @@ app.CotizacionMapfreMasPlus = (function () {
                     halign: 'center',
                     align: 'right',
                     formatter: 'app.ui.IntegerFormatter',
-                    visible: false
+                    visible: false,
+                    cardVisible: false
                 }, {
                     field: 'frecuencia',
                     title: 'Fraccionamiento',
@@ -1206,7 +1199,6 @@ app.CotizacionMapfreMasPlus = (function () {
                 app.ui.LookupLoad('cod_tip_vehi', settingData.cod_tip_vehi, true);
                 app.ui.LookupLoad('COD_TIP_COM_VEHI', settingData.COD_TIP_COM_VEHI, true);
                 app.ui.LookupLoad('COD_PLAN_AUTO', settingData.PLAN_AUTO, true);
-                RemoveEspecialPlanIfNotPurdy();
                 app.ui.LookupLoad('IMP_AUTO_RC', settingData.IMP_AUTO_RC, true);
                 app.ui.DropDownDisabled('#IMP_AUTO_RC', settingData.IMP_AUTO_RC.length == 0);
                 app.ui.LookupLoad('DED_AUTO_RC', settingData.DED_AUTO_RC, true);
@@ -1258,7 +1250,7 @@ app.CotizacionMapfreMasPlus = (function () {
 
             }
         }
-
+        
 
     }
     function SetRButtonMcaBancaDesarrollo(codAuto) {
@@ -1266,7 +1258,7 @@ app.CotizacionMapfreMasPlus = (function () {
         if (codAuto == '1') {
             app.ui.SetRadioNumericValue(rdButton, 2);
             $(`input[name="${rdButton}"]`).prop("disabled", true);
-        } else {
+        } else { 
             $(`input[name="${rdButton}"]`).prop("disabled", false);
         }
 
@@ -1443,12 +1435,12 @@ app.CotizacionMapfreMasPlus = (function () {
             plandepagoporfrecuencia_table_setup();
 
             Controls_Events();
-            if (app.language && app.language.translate) {
-                app.language.translate('#quoteBlock', '_resumen')();
-                app.language.translate('#DatosGeneralesTitle', '_datosgenerales')();
-                app.language.translate('#coberturasTbl', '_coberturaPlan')();
-                app.language.translate('#polizagrupoZone', '_polizagrupo')();
-            }
+                if (app.language && app.language.translate) {
+                    app.language.translate('#quoteBlock', '_resumen')();
+                    app.language.translate('#DatosGeneralesTitle', '_datosgenerales')();
+                    app.language.translate('#coberturasTbl', '_coberturaPlan')();
+                    app.language.translate('#polizagrupoZone', '_polizagrupo')();
+                }
             app.language.translate('body', 'MapfreMasPlus')();
             Setup(mode);
         }
