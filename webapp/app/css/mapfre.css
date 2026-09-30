@@ -6121,7 +6121,7 @@ body.Mapfre {
 .Mapfre #page-wrapper .checkbox,
 .Mapfre #page-wrapper .form-check,
 .Mapfre #page-wrapper .custom-control {
-    display: inline-flex !important;
+    display: inline-flex;
     align-items: center !important;
     min-height: 34px !important;
     margin: 3px 8px 3px 0 !important;
@@ -6326,7 +6326,7 @@ body.Mapfre {
 
 .Mapfre #page-wrapper .custom-control {
     position: relative !important;
-    display: inline-flex !important;
+    display: inline-flex;
     align-items: center !important;
     min-height: 34px !important;
     margin: 3px 7px 3px 0 !important;
