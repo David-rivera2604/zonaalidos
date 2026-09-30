@@ -23,13 +23,14 @@ namespace Architect.API.Insurance.Controllers
         /// Busqueda de información de residentes de Costa Rica.
         /// </summary>
         /// <param name="id">Identificación.</param>
-        /// <param name="docType">Tipo de identificación.</param>                 
+        /// <param name="docType">Tipo de identificación.</param>
+        /// <param name="source">Fuente adicional a consultar si la persona no existe en las fuentes internas ("credid").</param>
         /// <returns>Información de la personal.</returns>
         [HttpGet]
         [Route("{id}")]
         [AllowAnonymous]
         [ResponseType(typeof(Contracts.Policy.Insured))]
-        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1)
+        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1, string source = null)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Policy.Insured result = null;
@@ -59,6 +60,12 @@ namespace Architect.API.Insurance.Controllers
             {
                 verbose += "->tron";
                 result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+            }
+            // Credid es un servicio pagado con datos de contacto: solo para usuarios con sesión.
+            if (result == null && tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase))
+            {
+                verbose += "->credid";
+                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id);
             }
             if (result == null)
             {
