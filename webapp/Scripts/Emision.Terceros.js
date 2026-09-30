@@ -3,6 +3,7 @@ var app = app || {};
 app.EmisionTercero = (function () {
 
     let _callback = null;
+    let _source = null;
     let modelHelper = [];
 
     function terceros_table_setup() {
@@ -485,7 +486,9 @@ app.EmisionTercero = (function () {
             $('#apellido2').val(data.SecondLastName);
             $('#PhoneNumber').val(data.PhoneNumber);
             app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
-            $('#tercerosMca_sexo').val(data.Gender);
+            // El servicio usa 1=Masculino y 2=Femenino; el select usa 1=Masculino y 0=Femenino.
+            if (data.Gender == 1 || data.Gender == 2)
+                $('#tercerosMca_sexo').val(data.Gender == 2 ? '0' : '1');
             $('#TProvincia').val(data.Province);
             $('#correoelectronico').val(data.PrimaryEmailAddress);
             $('#numerodetelefono').val(data.PhoneNumber);
@@ -538,7 +541,7 @@ app.EmisionTercero = (function () {
     }
 
     function terceros_controls_Events() {
-        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack);
+        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack, _source);
 
         $('#tipodetercero').change(function () {
             switch ($('#tipodetercero').val()) {
@@ -629,7 +632,8 @@ app.EmisionTercero = (function () {
     }
 
     return {
-        Init: function () {
+        Init: function (options) {
+            _source = options && options.source ? options.source : null;
 
             terceros_controls_setup();
             terceros_table_setup();

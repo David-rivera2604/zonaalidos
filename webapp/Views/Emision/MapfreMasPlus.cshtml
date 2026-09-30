@@ -899,7 +899,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             app.EmisionMapfreMasPlus.Init();
-            app.EmisionTercero.Init();
+            app.EmisionTercero.Init({ source: 'credid' });
             app.EmisionTercero.Callback(app.EmisionMapfreMasPlus.formularios_handler);
         });
     </script>
