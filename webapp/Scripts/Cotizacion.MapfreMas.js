@@ -31,8 +31,21 @@ app.CotizacionMapfreMas = (function () {
         }
     }
 
+    // Cuentas con rol Banca: solo el tipo de producto Banca (plan 39 en MM_Plan). Las demas cuentas no lo ven.
+    function MostrarTiposProductoPorRol() {
+        var esBanca = (JSON.parse(localStorage.getItem('Roles') || '[]') || []).indexOf('Banca') !== -1;
+        $('input:radio[name=tipo_prod]').each(function () {
+            var visible = esBanca ? this.value === 'banca' : this.value !== 'banca';
+            $(this).closest('.custom-control').toggleClass('d-none', !visible);
+            if (!visible) {
+                $(this).prop('checked', false);
+            }
+        });
+    }
+
     function Setup(mode) {
         app.ui.CommonBehaviour();
+        MostrarTiposProductoPorRol();
         if (localStorage.getItem('Roles').includes('Purdy')) {
             $('.contratanteZone').removeClass('col-md-8');
             $('.contratanteZone').addClass('col-md-12');
@@ -132,6 +145,7 @@ app.CotizacionMapfreMas = (function () {
                 SettingReload(function () {
                     MapObjectToInput(data);
                     RemoveEspecialPlanIfNotPurdy();
+                    MostrarTiposProductoPorRol();
                     data_changed();
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
@@ -191,7 +205,7 @@ app.CotizacionMapfreMas = (function () {
                 }
                 $('input:radio[name=tipo_prod]').prop('disabled', true);
             } else {
-                $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
+                MostrarTiposProductoPorRol();
 
                 var bloquearTipoProd = esPurdy && contratoValue > 0;
                 $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
@@ -206,7 +220,8 @@ app.CotizacionMapfreMas = (function () {
             e.preventDefault();
             $('#contrato').prop('selectedIndex', -1);
             $('#subcontrato').prop('selectedIndex', -1).prop('disabled', true);
-            $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false).closest('.custom-control').removeClass('d-none');
+            $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false);
+            MostrarTiposProductoPorRol();
             $('#contratoClearBtn').addClass('d-none');
             SettingReload();
         });
