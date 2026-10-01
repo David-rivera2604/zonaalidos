@@ -4,6 +4,7 @@
 <head>
     <title>HTML, CSS and JavaScript demo</title>
     @Styles.Render("~/Content/cssMaster")
+    <link href="@Url.Content("~/app/css/mapfre.css")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/app/css/mapfre.css")).Ticks)" rel="stylesheet" />
     <link rel="stylesheet" href="../app/css/carnet.css">
 </head>
 

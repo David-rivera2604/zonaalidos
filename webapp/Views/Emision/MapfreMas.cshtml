@@ -883,7 +883,7 @@
     <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
-    <script src="@Url.Content("~/Scripts/Emision.MapfreMas.js")"></script>
+    <script src="@Url.Content("~/Scripts/Emision.MapfreMas.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.MapfreMas.js")).Ticks)"></script>
     <script src="@Url.Content("~/Scripts/Emision.Terceros.js")"></script>
     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
     <script type="text/javascript">
