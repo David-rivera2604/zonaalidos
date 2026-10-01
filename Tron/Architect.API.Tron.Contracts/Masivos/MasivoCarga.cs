@@ -24,6 +24,7 @@ namespace Architect.API.Tron.Contracts.Masivos
         public DateTime fec_actu { get; set; }
         public int cod_estado { get; set; }
         public string estado { get; set; }
+        public int num_proceso_val { get; set; }
         public int num_proceso { get; set; }
         public string resultado_proceso { get; set; }
     }

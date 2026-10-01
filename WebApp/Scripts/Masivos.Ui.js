@@ -151,25 +151,9 @@ app.Masivos.Ui = (function () {
         return true;
     }
 
-    function getEstadoLabel(value) {
-        var estado = Number(value);
-        if (estado === 0) return 'Inicial';
-        if (estado === 1) return 'Validado';
-        if (estado === 2) return 'Validado con Errores';
-        if (estado === 3) return 'Validado OK';
-        if (estado === 4) return 'Procesando';
-        if (estado === 5) return 'Finalizado con Errores';
-        if (estado === 6) return 'Finalizado OK';
-        return value || 'Pendiente';
-    }
-
     function getEstadoClass(value) {
-        var estado = Number(value);
-        if (estado === 1) return 'label-info';
-        if (estado === 2 || estado === 5) return 'label-danger';
-        if (estado === 3 || estado === 6) return 'label-success';
-        if (estado === 4) return 'label-primary';
-        return 'label-warning';
+        var clases = { 1: 'label-info', 2: 'label-danger', 3: 'label-success', 4: 'label-primary', 5: 'label-danger', 6: 'label-success' };
+        return clases[Number(value)] || 'label-warning';
     }
 
     function buildDownloadButton(value, fileName, label) {
@@ -214,8 +198,8 @@ app.Masivos.Ui = (function () {
                 },
                 {
                     field: 'cod_estado', title: 'Estado', sortable: false, halign: 'center', align: 'center',
-                    formatter: function (value) {
-                        return '<span class="label ' + getEstadoClass(value) + '">' + getEstadoLabel(value) + '</span>';
+                    formatter: function (value, row) {
+                        return '<span class="label ' + getEstadoClass(value) + '">' + (row.estado || '') + '</span>';
                     }
                 },
                 {
