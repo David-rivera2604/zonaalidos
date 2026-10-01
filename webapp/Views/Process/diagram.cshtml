@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Zona de Aliados</title>
     @Styles.Render("~/Content/cssMaster")
+    <link href="@Url.Content("~/app/css/mapfre.css")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/app/css/mapfre.css")).Ticks)" rel="stylesheet" />
 
     @Scripts.Render("~/bundles/jsMaster")
     <style>

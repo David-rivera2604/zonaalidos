@@ -7,6 +7,7 @@
     <title>Zona de Aliados</title>
 
     @Styles.Render("~/Content/cssMaster")
+    <link href="@Url.Content("~/app/css/mapfre.css")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/app/css/mapfre.css")).Ticks)" rel="stylesheet" />
     @Scripts.Render("~/bundles/jsMaster")
     <link rel="shortcut icon" href="~/images/favicon.png" />
 

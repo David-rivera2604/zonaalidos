@@ -32,8 +32,9 @@ namespace aliados
                        "~/assets/font-awesome/css/font-awesome.css",
                        "~/assets/toastr/toastr.min.css",
                        "~/assets/css/animate.css",
-                        "~/assets/css/style.css",
-                        "~/app/css/mapfre.css"));
+                        "~/assets/css/style.css"));
+            // mapfre.css no va en este bundle: cada vista lo carga con ?v=<fecha del archivo> para que el
+            // navegador no se quede con una version vieja (en debug el bundle no lleva version).
             bundles.Add(new ScriptBundle("~/bundles/jsMaster").Include(
                         "~/assets/jquery/jquery.js",
                         "~/assets/popper/umd/popper.js",

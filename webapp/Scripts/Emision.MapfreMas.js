@@ -15,8 +15,21 @@ app.EmisionMapfreMas = (function () {
     var rowDocumentosrequeridos = null;
     let mca_cuotas_gratis = 'N';
 
+    // Cuentas con rol Banca: solo el tipo de producto Banca; las demas cuentas no lo ven (igual que en la cotizacion).
+    function MostrarTiposProductoPorRol() {
+        var esBanca = (JSON.parse(localStorage.getItem('Roles') || '[]') || []).indexOf('Banca') !== -1;
+        if (esBanca) {
+            $('input:radio[name=tipo_prod]').each(function () {
+                $(this).closest('.custom-control').toggleClass('d-none', this.value !== 'banca');
+            });
+        } else {
+            $('input:radio[name=tipo_prod][value=banca]').closest('.custom-control').addClass('d-none');
+        }
+    }
+
     function Setup() {
         app.ui.CommonBehaviour();
+        MostrarTiposProductoPorRol();
         var _id = app.core.URLStringValue('presupuesto');
         if (_id != '') {
             workMode = app.core.URLStringValue('mode');
