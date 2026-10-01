@@ -15,6 +15,34 @@ app.CotizacionMapfreMas = (function () {
     var showCalculate = false;
     var coberturas = null;
 
+    var settingReloadSeq = 0;
+    var coverageReloadSeq = 0;
+    var mfPlanUiSeq = 0;
+
+    function RemoveEspecialPlanIfNotPurdy() {
+        if (localStorage.getItem('Roles').includes('Purdy')) {
+            return;
+        }
+        $('#COD_PLAN_AUTO option').filter(function () {
+            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+        }).remove();
+        if ($('#COD_PLAN_AUTO option').length > 0 && !$('#COD_PLAN_AUTO option[value="' + $('#COD_PLAN_AUTO').val() + '"]').length) {
+            $('#COD_PLAN_AUTO').val($('#COD_PLAN_AUTO option:first').val());
+        }
+    }
+
+    // Cuentas con rol Banca: solo el tipo de producto Banca (plan 39 en MM_Plan). Las demas cuentas no lo ven.
+    function MostrarTiposProductoPorRol() {
+        var esBanca = (JSON.parse(localStorage.getItem('Roles') || '[]') || []).indexOf('Banca') !== -1;
+        $('input:radio[name=tipo_prod]').each(function () {
+            var visible = esBanca ? this.value === 'banca' : this.value !== 'banca';
+            $(this).closest('.custom-control').toggleClass('d-none', !visible);
+            if (!visible) {
+                $(this).prop('checked', false);
+            }
+        });
+    }
+
     function Setup(mode) {
         app.ui.CommonBehaviour();
         MostrarTiposProductoPorRol();
@@ -130,6 +158,8 @@ app.CotizacionMapfreMas = (function () {
                 MapObjectToInput_First(data);
                 SettingReload(function () {
                     MapObjectToInput(data);
+                    RemoveEspecialPlanIfNotPurdy();
+                    MostrarTiposProductoPorRol();
                     data_changed();
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
@@ -189,8 +219,15 @@ app.CotizacionMapfreMas = (function () {
                 }
                 $('input:radio[name=tipo_prod]').prop('disabled', true);
             } else {
-                $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
+                MostrarTiposProductoPorRol();
+
+                var bloquearTipoProd = esPurdy && contratoValue > 0;
+                $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
+                if (bloquearTipoProd) {
+                    $('input:radio[name=tipo_prod]').prop('checked', false);
+                }
             }
+            $('#contratoClearBtn').toggleClass('d-none', !(esContratoSoloTrebol || (esPurdy && contratoValue > 0)));
         }
 
         $('#contratoClearBtn').on('click', function (e) {
