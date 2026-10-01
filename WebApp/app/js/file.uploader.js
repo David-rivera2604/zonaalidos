@@ -627,6 +627,490 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
     updateDropzoneDictionary(dz, translatedSettings);
 }
 
+// ============================================================================
+// OneDrive File Picker v8 (OneDrive for Business / Microsoft 365) - 100% client-side.
+// No llama a ningun endpoint propio para tokenizar archivos: usa MSAL en el
+// navegador, Microsoft Graph y el File Picker hospedado en SharePoint/OneDrive
+// del tenant configurado.
+//
+// Requiere:
+//  - <script src="https://alcdn.msauth.net/browser/2.38.2/js/msal-browser.min.js">
+//    cargado ANTES de este archivo (MSAL v3 deprecó el bundle de CDN, por eso v2).
+//  - Un App Registration en Entra ID de tipo organizacional, plataforma
+//    "Single-page application", con permisos delegados como Files.Read.
+//  - Las keys OneDriveClientId y OneDrivePickerBaseUrl en el web.config.
+//    El clientId NO esta hardcodeado en ningun lado de este archivo. Se pide
+//    una sola vez a ConfigurationController.GetAppSettings y se cachea en
+//    app.setting para que quede disponible como cualquier otro valor del front.
+//    Tambien se puede forzar config puntual pasando { oneDriveClientId: '...',
+//    oneDriveAuthority: '...', oneDrivePickerBaseUrl: '...' } a .fileUploader(...).
+//
+// Se auto-inicializa sobre cualquier boton con:
+//   data-fileuploader-target="<id-del-dropzone>" data-fileuploader-action="oneDrivePicker"
+// (ver bloque "Auto-configurar boton de OneDrive" dentro de methods.init).
+// ============================================================================
+
+var oneDriveMsalApp = null;
+var oneDriveMsalInitPromise = null;
+var oneDriveMsalSignature = null;
+var oneDriveConfigPromise = null;
+
+// Trae la configuracion de OneDrive una sola vez por carga de pagina y la
+// cachea en app.setting para que quede disponible igual que el resto de la
+// configuracion del front. Si algun valor ya viene seteado localmente, se
+// respeta ese override por encima de lo que llegue del endpoint.
+function oneDriveGetConfig() {
+    if (window.app && app.setting && app.setting.OneDriveClientId && app.setting.OneDriveAuthority && app.setting.OneDrivePickerBaseUrl) {
+        return Promise.resolve({
+            clientId: app.setting.OneDriveClientId,
+            authority: app.setting.OneDriveAuthority,
+            pickerBaseUrl: app.setting.OneDrivePickerBaseUrl
+        });
+    }
+    if (!oneDriveConfigPromise) {
+        var basepath = (window.app && app.setting && app.setting.basepath) ? app.setting.basepath : '/Aliados/';
+        oneDriveConfigPromise = fetch(basepath + 'Configuration/GetAppSettings', { credentials: 'same-origin' })
+            .then(function (response) { return response.ok ? response.json() : null; })
+            .then(function (data) {
+                var config = {
+                    clientId: (data && data.OneDriveClientId) ? data.OneDriveClientId : null,
+                    authority: (data && data.OneDriveAuthority) ? data.OneDriveAuthority : 'https://login.microsoftonline.com/organizations',
+                    pickerBaseUrl: (data && data.OneDrivePickerBaseUrl) ? data.OneDrivePickerBaseUrl : null
+                };
+
+                if (window.app && app.setting) {
+                    if (config.clientId) app.setting.OneDriveClientId = config.clientId;
+                    if (config.authority) app.setting.OneDriveAuthority = config.authority;
+                    if (config.pickerBaseUrl) app.setting.OneDrivePickerBaseUrl = config.pickerBaseUrl;
+                }
+
+                return config;
+            })
+            .catch(function () {
+                return {
+                    clientId: null,
+                    authority: 'https://login.microsoftonline.com/organizations',
+                    pickerBaseUrl: null
+                };
+            });
+    }
+    return oneDriveConfigPromise;
+}
+
+function oneDriveTrimTrailingSlash(url) {
+    return url ? url.replace(/\/+$/, '') : url;
+}
+
+function oneDriveGetPickerBaseUrl(settings) {
+    return oneDriveTrimTrailingSlash(
+        (settings && settings.oneDrivePickerBaseUrl) ||
+        (window.app && app.setting && app.setting.OneDrivePickerBaseUrl) ||
+        null
+    );
+}
+
+function oneDriveGetPickerResource(settings, resource) {
+    var pickerBaseUrl = oneDriveTrimTrailingSlash(resource || oneDriveGetPickerBaseUrl(settings));
+
+    if (!pickerBaseUrl) {
+        throw new Error('fileUploader/OneDrive: falta configurar OneDrivePickerBaseUrl (ConfigurationController.GetAppSettings / web.config).');
+    }
+
+    try {
+        return new URL(pickerBaseUrl).origin;
+    } catch (err) {
+        return pickerBaseUrl;
+    }
+}
+
+function oneDriveGetPickerScope(settings, resource) {
+    return oneDriveGetPickerResource(settings, resource) + '/.default';
+}
+
+// Nunca lanza de forma sincrona: cualquier problema de configuracion (script de
+// MSAL no cargado, clientId faltante, etc.) se entrega como rechazo de promesa.
+function oneDriveEnsureMsal(settings) {
+    return new Promise(function (resolve, reject) {
+        if (typeof msal === 'undefined') {
+            reject(new Error('fileUploader/OneDrive: falta cargar msal-browser.min.js antes de este script.'));
+            return;
+        }
+
+        oneDriveGetConfig().then(function (config) {
+            var clientId = (settings && settings.oneDriveClientId) || config.clientId;
+            var authority = (settings && settings.oneDriveAuthority) || config.authority || 'https://login.microsoftonline.com/organizations';
+
+            if (!clientId) {
+                reject(new Error('fileUploader/OneDrive: falta configurar OneDriveClientId (ConfigurationController.GetAppSettings / web.config).'));
+                return;
+            }
+
+            try {
+                var signature = [clientId, authority, window.location.origin].join('|');
+                if (!oneDriveMsalApp || oneDriveMsalSignature !== signature) {
+                    oneDriveMsalApp = new msal.PublicClientApplication({
+                        auth: {
+                            clientId: clientId,
+                            authority: authority,
+                            redirectUri: window.location.origin
+                        }
+                    });
+                    oneDriveMsalInitPromise = null;
+                    oneDriveMsalSignature = signature;
+                }
+
+                // Algunas versiones de MSAL requieren initialize() antes de usarse;
+                // en las que no lo requieren, la propiedad simplemente no existe.
+                // CRITICO: cachear esta promesa (no llamar initialize() de nuevo en
+                // cada invocacion). Confirmado en vivo que MSAL, mientras initialize()
+                // esta resolviendo, puede marcar una interaccion como "en progreso"
+                // internamente; si oneDriveEnsureMsal se invoca varias veces seguidas
+                // (el precalentamiento al detectar el boton + cada pedido de token en
+                // el click) y cada una vuelve a llamar a initialize() sobre la MISMA
+                // instancia mientras la anterior todavia no termino, eso alcanza a
+                // pisarse con la llamada real a loginPopup() y sale
+                // "BrowserAuthError: interaction_in_progress" aunque las adquisiciones
+                // de token ya sean secuenciales. Con una sola promesa compartida,
+                // initialize() corre una unica vez y todos los que lo pidan esperan
+                // esa misma resolucion.
+                if (!oneDriveMsalInitPromise) {
+                    oneDriveMsalInitPromise = oneDriveMsalApp.initialize ? oneDriveMsalApp.initialize() : Promise.resolve();
+                }
+                oneDriveMsalInitPromise.then(function () { resolve(oneDriveMsalApp); }, reject);
+            } catch (err) {
+                reject(err);
+            }
+        }).catch(reject);
+    });
+}
+
+// Pide un token para el/los scope(s) indicados, reusando la cuenta ya
+// logueada si existe (acquireTokenSilent) y cayendo a loginPopup si hace
+// falta interaccion (primer login, o consentimiento nuevo para ese scope).
+function oneDriveAcquireToken(settings, scopes, forceRefresh) {
+    return oneDriveEnsureMsal(settings).then(function (app) {
+        var request = { scopes: scopes };
+        if (forceRefresh) request.forceRefresh = true;
+        var account = app.getAllAccounts()[0];
+
+        if (account) {
+            request.account = account;
+            return app.acquireTokenSilent(request)
+                .then(function (result) { return result.accessToken; })
+                .catch(function () {
+                    return app.loginPopup(request).then(function (result) {
+                        app.setActiveAccount(result.account);
+                        return result.accessToken;
+                    });
+                });
+        }
+
+        return app.loginPopup(request).then(function (result) {
+            app.setActiveAccount(result.account);
+            return result.accessToken;
+        });
+    });
+}
+
+// Token para el picker (bootstrap POST + comando 'authenticate'). En OneDrive
+// for Business el picker pide un token para el recurso SharePoint/OneDrive del
+// tenant, por eso el scope se arma dinamicamente como "{resource}/.default".
+function oneDriveGetToken(settings, resource) {
+    return oneDriveGetConfig().then(function () {
+        return oneDriveAcquireToken(settings, [oneDriveGetPickerScope(settings, resource)]);
+    });
+}
+
+// Token especifico para llamar a Microsoft Graph directamente (usado en
+// oneDriveResolvePickedItems). El token del picker NO sirve aqui: trae
+// audiencia SharePoint/OneDrive, no graph.microsoft.com.
+function oneDriveGetGraphToken(settings) {
+    return oneDriveAcquireToken(settings, [settings.oneDriveGraphScope || 'Files.Read'], true);
+}
+
+function oneDriveUuid() {
+    // channelId solo necesita ser unico por instancia del picker, no
+    // criptograficamente fuerte.
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (Math.random() * 16) | 0;
+        var v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+}
+
+function oneDriveBuildPickerOptions(channelId) {
+    return {
+        sdk: '8.0',
+        // "entry.oneDrive" vacio ({}) hace que el picker intente resolver un
+        // item por defecto que no existe -> "This item might not exist or is
+        // no longer available". Con "files: {}" le decimos explicitamente que
+        // liste todos los archivos del OneDrive del usuario autenticado.
+        entry: { oneDrive: { files: {} } },
+        // Requerido para poder pedir datos completos del item seleccionado.
+        authentication: {},
+        messaging: {
+            origin: window.location.origin,
+            channelId: channelId
+        },
+        selection: { mode: 'multiple' },
+        typesAndSources: {
+            mode: 'files',
+            pivots: { oneDrive: true, recent: true }
+        }
+    };
+}
+
+// Toma los items "crudos" que devuelve el comando 'pick' (solo garantizan
+// id + parentReference.driveId segun doc de Microsoft) y los resuelve a
+// archivos reales descargando su contenido via Microsoft Graph.
+function oneDriveResolvePickedItems(items, settings) {
+    if (!items.length) return Promise.resolve([]);
+
+    return oneDriveGetGraphToken(settings).then(function (token) {
+        var jobs = items.map(function (item) {
+            var driveId = item.parentReference && item.parentReference.driveId;
+            var itemId = item.id;
+
+            if (!driveId || !itemId) {
+                return Promise.reject(new Error('fileUploader/OneDrive: item sin driveId/id, revisa el payload real del picker.'));
+            }
+
+            var metaUrl = 'https://graph.microsoft.com/v1.0/drives/' + driveId +
+                '/items/' + itemId + '?select=name,size,file,%40microsoft.graph.downloadUrl';
+
+            return fetch(metaUrl, { headers: { Authorization: 'Bearer ' + token } })
+                .then(function (res) {
+                    if (!res.ok) throw new Error('fileUploader/OneDrive: Graph respondió ' + res.status + ' al resolver el item.');
+                    return res.json();
+                })
+                .then(function (meta) {
+                    var downloadUrl = meta['@microsoft.graph.downloadUrl'];
+                    if (!downloadUrl) throw new Error('fileUploader/OneDrive: el item no trae downloadUrl (' + (meta.name || itemId) + ').');
+
+                    // La downloadUrl viene pre-firmada por Graph, no lleva Authorization.
+                    return fetch(downloadUrl)
+                        .then(function (fileRes) { return fileRes.blob(); })
+                        .then(function (blob) {
+                            var type = (meta.file && meta.file.mimeType) || blob.type || 'application/octet-stream';
+                            return new File([blob], meta.name, { type: type });
+                        });
+                });
+        });
+
+        return Promise.all(jobs);
+    });
+}
+
+// Abre el "panel" donde vive el picker. Si el markup trae el modal
+// #OneDrivePickerModal con su <iframe id="oneDrivePickerFrame">, el picker se
+// embebe ahi (integrado a la propia app, en vez de una ventana del sistema
+// operativo aparte). Si esos elementos no existen en la vista, cae de vuelta
+// a una ventana emergente clasica para no romper nada.
+// 'onManualClose' se invoca si el usuario cierra el modal (X / Esc) sin que
+// el picker haya terminado su flujo (para no dejar la promesa colgada).
+function oneDriveOpenPanel(onManualClose) {
+    var $modal = $('#OneDrivePickerModal');
+    var $frame = $('#oneDrivePickerFrame');
+
+    if ($modal.length > 0 && $frame.length > 0) {
+        // Si una apertura anterior quedo con el iframe navegado a
+        // onedrive.live.com (cross-origin) - por ejemplo porque el usuario
+        // cerro el modal con la X sin completar el flujo - hay que resetearlo
+        // ANTES de intentar usarlo de nuevo. Ademas, poner src="about:blank"
+        // no navega instantaneamente: hay que esperar el evento 'load' del
+        // iframe antes de tocar win.document, o el navegador lo bloquea con
+        // "Blocked a frame with origin ... from accessing a cross-origin
+        // frame" (el iframe todavia muestra el documento cross-origin viejo).
+        $frame.off('load.oneDrivePicker');
+        var ready = new Promise(function (resolveReady) {
+            $frame.one('load.oneDrivePicker', function () { resolveReady(); });
+            // Fallback por si el evento 'load' no llega a disparar.
+            setTimeout(resolveReady, 500);
+        });
+        $frame.attr('src', 'about:blank');
+
+        $modal.off('hidden.bs.modal.oneDrivePicker').on('hidden.bs.modal.oneDrivePicker', function () {
+            // Cierre manual (X/Esc): resetear el iframe YA, para que la
+            // proxima apertura no se tope con contenido cross-origin residual.
+            $frame.attr('src', 'about:blank');
+            onManualClose();
+        });
+        $modal.modal('show');
+
+        return {
+            win: $frame[0].contentWindow,
+            ready: ready,
+            close: function () {
+                $modal.off('hidden.bs.modal.oneDrivePicker');
+                $modal.modal('hide');
+                // Limpiar el iframe para que la proxima apertura arranque fresca.
+                setTimeout(function () { $frame.attr('src', 'about:blank'); }, 300);
+            }
+        };
+    }
+
+    // Fallback: no hay modal/iframe en esta vista, usar ventana emergente.
+    var popup = window.open('', 'OneDriveFilePicker', 'width=1080,height=680');
+    return {
+        win: popup,
+        ready: Promise.resolve(),
+        close: function () {
+            if (popup) popup.close();
+        }
+    };
+}
+
+// Abre el picker y resuelve con un Array<File> ya descargado desde Microsoft
+// Graph (listo para inyectar en Dropzone con dz.addFile(file)).
+function oneDrivePick(settings) {
+    return oneDriveGetToken(settings).then(function (bootstrapToken) {
+        return new Promise(function (resolve, reject) {
+            var channelId = oneDriveUuid();
+            var pickerOptions = oneDriveBuildPickerOptions(channelId);
+
+            var port = null;
+            var settled = false;
+
+            function finish(fn, arg) {
+                if (settled) return;
+                settled = true;
+                window.removeEventListener('message', initListener);
+                fn(arg);
+            }
+
+            var panel = oneDriveOpenPanel(function () {
+                finish(reject, new Error('fileUploader/OneDrive: panel cerrado por el usuario.'));
+            });
+            var win = panel.win;
+
+            if (!win) {
+                reject(new Error('fileUploader/OneDrive: no se pudo abrir el panel de OneDrive (¿bloqueado por el navegador?).'));
+                return;
+            }
+
+            var pickerBaseUrl;
+            try {
+                pickerBaseUrl = oneDriveGetPickerBaseUrl(settings);
+                if (!pickerBaseUrl) {
+                    throw new Error('fileUploader/OneDrive: falta configurar OneDrivePickerBaseUrl (ConfigurationController.GetAppSettings / web.config).');
+                }
+            } catch (err) {
+                reject(err);
+                return;
+            }
+
+            var queryString = new URLSearchParams({ filePicker: JSON.stringify(pickerOptions) });
+            var url = pickerBaseUrl + '/_layouts/15/FilePicker.aspx?' + queryString.toString();
+
+            // Esperar a que el iframe realmente termine de navegar a
+            // "about:blank" (panel.ready) antes de tocar win.document. Si no
+            // se espera, en reaperturas (el iframe ya tenia contenido de
+            // onedrive.live.com de un intento anterior) el navegador tira
+            // "Blocked a frame with origin ... from accessing a cross-origin
+            // frame" porque el reset a about:blank todavia no se completo.
+            panel.ready.then(function () {
+                if (settled) return;
+
+                var form = win.document.createElement('form');
+                form.setAttribute('action', url);
+                form.setAttribute('method', 'POST');
+
+                var tokenInput = win.document.createElement('input');
+                tokenInput.setAttribute('type', 'hidden');
+                tokenInput.setAttribute('name', 'access_token');
+                tokenInput.setAttribute('value', bootstrapToken);
+                form.appendChild(tokenInput);
+
+                win.document.body.appendChild(form);
+                form.submit();
+
+                window.addEventListener('message', initListener);
+            }).catch(function (err) {
+                finish(reject, err);
+            });
+
+            function initListener(event) {
+                if (!event.source || event.source !== win) return;
+                var message = event.data;
+                if (message && message.type === 'initialize' && message.channelId === channelId) {
+                    port = event.ports[0];
+                    port.addEventListener('message', channelMessageListener);
+                    port.start();
+                    port.postMessage({ type: 'activate' });
+                }
+            }
+
+            function channelMessageListener(message) {
+                var payload = message.data;
+                if (!payload) return;
+
+                if (payload.type === 'notification') {
+                    // Ej: { notification: 'page-loaded' }. Informativo, no requiere respuesta.
+                    return;
+                }
+                if (payload.type !== 'command') return;
+
+                // Todo comando debe reconocerse (acknowledge) antes de procesarlo.
+                port.postMessage({ type: 'acknowledge', id: payload.id });
+
+                var command = payload.data || {};
+
+                switch (command.command) {
+                    case 'authenticate':
+                        oneDriveGetToken(settings, command.resource)
+                            .then(function (token) {
+                                port.postMessage({
+                                    type: 'result',
+                                    id: payload.id,
+                                    data: { result: 'token', token: token }
+                                });
+                            })
+                            .catch(function (err) {
+                                port.postMessage({
+                                    type: 'result',
+                                    id: payload.id,
+                                    data: { result: 'error', error: { code: 'unableToObtainToken', message: String(err) } }
+                                });
+                            });
+                        break;
+
+                    case 'pick':
+                        oneDriveResolvePickedItems(command.items || [], settings)
+                            .then(function (files) {
+                                port.postMessage({ type: 'result', id: payload.id, data: { result: 'success' } });
+                                panel.close();
+                                finish(resolve, files);
+                            })
+                            .catch(function (err) {
+                                port.postMessage({
+                                    type: 'result',
+                                    id: payload.id,
+                                    data: { result: 'error', error: { code: 'unusableItem', message: String(err) } }
+                                });
+                                panel.close();
+                                finish(reject, err);
+                            });
+                        break;
+
+                    case 'close':
+                        port.postMessage({ type: 'result', id: payload.id, data: { result: 'success' } });
+                        panel.close();
+                        finish(reject, new Error('fileUploader/OneDrive: selección cancelada por el usuario.'));
+                        break;
+
+                    default:
+                        port.postMessage({
+                            type: 'result',
+                            id: payload.id,
+                            data: { result: 'error', error: { code: 'unsupportedCommand', message: command.command } }
+                        });
+                        break;
+                }
+            }
+        });
+    });
+}
+
 (function ($) {
     $.fn.fileUploader = function (optionsOrMethod) {
         var defaults = {
@@ -645,6 +1129,18 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
             dictRemoveFile: "Eliminar archivo",
             dictMaxFilesExceeded: "No puedes subir más archivos.",
             enableDownloadButtons: true, // Auto-configurar botones de descarga
+            // OneDrive File Picker v8 (OneDrive for Business / Microsoft 365).
+            // Se auto-configura sobre cualquier boton con
+            // data-fileuploader-target="<id>" data-fileuploader-action="oneDrivePicker".
+            enableOneDrivePicker: true,
+            // Sin valor hardcodeado: null = "no forzar valores puntuales". En ese
+            // caso oneDriveEnsureMsal() y oneDrivePick() usan la configuración
+            // devuelta por ConfigurationController.GetAppSettings via
+            // oneDriveGetConfig().
+            oneDriveClientId: null,
+            oneDriveAuthority: null,
+            oneDrivePickerBaseUrl: null,
+            oneDriveGraphScope: 'Files.Read',
             // Configuración para documentos esperados (NUEVA FUNCIONALIDAD)
             expectedDocuments: [], // Array de documentos esperados: [{id, name, status, description}, ...]
             showExpectedDocuments: true, // La vista nueva es la única vista del plugin
@@ -706,6 +1202,8 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                 var uploadedFile = isCompleted && doc.uploadedFile ? doc.uploadedFile : null;
                 var uploadedFileIdAttr = uploadedFile && uploadedFile.id ? ' data-file-id="' + escapeUploaderHtml(uploadedFile.id) + '"' : '';
                 var uploadedStoredAttr = uploadedFile && uploadedFile.storedFileName ? ' data-stored-file-name="' + escapeUploaderHtml(uploadedFile.storedFileName) + '"' : '';
+                var documentTypeAttr = (doc.documentType !== undefined && doc.documentType !== null && doc.documentType !== '') ? ' data-document-type="' + escapeUploaderHtml(doc.documentType) + '"' : '';
+                var documentTypeDescAttr = doc.documentTypeDesc ? ' data-document-type-desc="' + escapeUploaderHtml(doc.documentTypeDesc) + '"' : '';
                 var uploadedIconData = uploadedFile ? getAttachmentCardIconData(uploadedFile.type || uploadedFile.FileType || uploadedFile.ContentType || '', uploadedFile.name || uploadedFile.FileName || '') : null;
                 var fileInfoHtml = uploadedFile
                     ? buildAttachmentFileInfoHtml(
@@ -720,7 +1218,7 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
 
                 gridHtml += buildAttachmentCardHtml({
                     hasFile: !!fileInfoHtml,
-                    attrs: ' data-doc-id="' + escapeUploaderHtml(doc.id) + '"' + uploadedFileIdAttr + uploadedStoredAttr,
+                    attrs: ' data-doc-id="' + escapeUploaderHtml(doc.id) + '"' + uploadedFileIdAttr + uploadedStoredAttr + documentTypeAttr + documentTypeDescAttr,
                     iconData: uploadedIconData,
                     title: doc.name,
                     description: doc.description || '',
@@ -735,13 +1233,19 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
             // Insertar en el contenedor de documentos esperados
             if ($container.length > 0) {
                 // El elemento del uploader ($el / #dropzone) suele vivir dentro del contenedor.
-                // $container.html() lo desconectaría del DOM y dejaría a Dropzone adjunto a un nodo
-                // huérfano, impidiendo que la selección de archivos dispare la carga. Lo preservamos.
+                // Si usamos html() sin separarlo antes, jQuery limpia sus eventos/data.
+                // Lo detachamos primero para preservar la instancia fileUploader y Dropzone.
                 var uploaderInsideContainer = $el.length > 0 && $container[0].contains($el[0]);
-                $container.html(gridHtml);
+                var $preservedUploader = null;
                 if (uploaderInsideContainer) {
-                    $el.css('display', 'none');
-                    $container.append($el);
+                    $preservedUploader = $el.detach();
+                }
+
+                $container.html(gridHtml);
+
+                if ($preservedUploader && $preservedUploader.length > 0) {
+                    $preservedUploader.css('display', 'none');
+                    $container.append($preservedUploader);
                 }
             } else {
                 // Fallback: insertar antes del dropzone
@@ -811,6 +1315,8 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
             $cards.each(function () {
                 var $card = $(this);
                 var docId = $card.data('doc-id');
+                var docType = $card.attr('data-document-type');
+                var docTypeDesc = $card.attr('data-document-type-desc');
 
                 // Evita apilar handlers cuando bindExpectedDocumentCards corre en cada render
                 $card.off('.expcard');
@@ -838,6 +1344,9 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     } else {
                         expectedDocIdMap['_lastDocId'] = null;
                     }
+                    // El tipo de documento se guarda de forma independiente al docId
+                    expectedDocIdMap['_lastDocType'] = docType;
+                    expectedDocIdMap['_lastDocTypeDesc'] = docTypeDesc;
                     console.log('✅ DocId guardado en map:', expectedDocIdMap);
 
                     // La forma correcta: usar dz.hiddenFileInput que Dropzone ya tiene
@@ -916,6 +1425,9 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                             } else {
                                 expectedDocIdMap['_lastDocId'] = null;
                             }
+                            // El tipo de documento se guarda de forma independiente al docId
+                            expectedDocIdMap['_lastDocType'] = docType;
+                            expectedDocIdMap['_lastDocTypeDesc'] = docTypeDesc;
                             // Procesar archivos con Dropzone
                             dz.handleFiles(files);
                         }
@@ -969,6 +1481,30 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                                     if (String(dzFile.expectedDocId) === String(docId) && dzFile.manuallyAdded !== true) {
                                         dz.removeFile(dzFile);
                                         removedFromDropzone = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            var inst = $el.data('fileUploader');
+                            if (inst && inst.responses && inst.responses.length > 0) {
+                                for (var r = inst.responses.length - 1; r >= 0; r--) {
+                                    var responseFile = inst.responses[r];
+                                    var sameExpectedDoc = responseFile && responseFile.expectedDocId && String(responseFile.expectedDocId) === String(docId);
+                                    var sameFileId = responseFile && fileData && fileData.fileId && String(responseFile.Id) === String(fileData.fileId);
+                                    var sameStoredName = responseFile && fileData && fileData.storedFileName && responseFile.StoredFileName === fileData.storedFileName;
+                                    if (sameExpectedDoc || sameFileId || sameStoredName) {
+                                        inst.responses.splice(r, 1);
+                                    }
+                                }
+                            }
+
+                            if (inst && inst.expectedDocuments && inst.expectedDocuments.length > 0) {
+                                for (var d = 0; d < inst.expectedDocuments.length; d++) {
+                                    var expectedDoc = inst.expectedDocuments[d];
+                                    if (expectedDoc && String(expectedDoc.id) === String(docId)) {
+                                        expectedDoc.status = 'pending';
+                                        expectedDoc.uploadedFile = null;
                                         break;
                                     }
                                 }
@@ -1431,6 +1967,20 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                                     expectedDocIdMap['_lastDocId'] = null; // Limpiar
                                 }
 
+                                // ✅ Capturar el tipo de documento de la tarjeta esperada de forma independiente
+                                //    (el docId puede ser 0/falsy pero el tipo sigue siendo válido)
+                                if (expectedDocIdMap['_lastDocType'] !== undefined && expectedDocIdMap['_lastDocType'] !== null && expectedDocIdMap['_lastDocType'] !== '') {
+                                    file.expectedDocType = expectedDocIdMap['_lastDocType'];
+                                    file.DocumentType = expectedDocIdMap['_lastDocType'];
+                                    console.log('✅ expectedDocType asignado al file:', file.expectedDocType);
+                                }
+                                if (expectedDocIdMap['_lastDocTypeDesc']) {
+                                    file.expectedDocTypeDesc = expectedDocIdMap['_lastDocTypeDesc'];
+                                    file.DocumentTypeDesc = expectedDocIdMap['_lastDocTypeDesc'];
+                                }
+                                expectedDocIdMap['_lastDocType'] = null;
+                                expectedDocIdMap['_lastDocTypeDesc'] = null;
+
                                 filesToUpload.push(file);
                                 pendingUploads++;
 
@@ -1664,6 +2214,19 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                             }
                         }
 
+                        // ✅ Si el archivo proviene de una tarjeta esperada, enviar su tipo de documento
+                        //    para que el servidor lo persista y lo devuelva en lugar del genérico
+                        for (var d = 0; d < files.length; d++) {
+                            var docFile = files[d];
+                            if (docFile && docFile.DocumentType !== undefined && docFile.DocumentType !== null && docFile.DocumentType !== '') {
+                                fileData.set('DocumentType', docFile.DocumentType);
+                                if (docFile.DocumentTypeDesc) {
+                                    fileData.set('DocumentTypeDesc', docFile.DocumentTypeDesc);
+                                }
+                                break;
+                            }
+                        }
+
                         // Función auxiliar para formatear bytes
                         function formatBytes(bytes) {
                             if (bytes === 0) return '0 Bytes';
@@ -1775,8 +2338,17 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                                 // Normalizar la respuesta con propiedades adicionales
                                 response.FileSize = response.Size;
                                 response.Stored = response.StoredFileName;
-                                response.DocumentType = 1;
-                                response.DocumentTypeDesc = 'General';
+                                // ✅ Usar el tipo de documento de la tarjeta esperada si existe;
+                                //    en su defecto, respetar lo que devuelve el servidor; caso contrario, General (1)
+                                if (file && file.expectedDocType !== undefined && file.expectedDocType !== null && file.expectedDocType !== '') {
+                                    response.DocumentType = file.expectedDocType;
+                                    response.DocumentTypeDesc = file.expectedDocTypeDesc || 'General';
+                                } else if (response.DocumentType !== undefined && response.DocumentType !== null && response.DocumentType !== '') {
+                                    response.DocumentTypeDesc = response.DocumentTypeDesc || 'General';
+                                } else {
+                                    response.DocumentType = 1;
+                                    response.DocumentTypeDesc = 'General';
+                                }
                                 response.Description = file ? file.name.replace(/\.[^/.]+$/, "") : '';
                                 response.FileContent = response.Stored;
 
@@ -1827,6 +2399,7 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                         elementId: elementId,
                         showExpectedDocuments: settings.showExpectedDocuments === true,
                         showGeneralUploadCard: settings.showGeneralUploadCard !== false,
+                        expectedDocuments: (settings.expectedDocuments || []).slice(),
                         translations: translations,
                         responses: responses,
                         setupFileActions: setupFileActions, // Exponer funcion para uso en load()
@@ -2031,6 +2604,82 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                             });
                         }
                     }
+
+                    // 🔹 Auto-configurar boton de OneDrive (File Picker v8) si esta habilitado
+                    if (localizedSettings.enableOneDrivePicker) {
+                        var $oneDriveBtn = $('[data-fileuploader-target="' + elementId + '"][data-fileuploader-action="oneDrivePicker"]');
+
+                        if ($oneDriveBtn.length > 0) {
+                            // "Calentar" MSAL (crear la instancia + su initialize(), que hace
+                            // una llamada de red real) apenas se detecta el boton, NO cuando
+                            // se hace click. Si ese trabajo async ocurre recien en el click,
+                            // Chrome deja de asociar el loginPopup() posterior con el gesto
+                            // del usuario y lo bloquea (BrowserAuthError: popup_window_error /
+                            // window.open returned null). Precalentando aqui, para cuando el
+                            // usuario haga click ya no queda ningun await antes de loginPopup().
+                            oneDriveEnsureMsal(localizedSettings).catch(function () {
+                                // Silencioso: si falla (msal no cargo, clientId malo, etc.)
+                                // el click lo va a volver a intentar y ahi si se muestra el error.
+                            });
+
+                            $oneDriveBtn.off('click').on('click', function (e) {
+                                e.preventDefault();
+
+                                var $btn = $(this);
+                                $btn.prop('disabled', true);
+
+                                // Adquirir AHORA (todavia dentro del gesto de click real del
+                                // usuario) tanto el token del picker del tenant como
+                                // el de Microsoft Graph (Files.Read) que hace falta despues
+                                // para resolver el archivo elegido. Si se deja el token de
+                                // Graph para cuando el usuario le da "Seleccionar" DENTRO del
+                                // iframe del picker, ese consentimiento (la primera vez que se
+                                // pide ese scope) intenta abrir un popup fuera de cualquier
+                                // gesto de usuario real - el mensaje llega via postMessage
+                                // desde un iframe cross-origin, y postMessage no transmite
+                                // "user activation" al padre - y Chrome lo bloquea en
+                                // silencio (window.open devuelve null, sin ningun error
+                                // visible). Pidiendolo aqui, cualquier consentimiento nuevo
+                                // sale mientras el click todavia cuenta como gesto valido.
+                                //
+                                // IMPORTANTE: estas dos adquisiciones van SECUENCIALES, NO en
+                                // paralelo (Promise.all). Confirmado en vivo que MSAL no
+                                // soporta dos llamadas concurrentes (silent o interactivas)
+                                // sobre la misma instancia/cuenta: con cache limpio, la
+                                // segunda tira "BrowserAuthError: interaction_in_progress"
+                                // (MSAL bloquea explicitamente una 2da interaccion mientras la
+                                // 1ra sigue en curso); y con cache tibio, la segunda llamada a
+                                // acquireTokenSilent devolvia -sin error visible- un token
+                                // cacheado del OTRO scope (opaco, no-JWT), con result.scopes
+                                // listando ambos nombres mezclados - practicamente seguro que
+                                // es el mismo problema de raiz: dos requests concurrentes
+                                // corrompiendo la correlacion interna de MSAL. Pidiendolas una
+                                // despues de la otra evita ambos sintomas.
+                                oneDriveGetToken(localizedSettings)
+                                    .then(function () {
+                                        return oneDriveGetGraphToken(localizedSettings);
+                                    })
+                                    .then(function () {
+                                        return oneDrivePick(localizedSettings);
+                                    })
+                                    .then(function (files) {
+                                        (files || []).forEach(function (file) {
+                                            dz.addFile(file);
+                                        });
+                                    })
+                                    .catch(function (err) {
+                                        Logger.log('OneDrive picker: ' + err);
+                                        console.error('OneDrive picker:', err);
+                                        if (typeof toastr !== 'undefined') {
+                                            toastr.error('No se pudo completar la selección desde OneDrive.');
+                                        }
+                                    })
+                                    .finally(function () {
+                                        $btn.prop('disabled', false);
+                                    });
+                            });
+                        }
+                    }
                 });
             },
 
@@ -2057,6 +2706,25 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
             clear: function () {
                 var inst = this.first().data('fileUploader');
                 if (inst) inst.clear();
+                return this;
+            },
+
+            // Permite inyectar archivos obtenidos por fuera del drag&drop nativo
+            // (por ejemplo, desde el OneDrive File Picker v8) reutilizando exactamente
+            // el mismo pipeline de subida que un archivo soltado en el dropzone.
+            // 'files' puede ser un File[], un FileList o un solo File.
+            addFiles: function (files) {
+                var inst = this.first().data('fileUploader');
+                if (!inst || !files) return this;
+
+                var fileArray = files instanceof File ? [files] : Array.prototype.slice.call(files);
+
+                fileArray.forEach(function (file) {
+                    if (file instanceof File) {
+                        inst.dz.addFile(file);
+                    }
+                });
+
                 return this;
             },
 
@@ -2166,6 +2834,55 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                 return this;
             },
 
+            expectedDocumentsStatus: function () {
+                var inst = this.first().data('fileUploader');
+                if (!inst) return [];
+
+                var expected = inst.expectedDocuments || [];
+                var responses = inst.responses || [];
+
+                return expected.map(function (doc) {
+                    var responseMatch = responses.find(function (r) {
+                        return r && r.expectedDocId && String(r.expectedDocId) === String(doc.id);
+                    });
+
+                    var isLoaded = !!responseMatch;
+                    var uploadedFile = null;
+
+                    if (responseMatch) {
+                        uploadedFile = {
+                            id: responseMatch.Id || doc.id,
+                            name: responseMatch.FileName || doc.name || 'Archivo',
+                            size: responseMatch.FileSize || responseMatch.Size || 0,
+                            user: responseMatch.UpdateUserName || '',
+                            date: responseMatch.UpdateDate || null,
+                            storedFileName: responseMatch.StoredFileName || '',
+                            type: responseMatch.ContentType || 'application/octet-stream'
+                        };
+                    }
+
+                    return {
+                        id: doc.id,
+                        name: doc.name,
+                        description: doc.description || '',
+                        documentType: doc.documentType,
+                        documentTypeDesc: doc.documentTypeDesc || 'General',
+                        status: isLoaded ? 'completed' : 'pending',
+                        isLoaded: isLoaded,
+                        uploadedFile: uploadedFile
+                    };
+                });
+            },
+
+            pendingExpectedDocuments: function () {
+                var inst = this.first().data('fileUploader');
+                if (!inst) return [];
+
+                return methods.expectedDocumentsStatus.apply(this).filter(function (doc) {
+                    return !doc.isLoaded;
+                });
+            },
+
             destroy: function () {
                 return this.each(function () {
                     var inst = $(this).data('fileUploader');
@@ -2180,10 +2897,67 @@ function applyUploaderTranslationState($el, translationScope, dz, instance, sett
                     var inst = $el.data('fileUploader');
                     if (!inst) return;
 
+                    inst.expectedDocuments = (expectedDocuments || []).slice();
+
+                    if (inst.responses) {
+                        var generalFiles = inst.responses.filter(function (r) {
+                            return r && !r.expectedDocId;
+                        });
+
+                        inst.responses.length = 0;
+                        generalFiles.forEach(function (item) {
+                            inst.responses.push(item);
+                        });
+
+                        (expectedDocuments || []).forEach(function (doc) {
+                            var isCompleted = doc && (doc.status === 'completed' || doc.status === 'Listo' || !!doc.uploadedFile);
+                            if (!isCompleted || !doc.uploadedFile) {
+                                return;
+                            }
+
+                            var uploaded = doc.uploadedFile;
+                            var expectedNormalized = {
+                                Id: uploaded.id || doc.id,
+                                FileName: uploaded.name || doc.name || 'Archivo',
+                                StoredFileName: uploaded.storedFileName || '',
+                                Stored: uploaded.storedFileName || '',
+                                FileContent: uploaded.storedFileName || '',
+                                FileSize: uploaded.size || 0,
+                                Size: uploaded.size || 0,
+                                DocumentType: doc.documentType || 1,
+                                DocumentTypeDesc: doc.documentTypeDesc || 'General',
+                                Description: doc.description || doc.name || '',
+                                UpdateUserName: uploaded.user || '',
+                                UpdateDate: uploaded.date || null,
+                                IsLoaded: true,
+                                expectedDocId: doc.id
+                            };
+
+                            var exists = inst.responses.some(function (r) {
+                                return r && String(r.expectedDocId) === String(doc.id);
+                            });
+
+                            if (!exists) {
+                                inst.responses.push(expectedNormalized);
+                            }
+                        });
+                    }
+
                     if ((expectedDocuments && expectedDocuments.length > 0) || inst.showGeneralUploadCard) {
                         renderExpectedDocumentsGrid($el, expectedDocuments, inst.showGeneralUploadCard);
                         if (show !== false) { // Por defecto mostrar
                             bindExpectedDocumentCards($el, inst.dz, expectedDocuments, inst.expectedDocIdMap);
+                        }
+
+                        // Volver a pintar los adjuntos generales ya cargados (vía load),
+                        // ya que renderExpectedDocumentsGrid reconstruye toda la grilla.
+                        if (inst.responses && inst.responses.length > 0) {
+                            var loadedGeneralFiles = inst.responses.filter(function (r) {
+                                return r && !r.expectedDocId;
+                            });
+                            if (loadedGeneralFiles.length > 0) {
+                                refreshExpectedDocumentsUi($el, loadedGeneralFiles);
+                            }
                         }
                     }
                 });

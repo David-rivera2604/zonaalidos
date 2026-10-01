@@ -2,100 +2,10 @@
 
 app.Form_Ext_Altas = (function () {
 
-    let _test = {
-        "RAMO": 401,
-        "RAMODesc": "Saldo deudor declarativo",
-        "NUM_CONTRATO": 0,
-        "NUM_CONTRATODesc": "",
-        "NUM_POLIZA_GRUPO": "",
-        "MONEDA": "",
-        "EFEC_SPTO": "2025-08-01T00:00:00",
-        "VCTO_SPTO": "2026-08-01T00:00:00",
-        "COD_DOCUM_ASEGType": 1,
-        "COD_DOCUM_ASEG": "02-5894-1365",
-        "NOM_TERCERO_ASEG": "Wilson",
-        "APE_TERCERO_ASEG": "Torres",
-        "NAC_ASEG": "1999-06-06T00:00:00",
-        "MCA_SEXO_ASEG": 1,
-        "MCA_SEXO_ASEGDesc": "Masculino",
-        "TLF_NUMERO_ASEG": "0689-0763",
-        "OCUPACION_ASEG": 6002,
-        "OCUPACION_ASEGDesc": " Abogado liberal y bufete de abogados que NO manejan fondos para terceros",
-        "NACIONALIDAD_ASEG": "CRI",
-        "NACIONALIDAD_ASEGDesc": "COSTA RICA",
-        "COD_ESTADO": 5,
-        "COD_ESTADODesc": "GUANACASTE",
-        "COD_PROVINCIA": 505,
-        "COD_PROVINCIADesc": "CARRILLO",
-        "COD_LOCALIDAD": 50504,
-        "COD_LOCALIDADDesc": "BELEN",
-        "DOMICILIO": "",
-        "NUM_PRESTAMO": "738913",
-        "INI_PRESTAMO": "2025-08-01T00:00:00",
-        "VCTO_PRESTAMO": "2026-08-01T00:00:00",
-        "IMP_SUM_ASEG_VC": 0,
-        "IMP_SUMA_ASEG": 50000,
-        "IMP_PRIMA_FACT": 0,
-        "IMP_PRIMA_INFORMADA": 20000,
-        "ID_CRED_ESTUDIANTE": "",
-        "MCA_ASISTENCIA": 2,
-        "MCA_ASISTENCIADesc": "No",
-        "IMP_SUMA_MUERTE": 0,
-        "COD_PLAN_AP": null,
-        "COD_PLAN_APDesc": "",
-        "beneficiarios": [
-            {
-                "beneficiariosId": 1,
-                "COD_DOCUM_BENEF": "09-1011-1258",
-                "NOM_TERCERO_BENEF": "TEFA",
-                "NOM2_TERCERO_BENEF": "2",
-                "APE1_TERCERO_BENEF": "torres",
-                "APE2_TERCERO_BENEF": "2",
-                "FEC_NAC_BENEF": "2004-12-07T00:00:00",
-                "MCA_SEXO_BENEF": "F",
-                "MCA_SEXO_BENEFDesc": "Femenino",
-                "TLF_NUMERO_BENEF": "4548-5362",
-                "EMAIL_BENEF": "tefa123@gmail.com",
-                "TIP_RELAC": 1,
-                "TIP_RELACDesc": "Conyuge",
-                "PCT_PARTICIPACION": 50,
-                "PROVINCIA_BENEF": 2,
-                "PROVINCIA_BENEFDesc": "ALAJUELA",
-                "LOCALIDAD_BENEF": 201,
-                "LOCALIDAD_BENEFDesc": "ALAJUELA"
-            },
-            {
-                "beneficiariosId": 2,
-                "COD_DOCUM_BENEF": "01-1586-4741",
-                "NOM_TERCERO_BENEF": "dante",
-                "NOM2_TERCERO_BENEF": "2",
-                "APE1_TERCERO_BENEF": "sanntiago",
-                "APE2_TERCERO_BENEF": "meneses",
-                "FEC_NAC_BENEF": "2013-01-07T00:00:00",
-                "MCA_SEXO_BENEF": "M",
-                "MCA_SEXO_BENEFDesc": "Masculino",
-                "TLF_NUMERO_BENEF": "5448-5362",
-                "EMAIL_BENEF": "dante123@gmail.com",
-                "TIP_RELAC": 1,
-                "TIP_RELACDesc": "Conyuge",
-                "PCT_PARTICIPACION": 50,
-                "PROVINCIA_BENEF": 5,
-                "PROVINCIA_BENEFDesc": "GUANACASTE",
-                "LOCALIDAD_BENEF": 507,
-                "LOCALIDAD_BENEFDesc": "ABANGARES"
-            }
-        ]
-    };
-
     let _polizagrupo = null;
 
     function show(row) {
-
-        //            let row = { NUM_POLIZA: "4012200005031", FEC_EFEC_SPTO: app.ui.Today(), FEC_VCTO_SPTO: app.ui.Today(), PRIMA_TOTAL: "CRC-9.100.00", COBERTURAS: " aasdAS D ;alsdk ;D as;dlKAS DA;SLDKa", OBSERVACION: " aasdAS D ;alsdk ;D as;dlKAS DA;SLDKa" }
-
-
         var html = [];
-
 
         html.push('<div class="row">');
 
@@ -120,7 +30,7 @@ app.Form_Ext_Altas = (function () {
         html.push(`</div></div>`);
         app.ui.ShowSideBar({ title: 'PÓLIZA #{NUM_POLIZA}', subtitle: 'La póliza fue emitida de forma exitosa', isHTML: true, HTML: html.join(''), data: row, width: '380px' });
 
-       // $('.sidebar-content').toggleClass('sk-loading');
+        // $('.sidebar-content').toggleClass('sk-loading');
     }
 
     function update_info_poliza_grupo() {
@@ -151,9 +61,7 @@ app.Form_Ext_Altas = (function () {
                             $("#IMP_PRIMA_FACT").prop("disabled", false);
                             $(".IMP_PRIMA_FACTVisible").removeClass('d-none');
                             app.core.Lookups(['TRON_G2990006_ByMod:IMP_PRIMA_FACT.IMP_PRIMA_FACT'], function () {
-
-
-                            },  `cod_ramo=${cod_ramo}:cod_modalidad=${_polizagrupo.MODALIDAD}`);
+                            }, `cod_ramo=${cod_ramo}:cod_modalidad=${_polizagrupo.MODALIDAD}`);
                             $("#IMP_PRIMA_INFORMADA").prop("disabled", true);
                             app.ui.SetNumericValue('#IMP_PRIMA_INFORMADA', 0);
                             break;
@@ -231,14 +139,11 @@ app.Form_Ext_Altas = (function () {
                         $('#APE_TERCERO_ASEG').val(data.LastName);
                         $('#EMAIL_ASEG').val(data.PrimaryEmailAddress);
                         $('#TLF_NUMERO_ASEG').val(data.PhoneNumber);
-                        
+
                         app.ui.SetDateValue('#NAC_ASEG', data.BirthDate);
                         app.ui.SetRadioNumericValue('MCA_SEXO_ASEG', data.Gender === 2 ? 0 : 1);
                         app.ui.SetDropDownStringValue('#NACIONALIDAD_ASEG', data.CountryOfNationalityISO, false);
                         app.ui.SetDropDownNumericValue('#COD_ESTADO', data.Province, false);
-                        //app.ui.SetDropDownNumericValue('#COD_PROVINCIA', data.Canton, false);
-                        //app.ui.SetDropDownNumericValue('#COD_LOCALIDAD', data.District, false);
-
                         app.core.LookupDependency(data.Province, 'COD_PROVINCIA', 'Cantones', '', data.Canton, false, null, `cod_pais=${cod_pais}:cod_estado=`);
                         app.core.LookupDependency(data.Canton, 'COD_LOCALIDAD', 'Distritos', '', data.District, false, null, `cod_pais=${cod_pais}:cod_prov=`);
 
@@ -269,10 +174,9 @@ app.Form_Ext_Altas = (function () {
                         $('#EMAIL_BENEF').val(data.PrimaryEmailAddress);
                         $('#TLF_NUMERO_BENEF').val(data.PhoneNumber);
 
-                        app.ui.SetDropDownNumericValue('#PROVINCIA_BENEF', data.Canton, false);
-                        app.ui.SetDropDownNumericValue('#LOCALIDAD_BENEF', data.District, false);
-
-                        app.core.LookupDependency($('select#PROVINCIA_BENEF').val(), 'LOCALIDAD_BENEF', 'Cantones', '', null, true, null, `cod_pais=${cod_pais}:cod_estado=`);
+                        app.ui.SetDropDownNumericValue('#ESTADO_BENEF', data.Province, false);
+                        app.core.LookupDependency(data.Province, 'PROVINCIA_BENEF', 'Cantones', '', data.Canton, false, null, `cod_pais=${cod_pais}:cod_estado=`);
+                        app.core.LookupDependency(data.Canton, 'LOCALIDAD_BENEF', 'Distritos', '', data.District, false, null, `cod_pais=${cod_pais}:cod_prov=`);
 
                     } else {
                         $('#NOM_TERCERO_BENEF').val('');
@@ -283,9 +187,9 @@ app.Form_Ext_Altas = (function () {
                         app.ui.SetRadioNumericValue('MCA_SEXO_BENEF', null);
                         $('#EMAIL_BENEF').val('');
                         $('#TLF_NUMERO_BENEF').val('');
+                        app.ui.SetDropDownNumericValue('#ESTADO_BENEF', null, false);
                         app.ui.SetDropDownNumericValue('#PROVINCIA_BENEF', null, false);
                         app.ui.SetDropDownNumericValue('#LOCALIDAD_BENEF', null, false);
-
                     }
                 }
             };
@@ -317,9 +221,14 @@ app.Form_Ext_Altas = (function () {
                         var pais = $('select#cod_pais').val();
                         app.core.LookupDependency($('select#COD_PROVINCIA').val(), 'COD_LOCALIDAD', 'Distritos', '', null, false, null, `cod_pais=${cod_pais}:cod_prov=`);
                     });
-                    $('#PROVINCIA_BENEF').on('change', function () {
-                        app.core.LookupDependency($('select#PROVINCIA_BENEF').val(), 'LOCALIDAD_BENEF', 'Cantones', '', null, true, null, `cod_pais=${cod_pais}:cod_estado=`);
+                    $('#ESTADO_BENEF').on('change', function () {
+                        app.core.LookupDependency($('select#ESTADO_BENEF').val(), 'PROVINCIA_BENEF', 'Cantones', '', null, true, null, `cod_pais=${cod_pais}:cod_estado=`);
                     });
+                    $('#PROVINCIA_BENEF').on('change', function () {
+                        var pais = $('select#cod_pais').val();
+                        app.core.LookupDependency($('select#PROVINCIA_BENEF').val(), 'LOCALIDAD_BENEF', 'Distritos', '', null, false, null, `cod_pais=${cod_pais}:cod_prov=`);
+                    });
+                    
                     $('#OCUPACION_ASEG').select2({ width: '100%', theme: 'bootstrap4' });
                 }, options.Base);
 
@@ -346,32 +255,6 @@ app.Form_Ext_Altas = (function () {
 
             $('#NUM_CONTRATO').on('change', function () {
                 update_info_poliza_grupo();
-            });
-
-            $('#testdata').val(JSON.stringify(_test));
-
-            $('#setdata').click(function (e) {
-                let data = _test; // JSON.parse($('#testdata').val());
-                //data.testdata = $('#testdata').val();
-
-                app.EmitirPoliza.SetData(data);
-                $('#RAMO').change();
-                let l1 = setInterval(function () {
-                    app.EmitirPoliza.SetData(data);
-                    clearInterval(l1)
-                }, 1000);
-                $('#COD_ESTADO').change();
-                let l2 = setInterval(function () {
-                    app.core.LookupDependency(data.COD_ESTADO, 'COD_PROVINCIA', 'Cantones', '', data.COD_PROVINCIA, false, null, `cod_pais=CRI:cod_estado=`);
-                    clearInterval(l2)
-                }, 500);
-                $('#COD_PROVINCIA').change();
-                let l3 = setInterval(function () {
-                    app.core.LookupDependency(data.COD_PROVINCIA, 'COD_LOCALIDAD', 'Distritos', '', data.COD_LOCALIDAD, false, null, `cod_pais=CRI:cod_prov=`);
-                    clearInterval(l3)
-                }, 1000);
-
-                e.preventDefault();
             });
 
             $('#btnIssue').click(function (e) {

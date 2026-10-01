@@ -233,11 +233,20 @@ app.CotizacionMapfreMas = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
+<<<<<<<< HEAD:WebApp/Reports/Cotizacion.MapfreMas.js
                     if ($('#COD_PLAN_AUTO option').length > 0) {
+========
+                    if (!localStorage.getItem('Roles').includes('Purdy')) {
+                        $('#COD_PLAN_AUTO option').filter(function () {
+                            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+                        }).remove();
+                    }
+                    if ($('#COD_PLAN_AUTO option').length == 1) {
+>>>>>>>> DES:WebApp/Scripts/Cotizacion.MapfreMasPlus.js
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
                     SettingReload();
-                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`);
+                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}:num_poliza_grupo=${setupData.polizagrupo == null ? '' : setupData.polizagrupo}`);
 
         });
 
@@ -563,6 +572,13 @@ app.CotizacionMapfreMas = (function () {
         $('#print').click(function () {
             event.preventDefault();
             let data = MapInputToObject();
+<<<<<<<< HEAD:WebApp/Reports/Cotizacion.MapfreMas.js
+========
+            if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "1") {
+                data.cod_uso_vehiDesc = "BANCA Y DESARROLLO";
+            }
+
+>>>>>>>> DES:WebApp/Scripts/Cotizacion.MapfreMasPlus.js
             data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
             data.presupuesto = quoteData.presupuesto;
             data.Agente = setupData.Agente;
@@ -1078,6 +1094,7 @@ app.CotizacionMapfreMas = (function () {
             pagination: false,
             smartDisplay: true,
             detailView: false,
+            cardView: true,
             columns: [
                 {
                     field: 'codigo',
@@ -1087,7 +1104,8 @@ app.CotizacionMapfreMas = (function () {
                     halign: 'center',
                     align: 'right',
                     formatter: 'app.ui.IntegerFormatter',
-                    visible: false
+                    visible: false,
+                    cardVisible: false
                 }, {
                     field: 'frecuencia',
                     title: 'Fraccionamiento',

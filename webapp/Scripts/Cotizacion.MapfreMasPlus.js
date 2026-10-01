@@ -204,12 +204,20 @@ app.CotizacionMapfreMasPlus = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
+<<<<<<< HEAD
                     RemoveEspecialPlanIfNotPurdy();
+=======
+                    if (!localStorage.getItem('Roles').includes('Purdy')) {
+                        $('#COD_PLAN_AUTO option').filter(function () {
+                            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+                        }).remove();
+                    }
+>>>>>>> DES
                     if ($('#COD_PLAN_AUTO option').length == 1) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
                     SettingReload();
-                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`);
+                }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}:num_poliza_grupo=${setupData.polizagrupo == null ? '' : setupData.polizagrupo}`);
 
         });
 
@@ -547,7 +555,7 @@ app.CotizacionMapfreMasPlus = (function () {
         $('#print').click(function (e) {
             e.preventDefault();
             let data = MapInputToObject();
-            if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "2") {
+            if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "1") {
                 data.cod_uso_vehiDesc = "BANCA Y DESARROLLO";
             }
 
@@ -1072,6 +1080,7 @@ app.CotizacionMapfreMasPlus = (function () {
             pagination: false,
             smartDisplay: true,
             detailView: false,
+            cardView: true,
             columns: [
                 {
                     field: 'codigo',
@@ -1081,7 +1090,8 @@ app.CotizacionMapfreMasPlus = (function () {
                     halign: 'center',
                     align: 'right',
                     formatter: 'app.ui.IntegerFormatter',
-                    visible: false
+                    visible: false,
+                    cardVisible: false
                 }, {
                     field: 'frecuencia',
                     title: 'Fraccionamiento',

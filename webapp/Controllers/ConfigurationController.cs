@@ -63,7 +63,13 @@ namespace aliados.Controllers
                 basepath = "app.setting.basepath".StringValue() ?? string.Empty,
                 viewpath = "app.setting.viewpath".StringValue() ?? string.Empty,
                 entityapi = "app.setting.entityapi".StringValue() ?? string.Empty,
-                reportapi = "app.setting.reportapi".StringValue() ?? string.Empty
+                reportapi = "app.setting.reportapi".StringValue() ?? string.Empty,
+                OneDriveClientId = "OneDriveClientId".StringValue() ?? string.Empty,
+                OneDriveAuthority = ConfigurationManager.AppSettings["OneDriveAuthority"]
+                    ?? (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["EntraId.TenantId"])
+                        ? "https://login.microsoftonline.com/" + ConfigurationManager.AppSettings["EntraId.TenantId"]
+                        : "https://login.microsoftonline.com/organizations"),
+                OneDrivePickerBaseUrl = "OneDrivePickerBaseUrl".StringValue() ?? string.Empty
             };
 
             return Json(settings, JsonRequestBehavior.AllowGet);
