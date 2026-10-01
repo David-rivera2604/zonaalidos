@@ -273,9 +273,17 @@ app.Masivos.Ui = (function () {
             });
     }
 
+    function mostrarAvisoProceso(accion) {
+        var mensaje = 'La ' + accion + ' del archivo se está ejecutando y puede tardar unos minutos. ' +
+            'Puede continuar trabajando; si desea conocer el avance, haga clic en el botón <strong>Refrescar</strong>.';
+        app.ui.ShowAlert('generalNotify', 'alert-info', '<i class="fa fa-info-circle"></i> ' + mensaje);
+        toastr.info(mensaje, 'Proceso en curso', { timeOut: 12000, extendedTimeOut: 6000, closeButton: true, progressBar: true });
+    }
+
     function validarMasivo(id) {
         app.ui.ButtonDoing('[data-id="' + id + '"]');
         $('#masivosTbl').bootstrapTable('showLoading');
+        mostrarAvisoProceso('validación');
 
         app.Masivos.Api.Validar(id)
             .done(function (data) {
@@ -294,6 +302,7 @@ app.Masivos.Ui = (function () {
 
     function procesarMasivoPorRegistro(id) {
         $('#masivosTbl').bootstrapTable('showLoading');
+        mostrarAvisoProceso('procesamiento');
 
         app.Masivos.Api.Procesar(id)
             .done(function (data) {
