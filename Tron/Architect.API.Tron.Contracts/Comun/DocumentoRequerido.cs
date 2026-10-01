@@ -24,14 +24,6 @@ namespace Architect.API.Tron.Contracts.Comun
         /// </summary>
         [DataMember(), JsonProperty()] public string tipo { get; set; }
         /// <summary>
-        /// Código del tipo de documento asociado a la tarjeta esperada.
-        /// </summary>
-        [DataMember(), JsonProperty()] public int documentType { get; set; }
-        /// <summary>
-        /// Descripción del tipo de documento asociado a la tarjeta esperada.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string documentTypeDesc { get; set; }
-        /// <summary>
         /// Archivo.
         /// </summary>
         [DataMember(), JsonProperty()] public string DNombre { get; set; }
@@ -56,10 +48,6 @@ namespace Architect.API.Tron.Contracts.Comun
         /// </summary>
         [DataMember(), JsonProperty()] public string DDescripcion { get; set; }
 
-        /// <summary>
-        /// Nombre del usuario que actualizo por última vez el registro.
-        /// </summary>
-        [DataMember(), JsonProperty()] public string UpdateUserName { get; set; }
     }
 
 }

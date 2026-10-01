@@ -28,6 +28,7 @@ namespace Architect.API.Insurance.Controllers
         /// <returns>Información de la personal.</returns>
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         [ResponseType(typeof(Contracts.Policy.Insured))]
         public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1, string source = null)
         {

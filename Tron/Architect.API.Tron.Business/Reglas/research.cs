@@ -230,8 +230,6 @@ namespace Architect.API.Tron.Business.Reglas
                 {
                     documentosrequeridosId = documentos.Count + 1,
                     tipo = documento.descripcion,
-                    documentType = documento.documentType > 0 ? documento.documentType : 1,
-                    documentTypeDesc = documento.descripcion.IsNotEmpty() ? documento.descripcion : "General",
                     DArchivoEsperado = documento.archivo,
                     Grupo = "F"
                 };

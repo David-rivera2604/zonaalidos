@@ -1,22 +1,15 @@
 var app = app || {};
 
-//Aliniacion a la derecha de los combos
-//select { text-align-last: right; }
-//option { direction: rtl; }
-
-app.CotizacionMapfreMas = (function () {
+app.CotizacionMapfreMasPlus = (function () {
 
     let fec_vcto_poliza_grupo = null;
     let modelHelper = [];
-
-    var workMode = '';
-    var setupData = null;
-    var quoteData = null;
-    var showCalculate = false;
-    var coberturas = null;
-
-    var settingReloadSeq = 0;
-    var coverageReloadSeq = 0;
+    let workMode = '';
+    let setupData = null;
+    let quoteData = null;
+    let showCalculate = false;
+    let coberturas = null;
+    const lstlowCostDev_Contract = [17100, 17101];
 
     function Setup(mode) {
         app.ui.CommonBehaviour();
@@ -27,25 +20,18 @@ app.CotizacionMapfreMas = (function () {
             $("label[for='nombredelcontratante']").html($("label[for='nombredelcontratante']").html() + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>")
         }
 
-        //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
-        //    localStorage.getItem('Roles').includes('Davivienda_Leasing')) {
         $('#emitir').html("<i class='fa fa-check'></i> Completar solicitud");
         workMode = '&mode=draft';
-        //}
-        //else {
-        //    $('#emitir').html("<i class='fa fa-check'></i> Emitir");
-        //    workMode = '&mode=continue';
-        //}
 
         $('#coberturasTbl').bootstrapTable('showLoading');
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSetup?mode=${mode}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasPlusSetup?mode=${mode}`)
             .done(function (data, textStatus, jqXHR) {
                 Init_Lookups(data);
             });
     }
 
     function Quote() {
-        app.core.Post(app.setting.apipath + 'v1/Quote/MapfreMasQuote',
+        app.core.Post(app.setting.apipath + 'v1/Quote/MapfreMasPlusQuote',
             JSON.stringify(MapInputToObject()),
             function (data) {
                 quoteData = data;
@@ -57,10 +43,16 @@ app.CotizacionMapfreMas = (function () {
                     $('#plandepagoRow').removeClass('d-none');
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
 
+                    if (localStorage.getItem('Roles').includes('Cafsa')) {
+                        var tabla = document.getElementById('plandepagoTbl');
+                        tabla.classList.add('Cafsa');
+                    }
+
                     if (data.plandepagoFull != null && data.plandepagoFull.length > 0) {
                         $('#plandepagoFullRow').removeClass('d-none');
                         $('#plandepagoFullTbl').bootstrapTable('load', data.plandepagoFull);
                     }
+
 
                     if (data.plandepagoporfrecuencia != null) {
                         $('.plandepagoporfrecuencia').removeClass('d-none');
@@ -70,6 +62,7 @@ app.CotizacionMapfreMas = (function () {
                         $('.plandepagoporfrecuencia').addClass('d-none');
                         $('#plandepagoporfrecuenciaTbl').bootstrapTable('load', {});
                     }
+
 
                     $('#mainBlock').removeClass('col-md-12');
                     $('#mainBlock').addClass('col-md-9');
@@ -89,6 +82,7 @@ app.CotizacionMapfreMas = (function () {
                     }
                 }
 
+
             }).always(function () {
                 app.ui.ButtonDone('#cotizar');
             });
@@ -103,11 +97,12 @@ app.CotizacionMapfreMas = (function () {
             'MM_MarcasVehiculos.cod_marca',
             'MM_ModelosVehiculos.cod_modelo',
             'UsoVehiculo.cod_uso_vehi',
-            'MM_DEDU_AUTOSUS.DedudAutoSust'];
+            'TRON_G1010031:DEDUC303_3019.DedudAutoSustConnect',
+            'TRON_G1010031:DEDUC303_3017.DedudAutoSust'];
 
         setupData = JSON.parse(JSON.stringify(data));
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
-            lookupList.push('MM_POLIZA_GRUPO.contrato'); //, 'MM_SUB_CONTRATOS.subcontrato'
+            lookupList.push('MM_POLIZA_GRUPO_303.contrato'); //, 'MM_SUB_CONTRATOS.subcontrato'
             $('#polizagrupoZone').removeClass('d-none');
             app.Cotizacion.CustomAgentHandler('pg_', setupData);
         } else {
@@ -145,10 +140,19 @@ app.CotizacionMapfreMas = (function () {
         $('#contrato').on('change', function () {
             let contracto = app.ui.GetDropDownNumericValue('#contrato');
 
-            if (contracto > 0) {
-                setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
+            if (contracto == 10700) {
+                app.ui.SetRadioStringValue('rc_alcohol', 'S');
+                $("#rc_alcohol_2").prop('disabled', true);
+                $("#rc_alcohol_1").prop('disabled', true);
+            } else {
+                $("#rc_alcohol_2").prop('disabled', false);
+                $("#rc_alcohol_1").prop('disabled', false);
             }
-            AplicarRestriccionTipoProductoPorContrato(contracto);
+
+
+            if (contracto > 0) {
+                setupData.polizagrupo = app.core.Data().lookups.filter(i => i.Key === 'MM_POLIZA_GRUPO_303')[0].Lkp.filter(l => l.Code === contracto + '')[0].NUM_POLIZA;
+            }
             initializeDateTimePicker();
             SettingReload();
             app.core.LookupDependency($('select#contrato').val(), 'subcontrato', 'MM_SUB_CONTRATOS', '', null, true,
@@ -158,59 +162,13 @@ app.CotizacionMapfreMas = (function () {
                     if (lkpData.length != 0) {
                         $('select#subcontrato').val(app.ui.GetDropDownNumericValue('#cod_mon'));
                         $('select#subcontrato').change();
-                    } { }
+                    }
                 },
                 `cod_ramo=${setupData.cod_ramo}:num_contrato=`);
-        });
-
-        // Contratos 99780 y 99781 solo se permite el tipo de producto "Trébol"
-        function AplicarRestriccionTipoProductoPorContrato(contratoValue) {
-            var contratosSoloTrebol = [99780, 99781];
-            var esContratoSoloTrebol = contratosSoloTrebol.indexOf(contratoValue) !== -1;
-            var esPurdy = localStorage.getItem('Roles').includes('Purdy');
-
-            if (esContratoSoloTrebol) {
-                $('input:radio[name=tipo_prod]').not('#tipo_prod_6').closest('.custom-control').addClass('d-none');
-                if (!$('#tipo_prod_6').prop('checked')) {
-                    $('#tipo_prod_6').prop('checked', true);
-                }
-                $('input:radio[name=tipo_prod]').prop('disabled', true);
-            } else {
-                $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
-
-                var bloquearTipoProd = esPurdy && contratoValue > 0;
-                $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
-                if (bloquearTipoProd) {
-                    $('input:radio[name=tipo_prod]').prop('checked', false);
-                }
-            }
-            $('#contratoClearBtn').toggleClass('d-none', !(esContratoSoloTrebol || (esPurdy && contratoValue > 0)));
-        }
-
-        $('#contratoClearBtn').on('click', function (e) {
-            e.preventDefault();
-            $('#contrato').prop('selectedIndex', -1);
-            $('#subcontrato').prop('selectedIndex', -1).prop('disabled', true);
-            $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false).closest('.custom-control').removeClass('d-none');
-            $('#contratoClearBtn').addClass('d-none');
-            SettingReload();
-        });
-
-        $('#tipoProdClearBtn').on('click', function (e) {
-            e.preventDefault();
-            $('input:radio[name=tipo_prod]').prop('checked', false);
-            app.ui.DropDownDisabled('#contrato', false, false);
-            $('#tipoProdClearBtn').addClass('d-none');
-            CoverageReload();
+            setDropDownUseVehi(contracto);
         });
 
         $('input:radio[name=tipo_prod]').change(function () {
-            if (localStorage.getItem('Roles').includes('Purdy')) {
-                app.ui.DropDownDisabled('#contrato', true, true);
-                app.ui.DropDownDisabled('#subcontrato', true, true);
-                $('#tipoProdClearBtn').removeClass('d-none');
-            }
-
             var data = {
                 cod_ramo: setupData.cod_ramo,
                 edad: app.ui.GetNumericValue('#edad'),
@@ -233,7 +191,7 @@ app.CotizacionMapfreMas = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
-                    if ($('#COD_PLAN_AUTO option').length > 0) {
+                    if ($('#COD_PLAN_AUTO option').length == 1) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
                     SettingReload();
@@ -243,6 +201,7 @@ app.CotizacionMapfreMas = (function () {
 
         $('#COD_PLAN_AUTO, #cod_tip_vehi, #cod_uso_vehi').on('change', function () {
             CoverageReload();
+            SetRButtonMcaBancaDesarrollo($("#cod_uso_vehi").val());
         });
 
         $('#cod_mon').on('change', function () {
@@ -252,7 +211,7 @@ app.CotizacionMapfreMas = (function () {
                 let cod_agt = app.Cotizacion.AgentCode();
                 app.ui.DropDownDisabled('#subcontrato', true, true);
                 app.core.Lookups([
-                    'MM_POLIZA_GRUPO.contrato'],
+                    'MM_POLIZA_GRUPO_303.contrato'],
                     function () {
                         SettingReload();
                     }, `cod_ramo=${data.cod_ramo}:cod_mon=${cod_mon}:cod_agt=${cod_agt}`);
@@ -260,10 +219,6 @@ app.CotizacionMapfreMas = (function () {
                 SettingReload();
             }
 
-        });
-
-        $('#COD_TIP_COM_VEHI').on('change', function () {
-            LimpiarCoberturasPorCambioCombustible();
         });
 
     }
@@ -300,14 +255,13 @@ app.CotizacionMapfreMas = (function () {
             cod_tip_vehiDesc: $("#cod_tip_vehi option:selected").text(),
             cod_uso_vehi: app.ui.GetDropDownNumericValue('#cod_uso_vehi'),
             cod_uso_vehiDesc: $("#cod_uso_vehi option:selected").text(),
-            COD_TIP_COM_VEHI: $("#COD_TIP_COM_VEHI option:selected").val(),
             COD_TIP_COM_VEHI_DESC: $("#COD_TIP_COM_VEHI option:selected").text(),
             MCA_CERO_KM: app.ui.GetRadioNumericValue('MCA_CERO_KM'),
+            MCA_BANCA_DESARROLLO: app.ui.GetRadioNumericValue('MCA_BANCA_DESARROLLO'),
             MCA_AUTO_GPS: app.ui.GetRadioNumericValue('MCA_AUTO_GPS'),
             MCA_AUTO_GPS_CMS: app.ui.GetRadioNumericValue('MCA_AUTO_GPS_CMS'),
             ext_garantia: app.ui.GetRadioNumericValue('ext_garantia'),
             rc_alcohol: app.ui.GetRadioStringValue('rc_alcohol'),
-            rc_conductor: app.ui.GetRadioStringValue('rc_conductor'),
             MCA_MONITOREO_GPS: app.ui.GetRadioNumericValue('MCA_MONITOREO_GPS'),
             MCA_PRA: app.ui.GetRadioNumericValue('MCA_PRA'),
             MCA_VR: app.ui.GetRadioNumericValue('MCA_VR'),
@@ -331,6 +285,7 @@ app.CotizacionMapfreMas = (function () {
             IMP_AUTO_CRI: app.ui.GetDropDownNumericValue('#IMP_AUTO_CRI'),
             DED_AUTO_CRI: app.ui.GetDropDownNumericValue('#DED_AUTO_CRI'),
             AutoSust: app.ui.GetDropDownNumericValue('#AutoSust'),
+            DedudAutoSustConnect: app.ui.GetDropDownNumericValue('#DedudAutoSustConnect'),
             DedudAutoSust: app.ui.GetDropDownNumericValue('#DedudAutoSust'),
             coberturas: $('#coberturasTbl').bootstrapTable('getData'),
             plandepago: $('#plandepagoTbl').bootstrapTable('getData'),
@@ -344,7 +299,6 @@ app.CotizacionMapfreMas = (function () {
             num_cuotas_gratis: app.ui.GetDropDownNumericValue('#num_cuotas_gratis'),
             cod_agt: app.Cotizacion.AgentCode(),
             cod_cuadro_com: app.Cotizacion.CuadroCom()
-
         };
         data.NUM_MATRICULA = data.NUM_MATRICULA.replace(/[^a-zA-Z0-9]/g, "");
         return data;
@@ -361,6 +315,7 @@ app.CotizacionMapfreMas = (function () {
         $('#cod_modelo').val(data.cod_modelo);
         $('#cod_tip_vehi').val(data.cod_tip_vehi);
         $('#cod_uso_vehi').val(data.cod_uso_vehi);
+        SetRButtonMcaBancaDesarrollo(data.cod_uso_vehi);
         app.ui.SetRadioStringValue('tipo_prod', data.tipo_prod);
         app.ui.SetDateValue('#fec_efec_poliza', data.fec_efec_poliza);
         $('#fec_vcto_poliza_group').data("DateTimePicker").minDate($('#fec_efec_poliza_group').data("DateTimePicker").date());
@@ -372,14 +327,15 @@ app.CotizacionMapfreMas = (function () {
             data.COD_PLAN_AUTO = $("#COD_PLAN_AUTO option:first").val();
         }
         $('#COD_PLAN_AUTO').val(data.COD_PLAN_AUTO);
+
         app.ui.SetNumericValue('#ANIO_SUB_MODELO', data.ANIO_SUB_MODELO);
         app.ui.SetRadioNumericValue('MCA_CERO_KM', data.MCA_CERO_KM);
+        app.ui.SetRadioNumericValue('MCA_BANCA_DESARROLLO', data.MCA_BANCA_DESARROLLO);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS', data.MCA_AUTO_GPS);
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
         app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);
         app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
         app.ui.SetRadioStringValue('rc_alcohol', data.rc_alcohol);
-        app.ui.SetRadioStringValue('rc_conductor', data.rc_conductor);
         app.ui.SetRadioNumericValue('MCA_PRA', data.MCA_PRA);
         app.ui.SetRadioNumericValue('MCA_VR', data.MCA_VR);
         app.ui.SetNumericValue('#IMP_VR', data.IMP_VR);
@@ -461,20 +417,34 @@ app.CotizacionMapfreMas = (function () {
             decimalPlaces: '2',
             emptyInputBehavior: 'null'
         });
-        const tienePrivilegios = localStorage.getItem('Roles')?.includes('Privilegios');
-        const opcionesAutoNumeric = {
-            decimalCharacter: ',',
-            decimalCharacterAlternative: '.',
-            digitGroupSeparator: '.',
-            decimalPlaces: '0',
-            emptyInputBehavior: 'null',
-            maximumValue: '0'
-        };
-        // Solo aplicar límites si NO tiene privilegios
-        if (!tienePrivilegios) {
-            opcionesAutoNumeric.minimumValue = '-15';
+
+        if (localStorage.getItem('Roles').includes('Purdy')) {
+            $('#PCT_AJUSTE_GEN').prop('title', 'Valor entre -5 y 0%');
+            new AutoNumeric('#PCT_AJUSTE_GEN', {
+                decimalCharacter: ',',
+                decimalCharacterAlternative: '.',
+                digitGroupSeparator: '.',
+                maximumValue: '0',
+                minimumValue: '-5',
+                decimalPlaces: '0',
+                emptyInputBehavior: 'null'
+            });
+        } else {
+            const tienePrivilegios = localStorage.getItem('Roles')?.includes('Privilegios');
+            const opcionesAutoNumeric = {
+                decimalCharacter: ',',
+                decimalCharacterAlternative: '.',
+                digitGroupSeparator: '.',
+                decimalPlaces: '0',
+                emptyInputBehavior: 'null',
+                maximumValue: '0'
+            };
+            // Solo aplicar límites si NO tiene privilegios
+            if (!tienePrivilegios) {
+                opcionesAutoNumeric.minimumValue = '-15';
+            }
+            new AutoNumeric('#PCT_AJUSTE_GEN', opcionesAutoNumeric);
         }
-        new AutoNumeric('#PCT_AJUSTE_GEN', opcionesAutoNumeric);
 
         new AutoNumeric('#IMP_AUTO_CYV', {
             decimalCharacter: ',',
@@ -538,15 +508,15 @@ app.CotizacionMapfreMas = (function () {
 
         });
 
-        $('#cotizar').click(function () {
+        $('#cotizar').click(function (e) {
             if (app.ui.IsValid('#VisualizationsEdtForm', false)) {
                 app.ui.ButtonDoing('#cotizar');
                 Quote();
             }
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#limpiar').click(function () {
+        $('#limpiar').click(function (e) {
             app.ui.ButtonDoing('#limpiar');
             $('#mainBlock').removeClass('col-md-9');
             $('#mainBlock').addClass('col-md-12');
@@ -557,21 +527,25 @@ app.CotizacionMapfreMas = (function () {
             MapObjectToInput(setupData);
             $("#VisualizationsEdtForm").validate().resetForm();
             app.ui.ButtonDone('#limpiar');
-            event.preventDefault();
+            e.preventDefault();
         });
 
-        $('#print').click(function () {
-            event.preventDefault();
+        $('#print').click(function (e) {
+            e.preventDefault();
             let data = MapInputToObject();
+            if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "2") {
+                data.cod_uso_vehiDesc = "BANCA Y DESARROLLO";
+            }
+
             data.plandepagoporfrecuencia = quoteData.plandepagoporfrecuencia;
             data.presupuesto = quoteData.presupuesto;
             data.Agente = setupData.Agente;
             app.Cotizacion.Imprimir('MapfreMas', data);
         });
 
-        $('#emitir').click(function () {
-            event.preventDefault();
-            window.location.replace(app.setting.basepath + 'emision/mapfremas?presupuesto=' + quoteData.presupuesto + workMode);
+        $('#emitir').click(function (e) {
+            e.preventDefault();
+            window.location.replace(app.setting.basepath + 'emision/mapfremasplus?presupuesto=' + quoteData.presupuesto + workMode);
         });
 
         $('#IMP_VR').change(function () {
@@ -596,7 +570,7 @@ app.CotizacionMapfreMas = (function () {
             $("#VisualizationsEdtForm").validate().resetForm();
         });
 
-        $('#VehicleModelHelper').click(function () {
+        $('#VehicleModelHelper').click(function (e) {
             if (modelHelper.length === 0) {
                 let cod_agt = app.Cotizacion.AgentCode();
                 app.core.Get(app.setting.apipath + 'v1/datasource/VehicleModelHelper?cod_agt' + cod_agt)
@@ -640,12 +614,13 @@ app.CotizacionMapfreMas = (function () {
                 $('.handler-marcaHelper').removeClass('d-none');
                 $('.handler-marca').addClass('d-none');
             }
-            event.preventDefault();
+            e.preventDefault();
         });
-        $('#VehicleModelHelperCancel').click(function () {
+
+        $('#VehicleModelHelperCancel').click(function (e) {
             $('.handler-marcaHelper').addClass('d-none');
             $('.handler-marca').removeClass('d-none');
-            event.preventDefault();
+            e.preventDefault();
         });
 
         //const radioSi = document.getElementById("mc_cuotas_gratis_1");
@@ -675,7 +650,6 @@ app.CotizacionMapfreMas = (function () {
                 $('#num_cuotas_gratis').prop('disabled', true);
             }
         });
-
     }
 
     function Setup_Validations() {
@@ -709,7 +683,7 @@ app.CotizacionMapfreMas = (function () {
         );
         $.validator.addMethod("AnoFabricacion",
             function (value, element, params) {
-                if (localStorage.getItem('Roles').includes('Privilegios') || localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Comercial_Mapfre'))
+                if (localStorage.getItem('Roles').includes('Privilegios') || localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Red_Afecta'))
                     return true;
                 else {
                     let nvalue = parseInt(value, 10);
@@ -748,12 +722,25 @@ app.CotizacionMapfreMas = (function () {
         );
 
         $.validator.addMethod("ValidarAjusteConRol", function (value, element) {
-            const tienePrivilegios = localStorage.getItem('Roles')?.includes('Privilegios');
-            if (tienePrivilegios) return true; // No validar si tiene el rol
+            const roles = localStorage.getItem('Roles') || '';
+            const tienePrivilegios = roles.includes('Privilegios');
+            const tienePurdy = roles.includes('Purdy');
+
+            if (tienePrivilegios) return true; // Sin validación para este rol
 
             const num = parseFloat(value);
-            return !isNaN(num) && num >= -15 && num <= 0;
-        }, "El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %");
+            if (isNaN(num)) return false;
+
+            const min = tienePurdy ? -5 : -15;
+            return num >= min && num <= 0;
+        }, function (_, element) {
+            const roles = localStorage.getItem('Roles') || '';
+            const tienePurdy = roles.includes('Purdy');
+            const min = tienePurdy ? '-5' : '-15';
+            return `El porcentaje de ajuste comercial debe estar entre el 0 y el ${min} %`;
+        });
+
+
 
         $("#VisualizationsEdtForm").validate({
             errorPlacement: app.ui.ErrorPlacement,
@@ -772,7 +759,7 @@ app.CotizacionMapfreMas = (function () {
                 cod_tip_vehi: { required: true },
                 cod_uso_vehi: { required: true },
                 IMP_VR: { required: true, Numeric: true },
-                PCT_AJUSTE_GEN: { AjustePorAnoFabricacion: true, ValidarAjusteConRol: true },
+                PCT_AJUSTE_GEN: { AjustePorAnoFabricacion: !localStorage.getItem('Roles')?.includes('Purdy'), ValidarAjusteConRol: true },
                 IMP_AUTO_RC: { required: true },
                 DED_AUTO_RC: { required: true },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: true },
@@ -789,7 +776,7 @@ app.CotizacionMapfreMas = (function () {
                 IMP_AUTO_CRI: { required: true },
                 DED_AUTO_CRI: { required: true },
                 AutoSust: { required: true },
-                DedudAutoSust: { required: true },
+                DedudAutoSustConnect: { required: true },
                 contrato: { required: false },
                 subcontrato: { required: false }
             },
@@ -808,7 +795,7 @@ app.CotizacionMapfreMas = (function () {
                 cod_tip_vehi: { required: 'Debe indicar el clase del vehículo' },
                 cod_uso_vehi: { required: 'Debe indicar el uso del vehículo' },
                 IMP_VR: { required: 'Debe indicar el valor del vehículo asegurado', Numeric: 'Debe indicar el valor del vehículo asegurado' },
-                PCT_AJUSTE_GEN: { ValidarAjusteConRol: 'El porcentaje de ajuste comercial debe estar entre el 0 y el -15 %, salvo que tenga privilegios', AjustePorAnoFabricacion: '' },
+                PCT_AJUSTE_GEN: { ValidarAjusteConRol: '', /*El mensaje ya está definido dinámicamente en la regla*/ AjustePorAnoFabricacion: '' },
                 IMP_AUTO_RC: { required: 'Debe indicar el responsabilidad civil' },
                 DED_AUTO_RC: { required: 'Debe indicar el deducible responsabilidad civil' },
                 IMP_AUTO_GMO: { ValorRequeridoSegunVechiculoPlan: 'Debe indicar el monto de gastos médicos de ocupantes para el plan seleccionado' },
@@ -826,7 +813,7 @@ app.CotizacionMapfreMas = (function () {
                 DED_AUTO_CRI: { required: 'Debe indicar el deducible rotura de cristales' },
 
                 AutoSust: { required: 'Debe indicar el auto sustituto' },
-                DedudAutoSust: { required: 'Debe indicar el deducible para el auto sustituto' },
+                DedudAutoSustConnect: { required: 'Debe indicar el deducible para el auto sustituto connect' },
                 contrato: { required: 'Debe indicar el contrato' },
                 subcontrato: { required: 'Debe indicar el subcontrato' }
             }
@@ -895,14 +882,7 @@ app.CotizacionMapfreMas = (function () {
                 },]
         });
 
-        $('#coberturasTbl').on('check.bs.table', function (e, row) {
-            if (!validarCoberturaSeleccionable(row)) {
-                $('#coberturasTbl').bootstrapTable('uncheckBy', {
-                    field: 'codigo',
-                    values: [row.codigo]
-                });
-                return;
-            }
+        $('#coberturasTbl').on('check.bs.table', function () {
             Coberturas_ManejoDeCapital();
         });
         $('#coberturasTbl').on('check-all.bs.table', function () {
@@ -1125,12 +1105,6 @@ app.CotizacionMapfreMas = (function () {
 
         //$('#IMP_VR').prop('disabled', app.ui.GetRadioNumericValue('MCA_VR') === '2');
 
-        app.ui.DropDownDisabled('#DED_AUTO_CYV', !app.Cotizacion.Coberturas_Seleccionada(coberturas, 3004) || (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3004) && app.ui.GetNumericValue('#IMP_AUTO_CYV') === 0));
-
-        app.ui.DropDownDisabled('#DED_AUTO_ROB', !app.Cotizacion.Coberturas_Seleccionada(coberturas, 3006) || (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3006) && app.ui.GetNumericValue('#IMP_AUTO_ROB') === 0));
-
-        app.ui.DropDownDisabled('#DED_AUTO_EQESP', $('#IMP_AUTO_EQESP').prop('disabled') && app.ui.GetNumericValue('#IMP_AUTO_EQESP') === 0);
-
         if (localStorage.getItem('Roles').includes('PolizaGrupo')) {
             app.ui.DropDownDisabled('#DED_AUTO_RAD', $('#IMP_AUTO_RAD').prop('disabled') && app.ui.GetNumericValue('#IMP_AUTO_RAD') === 0);
         } else {
@@ -1139,53 +1113,20 @@ app.CotizacionMapfreMas = (function () {
             // }
         }
 
-        let cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
-        let tipo_prod = app.ui.GetRadioStringValue('tipo_prod');
-        //31 HYUNDAI, 74 TOYOTA, 73 SUZUKI, 55 MITSUBISHI, 40 KIA, 50 MAZDA, 13 CHEVROLET, 30 HONDA
-        if (tipo_prod === 'trebolbc' || tipo_prod === 'trebolpr') {
-            // Ramo 302 MAPFRE Más: para Trébol Basic y Trébol Premium no se permite ajuste comercial
-            app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
-            $('#PCT_AJUSTE_GEN').prop('disabled', true);
-            $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').addClass('d-none');
-        }
-        else if (
-            (tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
-            (cod_marca === 31 ||
-                cod_marca === 74 ||
-                cod_marca === 73 ||
-                cod_marca === 55 ||
-                cod_marca === 40 ||
-                cod_marca === 50 ||
-                cod_marca === 13 ||
-                cod_marca === 30)
-        ) {
-            $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').removeClass('d-none');
-
-            if (!localStorage.getItem('Roles').includes('Privilegios')) {
-                app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
-                $('#PCT_AJUSTE_GEN').prop('disabled', true);
+        if (!localStorage.getItem('Roles').includes('Purdy')) {
+            let cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
+            let tipo_prod = app.ui.GetRadioStringValue('tipo_prod');
+            //31 HYUNDAI, 74 TOYOTA, 73 SUZUKI, 55 MITSUBISHI, 40 KIA, 50 MAZDA, 13 CHEVROLET, 30 HONDA
+            if ((tipo_prod === 'basico' || tipo_prod === 'amplio' || tipo_prod === 'plus') &&
+                (cod_marca === 31 || cod_marca === 74 || cod_marca === 73 || cod_marca === 55 || cod_marca === 40 || cod_marca === 50 || cod_marca === 13 || cod_marca === 30)) {
+                if (!localStorage.getItem('Roles').includes('Privilegios')) {
+                    app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
+                    $('#PCT_AJUSTE_GEN').prop('disabled', true);
+                }
+            } else {
+                $('#PCT_AJUSTE_GEN').prop('disabled', false);
             }
         }
-        else {
-            $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').removeClass('d-none');
-            $('#PCT_AJUSTE_GEN').prop('disabled', false);
-        }
-
-        //if (cod_tip_vehi === 2 && (cod_plan_auto === 31 && cod_plan_auto === 32 && cod_plan_auto == 33)) {
-        //    //La cobertura Gastos Médicos no se toma en cuenta para el auto de uso Comercial
-        //    //La cobertura Accidentes no se toma en cuenta para el auto de uso Comercial
-        //    app.ui.DropDownDisabled('#IMP_AUTO_GMO', true);
-        //    app.ui.DropDownDisabled('#IMP_AUTO_ACO', true);
-        //}
-        //else {
-        //    //La cobertura Gastos Médicos no se toma en cuenta para el plan Básico
-        //    //La cobertura Accidentes no se toma en cuenta para el plan Básico
-        //    app.ui.DropDownDisabled('#IMP_AUTO_GMO', cod_plan_auto === 31);
-        //    app.ui.DropDownDisabled('#IMP_AUTO_ACO', cod_plan_auto === 31);
-        //}
-
-        app.ui.DropDownDisabled('#IMP_AUTO_GMO', !app.Cotizacion.Coberturas_Seleccionada(coberturas, 3002), true);
-        app.ui.DropDownDisabled('#IMP_AUTO_ACO', !app.Cotizacion.Coberturas_Seleccionada(coberturas, 3003), true);
 
         if (showCalculate) {
             $('#plandepagoRow').addClass('d-none');
@@ -1196,6 +1137,7 @@ app.CotizacionMapfreMas = (function () {
             $('#mainBlock').addClass('col-md-12');
             $('#mainBlock').removeClass('col-md-9');
             $('#quoteBlock').addClass('d-none');
+
 
             var coberturasLocal = $('#coberturasTbl').bootstrapTable('getData');
             for (var i = 0; i < coberturasLocal.length; i++) {
@@ -1236,14 +1178,9 @@ app.CotizacionMapfreMas = (function () {
 
     function SettingReload(callback) {
         var param = SettingParameter();
-        var mySeq = ++settingReloadSeq;
 
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
+        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasPlusSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
             .done(function (settingData) {
-                if (mySeq !== settingReloadSeq) {
-                    return;
-                }
-
                 fec_vcto_poliza_grupo = settingData.fec_vcto_poliza_grupo;
                 app.ui.SetDateValue('#fec_vcto_poliza', app.ui.GetDateValue('#fec_efec_poliza'));
                 if (fec_vcto_poliza_grupo == null) {
@@ -1251,8 +1188,6 @@ app.CotizacionMapfreMas = (function () {
                     settingData.fec_vcto_poliza.setFullYear(settingData.fec_vcto_poliza.getFullYear() + 1);
                 }
                 app.ui.SetDateValue('#fec_vcto_poliza', settingData.fec_vcto_poliza);
-
-                app.ui.LookupLoad('cod_marca', settingData.cod_marca, false);
 
                 app.ui.LookupLoad('cod_tip_vehi', settingData.cod_tip_vehi, true);
                 app.ui.LookupLoad('COD_TIP_COM_VEHI', settingData.COD_TIP_COM_VEHI, true);
@@ -1281,32 +1216,53 @@ app.CotizacionMapfreMas = (function () {
                     $('#cod_fracc_pago').prop('disabled', false);
                 }
 
-                if (settingData.PLAN_AUTO != null && settingData.PLAN_AUTO.length === 0) {
-                    toastr.warning(
-                        'No hay ningún plan disponible para la combinación de tipo de producto/contrato y datos del vehículo seleccionados. Revise esos datos.',
-                        '',
-                        { closeButton: true, progressBar: true });
-                }
-
                 if (callback !== undefined && callback !== null) {
                     callback();
                 }
                 CoverageReload();
-                app.Cotizacion.DefaultSettings('MapfreMas');
+                app.Cotizacion.DefaultSettings('MapfreMasPlus');
             });
 
     }
+    //permite agregar un nuevo item para los contratos  17100, 17101 BANCA Y DESARROLLO PARA EL RAMO 303
+    function setDropDownUseVehi(contrato) {
+        let selector = "#cod_uso_vehi";
+        let textValue = "BANCA Y DESARROLLO";
+        if (lstlowCostDev_Contract.includes(contrato)) {
 
+            app.ui.DropDownValueWithOption(selector, "1", textValue);
+            app.ui.SelectDropDownByText(selector, textValue);
+            app.ui.DropDownDisabled(selector, true, false);
+
+        } else {
+
+            if (app.ui.GetDropDownSelectedText(selector) == textValue) {
+                $(`${selector} option:contains('${textValue}')`).remove();
+                app.ui.DropDownDisabled(selector, false, false);
+                app.ui.SetDropDownNumericValue(selector, "1");
+
+            }
+        }
+        
+
+    }
+    function SetRButtonMcaBancaDesarrollo(codAuto) {
+        let rdButton = "MCA_BANCA_DESARROLLO";
+        if (codAuto == '1') {
+            app.ui.SetRadioNumericValue(rdButton, 2);
+            $(`input[name="${rdButton}"]`).prop("disabled", true);
+        } else { 
+            $(`input[name="${rdButton}"]`).prop("disabled", false);
+        }
+
+
+    }
     function CoverageReload() {
         //  int mca_sexo, int cod_zona_circul, int edad, int cod_plan_auto
         var param = SettingParameter();
-        var mySeq = ++coverageReloadSeq;
         $('#coberturasTbl').bootstrapTable('showLoading');
-        app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasCoverages?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&cod_agt=${param.cod_agt}`)
+        app.core.Get(app.setting.apipath + 'v1/Quote/MapfreMasPlusCoverages?' + `cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.anio_sub_modelo}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.cod_plan_auto}&num_contrato=${param.num_contrato}&num_subcontrato=${param.num_subcontrato}&num_poliza_grupo=${param.num_poliza_grupo}&cod_agt=${param.cod_agt}`)
             .done(function (data) {
-                if (mySeq !== coverageReloadSeq) {
-                    return;
-                }
                 if (data != null) {
                     $('#coberturasTbl').bootstrapTable('load', data);
                     Coberturas_Fijas(data);
@@ -1315,18 +1271,41 @@ app.CotizacionMapfreMas = (function () {
                 else
                     $('#coberturasTbl').bootstrapTable('load', {});
             }).always(function () {
-                if (mySeq === coverageReloadSeq) {
-                    $('#coberturasTbl').bootstrapTable('hideLoading');
-                }
+                $('#coberturasTbl').bootstrapTable('hideLoading');
             });
     }
 
     function Coberturas_ManejoDeCapital() {
         coberturas = $('#coberturasTbl').bootstrapTable('getData');
 
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3001)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RC', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RC', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RC', true);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RC', true);
+            app.ui.SetDropDownNumericValue('#IMP_AUTO_RC', -1);
+            app.ui.SetDropDownNumericValue('#DED_AUTO_RC', -1);
+        }
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3002)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_GMO', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_GMO', true);
+            app.ui.SetDropDownNumericValue('#IMP_AUTO_GMO', -1);
+        }
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3003)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ACO', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ACO', true);
+            app.ui.SetDropDownNumericValue('#IMP_AUTO_ACO', -1);
+        }
+
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3004)) {
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CYV', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_CYV', true);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_CYV', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_CYV', false);
             app.ui.SetNumericValue('#IMP_AUTO_CYV', app.ui.GetNumericValue('#IMP_VR'));
         }
         else {
@@ -1335,9 +1314,10 @@ app.CotizacionMapfreMas = (function () {
             app.ui.SetNumericValue('#IMP_AUTO_CYV', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_CYV', -1);
         }
+
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3005)) {
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RAD', true);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_RAD', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_RAD', false);
             app.ui.SetNumericValue('#IMP_AUTO_RAD', app.ui.GetNumericValue('#IMP_VR'));
         }
         else {
@@ -1347,8 +1327,8 @@ app.CotizacionMapfreMas = (function () {
             app.ui.SetDropDownNumericValue('#DED_AUTO_RAD', -1);
         }
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3006)) {
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ROB', true);
-            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_ROB', true);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#IMP_AUTO_ROB', false);
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DED_AUTO_ROB', false);
             app.ui.SetNumericValue('#IMP_AUTO_ROB', app.ui.GetNumericValue('#IMP_VR'));
         }
         else {
@@ -1378,6 +1358,14 @@ app.CotizacionMapfreMas = (function () {
             app.ui.SetDropDownNumericValue('#DED_AUTO_EQESP', 0);
             app.ui.SetDropDownNumericValue('#DED_AUTO_EQESP', 0);
         }
+
+        if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3019)) {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSustConnect', false);
+        }
+        else {
+            app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSustConnect', true);
+            app.ui.SetDropDownNumericValue('#DedudAutoSustConnect', 0);
+        }
         if (app.Cotizacion.Coberturas_Seleccionada(coberturas, 3017)) {
             app.Cotizacion.Coberturas_ComportamientoDependencia('#DedudAutoSust', false);
         }
@@ -1396,45 +1384,6 @@ app.CotizacionMapfreMas = (function () {
         $('[name=btSelectAll]').prop('disabled', true);
     }
 
-    function validarCoberturaSeleccionable(row) {
-        const tipoCombustible = $("#COD_TIP_COM_VEHI option:selected").val();
-        var roles = localStorage.getItem('Roles'); 
-
-        if (roles.includes('Veinsa')) {
-            // Eléctrico
-            if (tipoCombustible == "2" && row.codigo == 3010) {
-                toastr.warning('La cobertura 3010 no aplica para vehículos eléctricos.');
-                return false;
-            }
-
-            // Combustible o Híbrido
-            if ((tipoCombustible == "1" || tipoCombustible == "3") && row.codigo == 1060) {
-                toastr.warning('La cobertura 1060 solo aplica para vehículos eléctricos.');
-                return false;
-            }
-        }
-            return true;
-        
-    }
-
-    function LimpiarCoberturasPorCambioCombustible() {
-        var roles = localStorage.getItem('Roles');
-
-        if (roles.includes('Veinsa')) {
-            $('#coberturasTbl').bootstrapTable('uncheckBy', {
-                field: 'codigo',
-                values: [3010]
-            });
-
-            $('#coberturasTbl').bootstrapTable('uncheckBy', {
-                field: 'codigo',
-                values: [1060]
-            });
-
-            Coberturas_ManejoDeCapital();
-        }
-    }
-
     function initializeDateTimePicker() {
         var contratoValue = app.ui.GetDropDownNumericValue('#contrato');
         var roles = localStorage.getItem('Roles');
@@ -1442,7 +1391,7 @@ app.CotizacionMapfreMas = (function () {
         if (contratoValue !== null && contratoValue !== undefined) {
             var minDate;
 
-            if (contratoValue === 10006 || contratoValue === 14002) {
+            if (contratoValue === 10205) {
                 minDate = moment().subtract(6, 'months').startOf('day'); // Retroceso de 6 meses
             }
             else if (roles.includes('Purdy')) {
@@ -1479,15 +1428,16 @@ app.CotizacionMapfreMas = (function () {
             plandepagoporfrecuencia_table_setup();
 
             Controls_Events();
-            if (app.language && app.language.translate) {
-                app.language.translate('#quoteBlock', '_resumen')();
-                app.language.translate('#DatosGeneralesTitle', '_datosgenerales')();
-                app.language.translate('#coberturasTbl', '_coberturaPlan')();
-                app.language.translate('#polizagrupoZone', '_polizagrupo')();
-            }
-            app.language.translate('body', 'MapfreMas')();
+                if (app.language && app.language.translate) {
+                    app.language.translate('#quoteBlock', '_resumen')();
+                    app.language.translate('#DatosGeneralesTitle', '_datosgenerales')();
+                    app.language.translate('#coberturasTbl', '_coberturaPlan')();
+                    app.language.translate('#polizagrupoZone', '_polizagrupo')();
+                }
+            app.language.translate('body', 'MapfreMasPlus')();
             Setup(mode);
         }
     };
 })();
+
 

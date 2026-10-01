@@ -3,10 +3,8 @@ using Architect.API.Core.Business.General;
 using Architect.API.Tron.DataAccess.Pagos;
 using Architect.Payment.Integrations.Contracts.v2;
 using Architect.Utilities.Extensions;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Hangfire;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +59,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         envioDate = DateTime.Today,
                         numPlan = "0",
                         trnExterna = true,
-                        items = new List<Architect.Payment.Integrations.Contracts.v2.Item>(),
+                        items = new List<Item>(),
                         urlWebhook = string.Format("{0}/v2/Pagos/RecurringReceipts", Utilities.Helpers.Settings.StringValue("Payment.Silice.urlWebhook"))
                     };
                     string email = string.Empty;
@@ -76,32 +74,31 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         if (string.IsNullOrEmpty(email))
                             email = pendiente.TXT_EMAIL;
 
-                        Architect.Payment.Integrations.Contracts.v2.Item newItem = new Architect.Payment.Integrations.Contracts.v2.Item()
-                        {
-                            productCode = "0",
-                            subtotal = pendiente.IMP_RECIBO.ToString(),
-                            impuestos = "0",
-                            emailCliente = email,
-                            total = pendiente.IMP_RECIBO.ToString(),
-                            ordenId = pendiente.NUM_RECIBO.ToString(),
-                            origen = "api",
-                            expectedCollectionPaidDate = DateTime.Today,
-                            moneda = pendiente.NOM_MON,
-                            concepto = string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.NOM_SECTOR),
-                            token = pendiente.TOKEN,
-
-                            firstname = pendiente.NOM_TERCERO,
-                            lastname = pendiente.APE1_TERCERO,
-                            documenttype = pendiente.TIP_DOCUM,
-                            document = pendiente.COD_DOCUM,
-                            mobile = pendiente.TLF_NUMERO.OnlyNumbers()
-                        };
-
                         if (!string.IsNullOrEmpty(email))
                         {
                             total += pendiente.IMP_RECIBO;
                             count++;
 
+                            Item newItem = new Item()
+                            {
+                                productCode = "0",
+                                subtotal = pendiente.IMP_RECIBO.ToString(),
+                                impuestos = "0",
+                                emailCliente = email,
+                                total = pendiente.IMP_RECIBO.ToString(),
+                                ordenId = pendiente.NUM_RECIBO.ToString(),
+                                origen = "api",
+                                expectedCollectionPaidDate = DateTime.Today,
+                                moneda = pendiente.NOM_MON,
+                                concepto = string.Format("MAPFRE: {3}. {0}. POLIZA #{1} RECIBO #{2}", pendiente.NOM_RAMO, pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.NOM_SECTOR),
+                                token = pendiente.TOKEN,
+
+                                firstname = pendiente.NOM_TERCERO,
+                                lastname = pendiente.APE1_TERCERO,
+                                documenttype = pendiente.TIP_DOCUM,
+                                document = pendiente.COD_DOCUM,
+                                mobile = pendiente.TLF_NUMERO.OnlyNumbers()
+                            };
                             reciboReq.items.Add(newItem);
                             if (string.IsNullOrEmpty(prefix))
                             {
@@ -117,25 +114,6 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                                 pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, pendiente.COD_AGT, reciboReq.procesoId).Id;
 
                             newItem.ordenId = id.ToString();
-                        }
-                        else
-                        {
-
-                            id = Payment.Integrations.Providers.Silice.Payment.TrackOnlinePayment(cod_cia, 0, newItem,
-                                pendiente.NUM_POLIZA, pendiente.NUM_RECIBO, pendiente.IMP_RECIBO,
-                                pendiente.TIP_DOCUM, pendiente.COD_DOCUM, pendiente.NOM_TERCERO, pendiente.APE1_TERCERO, pendiente.TLF_NUMERO, pendiente.COD_AGT, reciboReq.procesoId).Id;
-
-                            Architect.Payment.Integrations.Payment.UpdateStatus(0,
-                                new Payment.Integrations.Contracts.OnlinePayment()
-                                {
-                                    Id = id
-                                },
-                                new Payment.Integrations.Contracts.InformationRequest()
-                                {
-                                    status = "REJECTED",
-                                    message = "El cliente no tiene un correo electrónico registrado"
-                                });
-
                         }
                         recordCount++;
                     }
@@ -481,7 +459,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
         {
             int recordCount = 0;
             int cod_cia = Utilities.Helpers.Settings.IntegerValue("Mapfre.Tron.cod_cia", 1);
-            string prefix = "EMail.Test".StringValue(0);
+            string prefix =  "EMail.Test".StringValue(0);
             int cardCount = "Payment.Silice.Tokenize.Cantidad.Tarjetas".IntegerValue(0, 50);
             string provider = "Tenant.Settings.Payment.Provider".StringValue(0);
             string filter = "Payment.Silice.Tokenize.Filter.Policies".StringValue(0, string.Empty);
@@ -534,10 +512,9 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                 client.DefaultRequestHeaders.Authorization = null;
 
                 List<DatosTarjeta> result = Architect.Payment.Integrations.Tokenize.Request(provider, client, datosTajetas).Result;
-                DateTime validUntil;
+
                 foreach (DatosTarjeta tarjeta in result)
                 {
-                    validUntil = new DateTime(tarjeta.expiry_year, tarjeta.expiry_month, DateTime.DaysInMonth(tarjeta.expiry_year, tarjeta.expiry_month));
                     var data = pendientes.Where(r => r.NUM_TARJETA == tarjeta.key).FirstOrDefault();
                     if (tarjeta.token != string.Empty)
                     {
@@ -545,7 +522,7 @@ namespace Architect.API.Tron.Business.Backoffice.v2
                         DataAccess.Pagos.Num_Tarjeta_mcr.Update(cod_cia, tarjeta.tip_docum, tarjeta.cod_docum, tarjeta.card, null);
                         data.NUM_TARJETA = tarjeta.card;
                     }
-                    DataAccess.Pagos.Tarjetas.CreateBoveda(data.NUM_POLIZA, data.NUM_SPTO, tarjeta.tip_docum, tarjeta.cod_docum, data.NUM_TARJETA, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason, validUntil);
+                    DataAccess.Pagos.Tarjetas.CreateBoveda(data.NUM_POLIZA, data.NUM_SPTO, tarjeta.tip_docum, tarjeta.cod_docum, data.NUM_TARJETA, tarjeta.token, tarjeta.clientId, tarjeta.status, tarjeta.reason);
                     recordCount++;
                 }
             }

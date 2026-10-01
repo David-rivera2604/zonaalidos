@@ -7,78 +7,40 @@
             </div>
             <div class='col-auto'>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-white"
-                            id="btnOneDrivePicker"
-                            data-fileuploader-target="dropzone"
-                            data-fileuploader-action="oneDrivePicker"
-                            title="Adjuntar desde OneDrive">
-                        <i class="fa fa-cloud"></i>
-                    </button>
                     <button type="button" class="btn btn-sm btn-white dropdown-toggle" id="AttachmentDownload" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Descargar adjuntos">
                         <i class="fa fa-download"></i>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#"
-                           id="downloadZip"
-                           data-fileuploader-target="dropzone"
+                        <a class="dropdown-item" href="#" 
+                           id="downloadZip" 
+                           data-fileuploader-target="dropzone" 
                            data-fileuploader-action="downloadZip">
                             <i class="fa fa-file-archive-o"></i> <span id="downloadZipText">Descargar todo (ZIP)</span>
                         </a>
-                        <a class="dropdown-item" href="#"
-                           id="downloadIndividual"
-                           data-fileuploader-target="dropzone"
+                        <a class="dropdown-item" href="#" 
+                           id="downloadIndividual" 
+                           data-fileuploader-target="dropzone" 
                            data-fileuploader-action="downloadAll">
                             <i class="fa fa-files-o"></i> <span id="downloadIndividualText">Descargar uno por uno</span>
                         </a>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
         <div class="hr-line-dashed AttachmentTitle" style="border-top: 2px solid #e7eaec; margin: 10px 0;"></div>
-        <div id="expectedDocumentsContainer">
-            <div class="form-row">
-                <div class='col-md-12' style="padding-bottom: 20px">
-                    <div class="table-responsive animated bounceInRight">
-                        <div id="dropzone" class="dropzone" style="min-height: 150px; border: 2px dashed #0087F7; border-radius: 5px; background: #f8f9fa;">
-                            <div class="dz-message" style="text-align: center; padding: 50px 0;">
-                                <i class="fa fa-cloud-upload" style="font-size: 48px; color: #0087F7;"></i>
-                                <h4 id="DropzoneTitle" style="margin-top: 15px;">Arrastra archivos aquí o haz clic para seleccionar</h4>
-                                <span id="DropzoneSubtitle" style="color: #999;">Puedes subir múltiples archivos a la vez</span>
-                            </div>
+        <div class="form-row">
+            <div class='col-md-12' style="padding-bottom: 20px">
+                <div class="table-responsive animated bounceInRight">
+                    <div id="dropzone" class="dropzone" style="min-height: 150px; border: 2px dashed #0087F7; border-radius: 5px; background: #f8f9fa;">
+                        <div class="dz-message" style="text-align: center; padding: 50px 0;">
+                            <i class="fa fa-cloud-upload" style="font-size: 48px; color: #0087F7;"></i>
+                            <h4 id="DropzoneTitle" style="margin-top: 15px;">Arrastra archivos aquí o haz clic para seleccionar</h4>
+                            <span id="DropzoneSubtitle" style="color: #999;">Puedes subir múltiples archivos a la vez</span>
                         </div>
-                        @*<table id="AttachmentGridTbl" style="font-size: 12px" class="table table-bordered table-hover table-index"></table>*@
                     </div>
+                    @*<table id="AttachmentGridTbl" style="font-size: 12px" class="table table-bordered table-hover table-index"></table>*@
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@* Panel embebido (modal + iframe) donde carga el File Picker v8 de OneDrive.
-   file.uploader.js lo detecta por id (#OneDrivePickerModal / #oneDrivePickerFrame)
-   y lo usa en vez de una ventana emergente del sistema operativo. *@
-<div class="modal inmodal" id="OneDrivePickerModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content animated bounceInRight">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                <h4 class="modal-title"><i class="fa fa-cloud"></i> Seleccionar desde OneDrive</h4>
-            </div>
-            <div class="modal-body" style="padding: 0;">
-                <iframe id="oneDrivePickerFrame" title="OneDrive File Picker" style="width: 100%; height: 620px; border: 0;"></iframe>
-            </div>
-        </div>
-    </div>
-</div>
-
-@* Dependencia del boton "Adjuntar desde OneDrive" (File Picker v8, OneDrive personal/MSA).
-   Toda la logica (config, apertura del picker, wiring del click) vive dentro de
-   app/js/file.uploader.js - aqui solo se carga MSAL, que el navegador necesita
-   como script global.
-   MSAL Browser v3 deprecó el bundle para CDN (solo publica ESM/CJS para bundlers
-   desde la v3.0.0); como este proyecto no tiene pipeline de bundling para JS de
-   cliente, usamos la ultima v2.x.
-   Servido localmente (assets/js/plugins/msal-browser.min.js, msal-browser
-   v2.38.2 - mismo archivo/version que se usaba desde el CDN de Microsoft) en vez
-   de depender del CDN externo, igual que el resto de los plugins de /assets. *@
-<script type="text/javascript" src="@Url.Content("~/assets/js/plugins/msal-browser.min.js")"></script>

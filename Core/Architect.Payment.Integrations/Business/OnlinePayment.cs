@@ -35,9 +35,9 @@ namespace Architect.Payment.Integrations.Business
         /// <summary>
         /// Recupera un registro en la tabla OnlinePayment por medio del campo RequestID.
         /// </summary>
-        public static Contracts.OnlinePayment RetrieveByRequestID(Int64 requestId, bool full = false)
+        public static Contracts.OnlinePayment RetrieveByRequestID(Int64 requestId)
         {
-            return DataAccess.OnlinePayment.RetrieveByRequestID(requestId, full);
+            return DataAccess.OnlinePayment.RetrieveByRequestID(requestId);
         }
 
         public static Contracts.OnlinePayment RetrieveByPolicyAndBill(int companyId, string policyId, Int64 billNumber)
@@ -64,20 +64,6 @@ namespace Architect.Payment.Integrations.Business
         public static int UpdateNewSession(Contracts.OnlinePayment onlinepaymentItem)
         {
             return DataAccess.OnlinePayment.UpdateNewSession(onlinepaymentItem);
-        }
-
-        public static Architect.Payment.Integrations.Contracts.InformationRequest Retrieve_By_RequestID(Int64 requestId)
-        {
-            Contracts.OnlinePayment payment = DataAccess.OnlinePayment.RetrieveByRequestID(requestId, true);
-
-            Architect.Payment.Integrations.Contracts.InformationRequest result = null;
-            if (payment.ResponseData.IsNotEmpty())
-            {
-                result = Architect.Payment.Integrations.Providers.Placetopay.Webcheckout.Convert_Information_2_InformationRequest(payment.ResponseData, string.Empty);
-                result.OnlinePayment = payment;
-            }
-
-            return result;
         }
     }
 }

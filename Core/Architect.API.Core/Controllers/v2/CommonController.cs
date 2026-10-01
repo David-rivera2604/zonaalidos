@@ -26,12 +26,8 @@ namespace Architect.API.Process.WebApi.Controllers.v2
         private const string FORM_ENTITY_TYPE = "EntityType";
         private const string FORM_ENTITY_ID = "EntityId";
         private const string FORM_DOCUMENT_TYPE = "DocumentType";
-        private const string FORM_DOCUMENT_TYPE_DESC = "DocumentTypeDesc";
         private const string FORM_DESCRIPTION = "Description";
         private const string FILES_PATH_KEY = "Files.Path";
-
-        private const int DEFAULT_DOCUMENT_TYPE = 1;
-        private const string DEFAULT_DOCUMENT_TYPE_DESC = "General";
 
         private const string ERROR_INVALID_FILE_FORMAT = "El archivo {0} no es válido para su tipo";
         private const string ERROR_INVALID_FILE_SIZE = "El archivo {0} no tiene el tamaño permitido";
@@ -208,34 +204,12 @@ namespace Architect.API.Process.WebApi.Controllers.v2
                     attachmentId = SaveAttachment(uploadedFile, tokenInfo, httpContext, fullFilePath, size);
                 }
 
-                var form = httpContext?.Request?.Form;
-                var documentType = DEFAULT_DOCUMENT_TYPE;
-                if (form != null && form.Get(FORM_DOCUMENT_TYPE).IsNotEmpty())
-                {
-                    documentType = Convert.ToInt32(form.Get(FORM_DOCUMENT_TYPE));
-                }
-
-                var documentTypeDesc = DEFAULT_DOCUMENT_TYPE_DESC;
-                if (form != null && form.Get(FORM_DOCUMENT_TYPE_DESC).IsNotEmpty())
-                {
-                    documentTypeDesc = form.Get(FORM_DOCUMENT_TYPE_DESC);
-                }
-
-                var description = form?.Get(FORM_DESCRIPTION);
-                if (description.IsEmpty() || description == FILENAME_PLACEHOLDER)
-                {
-                    description = Path.GetFileNameWithoutExtension(uploadedFile.FileName);
-                }
-
                 return new
                 {
                     FileName = uploadedFile.FileName,
                     StoredFileName = storedFileName,
                     Size = size,
                     Id = attachmentId,
-                    DocumentType = documentType,
-                    DocumentTypeDesc = documentTypeDesc,
-                    Description = description,
                     UpdateUserName = tokenInfo?.UserName,
                     UpdateDate = DateTime.Now
                 };

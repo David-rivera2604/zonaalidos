@@ -12,6 +12,7 @@ app.EmisionMapfreMas = (function () {
     var workMode = '';
     var setupData = null;
     var showCalculate = false;
+    var rowDocumentosrequeridos = null;
     let mca_cuotas_gratis = 'N';
 
     // Cuentas con rol Banca: solo el tipo de producto Banca; las demas cuentas no lo ven (igual que en la cotizacion).
@@ -42,21 +43,10 @@ app.EmisionMapfreMas = (function () {
                         $('#Fuente_Tomador').prop("disabled", (workMode != 'draft' && workMode != 'resume'));
                     }
 
-                    // Plan Banca (cod_plan 39): con el rol Banca solo se visualiza este plan, el resto se oculta
-                    if (app.ui.HasRole('Banca')) {
-                        $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').addClass('d-none');
-                        $('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
-                        // Rol Banca: el plan Banca (cod_plan 39) es el unico disponible, se carga por defecto
-                        data.tipo_prod = 'banca';
-                        data.COD_PLAN_AUTO = 39;
-                    } else {
-                        $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').removeClass('d-none');
-                        $('#tipo_prod_10').closest('.custom-control').addClass('d-none');
-                    }
-
                     if (workMode === 'draft' || workMode === 'resume') {
                         $('#guardarenviar').removeClass('d-none');
                         $("#guardarenviar").appendTo("#GenericToolBar");
+                        $('.documentosrequeridosGrid').addClass('d-none');
 
                         $('#PageSubTitle').text("Emision Solicitud de Seguro")
                         $('.enviosolicitudZone').removeClass('d-none');
@@ -130,6 +120,8 @@ app.EmisionMapfreMas = (function () {
         $('#DedudAutoSust').replaceWith(ValorSoloLectura($('#DedudAutoSust option:selected').text()));
         //$('#tercerosNew').addClass('d-none');
         //$('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
+        //$('#documentosrequeridosNew').addClass('d-none');
+        //$('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
     }
 
     function ReadOnly_End() {
@@ -146,6 +138,8 @@ app.EmisionMapfreMas = (function () {
 
         $('#tercerosNew').addClass('d-none');
         $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
+        $('#documentosrequeridosNew').addClass('d-none');
+        $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
         $('#formulariosNew').addClass('d-none');
         $('#formulariosTbl').bootstrapTable('hideColumn', 'Actions');
     }
@@ -281,30 +275,7 @@ app.EmisionMapfreMas = (function () {
         data.VAL_CAPACIDAD = app.ui.GetNumericValue('#VAL_CAPACIDAD');
         data.Vehiculo_Otra_Poliza = app.ui.GetRadioStringValue('Vehiculo_Otra_Poliza');
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
-        data.documentosrequeridos = [];
-
-        // Convertir archivos de Dropzone a DocumentoRequerido
-        var dropzoneInstance = $('#dropzone').data('dropzone');
-        if (dropzoneInstance) {
-            var uploadedFiles = dropzoneInstance.getAcceptedFiles();
-            uploadedFiles.forEach(function (file) {
-                var docRequerido = {
-                    documentosrequeridosId: 0,
-                    DStored: 'S',
-                    tipo: file.type || 'application/octet-stream',
-                    documentType: file.DocumentType || 1,
-                    documentTypeDesc: file.DocumentTypeDesc || 'General',
-                    DNombre: file.name,
-                    DArchivoEsperado: file.name,
-                    Grupo: 'ADJUNTOS',
-                    DFecha: new Date(),
-                    DTamano: file.size || 0,
-                    DDescripcion: file.DocumentTypeDesc || 'Documento adjunto cargado'
-                };
-                data.documentosrequeridos.push(docRequerido);
-            });
-        }
-
+        data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
         data.kyc = null;
         let formulariosData = $('#formulariosTbl').bootstrapTable('getData');
         if (formulariosData.length > 0) {
@@ -384,62 +355,10 @@ app.EmisionMapfreMas = (function () {
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
         else
             $('#tercerosTbl').bootstrapTable('load', {});
-        if (data.documentosrequeridos != null) {
-            let pendientesMap = data.documentosrequeridos
-                .filter(function (doc) {
-                    // Solo son documentos esperados los que tienen un documentType entre 20 y 97 (>=20 y <98)
-                    let dt = parseInt(doc.documentType, 10);
-                    return !isNaN(dt) && dt >= 20 && dt < 98;
-                })
-                .map(function (doc, index) {
-                    let isCompleted = doc.DStored != null && doc.DStored !== '';
-                    return {
-                        id: doc.documentosrequeridosId,
-                        name: doc.tipo,
-                        description: doc.DArchivoEsperado,
-                        status: isCompleted ? 'completed' : 'pending',
-                        documentType: doc.documentType,
-                        documentTypeDesc: doc.documentTypeDesc || 'General',
-                        uploadedFile: isCompleted ? {
-                            id: doc.documentosrequeridosId,
-                            name: doc.DNombre || doc.DArchivoEsperado,
-                            size: doc.DTamano,
-                            user: doc.UpdateUserName,
-                            date: doc.DFecha,
-                            storedFileName: doc.DNombre,
-                            type: 'application/octet-stream'
-                        } : null
-                    };
-                });
-
-            // Documentos genéricos (fuera del rango de esperados) que ya están cargados
-            // se muestran como adjuntos generales, no como tarjetas esperadas.
-            let genericosMap = data.documentosrequeridos
-                .filter(function (doc) {
-                    let dt = parseInt(doc.documentType, 10);
-                    let isExpected = !isNaN(dt) && dt >= 20 && dt < 98;
-                    let isCompleted = doc.DStored != null && doc.DStored !== '';
-                    return !isExpected && isCompleted;
-                })
-                .map(function (doc) {
-                    return {
-                        Id: doc.documentosrequeridosId,
-                        FileName: doc.DNombre || doc.DArchivoEsperado,
-                        StoredFileName: doc.DNombre,
-                        Size: doc.DTamano,
-                        DocumentType: doc.documentType || 1,
-                        DocumentTypeDesc: doc.documentTypeDesc || 'General',
-                        Description: doc.tipo || doc.DArchivoEsperado,
-                        UpdateUserName: doc.UpdateUserName,
-                        UpdateDate: doc.DFecha
-                    };
-                });
-
-            $('#dropzone').fileUploader('load', genericosMap, { EntityType: 3000, EntityId: data.presupuesto, DocumentType: 99, Description: "MapfreMas" });
-            $('#dropzone').fileUploader('setExpectedDocuments', pendientesMap);
-
-        }
-
+        if (data.documentosrequeridos != null)
+            $('#documentosrequeridosTbl').bootstrapTable('load', data.documentosrequeridos);
+        else
+            $('#documentosrequeridosTbl').bootstrapTable('load', {});
         if (data.coberturas != null)
             $('#coberturasTbl').bootstrapTable('load', data.coberturas);
         else
@@ -638,7 +557,7 @@ app.EmisionMapfreMas = (function () {
                 });
         });
 
-        $('#cotizar').click(function (e) {
+        $('#cotizar').click(function () {
             var others = OtherValidations();
             if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#cotizar');
@@ -647,16 +566,16 @@ app.EmisionMapfreMas = (function () {
             else {
                 var instance = $('#VisualizationsEdtForm');
                 var validate = instance.validate();
-                //validate.settings.ignore = '';
+                validate.settings.ignore = '';
                 var result = instance.valid();
                 var count = validate.numberOfInvalids();
-                //validate.settings.ignore = ':hidden';
+                validate.settings.ignore = ':hidden';
                 toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
-            e.preventDefault();
+            event.preventDefault();
         });
 
-        $('#guardarenviar').click(function (e) {
+        $('#guardarenviar').click(function () {
             var others = OtherValidations();
             if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#guardarenviar');
@@ -685,7 +604,7 @@ app.EmisionMapfreMas = (function () {
                 validate.settings.ignore = ':hidden';
                 toastr.error("Existen " + (count + others) + " error(es), que ameritan su atención.", "", { closeButton: true, progressBar: true });
             }
-            e.preventDefault();
+            event.preventDefault();
         });
 
         $('#print').click(function (e) {
@@ -949,6 +868,7 @@ app.EmisionMapfreMas = (function () {
             showCalculate = false;
         }
         $('#tercerosTbl-error').addClass('d-none');
+        $('#documentosrequeridosTbl-error').addClass('d-none');
     }
 
     function OtherValidations() {
@@ -1012,10 +932,13 @@ app.EmisionMapfreMas = (function () {
 
         if (workMode != 'draft' && workMode != 'resume') {
             var grupo = 'F';
-
-            let lista = $('#dropzone').fileUploader('pendingExpectedDocuments');
+            let documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
+            let lista = documentosrequeridos.filter(function (row) {
+                return (row.DStored === null || row.DStored === '');
+            });
             if (lista.length > 0) {
-                app.ui.ShowAlert('quoteNotify', 'alert-danger', 'Debe cargar todos los documentos pendientes');
+                $('#documentosrequeridosTbl-error').html('Debe cargar todos los documentos pendientes');
+                $('#documentosrequeridosTbl-error').removeClass('d-none');
                 result = result + 1;
             }
         }
@@ -1053,13 +976,13 @@ app.EmisionMapfreMas = (function () {
     function tieneTercerosDuplicados(terceros) {
         const ids = new Set();
         for (const tercero of terceros) {
-            const condicion = `${tercero.tipodetercero}-${tercero.DocumentNumber}`;
-            if (ids.has(condicion)) {
-                return true;
-            } else {
-                ids.add(condicion);
-            }
-
+                const condicion = `${tercero.tipodetercero}-${tercero.DocumentNumber}`;
+                if (ids.has(condicion)) {
+                    return true;
+                } else {
+                    ids.add(condicion);
+                }
+            
         }
         return false;
     }
@@ -1843,6 +1766,10 @@ app.EmisionMapfreMas = (function () {
 
     }
 
+
+
+
+
     //-------------------------------------------------------------------------Scripts vehiculoNew------------------------------------------------------------------------------
     function vehiculo_table_setup() {
         $('#vehiculoTbl').bootstrapTable({
@@ -2000,6 +1927,7 @@ app.EmisionMapfreMas = (function () {
         }
     }
 
+
     function vehiculo_table_row_edit(row) {
         var md = $('#vehiculoModal').modal({ show: false });
         var formInstance = $("#vehiculoEdtForm");
@@ -2028,6 +1956,9 @@ app.EmisionMapfreMas = (function () {
         $('#vehiculoTbl').bootstrapTable('removeByUniqueId', row.vehiculoId);
     };
 
+
+
+
     function vehiculo_table_Validations() {
         app.ui.DateValidators();
         $("#vehiculoEdtForm").validate({
@@ -2054,88 +1985,490 @@ app.EmisionMapfreMas = (function () {
     };
 
 
-    function formularios_table_setup() {
-    $('#formulariosTbl').bootstrapTable({
-        uniqueId: 'formularioId',
-        data: [],
-        classes: 'table table-bordered table-hover table-index table-in-form',
-        pagination: false,
-        smartDisplay: true,
-        detailView: false,
-        detailFormatter: 'app.ui.GenericDetailFormatter',
-        columns: [
-            {
-                field: 'status',
-                title: 'Estado',
-                titleTooltip: '',
-                sortable: false,
-                halign: 'center',
-                align: 'center',
-                formatter: function (value, row, index, field) {
 
-                    if (row.data === null) {
-                        return '<span class="label label-danger">Pendiente</span>';
-                    }
-                    else {
-                        return '<span class="label label-success">Listo</span>';
-                    }
 
-                },
-                visible: true,
-                width: 10,
-                widthUnit: '%'
-            }, {
-                field: 'name',
-                title: 'Tipo de formulario',
-                titleTooltip: '',
-                sortable: false,
-                halign: 'center',
-                align: 'left',
-                formatter: 'app.ui.StringFormatter',
-                visible: true,
-                width: 60,
-                widthUnit: '%'
-            }, {
-                field: 'when',
-                title: 'Cuando',
-                titleTooltip: '',
-                sortable: false,
-                halign: 'center',
-                align: 'center',
-                formatter: 'app.ui.DateAndTimeFormatter',
-                visible: true,
-                width: 20,
-                widthUnit: '%'
-            }, {
-                field: 'Actions',
-                title: 'Acciones',
-                class: 'd-none d-sm-table-cell',
-                titleTooltip: 'Acciones disponibles para un formulario',
-                sortable: false,
-                halign: 'center',
-                align: 'center',
-                width: 10,
-                widthUnit: "%",
-                visible: true,
-                events: 'formulariosTbl_Events',
-                formatter: function (value, row, index, field) {
-                    var html = [];
-                    html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite agregar o editar la información de un formulario"> <i class="fa fa-pencil"></i> </button>');
-                    html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar la información de un formulario"> <i class="fa fa-recycle"></i> </button>');
-                    return html.join('');
-                },
-                cellStyle: function (value, row, index) {
-                    return {
-                        css: {
-                            'white-space': 'nowrap',
-                            'vertical-align': 'top'
+
+
+
+
+
+
+
+
+
+
+
+    function documentosrequeridos_table_setup() {
+
+        $('#documentosrequeridosTbl').bootstrapTable({
+            uniqueId: 'documentosrequeridosId',
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'DStored',
+                    title: 'Estado',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: function (value, row, index, field) {
+
+                        if (row.DStored === null || row.DStored === '') {
+                            return '<span class="label label-danger">Pendiente</span>';
+                        }
+                        else {
+                            return '<span class="label label-success">Listo</span>';
+                        }
+
+                    },
+                    visible: true,
+                    width: 10,
+                    widthUnit: '%'
+                }, {
+                    field: 'tipo',
+                    title: 'Tipo de documento',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: function (value, row, index, field) {
+                        let result;
+                        if (row.DStored != null && row.DStored != '') {
+                            result = `<span><a href=# onclick="app.ui.Download('${row.DNombre}', ${row.documentosrequeridosId}); return false;" title="Descargar adjunto"><i class="fa fa-paperclip"></i></a>`;
+                        } else {
+                            result = '<span><i class="fa fa-paperclip"></i>';
+                        }
+                        if (row.tipo == 'Genérico') {
+                            result += ' ' + row.DDescripcion + ' (' + value + ')</span>';
+                        }
+                        else {
+                            result += ' ' + value + '</span>';
+                        }
+                        return result;
+                    },
+                    visible: true,
+                    width: 40,
+                    widthUnit: '%'
+                }, {
+                    field: 'DNombre',
+                    title: 'Archivo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true,
+                    width: 20,
+                    widthUnit: '%'
+                }, {
+                    field: 'DArchivoEsperado',
+                    title: 'Archivoeseperado',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: false
+                }, {
+                    field: 'Grupo',
+                    title: 'Grupo',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: false
+                }, {
+                    field: 'DFecha',
+                    title: 'Fecha',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateAndTimeFormatter',
+                    visible: true,
+                    width: 20,
+                    widthUnit: '%'
+                }, {
+                    field: 'DTamano',
+                    title: 'Tamaño',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: function (value, row, index, field) {
+                        if (value === null || value === 0)
+                            return '';
+                        else
+                            return parseInt(value / 1024) + 'kb';
+                    },
+                    visible: true,
+                    width: 10,
+                    widthUnit: '%'
+                }, {
+                    field: 'Actions',
+                    title: 'Acciones',
+                    class: 'd-none d-sm-table-cell',
+                    titleTooltip: 'Acciones disponibles para un visualizations',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    width: 10,
+                    widthUnit: "%",
+                    visible: true,
+                    events: 'documentosrequeridosTbl_Events',
+                    formatter: function (value, row, index, field) {
+                        var html = [];
+                        if (row.tipo == 'Genérico') {
+                            html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del documento"> <i class="fa fa-pencil"></i> </button>');
+                            html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar el documento"> <i class="fa fa-eraser"></i> </button>');
+                        } else {
+                            html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la carga del documento requerido"> <i class="fa fa-upload"></i> </button>');
+                            html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar el documento agregado de la fila"> <i class="fa fa-recycle"></i> </button>');
+                        }
+                        return html.join('');
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap',
+                                'vertical-align': 'top'
+                            }
                         }
                     }
-                }
-            }]
-    });
+                }]
+        });
 
-}
+        $('#documentosrequeridosNew').click(function () {
+            documentosrequeridos_table_row_edit(null);
+        });
+
+        $('#documentosrequeridosEdtFormSave').click(function () {
+            if (app.ui.IsValid('#documentosrequeridosEdtForm', false)) {
+                app.ui.ButtonDoing('#documentosrequeridosEdtFormSave');
+
+                var row = documentosrequeridos_table_row('values');
+
+                if (row.documentosrequeridosId === null) {
+                    row.documentosrequeridosId = 100 + Math.max.apply(Math, $('#documentosrequeridosTbl').bootstrapTable('getData').map(function (o) { return o.documentosrequeridosId == 10 ? o.documentosrequeridosId : null; }));
+                }
+                if ($('#documentosrequeridosModal').data('id') != null) {
+                    $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: row.documentosrequeridosId, row: row });
+                }
+                else {
+                    $('#documentosrequeridosTbl').bootstrapTable('append', row);
+                }
+
+                app.ui.ButtonDone('#documentosrequeridosEdtFormSave')
+                $('#documentosrequeridosModal').modal('hide');
+            }
+        });
+
+        $('#documentosrequeridosTbl').bootstrapTable('filterBy', { Grupo: ['F'] })
+    }
+
+    function documentosrequeridos_table_row(mode) {
+        if (mode == null) {
+            return {
+                documentosrequeridosId: null,
+                DStored: null,
+                tipo: 'Genérico',
+                DNombre: null,
+                DArchivoEsperado: null,
+                Grupo: 'F',
+                DFecha: null,
+                DTamano: null,
+                DDescripcion: 'Genérico'
+            };
+        }
+        else {
+            return {
+                documentosrequeridosId: $('#documentosrequeridosModal').data('id'),
+                DStored: $('#DStored').val(),
+                tipo: $('#tipo option:selected').text(),
+                DNombre: $('#DNombre').val(),
+                DArchivoEsperado: $('#DArchivoEsperado').val(),
+                Grupo: $('#Grupo').val(),
+                DFecha: new Date(),
+                DTamano: $('#DTamano').val(),
+                DDescripcion: $('#DDescripcion').val()
+            };
+        }
+    }
+
+    function documentosrequeridos_table_row_edit(row) {
+        if (row != null && row.tipo != 'Genérico') {
+            rowDocumentosrequeridos = row;
+            $('#fileUpload').click();
+        }
+        else {
+            var md = $('#documentosrequeridosModal').modal({ show: false });
+            var formInstance = $("#documentosrequeridosEdtForm");
+            var fvalidate = formInstance.validate();
+            fvalidate.resetForm();
+            row = row || documentosrequeridos_table_row();
+            md.data('id', row.documentosrequeridosId);
+
+            $('#DDescripcion').val(row.DDescripcion);
+            $('#DTamano').val(row.DTamano);
+            $('#DFecha').val(row.DFecha);
+            $('#Grupo').val(row.Grupo);
+            $('#DNombre').val(row.DNombre);
+
+            md.modal('show');
+        }
+    }
+
+    function documentosrequeridos_table_row_delete(row) {
+        if (row.tipo != 'Genérico') {
+            row.DNombre = '';
+            row.DStored = '';
+            row.DTamano = 0;
+            row.DFecha = null;
+            $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: row.documentosrequeridosId, row: row });
+        }
+        else {
+            $('#documentosrequeridosTbl').bootstrapTable('removeByUniqueId', row.documentosrequeridosId);
+        }
+    }
+
+    function documentosrequeridos_table_Validations() {
+        app.ui.DateValidators();
+        $("#documentosrequeridosEdtForm").validate({
+            errorPlacement: app.ui.ErrorPlacement,
+            rules: {
+                DDescripcion: {
+                    required: true
+                },
+                tipo: {
+                    required: true
+                },
+                FileName: {
+                    required: true
+                }
+            },
+            messages: {
+                DDescripcion: {
+                    required: 'Debe indicar una descripción del archivo'
+                },
+                tipo: {
+                    required: 'Debe indicar el tipo de documento'
+                },
+                FileName: {
+                    required: 'Debe indicar un archivo'
+                }
+            }
+        });
+    }
+
+    function documentosrequeridos_controls_setup() {
+    }
+
+    function documentosrequeridos_controls_Events() {
+
+        $('#fileUploadModal').on('change', function () {
+            var index = 0;
+            var arr = $('#fileUploadModal').prop('files');
+            var message = '';
+
+            for (index = 0; index < arr.length; index++) {
+                if (arr[index].size >= 31457280) {
+                    if (message != '') {
+                        message = message & ', ';
+                    }
+                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
+                }
+            }
+            if (message != '') {
+                elementInstance.showErrors({ 'FileName': message });
+            }
+            else {
+                app.ui.ButtonDoing('#fileUploadModal');
+                var data = new FormData();
+                data.append('EntityType', 3000);
+                data.append('EntityId', setupData.presupuesto);
+                data.append('DocumentType', 99);
+                data.append('Description', arr[0].name);
+                for (index = 0; index < arr.length; index++) {
+                    data.append('files', arr[index]);
+                }
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: app.setting.apipath + 'v1/Common/Upload',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
+                    }
+                }).done(function (data, textStatus, jqXHR) {
+
+                    $('#DNombre').val(data[0].FileName);
+                    $('#DStored').val(data[0].StoredFileName);
+                    $('#DTamano').val(data[0].Size);
+                    $('#DDescripcion').val(app.ui.StringCapitalizeFormatter(data[0].FileName.substring(0, data[0].FileName.indexOf('.'))));
+                    $('#DDescripcion').select().focus()
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR : ", jqXHR);
+                }).always(function () {
+                    app.ui.ButtonDone('#fileUploadModal')
+                });
+            }
+        });
+
+        $('#fileUpload').on('change', function () {
+            var index = 0;
+            var arr = $('#fileUpload').prop('files');
+            var message = '';
+
+            for (index = 0; index < arr.length; index++) {
+                if (arr[index].size >= 31457280) {
+                    if (message != '') {
+                        message = message & ', ';
+                    }
+                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
+                }
+            }
+            if (message != '') {
+                elementInstance.showErrors({ 'FileName': message });
+            }
+            else {
+                app.ui.ButtonDoing('#fileUpload');
+                var data = new FormData();
+                data.append('EntityType', 3000);
+                data.append('EntityId', setupData.presupuesto);
+                data.append('DocumentType', rowDocumentosrequeridos.documentosrequeridosId);
+                data.append('Description', rowDocumentosrequeridos.tipo);
+                for (index = 0; index < arr.length; index++) {
+                    data.append('files', arr[index]);
+                }
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: app.setting.apipath + 'v1/Common/Upload',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
+                    }
+                }).done(function (data, textStatus, jqXHR) {
+                    let oldId = rowDocumentosrequeridos.documentosrequeridosId;
+                    rowDocumentosrequeridos.documentosrequeridosId = data[0].Id;
+                    rowDocumentosrequeridos.DNombre = data[0].FileName;
+                    rowDocumentosrequeridos.DStored = data[0].StoredFileName;
+                    rowDocumentosrequeridos.DTamano = data[0].Size;
+                    rowDocumentosrequeridos.DFecha = new Date();
+                    $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: oldId, row: rowDocumentosrequeridos });
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR : ", jqXHR);
+                }).always(function () {
+                    app.ui.ButtonDone('#fileUpload')
+                });
+            }
+        });
+
+    }
+
+    function formularios_table_setup() {
+        $('#formulariosTbl').bootstrapTable({
+            uniqueId: 'formularioId',
+            data: [],
+            classes: 'table table-bordered table-hover table-index table-in-form',
+            pagination: false,
+            smartDisplay: true,
+            detailView: false,
+            detailFormatter: 'app.ui.GenericDetailFormatter',
+            columns: [
+                {
+                    field: 'status',
+                    title: 'Estado',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: function (value, row, index, field) {
+
+                        if (row.data === null) {
+                            return '<span class="label label-danger">Pendiente</span>';
+                        }
+                        else {
+                            return '<span class="label label-success">Listo</span>';
+                        }
+
+                    },
+                    visible: true,
+                    width: 10,
+                    widthUnit: '%'
+                }, {
+                    field: 'name',
+                    title: 'Tipo de formulario',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'left',
+                    formatter: 'app.ui.StringFormatter',
+                    visible: true,
+                    width: 60,
+                    widthUnit: '%'
+                }, {
+                    field: 'when',
+                    title: 'Cuando',
+                    titleTooltip: '',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    formatter: 'app.ui.DateAndTimeFormatter',
+                    visible: true,
+                    width: 20,
+                    widthUnit: '%'
+                }, {
+                    field: 'Actions',
+                    title: 'Acciones',
+                    class: 'd-none d-sm-table-cell',
+                    titleTooltip: 'Acciones disponibles para un formulario',
+                    sortable: false,
+                    halign: 'center',
+                    align: 'center',
+                    width: 10,
+                    widthUnit: "%",
+                    visible: true,
+                    events: 'formulariosTbl_Events',
+                    formatter: function (value, row, index, field) {
+                        var html = [];
+                        html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite agregar o editar la información de un formulario"> <i class="fa fa-pencil"></i> </button>');
+                        html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar la información de un formulario"> <i class="fa fa-recycle"></i> </button>');
+                        return html.join('');
+                    },
+                    cellStyle: function (value, row, index) {
+                        return {
+                            css: {
+                                'white-space': 'nowrap',
+                                'vertical-align': 'top'
+                            }
+                        }
+                    }
+                }]
+        });
+
+    }
 
     function formularios_table_row_edit(row) {
         formularioRow = row;
@@ -2300,24 +2633,6 @@ app.EmisionMapfreMas = (function () {
         //return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy'));
     }
 
-    function attachments_controls_setup() {
-        $('#AttachmentTitleText').text('Documentos requeridos');
-        $('#dropzone').fileUploader({
-            maxFilesize: 256,
-            showExpectedDocuments: true,
-            showGeneralUploadCard: true,
-            done: function (responses) {
-                //console.log('Attachments: Archivos subidos exitosamente:', responses);
-            },
-            fail: function (error, file) {
-                //console.error('Attachments: Error al subir archivo:', error, file);
-            },
-            always: function (result) {
-                //console.log('Attachments: Proceso de carga completado:', result);
-            }
-        });
-    }
-
     return {
         Data: function () {
             return setupData;
@@ -2336,8 +2651,10 @@ app.EmisionMapfreMas = (function () {
 
             vehiculo_table_setup();
             vehiculo_table_Validations();
-
-            attachments_controls_setup();
+            documentosrequeridos_controls_setup();
+            documentosrequeridos_table_setup();
+            documentosrequeridos_table_Validations();
+            documentosrequeridos_controls_Events();
 
             formularios_table_setup();
 
@@ -2346,8 +2663,8 @@ app.EmisionMapfreMas = (function () {
             Setup();
             app.language.translate('body', 'MapfreMas')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
-            app.language.translate('#quoteBlock', '_resumen')();
-            app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+    app.language.translate('#quoteBlock', '_resumen')();
+    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
@@ -2355,11 +2672,17 @@ app.EmisionMapfreMas = (function () {
         tercerosDeleteRow: function (row) {
             terceros_table_row_delete(row);
         },
+        documentosrequeridosEditRow: function (row) {
+            documentosrequeridos_table_row_edit(row);
+        },
         vehiculoEditRow: function (row) {
             vehiculo_table_row_edit(row);
         },
         vehiculoDeleteRow: function (row) {
             vehiculo_table_row_delete(row);
+        },
+        documentosrequeridosDeleteRow: function (row) {
+            documentosrequeridos_table_row_delete(row);
         },
         formulariosEditRow: function (row) {
             formularios_table_row_edit(row);
@@ -2408,6 +2731,16 @@ window.vehiculo_Events = {
         e.stopPropagation();
     }
 };
+window.documentosrequeridosTbl_Events = {
+    'click .delete': function (e, value, row, index) {
+        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.documentosrequeridosDeleteRow(row); } });
+        e.stopPropagation();
+    },
+    'click .edit': function (e, value, row, index) {
+        app.EmisionMapfreMas.documentosrequeridosEditRow(row);
+        e.stopPropagation();
+    }
+};
 window.formulariosTbl_Events = {
     'click .delete': function (e, value, row, index) {
         toastr.warning("Si está seguro de querer limpiar la información del formulario  '" + row.name + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMapfreMas.formulariosDeleteRow(row); } });
@@ -2418,3 +2751,6 @@ window.formulariosTbl_Events = {
         e.stopPropagation();
     }
 };
+
+
+

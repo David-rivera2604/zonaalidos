@@ -310,7 +310,6 @@ namespace Architect.Payment.Integrations
                         result.changed = true;
                     }
                 }
-
             }
             else
             {

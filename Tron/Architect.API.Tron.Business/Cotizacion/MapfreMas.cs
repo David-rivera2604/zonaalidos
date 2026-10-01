@@ -224,12 +224,7 @@ namespace Architect.API.Tron.Business.Cotizacion
                     }
                 }
 
-                if (cod_plan_auto == 39)
-                {
-                    // Plan Banca: únicamente se visualizan las coberturas definidas para este plan
-                    cod_cobIncludeFilter = "3001,3002,3003,3004,3005,3006,3007,3009,3010,1063";
-                    cod_cobExcludeFilter = string.Empty;
-                }
+                
 
                 foreach (Contracts.Ramo.a1002150 item in DataAccess.PorRamo.Coberturas(cod_cia, cod_ramo, cod_modalidad, fec_validez, cod_cobExcludeFilter, cod_cobIncludeFilter))
                 {

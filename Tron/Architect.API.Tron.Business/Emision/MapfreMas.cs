@@ -97,41 +97,18 @@ namespace Architect.API.Tron.Business.Emision
                     {
                         foreach (Core.Contracts.General.AttachmentView attachment in attachments)
                         {
-                            // Buscar un documento requerido (definido por reglas) cuyo tipo coincida
-                            // con el DocumentType del attachment y que aún no tenga archivo cargado.
-                            Contracts.Comun.DocumentoRequerido requerido = result.documentosrequeridos.Find(
-                                x => x.documentType == attachment.DocumentType && x.DStored.IsEmpty());
-
-                            if (requerido.IsNotEmpty())
+                            result.documentosrequeridos.Add(new Contracts.Comun.DocumentoRequerido()
                             {
-                                // El attachment corresponde a un documento requerido: se marca como cargado.
-                                requerido.DStored = attachment.FileName;
-                                requerido.documentosrequeridosId = attachment.Id;
-                                requerido.DDescripcion = attachment.Description;
-                                requerido.DNombre = attachment.FileName;
-                                requerido.DFecha = attachment.UpdateDate;
-                                requerido.UpdateUserName = attachment.UpdateUserName;
-                                requerido.DTamano = attachment.FileSize;
-                            }
-                            else
-                            {
-                                // El attachment no coincide con ningún requerido: se agrega como genérico.
-                                result.documentosrequeridos.Add(new Contracts.Comun.DocumentoRequerido()
-                                {
-                                    DStored = attachment.FileName,
-                                    documentosrequeridosId = attachment.Id,
-                                    tipo = "Genérico",
-                                    documentType = attachment.DocumentType,
-                                    documentTypeDesc = attachment.DocumentTypeDesc,
-                                    DArchivoEsperado = attachment.FileName,
-                                    DDescripcion = attachment.Description,
-                                    DNombre = attachment.FileName,
-                                    DFecha = attachment.UpdateDate,
-                                    UpdateUserName = attachment.UpdateUserName,
-                                    DTamano = attachment.FileSize,
-                                    Grupo = "F"
-                                });
-                            }
+                                DStored = attachment.FileName,
+                                documentosrequeridosId = attachment.Id,
+                                tipo = "Genérico",
+                                DArchivoEsperado = attachment.FileName,
+                                DDescripcion = attachment.Description,
+                                DNombre = attachment.FileName,
+                                DFecha = attachment.UpdateDate,
+                                DTamano = attachment.FileSize,
+                                Grupo = "F"
+                            });
                         }
 
                     }

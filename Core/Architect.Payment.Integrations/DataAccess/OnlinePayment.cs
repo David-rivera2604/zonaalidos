@@ -71,7 +71,7 @@ namespace Architect.Payment.Integrations.DataAccess
             {
                 complement = ", ResponseData";
             }
-            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.TronCode, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
                              "WHERE OnlinePayment.Id=:Id AND OnlinePayment.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -94,7 +94,7 @@ namespace Architect.Payment.Integrations.DataAccess
             {
                 complement = ", ResponseData";
             }
-            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.TronCode, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
                              "WHERE OnlinePayment.RequestID=:RequestID")
                         .AddParameter("RequestID", DbType.Decimal, 11, requestID)
@@ -117,7 +117,7 @@ namespace Architect.Payment.Integrations.DataAccess
             }
 
             Contracts.OnlinePayment result = null;
-            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, NULL StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.TronCode, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, NULL StatusDate, RequestID, ProcessUrl, ProviderStatus" + complement + ", Status, Reason, Authorization, Receipt, OnlinePayment.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
                               "FROM OnlinePayment LEFT JOIN UserMember um ON um.UserId = OnlinePayment.UpdateUserCode " +
                              "WHERE OnlinePayment.CompanyId=:CompanyId AND OnlinePayment.PolicyId=:PolicyId AND OnlinePayment.BillNumber=:BillNumber " +
                              "ORDER BY OnlinePayment.IssueDate DESC FETCH FIRST 1 ROWS ONLY")
@@ -254,7 +254,6 @@ namespace Architect.Payment.Integrations.DataAccess
             item.UpdateUserName = reader.StringValue("UpdateUserName");
             item.UpdateDate = reader.DateTimeValue("UpdateDate");
             item.SettingId = reader.IntegerValue("SettingId");
-            item.TronCode = reader.IntegerValue("TronCode");
             return item;
         }
 
@@ -264,7 +263,7 @@ namespace Architect.Payment.Integrations.DataAccess
         public static List<Contracts.OnlinePayment> RetrievePendings(IDbConnection connection = null)
         {
             List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
-            Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.TronCode, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
                               "FROM OnlinePayment " +
                              "WHERE OnlinePayment.ProviderStatus IN ('INIT', 'PENDING') AND NOT OnlinePayment.Source IN ('Recurring', 'SINPEMovil')")
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
@@ -280,9 +279,9 @@ namespace Architect.Payment.Integrations.DataAccess
         public static List<Contracts.OnlinePayment> RetrieveByTronCode(int tronCode, IDbConnection connection = null)
         {
             List<Contracts.OnlinePayment> result = new List<Contracts.OnlinePayment>();
-            Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.TronCode, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
+            Database.Select("SELECT Id, OnlinePayment.CompanyId, RequestID, ProviderStatus, Reason, Authorization, Receipt, NULL ResponseData, DocumentType, DocumentNumber, OnlinePayment.FirstName, OnlinePayment.LastName, PrimaryEmailAddress, PhoneNumberMobile, AgentCode, PolicyId, BillNumber, Currency, Amount, OnlinePayment.Reference, Description, IssueDate, StatusDate, ProcessUrl, Status, OnlinePayment.UpdateUserCode, NULL UpdateUserName, OnlinePayment.UpdateDate, SettingId " +
                               "FROM OnlinePayment " +
-                             "WHERE (OnlinePayment.ProviderStatus = 'APPROVED' AND OnlinePayment.TronCode IS NULL) OR NVL(OnlinePayment.TronCode,0) = :TronCode")
+                             "WHERE NVL(OnlinePayment.TronCode,0) = :TronCode")
                         .AddParameter("TronCode", DbType.Decimal, 5, tronCode)
                         .Query(connection, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {

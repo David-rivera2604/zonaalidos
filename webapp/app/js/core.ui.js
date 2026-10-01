@@ -863,7 +863,7 @@ app.ui = (function () {
                             apiUrl += '&source=' + encodeURIComponent(source);
                         }
 
-                        app.core.Get(apiUrl, undefined, undefined).done(function (data, textStatus, jqXHR) {
+                        app.core.Get(apiUrl, undefined, undefined, false).done(function (data, textStatus, jqXHR) {
                             if (data != null && data.FirstName !== null) {
                                 if (data.MiddleName === null) data.MiddleName = '';
                                 if (data.LastName === null) data.LastName = '';
@@ -1523,11 +1523,6 @@ app.ui = (function () {
         },
         LabelColorFormatter: function (value, row, index, field) {
             return '<span class="label label-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
-        },
-        // Chequeo de rol insensible a mayusculas/minusculas
-        HasRole: function (roleName) {
-            let roles = JSON.parse(localStorage.getItem('Roles')) || [];
-            return roles.some(function (item) { return item.toLowerCase() === roleName.toLowerCase(); });
         },
         CommonBehaviour: function (custom) {
             let roles = JSON.parse(localStorage.getItem('Roles'));
