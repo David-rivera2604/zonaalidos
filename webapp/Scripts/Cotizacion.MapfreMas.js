@@ -412,6 +412,9 @@ app.CotizacionMapfreMas = (function () {
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
         app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);
         app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
+        if (app.ui.HasRole('banca')) {
+            data.rc_alcohol = 'S';
+        }
         app.ui.SetRadioStringValue('rc_alcohol', data.rc_alcohol);
         app.ui.SetRadioStringValue('rc_conductor', data.rc_conductor);
         app.ui.SetRadioNumericValue('MCA_PRA', data.MCA_PRA);
@@ -1204,9 +1207,9 @@ app.CotizacionMapfreMas = (function () {
             }
         } else if (tipo_prod === 'banca') {
             app.ui.SetNumericValue('#PCT_AJUSTE_GEN', -30);
-            $('#PCT_AJUSTE_GEN').hide(); app.ui.SetRadioStringValue('rc_alcohol', 'S');
-            $("#rc_alcohol_2").prop('disabled', true);
-            $("#rc_alcohol_1").prop('disabled', true);
+            $('select#IMP_AUTO_RC').val($('select#IMP_AUTO_RC option:first').val());
+            $('.role-banca').hide();
+            
 
         } else {
             $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').removeClass('d-none');
