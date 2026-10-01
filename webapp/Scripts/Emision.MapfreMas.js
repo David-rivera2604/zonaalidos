@@ -36,8 +36,6 @@ app.EmisionMapfreMas = (function () {
                         $('.documentosrequeridosGrid').addClass('d-none');
 
                         $('#PageSubTitle').text("Emision Solicitud de Seguro")
-                        $('.datosgeneralesZone').removeClass('col-md-12');
-                        $('.datosgeneralesZone').addClass('col-md-7');
                         $('.enviosolicitudZone').removeClass('d-none');
                         $('._user_txt_motivo_spto').addClass('d-none');
                     } else {
@@ -51,54 +49,62 @@ app.EmisionMapfreMas = (function () {
         }
     }
 
+    // Dato que viene de la cotizacion: se muestra en un recuadro gris del tamano de un campo, sin poder editarse.
+    function ValorSoloLectura(texto) {
+        if (texto === undefined || texto === null || texto === '' || texto === 'undefined')
+            texto = '-';
+        return '<div class="mf-readonly">' + texto + '</div>';
+    }
+
     function ReadOnly() {
-        $('input[name=tipo_prod').first().parent().parent().replaceWith('<div class="mf-readonly">' + $('input:radio[name=tipo_prod]:checked').next().html() + '</div>')
-        $('#cod_mon').replaceWith('<div class="mf-readonly">' + $('#cod_mon option:selected').text() + '</div>');
-        //$('#cod_fracc_pago').replaceWith('<div class="mf-readonly">' + $('#cod_fracc_pago option:selected').text() + '</div>');
-        //$('#fec_efec_poliza_group').replaceWith('<div class="mf-readonly">' + $('#fec_efec_poliza').val() + '</div>');
-        //$('#fec_vcto_poliza_group').replaceWith('<div class="mf-readonly">' + $('#fec_vcto_poliza').val() + '</div>');
-        $('#COD_PLAN_AUTO').replaceWith('<div class="mf-readonly">' + $('#COD_PLAN_AUTO option:selected').text() + '</div>');
-        $('#cod_zona_circul').replaceWith('<div class="mf-readonly">' + $('#cod_zona_circul option:selected').text() + '</div>');
-        $('#cod_marca').replaceWith('<div class="mf-readonly">' + $('#cod_marca option:selected').text() + '</div>');
-        $('#cod_modelo').replaceWith('<div class="mf-readonly">' + $('#cod_modelo option:selected').text() + '</div>');
-        $('#cod_sub_modelo').replaceWith('<div class="mf-readonly">' + $('#cod_sub_modelo option:selected').text() + '</div>');
-        $('#ANIO_SUB_MODELO').replaceWith('<div class="mf-readonly">' + $('#ANIO_SUB_MODELO').val() + '</div>');
-        $('#cod_tip_vehi').replaceWith('<div class="mf-readonly">' + $('#cod_tip_vehi option:selected').text() + '</div>');
-        $('#cod_uso_vehi').replaceWith('<div class="mf-readonly">' + $('#cod_uso_vehi option:selected').text() + '</div>');
-        //$('#NUM_MATRICULA').replaceWith('<div class="mf-readonly">' + $('#NUM_MATRICULA').val() + '</div>');
-        //$('#COD_CHASSIS').replaceWith('<div class="mf-readonly">' + $('#COD_CHASSIS').val() + '</div>');
-        //$('#DES_TIP_CILINDRAJE').replaceWith('<div class="mf-readonly">' + $('#DES_TIP_CILINDRAJE').val() + '</div>');
-        //$('#VAL_PESO').replaceWith('<div class="mf-readonly">' + $('#VAL_PESO').val() + '</div>');
-        //$('#COD_COLOR').replaceWith('<div class="mf-readonly">' + $('#COD_COLOR option:selected').text() + '</div>');
-        //$('#NUM_MOTOR').replaceWith('<div class="mf-readonly">' + $('#NUM_MOTOR').val() + '</div>');
-        //$('#VAL_CAPACIDAD').replaceWith('<div class="mf-readonly">' + $('#VAL_CAPACIDAD').val() + '</div>');
-        $('label[for=MCA_CERO_KM').next().replaceWith('<div class="mf-readonly">' + $('label[for=MCA_CERO_KM_' + app.ui.GetRadioNumericValue('MCA_CERO_KM') + '').html() + '</div>');
-        $('label[for=MCA_AUTO_GPS').next().replaceWith('<div class="mf-readonly">' + $('label[for=MCA_AUTO_GPS_' + app.ui.GetRadioNumericValue('MCA_AUTO_GPS') + '').html() + '</div>');
-        $('label[for=MCA_AUTO_GPS_CMS').next().replaceWith('<div class="mf-readonly">' + $('label[for=MCA_AUTO_GPS_CMS_' + app.ui.GetRadioNumericValue('MCA_AUTO_GPS_CMS') + '').html() + '</div>');
-        $('label[for=MCA_MONITOREO_GPS').next().replaceWith('<div class="mf-readonly">' + $('label[for=MCA_MONITOREO_GPS_' + app.ui.GetRadioNumericValue('MCA_MONITOREO_GPS') + '').html() + '</div>');
-        $('label[for=MCA_PRA').next().replaceWith('<div class="mf-readonly">' + $('label[for=MCA_PRA_' + app.ui.GetRadioNumericValue('MCA_PRA') + '').html() + '</div>');
-        $('label[for=MCA_VR').next().replaceWith('<div class="mf-readonly">' + $('label[for=MCA_VR_' + app.ui.GetRadioNumericValue('MCA_VR') + '').html() + '</div>');
-        $('#IMP_VR').replaceWith('<div class="mf-readonly">' + $('#IMP_VR').val() + '</div>');
-        $('label[for=MCA_DESC_CLIENTE_NUEVO').next().replaceWith('<div class="mf-readonly">' + $('label[for=MCA_DESC_CLIENTE_NUEVO_' + app.ui.GetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO') + '').html() + '</div>');
-        $('label[for=ext_garantia').next().replaceWith('<div class="mf-readonly">' + $('label[for=ext_garantia_' + app.ui.GetRadioNumericValue('ext_garantia') + '').html() + '</div>');
-        $('#PCT_AJUSTE_GEN').closest('.form-group').parent().remove();
-        $('#IMP_AUTO_RC').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_RC option:selected').text() + '</div>');
-        $('#DED_AUTO_RC').replaceWith('<div class="mf-readonly">' + $('#DED_AUTO_RC option:selected').text() + '</div>');
-        $('#IMP_AUTO_GMO').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_GMO option:selected').text() + '</div>');
-        $('#IMP_AUTO_ACO').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_ACO option:selected').text() + '</div>');
-        $('#IMP_AUTO_CYV').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_CYV').val() + '</div>');
-        $('#DED_AUTO_CYV').replaceWith('<div class="mf-readonly">' + $('#DED_AUTO_CYV option:selected').text() + '</div>');
-        $('#IMP_AUTO_RAD').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_RAD').val() + '</div>');
-        $('#DED_AUTO_RAD').replaceWith('<div class="mf-readonly">' + $('#DED_AUTO_RAD option:selected').text() + '</div>');
-        $('#IMP_AUTO_ROB').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_ROB').val() + '</div>');
-        $('#DED_AUTO_ROB').replaceWith('<div class="mf-readonly">' + $('#DED_AUTO_ROB option:selected').text() + '</div>');
-        $('#IMP_AUTO_EQESP').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_EQESP').val() + '</div>');
-        $('#DED_AUTO_EQESP').replaceWith('<div class="mf-readonly">' + $('#DED_AUTO_EQESP option:selected').text() + '</div>');
-        $('#IMP_AUTO_NEUM').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_NEUM option:selected').text() + '</div>');
-        $('#IMP_AUTO_MECA').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_MECA option:selected').text() + '</div>');
-        $('#IMP_AUTO_CRI').replaceWith('<div class="mf-readonly">' + $('#IMP_AUTO_CRI option:selected').text() + '</div>');
-        $('#DED_AUTO_CRI').replaceWith('<div class="mf-readonly">' + $('#DED_AUTO_CRI option:selected').text() + '</div>');
-        $('#DedudAutoSust').replaceWith('<div class="mf-readonly">' + $('#DedudAutoSust option:selected').text() + '</div>');
+        $('input[name=tipo_prod').first().parent().parent().replaceWith(ValorSoloLectura($('input:radio[name=tipo_prod]:checked').next().html() || setupData.tipo_prodDesc || setupData.COD_PLAN_AUTODesc));
+        $('#cod_mon').replaceWith(ValorSoloLectura($('#cod_mon option:selected').text()));
+        //$('#cod_fracc_pago').replaceWith(ValorSoloLectura($('#cod_fracc_pago option:selected').text()));
+        //$('#fec_efec_poliza_group').replaceWith(ValorSoloLectura($('#fec_efec_poliza').val()));
+        //$('#fec_vcto_poliza_group').replaceWith(ValorSoloLectura($('#fec_vcto_poliza').val()));
+        $('#COD_PLAN_AUTO').replaceWith(ValorSoloLectura($('#COD_PLAN_AUTO option:selected').text()));
+        $('#cod_zona_circul').replaceWith(ValorSoloLectura($('#cod_zona_circul option:selected').text()));
+        $('#cod_marca').replaceWith(ValorSoloLectura($('#cod_marca option:selected').text()));
+        $('#cod_modelo').replaceWith(ValorSoloLectura($('#cod_modelo option:selected').text()));
+        $('#cod_sub_modelo').replaceWith(ValorSoloLectura($('#cod_sub_modelo option:selected').text()));
+        $('#ANIO_SUB_MODELO').replaceWith(ValorSoloLectura($('#ANIO_SUB_MODELO').val()));
+        $('#cod_tip_vehi').replaceWith(ValorSoloLectura($('#cod_tip_vehi option:selected').text()));
+        $('#cod_uso_vehi').replaceWith(ValorSoloLectura($('#cod_uso_vehi option:selected').text()));
+        //$('#NUM_MATRICULA').replaceWith(ValorSoloLectura($('#NUM_MATRICULA').val()));
+        //$('#COD_CHASSIS').replaceWith(ValorSoloLectura($('#COD_CHASSIS').val()));
+        //$('#DES_TIP_CILINDRAJE').replaceWith(ValorSoloLectura($('#DES_TIP_CILINDRAJE').val()));
+        //$('#VAL_PESO').replaceWith(ValorSoloLectura($('#VAL_PESO').val()));
+        //$('#COD_COLOR').replaceWith(ValorSoloLectura($('#COD_COLOR option:selected').text()));
+        //$('#NUM_MOTOR').replaceWith(ValorSoloLectura($('#NUM_MOTOR').val()));
+        //$('#VAL_CAPACIDAD').replaceWith(ValorSoloLectura($('#VAL_CAPACIDAD').val()));
+        $('label[for=MCA_CERO_KM').next().replaceWith(ValorSoloLectura($('label[for=MCA_CERO_KM_' + app.ui.GetRadioNumericValue('MCA_CERO_KM') + '').html()));
+        $('label[for=MCA_AUTO_GPS').next().replaceWith(ValorSoloLectura($('label[for=MCA_AUTO_GPS_' + app.ui.GetRadioNumericValue('MCA_AUTO_GPS') + '').html()));
+        $('label[for=MCA_AUTO_GPS_CMS').next().replaceWith(ValorSoloLectura($('label[for=MCA_AUTO_GPS_CMS_' + app.ui.GetRadioNumericValue('MCA_AUTO_GPS_CMS') + '').html()));
+        $('label[for=MCA_MONITOREO_GPS').next().replaceWith(ValorSoloLectura($('label[for=MCA_MONITOREO_GPS_' + app.ui.GetRadioNumericValue('MCA_MONITOREO_GPS') + '').html()));
+        $('label[for=MCA_PRA').next().replaceWith(ValorSoloLectura($('label[for=MCA_PRA_' + app.ui.GetRadioNumericValue('MCA_PRA') + '').html()));
+        $('label[for=MCA_VR').next().replaceWith(ValorSoloLectura($('label[for=MCA_VR_' + app.ui.GetRadioNumericValue('MCA_VR') + '').html()));
+        $('#IMP_VR').replaceWith(ValorSoloLectura($('#IMP_VR').val()));
+        $('label[for=MCA_DESC_CLIENTE_NUEVO').next().replaceWith(ValorSoloLectura($('label[for=MCA_DESC_CLIENTE_NUEVO_' + app.ui.GetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO') + '').html()));
+        $('label[for=ext_garantia').next().replaceWith(ValorSoloLectura($('label[for=ext_garantia_' + app.ui.GetRadioNumericValue('ext_garantia') + '').html()));
+        // El ajuste comercial se define en la cotizacion: en la emision no se muestra.
+        $('#PCT_AJUSTE_GEN').closest('.col-sm-3').remove();
+        $('#IMP_AUTO_RC').replaceWith(ValorSoloLectura($('#IMP_AUTO_RC option:selected').text()));
+        $('#DED_AUTO_RC').replaceWith(ValorSoloLectura($('#DED_AUTO_RC option:selected').text()));
+        $('#IMP_AUTO_GMO').replaceWith(ValorSoloLectura($('#IMP_AUTO_GMO option:selected').text()));
+        $('#IMP_AUTO_ACO').replaceWith(ValorSoloLectura($('#IMP_AUTO_ACO option:selected').text()));
+        $('#IMP_AUTO_CYV').replaceWith(ValorSoloLectura($('#IMP_AUTO_CYV').val()));
+        $('#DED_AUTO_CYV').replaceWith(ValorSoloLectura($('#DED_AUTO_CYV option:selected').text()));
+        $('#IMP_AUTO_RAD').replaceWith(ValorSoloLectura($('#IMP_AUTO_RAD').val()));
+        $('#DED_AUTO_RAD').replaceWith(ValorSoloLectura($('#DED_AUTO_RAD option:selected').text()));
+        $('#IMP_AUTO_ROB').replaceWith(ValorSoloLectura($('#IMP_AUTO_ROB').val()));
+        $('#DED_AUTO_ROB').replaceWith(ValorSoloLectura($('#DED_AUTO_ROB option:selected').text()));
+        $('#IMP_AUTO_EQESP').replaceWith(ValorSoloLectura($('#IMP_AUTO_EQESP').val()));
+        $('#DED_AUTO_EQESP').replaceWith(ValorSoloLectura($('#DED_AUTO_EQESP option:selected').text()));
+        $('#IMP_AUTO_NEUM').replaceWith(ValorSoloLectura($('#IMP_AUTO_NEUM option:selected').text()));
+        $('#IMP_AUTO_MECA').replaceWith(ValorSoloLectura($('#IMP_AUTO_MECA option:selected').text()));
+        $('#IMP_AUTO_CRI').replaceWith(ValorSoloLectura($('#IMP_AUTO_CRI option:selected').text()));
+        $('#DED_AUTO_CRI').replaceWith(ValorSoloLectura($('#DED_AUTO_CRI option:selected').text()));
+        $('#DedudAutoSust').replaceWith(ValorSoloLectura($('#DedudAutoSust option:selected').text()));
         //$('#tercerosNew').addClass('d-none');
         //$('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
         //$('#documentosrequeridosNew').addClass('d-none');
@@ -106,16 +112,16 @@ app.EmisionMapfreMas = (function () {
     }
 
     function ReadOnly_End() {
-        $('#fec_efec_poliza_group').replaceWith('<div class="mf-readonly">' + $('#fec_efec_poliza').val() + '</div>');
-        $('#fec_vcto_poliza_group').replaceWith('<div class="mf-readonly">' + $('#fec_vcto_poliza').val() + '</div>');
-        $('#NUM_MATRICULA').replaceWith('<div class="mf-readonly">' + $('#NUM_MATRICULA').val() + '</div>');
-        $('#COD_CHASSIS').replaceWith('<div class="mf-readonly">' + $('#COD_CHASSIS').val() + '</div>');
-        $('#NUM_MOTOR').replaceWith('<div class="mf-readonly">' + $('#NUM_MOTOR').val() + '</div>');
-        $('#DES_TIP_CILINDRAJE').replaceWith('<div class="mf-readonly">' + $('#DES_TIP_CILINDRAJE').val() + '</div>');
-        $('#VAL_PESO').parent().replaceWith('<div class="mf-readonly">' + $('#VAL_PESO').val() + ' Kg</div>');
-        $('#COD_COLOR').replaceWith('<div class="mf-readonly">' + $('#COD_COLOR option:selected').text() + '</div>');
-        $('#VAL_CAPACIDAD').replaceWith('<div class="mf-readonly">' + $('#VAL_CAPACIDAD').val() + '</div>');
-        $('label[for=Vehiculo_Otra_Poliza').next().replaceWith('<div class="mf-readonly">' + $('label[for=Vehiculo_Otra_Poliza_' + app.ui.GetRadioStringValue('Vehiculo_Otra_Poliza') + '').html() + '</div>');
+        $('#fec_efec_poliza_group').replaceWith(ValorSoloLectura($('#fec_efec_poliza').val()));
+        $('#fec_vcto_poliza_group').replaceWith(ValorSoloLectura($('#fec_vcto_poliza').val()));
+        $('#NUM_MATRICULA').replaceWith(ValorSoloLectura($('#NUM_MATRICULA').val()));
+        $('#COD_CHASSIS').replaceWith(ValorSoloLectura($('#COD_CHASSIS').val()));
+        $('#NUM_MOTOR').replaceWith(ValorSoloLectura($('#NUM_MOTOR').val()));
+        $('#DES_TIP_CILINDRAJE').replaceWith(ValorSoloLectura($('#DES_TIP_CILINDRAJE').val()));
+        $('#VAL_PESO').parent().replaceWith(ValorSoloLectura($('#VAL_PESO').val() + ' Kg'));
+        $('#COD_COLOR').replaceWith(ValorSoloLectura($('#COD_COLOR option:selected').text()));
+        $('#VAL_CAPACIDAD').replaceWith(ValorSoloLectura($('#VAL_CAPACIDAD').val()));
+        $('label[for=Vehiculo_Otra_Poliza').next().replaceWith(ValorSoloLectura($('label[for=Vehiculo_Otra_Poliza_' + app.ui.GetRadioStringValue('Vehiculo_Otra_Poliza') + '').html()));
 
         $('#tercerosNew').addClass('d-none');
         $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
@@ -198,7 +204,7 @@ app.EmisionMapfreMas = (function () {
     function SettingReload(callback) {
         let param = setupData;
         param.cod_mon = app.ui.GetDropDownNumericValue('#cod_mon');
-        param.tipo_prod = $('input:radio[name=tipo_prod]:checked').val();
+        param.tipo_prod = $('input:radio[name=tipo_prod]:checked').val() || param.tipo_prod;
         param.cod_marca = app.ui.GetDropDownNumericValue('#cod_marca');
 
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSettings?cod_ramo=${param.cod_ramo}&cod_mon=${param.cod_mon}&cod_marca=${param.cod_marca}&cod_modelo=${param.cod_modelo}&cod_sub_modelo=${param.cod_sub_modelo}&anio_sub_modelo=${param.ANIO_SUB_MODELO}&cod_tip_vehi=${param.cod_tip_vehi}&cod_uso_vehi=${param.cod_uso_vehi}&mca_sexo=${param.mca_sexo}&cod_zona_circul=${param.cod_zona_circul}&edad=${param.edad}&cod_plan_auto=${param.COD_PLAN_AUTO}&num_contrato=${param.contrato}&num_subcontrato=${param.subcontrato}&num_poliza_grupo=${param.polizagrupo}&tipo_prod=${param.tipo_prod}&cod_agt=${param.cod_agt}`)
@@ -228,6 +234,9 @@ app.EmisionMapfreMas = (function () {
                 if (callback !== undefined && callback !== null) {
                     callback();
                 }
+                ReadOnly();
+            })
+            .fail(function () {
                 ReadOnly();
             });
 
