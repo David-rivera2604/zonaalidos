@@ -105,7 +105,7 @@ namespace Architect.API.Tron.Business.Masivos
 
             try
             {
-                int numProceso = DataAccess.Masivos.MasivosDataAccess.Validar(id, codUsr);
+                int numProceso = DataAccess.Masivos.MasivosDataAccess.Validar(id);
                 result.Exitoso = numProceso > 0;
                 result.Mensaje = result.Exitoso ? "Archivo validado correctamente." : "No fue posible validar el archivo.";
             }
@@ -132,9 +132,12 @@ namespace Architect.API.Tron.Business.Masivos
 
             try
             {
-                int numProceso = DataAccess.Masivos.MasivosDataAccess.Procesar(id, codUsr);
+                string mensaje;
+                int numProceso = DataAccess.Masivos.MasivosDataAccess.Procesar(id, out mensaje);
                 result.Exitoso = numProceso > 0;
-                result.Mensaje = result.Exitoso ? "Procesamiento ejecutado correctamente." : "No fue posible procesar la carga masiva.";
+                result.Mensaje = !string.IsNullOrEmpty(mensaje)
+                    ? mensaje
+                    : (result.Exitoso ? "Procesamiento ejecutado correctamente." : "No fue posible procesar la carga masiva.");
             }
             catch (Exception ex)
             {
@@ -190,7 +193,7 @@ namespace Architect.API.Tron.Business.Masivos
 
             try
             {
-                bool exito = DataAccess.Masivos.MasivosDataAccess.UpdateArchivoCarga(id, fileName, fileBytes, fileSize, codUsr);
+                bool exito = DataAccess.Masivos.MasivosDataAccess.UpdateArchivoCarga(id, fileBytes, fileSize, codUsr);
                 result.Exitoso = exito;
                 result.Mensaje = exito ? "Archivo actualizado correctamente." : "No se pudo actualizar el archivo.";
             }

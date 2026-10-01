@@ -93,58 +93,63 @@ namespace Architect.API.Tron.DataAccess.Masivos
         /// Ejecuta la validación del archivo de carga masiva indicado.
         /// </summary>
         /// <param name="id">Identificador del registro de carga a validar.</param>
-        /// <param name="codUsr">Código del usuario que ejecuta la validación.</param>
-        /// <returns>Número de proceso generado por la validación.</returns>
-        public static int Validar(int id, int codUsr)
+        /// <returns>Número de proceso de validación generado.</returns>
+        public static int Validar(int id)
         {
-            int numProceso = 0;
+            int numProcesoVal = 0;
 
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
                 List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
                     .AddParameter("p_id", DbType.Int32, 9, id)
-                    .AddParameter("p_updateusercode", DbType.Int32, 9, codUsr)
-                    .AddParameter("p_num_proceso", DbType.Int32, 9, 0, ParameterDirection.Output).Parameters;
+                    .AddParameter("p_num_proceso_val", DbType.Int32, 9, 0, ParameterDirection.Output).Parameters;
 
                 Database.Procedure("em_k_masivos_mcr.p_validar_archivo")
                     .AddParameter(parameters)
                     .Execute(currentConnection, "Tron");
 
-                object valor = parameters.Find(p => p.Name == "p_num_proceso").Value;
+                object valor = parameters.Find(p => p.Name == "p_num_proceso_val").Value;
                 if (valor != null && valor != DBNull.Value)
                 {
-                    int.TryParse(valor.ToString(), out numProceso);
+                    int.TryParse(valor.ToString(), out numProcesoVal);
                 }
             }
 
-            return numProceso;
+            return numProcesoVal;
         }
 
         /// <summary>
         /// Ejecuta el procesamiento del archivo de carga masiva indicado.
         /// </summary>
         /// <param name="id">Identificador del registro de carga a procesar.</param>
-        /// <param name="codUsr">Código del usuario que ejecuta el procesamiento.</param>
+        /// <param name="mensaje">Mensaje de resultado retornado por el procedimiento.</param>
         /// <returns>Número de proceso generado por el procesamiento.</returns>
-        public static int Procesar(int id, int codUsr)
+        public static int Procesar(int id, out string mensaje)
         {
             int numProceso = 0;
+            mensaje = string.Empty;
 
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
                 List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
                     .AddParameter("p_id", DbType.Int32, 9, id)
-                    .AddParameter("p_updateusercode", DbType.Int32, 9, codUsr)
-                    .AddParameter("p_num_proceso", DbType.Int32, 9, 0, ParameterDirection.Output).Parameters;
+                    .AddParameter("p_num_proceso", DbType.Int32, 9, 0, ParameterDirection.Output)
+                    .AddParameter("p_mensaje", DbType.String, 4000, string.Empty, ParameterDirection.Output).Parameters;
 
                 Database.Procedure("em_k_masivos_mcr.p_procesar_archivo")
                     .AddParameter(parameters)
                     .Execute(currentConnection, "Tron");
 
-                object valor = parameters.Find(p => p.Name == "p_num_proceso").Value;
-                if (valor != null && valor != DBNull.Value)
+                object valorNum = parameters.Find(p => p.Name == "p_num_proceso").Value;
+                if (valorNum != null && valorNum != DBNull.Value)
                 {
-                    int.TryParse(valor.ToString(), out numProceso);
+                    int.TryParse(valorNum.ToString(), out numProceso);
+                }
+
+                object valorMsj = parameters.Find(p => p.Name == "p_mensaje").Value;
+                if (valorMsj != null && valorMsj != DBNull.Value)
+                {
+                    mensaje = valorMsj.ToString();
                 }
             }
 
@@ -155,18 +160,16 @@ namespace Architect.API.Tron.DataAccess.Masivos
         /// Actualiza el archivo de carga de un registro masivo existente.
         /// </summary>
         /// <param name="id">Identificador del registro a actualizar.</param>
-        /// <param name="fileName">Nombre del nuevo archivo de carga.</param>
         /// <param name="fileBytes">Contenido binario del nuevo archivo.</param>
         /// <param name="fileSize">Tamaño del nuevo archivo en bytes.</param>
         /// <param name="codUsr">Código del usuario que ejecuta la actualización.</param>
         /// <returns>Indicador de actualización exitosa.</returns>
-        public static bool UpdateArchivoCarga(int id, string fileName, byte[] fileBytes, int fileSize, int codUsr)
+        public static bool UpdateArchivoCarga(int id, byte[] fileBytes, int fileSize, int codUsr)
         {
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
                 Database.Procedure("em_k_masivos_mcr.p_update_archivo_carga")
                     .AddParameter("p_id", DbType.Int32, 9, id)
-                    .AddParameter("p_txt_archivo_carga", DbType.String, 255, fileName)
                     .AddParameter("p_num_tam_archivo", DbType.Int32, 9, fileSize)
                     .AddParameter("p_archivo_carga", DbType.Binary, 0, fileBytes)
                     .AddParameter("p_updateusercode", DbType.Int32, 9, codUsr)

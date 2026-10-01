@@ -206,20 +206,25 @@ app.Masivos.Ui = (function () {
                     field: 'acciones', title: 'Acciones', sortable: false, halign: 'center', align: 'center',
                     formatter: function (value, row) {
                         var estado = Number(row.cod_estado || 0);
-                        var html = [];
+                        var botones = [];
 
-                        html.push('<div class="btn-group btn-group-xs" role="group">');
-                        html.push('<button type="button" class="btn btn-xs btn-primary btn-validar" data-id="' + row.id + '" title="Validar archivo"><i class="fa fa-check"></i> Validar</button>');
-                        html.push('<button type="button" class="btn btn-xs btn-success btn-procesar" data-id="' + row.id + '" title="Procesar archivo"><i class="fa fa-gears"></i> Procesar</button>');
-
-                        if (estado === 0 || estado === 2) {
-                            html.push('<button type="button" class="btn btn-xs btn-warning btn-actualizar" data-id="' + row.id + '" title="Actualizar archivo"><i class="fa fa-upload"></i> Actualizar</button>');
-                        } else {
-                            html.push('<button type="button" class="btn btn-xs btn-default" disabled title="Actualizar archivo no disponible para este estado"><i class="fa fa-upload"></i> Actualizar</button>');
+                        if (estado === 0) {
+                            botones.push('<button type="button" class="btn btn-xs btn-primary btn-validar" data-id="' + row.id + '" title="Validar archivo"><i class="fa fa-check"></i> Validar</button>');
                         }
 
-                        html.push('</div>');
-                        return html.join('');
+                        if (estado === 2) {
+                            botones.push('<button type="button" class="btn btn-xs btn-warning btn-actualizar" data-id="' + row.id + '" title="Actualizar archivo"><i class="fa fa-upload"></i> Actualizar</button>');
+                        }
+
+                        if (estado === 3) {
+                            botones.push('<button type="button" class="btn btn-xs btn-success btn-procesar" data-id="' + row.id + '" title="Procesar archivo"><i class="fa fa-gears"></i> Procesar</button>');
+                        }
+
+                        if (botones.length === 0) {
+                            return '<span class="text-muted">-</span>';
+                        }
+
+                        return '<div class="btn-group btn-group-xs" role="group">' + botones.join('') + '</div>';
                     }
                 }
             ]
