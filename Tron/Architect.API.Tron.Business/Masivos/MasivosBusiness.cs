@@ -94,6 +94,34 @@ namespace Architect.API.Tron.Business.Masivos
         }
 
         /// <summary>
+        /// Consulta el avance de un procesamiento en curso (estado 4 - Procesando).
+        /// </summary>
+        /// <param name="id">Identificador del registro de carga a consultar.</param>
+        /// <returns>Resultado con el mensaje de avance y si el procesamiento ya finalizó.</returns>
+        public static MasivoResult ConsultarResultado(int id)
+        {
+            MasivoResult result = new MasivoResult();
+
+            try
+            {
+                string mensaje;
+                DataAccess.Masivos.MasivosDataAccess.ConsultarResultado(id, out mensaje);
+                result.Exitoso = true;
+                result.Mensaje = mensaje;
+                result.Finalizado = !string.IsNullOrEmpty(mensaje) && mensaje.IndexOf("finalizado", StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+            catch (Exception ex)
+            {
+                result.Exitoso = false;
+                result.Mensaje = "No fue posible consultar el avance del procesamiento.";
+                result.Errores.Add(ex.Message);
+                Utilities.Log.ErrorLog("Masivos.ConsultarResultado", ex.Message, "MasivosBusiness.ConsultarResultado");
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Valida el archivo de carga masiva indicado.
         /// </summary>
         /// <param name="id">Identificador del registro de carga a validar.</param>

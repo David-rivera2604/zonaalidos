@@ -77,11 +77,16 @@ app.Masivos.Api = (function () {
         });
     }
 
+    function ConsultarResultado(id) {
+        return app.core.Get(app.setting.apipath + 'v1/Masivos/Resultado/' + id);
+    }
+
     return {
         ConsultarCargas: ConsultarCargas,
         CargarCsv: CargarCsv,
         Validar: Validar,
         Procesar: Procesar,
-        ActualizarArchivo: ActualizarArchivo
+        ActualizarArchivo: ActualizarArchivo,
+        ConsultarResultado: ConsultarResultado
     };
 })();

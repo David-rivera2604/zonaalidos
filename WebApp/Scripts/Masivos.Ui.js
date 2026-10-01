@@ -5,13 +5,17 @@ app.Masivos.Ui = (function () {
     var state = {
         selectedFile: null,
         uploadedFileName: '',
-        rowUpdateId: null
+        rowUpdateId: null,
+        progreso: {}
     };
+
+    var POLL_INTERVAL_MS = 15000;
 
     function Init() {
         app.ui.CommonBehaviour();
         masivos_table_setup();
         ensureUpdateInput();
+        ensureProgresoPanel();
         setupEvents();
     }
 
@@ -19,6 +23,19 @@ app.Masivos.Ui = (function () {
         if ($('#masivoUpdateFile').length === 0) {
             $('body').append('<input id="masivoUpdateFile" type="file" accept=".csv,text/csv" style="display:none;">');
         }
+    }
+
+    function ensureProgresoPanel() {
+        if ($('#masivosProgresoPanel').length > 0) {
+            return;
+        }
+
+        var panel = '<div id="masivosProgresoPanel" class="alert alert-info" style="display:none;">' +
+            '<h5><i class="fa fa-spinner fa-spin"></i> Procesos en ejecución</h5>' +
+            '<ul id="masivosProgresoLista" style="margin-bottom:0;"></ul>' +
+            '</div>';
+
+        $('#masivosTbl').closest('.table-responsive').before(panel);
     }
 
     function setupEvents() {
@@ -238,16 +255,100 @@ app.Masivos.Ui = (function () {
                 if (data != null && data.Mensaje != null) {
                     app.ui.ShowAlert('generalNotify', 'alert-danger', data.Mensaje);
                     $('#masivosTbl').bootstrapTable('load', {});
+                    sincronizarProgreso([]);
                 } else {
-                    $('#masivosTbl').bootstrapTable('load', Array.isArray(data) ? data : []);
+                    var rows = Array.isArray(data) ? data : [];
+                    $('#masivosTbl').bootstrapTable('load', rows);
+                    sincronizarProgreso(rows);
                 }
             })
             .fail(function () {
                 $('#masivosTbl').bootstrapTable('load', []);
+                sincronizarProgreso([]);
             })
             .always(function () {
                 $('#masivosTbl').bootstrapTable('hideLoading');
             });
+    }
+
+    function sincronizarProgreso(rows) {
+        var idsEnProceso = {};
+
+        (rows || []).forEach(function (row) {
+            if (Number(row.cod_estado || 0) === 4) {
+                idsEnProceso[row.id] = row;
+            }
+        });
+
+        // Detiene el polling de filas que ya no están en estado "Procesando".
+        Object.keys(state.progreso).forEach(function (id) {
+            if (!idsEnProceso[id]) {
+                clearInterval(state.progreso[id].intervalId);
+                delete state.progreso[id];
+            }
+        });
+
+        // Inicia el polling de filas nuevas en estado "Procesando".
+        Object.keys(idsEnProceso).forEach(function (id) {
+            if (!state.progreso[id]) {
+                iniciarPollingResultado(idsEnProceso[id]);
+            }
+        });
+
+        renderProgresoPanel();
+    }
+
+    function iniciarPollingResultado(row) {
+        state.progreso[row.id] = {
+            archivo: row.txt_archivo_carga,
+            mensaje: 'Consultando avance...',
+            intervalId: setInterval(function () { consultarResultadoProceso(row.id); }, POLL_INTERVAL_MS)
+        };
+
+        consultarResultadoProceso(row.id);
+    }
+
+    function consultarResultadoProceso(id) {
+        app.Masivos.Api.ConsultarResultado(id)
+            .done(function (data) {
+                if (!state.progreso[id]) return;
+
+                state.progreso[id].mensaje = (data && data.Mensaje) ? data.Mensaje : 'Procesando...';
+                renderProgresoPanel();
+
+                if (data && data.Finalizado) {
+                    clearInterval(state.progreso[id].intervalId);
+                    delete state.progreso[id];
+                    renderProgresoPanel();
+                    consultarCargas();
+                }
+            })
+            .fail(function () {
+                if (state.progreso[id]) {
+                    state.progreso[id].mensaje = 'No fue posible consultar el avance.';
+                    renderProgresoPanel();
+                }
+            });
+    }
+
+    function renderProgresoPanel() {
+        var ids = Object.keys(state.progreso);
+        var $panel = $('#masivosProgresoPanel');
+        var $lista = $('#masivosProgresoLista');
+
+        if (ids.length === 0) {
+            $panel.hide();
+            $lista.empty();
+            return;
+        }
+
+        var html = ids.map(function (id) {
+            var item = state.progreso[id];
+            return '<li><strong>' + (item.archivo || ('ID ' + id)) + ':</strong> ' + item.mensaje + '</li>';
+        }).join('');
+
+        $lista.html(html);
+        $panel.show();
     }
 
     function cargarCsv() {

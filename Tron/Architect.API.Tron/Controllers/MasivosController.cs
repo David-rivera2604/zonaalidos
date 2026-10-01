@@ -34,6 +34,25 @@ namespace Architect.API.Tron.Controllers
         }
 
         /// <summary>
+        /// Consulta el avance de un procesamiento en curso (estado 4 - Procesando).
+        /// </summary>
+        /// <param name="id">Identificador del registro de carga a consultar.</param>
+        /// <returns>Resultado con el mensaje de avance y si el procesamiento ya finalizó.</returns>
+        [HttpGet]
+        [Route("Resultado/{id:int}")]
+        public async Task<IHttpActionResult> Resultado(int id)
+        {
+            MasivoResult result = null;
+
+            await Task.Run(() =>
+            {
+                result = Business.Masivos.MasivosBusiness.ConsultarResultado(id);
+            }).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Recibe un archivo CSV multipart y lo registra como una nueva carga masiva.
         /// </summary>
         /// <returns>Resultado de la carga del archivo.</returns>

@@ -157,6 +157,44 @@ namespace Architect.API.Tron.DataAccess.Masivos
         }
 
         /// <summary>
+        /// Consulta el avance de un procesamiento en curso (estado 4 - Procesando).
+        /// </summary>
+        /// <param name="id">Identificador del registro de carga a consultar.</param>
+        /// <param name="mensaje">Mensaje de avance o finalización retornado por el procedimiento.</param>
+        /// <returns>Número de proceso asociado al procesamiento.</returns>
+        public static int ConsultarResultado(int id, out string mensaje)
+        {
+            int numProceso = 0;
+            mensaje = string.Empty;
+
+            using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
+            {
+                List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
+                    .AddParameter("p_id", DbType.Int32, 9, id)
+                    .AddParameter("p_num_proceso", DbType.Int32, 9, 0, ParameterDirection.Output)
+                    .AddParameter("p_mensaje", DbType.String, 4000, string.Empty, ParameterDirection.Output).Parameters;
+
+                Database.Procedure("em_k_masivos_mcr.p_resultado")
+                    .AddParameter(parameters)
+                    .Execute(currentConnection, "Tron");
+
+                object valorNum = parameters.Find(p => p.Name == "p_num_proceso").Value;
+                if (valorNum != null && valorNum != DBNull.Value)
+                {
+                    int.TryParse(valorNum.ToString(), out numProceso);
+                }
+
+                object valorMsj = parameters.Find(p => p.Name == "p_mensaje").Value;
+                if (valorMsj != null && valorMsj != DBNull.Value)
+                {
+                    mensaje = valorMsj.ToString();
+                }
+            }
+
+            return numProceso;
+        }
+
+        /// <summary>
         /// Actualiza el archivo de carga de un registro masivo existente.
         /// </summary>
         /// <param name="id">Identificador del registro a actualizar.</param>
