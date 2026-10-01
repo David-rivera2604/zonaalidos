@@ -8139,3 +8139,45 @@ body.Mapfre {
     box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 1px 3px rgba(255,255,255,.9) !important;
     text-shadow: none !important;
 }
+
+/* Zonas que van directo dentro del formulario sin .form-row (Destinatario para envio de solicitud,
+   Verificacion de domicilio): mismo cuadro que las demas secciones y a todo el ancho. */
+.Mapfre #page-wrapper fieldset > .enviosolicitudZone,
+.Mapfre #page-wrapper fieldset > .VerificarDomicilio {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 20px !important;
+    padding: 18px 20px 16px !important;
+    background: #FBFBFC !important;
+    border: 1px solid var(--mf-line) !important;
+    border-left: 3px solid var(--mf-red) !important;
+    border-radius: 0 10px 10px 0 !important;
+}
+
+    .Mapfre #page-wrapper fieldset > .enviosolicitudZone > h4,
+    .Mapfre #page-wrapper fieldset > .VerificarDomicilio > h4 {
+        margin-top: 2px !important;
+    }
+
+@media (min-width: 768px) {
+    /* Tipo de envio y Correo uno al lado del otro */
+    .Mapfre #page-wrapper fieldset > .enviosolicitudZone > .form-row > .col-md-12 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+/* Botonera sin ningun boton visible (en la emision los botones se pasan a la barra de arriba):
+   no se muestra el cuadro vacio. Si un boton vuelve a mostrarse, el cuadro aparece. */
+.Mapfre #page-wrapper fieldset > .form-row:has(> [class*="col"] > .modal-footer):not(:has(.form-group)):not(:has(.modal-footer > .btn:not(.d-none))) {
+    display: none !important;
+}
+
+/* Cuadro que solo tiene la botonera: sin la linea ni el relleno del pie, el boton queda centrado en su cuadro. */
+.Mapfre #page-wrapper fieldset > .form-row:has(> [class*="col"] > .modal-footer):not(:has(.form-group)) .modal-footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: 0 !important;
+    background: transparent !important;
+}
