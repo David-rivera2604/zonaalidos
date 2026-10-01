@@ -204,7 +204,15 @@ app.CotizacionMapfreMasPlus = (function () {
             app.core.Lookups([
                 'MM_Plan.COD_PLAN_AUTO'],
                 function () {
+<<<<<<< HEAD
                     RemoveEspecialPlanIfNotPurdy();
+=======
+                    if (!localStorage.getItem('Roles').includes('Purdy')) {
+                        $('#COD_PLAN_AUTO option').filter(function () {
+                            return $(this).text().trim().toUpperCase() === 'ESPECIAL';
+                        }).remove();
+                    }
+>>>>>>> DES
                     if ($('#COD_PLAN_AUTO option').length == 1) {
                         $("#COD_PLAN_AUTO").val($("#COD_PLAN_AUTO option:first").val());
                     }
@@ -547,7 +555,7 @@ app.CotizacionMapfreMasPlus = (function () {
         $('#print').click(function (e) {
             e.preventDefault();
             let data = MapInputToObject();
-            if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "2") {
+            if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "1") {
                 data.cod_uso_vehiDesc = "BANCA Y DESARROLLO";
             }
 

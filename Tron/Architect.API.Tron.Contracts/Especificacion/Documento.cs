@@ -12,6 +12,7 @@ namespace Architect.API.Tron.Contracts.Especificacion
         public string descripcion { get; set; }
         public string archivo { get; set; }
         public bool requerido { get; set; }
+        public int documentType { get; set; }
 
 
         //new Contracts.Emision.MapfreMasdocumentosrequeridos() { documentosrequeridosId=1, tipo = "Copia de la cédula de identidad", DArchivoEsperado="CEDULA.docx", Grupo="F"  },

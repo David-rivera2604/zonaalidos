@@ -31,6 +31,7 @@ app.CotizacionMapfreMas = (function () {
         }
     }
 
+<<<<<<< HEAD
     // Cuentas con rol Banca: solo el tipo de producto Banca (plan 39 en MM_Plan). Las demas cuentas no lo ven.
     function MostrarTiposProductoPorRol() {
         var esBanca = (JSON.parse(localStorage.getItem('Roles') || '[]') || []).indexOf('Banca') !== -1;
@@ -43,6 +44,8 @@ app.CotizacionMapfreMas = (function () {
         });
     }
 
+=======
+>>>>>>> DES
     function Setup(mode) {
         app.ui.CommonBehaviour();
         MostrarTiposProductoPorRol();
@@ -51,6 +54,15 @@ app.CotizacionMapfreMas = (function () {
             $('.contratanteZone').addClass('col-md-12');
 
             $("label[for='nombredelcontratante']").html($("label[for='nombredelcontratante']").html() + "<span class='required-mark' title='Este campo debe ser llenado de forma obligatoria'>*</span>")
+        }
+
+        // Plan Banca (cod_plan 39): con el rol Banca solo se visualiza este plan, el resto se oculta
+        if (app.ui.HasRole('Banca')) {
+            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').hide();
+            $('#tipo_prod_10').closest('.custom-control').show();
+        } else {
+            $('input[name=tipo_prod]').not('#tipo_prod_10').closest('.custom-control').show();
+            $('#tipo_prod_10').closest('.custom-control').hide();
         }
 
         //if (localStorage.getItem('Roles').includes('Purdy') || localStorage.getItem('Roles').includes('Davivienda_Prendarios') ||
@@ -66,6 +78,11 @@ app.CotizacionMapfreMas = (function () {
         $('#coberturasTbl').bootstrapTable('showLoading');
         app.core.Get(app.setting.apipath + `v1/Quote/MapfreMasSetup?mode=${mode}`)
             .done(function (data, textStatus, jqXHR) {
+                // Rol Banca: el plan Banca (cod_plan 39) es el unico disponible, se carga por defecto
+                if (app.ui.HasRole('Banca')) {
+                    data.tipo_prod = 'banca';
+                    data.COD_PLAN_AUTO = 39;
+                }
                 Init_Lookups(data);
             });
     }
@@ -145,7 +162,10 @@ app.CotizacionMapfreMas = (function () {
                 SettingReload(function () {
                     MapObjectToInput(data);
                     RemoveEspecialPlanIfNotPurdy();
+<<<<<<< HEAD
                     MostrarTiposProductoPorRol();
+=======
+>>>>>>> DES
                     data_changed();
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
@@ -205,7 +225,11 @@ app.CotizacionMapfreMas = (function () {
                 }
                 $('input:radio[name=tipo_prod]').prop('disabled', true);
             } else {
+<<<<<<< HEAD
                 MostrarTiposProductoPorRol();
+=======
+                $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
+>>>>>>> DES
 
                 var bloquearTipoProd = esPurdy && contratoValue > 0;
                 $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
@@ -220,8 +244,12 @@ app.CotizacionMapfreMas = (function () {
             e.preventDefault();
             $('#contrato').prop('selectedIndex', -1);
             $('#subcontrato').prop('selectedIndex', -1).prop('disabled', true);
+<<<<<<< HEAD
             $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false);
             MostrarTiposProductoPorRol();
+=======
+            $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false).closest('.custom-control').removeClass('d-none');
+>>>>>>> DES
             $('#contratoClearBtn').addClass('d-none');
             SettingReload();
         });
@@ -413,6 +441,9 @@ app.CotizacionMapfreMas = (function () {
         app.ui.SetRadioNumericValue('MCA_AUTO_GPS_CMS', data.MCA_AUTO_GPS_CMS);
         app.ui.SetRadioNumericValue('MCA_MONITOREO_GPS', data.MCA_MONITOREO_GPS);
         app.ui.SetRadioNumericValue('ext_garantia', data.ext_garantia);
+        if (app.ui.HasRole('banca')) {
+            data.rc_alcohol = 'S';
+        }
         app.ui.SetRadioStringValue('rc_alcohol', data.rc_alcohol);
         app.ui.SetRadioStringValue('rc_conductor', data.rc_conductor);
         app.ui.SetRadioNumericValue('MCA_PRA', data.MCA_PRA);
@@ -506,7 +537,7 @@ app.CotizacionMapfreMas = (function () {
             maximumValue: '0'
         };
         // Solo aplicar límites si NO tiene privilegios
-        if (!tienePrivilegios) {
+        if (!tienePrivilegios && !app.ui.HasRole('banca')) {
             opcionesAutoNumeric.minimumValue = '-15';
         }
         new AutoNumeric('#PCT_AJUSTE_GEN', opcionesAutoNumeric);
@@ -784,7 +815,8 @@ app.CotizacionMapfreMas = (function () {
 
         $.validator.addMethod("ValidarAjusteConRol", function (value, element) {
             const tienePrivilegios = localStorage.getItem('Roles')?.includes('Privilegios');
-            if (tienePrivilegios) return true; // No validar si tiene el rol
+            if (tienePrivilegios && app.ui.HasRole('banca'))
+                return true; // No validar si tiene el rol
 
             const num = parseFloat(value);
             return !isNaN(num) && num >= -15 && num <= 0;
@@ -1202,8 +1234,13 @@ app.CotizacionMapfreMas = (function () {
                 app.ui.SetNumericValue('#PCT_AJUSTE_GEN', 0);
                 $('#PCT_AJUSTE_GEN').prop('disabled', true);
             }
-        }
-        else {
+        } else if (tipo_prod === 'banca') {
+            app.ui.SetNumericValue('#PCT_AJUSTE_GEN', -30);
+            $('select#IMP_AUTO_RC').val($('select#IMP_AUTO_RC option:first').val());
+            $('.role-banca').hide();
+            
+
+        } else {
             $('#PCT_AJUSTE_GEN').closest('.col-sm-3.col-md-3').removeClass('d-none');
             $('#PCT_AJUSTE_GEN').prop('disabled', false);
         }
@@ -1436,7 +1473,7 @@ app.CotizacionMapfreMas = (function () {
 
     function validarCoberturaSeleccionable(row) {
         const tipoCombustible = $("#COD_TIP_COM_VEHI option:selected").val();
-        var roles = localStorage.getItem('Roles'); 
+        var roles = localStorage.getItem('Roles');
 
         if (roles.includes('Veinsa')) {
             // Eléctrico
@@ -1451,8 +1488,8 @@ app.CotizacionMapfreMas = (function () {
                 return false;
             }
         }
-            return true;
-        
+        return true;
+
     }
 
     function LimpiarCoberturasPorCambioCombustible() {

@@ -52,7 +52,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
             return result;
         }
 
-        public static int CreateBoveda(string num_poliza, int num_spto, string TIP_DOCUM, string COD_DOCUM, string CARD, string TOKEN, string CLIENTID, bool STATUS, string REASON, IDbConnection connection = null)
+        public static int CreateBoveda(string num_poliza, int num_spto, string TIP_DOCUM, string COD_DOCUM, string CARD, string TOKEN, string CLIENTID, bool STATUS, string REASON, DateTime validUntil, IDbConnection connection = null)
         {
             int result = 0;
 
@@ -78,6 +78,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                 .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
                                 .Column("NUM_POLIZA", DbType.String, 13, num_poliza)
                                 .Column("NUM_SPTO", DbType.Int32, 22, num_spto)
+                                .Column("CardExpirationDate", DbType.DateTime, 0, validUntil)
                                 .Execute(connection, "Research");
             }
             else
@@ -89,6 +90,7 @@ namespace Architect.API.Tron.DataAccess.Pagos
                                 .Column("STATUS", DbType.Int32, 1, STATUS ? 1 : 0)
                                 .Column("REASON", DbType.AnsiString, 100, REASON)
                                 .Column("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                                .Column("CardExpirationDate", DbType.DateTime, 0, validUntil)
                                 .Filter("TIP_DOCUM", DbType.AnsiString, 3, TIP_DOCUM)
                                 .Filter("COD_DOCUM", DbType.AnsiString, 20, COD_DOCUM)
                                 .Filter("NUM_POLIZA", DbType.String, 13, num_poliza)

@@ -1733,10 +1733,17 @@ div .input-group-prepend {
     padding: 18px;
 }
 
+<<<<<<< HEAD
 .Casos_St .Inputs {
     gap: 14px;
     margin-bottom: 16px;
 }
+=======
+    .Casos_St .Inputs {
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+>>>>>>> DES
 
 .info_table_top2 p {
     margin: 10px
@@ -3525,12 +3532,16 @@ ul.Observaciones {
         margin-left: 42px;
     }
 
+<<<<<<< HEAD
 /* Observaci�n (1� l�nea) */
+=======
+/* Observaci n (1  l nea) */
+>>>>>>> DES
 .obs-text {
     white-space: pre-wrap
 }
 
-/* Meta (2� l�nea: usuario + fecha, izquierda) */
+/* Meta (2  l nea: usuario + fecha, izquierda) */
 .meta-line {
     font-size: 10px;
     color: #6c757d;
@@ -5165,6 +5176,7 @@ body.Mapfre {
         z-index: 1;
     }
 
+<<<<<<< HEAD
     /* Con un modal abierto la fila no puede ser un contexto de apilamiento: el modal vive
        dentro de ella y quedaria debajo del fondo gris (.modal-backdrop va en el body). */
     .Mapfre.modal-open .wrapper-content > .row,
@@ -5172,6 +5184,8 @@ body.Mapfre {
         z-index: auto;
     }
 
+=======
+>>>>>>> DES
 .Mapfre .aliados ul.menu-dropdown {
     padding: 6px !important;
     border: 1px solid var(--mf-line) !important;
@@ -5881,11 +5895,16 @@ body.Mapfre {
         background: var(--mf-red);
     }
 
+<<<<<<< HEAD
 /* backwards (no both): al terminar no debe quedar un transform en la fila, porque un
    transform convierte a la fila en el contenedor de los position:fixed y los modales
    (terceros, documentos...) se abren arriba de la pagina, fuera de la pantalla. */
 .Mapfre .wrapper-content > .row {
     animation: mfRise .3s var(--mf-ease) backwards;
+=======
+.Mapfre .wrapper-content > .row {
+    animation: mfRise .3s var(--mf-ease) both;
+>>>>>>> DES
 }
 
 @keyframes mfRise {
@@ -6041,6 +6060,7 @@ body.Mapfre {
         font-size: 13px !important;
     }
 
+<<<<<<< HEAD
 .Mapfre #page-wrapper h4 .mf-clear-selection {
     margin-left: auto !important;
     display: inline-flex !important;
@@ -6070,6 +6090,37 @@ body.Mapfre {
         color: currentColor !important;
         font-size: 11px !important;
     }
+=======
+    .Mapfre #page-wrapper h4 .mf-clear-selection {
+        margin-left: auto !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        padding: 3px 9px !important;
+        border: 1px solid var(--mf-line) !important;
+        border-radius: 20px !important;
+        background: #fff !important;
+        color: var(--mf-muted, #80868D) !important;
+        font-family: var(--mf-font-text, inherit) !important;
+        font-size: 10.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0 !important;
+        text-decoration: none !important;
+        white-space: nowrap !important;
+        transition: color .13s ease, border-color .13s ease, background .13s ease !important;
+    }
+
+        .Mapfre #page-wrapper h4 .mf-clear-selection:hover {
+            color: var(--mf-red) !important;
+            border-color: var(--mf-red) !important;
+            background: var(--mf-red-soft, #FBEAE8) !important;
+        }
+
+        .Mapfre #page-wrapper h4 .mf-clear-selection i {
+            color: currentColor !important;
+            font-size: 11px !important;
+        }
+>>>>>>> DES
 
 .Mapfre #page-wrapper .form-control,
 .Mapfre #page-wrapper select.form-control {
@@ -6311,11 +6362,15 @@ body.Mapfre {
     opacity: 1 !important;
     filter: none !important;
     background-color: var(--mf-canvas) !important;
+<<<<<<< HEAD
     background-image:
     linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.45) 32%, rgba(255,255,255,0) 65%),
     radial-gradient(920px 660px at 92% -6%, color-mix(in srgb, var(--mf-red) 30%, transparent) 0%, transparent 65%),
     radial-gradient(760px 620px at -4% 102%, color-mix(in srgb, var(--mf-red) 22%, transparent) 0%, transparent 62%),
     radial-gradient(560px 420px at 62% 58%, color-mix(in srgb, var(--mf-red) 11%, transparent) 0%, transparent 70%) !important;
+=======
+    background-image: linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.45) 32%, rgba(255,255,255,0) 65%), radial-gradient(920px 660px at 92% -6%, color-mix(in srgb, var(--mf-red) 30%, transparent) 0%, transparent 65%), radial-gradient(760px 620px at -4% 102%, color-mix(in srgb, var(--mf-red) 22%, transparent) 0%, transparent 62%), radial-gradient(560px 420px at 62% 58%, color-mix(in srgb, var(--mf-red) 11%, transparent) 0%, transparent 70%) !important;
+>>>>>>> DES
     background-repeat: no-repeat !important;
     background-size: cover !important;
 }
@@ -6916,9 +6971,15 @@ body.Mapfre {
 }
 
 @media (max-width: 575px) {
+<<<<<<< HEAD
         .Mapfre #imgHead img {
             max-height: 27px !important;
         }
+=======
+    .Mapfre #imgHead img {
+        max-height: 27px !important;
+    }
+>>>>>>> DES
 
     .Mapfre #UserNameMaster {
         display: none !important;
@@ -7159,6 +7220,7 @@ body.Mapfre {
 .Mapfre #side-menu .menu-dropdown {
     overflow: hidden !important;
     transition: max-height .28s cubic-bezier(.2,.7,.3,1), opacity .2s ease !important;
+<<<<<<< HEAD
 }
 
 .Mapfre #side-menu .inputche:checked ~ .menu-dropdown {
@@ -8180,4 +8242,765 @@ body.Mapfre {
     padding: 0 !important;
     border-top: 0 !important;
     background: transparent !important;
+=======
 }
+
+.Mapfre #side-menu .inputche:checked ~ .menu-dropdown {
+    animation: mfSubIn .28s cubic-bezier(.2,.7,.3,1) both !important;
+}
+
+@keyframes mfSubIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.Mapfre .wrapper-content .ibox,
+.Mapfre .wrapper-content .widget.style1 {
+    animation: mfCardIn .38s cubic-bezier(.2,.7,.3,1) both;
+}
+
+.Mapfre .wrapper-content [class*="col-"]:nth-child(1) .ibox,
+.Mapfre .wrapper-content [class*="col-"]:nth-child(1) .widget.style1 {
+    animation-delay: .04s;
+}
+
+.Mapfre .wrapper-content [class*="col-"]:nth-child(2) .ibox,
+.Mapfre .wrapper-content [class*="col-"]:nth-child(2) .widget.style1 {
+    animation-delay: .09s;
+}
+
+.Mapfre .wrapper-content [class*="col-"]:nth-child(3) .ibox,
+.Mapfre .wrapper-content [class*="col-"]:nth-child(3) .widget.style1 {
+    animation-delay: .14s;
+>>>>>>> DES
+}
+
+.Mapfre .wrapper-content [class*="col-"]:nth-child(n+4) .ibox {
+    animation-delay: .18s;
+}
+
+@keyframes mfCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(9px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.Mapfre #side-menu > nav + nav {
+    margin-top: 1px !important;
+}
+
+.Mapfre #side-menu .dropdown-toggle::after,
+.Mapfre #side-menu .level_1__link.dropdown-toggle::after {
+    transition: transform .24s cubic-bezier(.2,.7,.3,1) !important;
+}
+
+.Mapfre #side-menu .inputche:checked ~ label .dropdown-toggle::after {
+    transform: rotate(180deg) !important;
+}
+
+.Mapfre .breadcrumb {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-weight: 600 !important;
+}
+
+.Mapfre #page-wrapper .no-records-found td,
+.Mapfre #page-wrapper .text-muted-empty {
+    padding: 26px 14px !important;
+    color: var(--mf-muted, #80868D) !important;
+    font-size: 12px !important;
+    text-align: center !important;
+}
+
+.Mapfre #page-wrapper .label,
+.Mapfre #page-wrapper .badge {
+    padding: 4px 9px !important;
+    border-radius: 20px !important;
+    font-family: var(--mf-font-display);
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    letter-spacing: .03em !important;
+}
+
+@media (max-width: 991px) {
+    .Mapfre #imgHead {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 9px !important;
+        border-bottom: 0 !important;
+    }
+
+        .Mapfre #imgHead::before,
+        .Mapfre #imgHead::after {
+            display: none !important;
+        }
+
+        .Mapfre #imgHead .mf-brand-logo {
+            width: auto !important;
+            margin: 0 !important;
+        }
+
+            .Mapfre #imgHead .mf-brand-logo img {
+                width: auto !important;
+                max-height: 44px !important;
+            }
+
+    .Mapfre .mf-brand-name {
+        display: none !important;
+    }
+
+    .Mapfre .wrapper-content::before {
+        animation: none !important;
+    }
+
+    .Mapfre #side-menu > nav,
+    .Mapfre .wrapper-content .ibox,
+    .Mapfre .wrapper-content .widget.style1 {
+        animation-duration: .22s !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .Mapfre #imgHead .mf-brand-logo img {
+        max-height: 34px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .Mapfre .wrapper-content::before,
+    .Mapfre #side-menu > nav,
+    .Mapfre .wrapper-content .ibox,
+    .Mapfre .wrapper-content .widget.style1,
+    .Mapfre #imgHead img {
+        animation: none !important;
+    }
+}
+
+.Mapfre #page-wrapper .res_bo {
+    margin-bottom: 16px !important;
+    background: var(--mf-card, #fff) !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: var(--mf-radius, 10px) !important;
+    box-shadow: var(--mf-e1) !important;
+    transition: box-shadow .18s var(--mf-ease), transform .18s var(--mf-ease), border-color .18s ease !important;
+}
+
+    .Mapfre #page-wrapper .res_bo:hover {
+        box-shadow: var(--mf-e2) !important;
+        transform: translateY(-2px) !important;
+        border-color: #D8D3D3 !important;
+    }
+
+    .Mapfre #page-wrapper .res_bo .ibox-content {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 18px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .Mapfre #page-wrapper .res_bo .items {
+        display: block !important;
+    }
+
+        .Mapfre #page-wrapper .res_bo .items label {
+            float: none !important;
+            display: block !important;
+            width: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: none !important;
+            font-family: var(--mf-font-display);
+            font-size: 10.5px !important;
+            font-weight: 800 !important;
+            letter-spacing: .06em !important;
+            text-transform: uppercase !important;
+            color: var(--mf-muted, #80868D) !important;
+        }
+
+    .Mapfre #page-wrapper .res_bo .info {
+        padding: 0 !important;
+    }
+
+        .Mapfre #page-wrapper .res_bo .info p {
+            display: flex !important;
+            align-items: center !important;
+            gap: 13px !important;
+            margin: 0 !important;
+        }
+
+    .Mapfre #page-wrapper .res_bo .iconboxes {
+        flex: 0 0 auto !important;
+        width: 46px !important;
+        height: 46px !important;
+        margin: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 12px !important;
+        background: color-mix(in srgb, currentColor 13%, white) !important;
+        font-size: 19px !important;
+    }
+
+    .Mapfre #page-wrapper .res_bo .num {
+        margin: 0 !important;
+        font-family: var(--mf-font-display);
+        font-size: 25px !important;
+        font-weight: 800 !important;
+        letter-spacing: -.02em !important;
+        color: var(--mf-ink, #1A1D21) !important;
+        font-variant-numeric: tabular-nums !important;
+    }
+
+@supports not (background: color-mix(in srgb, red 10%, white)) {
+    .Mapfre #page-wrapper .res_bo .iconboxes {
+        background: #F2F3F5 !important;
+    }
+}
+
+.Mapfre #side-menu .level_1__link i:empty,
+.Mapfre #side-menu .menu-dropdown li > a i:empty,
+.Mapfre .items_ham_menu .level_1__link i:empty,
+.Mapfre .items_ham_menu .menu-dropdown li > a i:empty {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+    .Mapfre #side-menu .level_1__link i:empty::before,
+    .Mapfre #side-menu .menu-dropdown li > a i:empty::before,
+    .Mapfre .items_ham_menu .level_1__link i:empty::before,
+    .Mapfre .items_ham_menu .menu-dropdown li > a i:empty::before {
+        content: "" !important;
+        display: block !important;
+        width: 5px !important;
+        height: 5px !important;
+        border-radius: 50% !important;
+        background: currentColor !important;
+        opacity: .5 !important;
+    }
+
+.Mapfre #side-menu > nav.active > .menu .level_1__link,
+.Mapfre #side-menu > nav.active > .menu > .level_1__item > a,
+.Mapfre #side-menu > nav.active > .menu .level_1__link:hover,
+.Mapfre #side-menu > nav.active > .menu > .level_1__item > a:hover {
+    background: var(--mf-red) !important;
+    color: #fff !important;
+    border-left-color: var(--mf-red-2, var(--mf-red)) !important;
+    box-shadow: var(--mf-e1) !important;
+}
+
+    .Mapfre #side-menu > nav.active > .menu .level_1__link i,
+    .Mapfre #side-menu > nav.active > .menu > .level_1__item > a i {
+        color: #fff !important;
+    }
+
+.Mapfre #side-menu .menu-dropdown li.active > a,
+.Mapfre #side-menu .menu-dropdown li.active > a:hover {
+    background: var(--mf-red-soft, #FBEAE8) !important;
+    color: var(--mf-red) !important;
+    font-weight: 700 !important;
+}
+
+.Mapfre #page-wrapper .ibox-title {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--mf-red) 4%, #fff), #fff) !important;
+    border-bottom: 1px solid var(--mf-line) !important;
+}
+
+.Mapfre #page-wrapper fieldset > .form-row {
+    margin: 0 0 20px !important;
+    padding: 18px 20px 16px !important;
+    background: #FBFBFC !important;
+    border: 1px solid var(--mf-line) !important;
+    border-left: 3px solid var(--mf-red) !important;
+    border-radius: 0 10px 10px 0 !important;
+}
+
+    .Mapfre #page-wrapper fieldset > .form-row:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .Mapfre #page-wrapper fieldset > .form-row > .col-lg-12 > h4,
+    .Mapfre #page-wrapper fieldset > .form-row > .col-lg-12 > .titulosMant {
+        margin-top: 2px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .Mapfre #page-wrapper fieldset > .form-row .hr-line-dashed {
+        margin: 0 0 16px !important;
+    }
+
+.Mapfre #page-wrapper fieldset .form-control,
+.Mapfre #page-wrapper fieldset select.form-control {
+    background-color: #fff !important;
+    box-shadow: inset 0 1px 2px rgba(20, 24, 29, .04) !important;
+}
+
+    .Mapfre #page-wrapper fieldset .form-control:focus {
+        box-shadow: inset 0 1px 2px rgba(20, 24, 29, .04), 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
+    }
+
+.Mapfre #page-wrapper fieldset .btn-primary:not(.btn-sm):not(.btn-xs):not(.dropdown-toggle),
+.Mapfre #page-wrapper fieldset .btn-default:not(.btn-sm):not(.btn-xs):not(.dropdown-toggle):not(.fileinput-button) {
+    min-width: 132px !important;
+    font-weight: 700 !important;
+}
+
+@media (max-width: 767px) {
+    .Mapfre #page-wrapper fieldset > .form-row {
+        padding: 14px 14px 12px !important;
+    }
+
+    .Mapfre #page-wrapper .res_bo .num {
+        font-size: 21px !important;
+    }
+}
+
+.Mapfre #page-wrapper .ult_in {
+    max-height: 560px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+    .Mapfre #page-wrapper .ult_in .ibox-content {
+        margin-right: 0 !important;
+        padding: 6px 4px !important;
+    }
+
+.Mapfre #page-wrapper .info_table_top,
+.Mapfre #page-wrapper .info_table_top2 {
+    display: flex !important;
+    align-items: baseline !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 14px 10px 2px !important;
+    border: 0 !important;
+    border-top: 1px solid var(--mf-line, #E7EAEC) !important;
+}
+
+.Mapfre #page-wrapper .ult_in > div > .info_table_top:first-child,
+.Mapfre #page-wrapper .ult_in > div > .info_table_top2:first-child {
+    border-top: 0 !important;
+    padding-top: 2px !important;
+}
+
+.Mapfre #page-wrapper .info_table_top strong,
+.Mapfre #page-wrapper .info_table_top2 strong {
+    font-family: var(--mf-font-display);
+    font-size: 12.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: -.01em !important;
+    color: var(--mf-ink, #1A1D21) !important;
+}
+
+.Mapfre #page-wrapper .info_table_top small,
+.Mapfre #page-wrapper .info_table_top2 small {
+    float: none !important;
+    flex: 0 0 auto !important;
+    font-size: 10.5px !important;
+    font-weight: 600 !important;
+    color: var(--mf-muted, #80868D) !important;
+    white-space: nowrap !important;
+}
+
+.Mapfre #page-wrapper .info_table_body,
+.Mapfre #page-wrapper .info_table_body2 {
+    padding: 2px 10px 6px !important;
+}
+
+    .Mapfre #page-wrapper .info_table_body p,
+    .Mapfre #page-wrapper .info_table_body2 p {
+        margin: 0 0 6px !important;
+        font-size: 11.5px !important;
+        line-height: 1.45 !important;
+        color: var(--mf-text, #3C424A) !important;
+    }
+
+.Mapfre #page-wrapper .title_table_body {
+    display: inline-block !important;
+    margin: 0 6px 4px 0 !important;
+    font-size: 9.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: .05em !important;
+    text-transform: uppercase !important;
+    color: var(--mf-red) !important;
+}
+
+.Mapfre #page-wrapper .info_table_footer,
+.Mapfre #page-wrapper .info_table_footer2 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    padding: 8px 10px 12px !important;
+    border: 0 !important;
+    font-size: 10.5px !important;
+}
+
+    .Mapfre #page-wrapper .info_table_footer strong,
+    .Mapfre #page-wrapper .info_table_footer2 strong {
+        padding: 3px 9px !important;
+        border-radius: 20px !important;
+        background: var(--mf-red-soft, #FBEAE8) !important;
+        color: var(--mf-red) !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+    }
+
+    .Mapfre #page-wrapper .info_table_footer small,
+    .Mapfre #page-wrapper .info_table_footer2 small,
+    .Mapfre #page-wrapper .small_dates {
+        float: none !important;
+        color: var(--mf-muted, #80868D) !important;
+        font-size: 10px !important;
+        white-space: nowrap !important;
+    }
+
+    .Mapfre #page-wrapper .info_table_top:hover,
+    .Mapfre #page-wrapper .info_table_top2:hover,
+    .Mapfre #page-wrapper .info_table_body:hover,
+    .Mapfre #page-wrapper .info_table_body2:hover,
+    .Mapfre #page-wrapper .info_table_footer:hover,
+    .Mapfre #page-wrapper .info_table_footer2:hover {
+        background: var(--mf-hover, #F6F6F7) !important;
+    }
+
+.Mapfre #page-wrapper .ult_in br {
+    display: none !important;
+}
+
+.Mapfre .bootstrap-datetimepicker-widget {
+    border: 1px solid var(--mf-line, #E7EAEC) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--mf-shadow-hover, 0 10px 24px rgba(20,24,29,.12)) !important;
+    padding: 6px !important;
+    font-size: 12px !important;
+}
+
+    .Mapfre .bootstrap-datetimepicker-widget table th.picker-switch,
+    .Mapfre .bootstrap-datetimepicker-widget table th.prev,
+    .Mapfre .bootstrap-datetimepicker-widget table th.next {
+        border-radius: 7px !important;
+        color: var(--mf-ink, #1A1D21) !important;
+        font-weight: 700 !important;
+    }
+
+    .Mapfre .bootstrap-datetimepicker-widget table th:hover {
+        background: var(--mf-red-soft, #FBEAE8) !important;
+        color: var(--mf-red) !important;
+    }
+
+    .Mapfre .bootstrap-datetimepicker-widget table td span:hover,
+    .Mapfre .bootstrap-datetimepicker-widget table td.day:hover {
+        background: var(--mf-red-soft, #FBEAE8) !important;
+    }
+
+    .Mapfre .bootstrap-datetimepicker-widget table td.active,
+    .Mapfre .bootstrap-datetimepicker-widget table td.active:hover,
+    .Mapfre .bootstrap-datetimepicker-widget table td span.active {
+        background: var(--mf-red, #C31F09) !important;
+        color: #fff !important;
+        text-shadow: none !important;
+    }
+
+    .Mapfre .bootstrap-datetimepicker-widget table td.today:before {
+        border-bottom-color: var(--mf-red, #C31F09) !important;
+    }
+
+    .Mapfre .bootstrap-datetimepicker-widget table td.active.today:before {
+        border-bottom-color: #fff !important;
+    }
+
+.Mapfre #toast-container > div {
+    border-radius: 10px !important;
+    padding: 13px 16px 13px 46px !important;
+    background-image: none !important;
+    box-shadow: 0 10px 28px rgba(20, 24, 29, .18) !important;
+    opacity: 1 !important;
+}
+
+    .Mapfre #toast-container > div:hover {
+        box-shadow: 0 14px 32px rgba(20, 24, 29, .24) !important;
+        opacity: 1 !important;
+    }
+
+.Mapfre .toast-success {
+    background-color: #1F8A4C !important;
+}
+
+.Mapfre .toast-error {
+    background-color: var(--mf-red, #C31F09) !important;
+}
+
+.Mapfre .toast-info {
+    background-color: #2072A6 !important;
+}
+
+.Mapfre .toast-warning {
+    background-color: #B4790C !important;
+}
+
+    .Mapfre .toast-success::before,
+    .Mapfre .toast-error::before,
+    .Mapfre .toast-info::before,
+    .Mapfre .toast-warning::before {
+        font: normal normal normal 17px/1 FontAwesome !important;
+        position: absolute !important;
+        left: 15px !important;
+        top: 15px !important;
+    }
+
+.Mapfre .toast-success::before {
+    content: "\f058" !important;
+}
+
+.Mapfre .toast-error::before {
+    content: "\f057" !important;
+}
+
+.Mapfre .toast-info::before {
+    content: "\f05a" !important;
+}
+
+.Mapfre .toast-warning::before {
+    content: "\f071" !important;
+}
+
+.Mapfre .was-validated .form-control:valid,
+.Mapfre .form-control.is-valid,
+.Mapfre .was-validated .custom-select:valid,
+.Mapfre .custom-select.is-valid {
+    border-color: #2E9D5C !important;
+    background-image: none !important;
+    padding-right: 12px !important;
+}
+
+    .Mapfre .was-validated .form-control:valid:focus,
+    .Mapfre .form-control.is-valid:focus,
+    .Mapfre .was-validated .custom-select:valid:focus,
+    .Mapfre .custom-select.is-valid:focus {
+        border-color: #2E9D5C !important;
+        box-shadow: 0 0 0 3px rgba(46, 157, 92, .16) !important;
+    }
+
+.Mapfre .was-validated .form-control:invalid,
+.Mapfre .form-control.is-invalid,
+.Mapfre .was-validated .custom-select:invalid,
+.Mapfre .custom-select.is-invalid {
+    border-color: var(--mf-red, #C31F09) !important;
+    background-image: none !important;
+    padding-right: 12px !important;
+}
+
+    .Mapfre .was-validated .form-control:invalid:focus,
+    .Mapfre .form-control.is-invalid:focus,
+    .Mapfre .was-validated .custom-select:invalid:focus,
+    .Mapfre .custom-select.is-invalid:focus {
+        border-color: var(--mf-red, #C31F09) !important;
+        box-shadow: 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
+    }
+
+.Mapfre .was-validated .custom-control-input:valid ~ .custom-control-label::before,
+.Mapfre .custom-control-input.is-valid ~ .custom-control-label::before {
+    border-color: #2E9D5C !important;
+}
+
+.Mapfre .was-validated .custom-control-input:valid:checked ~ .custom-control-label::before,
+.Mapfre .custom-control-input.is-valid:checked ~ .custom-control-label::before {
+    border-color: #2E9D5C !important;
+    background-color: #2E9D5C !important;
+}
+
+.Mapfre .was-validated .custom-control-input:invalid ~ .custom-control-label::before,
+.Mapfre .custom-control-input.is-invalid ~ .custom-control-label::before {
+    border-color: var(--mf-red, #C31F09) !important;
+}
+
+.Mapfre .was-validated .custom-control-input:invalid:checked ~ .custom-control-label::before,
+.Mapfre .custom-control-input.is-invalid:checked ~ .custom-control-label::before {
+    border-color: var(--mf-red, #C31F09) !important;
+    background-color: var(--mf-red, #C31F09) !important;
+}
+
+.Mapfre .was-validated .custom-control-input:valid ~ .custom-control-label,
+.Mapfre .custom-control-input.is-valid ~ .custom-control-label {
+    color: #2E9D5C !important;
+}
+
+.Mapfre .was-validated .custom-control-input:invalid ~ .custom-control-label,
+.Mapfre .custom-control-input.is-invalid ~ .custom-control-label {
+    color: var(--mf-red, #C31F09) !important;
+}
+
+.Mapfre #page-wrapper {
+    font-size: 14.5px;
+}
+
+    .Mapfre #page-wrapper label.control-label,
+    .Mapfre #page-wrapper .form-label,
+    .Mapfre #page-wrapper .control-label {
+        font-size: 13.5px !important;
+        line-height: 1.35 !important;
+    }
+
+    .Mapfre #page-wrapper .form-control,
+    .Mapfre #page-wrapper select.form-control,
+    .Mapfre #page-wrapper textarea.form-control,
+    .Mapfre #page-wrapper input.form-control,
+    .Mapfre #page-wrapper fieldset select.form-control {
+        min-height: 44px !important;
+        padding: 10px 12px !important;
+        font-size: 15px !important;
+        line-height: 1.4 !important;
+    }
+
+    .Mapfre #page-wrapper select.form-control,
+    .Mapfre #page-wrapper fieldset select.form-control {
+        min-height: 38px !important;
+    }
+
+    .Mapfre #page-wrapper .custom-select,
+    .Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection,
+    .Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection--single {
+        min-height: 44px !important;
+    }
+
+    .Mapfre #page-wrapper .required-mark {
+        font-size: 14px !important;
+    }
+
+    .Mapfre #page-wrapper .custom-control-label {
+        font-size: 14.5px !important;
+        line-height: 1.35 !important;
+    }
+
+        .Mapfre #page-wrapper .custom-control-label::before,
+        .Mapfre #page-wrapper .custom-control-label::after {
+            width: 20px !important;
+            height: 20px !important;
+        }
+
+    .Mapfre #page-wrapper .custom-control {
+        min-height: 44px !important;
+        padding-left: 34px !important;
+    }
+
+    .Mapfre #page-wrapper input[type="radio"],
+    .Mapfre #page-wrapper input[type="checkbox"] {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .Mapfre #page-wrapper .radio label,
+    .Mapfre #page-wrapper .checkbox label,
+    .Mapfre #page-wrapper .form-check label {
+        font-size: 14.5px !important;
+    }
+
+    .Mapfre #page-wrapper .btn {
+        min-height: 44px !important;
+        padding: 10px 18px !important;
+        font-size: 14px !important;
+    }
+
+    .Mapfre #page-wrapper h4,
+    .Mapfre #page-wrapper .titulosMant {
+        font-size: 15.5px !important;
+    }
+
+    .Mapfre #page-wrapper .form-group .error,
+    .Mapfre #page-wrapper .form-group .LabelValidate,
+    .Mapfre #page-wrapper .form-text,
+    .Mapfre #page-wrapper .help-block {
+        font-size: 12.5px !important;
+    }
+
+/* Header movil: hamburguesa a la izquierda, logo al lado, cuenta a la derecha */
+@media (max-width: 991px) {
+    .Mapfre .head_prin > #imgHead {
+        position: absolute !important;
+        top: env(safe-area-inset-top) !important;
+        left: 54px !important;
+        right: auto !important;
+        width: auto !important;
+        height: 56px !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        background: transparent !important;
+        overflow: visible !important;
+        justify-content: flex-start !important;
+    }
+
+        .Mapfre .head_prin > #imgHead .mf-brand-logo img {
+            max-height: 30px !important;
+            animation: none !important;
+        }
+
+    .Mapfre .head_prin > .ham-icon {
+        left: 6px !important;
+        right: auto !important;
+    }
+
+    .Mapfre .head_prin > .head_line {
+        right: 10px !important;
+    }
+
+    .Mapfre .head_line > .aliados {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    .Mapfre .aliados .usua_head {
+        flex: 0 1 auto !important;
+        position: static !important;
+        align-items: flex-end !important;
+        justify-content: center !important;
+        gap: 1px !important;
+    }
+
+    .Mapfre .aliados #UserNameMaster {
+        display: block !important;
+        width: auto !important;
+        max-width: calc(100vw - 230px) !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        color: #40454C !important;
+    }
+
+    .Mapfre .aliados #TenantMaster {
+        max-width: calc(100vw - 250px) !important;
+    }
+
+    .Mapfre .aliados .dropdown-toggle::after {
+        display: none !important;
+    }
+}
+
+
+/* En caso de agregar mas lineas, considerablemente hacerlo separado para mejores manteninmientos */
