@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --mapfrered1: #C31F09;
     --mapfrered2: #A11A08;
 }
@@ -3525,12 +3525,12 @@ ul.Observaciones {
         margin-left: 42px;
     }
 
-/* Observaci n (1  l nea) */
+/* Observacion (1a linea) */
 .obs-text {
     white-space: pre-wrap
 }
 
-/* Meta (2  l nea: usuario + fecha, izquierda) */
+/* linea: usuario + fecha, izquierda */
 .meta-line {
     font-size: 10px;
     color: #6c757d;
@@ -5165,6 +5165,13 @@ body.Mapfre {
         z-index: 1;
     }
 
+/* Con un modal abierto la fila no puede ser un contexto de apilamiento: el modal vive
+       dentro de ella y quedaria debajo del fondo gris (.modal-backdrop va en el body). */
+.Mapfre.modal-open .wrapper-content > .row,
+.Mapfre.modal-open .wrapper-content > * {
+    z-index: auto;
+}
+
 .Mapfre .aliados ul.menu-dropdown {
     padding: 6px !important;
     border: 1px solid var(--mf-line) !important;
@@ -5874,8 +5881,11 @@ body.Mapfre {
         background: var(--mf-red);
     }
 
+/* backwards (no both): al terminar no debe quedar un transform en la fila, porque un
+   transform convierte a la fila en el contenedor de los position:fixed y los modales
+   (terceros, documentos...) se abren arriba de la pagina, fuera de la pantalla. */
 .Mapfre .wrapper-content > .row {
-    animation: mfRise .3s var(--mf-ease) both;
+    animation: mfRise .3s var(--mf-ease) backwards;
 }
 
 @keyframes mfRise {
@@ -7832,7 +7842,8 @@ body.Mapfre {
     .Mapfre #page-wrapper .help-block {
         font-size: 12.5px !important;
     }
-
+/* En caso de agregar mas lineas, considerablemente hacerlo separado para mejores manteninmientos 
+*/
 /* Header movil: hamburguesa a la izquierda, logo al lado, cuenta a la derecha */
 @media (max-width: 991px) {
     .Mapfre .head_prin > #imgHead {
@@ -7903,5 +7914,355 @@ body.Mapfre {
     }
 }
 
+/* Encabezado de los productos (titulo, texto de MAPFRE y slogan del seguro): un solo cuadro,
+   con el mismo estilo que las secciones del formulario (Datos generales, Datos del vehiculo...).
+   Solo para los encabezados de 3 partes (T1/T2/T3); los que tienen solo titulo (Policy, Bayer) quedan igual. */
+.Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #FBFBFC !important;
+    border: 1px solid var(--mf-line) !important;
+    border-left: 3px solid var(--mf-red) !important;
+    border-radius: 0 10px 10px 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+}
 
-/* En caso de agregar mas lineas, considerablemente hacerlo separado para mejores manteninmientos */
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T1,
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T2,
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T3 {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 16px 20px !important;
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T1 {
+        flex: 0 0 auto !important;
+    }
+
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T2 {
+        flex: 1 1 auto !important;
+        border-left: 1px solid var(--mf-line) !important;
+    }
+
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T3 {
+        flex: 0 0 260px !important;
+        border-left: 1px solid var(--mf-line) !important;
+        text-align: left !important;
+    }
+
+        .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T3 a,
+        .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T3 p {
+            text-align: left !important;
+        }
+
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T1 > br {
+        display: none;
+    }
+
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T1 small {
+        margin: 6px 0 0 !important;
+    }
+
+@media (max-width: 991px) {
+    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) {
+        flex-direction: column !important;
+    }
+
+        .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T1,
+        .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T2,
+        .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T3 {
+            flex: 1 1 auto !important;
+            width: 100% !important;
+            padding: 12px 16px !important;
+        }
+
+        .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T2,
+        .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) > .T3 {
+            border-left: 0 !important;
+            border-top: 1px solid var(--mf-line) !important;
+        }
+}
+
+/* Emision: datos que vienen de la cotizacion. Mismo alto y borde que un campo, en gris y sin poder editarse. */
+.Mapfre #page-wrapper .mf-readonly {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--mf-line);
+    border-radius: 6px;
+    background: #F1F2F4;
+    color: #40454C;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    word-break: break-word;
+    cursor: not-allowed;
+}
+
+/* Modales (terceros, documentos...): titulo y subtitulo alineados a la izquierda, sin la linea de los h4 del formulario. */
+.Mapfre #page-wrapper .inmodal .modal-header {
+    display: block !important;
+    text-align: left !important;
+}
+
+    .Mapfre #page-wrapper .inmodal .modal-header .modal-title {
+        margin: 0 !important;
+        padding: 0 32px 0 0 !important;
+        border: 0 !important;
+        font-size: 16px !important;
+    }
+
+    .Mapfre #page-wrapper .inmodal .modal-header small,
+    .Mapfre #page-wrapper .inmodal .modal-header small span {
+        display: block !important;
+        margin-top: 4px !important;
+        color: var(--mf-muted, #80868D) !important;
+        font-family: var(--mf-font-text, inherit) !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+    }
+
+    .Mapfre #page-wrapper .inmodal .modal-header .close {
+        position: absolute !important;
+        top: 14px !important;
+        right: 16px !important;
+        margin: 0 !important;
+        padding: 4px !important;
+    }
+
+/* Botones rojos (primary, danger, success): sin sombra oscura. Encima del rojo va un brillo blanco
+   que se desvanece hacia abajo, y la sombra exterior es blanca. */
+.Mapfre #page-wrapper .btn-primary,
+.Mapfre #page-wrapper .btn-danger,
+.Mapfre #page-wrapper .btn-success {
+    background: linear-gradient(180deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.12) 48%, rgba(255,255,255,0) 100%), var(--mf-red) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 1px 3px rgba(255,255,255,.9) !important;
+    text-shadow: none !important;
+}
+
+    .Mapfre #page-wrapper .btn-primary:hover,
+    .Mapfre #page-wrapper .btn-danger:hover,
+    .Mapfre #page-wrapper .btn-success:hover,
+    .Mapfre #page-wrapper .btn-primary:focus,
+    .Mapfre #page-wrapper .btn-danger:focus,
+    .Mapfre #page-wrapper .btn-success:focus {
+        background: linear-gradient(180deg, rgba(255,255,255,.46) 0%, rgba(255,255,255,.16) 48%, rgba(255,255,255,0) 100%), var(--mf-red) !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 4px 14px rgba(255,255,255,.95) !important;
+    }
+
+    .Mapfre #page-wrapper .btn-primary:active,
+    .Mapfre #page-wrapper .btn-danger:active,
+    .Mapfre #page-wrapper .btn-success:active {
+        box-shadow: inset 0 2px 5px rgba(255,255,255,.35) !important;
+    }
+
+/* Botones "outline" rojos (p. ej. Emitir en la lista de presupuestos): el fondo es rojo, asi que la letra va en blanco. */
+.Mapfre #page-wrapper .btn-outline.btn-primary,
+.Mapfre #page-wrapper .btn-outline.btn-danger,
+.Mapfre #page-wrapper .btn-outline.btn-success,
+.Mapfre #page-wrapper .btn-outline.btn-primary:hover,
+.Mapfre #page-wrapper .btn-outline.btn-danger:hover,
+.Mapfre #page-wrapper .btn-outline.btn-success:hover,
+.Mapfre #page-wrapper .btn-outline.btn-primary:focus,
+.Mapfre #page-wrapper .btn-outline.btn-danger:focus,
+.Mapfre #page-wrapper .btn-outline.btn-success:focus {
+    color: #fff !important;
+}
+
+/* ===== Botones de todo el proyecto: mismo tamano, alineacion y espaciado =====
+   - .btn-sm y .btn-xs vuelven a ser mas pequenos (una regla anterior les ponia 44px a todos).
+   - Margen igual en los 4 lados para todos (antes .btn-primary tenia 6px 0 6px 8px y .btn-white 8px,
+     por eso quedaban a distinta altura uno al lado del otro).
+   - Texto e icono centrados. display sin !important para que .d-none pueda ocultarlos. */
+.Mapfre #page-wrapper .btn {
+    display: inline-flex;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px;
+    margin: 4px !important;
+    line-height: 1.2 !important;
+    vertical-align: middle !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+}
+
+.Mapfre #page-wrapper .btn-block {
+    display: flex;
+    width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.Mapfre #page-wrapper .btn-sm {
+    min-height: 36px !important;
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+}
+
+.Mapfre #page-wrapper .btn-xs {
+    min-height: 30px !important;
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+}
+
+/* En grupos y campos con boton los botones van pegados: sin margen ni float. */
+.Mapfre #page-wrapper .btn-group > .btn,
+.Mapfre #page-wrapper .btn-group-toggle > .btn,
+.Mapfre #page-wrapper .input-group > .btn,
+.Mapfre #page-wrapper .input-group-prepend > .btn,
+.Mapfre #page-wrapper .input-group-append > .btn {
+    margin: 0 !important;
+    float: none !important;
+}
+
+    .Mapfre #page-wrapper .btn-group > .btn + .btn,
+    .Mapfre #page-wrapper .btn-group-toggle > .btn + .btn {
+        margin-left: -1px !important;
+    }
+
+/* En tablas (acciones como Emitir / Reenvia solicitud) los botones no flotan: quedan uno al lado del otro. */
+.Mapfre #page-wrapper td .btn,
+.Mapfre #page-wrapper th .btn {
+    float: none !important;
+    margin: 2px !important;
+    font-weight: 700 !important;
+}
+
+/* .btn-primary flota a la derecha (regla vieja). Si comparte fila con otros botones visibles, se queda en
+   su orden junto a ellos; antes saltaba al extremo derecho y dejaba los demas a la izquierda. */
+.Mapfre #page-wrapper :has(> .btn:not(.btn-primary):not(.d-none)) > .btn-primary {
+    float: none !important;
+}
+
+/* El mismo brillo blanco en los demas botones de color. */
+.Mapfre #page-wrapper .btn-info,
+.Mapfre #page-wrapper .btn-warning,
+.Mapfre #page-wrapper .btn-secondary {
+    background-image: linear-gradient(180deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.12) 48%, rgba(255,255,255,0) 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 1px 3px rgba(255,255,255,.9) !important;
+    text-shadow: none !important;
+}
+
+/* Zonas que van directo dentro del formulario sin .form-row (Destinatario para envio de solicitud,
+   Verificacion de domicilio): mismo cuadro que las demas secciones y a todo el ancho. */
+.Mapfre #page-wrapper fieldset > .enviosolicitudZone,
+.Mapfre #page-wrapper fieldset > .VerificarDomicilio {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 20px !important;
+    padding: 18px 20px 16px !important;
+    background: #FBFBFC !important;
+    border: 1px solid var(--mf-line) !important;
+    border-left: 3px solid var(--mf-red) !important;
+    border-radius: 0 10px 10px 0 !important;
+}
+
+    .Mapfre #page-wrapper fieldset > .enviosolicitudZone > h4,
+    .Mapfre #page-wrapper fieldset > .VerificarDomicilio > h4 {
+        margin-top: 2px !important;
+    }
+
+@media (min-width: 768px) {
+    /* Tipo de envio y Correo uno al lado del otro */
+    .Mapfre #page-wrapper fieldset > .enviosolicitudZone > .form-row > .col-md-12 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+/* Botonera sin ningun boton visible (en la emision los botones se pasan a la barra de arriba):
+   no se muestra el cuadro vacio. Si un boton vuelve a mostrarse, el cuadro aparece. */
+.Mapfre #page-wrapper fieldset > .form-row:has(> [class*="col"] > .modal-footer):not(:has(.form-group)):not(:has(.modal-footer > .btn:not(.d-none))) {
+    display: none !important;
+}
+
+/* Cuadro que solo tiene la botonera: sin la linea ni el relleno del pie, el boton queda centrado en su cuadro. */
+.Mapfre #page-wrapper fieldset > .form-row:has(> [class*="col"] > .modal-footer):not(:has(.form-group)) .modal-footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: 0 !important;
+    background: transparent !important;
+}
+
+/* Modal "Informacion de tercero": mas compacto y con Guardar cambios siempre a la vista.
+   El encabezado y los botones quedan fijos; si la pantalla es baja, solo se desplazan los campos. */
+.Mapfre #page-wrapper #tercerosModal .modal-dialog {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.Mapfre #page-wrapper #tercerosModal .modal-content {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 24px);
+}
+
+.Mapfre #page-wrapper #tercerosModal .modal-header {
+    flex: 0 0 auto;
+    padding: 12px 18px !important;
+}
+
+.Mapfre #page-wrapper #tercerosModal .modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 12px 18px !important;
+}
+
+.Mapfre #page-wrapper #tercerosModal .modal-footer {
+    flex: 0 0 auto;
+    padding: 10px 18px !important;
+}
+
+.Mapfre #page-wrapper #tercerosModal fieldset > .form-row {
+    margin-bottom: 10px !important;
+    padding: 12px 14px 2px !important;
+}
+
+.Mapfre #page-wrapper #tercerosModal .form-group {
+    margin-bottom: 10px !important;
+}
+
+.Mapfre #page-wrapper #tercerosModal label.control-label,
+.Mapfre #page-wrapper #tercerosModal .control-label {
+    margin-bottom: 3px !important;
+    font-size: 12.5px !important;
+    line-height: 1.3 !important;
+}
+
+.Mapfre #page-wrapper #tercerosModal .form-control,
+.Mapfre #page-wrapper #tercerosModal select.form-control,
+.Mapfre #page-wrapper #tercerosModal fieldset select.form-control,
+.Mapfre #page-wrapper #tercerosModal input.form-control {
+    min-height: 36px !important;
+    height: 36px !important;
+    padding: 6px 10px !important;
+    font-size: 14px !important;
+}
+
+.Mapfre #page-wrapper #tercerosModal .input-group-addon,
+.Mapfre #page-wrapper #tercerosModal .input-group .btn {
+    min-height: 36px !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+}
+
+.Mapfre #page-wrapper #tercerosModal .custom-control {
+    min-height: 36px !important;
+}
