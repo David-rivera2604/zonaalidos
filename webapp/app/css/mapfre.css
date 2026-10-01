@@ -8026,13 +8026,13 @@ body.Mapfre {
         padding: 4px !important;
     }
 
-/* Botones rojos (primary, danger, success): sin sombra oscura. El degradado ya no oscurece hacia
-   abajo sino que arranca con un brillo blanco, y la sombra exterior es blanca. */
+/* Botones rojos (primary, danger, success): sin sombra oscura. Encima del rojo va un brillo blanco
+   que se desvanece hacia abajo, y la sombra exterior es blanca. */
 .Mapfre #page-wrapper .btn-primary,
 .Mapfre #page-wrapper .btn-danger,
 .Mapfre #page-wrapper .btn-success {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--mf-red) 80%, #fff), var(--mf-red)) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 1px 3px rgba(255,255,255,.9) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.12) 48%, rgba(255,255,255,0) 100%), var(--mf-red) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 1px 3px rgba(255,255,255,.9) !important;
     text-shadow: none !important;
 }
 
@@ -8042,7 +8042,7 @@ body.Mapfre {
     .Mapfre #page-wrapper .btn-primary:focus,
     .Mapfre #page-wrapper .btn-danger:focus,
     .Mapfre #page-wrapper .btn-success:focus {
-        background: linear-gradient(180deg, color-mix(in srgb, var(--mf-red) 90%, #fff), var(--mf-red)) !important;
+        background: linear-gradient(180deg, rgba(255,255,255,.46) 0%, rgba(255,255,255,.16) 48%, rgba(255,255,255,0) 100%), var(--mf-red) !important;
         box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 4px 14px rgba(255,255,255,.95) !important;
     }
 
@@ -8063,4 +8063,79 @@ body.Mapfre {
 .Mapfre #page-wrapper .btn-outline.btn-danger:focus,
 .Mapfre #page-wrapper .btn-outline.btn-success:focus {
     color: #fff !important;
+}
+
+/* ===== Botones de todo el proyecto: mismo tamano, alineacion y espaciado =====
+   - .btn-sm y .btn-xs vuelven a ser mas pequenos (una regla anterior les ponia 44px a todos).
+   - Margen igual en los 4 lados para todos (antes .btn-primary tenia 6px 0 6px 8px y .btn-white 8px,
+     por eso quedaban a distinta altura uno al lado del otro).
+   - Texto e icono centrados. display sin !important para que .d-none pueda ocultarlos. */
+.Mapfre #page-wrapper .btn {
+    display: inline-flex;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px;
+    margin: 4px !important;
+    line-height: 1.2 !important;
+    vertical-align: middle !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+}
+
+.Mapfre #page-wrapper .btn-block {
+    display: flex;
+    width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.Mapfre #page-wrapper .btn-sm {
+    min-height: 36px !important;
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+}
+
+.Mapfre #page-wrapper .btn-xs {
+    min-height: 30px !important;
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+}
+
+/* En grupos y campos con boton los botones van pegados: sin margen ni float. */
+.Mapfre #page-wrapper .btn-group > .btn,
+.Mapfre #page-wrapper .btn-group-toggle > .btn,
+.Mapfre #page-wrapper .input-group > .btn,
+.Mapfre #page-wrapper .input-group-prepend > .btn,
+.Mapfre #page-wrapper .input-group-append > .btn {
+    margin: 0 !important;
+    float: none !important;
+}
+
+    .Mapfre #page-wrapper .btn-group > .btn + .btn,
+    .Mapfre #page-wrapper .btn-group-toggle > .btn + .btn {
+        margin-left: -1px !important;
+    }
+
+/* En tablas (acciones como Emitir / Reenvia solicitud) los botones no flotan: quedan uno al lado del otro. */
+.Mapfre #page-wrapper td .btn,
+.Mapfre #page-wrapper th .btn {
+    float: none !important;
+    margin: 2px !important;
+    font-weight: 700 !important;
+}
+
+/* .btn-primary flota a la derecha (regla vieja). Si comparte fila con otros botones visibles, se queda en
+   su orden junto a ellos; antes saltaba al extremo derecho y dejaba los demas a la izquierda. */
+.Mapfre #page-wrapper :has(> .btn:not(.btn-primary):not(.d-none)) > .btn-primary {
+    float: none !important;
+}
+
+/* El mismo brillo blanco en los demas botones de color. */
+.Mapfre #page-wrapper .btn-info,
+.Mapfre #page-wrapper .btn-warning,
+.Mapfre #page-wrapper .btn-secondary {
+    background-image: linear-gradient(180deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.12) 48%, rgba(255,255,255,0) 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 1px 3px rgba(255,255,255,.9) !important;
+    text-shadow: none !important;
 }
