@@ -8025,3 +8025,42 @@ body.Mapfre {
         margin: 0 !important;
         padding: 4px !important;
     }
+
+/* Botones rojos (primary, danger, success): sin sombra oscura. El degradado ya no oscurece hacia
+   abajo sino que arranca con un brillo blanco, y la sombra exterior es blanca. */
+.Mapfre #page-wrapper .btn-primary,
+.Mapfre #page-wrapper .btn-danger,
+.Mapfre #page-wrapper .btn-success {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--mf-red) 80%, #fff), var(--mf-red)) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 1px 3px rgba(255,255,255,.9) !important;
+    text-shadow: none !important;
+}
+
+    .Mapfre #page-wrapper .btn-primary:hover,
+    .Mapfre #page-wrapper .btn-danger:hover,
+    .Mapfre #page-wrapper .btn-success:hover,
+    .Mapfre #page-wrapper .btn-primary:focus,
+    .Mapfre #page-wrapper .btn-danger:focus,
+    .Mapfre #page-wrapper .btn-success:focus {
+        background: linear-gradient(180deg, color-mix(in srgb, var(--mf-red) 90%, #fff), var(--mf-red)) !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 4px 14px rgba(255,255,255,.95) !important;
+    }
+
+    .Mapfre #page-wrapper .btn-primary:active,
+    .Mapfre #page-wrapper .btn-danger:active,
+    .Mapfre #page-wrapper .btn-success:active {
+        box-shadow: inset 0 2px 5px rgba(255,255,255,.35) !important;
+    }
+
+/* Botones "outline" rojos (p. ej. Emitir en la lista de presupuestos): el fondo es rojo, asi que la letra va en blanco. */
+.Mapfre #page-wrapper .btn-outline.btn-primary,
+.Mapfre #page-wrapper .btn-outline.btn-danger,
+.Mapfre #page-wrapper .btn-outline.btn-success,
+.Mapfre #page-wrapper .btn-outline.btn-primary:hover,
+.Mapfre #page-wrapper .btn-outline.btn-danger:hover,
+.Mapfre #page-wrapper .btn-outline.btn-success:hover,
+.Mapfre #page-wrapper .btn-outline.btn-primary:focus,
+.Mapfre #page-wrapper .btn-outline.btn-danger:focus,
+.Mapfre #page-wrapper .btn-outline.btn-success:focus {
+    color: #fff !important;
+}
