@@ -76,8 +76,8 @@ namespace Architect.API.Tron.DataAccess.Masivos
                                 fec_actu = reader.DateTimeValue("updatedate"),
                                 cod_estado = reader.IntegerValue("cod_estado"),
                                 estado = reader.StringValue("estado"),
-                                num_proceso = reader.IntegerValue("num_proceso"),
-                                resultado_proceso = reader.StringValue("resultado_proceso")
+                                num_proceso_val = reader.IntegerValue("num_proceso_val"),
+                                num_proceso = reader.IntegerValue("num_proceso")
                             };
 
                             result.Add(item);
