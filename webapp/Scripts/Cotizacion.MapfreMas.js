@@ -31,7 +31,6 @@ app.CotizacionMapfreMas = (function () {
         }
     }
 
-<<<<<<< HEAD
     // Cuentas con rol Banca: solo el tipo de producto Banca (plan 39 en MM_Plan). Las demas cuentas no lo ven.
     function MostrarTiposProductoPorRol() {
         var esBanca = (JSON.parse(localStorage.getItem('Roles') || '[]') || []).indexOf('Banca') !== -1;
@@ -44,8 +43,6 @@ app.CotizacionMapfreMas = (function () {
         });
     }
 
-=======
->>>>>>> DES
     function Setup(mode) {
         app.ui.CommonBehaviour();
         MostrarTiposProductoPorRol();
@@ -162,10 +159,7 @@ app.CotizacionMapfreMas = (function () {
                 SettingReload(function () {
                     MapObjectToInput(data);
                     RemoveEspecialPlanIfNotPurdy();
-<<<<<<< HEAD
                     MostrarTiposProductoPorRol();
-=======
->>>>>>> DES
                     data_changed();
                 });
             }, `cod_ramo=${data.cod_ramo}:cod_mon=${data.cod_mon}:edad=${data.edad}:plan=${data.tipo_prod}:cod_marca=${data.cod_marca}:cod_agt=${data.cod_agt}`, 'v1/TronCommon/Lkps');
@@ -225,11 +219,7 @@ app.CotizacionMapfreMas = (function () {
                 }
                 $('input:radio[name=tipo_prod]').prop('disabled', true);
             } else {
-<<<<<<< HEAD
                 MostrarTiposProductoPorRol();
-=======
-                $('input:radio[name=tipo_prod]').closest('.custom-control').removeClass('d-none');
->>>>>>> DES
 
                 var bloquearTipoProd = esPurdy && contratoValue > 0;
                 $('input:radio[name=tipo_prod]').prop('disabled', bloquearTipoProd);
@@ -244,12 +234,8 @@ app.CotizacionMapfreMas = (function () {
             e.preventDefault();
             $('#contrato').prop('selectedIndex', -1);
             $('#subcontrato').prop('selectedIndex', -1).prop('disabled', true);
-<<<<<<< HEAD
             $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false);
             MostrarTiposProductoPorRol();
-=======
-            $('input:radio[name=tipo_prod]').prop('checked', false).prop('disabled', false).closest('.custom-control').removeClass('d-none');
->>>>>>> DES
             $('#contratoClearBtn').addClass('d-none');
             SettingReload();
         });
