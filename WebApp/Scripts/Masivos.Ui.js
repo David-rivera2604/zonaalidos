@@ -11,8 +11,8 @@ app.Masivos.Ui = (function () {
     function Init() {
         app.ui.CommonBehaviour();
         masivos_table_setup();
-        setupEvents();
         ensureUpdateInput();
+        setupEvents();
     }
 
     function ensureUpdateInput() {
@@ -28,7 +28,7 @@ app.Masivos.Ui = (function () {
         });
 
         $('#fileUpload').on('change', onFileSelected);
-        $('#masivoUpdateFile').on('change', onUpdateSelected);
+        $(document).on('change', '#masivoUpdateFile', onUpdateSelected);
 
         $('#cod_ramo').on('change', function () {
             state.uploadedFileName = '';
