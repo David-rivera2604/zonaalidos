@@ -12,14 +12,9 @@ using System.Threading.Tasks;
 namespace Architect.Extend.Integrations.Credid
 {
     /// <summary>
-    /// Consultas de integración con el servicio web de Credid.net (reporte de una persona por identificación).
+    /// Consulta de personas en Credid.net.
+    /// Usa Credid.Url, Credid.Token y Credid.TimeoutSeconds del Web.config. Sin token no consulta.
     /// </summary>
-    /// <remarks>
-    /// Settings (appSettings):
-    /// Credid.Url            Endpoint del reporte. Por defecto https://ws.credid.net/ws/api/reporte
-    /// Credid.Token          Token de autorización entregado por Credid. Si está vacío la consulta no se realiza.
-    /// Credid.TimeoutSeconds Tiempo máximo de espera de la respuesta. Por defecto 10.
-    /// </remarks>
     public static class Consultas
     {
         private static readonly CultureInfo CostaRica = CultureInfo.CreateSpecificCulture("es-CR");
@@ -31,10 +26,10 @@ namespace Architect.Extend.Integrations.Credid
         });
 
         /// <summary>
-        /// Permite recuperar la información de una persona física, extranjera o jurídica por medio de su identificación.
+        /// Busca una persona por identificación.
         /// </summary>
-        /// <param name="identificacion">Identificación tal como se digitó.</param>
-        /// <param name="docType">1 Cédula, 2 DIMEX, 3 Pasaporte, 4 Cédula jurídica.</param>
+        /// <param name="identificacion">Identificación digitada.</param>
+        /// <param name="docType">1 cédula, 2 DIMEX, 3 pasaporte, 4 jurídica.</param>
         public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion, int docType = 1)
         {
             Architect.API.Insurance.Contracts.Policy.Insured result = null;
@@ -69,7 +64,7 @@ namespace Architect.Extend.Integrations.Credid
                         string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                         if (body.IsNotEmpty())
                         {
-                            // Sin DateParseHandling.None, Json.NET convierte fechas ISO y cambia su formato al leerlas como texto.
+                            // Sin esto Json.NET cambia el formato de las fechas
                             using (JsonTextReader reader = new JsonTextReader(new StringReader(body)) { DateParseHandling = DateParseHandling.None })
                             {
                                 result = Convertir(JObject.Load(reader), cedula, docType);
@@ -88,8 +83,7 @@ namespace Architect.Extend.Integrations.Credid
         }
 
         /// <summary>
-        /// Credid recibe cédulas sin el cero inicial del formato 0X-XXXX-XXXX y, para pasaportes,
-        /// la identificación con el prefijo "ext-" (manual, parámetro cedula).
+        /// Credid pide la cédula sin el 0 inicial y los pasaportes con "ext-".
         /// </summary>
         private static string IdentificacionCredid(string identificacion, int docType)
         {
@@ -169,8 +163,7 @@ namespace Architect.Extend.Integrations.Credid
         }
 
         /// <summary>
-        /// Los códigos pueden venir por partes (1, 01, 01) o completos (1, 101, 10101); se normalizan a
-        /// provincia de 1 dígito, cantón de 3 y distrito de 5, igual que el resto de las fuentes.
+        /// Deja provincia en 1 dígito, cantón en 3 y distrito en 5.
         /// </summary>
         private static void Domicilio(Architect.API.Insurance.Contracts.Policy.Insured result, JObject domicilio)
         {
@@ -218,7 +211,7 @@ namespace Architect.Extend.Integrations.Credid
         }
 
         /// <summary>
-        /// Toma el teléfono (celular primero), correo y dirección más recientes que pertenezcan al titular.
+        /// Teléfono, correo y dirección más recientes del titular.
         /// </summary>
         private static void Localizacion(Architect.API.Insurance.Contracts.Policy.Insured result, JArray datos)
         {

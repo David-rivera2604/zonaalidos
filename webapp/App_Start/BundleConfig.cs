@@ -33,8 +33,7 @@ namespace aliados
                        "~/assets/toastr/toastr.min.css",
                        "~/assets/css/animate.css",
                         "~/assets/css/style.css"));
-            // mapfre.css no va en este bundle: cada vista lo carga con ?v=<fecha del archivo> para que el
-            // navegador no se quede con una version vieja (en debug el bundle no lleva version).
+            // mapfre.css se carga aparte en las vistas con ?v= para que no quede en cache
             bundles.Add(new ScriptBundle("~/bundles/jsMaster").Include(
                         "~/assets/jquery/jquery.js",
                         "~/assets/popper/umd/popper.js",

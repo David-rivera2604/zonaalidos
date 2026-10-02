@@ -24,7 +24,7 @@ namespace Architect.API.Insurance.Controllers
         /// </summary>
         /// <param name="id">Identificación.</param>
         /// <param name="docType">Tipo de identificación.</param>
-        /// <param name="source">Fuente adicional a consultar si la persona no existe en las fuentes internas ("credid").</param>
+        /// <param name="source">"credid" para buscar en Credid si no aparece en las fuentes internas.</param>
         /// <returns>Información de la personal.</returns>
         [HttpGet]
         [Route("{id}")]
@@ -60,7 +60,7 @@ namespace Architect.API.Insurance.Controllers
                 verbose += "->tron";
                 result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
             }
-            // Credid es un servicio pagado con datos de contacto: solo para usuarios con sesión.
+            // Credid solo para usuarios logueados (es pagado)
             if (result == null && tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase))
             {
                 verbose += "->credid";

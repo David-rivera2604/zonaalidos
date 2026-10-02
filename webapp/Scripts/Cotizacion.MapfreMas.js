@@ -31,7 +31,7 @@ app.CotizacionMapfreMas = (function () {
         }
     }
 
-    // Cuentas con rol Banca: solo el tipo de producto Banca (plan 39 en MM_Plan). Las demas cuentas no lo ven.
+    // Rol Banca: solo ve Banca (plan 39), los demas no lo ven
     function MostrarTiposProductoPorRol() {
         var esBanca = (JSON.parse(localStorage.getItem('Roles') || '[]') || []).indexOf('Banca') !== -1;
         $('input:radio[name=tipo_prod]').each(function () {

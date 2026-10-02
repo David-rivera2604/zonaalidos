@@ -1115,7 +1115,7 @@ app.EmisionViajero = (function () {
             if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
                 app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
             }
-            // El servicio usa 1=Masculino y 2=Femenino; el select usa 1=Masculino y 0=Femenino.
+            // El servicio manda 1=M y 2=F, el select usa 1=M y 0=F
             if (data.Gender == 1 || data.Gender == 2)
                 $('#tercerosMca_sexo').val(data.Gender == 2 ? '0' : '1');
             $('#TProvincia').val(data.Province);
