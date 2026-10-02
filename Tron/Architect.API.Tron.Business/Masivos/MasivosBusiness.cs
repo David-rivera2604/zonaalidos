@@ -94,28 +94,21 @@ namespace Architect.API.Tron.Business.Masivos
         }
 
         /// <summary>
-        /// Consulta el avance de un procesamiento en curso (estado 4 - Procesando).
+        /// Consulta el avance de varios procesamientos en curso en una sola operación (uso en polling por lote).
         /// </summary>
-        /// <param name="id">Identificador del registro de carga a consultar.</param>
-        /// <returns>Resultado con el mensaje de avance y si el procesamiento ya finalizó.</returns>
-        public static MasivoResult ConsultarResultado(int id)
+        /// <param name="ids">Identificadores de los registros de carga a consultar.</param>
+        /// <returns>Lista con el mensaje de avance y si cada procesamiento ya finalizó.</returns>
+        public static List<MasivoResultadoProceso> ConsultarResultados(List<int> ids)
         {
-            MasivoResult result = new MasivoResult();
+            List<MasivoResultadoProceso> result = new List<MasivoResultadoProceso>();
 
             try
             {
-                string mensaje;
-                DataAccess.Masivos.MasivosDataAccess.ConsultarResultado(id, out mensaje);
-                result.Exitoso = true;
-                result.Mensaje = mensaje;
-                result.Finalizado = !string.IsNullOrEmpty(mensaje) && mensaje.IndexOf("finalizado", StringComparison.OrdinalIgnoreCase) >= 0;
+                result = DataAccess.Masivos.MasivosDataAccess.ConsultarResultados(ids);
             }
             catch (Exception ex)
             {
-                result.Exitoso = false;
-                result.Mensaje = "No fue posible consultar el avance del procesamiento.";
-                result.Errores.Add(ex.Message);
-                Utilities.Log.ErrorLog("Masivos.ConsultarResultado", ex.Message, "MasivosBusiness.ConsultarResultado");
+                Utilities.Log.ErrorLog("Masivos.ConsultarResultados", ex.Message, "MasivosBusiness.ConsultarResultados");
             }
 
             return result;

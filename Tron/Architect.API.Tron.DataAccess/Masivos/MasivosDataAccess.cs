@@ -157,41 +157,60 @@ namespace Architect.API.Tron.DataAccess.Masivos
         }
 
         /// <summary>
-        /// Consulta el avance de un procesamiento en curso (estado 4 - Procesando).
+        /// Consulta el avance de varios procesamientos en curso (estado 4 - Procesando) reutilizando una sola conexión.
         /// </summary>
-        /// <param name="id">Identificador del registro de carga a consultar.</param>
-        /// <param name="mensaje">Mensaje de avance o finalización retornado por el procedimiento.</param>
-        /// <returns>Número de proceso asociado al procesamiento.</returns>
-        public static int ConsultarResultado(int id, out string mensaje)
+        /// <param name="ids">Identificadores de los registros de carga a consultar.</param>
+        /// <returns>Lista con el mensaje de avance de cada identificador.</returns>
+        public static List<MasivoResultadoProceso> ConsultarResultados(List<int> ids)
         {
-            int numProceso = 0;
-            mensaje = string.Empty;
+            List<MasivoResultadoProceso> result = new List<MasivoResultadoProceso>();
 
             using (IDbConnection currentConnection = Database.OpenConnection("Tron"))
             {
-                List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
-                    .AddParameter("p_id", DbType.Int32, 9, id)
-                    .AddParameter("p_num_proceso", DbType.Int32, 9, 0, ParameterDirection.Output)
-                    .AddParameter("p_mensaje", DbType.String, 4000, string.Empty, ParameterDirection.Output).Parameters;
-
-                Database.Procedure("em_k_masivos_mcr.p_resultado")
-                    .AddParameter(parameters)
-                    .Execute(currentConnection, "Tron");
-
-                object valorNum = parameters.Find(p => p.Name == "p_num_proceso").Value;
-                if (valorNum != null && valorNum != DBNull.Value)
+                foreach (int id in ids)
                 {
-                    int.TryParse(valorNum.ToString(), out numProceso);
-                }
+                    int numProceso = 0;
+                    string mensaje = string.Empty;
 
-                object valorMsj = parameters.Find(p => p.Name == "p_mensaje").Value;
-                if (valorMsj != null && valorMsj != DBNull.Value)
-                {
-                    mensaje = valorMsj.ToString();
+                    try
+                    {
+                        List<DataFactory.Contracts.Parameter> parameters = Database.ParameterList()
+                            .AddParameter("p_id", DbType.Int32, 9, id)
+                            .AddParameter("p_num_proceso", DbType.Int32, 9, 0, ParameterDirection.Output)
+                            .AddParameter("p_mensaje", DbType.String, 4000, string.Empty, ParameterDirection.Output).Parameters;
+
+                        Database.Procedure("em_k_masivos_mcr.p_resultado")
+                            .AddParameter(parameters)
+                            .Execute(currentConnection, "Tron");
+
+                        object valorNum = parameters.Find(p => p.Name == "p_num_proceso").Value;
+                        if (valorNum != null && valorNum != DBNull.Value)
+                        {
+                            int.TryParse(valorNum.ToString(), out numProceso);
+                        }
+
+                        object valorMsj = parameters.Find(p => p.Name == "p_mensaje").Value;
+                        if (valorMsj != null && valorMsj != DBNull.Value)
+                        {
+                            mensaje = valorMsj.ToString();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        mensaje = "No fue posible consultar el avance.";
+                    }
+
+                    result.Add(new MasivoResultadoProceso
+                    {
+                        id = id,
+                        num_proceso = numProceso,
+                        mensaje = mensaje,
+                        finalizado = !string.IsNullOrEmpty(mensaje) && mensaje.IndexOf("finalizado", StringComparison.OrdinalIgnoreCase) >= 0
+                    });
                 }
             }
 
-            return numProceso;
+            return result;
         }
 
         /// <summary>

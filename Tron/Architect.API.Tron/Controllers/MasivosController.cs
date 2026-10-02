@@ -34,20 +34,23 @@ namespace Architect.API.Tron.Controllers
         }
 
         /// <summary>
-        /// Consulta el avance de un procesamiento en curso (estado 4 - Procesando).
+        /// Consulta el avance de varios procesamientos en curso en una sola solicitud (uso en polling por lote).
         /// </summary>
-        /// <param name="id">Identificador del registro de carga a consultar.</param>
-        /// <returns>Resultado con el mensaje de avance y si el procesamiento ya finalizó.</returns>
-        [HttpGet]
-        [Route("Resultado/{id:int}")]
-        public async Task<IHttpActionResult> Resultado(int id)
+        /// <param name="ids">Identificadores de los registros de carga a consultar.</param>
+        /// <returns>Lista con el mensaje de avance de cada identificador.</returns>
+        [HttpPost]
+        [Route("ResultadosBatch")]
+        public async Task<IHttpActionResult> ResultadosBatch([FromBody] List<int> ids)
         {
-            MasivoResult result = null;
+            List<MasivoResultadoProceso> result = new List<MasivoResultadoProceso>();
 
-            await Task.Run(() =>
+            if (ids != null && ids.Count > 0)
             {
-                result = Business.Masivos.MasivosBusiness.ConsultarResultado(id);
-            }).ConfigureAwait(false);
+                await Task.Run(() =>
+                {
+                    result = Business.Masivos.MasivosBusiness.ConsultarResultados(ids);
+                }).ConfigureAwait(false);
+            }
 
             return Ok(result);
         }

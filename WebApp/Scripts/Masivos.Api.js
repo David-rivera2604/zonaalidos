@@ -77,8 +77,18 @@ app.Masivos.Api = (function () {
         });
     }
 
-    function ConsultarResultado(id) {
-        return app.core.Get(app.setting.apipath + 'v1/Masivos/Resultado/' + id);
+    function ConsultarResultados(ids) {
+        return $.ajax({
+            type: 'POST',
+            url: app.setting.apipath + 'v1/Masivos/ResultadosBatch',
+            data: JSON.stringify(ids),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            xhrFields: { withCredentials: true },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
+            }
+        });
     }
 
     return {
@@ -87,6 +97,6 @@ app.Masivos.Api = (function () {
         Validar: Validar,
         Procesar: Procesar,
         ActualizarArchivo: ActualizarArchivo,
-        ConsultarResultado: ConsultarResultado
+        ConsultarResultados: ConsultarResultados
     };
 })();

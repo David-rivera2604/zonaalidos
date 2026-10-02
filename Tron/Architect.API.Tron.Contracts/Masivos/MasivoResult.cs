@@ -17,9 +17,6 @@ namespace Architect.API.Tron.Contracts.Masivos
         public string Mensaje { get; set; }
         public List<string> Errores { get; set; }
 
-        /// <summary>Indica si el procesamiento en segundo plano ya finalizó (uso en consulta de avance).</summary>
-        public bool Finalizado { get; set; }
-
         /// <summary>
         /// Colección de errores o advertencias por registro. 
         /// Si viene vacía el procesamiento fue exitoso.

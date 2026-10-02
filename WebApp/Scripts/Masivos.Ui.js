@@ -10,6 +10,8 @@ app.Masivos.Ui = (function () {
     };
 
     var POLL_INTERVAL_MS = 15000;
+    var MAX_DETALLE_VISIBLE = 20;
+    var pollingTimerId = null;
 
     function Init() {
         app.ui.CommonBehaviour();
@@ -31,8 +33,10 @@ app.Masivos.Ui = (function () {
         }
 
         var panel = '<div id="masivosProgresoPanel" class="alert alert-info" style="display:none;">' +
-            '<h5><i class="fa fa-spinner fa-spin"></i> Procesos en ejecución</h5>' +
-            '<ul id="masivosProgresoLista" style="margin-bottom:0;"></ul>' +
+            '<i class="fa fa-spinner fa-spin"></i> ' +
+            '<span id="masivosProgresoResumen"></span> ' +
+            '<button type="button" id="btnToggleProgresoDetalle" class="btn btn-xs btn-link">Ver detalle</button>' +
+            '<ul id="masivosProgresoLista" style="display:none; margin:8px 0 0;"></ul>' +
             '</div>';
 
         $('#masivosTbl').closest('.table-responsive').before(panel);
@@ -86,6 +90,12 @@ app.Masivos.Ui = (function () {
             e.preventDefault();
             state.rowUpdateId = $(this).data('id');
             $('#masivoUpdateFile').trigger('click');
+        });
+
+        $(document).on('click', '#btnToggleProgresoDetalle', function (e) {
+            e.preventDefault();
+            $('#masivosProgresoLista').toggle();
+            $(this).text($('#masivosProgresoLista').is(':visible') ? 'Ocultar detalle' : 'Ver detalle');
         });
     }
 
@@ -276,57 +286,63 @@ app.Masivos.Ui = (function () {
 
         (rows || []).forEach(function (row) {
             if (Number(row.cod_estado || 0) === 4) {
-                idsEnProceso[row.id] = row;
+                var previo = state.progreso[row.id];
+                idsEnProceso[row.id] = { archivo: row.txt_archivo_carga, mensaje: (previo && previo.mensaje) || 'Consultando avance...' };
             }
         });
 
-        // Detiene el polling de filas que ya no están en estado "Procesando".
-        Object.keys(state.progreso).forEach(function (id) {
-            if (!idsEnProceso[id]) {
-                clearInterval(state.progreso[id].intervalId);
-                delete state.progreso[id];
-            }
-        });
+        state.progreso = idsEnProceso;
 
-        // Inicia el polling de filas nuevas en estado "Procesando".
-        Object.keys(idsEnProceso).forEach(function (id) {
-            if (!state.progreso[id]) {
-                iniciarPollingResultado(idsEnProceso[id]);
-            }
-        });
+        if (Object.keys(state.progreso).length > 0) {
+            iniciarPollingGlobal();
+            consultarResultadosLote();
+        } else {
+            detenerPollingGlobal();
+        }
 
         renderProgresoPanel();
     }
 
-    function iniciarPollingResultado(row) {
-        state.progreso[row.id] = {
-            archivo: row.txt_archivo_carga,
-            mensaje: 'Consultando avance...',
-            intervalId: setInterval(function () { consultarResultadoProceso(row.id); }, POLL_INTERVAL_MS)
-        };
-
-        consultarResultadoProceso(row.id);
+    function iniciarPollingGlobal() {
+        if (pollingTimerId) return;
+        pollingTimerId = setInterval(consultarResultadosLote, POLL_INTERVAL_MS);
     }
 
-    function consultarResultadoProceso(id) {
-        app.Masivos.Api.ConsultarResultado(id)
-            .done(function (data) {
-                if (!state.progreso[id]) return;
+    function detenerPollingGlobal() {
+        if (pollingTimerId) {
+            clearInterval(pollingTimerId);
+            pollingTimerId = null;
+        }
+    }
 
-                state.progreso[id].mensaje = (data && data.Mensaje) ? data.Mensaje : 'Procesando...';
+    function consultarResultadosLote() {
+        var ids = Object.keys(state.progreso).map(Number);
+
+        if (ids.length === 0) {
+            detenerPollingGlobal();
+            return;
+        }
+
+        app.Masivos.Api.ConsultarResultados(ids)
+            .done(function (data) {
+                var items = Array.isArray(data) ? data : [];
+                var huboFinalizados = false;
+
+                items.forEach(function (item) {
+                    if (!state.progreso[item.id]) return;
+                    state.progreso[item.id].mensaje = item.mensaje || 'Procesando...';
+                    if (item.finalizado) {
+                        huboFinalizados = true;
+                        delete state.progreso[item.id];
+                    }
+                });
+
                 renderProgresoPanel();
 
-                if (data && data.Finalizado) {
-                    clearInterval(state.progreso[id].intervalId);
-                    delete state.progreso[id];
-                    renderProgresoPanel();
+                if (huboFinalizados) {
                     consultarCargas();
-                }
-            })
-            .fail(function () {
-                if (state.progreso[id]) {
-                    state.progreso[id].mensaje = 'No fue posible consultar el avance.';
-                    renderProgresoPanel();
+                } else if (Object.keys(state.progreso).length === 0) {
+                    detenerPollingGlobal();
                 }
             });
     }
@@ -334,18 +350,27 @@ app.Masivos.Ui = (function () {
     function renderProgresoPanel() {
         var ids = Object.keys(state.progreso);
         var $panel = $('#masivosProgresoPanel');
+        var $resumen = $('#masivosProgresoResumen');
         var $lista = $('#masivosProgresoLista');
 
         if (ids.length === 0) {
             $panel.hide();
-            $lista.empty();
+            $lista.empty().hide();
+            $('#btnToggleProgresoDetalle').text('Ver detalle');
             return;
         }
 
-        var html = ids.map(function (id) {
+        $resumen.text(ids.length + ' archivo(s) en procesamiento. Puede continuar trabajando; haga clic en Refrescar para ver el estado final.');
+
+        var visibles = ids.slice(0, MAX_DETALLE_VISIBLE);
+        var html = visibles.map(function (id) {
             var item = state.progreso[id];
             return '<li><strong>' + (item.archivo || ('ID ' + id)) + ':</strong> ' + item.mensaje + '</li>';
         }).join('');
+
+        if (ids.length > MAX_DETALLE_VISIBLE) {
+            html += '<li class="text-muted">... y ' + (ids.length - MAX_DETALLE_VISIBLE) + ' archivo(s) más.</li>';
+        }
 
         $lista.html(html);
         $panel.show();
