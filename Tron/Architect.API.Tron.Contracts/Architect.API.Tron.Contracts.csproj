@@ -84,6 +84,7 @@
     <Compile Include="Masivos\MasivoErrorDetalle.cs" />
     <Compile Include="Masivos\MasivoProcesarRequest.cs" />
     <Compile Include="Masivos\MasivoResult.cs" />
+    <Compile Include="Masivos\MasivoResultadoProceso.cs" />
     <Compile Include="Pagos\RecibosParaRecobro.cs" />
     <Compile Include="Pagos\Recibo.cs" />
     <Compile Include="Pagos\Tarjeta.cs" />
