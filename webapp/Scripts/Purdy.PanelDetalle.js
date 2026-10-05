@@ -88,10 +88,10 @@ app.PurdyPanelDetalle = (function () {
     async function GetPolicy(data) {
         app.core.datapi('GET', `policy/${data.claim.NUM_POLIZA}?NUM_SPTO=${data.claim.NUM_SPTO}&NUM_APLI=${data.claim.NUM_APLI}&NUM_SPTO_APLI=${data.claim.NUM_SPTO_APLI}&NUM_RIESGO=${data.claim.NUM_RIESGO}`)
             .then(policy => {
-                let data = policy.Fixeddata;
+                let data = policy.FixedData;
                 _eventCallback('PolicyChange', data);
 
-                roles = policy.Thirdparties;
+                roles = policy.ThirdParties;
                 data.roles = roles;
                 let acreedor = roles.filter(i => i.TIP_BENEF === "8");
                 if (acreedor.length > 0) {
@@ -101,7 +101,7 @@ app.PurdyPanelDetalle = (function () {
                 }
                 _eventCallback('PolicyRolesChange', data);
 
-                dataVar = policy.Variabledata;
+                dataVar = policy.VariableData;
                 data.data = dataVar;
                 data.marca = ShowValue(dataVar.filter(i => i.COD_CAMPO === "COD_MARCA"), 'marca', 'TXT_CAMPO');
                 data.empresa = 'Purdy Motor';
