@@ -8235,38 +8235,26 @@ body.Mapfre {
     min-height: 36px !important;
 }
 
-/* Inicio de clientes: la imagen ocupa todo el espacio, sin el cuadro blanco */
-.Mapfre #page-wrapper .wrapper-content:has(.clients-square) {
-    padding: 0 !important;
-}
-
-    .Mapfre #page-wrapper .wrapper-content:has(.clients-square) > .row {
-        margin: 0 !important;
-    }
-
-        .Mapfre #page-wrapper .wrapper-content:has(.clients-square) > .row > .col-lg-12 {
-            padding: 0 !important;
-        }
-
+/* Inicio de clientes: carrusel a todo el alto, texto sobre degradado. La foto no se estira */
 .Mapfre #page-wrapper .ibox:has(> .clients-square) {
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
     background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 .Mapfre #page-wrapper .ibox-content.clients-square {
-    height: calc(100vh - 40px) !important;
+    position: relative;
+    height: calc(100vh - 85px) !important;
     min-height: 420px;
-    margin: 0 !important;
     padding: 0 !important;
+    margin-top: 0 !important;
     border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    background: #1f1f1f !important;
+    border-radius: 18px;
     overflow: hidden;
+    background: #1f1f1f;
+    box-shadow: 0 22px 45px -24px rgba(0, 0, 0, .45);
 }
 
     .Mapfre #page-wrapper .clients-square .carousel,
@@ -8292,11 +8280,11 @@ body.Mapfre {
             height: 100% !important;
             width: 100% !important;
             opacity: 1 !important;
+            max-width: none !important;
             transform: none !important;
             object-fit: cover;
-            object-position: center center;
+            object-position: center 30%;
         }
-
 
 /* texto del slide */
 .Mapfre #page-wrapper .clients-square .box-img {
@@ -8451,18 +8439,11 @@ body.Mapfre {
         background-color: var(--mapfrered1) !important;
     }
 
-/* en pantallas chicas el header va arriba */
-@media (max-width: 991px) {
-    .Mapfre #page-wrapper .wrapper-content:has(.clients-square) {
-        padding-top: 56px !important;
-    }
-
-    .Mapfre #page-wrapper .ibox-content.clients-square {
-        height: calc(100vh - 96px) !important;
-    }
-}
-
 @media (min-width: 768px) and (max-width: 991px) {
+    .Mapfre #page-wrapper .ibox-content.clients-square {
+        height: calc(100vh - 140px) !important;
+    }
+
     .Mapfre #page-wrapper .clients-square .box-img {
         width: 60% !important;
     }
@@ -8471,7 +8452,9 @@ body.Mapfre {
 /* en celular el texto va abajo y el degradado sube desde el pie */
 @media (max-width: 767px) {
     .Mapfre #page-wrapper .ibox-content.clients-square {
+        height: calc(100vh - 140px) !important;
         min-height: 460px;
+        border-radius: 14px;
     }
 
         .Mapfre #page-wrapper .clients-square .carousel-item::after {
