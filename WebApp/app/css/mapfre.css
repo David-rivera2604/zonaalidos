@@ -8235,27 +8235,19 @@ body.Mapfre {
     min-height: 36px !important;
 }
 
-/* Inicio de clientes: carrusel a todo el alto, texto sobre degradado */
-.Mapfre #page-wrapper .ibox:has(> .clients-square) {
-    background: transparent !important;
-    border: 0 !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin-bottom: 0 !important;
+/* Inicio de clientes: carrusel a todo el alto dentro del cuadro, texto sobre degradado */
+.Mapfre #page-wrapper .ibox-content.clients-square {
+    height: calc(100vh - 105px) !important;
+    min-height: 420px;
+    padding: 12px !important;
+    overflow: hidden;
 }
 
-.Mapfre #page-wrapper .ibox-content.clients-square {
-    position: relative;
-    height: calc(100vh - 85px) !important;
-    min-height: 420px;
-    padding: 0 !important;
-    margin-top: 0 !important;
-    border: 0 !important;
-    border-radius: 18px;
-    overflow: hidden;
-    background: #1f1f1f;
-    box-shadow: 0 22px 45px -24px rgba(0, 0, 0, .45);
-}
+    .Mapfre #page-wrapper .clients-square .carousel {
+        border-radius: 12px;
+        overflow: hidden;
+        background: #1f1f1f;
+    }
 
     .Mapfre #page-wrapper .clients-square .carousel,
     .Mapfre #page-wrapper .clients-square .carousel-inner,
@@ -8280,18 +8272,11 @@ body.Mapfre {
             height: 100% !important;
             width: 100% !important;
             opacity: 1 !important;
+            transform: none !important;
             object-fit: cover;
             object-position: center center;
         }
 
-        .Mapfre #page-wrapper .clients-square .carousel-item.active img {
-            animation: mfZoomInicio 9s ease-out both;
-        }
-
-@keyframes mfZoomInicio {
-    from { transform: scale(1.06); }
-    to { transform: scale(1); }
-}
 
 /* texto del slide */
 .Mapfre #page-wrapper .clients-square .box-img {
