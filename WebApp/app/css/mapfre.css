@@ -8235,19 +8235,39 @@ body.Mapfre {
     min-height: 36px !important;
 }
 
-/* Inicio de clientes: carrusel a todo el alto dentro del cuadro, texto sobre degradado */
-.Mapfre #page-wrapper .ibox-content.clients-square {
-    height: calc(100vh - 105px) !important;
-    min-height: 420px;
-    padding: 12px !important;
-    overflow: hidden;
+/* Inicio de clientes: la imagen ocupa todo el espacio, sin el cuadro blanco */
+.Mapfre #page-wrapper .wrapper-content:has(.clients-square) {
+    padding: 0 !important;
 }
 
-    .Mapfre #page-wrapper .clients-square .carousel {
-        border-radius: 12px;
-        overflow: hidden;
-        background: #1f1f1f;
+    .Mapfre #page-wrapper .wrapper-content:has(.clients-square) > .row {
+        margin: 0 !important;
     }
+
+        .Mapfre #page-wrapper .wrapper-content:has(.clients-square) > .row > .col-lg-12 {
+            padding: 0 !important;
+        }
+
+.Mapfre #page-wrapper .ibox:has(> .clients-square) {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.Mapfre #page-wrapper .ibox-content.clients-square {
+    height: calc(100vh - 40px) !important;
+    min-height: 420px;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #1f1f1f !important;
+    overflow: hidden;
+}
 
     .Mapfre #page-wrapper .clients-square .carousel,
     .Mapfre #page-wrapper .clients-square .carousel-inner,
@@ -8431,11 +8451,18 @@ body.Mapfre {
         background-color: var(--mapfrered1) !important;
     }
 
-@media (min-width: 768px) and (max-width: 991px) {
-    .Mapfre #page-wrapper .ibox-content.clients-square {
-        height: calc(100vh - 140px) !important;
+/* en pantallas chicas el header va arriba */
+@media (max-width: 991px) {
+    .Mapfre #page-wrapper .wrapper-content:has(.clients-square) {
+        padding-top: 56px !important;
     }
 
+    .Mapfre #page-wrapper .ibox-content.clients-square {
+        height: calc(100vh - 96px) !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
     .Mapfre #page-wrapper .clients-square .box-img {
         width: 60% !important;
     }
@@ -8444,9 +8471,7 @@ body.Mapfre {
 /* en celular el texto va abajo y el degradado sube desde el pie */
 @media (max-width: 767px) {
     .Mapfre #page-wrapper .ibox-content.clients-square {
-        height: calc(100vh - 140px) !important;
         min-height: 460px;
-        border-radius: 14px;
     }
 
         .Mapfre #page-wrapper .clients-square .carousel-item::after {
