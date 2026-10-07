@@ -3525,12 +3525,10 @@ ul.Observaciones {
         margin-left: 42px;
     }
 
-/* Observaci�n (1� l�nea) */
 .obs-text {
     white-space: pre-wrap
 }
 
-/* Meta (2� l�nea: usuario + fecha, izquierda) */
 .meta-line {
     font-size: 10px;
     color: #6c757d;
@@ -5165,7 +5163,6 @@ body.Mapfre {
         z-index: 1;
     }
 
-    /* Con modal abierto se quita el z-index, si no el modal queda debajo del fondo gris */
     .Mapfre.modal-open .wrapper-content > .row,
     .Mapfre.modal-open .wrapper-content > * {
         z-index: auto;
@@ -5880,7 +5877,6 @@ body.Mapfre {
         background: var(--mf-red);
     }
 
-/* backwards y no both: si queda el transform los modales se abren fuera de la pantalla */
 .Mapfre .wrapper-content > .row {
     animation: mfRise .3s var(--mf-ease) backwards;
 }
@@ -7823,7 +7819,6 @@ body.Mapfre {
 }
 /* En caso de agregar mas lineas, considerablemente hacerlo separado para mejores manteninmientos 
 */
-/* Header movil: hamburguesa a la izquierda, logo al lado, cuenta a la derecha */
 @media (max-width: 991px) {
     .Mapfre .head_prin > #imgHead {
         position: absolute !important;
@@ -7893,7 +7888,6 @@ body.Mapfre {
     }
 }
 
-/* Encabezado de productos (T1/T2/T3) en un solo cuadro */
 .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) {
     display: flex !important;
     flex-direction: row !important;
@@ -7972,7 +7966,6 @@ body.Mapfre {
         }
 }
 
-/* Datos de la cotizacion en la emision (solo lectura) */
 .Mapfre #page-wrapper .mf-readonly {
     display: flex;
     align-items: center;
@@ -7989,7 +7982,6 @@ body.Mapfre {
     cursor: not-allowed;
 }
 
-/* Encabezado de los modales */
 .Mapfre #page-wrapper .inmodal .modal-header {
     display: block !important;
     text-align: left !important;
@@ -8021,7 +8013,6 @@ body.Mapfre {
         padding: 4px !important;
     }
 
-/* Botones rojos: brillo blanco y sin sombra oscura */
 .Mapfre #page-wrapper .btn-primary,
 .Mapfre #page-wrapper .btn-danger,
 .Mapfre #page-wrapper .btn-success {
@@ -8046,7 +8037,6 @@ body.Mapfre {
         box-shadow: inset 0 2px 5px rgba(255,255,255,.35) !important;
     }
 
-/* Emitir (outline) con letra blanca */
 .Mapfre #page-wrapper .btn-outline.btn-primary,
 .Mapfre #page-wrapper .btn-outline.btn-danger,
 .Mapfre #page-wrapper .btn-outline.btn-success,
@@ -8059,7 +8049,6 @@ body.Mapfre {
     color: #fff !important;
 }
 
-/* Botones: mismo tamano, margen y alineacion (display sin !important por el d-none) */
 .Mapfre #page-wrapper .btn {
     display: inline-flex;
     align-items: center !important;
@@ -8092,7 +8081,6 @@ body.Mapfre {
     border-radius: 6px !important;
 }
 
-/* Botones dentro de grupos e input-group */
 .Mapfre #page-wrapper .btn-group > .btn,
 .Mapfre #page-wrapper .btn-group-toggle > .btn,
 .Mapfre #page-wrapper .input-group > .btn,
@@ -8107,7 +8095,6 @@ body.Mapfre {
         margin-left: -1px !important;
     }
 
-/* Botones en tablas */
 .Mapfre #page-wrapper td .btn,
 .Mapfre #page-wrapper th .btn {
     float: none !important;
@@ -8115,12 +8102,10 @@ body.Mapfre {
     font-weight: 700 !important;
 }
 
-/* btn-primary no flota si hay mas botones en la fila */
 .Mapfre #page-wrapper :has(> .btn:not(.btn-primary):not(.d-none)) > .btn-primary {
     float: none !important;
 }
 
-/* Brillo en los demas botones de color */
 .Mapfre #page-wrapper .btn-info,
 .Mapfre #page-wrapper .btn-warning,
 .Mapfre #page-wrapper .btn-secondary {
@@ -8129,7 +8114,6 @@ body.Mapfre {
     text-shadow: none !important;
 }
 
-/* Destinatario y Verificacion de domicilio en su cuadro */
 .Mapfre #page-wrapper fieldset > .enviosolicitudZone,
 .Mapfre #page-wrapper fieldset > .VerificarDomicilio {
     flex: none !important;
@@ -8149,19 +8133,16 @@ body.Mapfre {
     }
 
 @media (min-width: 768px) {
-    /* Tipo de envio y Correo en la misma fila */
     .Mapfre #page-wrapper fieldset > .enviosolicitudZone > .form-row > .col-md-12 {
         flex: 0 0 50% !important;
         max-width: 50% !important;
     }
 }
 
-/* Si la botonera no tiene botones visibles no se muestra */
 .Mapfre #page-wrapper fieldset > .form-row:has(> [class*="col"] > .modal-footer):not(:has(.form-group)):not(:has(.modal-footer > .btn:not(.d-none))) {
     display: none !important;
 }
 
-/* Botonera sola: sin linea ni relleno */
 .Mapfre #page-wrapper fieldset > .form-row:has(> [class*="col"] > .modal-footer):not(:has(.form-group)) .modal-footer {
     margin: 0 !important;
     padding: 0 !important;
@@ -8169,7 +8150,6 @@ body.Mapfre {
     background: transparent !important;
 }
 
-/* Modal de terceros mas compacto, botones siempre visibles */
 .Mapfre #page-wrapper #tercerosModal .modal-dialog {
     margin-top: 12px;
     margin-bottom: 12px;
@@ -8235,7 +8215,6 @@ body.Mapfre {
     min-height: 36px !important;
 }
 
-/* Inicio de clientes: carrusel a todo el alto, texto sobre degradado. La foto no se estira */
 .Mapfre #page-wrapper .ibox:has(> .clients-square) {
     background: transparent !important;
     border: 0 !important;
@@ -8267,7 +8246,6 @@ body.Mapfre {
         overflow: hidden;
     }
 
-        /* degradado para que el texto se lea sin tapar la foto */
         .Mapfre #page-wrapper .clients-square .carousel-item::after {
             content: '';
             position: absolute;
@@ -8286,7 +8264,6 @@ body.Mapfre {
             object-position: center 30%;
         }
 
-/* texto del slide */
 .Mapfre #page-wrapper .clients-square .box-img {
     position: absolute !important;
     z-index: 2;
@@ -8379,7 +8356,6 @@ body.Mapfre {
         transform: translateY(-50%) !important;
     }
 
-/* flechas redondas */
 .Mapfre #page-wrapper .clients-square .carousel-control-prev,
 .Mapfre #page-wrapper .clients-square .carousel-control-next {
     z-index: 3 !important;
@@ -8410,7 +8386,6 @@ body.Mapfre {
         height: 16px;
     }
 
-/* indicadores tipo barra */
 .Mapfre #page-wrapper .clients-square .carousel-indicators {
     z-index: 3;
     left: 0;
@@ -8449,7 +8424,6 @@ body.Mapfre {
     }
 }
 
-/* en celular el texto va abajo y el degradado sube desde el pie */
 @media (max-width: 767px) {
     .Mapfre #page-wrapper .ibox-content.clients-square {
         height: calc(100vh - 140px) !important;

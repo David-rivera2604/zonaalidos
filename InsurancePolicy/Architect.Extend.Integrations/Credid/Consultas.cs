@@ -11,10 +11,6 @@ using System.Threading.Tasks;
 
 namespace Architect.Extend.Integrations.Credid
 {
-    /// <summary>
-    /// Consulta de personas en Credid.net.
-    /// Usa Credid.Url, Credid.Token y Credid.TimeoutSeconds del Web.config. Sin token no consulta.
-    /// </summary>
     public static class Consultas
     {
         private static readonly CultureInfo CostaRica = CultureInfo.CreateSpecificCulture("es-CR");
@@ -25,11 +21,6 @@ namespace Architect.Extend.Integrations.Credid
             return new HttpClient() { Timeout = TimeSpan.FromSeconds(Architect.Utilities.Helpers.Settings.IntegerValue("Credid.TimeoutSeconds", 10)) };
         });
 
-        /// <summary>
-        /// Busca una persona por identificación.
-        /// </summary>
-        /// <param name="identificacion">Identificación digitada.</param>
-        /// <param name="docType">1 cédula, 2 DIMEX, 3 pasaporte, 4 jurídica.</param>
         public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion, int docType = 1)
         {
             Architect.API.Insurance.Contracts.Policy.Insured result = null;
@@ -64,7 +55,6 @@ namespace Architect.Extend.Integrations.Credid
                         string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                         if (body.IsNotEmpty())
                         {
-                            // Sin esto Json.NET cambia el formato de las fechas
                             using (JsonTextReader reader = new JsonTextReader(new StringReader(body)) { DateParseHandling = DateParseHandling.None })
                             {
                                 result = Convertir(JObject.Load(reader), cedula, docType);
@@ -82,9 +72,6 @@ namespace Architect.Extend.Integrations.Credid
             return result;
         }
 
-        /// <summary>
-        /// Credid pide la cédula sin el 0 inicial y los pasaportes con "ext-".
-        /// </summary>
         private static string IdentificacionCredid(string identificacion, int docType)
         {
             if (docType == 3)
@@ -162,9 +149,6 @@ namespace Architect.Extend.Integrations.Credid
             };
         }
 
-        /// <summary>
-        /// Deja provincia en 1 dígito, cantón en 3 y distrito en 5.
-        /// </summary>
         private static void Domicilio(Architect.API.Insurance.Contracts.Policy.Insured result, JObject domicilio)
         {
             if (domicilio == null)
@@ -210,9 +194,6 @@ namespace Architect.Extend.Integrations.Credid
             }
         }
 
-        /// <summary>
-        /// Teléfono, correo y dirección más recientes del titular.
-        /// </summary>
         private static void Localizacion(Architect.API.Insurance.Contracts.Policy.Insured result, JArray datos)
         {
             if (datos == null)

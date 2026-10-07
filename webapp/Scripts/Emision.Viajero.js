@@ -72,7 +72,6 @@ app.EmisionViajero = (function () {
             });
     };
 
-    // Al emitir se manda el certificado al correo del tomador (o del asegurado si es el mismo tomador)
     function EnviarCertificadoTomador(data) {
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let tomador = terceros.find(t => t.tipodetercero == 0) || terceros.find(t => t.tipodetercero == 2 && t.elaseguradoeselmismotomador == 1);
@@ -1151,7 +1150,6 @@ app.EmisionViajero = (function () {
             if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
                 app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
             }
-            // El servicio manda 1=M y 2=F, el select usa 1=M y 0=F
             if (data.Gender == 1 || data.Gender == 2)
                 $('#tercerosMca_sexo').val(data.Gender == 2 ? '0' : '1');
             $('#TProvincia').val(data.Province);

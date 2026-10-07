@@ -31,7 +31,6 @@ app.CotizacionMapfreMas = (function () {
         }
     }
 
-    // Rol Banca: solo ve Banca (plan 39), los demas no lo ven
     function MostrarTiposProductoPorRol() {
         var esBanca = (JSON.parse(localStorage.getItem('Roles') || '[]') || []).indexOf('Banca') !== -1;
         $('input:radio[name=tipo_prod]').each(function () {

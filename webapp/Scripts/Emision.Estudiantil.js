@@ -72,7 +72,6 @@ app.EmisionEstudiantil = (function () {
             });
     };
 
-    // Al emitir se manda el certificado al correo del tomador (o del asegurado si es el mismo tomador)
     function EnviarCertificadoTomador(data) {
         let terceros = $('#tercerosTbl').bootstrapTable('getData');
         let tomador = terceros.find(t => t.tipodetercero == 0) || terceros.find(t => t.tipodetercero == 2 && t.elaseguradoeselmismotomador == 1);

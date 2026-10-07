@@ -14,7 +14,6 @@ app.EmisionMapfreMas = (function () {
     var showCalculate = false;
     let mca_cuotas_gratis = 'N';
 
-    // Rol Banca: solo se ve el tipo de producto Banca
     function MostrarTiposProductoPorRol() {
         var esBanca = (JSON.parse(localStorage.getItem('Roles') || '[]') || []).indexOf('Banca') !== -1;
         if (esBanca) {
@@ -72,7 +71,6 @@ app.EmisionMapfreMas = (function () {
         }
     }
 
-    // Valor de la cotizacion en solo lectura
     function ValorSoloLectura(texto) {
         if (texto === undefined || texto === null || texto === '' || texto === 'undefined')
             texto = '-';
@@ -109,7 +107,6 @@ app.EmisionMapfreMas = (function () {
         $('#IMP_VR').replaceWith(ValorSoloLectura($('#IMP_VR').val()));
         $('label[for=MCA_DESC_CLIENTE_NUEVO').next().replaceWith(ValorSoloLectura($('label[for=MCA_DESC_CLIENTE_NUEVO_' + app.ui.GetRadioNumericValue('MCA_DESC_CLIENTE_NUEVO') + '').html()));
         $('label[for=ext_garantia').next().replaceWith(ValorSoloLectura($('label[for=ext_garantia_' + app.ui.GetRadioNumericValue('ext_garantia') + '').html()));
-        // En la emision no se muestra el ajuste comercial
         $('#PCT_AJUSTE_GEN').closest('.col-sm-3').remove();
         $('#IMP_AUTO_RC').replaceWith(ValorSoloLectura($('#IMP_AUTO_RC option:selected').text()));
         $('#DED_AUTO_RC').replaceWith(ValorSoloLectura($('#DED_AUTO_RC option:selected').text()));
