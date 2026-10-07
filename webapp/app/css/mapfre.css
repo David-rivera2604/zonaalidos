@@ -8235,33 +8235,259 @@ body.Mapfre {
     min-height: 36px !important;
 }
 
-/* Inicio de clientes: el carrusel llega hasta el footer y no deja espacio abajo */
-@media (min-width: 768px) {
-    .Mapfre .clients-square {
-        height: calc(100vh - 105px) !important;
-        min-height: 420px;
+/* Inicio de clientes: carrusel a todo el alto, texto sobre degradado */
+.Mapfre #page-wrapper .ibox:has(> .clients-square) {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.Mapfre #page-wrapper .ibox-content.clients-square {
+    position: relative;
+    height: calc(100vh - 85px) !important;
+    min-height: 420px;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    border: 0 !important;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #1f1f1f;
+    box-shadow: 0 22px 45px -24px rgba(0, 0, 0, .45);
+}
+
+    .Mapfre #page-wrapper .clients-square .carousel,
+    .Mapfre #page-wrapper .clients-square .carousel-inner,
+    .Mapfre #page-wrapper .clients-square .carousel-item {
+        height: 100%;
     }
 
-        .Mapfre .clients-square .carousel,
-        .Mapfre .clients-square .carousel-inner,
-        .Mapfre .clients-square .carousel-item {
-            height: 100%;
+    .Mapfre #page-wrapper .clients-square .carousel-item {
+        overflow: hidden;
+    }
+
+        /* degradado para que el texto se lea sin tapar la foto */
+        .Mapfre #page-wrapper .clients-square .carousel-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(15, 15, 15, .82) 0%, rgba(15, 15, 15, .55) 32%, rgba(15, 15, 15, .08) 62%, rgba(15, 15, 15, 0) 100%);
+            pointer-events: none;
         }
 
-            .Mapfre .clients-square .carousel-item img {
-                height: 100% !important;
-            }
+        .Mapfre #page-wrapper .clients-square .carousel-item img {
+            height: 100% !important;
+            width: 100% !important;
+            opacity: 1 !important;
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        .Mapfre #page-wrapper .clients-square .carousel-item.active img {
+            animation: mfZoomInicio 9s ease-out both;
+        }
+
+@keyframes mfZoomInicio {
+    from { transform: scale(1.06); }
+    to { transform: scale(1); }
 }
 
+/* texto del slide */
+.Mapfre #page-wrapper .clients-square .box-img {
+    position: absolute !important;
+    z-index: 2;
+    top: 50% !important;
+    left: 96px !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    width: min(480px, 44%) !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-radius: 0;
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    transition: none;
+}
+
+    .Mapfre #page-wrapper .clients-square .box-img::before {
+        content: '';
+        width: 46px;
+        height: 4px;
+        border-radius: 4px;
+        background: var(--mapfrered1);
+        margin-bottom: 18px;
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img hr {
+        display: none;
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img p1 {
+        display: block;
+        font-size: clamp(26px, 2.6vw, 42px);
+        font-weight: 800;
+        line-height: 1.15;
+        color: #fff;
+        margin-bottom: 14px;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, .35);
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img p2 {
+        display: block;
+        font-size: clamp(15px, 1.15vw, 18px);
+        font-weight: 400;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, .92);
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img p3 {
+        display: block;
+        margin: 18px 0 26px;
+        padding-left: 12px;
+        border-left: 3px solid var(--mapfrered1);
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: 1.45;
+        color: rgba(255, 255, 255, .78);
+    }
+
+        .Mapfre #page-wrapper .clients-square .box-img p1:empty,
+        .Mapfre #page-wrapper .clients-square .box-img p2:empty,
+        .Mapfre #page-wrapper .clients-square .box-img p3:empty {
+            display: none;
+        }
+
+    .Mapfre #page-wrapper .clients-square .box-img .btn-inicio {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: auto !important;
+        padding: 12px 28px !important;
+        margin: 0 !important;
+        border-radius: 999px !important;
+        font-size: 15px;
+        box-shadow: 0 10px 22px -10px rgba(0, 0, 0, .6);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .Mapfre #page-wrapper .clients-square .box-img .btn-inicio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 26px -10px rgba(0, 0, 0, .7);
+        }
+
+    .Mapfre #page-wrapper .clients-square .box-img:hover {
+        transform: translateY(-50%) !important;
+    }
+
+/* flechas redondas */
+.Mapfre #page-wrapper .clients-square .carousel-control-prev,
+.Mapfre #page-wrapper .clients-square .carousel-control-next {
+    z-index: 3 !important;
+    top: 50%;
+    bottom: auto;
+    width: 46px;
+    height: 46px;
+    margin: 0 18px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .35);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    opacity: .85;
+    transition: background .2s ease, opacity .2s ease;
+}
+
+    .Mapfre #page-wrapper .clients-square .carousel-control-prev:hover,
+    .Mapfre #page-wrapper .clients-square .carousel-control-next:hover {
+        background: rgba(255, 255, 255, .3);
+        opacity: 1;
+    }
+
+    .Mapfre #page-wrapper .clients-square .carousel-control-prev-icon,
+    .Mapfre #page-wrapper .clients-square .carousel-control-next-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+/* indicadores tipo barra */
+.Mapfre #page-wrapper .clients-square .carousel-indicators {
+    z-index: 3;
+    left: 0;
+    right: 0;
+    bottom: 18px;
+    margin: 0 auto !important;
+    padding: 0;
+    justify-content: center;
+}
+
+    .Mapfre #page-wrapper .clients-square .carousel-indicators li {
+        flex: 0 0 auto;
+        width: 26px !important;
+        height: 4px !important;
+        margin: 0 4px;
+        border: 0;
+        border-radius: 4px !important;
+        background-color: rgba(255, 255, 255, .55) !important;
+        opacity: 1;
+        transition: width .3s ease, background-color .3s ease;
+    }
+
+    .Mapfre #page-wrapper .clients-square .carousel-indicators .active {
+        width: 44px !important;
+        height: 4px !important;
+        background-color: var(--mapfrered1) !important;
+    }
+
 @media (min-width: 768px) and (max-width: 991px) {
-    .Mapfre .clients-square {
-        height: calc(100vh - 155px) !important;
+    .Mapfre #page-wrapper .ibox-content.clients-square {
+        height: calc(100vh - 140px) !important;
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img {
+        width: 60% !important;
     }
 }
 
-/* en celular la imagen va oculta, entonces el cuadro solo envuelve la tarjeta */
+/* en celular el texto va abajo y el degradado sube desde el pie */
 @media (max-width: 767px) {
-    .Mapfre .clients-square {
-        height: auto !important;
+    .Mapfre #page-wrapper .ibox-content.clients-square {
+        height: calc(100vh - 140px) !important;
+        min-height: 460px;
+        border-radius: 14px;
+    }
+
+        .Mapfre #page-wrapper .clients-square .carousel-item::after {
+            background: linear-gradient(0deg, rgba(15, 15, 15, .9) 0%, rgba(15, 15, 15, .6) 45%, rgba(15, 15, 15, .05) 80%);
+        }
+
+    .Mapfre #page-wrapper .clients-square .box-img,
+    .Mapfre #page-wrapper .clients-square .box-img:hover {
+        top: auto !important;
+        bottom: 52px !important;
+        left: 22px !important;
+        right: 22px !important;
+        width: auto !important;
+        transform: none !important;
+    }
+
+        .Mapfre #page-wrapper .clients-square .box-img p3 {
+            margin: 14px 0 20px;
+        }
+
+    .Mapfre #page-wrapper .clients-square .carousel-control-prev,
+    .Mapfre #page-wrapper .clients-square .carousel-control-next {
+        top: 28px;
+        transform: none;
+        width: 38px;
+        height: 38px;
+        margin: 0 12px;
     }
 }
