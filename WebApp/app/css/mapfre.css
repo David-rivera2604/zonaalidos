@@ -3525,12 +3525,12 @@ ul.Observaciones {
         margin-left: 42px;
     }
 
-/* Observacion (1a linea) */
+/* Observaci�n (1� l�nea) */
 .obs-text {
     white-space: pre-wrap
 }
 
-/* linea: usuario + fecha, izquierda */
+/* Meta (2� l�nea: usuario + fecha, izquierda) */
 .meta-line {
     font-size: 10px;
     color: #6c757d;
@@ -5165,8 +5165,7 @@ body.Mapfre {
         z-index: 1;
     }
 
-/* Con un modal abierto la fila no puede ser un contexto de apilamiento: el modal vive
-       dentro de ella y quedaria debajo del fondo gris (.modal-backdrop va en el body). */
+/* Con modal abierto se quita el z-index, si no el modal queda debajo del fondo gris */
 .Mapfre.modal-open .wrapper-content > .row,
 .Mapfre.modal-open .wrapper-content > * {
     z-index: auto;
@@ -5881,9 +5880,7 @@ body.Mapfre {
         background: var(--mf-red);
     }
 
-/* backwards (no both): al terminar no debe quedar un transform en la fila, porque un
-   transform convierte a la fila en el contenedor de los position:fixed y los modales
-   (terceros, documentos...) se abren arriba de la pagina, fuera de la pantalla. */
+/* backwards y no both: si queda el transform los modales se abren fuera de la pantalla */
 .Mapfre .wrapper-content > .row {
     animation: mfRise .3s var(--mf-ease) backwards;
 }
@@ -7914,9 +7911,7 @@ body.Mapfre {
     }
 }
 
-/* Encabezado de los productos (titulo, texto de MAPFRE y slogan del seguro): un solo cuadro,
-   con el mismo estilo que las secciones del formulario (Datos generales, Datos del vehiculo...).
-   Solo para los encabezados de 3 partes (T1/T2/T3); los que tienen solo titulo (Policy, Bayer) quedan igual. */
+/* Encabezado de productos (T1/T2/T3) en un solo cuadro */
 .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) {
     display: flex !important;
     flex-direction: row !important;
@@ -7995,7 +7990,7 @@ body.Mapfre {
         }
 }
 
-/* Emision: datos que vienen de la cotizacion. Mismo alto y borde que un campo, en gris y sin poder editarse. */
+/* Datos de la cotizacion en la emision (solo lectura) */
 .Mapfre #page-wrapper .mf-readonly {
     display: flex;
     align-items: center;
@@ -8012,7 +8007,7 @@ body.Mapfre {
     cursor: not-allowed;
 }
 
-/* Modales (terceros, documentos...): titulo y subtitulo alineados a la izquierda, sin la linea de los h4 del formulario. */
+/* Encabezado de los modales */
 .Mapfre #page-wrapper .inmodal .modal-header {
     display: block !important;
     text-align: left !important;
@@ -8044,8 +8039,7 @@ body.Mapfre {
         padding: 4px !important;
     }
 
-/* Botones rojos (primary, danger, success): sin sombra oscura. Encima del rojo va un brillo blanco
-   que se desvanece hacia abajo, y la sombra exterior es blanca. */
+/* Botones rojos: brillo blanco y sin sombra oscura */
 .Mapfre #page-wrapper .btn-primary,
 .Mapfre #page-wrapper .btn-danger,
 .Mapfre #page-wrapper .btn-success {
@@ -8070,7 +8064,7 @@ body.Mapfre {
         box-shadow: inset 0 2px 5px rgba(255,255,255,.35) !important;
     }
 
-/* Botones "outline" rojos (p. ej. Emitir en la lista de presupuestos): el fondo es rojo, asi que la letra va en blanco. */
+/* Emitir (outline) con letra blanca */
 .Mapfre #page-wrapper .btn-outline.btn-primary,
 .Mapfre #page-wrapper .btn-outline.btn-danger,
 .Mapfre #page-wrapper .btn-outline.btn-success,
@@ -8083,11 +8077,7 @@ body.Mapfre {
     color: #fff !important;
 }
 
-/* ===== Botones de todo el proyecto: mismo tamano, alineacion y espaciado =====
-   - .btn-sm y .btn-xs vuelven a ser mas pequenos (una regla anterior les ponia 44px a todos).
-   - Margen igual en los 4 lados para todos (antes .btn-primary tenia 6px 0 6px 8px y .btn-white 8px,
-     por eso quedaban a distinta altura uno al lado del otro).
-   - Texto e icono centrados. display sin !important para que .d-none pueda ocultarlos. */
+/* Botones: mismo tamano, margen y alineacion (display sin !important por el d-none) */
 .Mapfre #page-wrapper .btn {
     display: inline-flex;
     align-items: center !important;
@@ -8120,7 +8110,7 @@ body.Mapfre {
     border-radius: 6px !important;
 }
 
-/* En grupos y campos con boton los botones van pegados: sin margen ni float. */
+/* Botones dentro de grupos e input-group */
 .Mapfre #page-wrapper .btn-group > .btn,
 .Mapfre #page-wrapper .btn-group-toggle > .btn,
 .Mapfre #page-wrapper .input-group > .btn,
@@ -8135,7 +8125,7 @@ body.Mapfre {
         margin-left: -1px !important;
     }
 
-/* En tablas (acciones como Emitir / Reenvia solicitud) los botones no flotan: quedan uno al lado del otro. */
+/* Botones en tablas */
 .Mapfre #page-wrapper td .btn,
 .Mapfre #page-wrapper th .btn {
     float: none !important;
@@ -8143,13 +8133,12 @@ body.Mapfre {
     font-weight: 700 !important;
 }
 
-/* .btn-primary flota a la derecha (regla vieja). Si comparte fila con otros botones visibles, se queda en
-   su orden junto a ellos; antes saltaba al extremo derecho y dejaba los demas a la izquierda. */
+/* btn-primary no flota si hay mas botones en la fila */
 .Mapfre #page-wrapper :has(> .btn:not(.btn-primary):not(.d-none)) > .btn-primary {
     float: none !important;
 }
 
-/* El mismo brillo blanco en los demas botones de color. */
+/* Brillo en los demas botones de color */
 .Mapfre #page-wrapper .btn-info,
 .Mapfre #page-wrapper .btn-warning,
 .Mapfre #page-wrapper .btn-secondary {
@@ -8158,8 +8147,7 @@ body.Mapfre {
     text-shadow: none !important;
 }
 
-/* Zonas que van directo dentro del formulario sin .form-row (Destinatario para envio de solicitud,
-   Verificacion de domicilio): mismo cuadro que las demas secciones y a todo el ancho. */
+/* Destinatario y Verificacion de domicilio en su cuadro */
 .Mapfre #page-wrapper fieldset > .enviosolicitudZone,
 .Mapfre #page-wrapper fieldset > .VerificarDomicilio {
     flex: none !important;
@@ -8179,20 +8167,19 @@ body.Mapfre {
     }
 
 @media (min-width: 768px) {
-    /* Tipo de envio y Correo uno al lado del otro */
+    /* Tipo de envio y Correo en la misma fila */
     .Mapfre #page-wrapper fieldset > .enviosolicitudZone > .form-row > .col-md-12 {
         flex: 0 0 50% !important;
         max-width: 50% !important;
     }
 }
 
-/* Botonera sin ningun boton visible (en la emision los botones se pasan a la barra de arriba):
-   no se muestra el cuadro vacio. Si un boton vuelve a mostrarse, el cuadro aparece. */
+/* Si la botonera no tiene botones visibles no se muestra */
 .Mapfre #page-wrapper fieldset > .form-row:has(> [class*="col"] > .modal-footer):not(:has(.form-group)):not(:has(.modal-footer > .btn:not(.d-none))) {
     display: none !important;
 }
 
-/* Cuadro que solo tiene la botonera: sin la linea ni el relleno del pie, el boton queda centrado en su cuadro. */
+/* Botonera sola: sin linea ni relleno */
 .Mapfre #page-wrapper fieldset > .form-row:has(> [class*="col"] > .modal-footer):not(:has(.form-group)) .modal-footer {
     margin: 0 !important;
     padding: 0 !important;
@@ -8200,8 +8187,7 @@ body.Mapfre {
     background: transparent !important;
 }
 
-/* Modal "Informacion de tercero": mas compacto y con Guardar cambios siempre a la vista.
-   El encabezado y los botones quedan fijos; si la pantalla es baja, solo se desplazan los campos. */
+/* Modal de terceros mas compacto, botones siempre visibles */
 .Mapfre #page-wrapper #tercerosModal .modal-dialog {
     margin-top: 12px;
     margin-bottom: 12px;
@@ -8265,4 +8251,254 @@ body.Mapfre {
 
 .Mapfre #page-wrapper #tercerosModal .custom-control {
     min-height: 36px !important;
+}
+
+/* Inicio de clientes: carrusel a todo el alto, texto sobre degradad sin forto desajustada */
+.Mapfre #page-wrapper .ibox:has(> .clients-square) {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.Mapfre #page-wrapper .ibox-content.clients-square {
+    position: relative;
+    height: calc(100vh - 85px) !important;
+    min-height: 420px;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    border: 0 !important;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #1f1f1f;
+    box-shadow: 0 22px 45px -24px rgba(0, 0, 0, .45);
+}
+
+.Mapfre #page-wrapper .clients-square .carousel,
+.Mapfre #page-wrapper .clients-square .carousel-inner,
+.Mapfre #page-wrapper .clients-square .carousel-item {
+    height: 100%;
+}
+
+.Mapfre #page-wrapper .clients-square .carousel-item {
+    overflow: hidden;
+}
+
+    /* degradado para que el texto se lea sin tapar la foto */
+    .Mapfre #page-wrapper .clients-square .carousel-item::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(15, 15, 15, .82) 0%, rgba(15, 15, 15, .55) 32%, rgba(15, 15, 15, .08) 62%, rgba(15, 15, 15, 0) 100%);
+        pointer-events: none;
+    }
+
+    .Mapfre #page-wrapper .clients-square .carousel-item img {
+        height: 100% !important;
+        width: 100% !important;
+        opacity: 1 !important;
+        max-width: none !important;
+        transform: none !important;
+        object-fit: cover;
+        object-position: center 30%;
+    }
+
+/* texto del slide */
+.Mapfre #page-wrapper .clients-square .box-img {
+    position: absolute !important;
+    z-index: 2;
+    top: 50% !important;
+    left: 96px !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    width: min(480px, 44%) !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-radius: 0;
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    transition: none;
+}
+
+    .Mapfre #page-wrapper .clients-square .box-img::before {
+        content: '';
+        width: 46px;
+        height: 4px;
+        border-radius: 4px;
+        background: var(--mapfrered1);
+        margin-bottom: 18px;
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img hr {
+        display: none;
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img p1 {
+        display: block;
+        font-size: clamp(26px, 2.6vw, 42px);
+        font-weight: 800;
+        line-height: 1.15;
+        color: #fff;
+        margin-bottom: 14px;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, .35);
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img p2 {
+        display: block;
+        font-size: clamp(15px, 1.15vw, 18px);
+        font-weight: 400;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, .92);
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img p3 {
+        display: block;
+        margin: 18px 0 26px;
+        padding-left: 12px;
+        border-left: 3px solid var(--mapfrered1);
+        font-size: 14px;
+        font-style: italic;
+        font-weight: 400;
+        line-height: 1.45;
+        color: rgba(255, 255, 255, .78);
+    }
+
+        .Mapfre #page-wrapper .clients-square .box-img p1:empty,
+        .Mapfre #page-wrapper .clients-square .box-img p2:empty,
+        .Mapfre #page-wrapper .clients-square .box-img p3:empty {
+            display: none;
+        }
+
+    .Mapfre #page-wrapper .clients-square .box-img .btn-inicio {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: auto !important;
+        padding: 12px 28px !important;
+        margin: 0 !important;
+        border-radius: 999px !important;
+        font-size: 15px;
+        box-shadow: 0 10px 22px -10px rgba(0, 0, 0, .6);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .Mapfre #page-wrapper .clients-square .box-img .btn-inicio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 26px -10px rgba(0, 0, 0, .7);
+        }
+
+    .Mapfre #page-wrapper .clients-square .box-img:hover {
+        transform: translateY(-50%) !important;
+    }
+
+/* flechas redondas */
+.Mapfre #page-wrapper .clients-square .carousel-control-prev,
+.Mapfre #page-wrapper .clients-square .carousel-control-next {
+    z-index: 3 !important;
+    top: 50%;
+    bottom: auto;
+    width: 46px;
+    height: 46px;
+    margin: 0 18px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .35);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    opacity: .85;
+    transition: background .2s ease, opacity .2s ease;
+}
+
+    .Mapfre #page-wrapper .clients-square .carousel-control-prev:hover,
+    .Mapfre #page-wrapper .clients-square .carousel-control-next:hover {
+        background: rgba(255, 255, 255, .3);
+        opacity: 1;
+    }
+
+.Mapfre #page-wrapper .clients-square .carousel-control-prev-icon,
+.Mapfre #page-wrapper .clients-square .carousel-control-next-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* indicadores tipo barra */
+.Mapfre #page-wrapper .clients-square .carousel-indicators {
+    z-index: 3;
+    left: 0;
+    right: 0;
+    bottom: 18px;
+    margin: 0 auto !important;
+    padding: 0;
+    justify-content: center;
+}
+
+    .Mapfre #page-wrapper .clients-square .carousel-indicators li {
+        flex: 0 0 auto;
+        width: 26px !important;
+        height: 4px !important;
+        margin: 0 4px;
+        border: 0;
+        border-radius: 4px !important;
+        background-color: rgba(255, 255, 255, .55) !important;
+        opacity: 1;
+        transition: width .3s ease, background-color .3s ease;
+    }
+
+    .Mapfre #page-wrapper .clients-square .carousel-indicators .active {
+        width: 44px !important;
+        height: 4px !important;
+        background-color: var(--mapfrered1) !important;
+    }
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .Mapfre #page-wrapper .ibox-content.clients-square {
+        height: calc(100vh - 140px) !important;
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img {
+        width: 60% !important;
+    }
+}
+
+/* en celular el texto va abajo y el degradado sube desde el pie */
+@media (max-width: 767px) {
+    .Mapfre #page-wrapper .ibox-content.clients-square {
+        height: calc(100vh - 140px) !important;
+        min-height: 460px;
+        border-radius: 14px;
+    }
+
+    .Mapfre #page-wrapper .clients-square .carousel-item::after {
+        background: linear-gradient(0deg, rgba(15, 15, 15, .9) 0%, rgba(15, 15, 15, .6) 45%, rgba(15, 15, 15, .05) 80%);
+    }
+
+    .Mapfre #page-wrapper .clients-square .box-img,
+    .Mapfre #page-wrapper .clients-square .box-img:hover {
+        top: auto !important;
+        bottom: 52px !important;
+        left: 22px !important;
+        right: 22px !important;
+        width: auto !important;
+        transform: none !important;
+    }
+
+        .Mapfre #page-wrapper .clients-square .box-img p3 {
+            margin: 14px 0 20px;
+        }
+
+    .Mapfre #page-wrapper .clients-square .carousel-control-prev,
+    .Mapfre #page-wrapper .clients-square .carousel-control-next {
+        top: 28px;
+        transform: none;
+        width: 38px;
+        height: 38px;
+        margin: 0 12px;
+    }
 }
