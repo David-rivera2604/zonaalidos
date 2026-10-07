@@ -1,5 +1,14 @@
 # Release Notes - Aliados
 
+## Versión 1.6.209
+
+### Aliados - Panel Purdy: No visualizacion de datos módulo de Siniestros en Zona de Aliados.
+
+#### Cambios implementados:
+
+- Se ajustaron los nombres en el json ya que usando la versión v1.10.0.19 de DataApi, había diferencias en mayúsculas y minúsculas.
+
+--
 ## Versión 1.6.208
 
 ### Aliados - OneDrive: Se habilita la carga de archivos por medio de OneDrive, en el manejo de trazabilidad y en emisión MapfreMas.

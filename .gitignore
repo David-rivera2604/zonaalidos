@@ -112,6 +112,12 @@ Thumbs.db
 /Sugese/Architect.Sugese.Utility/.vs/Architect.Sugese.Utility.csproj.dtbcache.json
 /.vs/VSWorkspaceState.json
 *.md
+!/CLAUDE.md
+!/docs/**/*.md
+!/docs/*.md
 /webapp/Views/Tests
 /webapp/app/components 
 /WebApp/roslyn
+/CLAUDE.md
+/docs
+/docs/AliadosPRD.md

@@ -210,8 +210,8 @@ app.ExtendClaims = (function () {
 
             app.core.datapi('GET', `policy/${row.NUM_POLIZA}?NUM_SPTO=${row.NUM_SPTO}&NUM_APLI=${row.NUM_APLI}&NUM_SPTO_APLI=${row.NUM_SPTO_APLI}&NUM_RIESGO=${row.NUM_RIESGO}`)
                 .then(data => {
-                    if (data.Fixeddata != null) {
-                        let info = data.Fixeddata;
+                    if (data.FixedData != null) {
+                        let info = data.FixedData;
                         let html = [];
                         html.push('<div class="row">');
                         [
