@@ -1141,7 +1141,15 @@ app.EmisionViajero = (function () {
 
     };
 
+    function LimpiarDatosTercero() {
+        $('#nombre, #apellido1, #apellido2, #PhoneNumber, #correoelectronico, #numerodetelefono, #otrasenas').val('');
+        app.ui.SetDateValue('#fechadenacimiento', null);
+        $('#tercerosMca_sexo, #estadoCivil, #TProvincia').val('');
+        $('#TCanton, #TDistrito').children().remove();
+    }
+
     function terceros_documentNumberCallBack(data) {
+        LimpiarDatosTercero();
         if (data != null) {
             $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
             $('#apellido1').val(data.LastName);
