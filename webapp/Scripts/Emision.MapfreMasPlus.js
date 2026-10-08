@@ -567,8 +567,12 @@ app.EmisionMapfreMasPlus = (function () {
             var others = OtherValidations();
             if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#guardarenviar');
+                let data = MapInputToObject();
+                if (data.cod_uso_vehi == "2" && data.MCA_BANCA_DESARROLLO == "1") {
+                    data.cod_uso_vehiDesc = "BANCA Y DESARROLLO";
+                }
                 app.core.Post(app.setting.apipath + 'v1/Issue/MapfreMasPlus',
-                    JSON.stringify(MapInputToObject()),
+                    JSON.stringify(data),
                     function (data) {
 
                         $('#guardarenviar').addClass('d-none');

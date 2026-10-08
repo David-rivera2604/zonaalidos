@@ -109,7 +109,7 @@ namespace Architect.API.Tron.Contracts.Cotizacion
         /// <summary>
         /// ¿Aplica banca desarrollo?.
         /// </summary>
-        [DataMember(), JsonProperty()] public int MCA_BANCA_DESARROLLO { get; set; }
+        [DataMember(), JsonProperty()] public int MCA_BANCA_DESARROLLO { get; set; } = 2;
         /// <summary>
         /// ¿Tiene GPS?.
         /// </summary>
