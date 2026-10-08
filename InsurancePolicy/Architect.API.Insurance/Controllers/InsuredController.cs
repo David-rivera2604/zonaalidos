@@ -38,6 +38,22 @@ namespace Architect.API.Insurance.Controllers
             {
                 return BadRequest("Debe indicar la identificación");
             }
+            bool usarCredid = tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase);
+            if (usarCredid)
+            {
+                verbose += "->tron";
+                result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+                if (result == null)
+                {
+                    verbose += "->credid";
+                    result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType);
+                }
+                else if (Incompleto(result))
+                {
+                    verbose += "->credid(completar)";
+                    Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType));
+                }
+            }
             if (result == null && tokenInfo.CompanyId == 11)   //Sur Química
             {
                 verbose += "->thirdparty";
@@ -54,18 +70,10 @@ namespace Architect.API.Insurance.Controllers
                 verbose += "->coope";
                 result = Architect.Extend.Integrations.Coope.Consultas.ClientePorIdentificacion(id);
             }
-            if (result == null)
+            if (result == null && !usarCredid)
             {
                 verbose += "->tron";
                 result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
-            }
-            bool usarCredid = tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase);
-            bool credidConsultado = false;
-            if (result == null && usarCredid)
-            {
-                verbose += "->credid";
-                credidConsultado = true;
-                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType);
             }
             if (result == null)
             {
@@ -125,11 +133,6 @@ namespace Architect.API.Insurance.Controllers
 
             if (result != null && usarCredid && Incompleto(result))
             {
-                if (!credidConsultado)
-                {
-                    verbose += "->credid(completar)";
-                    Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType));
-                }
                 if (Incompleto(result) && result.Source != "INS")
                 {
                     verbose += "->ins(completar)";
