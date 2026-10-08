@@ -107,6 +107,7 @@ namespace Architect.Extend.Integrations.Credid
                 result.SecondLastName = Nombre(Texto(persona, "Apellido2"));
                 result.BirthDate = Fecha(Texto(persona, "FechaNacimiento"));
                 result.Gender = Genero(Texto(persona, "Genero"), Texto(persona, "GeneroLiteral"));
+                result.CivilStatus = EstadoCivil(Texto(persona, "EstadoCivil"), Texto(persona, "EstadoCivilLiteral"));
                 Domicilio(result, persona["DomicilioElectoral"] as JObject);
             }
             else
@@ -243,6 +244,32 @@ namespace Architect.Extend.Integrations.Credid
             if (value.StartsWith("F"))
             {
                 return 2;
+            }
+            return 0;
+        }
+
+        private static int EstadoCivil(string estado, string literal)
+        {
+            string value = (literal.IsNotEmpty() ? literal : estado).ToUpperInvariant();
+            if (value.StartsWith("CAS") || value == "C")
+            {
+                return 1;
+            }
+            if (value.StartsWith("DIV") || value == "D")
+            {
+                return 2;
+            }
+            if (value.StartsWith("SOL") || value == "S")
+            {
+                return 3;
+            }
+            if (value.StartsWith("VIU") || value == "V")
+            {
+                return 4;
+            }
+            if (value.StartsWith("UNI") || value.StartsWith("ACOM") || value.Contains("LIBRE") || value == "U")
+            {
+                return 7;
             }
             return 0;
         }

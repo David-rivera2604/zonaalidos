@@ -59,10 +59,16 @@ namespace Architect.API.Insurance.Controllers
                 verbose += "->tron";
                 result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
             }
-            if (result == null && tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase))
+            bool usarCredid = tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase);
+            if (result == null && usarCredid)
             {
                 verbose += "->credid";
                 result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType);
+            }
+            else if (result != null && usarCredid && Incompleto(result))
+            {
+                verbose += "->credid(completar)";
+                Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType));
             }
             if (result == null)
             {
@@ -126,6 +132,66 @@ namespace Architect.API.Insurance.Controllers
                 result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
             }
             return Ok(result);
+        }
+
+        private static bool FechaValida(System.DateTime fecha)
+        {
+            return fecha.Year > 1900;
+        }
+
+        private static bool EstadoCivilValido(int estado)
+        {
+            return estado >= 1 && estado <= 4 || estado == 6 || estado == 7;
+        }
+
+        private static bool UbicacionValida(Contracts.Policy.Insured persona)
+        {
+            return persona.Province > 0 && persona.Canton > 0 && persona.District > 0;
+        }
+
+        private static bool Incompleto(Contracts.Policy.Insured persona)
+        {
+            return !FechaValida(persona.BirthDate) || (persona.Gender != 1 && persona.Gender != 2) || !EstadoCivilValido(persona.CivilStatus) ||
+                   !UbicacionValida(persona) || persona.PhoneNumber.IsEmpty() || persona.PrimaryEmailAddress.IsEmpty() || persona.AddressDetail.IsEmpty();
+        }
+
+        private static void Completar(Contracts.Policy.Insured persona, Contracts.Policy.Insured otra)
+        {
+            if (otra == null)
+            {
+                return;
+            }
+            if (!FechaValida(persona.BirthDate) && FechaValida(otra.BirthDate))
+            {
+                persona.BirthDate = otra.BirthDate;
+            }
+            if (persona.Gender != 1 && persona.Gender != 2 && (otra.Gender == 1 || otra.Gender == 2))
+            {
+                persona.Gender = otra.Gender;
+            }
+            if (!EstadoCivilValido(persona.CivilStatus) && EstadoCivilValido(otra.CivilStatus))
+            {
+                persona.CivilStatus = otra.CivilStatus;
+            }
+            if (!UbicacionValida(persona) && UbicacionValida(otra))
+            {
+                persona.Province = otra.Province;
+                persona.Canton = otra.Canton;
+                persona.District = otra.District;
+            }
+            if (persona.PhoneNumber.IsEmpty() && otra.PhoneNumber.IsNotEmpty())
+            {
+                persona.PhoneNumber = otra.PhoneNumber;
+                persona.PhoneType = otra.PhoneType;
+            }
+            if (persona.PrimaryEmailAddress.IsEmpty() && otra.PrimaryEmailAddress.IsNotEmpty())
+            {
+                persona.PrimaryEmailAddress = otra.PrimaryEmailAddress;
+            }
+            if (persona.AddressDetail.IsEmpty() && otra.AddressDetail.IsNotEmpty())
+            {
+                persona.AddressDetail = otra.AddressDetail;
+            }
         }
 
 
