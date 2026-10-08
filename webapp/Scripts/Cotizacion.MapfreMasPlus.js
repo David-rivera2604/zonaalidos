@@ -1257,6 +1257,9 @@ app.CotizacionMapfreMasPlus = (function () {
                 $(`${selector} option:contains('${textValue}')`).remove();
                 app.ui.DropDownDisabled(selector, false, false);
                 app.ui.SetDropDownNumericValue(selector, "1");
+                let rdButton = "MCA_BANCA_DESARROLLO";
+                app.ui.SetRadioNumericValue(rdButton, 2);
+                $(`input[name="${rdButton}"]`).prop("disabled", true);
 
             }
         }
