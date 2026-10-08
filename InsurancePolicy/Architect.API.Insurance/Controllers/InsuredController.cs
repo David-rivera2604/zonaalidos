@@ -60,15 +60,12 @@ namespace Architect.API.Insurance.Controllers
                 result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
             }
             bool usarCredid = tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase);
+            bool credidConsultado = false;
             if (result == null && usarCredid)
             {
                 verbose += "->credid";
+                credidConsultado = true;
                 result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType);
-            }
-            else if (result != null && usarCredid && Incompleto(result))
-            {
-                verbose += "->credid(completar)";
-                Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType));
             }
             if (result == null)
             {
@@ -125,6 +122,25 @@ namespace Architect.API.Insurance.Controllers
             //        Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
             //    }
             //}
+
+            if (result != null && usarCredid && Incompleto(result))
+            {
+                if (!credidConsultado)
+                {
+                    verbose += "->credid(completar)";
+                    Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType));
+                }
+                if (Incompleto(result) && result.Source != "INS")
+                {
+                    verbose += "->ins(completar)";
+                    Completar(result, await Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id.DocumentNumber(docType.ToString()), Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.DocTypeConvert(docType)));
+                }
+                if (Incompleto(result) && result.Source != "Padron" && (docType == 1 || docType == 0))
+                {
+                    verbose += "->padron(completar)";
+                    Completar(result, await Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id));
+                }
+            }
 
             if (result != null)
             {
