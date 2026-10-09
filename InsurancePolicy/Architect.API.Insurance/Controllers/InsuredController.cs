@@ -28,7 +28,7 @@ namespace Architect.API.Insurance.Controllers
         [HttpGet]
         [Route("{id}")]
         [ResponseType(typeof(Contracts.Policy.Insured))]
-        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1, string source = null)
+        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
             Contracts.Policy.Insured result = null;
@@ -38,11 +38,12 @@ namespace Architect.API.Insurance.Controllers
             {
                 return BadRequest("Debe indicar la identificación");
             }
-            bool usarCredid = tokenInfo.UserId > 0 && string.Equals(source, "credid", System.StringComparison.OrdinalIgnoreCase);
-            if (usarCredid)
+
+            verbose += "->tron";
+            result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+
+            if (tokenInfo.UserId > 0)
             {
-                verbose += "->tron";
-                result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
                 if (result == null)
                 {
                     verbose += "->credid";
@@ -54,12 +55,12 @@ namespace Architect.API.Insurance.Controllers
                     Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType));
                 }
             }
+
             if (result == null && tokenInfo.CompanyId == 11)   //Sur Química
             {
                 verbose += "->thirdparty";
                 result = await Architect.Extend.Integrations.Aliados.Consultas.ThirdParty(id);
             }
-
             if (result == null)
             {
                 verbose += "->Aliados";
@@ -69,11 +70,6 @@ namespace Architect.API.Insurance.Controllers
             {
                 verbose += "->coope";
                 result = Architect.Extend.Integrations.Coope.Consultas.ClientePorIdentificacion(id);
-            }
-            if (result == null && !usarCredid)
-            {
-                verbose += "->tron";
-                result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
             }
             if (result == null)
             {
@@ -131,24 +127,14 @@ namespace Architect.API.Insurance.Controllers
             //    }
             //}
 
-            if (result != null && usarCredid && Incompleto(result))
-            {
-                if (Incompleto(result) && result.Source != "INS")
-                {
-                    verbose += "->ins(completar)";
-                    Completar(result, await Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id.DocumentNumber(docType.ToString()), Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.DocTypeConvert(docType)));
-                }
-                if (Incompleto(result) && result.Source != "Padron" && (docType == 1 || docType == 0))
-                {
-                    verbose += "->padron(completar)";
-                    Completar(result, await Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id));
-                }
-            }
-
             if (result != null)
             {
-                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado"), "integrations");
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado " + result.Source), "integrations");
                 result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
+            }
+            else
+            {
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
             }
             return Ok(result);
         }

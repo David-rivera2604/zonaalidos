@@ -1201,7 +1201,7 @@ app.EmisionViajero = (function () {
     }
 
     function terceros_controls_Events() {
-        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack, 'credid');
+        app.ui.DocumentNumberHandler('#DocumentNumber', terceros_documentNumberCallBack, terceros_documentTypeCallBack);
 
         $('#tipodetercero').change(function () {
 

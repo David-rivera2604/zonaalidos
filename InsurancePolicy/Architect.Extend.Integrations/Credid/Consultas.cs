@@ -26,8 +26,13 @@ namespace Architect.Extend.Integrations.Credid
             Architect.API.Insurance.Contracts.Policy.Insured result = null;
             string token = Architect.Utilities.Helpers.Settings.StringValue("Credid.Token");
 
-            if (token.IsEmpty() || identificacion.IsEmpty())
+            if (identificacion.IsEmpty())
             {
+                return result;
+            }
+            if (token.IsEmpty())
+            {
+                Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion", "Credid.Token vacio en el Web.config, no se consulta", "integrations");
                 return result;
             }
 
@@ -58,6 +63,11 @@ namespace Architect.Extend.Integrations.Credid
                             using (JsonTextReader reader = new JsonTextReader(new StringReader(body)) { DateParseHandling = DateParseHandling.None })
                             {
                                 result = Convertir(JObject.Load(reader), cedula, docType);
+                            }
+                            if (result == null)
+                            {
+                                Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion",
+                                                         string.Format("Identificación '{0}' sin datos de persona: {1}", cedula, body.Length > 2000 ? body.Substring(0, 2000) : body), "integrations");
                             }
                         }
                     }

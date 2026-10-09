@@ -832,7 +832,7 @@ app.ui = (function () {
                 callbackDocumentType(value);
             }
         },
-        DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocType, source) {
+        DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocType) {
             $(documentNumberElement).formatter({
                 pattern: '',
                 persistent: false
@@ -858,9 +858,6 @@ app.ui = (function () {
 
                         } else {
                             apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
-                        }
-                        if (source) {
-                            apiUrl += '&source=' + encodeURIComponent(source);
                         }
 
                         app.core.Get(apiUrl, undefined, undefined).done(function (data, textStatus, jqXHR) {
