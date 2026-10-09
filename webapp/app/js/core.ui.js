@@ -832,6 +832,48 @@ app.ui = (function () {
                 callbackDocumentType(value);
             }
         },
+        LlenarDatosTercero: function (data) {
+            let conFecha = $('#fechadenacimiento_group').data('DateTimePicker') !== undefined;
+            let seleccionar = function (selector, patron) {
+                let opcion = $(selector + ' option').filter(function () { return patron.test($(this).text()); }).first();
+                if (opcion.length)
+                    $(selector).val(opcion.val());
+            };
+
+            $('#nombre, #apellido1, #apellido2, #PhoneNumber, #correoelectronico, #numerodetelefono, #otrasenas').val('');
+            $('#tercerosMca_sexo, #estadoCivil, #TProvincia').val('');
+            $('#TCanton, #TDistrito').children().remove();
+            if (conFecha)
+                app.ui.SetDateValue('#fechadenacimiento', null);
+            if (data == null)
+                return;
+
+            $('#nombre').val(((data.FirstName || '') + ' ' + (data.MiddleName || '')).trim());
+            $('#apellido1').val(data.LastName || '');
+            $('#apellido2').val(data.SecondLastName || '');
+            $('#PhoneNumber, #numerodetelefono').val(data.PhoneNumber || '');
+            $('#correoelectronico').val(data.PrimaryEmailAddress || '');
+            $('#otrasenas').val(data.AddressDetail || '');
+
+            if (conFecha && data.BirthDate && moment(data.BirthDate).year() > 1900)
+                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+
+            if (data.Gender == 1)
+                seleccionar('#tercerosMca_sexo', /^\s*masc/i);
+            else if (data.Gender == 2)
+                seleccionar('#tercerosMca_sexo', /^\s*fem/i);
+
+            let estados = { 1: /^\s*casad/i, 2: /^\s*divorc/i, 3: /^\s*solter/i, 4: /^\s*viud/i, 6: /uni[oó]n|libre|acompa/i, 7: /uni[oó]n|libre|acompa/i };
+            if (estados[data.CivilStatus])
+                seleccionar('#estadoCivil', estados[data.CivilStatus]);
+
+            if (data.Province > 0) {
+                $('#TProvincia').val(data.Province);
+                app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton > 0 ? data.Canton : null, false, null, 'cod_pais=CRI:cod_estado=');
+                if (data.Canton > 0)
+                    app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District > 0 ? data.District : null, false, null, 'cod_pais=CRI:cod_prov=');
+            }
+        },
         DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocType) {
             $(documentNumberElement).formatter({
                 pattern: '',
@@ -860,7 +902,7 @@ app.ui = (function () {
                             apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
                         }
 
-                        app.core.Get(apiUrl, undefined, undefined).done(function (data, textStatus, jqXHR) {
+                        app.core.Get(apiUrl, undefined, undefined, !!localStorage.getItem('Token')).done(function (data, textStatus, jqXHR) {
                             if (data != null && data.FirstName !== null) {
                                 if (data.MiddleName === null) data.MiddleName = '';
                                 if (data.LastName === null) data.LastName = '';

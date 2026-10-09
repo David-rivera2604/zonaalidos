@@ -1141,43 +1141,8 @@ app.EmisionViajero = (function () {
 
     };
 
-    function LimpiarDatosTercero() {
-        $('#nombre, #apellido1, #apellido2, #PhoneNumber, #correoelectronico, #numerodetelefono, #otrasenas').val('');
-        app.ui.SetDateValue('#fechadenacimiento', null);
-        $('#tercerosMca_sexo, #estadoCivil, #TProvincia').val('');
-        $('#TCanton, #TDistrito').children().remove();
-    }
-
     function terceros_documentNumberCallBack(data) {
-        LimpiarDatosTercero();
-        if (data != null) {
-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
-            $('#apellido1').val(data.LastName);
-            $('#apellido2').val(data.SecondLastName);
-            $('#PhoneNumber').val(data.PhoneNumber);
-            if (data.BirthDate && moment(data.BirthDate).year() > 1900) {
-                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
-            }
-            if (data.Gender == 1 || data.Gender == 2)
-                $('#tercerosMca_sexo').val(data.Gender == 2 ? '0' : '1');
-            $('#correoelectronico').val(data.PrimaryEmailAddress);
-            $('#numerodetelefono').val(data.PhoneNumber);
-
-            let estadoCivil = { 1: 'C', 2: 'D', 3: 'S', 4: 'V', 6: 'CL', 7: 'CL' }[data.CivilStatus];
-            if (estadoCivil)
-                $('#estadoCivil').val(estadoCivil);
-
-            if (data.Province > 0) {
-                $('#TProvincia').val(data.Province);
-                app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton > 0 ? data.Canton : null, false, null, 'cod_pais=CRI:cod_estado=');
-                if (data.Canton > 0)
-                    app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District > 0 ? data.District : null, false, null, 'cod_pais=CRI:cod_prov=');
-            }
-
-            //$('#TCanton').val(data.Canton);
-            //$('#TDistrito').val(data.District);
-            $('#otrasenas').val(data.AddressDetail);
-        }
+        app.ui.LlenarDatosTercero(data);
     }
 
     function terceros_documentTypeCallBack(data) {
