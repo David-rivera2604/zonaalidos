@@ -21,7 +21,7 @@ namespace Architect.Extend.Integrations.Credid
             return new HttpClient() { Timeout = TimeSpan.FromSeconds(Architect.Utilities.Helpers.Settings.IntegerValue("Credid.TimeoutSeconds", 10)) };
         });
 
-        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion, int docType = 1)
+        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion, int docType = 1, string idUsuario = null, string cedUsuario = null, string division = null)
         {
             Architect.API.Insurance.Contracts.Policy.Insured result = null;
             string token = Architect.Utilities.Helpers.Settings.StringValue("Credid.Token");
@@ -45,6 +45,18 @@ namespace Architect.Extend.Integrations.Credid
             try
             {
                 string url = Architect.Utilities.Helpers.Settings.StringValue("Credid.Url", "https://ws.credid.net/ws/api/reporte") + "?cedula=" + Uri.EscapeDataString(cedula);
+                if (idUsuario.IsNotEmpty())
+                {
+                    url += "&idUsuario=" + Uri.EscapeDataString(idUsuario);
+                }
+                if (cedUsuario.IsNotEmpty())
+                {
+                    url += "&cedUsuario=" + Uri.EscapeDataString(cedUsuario);
+                }
+                if (division.IsNotEmpty())
+                {
+                    url += "&division=" + Uri.EscapeDataString(division);
+                }
                 using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
                     request.Headers.TryAddWithoutValidation("authorization", token);

@@ -48,12 +48,12 @@ namespace Architect.API.Insurance.Controllers
                 if (result == null)
                 {
                     verbose += "->credid";
-                    result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType);
+                    result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
                 }
                 else if (Incompleto(result))
                 {
                     verbose += "->credid(completar)";
-                    Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType));
+                    Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId));
                 }
             }
 
