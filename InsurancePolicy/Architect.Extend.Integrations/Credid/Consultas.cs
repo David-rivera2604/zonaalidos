@@ -72,9 +72,14 @@ namespace Architect.Extend.Integrations.Credid
                         string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                         if (body.IsNotEmpty())
                         {
+                            JToken respuesta;
                             using (JsonTextReader reader = new JsonTextReader(new StringReader(body)) { DateParseHandling = DateParseHandling.None })
                             {
-                                result = Convertir(JObject.Load(reader), cedula, docType);
+                                respuesta = JToken.ReadFrom(reader);
+                            }
+                            if (respuesta is JObject)
+                            {
+                                result = Convertir((JObject)respuesta, cedula, docType);
                             }
                             if (result == null)
                             {
