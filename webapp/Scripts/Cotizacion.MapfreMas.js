@@ -1472,9 +1472,25 @@ app.CotizacionMapfreMas = (function () {
                 toastr.warning('La cobertura 1060 solo aplica para vehículos eléctricos.');
                 return false;
             }
-        }
-        return true;
 
+           
+        }
+
+        // Validación 3020 vs 3017
+        const existe3017 = coberturasSeleccionadas.some(x => x.codigo == 3017);
+        const existe3020 = coberturasSeleccionadas.some(x => x.codigo == 3020);
+
+        if (row.codigo == 3020 && existe3017) {
+            toastr.warning('No se puede seleccionar la cobertura 3020 cuando la 3017 ya está marcada.');
+            return false;
+        }
+
+        if (row.codigo == 3017 && existe3020) {
+            toastr.warning('No se puede seleccionar la cobertura 3017 cuando la 3020 ya está marcada.');
+            return false;
+        }
+
+        return true;
     }
 
     function LimpiarCoberturasPorCambioCombustible() {
