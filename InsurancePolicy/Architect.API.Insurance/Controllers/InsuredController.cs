@@ -40,6 +40,20 @@ namespace Architect.API.Insurance.Controllers
                 return BadRequest("Debe indicar la identificación");
             }
 
+            if (Architect.Utilities.Helpers.Settings.BoolValue("Credid.SoloCredid"))
+            {
+                if (tokenInfo.UserId > 0)
+                {
+                    result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
+                }
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("->solo credid Id={0} {1}", id, result != null ? "encontrado" : "no encontrado"), "integrations");
+                if (result != null)
+                {
+                    result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
+                }
+                return Ok(result);
+            }
+
             verbose += "->tron";
             result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
 
