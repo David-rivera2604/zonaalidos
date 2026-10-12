@@ -832,6 +832,15 @@ app.ui = (function () {
                 callbackDocumentType(value);
             }
         },
+        MensajeCompleto: function (titulo, mensaje) {
+            $('#mfMensajeCompleto').remove();
+            let capa = $('<div id="mfMensajeCompleto"></div>').css({ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0, zIndex: 20000, background: 'rgba(0,0,0,.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' });
+            let caja = $('<div></div>').css({ background: '#fff', borderRadius: '12px', maxWidth: '760px', width: '100%', padding: '28px', boxShadow: '0 20px 50px rgba(0,0,0,.4)' });
+            caja.append($('<h3></h3>').text(titulo).css({ marginTop: 0, color: '#c4161c', fontWeight: 700 }));
+            caja.append($('<pre></pre>').text(mensaje).css({ whiteSpace: 'pre-wrap', wordBreak: 'break-word', fontSize: '15px', background: '#f6f6f6', padding: '14px', borderRadius: '8px', maxHeight: '60vh', overflow: 'auto' }));
+            caja.append($('<button type="button" class="btn btn-primary">Cerrar</button>').on('click', function () { capa.remove(); }));
+            $('body').append(capa.append(caja));
+        },
         LlenarDatosTercero: function (data) {
             let conFecha = $('#fechadenacimiento_group').data('DateTimePicker') !== undefined;
             let seleccionar = function (selector, patron) {
@@ -911,6 +920,10 @@ app.ui = (function () {
                                 data = null;
                             }
                             if (callbackDone) callbackDone(data);
+                        }).fail(function (jqXHR) {
+                            let mensaje = jqXHR.responseJSON && jqXHR.responseJSON.Message;
+                            if (jqXHR.status === 400 && mensaje && mensaje.indexOf('Prueba de Credid') === 0)
+                                app.ui.MensajeCompleto('Respuesta de Credid', mensaje);
                         }).always(function () {
                             $(documentNumberElement).removeClass('loading');
                         });
