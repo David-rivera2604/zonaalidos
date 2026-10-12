@@ -21,24 +21,38 @@ namespace Architect.Extend.Integrations.Credid
             return new HttpClient() { Timeout = TimeSpan.FromSeconds(Architect.Utilities.Helpers.Settings.IntegerValue("Credid.TimeoutSeconds", 10)) };
         });
 
+        public class Respuesta
+        {
+            public Architect.API.Insurance.Contracts.Policy.Insured Persona { get; set; }
+            public string Mensaje { get; set; }
+        }
+
         public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion, int docType = 1, string idUsuario = null, string cedUsuario = null, string division = null)
         {
-            Architect.API.Insurance.Contracts.Policy.Insured result = null;
+            return (await Consultar(identificacion, docType, idUsuario, cedUsuario, division).ConfigureAwait(false)).Persona;
+        }
+
+        public async static Task<Respuesta> Consultar(string identificacion, int docType = 1, string idUsuario = null, string cedUsuario = null, string division = null)
+        {
+            Respuesta result = new Respuesta();
             string token = Architect.Utilities.Helpers.Settings.StringValue("Credid.Token");
 
             if (identificacion.IsEmpty())
             {
+                result.Mensaje = "No se indicó la identificación";
                 return result;
             }
             if (token.IsEmpty())
             {
-                Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion", "Credid.Token vacio en el Web.config, no se consulta", "integrations");
+                result.Mensaje = "Credid.Token está vacío en el Web.config";
+                Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion", result.Mensaje, "integrations");
                 return result;
             }
 
             string cedula = IdentificacionCredid(identificacion, docType);
             if (cedula.IsEmpty())
             {
+                result.Mensaje = "La identificación no es válida para Credid";
                 return result;
             }
 
@@ -62,14 +76,16 @@ namespace Architect.Extend.Integrations.Credid
                     request.Headers.TryAddWithoutValidation("authorization", token);
                     using (HttpResponseMessage response = await Client.Value.SendAsync(request).ConfigureAwait(false))
                     {
+                        string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false) ?? string.Empty;
+                        string corto = body.Length > 500 ? body.Substring(0, 500) : body;
+
                         if (!response.IsSuccessStatusCode)
                         {
-                            Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion",
-                                                     string.Format("Identificación '{0}' respondió {1}", cedula, (int)response.StatusCode), "integrations");
+                            result.Mensaje = string.Format("Credid respondió HTTP {0}: {1}", (int)response.StatusCode, corto);
+                            Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion", string.Format("Identificación '{0}' {1}", cedula, result.Mensaje), "integrations");
                             return result;
                         }
 
-                        string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                         if (body.IsNotEmpty())
                         {
                             JToken respuesta;
@@ -79,19 +95,21 @@ namespace Architect.Extend.Integrations.Credid
                             }
                             if (respuesta is JObject)
                             {
-                                result = Convertir((JObject)respuesta, cedula, docType);
+                                result.Persona = Convertir((JObject)respuesta, cedula, docType);
                             }
-                            if (result == null)
-                            {
-                                Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion",
-                                                         string.Format("Identificación '{0}' sin datos de persona: {1}", cedula, body.Length > 2000 ? body.Substring(0, 2000) : body), "integrations");
-                            }
+                        }
+                        if (result.Persona == null)
+                        {
+                            result.Mensaje = "Credid respondió sin datos de persona: " + (corto.IsEmpty() ? "(vacío)" : corto);
+                            Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion",
+                                                     string.Format("Identificación '{0}' sin datos de persona: {1}", cedula, body.Length > 2000 ? body.Substring(0, 2000) : body), "integrations");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                result.Mensaje = "No se pudo consultar Credid: " + ex.Message;
                 Utilities.Log.ErrorLog("Credid.PersonaPorIdentificacion",
                                        string.Format("Falla al tratar de consultar a identificación '{0}'", cedula),
                                        ex, "integrations");

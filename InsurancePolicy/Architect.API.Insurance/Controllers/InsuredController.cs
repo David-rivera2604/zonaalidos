@@ -42,15 +42,18 @@ namespace Architect.API.Insurance.Controllers
 
             if (Architect.Utilities.Helpers.Settings.BoolValue("Credid.SoloCredid"))
             {
-                if (tokenInfo.UserId > 0)
+                if (tokenInfo.UserId <= 0)
                 {
-                    result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
+                    return BadRequest("Prueba de Credid: debe iniciar sesión para consultar Credid");
                 }
-                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("->solo credid Id={0} {1}", id, result != null ? "encontrado" : "no encontrado"), "integrations");
-                if (result != null)
+                Architect.Extend.Integrations.Credid.Consultas.Respuesta credid = await Architect.Extend.Integrations.Credid.Consultas.Consultar(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("->solo credid Id={0} {1}", id, credid.Persona != null ? "encontrado" : "no encontrado: " + credid.Mensaje), "integrations");
+                if (credid.Persona == null)
                 {
-                    result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
+                    return BadRequest("Prueba de Credid: " + credid.Mensaje);
                 }
+                result = credid.Persona;
+                result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
                 return Ok(result);
             }
 
