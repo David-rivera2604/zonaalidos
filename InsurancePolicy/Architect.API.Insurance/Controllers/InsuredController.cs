@@ -40,34 +40,13 @@ namespace Architect.API.Insurance.Controllers
                 return BadRequest("Debe indicar la identificación");
             }
 
-            if (Architect.Utilities.Helpers.Settings.BoolValue("Credid.SoloCredid"))
-            {
-                Architect.Extend.Integrations.Credid.Consultas.Respuesta credid = await Architect.Extend.Integrations.Credid.Consultas.Consultar(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
-                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("->solo credid Id={0} {1}", id, credid.Persona != null ? "encontrado" : "no encontrado: " + credid.Mensaje), "integrations");
-                if (credid.Persona == null)
-                {
-                    return BadRequest("Prueba de Credid: " + credid.Mensaje);
-                }
-                result = credid.Persona;
-                result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
-                return Ok(result);
-            }
-
             verbose += "->tron";
             result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
 
-            if (tokenInfo.UserId > 0)
+            if (result == null && tokenInfo.UserId > 0)
             {
-                if (result == null)
-                {
-                    verbose += "->credid";
-                    result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
-                }
-                else if (Incompleto(result))
-                {
-                    verbose += "->credid(completar)";
-                    Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId));
-                }
+                verbose += "->credid";
+                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
             }
 
             if (result == null && tokenInfo.CompanyId == 11)   //Sur Química
@@ -151,66 +130,6 @@ namespace Architect.API.Insurance.Controllers
                 Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
             }
             return Ok(result);
-        }
-
-        private static bool FechaValida(System.DateTime fecha)
-        {
-            return fecha.Year > 1900;
-        }
-
-        private static bool EstadoCivilValido(int estado)
-        {
-            return estado >= 1 && estado <= 4 || estado == 6 || estado == 7;
-        }
-
-        private static bool UbicacionValida(Contracts.Policy.Insured persona)
-        {
-            return persona.Province > 0 && persona.Canton > 0 && persona.District > 0;
-        }
-
-        private static bool Incompleto(Contracts.Policy.Insured persona)
-        {
-            return !FechaValida(persona.BirthDate) || (persona.Gender != 1 && persona.Gender != 2) || !EstadoCivilValido(persona.CivilStatus) ||
-                   !UbicacionValida(persona) || persona.PhoneNumber.IsEmpty() || persona.PrimaryEmailAddress.IsEmpty() || persona.AddressDetail.IsEmpty();
-        }
-
-        private static void Completar(Contracts.Policy.Insured persona, Contracts.Policy.Insured otra)
-        {
-            if (otra == null)
-            {
-                return;
-            }
-            if (!FechaValida(persona.BirthDate) && FechaValida(otra.BirthDate))
-            {
-                persona.BirthDate = otra.BirthDate;
-            }
-            if (persona.Gender != 1 && persona.Gender != 2 && (otra.Gender == 1 || otra.Gender == 2))
-            {
-                persona.Gender = otra.Gender;
-            }
-            if (!EstadoCivilValido(persona.CivilStatus) && EstadoCivilValido(otra.CivilStatus))
-            {
-                persona.CivilStatus = otra.CivilStatus;
-            }
-            if (!UbicacionValida(persona) && UbicacionValida(otra))
-            {
-                persona.Province = otra.Province;
-                persona.Canton = otra.Canton;
-                persona.District = otra.District;
-            }
-            if (persona.PhoneNumber.IsEmpty() && otra.PhoneNumber.IsNotEmpty())
-            {
-                persona.PhoneNumber = otra.PhoneNumber;
-                persona.PhoneType = otra.PhoneType;
-            }
-            if (persona.PrimaryEmailAddress.IsEmpty() && otra.PrimaryEmailAddress.IsNotEmpty())
-            {
-                persona.PrimaryEmailAddress = otra.PrimaryEmailAddress;
-            }
-            if (persona.AddressDetail.IsEmpty() && otra.AddressDetail.IsNotEmpty())
-            {
-                persona.AddressDetail = otra.AddressDetail;
-            }
         }
 
 
