@@ -43,12 +43,6 @@ namespace Architect.API.Insurance.Controllers
             verbose += "->tron";
             result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
 
-            if (result == null && tokenInfo.UserId > 0)
-            {
-                verbose += "->credid";
-                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
-            }
-
             if (result == null && tokenInfo.CompanyId == 11)   //Sur Química
             {
                 verbose += "->thirdparty";
@@ -75,6 +69,12 @@ namespace Architect.API.Insurance.Controllers
                 {
                     result = result2;
                 }
+            }
+
+            if (result == null && tokenInfo.UserId > 0)
+            {
+                verbose += "->credid";
+                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
             }
 
             //if (result == null)
