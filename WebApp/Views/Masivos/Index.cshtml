@@ -1,0 +1,167 @@
+@model IEnumerable<aliados.Models.Masivos.PlantillaDocumentoViewModel>
+@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+@Styles.Render("~/Content/cssCRUD")
+
+<div class="row">
+    <div id="mainBlock" class="col-md-12 p-0">
+        <div class="ibox">
+            <div class="ibox-title p-0">
+                <div class="Title_Prin py-2">
+                    <div class="title_design T1">
+                        <h5><i class="fa fa-upload"></i> <span id="PageTitle">Masivos</span></h5><br>
+                        <small class="m-l-sm"><span id="PageSubTitle"> Carga de plantillas CSV.</span></small>
+                    </div>
+                    <div class="title_partner T2">
+                        <p class="text-muted small" id="MasivosIntroText">
+                            Gesti&oacute;n de plantillas para carga masiva y procesamiento de registros.
+                        </p>
+                        <h4 class="text-muted" style="color: #c31f09" id="MasivosRequiredFieldsText">
+                            Los campos marcados con asterisco rojo son obligatorios.
+                        </h4>
+                    </div>
+                    <div class="title_partner T3 text-center">
+                        <a id="MasivosLinkText" href="#" onclick="return false;">Plantillas de carga</a>
+                        <p id="MasivosSloganText" class="mt-2 text-center">
+                            Seleccione el ramo, cargue el archivo CSV y procese los registros pendientes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-content box_design">
+                <div class="sk-spinner sk-spinner-wave">
+                    <div class="sk-rect1"></div>
+                    <div class="sk-rect2"></div>
+                    <div class="sk-rect3"></div>
+                    <div class="sk-rect4"></div>
+                    <div class="sk-rect5"></div>
+                </div>
+
+                <div id="generalNotify"></div>
+
+                <div class="form-row">
+                    <div class="col-md-12 m-2">
+                        <div id="MasivosEdt" class="animated fadeInRight">
+                            <form id="MasivosEdtForm" class="form-horizontal" data-toggle="validator">
+                                <fieldset>
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <h4><i class="fa fa-folder-open"></i> <span id="MasivosCargaTitle">Datos de Carga</span></h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class="col-sm-3 col-md-3">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="cod_ramo">C&oacute;digo de ramo<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span></label>
+                                                        <select id="cod_ramo" name="cod_ramo" class="form-control">
+                                                            <option value="">Seleccione</option>
+                                                            <option value="302">302 - Emisi&oacute;n Masiva MAPFREMas</option>
+                                                            <option value="207">207 - Emisi&oacute;n Masiva Todo Riesgo Material</option>
+                                                            <option value="201">201 - Emisi&oacute;n Masiva Hogar Acreedor</option>
+                                                            <option value="202">202 - Emisi&oacute;n Masiva Multirriesgo Acreedor</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-5 col-md-5">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="archivoCsv">Archivo CSV<span class="required-mark" title="Este campo debe ser llenado de forma obligatoria">*</span></label>
+                                                        <div class="input-group">
+                                                            <input id="archivoCsv" name="archivoCsv" type="text" class="form-control" placeholder="Seleccione un archivo CSV" readonly>
+                                                            <div class="input-group-append">
+                                                                <span class="btn btn-default fileinput-button" title="Permite seleccionar el archivo CSV a cargar">
+                                                                    <span>Examinar...</span>
+                                                                    <input id="fileUpload" type="file" accept=".csv,text/csv">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4 col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="txt_archivo_carga">Nombre del archivo</label>
+                                                        <input type="text" id="txt_archivo_carga" name="txt_archivo_carga" class="form-control" maxlength="255" readonly />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 col-md-12 text-right" style="margin-top: 8px;">
+                                                    <button id="btnGuia" type="button" class="btn btn-info">
+                                                        <i class="fa fa-question-circle"></i> Gu&iacute;a
+                                                    </button>
+                                                    <button id="btnVerPlantillas" type="button" class="btn btn-white">
+                                                        <i class="fa fa-list"></i> Ver plantillas
+                                                    </button>
+                                                    <button id="btnCargarCsv" type="button" class="btn btn-primary">
+                                                        <i class="fa fa-cloud-upload"></i> Cargar CSV
+                                                    </button>
+                                                    <button id="btnRefrescar" type="button" class="btn btn-white">
+                                                        <i class="fa fa-refresh"></i> Refrescar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-lg-12">
+                                            <h4><i class="fa fa-table"></i> <span id="MasivosListadoTitle">Cargas registradas</span></h4>
+                                            <div class="hr-line-dashed" style="border-top: 1px solid #e7eaec; margin: 10px 0;"></div>
+                                            <div class="form-row">
+                                                <div class="col-md-12" style="padding-bottom: 20px">
+                                                    <div class="table-responsive">
+                                                        <table id="masivosTbl" class="table table-striped table-bordered" style="font-size: 11px;"></table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_PlantillasModal", Model)
+
+<!-- Modal Guia del Proceso -->
+<div class="modal fade" id="guiaModal" tabindex="-1" role="dialog" aria-labelledby="guiaModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="guiaModalLabel"><i class="fa fa-question-circle"></i> Gu&iacute;a del proceso de carga masiva</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h5><strong>Pasos para realizar una carga masiva:</strong></h5>
+                <ol style="font-size: 14px; line-height: 2.2;">
+                    <li><i class="fa fa-hand-pointer-o text-info"></i> <strong>Seleccione el c&oacute;digo de ramo:</strong> Elija el ramo correspondiente en el desplegable seg&uacute;n el tipo de emisi&oacute;n masiva que desea realizar.</li>
+                    <li><i class="fa fa-file-text-o text-info"></i> <strong>Seleccione el archivo CSV:</strong> Haga clic en <em>Examinar...</em> y escoja el archivo con el formato requerido seg&uacute;n la plantilla del ramo. Puede descargar la plantilla desde el bot&oacute;n <em>Ver plantillas</em>.</li>
+                    <li><i class="fa fa-cloud-upload text-primary"></i> <strong>Cargue el archivo:</strong> Presione el bot&oacute;n <strong>Cargar CSV</strong> para subir el archivo al sistema. La tabla se actualizar&aacute; autom&aacute;ticamente con el registro insertado.</li>
+                    <li><i class="fa fa-gears text-primary"></i> <strong>Procese los registros:</strong> Una vez cargado el archivo, presione <strong>Procesar</strong> para iniciar el procesamiento de los registros contenidos en el CSV.</li>
+                    <li><i class="fa fa-refresh text-success"></i> <strong>Consulte el estado:</strong> Use el bot&oacute;n <strong>Refrescar</strong> para actualizar la tabla y verificar el estado de la carga en cualquier momento.</li>
+                </ol>
+                <div class="alert alert-info" style="margin-top: 15px;">
+                    <i class="fa fa-info-circle"></i> <strong>Importante:</strong> Aseg&uacute;rese de que el archivo CSV cumpla con el formato de la plantilla correspondiente al ramo seleccionado. Los campos y el orden de columnas deben coincidir exactamente con la plantilla.
+                </div>
+                <div class="alert alert-warning">
+                    <i class="fa fa-exclamation-triangle"></i> <strong>Nota:</strong> El proceso puede tardar varios minutos dependiendo de la cantidad de registros. Utilice el bot&oacute;n <em>Refrescar</em> para consultar el avance.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jsCRUD")
+    <script src="@Url.Content("~/Scripts/Masivos.js")"></script>
+    <script src="@Url.Content("~/Scripts/Masivos.Api.js")"></script>
+    <script src="@Url.Content("~/Scripts/Masivos.Ui.js")"></script>
+}

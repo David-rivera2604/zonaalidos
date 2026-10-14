@@ -208,7 +208,7 @@ namespace Architect.API.Tron.Business.Cotizacion
 
                 if (cod_plan_auto == 50 || cod_plan_auto == 51)
                 {
-                    cod_cobIncludeFilter += ",3016";
+                    cod_cobIncludeFilter += ",3016,3020";
                 }
 
                 if (IsPlan(cod_plan_auto, new int[] { 34, 35, 36 }))

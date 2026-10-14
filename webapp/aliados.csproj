@@ -1300,6 +1300,9 @@
     <Content Include="Scripts\Extend.CobrosRechazados.js" />
     <Content Include="Scripts\Form.Ext.ExcludedPolicies.js" />
     <Content Include="Scripts\Security\Ext.UserMembers.js" />
+    <Content Include="Scripts\Masivos.Api.js" />
+    <Content Include="Scripts\Masivos.js" />
+    <Content Include="Scripts\Masivos.Ui.js" />
     <Content Include="Scripts\Sugese.Send.js" />
     <Content Include="Scripts\Sugese.Generador.js" />
     <Content Include="Scripts\Sugese.Manager.js" />
@@ -1457,6 +1460,7 @@
     <Compile Include="Controllers\EntraIDController.cs" />
     <Compile Include="Controllers\FunerarioController.cs" />
     <Compile Include="Controllers\HogatTotalController.cs" />
+    <Compile Include="Controllers\MasivosController.cs" />
     <Compile Include="Controllers\MultirriesgoController.cs" />
     <Compile Include="Controllers\OktaController.cs" />
     <Compile Include="Controllers\PurdyController.cs" />
@@ -1491,6 +1495,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Masivos\PlantillaDocumentoViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1810,7 +1815,12 @@
     <Content Include="locales\Security\userrolemember.en.json" />
     <Content Include="locales\viewer\UserMembers.Forms.en.json" />
     <Content Include="locales\Common\Common.es.json" />
+    <Content Include="Masivos\Plantillas\.gitkeep" />
     <Content Include="app.config" />
+    <Content Include="Masivos\Plantillas\Plantilla_Emision_Masiva_MAPFREMas_302.xls" />
+    <Content Include="Masivos\Plantillas\Plantilla_Emision_Masiva_Todo_RiesgoMaterial_207.xls" />
+    <Content Include="Masivos\Plantillas\PlantillaEmisionMasivaHogarAcreedor_201.xls" />
+    <Content Include="Masivos\Plantillas\PlantillaEmisionMasivaMultirriesgoAcreedor_202.xls" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -2184,6 +2194,8 @@
     <Content Include="Views\Acceso\aliados.cshtml" />
     <Content Include="Views\Acceso\mapfre.cshtml" />
     <Content Include="Views\Acceso\purdy.cshtml" />
+    <Content Include="Views\Masivos\Index.cshtml" />
+    <Content Include="Views\Masivos\_PlantillasModal.cshtml" />
     <Content Include="Views\Acceso\Bayer.cshtml" />
     <Content Include="Views\Acceso\Clientes.cshtml" />
     <None Include="Web.Debug.config">
@@ -2200,7 +2212,6 @@
     <Folder Include="assets\jquery-validation\dist\" />
     <Folder Include="files\" />
     <Folder Include="logs\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">
