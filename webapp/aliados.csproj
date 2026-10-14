@@ -1817,6 +1817,10 @@
     <Content Include="locales\Common\Common.es.json" />
     <Content Include="Masivos\Plantillas\.gitkeep" />
     <Content Include="app.config" />
+    <Content Include="Masivos\Plantillas\Plantilla_Emision_Masiva_MAPFREMas_302.xls" />
+    <Content Include="Masivos\Plantillas\Plantilla_Emision_Masiva_Todo_RiesgoMaterial_207.xls" />
+    <Content Include="Masivos\Plantillas\PlantillaEmisionMasivaHogarAcreedor_201.xls" />
+    <Content Include="Masivos\Plantillas\PlantillaEmisionMasivaMultirriesgoAcreedor_202.xls" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>
