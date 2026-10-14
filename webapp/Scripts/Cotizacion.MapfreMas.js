@@ -1477,6 +1477,8 @@ app.CotizacionMapfreMas = (function () {
         }
 
         // Validación 3020 vs 3017
+        var coberturasSeleccionadas = $('#coberturasTbl').bootstrapTable('getSelections');
+
         const existe3017 = coberturasSeleccionadas.some(x => x.codigo == 3017);
         const existe3020 = coberturasSeleccionadas.some(x => x.codigo == 3020);
 
