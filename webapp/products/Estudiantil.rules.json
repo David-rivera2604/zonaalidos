@@ -37,13 +37,15 @@
         {
           "descripcion": "Copia de la cédula de identidad",
           "archivo": "CEDULA.docx",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
 
         {
           "descripcion": "Comprobante de pago",
           "archivo": "Comprobante.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 27
         }
       ]
     },
@@ -53,13 +55,15 @@
         {
           "descripcion": "Copia de la cédula de identidad",
           "archivo": "CEDULA.docx",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
 
         {
           "descripcion": "Comprobante de pago",
           "archivo": "Comprobante.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 27
         }
       ]
     }

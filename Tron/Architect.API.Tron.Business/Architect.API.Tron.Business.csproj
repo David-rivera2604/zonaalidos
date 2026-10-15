@@ -128,6 +128,7 @@
     <Compile Include="Emision\Estudiantil.cs" />
     <Compile Include="Emision\Solicitud.cs" />
     <Compile Include="Emision\Viajero.cs" />
+    <Compile Include="Emision\DocumentosAdjuntos.cs" />
     <Compile Include="Emision\EstudiantilConvertFrom.cs" />
     <Compile Include="Emision\ViajeroConvertFrom.cs" />
     <Compile Include="Emision\EstudiantilConvertTo.cs" />

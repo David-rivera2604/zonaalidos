@@ -1117,6 +1117,9 @@ function oneDrivePick(settings) {
             autoProcessQueue: false,
             maxFilesize: 256,
             parallelUploads: 5,
+            // Opt-in para emisiones con distintos tipos por tarjeta; conserva los consumidores existentes.
+            uploadFilesIndividually: false,
+            singleExpectedFile: false,
             addRemoveLinks: true,
             dictDefaultMessage: "Arrastra archivos aquí o haz clic para seleccionar",
             dictFallbackMessage: "Tu navegador no soporta drag and drop de archivos.",
@@ -1323,6 +1326,7 @@ function oneDrivePick(settings) {
 
                 // === CLICK: Abrir selector de archivos ===
                 $card.on('click.expcard', function (e) {
+                    if ($el.data('fileUploader') && $el.data('fileUploader').readOnly) return;
                     // Solo si no es click en botones de acción
                     if ($(e.target).closest('.edc-action-btn').length > 0) {
                         return;
@@ -1338,6 +1342,10 @@ function oneDrivePick(settings) {
                         return;
                     }
 
+                    if ($el.data('fileUploader').singleExpectedFile && docId && $card.hasClass('has-file')) {
+                        toastr.warning('Elimine primero el archivo del documento requerido antes de cargar otro.');
+                        return;
+                    }
                     // Guardar temporalmente la referencia al documento esperado (si aplica)
                     if (docId !== undefined && docId !== null && docId !== '') {
                         expectedDocIdMap['_lastDocId'] = docId;
@@ -1352,6 +1360,7 @@ function oneDrivePick(settings) {
                     // La forma correcta: usar dz.hiddenFileInput que Dropzone ya tiene
                     if (dz && dz.hiddenFileInput) {
                         console.log('📂 Usando hiddenFileInput de Dropzone');
+                        if ($el.data('fileUploader').singleExpectedFile) dz.hiddenFileInput.multiple = !docId;
                         dz.hiddenFileInput.value = '';
                         dz.hiddenFileInput.click();
                     } else {
@@ -1359,7 +1368,7 @@ function oneDrivePick(settings) {
                         // Fallback: crear un input y simularlo
                         var fileInput = document.createElement('input');
                         fileInput.type = 'file';
-                        fileInput.multiple = true;
+                        fileInput.multiple = !($el.data('fileUploader').singleExpectedFile && docId);
                         fileInput.style.display = 'none';
 
                         fileInput.onchange = function () {
@@ -1411,6 +1420,7 @@ function oneDrivePick(settings) {
 
                 // === DROP: Procesar archivo ===
                 $card.on('drop.expcard', function (e) {
+                    if ($el.data('fileUploader') && $el.data('fileUploader').readOnly) { e.preventDefault(); return; }
                     e.preventDefault();
                     e.stopPropagation();
                     $card.removeClass('dz-drag-hover');
@@ -1419,6 +1429,14 @@ function oneDrivePick(settings) {
                     if (dataTransfer && dataTransfer.files && dataTransfer.files.length > 0) {
                         if (dz) {
                             var files = dataTransfer.files;
+                            if ($el.data('fileUploader').singleExpectedFile && docId && $card.hasClass('has-file')) {
+                                toastr.warning('Elimine primero el archivo del documento requerido antes de cargar otro.');
+                                return;
+                            }
+                            if ($el.data('fileUploader').singleExpectedFile && docId && files.length > 1) {
+                                toastr.warning('Cargue un solo archivo en cada documento requerido. Puede adjuntar varios archivos en carga general.');
+                                return;
+                            }
                             // Marcar docId temporalmente para el siguiente addedfile (si aplica)
                             if (docId !== undefined && docId !== null && docId !== '') {
                                 expectedDocIdMap['_lastDocId'] = docId;
@@ -1462,6 +1480,7 @@ function oneDrivePick(settings) {
 
                 // === BORRAR: Evento para botón de eliminar ===
                 $card.on('click.expcard', '.edc-delete', function (e) {
+                    if ($el.data('fileUploader') && $el.data('fileUploader').readOnly) { e.preventDefault(); return; }
                     e.preventDefault();
                     e.stopPropagation();
 
@@ -1469,6 +1488,8 @@ function oneDrivePick(settings) {
                     var deleteLabel = fileData && fileData.fileName ? fileData.fileName : ('documento_' + docId);
 
                     showUploaderDeleteConfirmation("Si está seguro de querer eliminar el archivo '" + deleteLabel + "' haga clic aquí", function () {
+                        var operationInstance = $el.data('fileUploader');
+                        if (!operationInstance || operationInstance.readOnly) return;
                         var removedFromDropzone = false;
                         var deleteUrl = fileData && fileData.fileId
                             ? app.setting.apipath + 'v1/Common/Attachments/' + fileData.fileId
@@ -1518,6 +1539,7 @@ function oneDrivePick(settings) {
                         }
 
                         if (deleteUrl) {
+                            operationInstance.pendingDeletes++;
                             $('.ibox-content').toggleClass('sk-loading');
                             app.core.Delete(deleteUrl)
                                 .done(function () {
@@ -1529,6 +1551,8 @@ function oneDrivePick(settings) {
                                     removeExpectedFileFromDropzone();
                                 })
                                 .always(function () {
+                                    operationInstance.pendingDeletes--;
+                                    if (operationInstance.getPendingCount() === 0) operationInstance.dz.emit('queuecomplete');
                                     $('.ibox-content').toggleClass('sk-loading');
                                 });
                         } else {
@@ -1573,6 +1597,8 @@ function oneDrivePick(settings) {
             $(document)
                 .off('click' + deleteNs, '.general-upload-result-card .edc-delete')
                 .on('click' + deleteNs, '.general-upload-result-card .edc-delete', function (e) {
+                    var currentInstance = $('#' + elementId).data('fileUploader');
+                    if (currentInstance && currentInstance.readOnly) { e.preventDefault(); return; }
                     e.preventDefault();
                     e.stopPropagation();
 
@@ -1582,6 +1608,8 @@ function oneDrivePick(settings) {
                     var fileName = $card.attr('data-file-name') || storedFileName || 'documento';
 
                     showUploaderDeleteConfirmation("Si está seguro de querer eliminar el adjunto '" + fileName + "' haga clic aquí", function () {
+                        var operationInstance = $('#' + elementId).data('fileUploader');
+                        if (!operationInstance || operationInstance.readOnly) return;
                         var deleteUrl = fileId
                             ? app.setting.apipath + 'v1/Common/Attachments/' + fileId
                             : '';
@@ -1620,6 +1648,7 @@ function oneDrivePick(settings) {
                             }
                         }
                         if (deleteUrl) {
+                            operationInstance.pendingDeletes++;
                             $('.ibox-content').toggleClass('sk-loading');
                             app.core.Delete(deleteUrl)
                                 .done(function () {
@@ -1631,6 +1660,8 @@ function oneDrivePick(settings) {
                                     removeGeneralFileFromDropzone();
                                 })
                                 .always(function () {
+                                    operationInstance.pendingDeletes--;
+                                    if (operationInstance.getPendingCount() === 0) operationInstance.dz.emit('queuecomplete');
                                     $('.ibox-content').toggleClass('sk-loading');
                                 });
                         } else {
@@ -1849,6 +1880,7 @@ function oneDrivePick(settings) {
                     var filesToUpload = [];
                     var lastDoneIndex = 0;
                     var uploadTimer = null;
+                    var uploadInProgress = false;
                     var parentData = null; // Datos del parent para enviar en uploads
                     var tokenData = '';
                     var expectedDocIdMap = {}; // Mapeo temporal de docId para archivos de tarjetas esperadas
@@ -1947,6 +1979,11 @@ function oneDrivePick(settings) {
                             $el.find('.fa-cloud-upload').css('color', '#d81e05');
 
                             self.on('addedfile', function (file) {
+                                var currentInstance = $el.data('fileUploader');
+                                if (currentInstance && currentInstance.readOnly && !file.manuallyAdded) {
+                                    self.removeFile(file);
+                                    return;
+                                }
                                 console.log('📤 Archivo añadido a Dropzone:', file.name, 'expectedDocId:', expectedDocIdMap['_lastDocId']);
 
                                 if (settings.showExpectedDocuments && file && file.previewElement && file.previewElement.parentNode) {
@@ -1981,6 +2018,15 @@ function oneDrivePick(settings) {
                                 expectedDocIdMap['_lastDocType'] = null;
                                 expectedDocIdMap['_lastDocTypeDesc'] = null;
 
+                                if (settings.singleExpectedFile && file.expectedDocId) {
+                                    var alreadyLoaded = responses.some(function (response) { return String(response.expectedDocId) === String(file.expectedDocId); });
+                                    var alreadyQueued = self.files.some(function (other) { return other !== file && String(other.expectedDocId) === String(file.expectedDocId); });
+                                    if (alreadyLoaded || alreadyQueued) {
+                                        self.removeFile(file);
+                                        toastr.warning('Elimine primero el archivo del documento requerido antes de cargar otro.');
+                                        return;
+                                    }
+                                }
                                 filesToUpload.push(file);
                                 pendingUploads++;
 
@@ -1998,8 +2044,10 @@ function oneDrivePick(settings) {
                             });
 
                             function processAllFiles() {
-                                var batch = filesToUpload.slice();
-                                filesToUpload = [];
+                                if (uploadInProgress || filesToUpload.length === 0) return;
+                                // Una petición por archivo evita mezclar metadata y correlacionar nombres repetidos.
+                                var batch = filesToUpload.splice(0, settings.uploadFilesIndividually ? 1 : filesToUpload.length);
+                                uploadInProgress = true;
 
                                 uploadMultipleFiles(batch, function (result) {
                                     var successList = result.success || [];
@@ -2078,7 +2126,9 @@ function oneDrivePick(settings) {
                                         localizedSettings.fail(failedList, batch);
                                     }
 
-                                    checkQueueComplete();
+                                    uploadInProgress = false;
+                                    if (filesToUpload.length > 0) processAllFiles();
+                                    else checkQueueComplete();
                                 }, function (error, failedFiles) {
                                     hasError = true;
 
@@ -2112,7 +2162,9 @@ function oneDrivePick(settings) {
                                     }
 
                                     localizedSettings.fail(error, failedFiles);
-                                    checkQueueComplete();
+                                    uploadInProgress = false;
+                                    if (filesToUpload.length > 0) processAllFiles();
+                                    else checkQueueComplete();
                                 });
                             }
 
@@ -2396,6 +2448,9 @@ function oneDrivePick(settings) {
                     // Crear instancia con referencia al array responses
                     var instance = {
                         dz: dz,
+                        readOnly: false,
+                        pendingDeletes: 0,
+                        singleExpectedFile: settings.singleExpectedFile,
                         elementId: elementId,
                         showExpectedDocuments: settings.showExpectedDocuments === true,
                         showGeneralUploadCard: settings.showGeneralUploadCard !== false,
@@ -2423,16 +2478,16 @@ function oneDrivePick(settings) {
                             tokenData = token;
                         },
                         getPendingCount: function () {
-                            return pendingUploads;
+                            return pendingUploads + instance.pendingDeletes;
                         },
                         promise: function () {
                             var deferred = $.Deferred();
 
-                            if (pendingUploads === 0) {
+                            if (instance.getPendingCount() === 0) {
                                 deferred.resolve(responses);
                             } else {
                                 dz.on('queuecomplete', function () {
-                                    deferred.resolve(responses);
+                                    if (instance.getPendingCount() === 0) deferred.resolve(responses);
                                 });
                             }
 
@@ -2441,6 +2496,7 @@ function oneDrivePick(settings) {
                         clear: function () {
                             responses.length = 0;
                             filesToUpload.length = 0;
+                            uploadInProgress = false;
                             hasError = false;
                             pendingUploads = 0;
                             if (uploadTimer) {
@@ -2625,6 +2681,10 @@ function oneDrivePick(settings) {
                             $oneDriveBtn.off('click').on('click', function (e) {
                                 e.preventDefault();
 
+                                if (instance.readOnly) return;
+                                expectedDocIdMap['_lastDocId'] = null;
+                                expectedDocIdMap['_lastDocType'] = null;
+                                expectedDocIdMap['_lastDocTypeDesc'] = null;
                                 var $btn = $(this);
                                 $btn.prop('disabled', true);
 
@@ -2680,6 +2740,22 @@ function oneDrivePick(settings) {
                             });
                         }
                     }
+                });
+            },
+
+            // Conserva descargas y bloquea nuevas cargas/eliminaciones después de emitir o enviar.
+            readOnly: function (value) {
+                return this.each(function () {
+                    var $el = $(this);
+                    var inst = $el.data('fileUploader');
+                    if (!inst) return;
+                    inst.readOnly = value !== false;
+                    if (inst.readOnly) inst.dz.disable();
+                    else inst.dz.enable();
+                    if (inst.dz.hiddenFileInput) inst.dz.hiddenFileInput.disabled = inst.readOnly;
+                    $('[data-fileuploader-target="' + inst.elementId + '"][data-fileuploader-action="oneDrivePicker"]').prop('disabled', inst.readOnly);
+                    var $container = $el.closest('#expectedDocumentsContainer');
+                    $container.find('.edc-delete, .general-upload-card').toggle(!inst.readOnly);
                 });
             },
 

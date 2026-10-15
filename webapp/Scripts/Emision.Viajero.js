@@ -45,7 +45,7 @@ app.EmisionViajero = (function () {
 
 
                     $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
-                    $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
+                    $('#dropzone').fileUploader('readOnly', true);
 
                     $('#mainBlock').removeClass('col-md-12');
                     $('#mainBlock').addClass('col-md-9');
@@ -112,7 +112,7 @@ app.EmisionViajero = (function () {
         var data = setupData;
 
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
-        data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
+        data.documentosrequeridos = app.EmisionAdjuntos.read($('#dropzone'));
         data.user_txt_motivo_spto = $('#user_txt_motivo_spto').val()
 
         return data;
@@ -140,10 +140,7 @@ app.EmisionViajero = (function () {
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
         else
             $('#tercerosTbl').bootstrapTable('load', {});
-        if (data.documentosrequeridos != null)
-            $('#documentosrequeridosTbl').bootstrapTable('load', data.documentosrequeridos);
-        else
-            $('#documentosrequeridosTbl').bootstrapTable('load', {});
+        app.EmisionAdjuntos.load($('#dropzone'), data.documentosrequeridos, data.presupuesto, 'Viajero');
         if (data.coberturas != null)
             $('#coberturasTbl').bootstrapTable('load', data.coberturas);
         else
@@ -236,6 +233,7 @@ app.EmisionViajero = (function () {
         });
 
         $('#emitir').click(function () {
+            if (!app.EmisionAdjuntos.canSubmit($('#dropzone'))) { event.preventDefault(); return; }
             let others = OtherValidations();
             if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#emitir');
@@ -478,7 +476,6 @@ app.EmisionViajero = (function () {
             showCalculate = false;
         }
         $('#tercerosTbl-error').addClass('d-none');
-        $('#documentosrequeridosTbl-error').addClass('d-none');
     }
 
     function OtherValidations() {
@@ -535,14 +532,9 @@ app.EmisionViajero = (function () {
         }
 
 
-        let grupo = 'F';
-        let documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
-        let lista = documentosrequeridos.filter(function (row) {
-            return (row.DStored === null || row.DStored === '');
-        });
+        let lista = $('#dropzone').fileUploader('pendingExpectedDocuments');
         if (lista.length > 0) {
-            $('#documentosrequeridosTbl-error').html('Debe cargar todos los documentos pendientes');
-            $('#documentosrequeridosTbl-error').removeClass('d-none');
+            app.ui.ShowAlert('quoteNotify', 'alert-danger', 'Debe cargar todos los documentos pendientes');
             result = result + 1;
         }
         return result;
@@ -1225,312 +1217,15 @@ app.EmisionViajero = (function () {
     }
 
     //Documentos Requeridos
-    function documentosrequeridos_table_setup() {
-
-        $('#documentosrequeridosTbl').bootstrapTable({
-            uniqueId: 'documentosrequeridosId',
-            classes: 'table table-bordered table-hover table-index table-in-form',
-            pagination: false,
-            smartDisplay: true,
-            detailView: false,
-            detailFormatter: 'app.ui.GenericDetailFormatter',
-            columns: [
-                {
-                    field: 'DStored',
-                    title: 'Estado',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: function (value, row, index, field) {
-
-                        if (row.DStored === null || row.DStored === '') {
-                            return '<span class="label label-danger">Pendiente</span>';
-                        }
-                        else {
-                            return '<span class="label label-success">Listo</span>';
-                        }
-
-                    },
-                    visible: true,
-                    width: 10,
-                    widthUnit: '%'
-                }, {
-                    field: 'tipo',
-                    title: 'Tipo de documento',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: function (value, row, index, field) {
-                        let result;
-                        if (row.DStored != null && row.DStored != '') {
-                            result = `<span><a href=# onclick="app.ui.Download('${row.DNombre}', ${row.documentosrequeridosId}); return false;" title="Descargar adjunto"><i class="fa fa-paperclip"></i></a>`;
-                        } else {
-                            result = '<span><i class="fa fa-paperclip"></i>';
-                        }
-                        if (row.tipo == 'Genérico') {
-                            result += ' ' + row.DDescripcion + ' (' + value + ')</span>';
-                        }
-                        else {
-                            result += ' ' + value + '</span>';
-                        }
-                        return result;
-                    },
-                    visible: true,
-                    width: 40,
-                    widthUnit: '%'
-                }, {
-                    field: 'DNombre',
-                    title: 'Archivo',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: true,
-                    width: 20,
-                    widthUnit: '%'
-                }, {
-                    field: 'DArchivoEsperado',
-                    title: 'Archivoeseperado',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'Grupo',
-                    title: 'Grupo',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'DFecha',
-                    title: 'Fecha',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.DateAndTimeFormatter',
-                    visible: true,
-                    width: 20,
-                    widthUnit: '%'
-                }, {
-                    field: 'DTamano',
-                    title: 'Tamaño',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: function (value, row, index, field) {
-                        if (value === null || value === 0)
-                            return '';
-                        else
-                            return parseInt(value / 1024) + 'kb';
-                    },
-                    visible: true,
-                    width: 10,
-                    widthUnit: '%'
-                }, {
-                    field: 'Actions',
-                    title: 'Acciones',
-                    class: 'd-none d-sm-table-cell',
-                    titleTooltip: 'Acciones disponibles para un visualizations',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    width: 10,
-                    widthUnit: "%",
-                    visible: true,
-                    events: 'documentosrequeridosTbl_Events',
-                    formatter: function (value, row, index, field) {
-                        var html = [];
-                        if (row.tipo == 'Genérico') {
-                            html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del documento"> <i class="fa fa-pencil"></i> </button>');
-                            html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar el documento"> <i class="fa fa-eraser"></i> </button>');
-                        } else {
-                            html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la carga del documento requerido"> <i class="fa fa-upload"></i> </button>');
-                            html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar el documento agregado de la fila"> <i class="fa fa-recycle"></i> </button>');
-                        }
-                        return html.join('');
-                    },
-                    cellStyle: function (value, row, index) {
-                        return {
-                            css: {
-                                'white-space': 'nowrap',
-                                'vertical-align': 'top'
-                            }
-                        }
-                    }
-                }]
+    function attachments_controls_setup() {
+        $('#AttachmentTitleText').text('Documentos requeridos');
+        $('#dropzone').fileUploader({
+            maxFilesize: 30,
+            uploadFilesIndividually: true,
+            singleExpectedFile: true,
+            showExpectedDocuments: true,
+            showGeneralUploadCard: true
         });
-
-        $('#documentosrequeridosNew').click(function () {
-            documentosrequeridos_table_row_edit(null);
-        });
-
-        $('#documentosrequeridosEdtFormSave').click(function () {
-            if (app.ui.IsValid('#documentosrequeridosEdtForm', false)) {
-                app.ui.ButtonDoing('#documentosrequeridosEdtFormSave');
-
-                var row = documentosrequeridos_table_row('values');
-
-                if (row.documentosrequeridosId === null) {
-                    row.documentosrequeridosId = 100 + Math.max.apply(Math, $('#documentosrequeridosTbl').bootstrapTable('getData').map(function (o) { return o.documentosrequeridosId == 10 ? o.documentosrequeridosId : null; }));
-                }
-                if ($('#documentosrequeridosModal').data('id') != null) {
-                    $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: row.documentosrequeridosId, row: row });
-                }
-                else {
-                    $('#documentosrequeridosTbl').bootstrapTable('append', row);
-                }
-
-                app.ui.ButtonDone('#documentosrequeridosEdtFormSave')
-                $('#documentosrequeridosModal').modal('hide');
-            }
-        });
-
-        $('#documentosrequeridosTbl').bootstrapTable('filterBy', { Grupo: ['F'] })
-    }
-
-    function documentosrequeridos_table_row(mode) {
-        if (mode == null) {
-            return {
-                documentosrequeridosId: null,
-                DStored: null,
-                tipo: 'Genérico',
-                DNombre: null,
-                DArchivoEsperado: null,
-                Grupo: 'F',
-                DFecha: null,
-                DTamano: null,
-                DDescripcion: null
-            };
-        }
-        else {
-            return {
-                documentosrequeridosId: $('#documentosrequeridosModal').data('id'),
-                DStored: $('#DStored').val(),
-                tipo: $('#tipo option:selected').text(),
-                DNombre: $('#DNombre').val(),
-                DArchivoEsperado: $('#DArchivoEsperado').val(),
-                Grupo: $('#Grupo').val(),
-                DFecha: new Date(),
-                DTamano: $('#DTamano').val(),
-                DDescripcion: $('#DDescripcion').val()
-            };
-        }
-    }
-
-    function documentosrequeridos_table_row_edit(row) {
-        if (row != null && row.tipo != 'Genérico') {
-            rowDocumentosrequeridos = row;
-            $('#fileUpload').click();
-        }
-        else {
-            var md = $('#documentosrequeridosModal').modal({ show: false });
-            var formInstance = $("#documentosrequeridosEdtForm");
-            var fvalidate = formInstance.validate();
-            fvalidate.resetForm();
-            row = row || documentosrequeridos_table_row();
-            md.data('id', row.documentosrequeridosId);
-
-            $('#DDescripcion').val(row.DDescripcion);
-            $('#DTamano').val(row.DTamano);
-            $('#DFecha').val(row.DFecha);
-            $('#Grupo').val(row.Grupo);
-            $('#DNombre').val(row.DNombre);
-
-            md.modal('show');
-        }
-    }
-
-    function documentosrequeridos_table_row_delete(row) {
-        if (row.tipo != 'Genérico') {
-            row.DNombre = '';
-            row.DStored = '';
-            row.DTamano = 0;
-            row.DFecha = null;
-            $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: row.documentosrequeridosId, row: row });
-        }
-        else {
-            $('#documentosrequeridosTbl').bootstrapTable('removeByUniqueId', row.documentosrequeridosId);
-        }
-    }
-
-    function documentosrequeridos_table_Validations() {
-        app.ui.DateValidators();
-        $("#documentosrequeridosEdtForm").validate({
-            errorPlacement: app.ui.ErrorPlacement,
-            rules: {
-                DDescripcion: {
-                    required: true
-                },
-                tipo: {
-                    required: true
-                },
-                FileName: {
-                    required: true
-                }
-            },
-            messages: {
-                DDescripcion: {
-                    required: 'Debe indicar una descripción del archivo'
-                },
-                tipo: {
-                    required: 'Debe indicar el tipo de documento'
-                },
-                FileName: {
-                    required: 'Debe indicar un archivo'
-                }
-            }
-        });
-    }
-
-    function documentosrequeridos_controls_setup() {
-    }
-
-    function documentosrequeridos_controls_Events() {
-
-        $('#fileUploadModal').on('change', function () {
-            app.core.FileUpLoad({
-                uploadCtrolId: '#fileUploadModal',
-                entityType: 3000,
-                entityId: setupData.presupuesto,
-                documentType: 99,
-                callback: function (data) {
-                    $('#DNombre').val(data[0].FileName);
-                    $('#DStored').val(data[0].StoredFileName);
-                    $('#DTamano').val(data[0].Size);
-                    $('#DDescripcion').val(app.ui.StringCapitalizeFormatter(data[0].FileName.substring(0, data[0].FileName.indexOf('.'))));
-                    $('#DDescripcion').select().focus()
-                }
-            });
-        });
-
-        $('#fileUpload').on('change', function () {
-            app.core.FileUpLoad({
-                uploadCtrolId: '#fileUpload',
-                entityType: 3000,
-                entityId: setupData.presupuesto,
-                documentType: rowDocumentosrequeridos.documentosrequeridosId,
-                description: rowDocumentosrequeridos.tipo,
-                callback: function (data) {
-                    rowDocumentosrequeridos.DNombre = data[0].FileName;
-                    rowDocumentosrequeridos.DStored = data[0].StoredFileName;
-                    rowDocumentosrequeridos.DTamano = data[0].Size;
-                    rowDocumentosrequeridos.DFecha = new Date();
-                    $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: rowDocumentosrequeridos.documentosrequeridosId, row: rowDocumentosrequeridos });
-
-                }
-            });
-        });
-
     }
 
     return {
@@ -1549,16 +1244,12 @@ app.EmisionViajero = (function () {
             terceros_table_Validations();
             terceros_controls_Events();
 
-            documentosrequeridos_controls_setup();
-            documentosrequeridos_table_setup();
-            documentosrequeridos_table_Validations();
-            documentosrequeridos_controls_Events();
+            attachments_controls_setup();
 
             Setup();
             app.language.translate('body', 'Viajero')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
             app.language.translate('#quoteBlock', '_resumen')();
-            app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
             app.language.translate('#tercerosModal', '_tercero')();
         },
         tercerosEditRow: function (row) {
@@ -1567,12 +1258,6 @@ app.EmisionViajero = (function () {
         tercerosDeleteRow: function (row) {
             terceros_table_row_delete(row);
         },
-        documentosrequeridosEditRow: function (row) {
-            documentosrequeridos_table_row_edit(row);
-        },
-        documentosrequeridosDeleteRow: function (row) {
-            documentosrequeridos_table_row_delete(row);
-        }
     };
 })();
 
@@ -1586,15 +1271,3 @@ window.tercerosTbl_Events = {
         e.stopPropagation();
     }
 };
-window.documentosrequeridosTbl_Events = {
-    'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer limpiar el documento requerido '" + row.DNombre + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionViajero.documentosrequeridosDeleteRow(row); } });
-        e.stopPropagation();
-    },
-    'click .edit': function (e, value, row, index) {
-        app.EmisionViajero.documentosrequeridosEditRow(row);
-        e.stopPropagation();
-    }
-};
-
-

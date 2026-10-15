@@ -129,6 +129,7 @@ app.EmisionMapfreMas = (function () {
         $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
         $('#formulariosNew').addClass('d-none');
         $('#formulariosTbl').bootstrapTable('hideColumn', 'Actions');
+        $('#dropzone').fileUploader('readOnly', true);
     }
 
     function Quote() {
@@ -259,29 +260,7 @@ app.EmisionMapfreMas = (function () {
         data.VAL_CAPACIDAD = app.ui.GetNumericValue('#VAL_CAPACIDAD');
         data.Vehiculo_Otra_Poliza = app.ui.GetRadioStringValue('Vehiculo_Otra_Poliza');
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
-        data.documentosrequeridos = [];
-
-        // Convertir archivos de Dropzone a DocumentoRequerido
-        var dropzoneInstance = $('#dropzone').data('dropzone');
-        if (dropzoneInstance) {
-            var uploadedFiles = dropzoneInstance.getAcceptedFiles();
-            uploadedFiles.forEach(function (file) {
-                var docRequerido = {
-                    documentosrequeridosId: 0,
-                    DStored: 'S',
-                    tipo: file.type || 'application/octet-stream',
-                    documentType: file.DocumentType || 1,
-                    documentTypeDesc: file.DocumentTypeDesc || 'General',
-                    DNombre: file.name,
-                    DArchivoEsperado: file.name,
-                    Grupo: 'ADJUNTOS',
-                    DFecha: new Date(),
-                    DTamano: file.size || 0,
-                    DDescripcion: file.DocumentTypeDesc || 'Documento adjunto cargado'
-                };
-                data.documentosrequeridos.push(docRequerido);
-            });
-        }
+        data.documentosrequeridos = app.EmisionAdjuntos.read($('#dropzone'));
 
         data.kyc = null;
         let formulariosData = $('#formulariosTbl').bootstrapTable('getData');
@@ -362,61 +341,7 @@ app.EmisionMapfreMas = (function () {
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
         else
             $('#tercerosTbl').bootstrapTable('load', {});
-        if (data.documentosrequeridos != null) {
-            let pendientesMap = data.documentosrequeridos
-                .filter(function (doc) {
-                    // Solo son documentos esperados los que tienen un documentType entre 20 y 97 (>=20 y <98)
-                    let dt = parseInt(doc.documentType, 10);
-                    return !isNaN(dt) && dt >= 20 && dt < 98;
-                })
-                .map(function (doc, index) {
-                    let isCompleted = doc.DStored != null && doc.DStored !== '';
-                    return {
-                        id: doc.documentosrequeridosId,
-                        name: doc.tipo,
-                        description: doc.DArchivoEsperado,
-                        status: isCompleted ? 'completed' : 'pending',
-                        documentType: doc.documentType,
-                        documentTypeDesc: doc.documentTypeDesc || 'General',
-                        uploadedFile: isCompleted ? {
-                            id: doc.documentosrequeridosId,
-                            name: doc.DNombre || doc.DArchivoEsperado,
-                            size: doc.DTamano,
-                            user: doc.UpdateUserName,
-                            date: doc.DFecha,
-                            storedFileName: doc.DNombre,
-                            type: 'application/octet-stream'
-                        } : null
-                    };
-                });
-
-            // Documentos genéricos (fuera del rango de esperados) que ya están cargados
-            // se muestran como adjuntos generales, no como tarjetas esperadas.
-            let genericosMap = data.documentosrequeridos
-                .filter(function (doc) {
-                    let dt = parseInt(doc.documentType, 10);
-                    let isExpected = !isNaN(dt) && dt >= 20 && dt < 98;
-                    let isCompleted = doc.DStored != null && doc.DStored !== '';
-                    return !isExpected && isCompleted;
-                })
-                .map(function (doc) {
-                    return {
-                        Id: doc.documentosrequeridosId,
-                        FileName: doc.DNombre || doc.DArchivoEsperado,
-                        StoredFileName: doc.DNombre,
-                        Size: doc.DTamano,
-                        DocumentType: doc.documentType || 1,
-                        DocumentTypeDesc: doc.documentTypeDesc || 'General',
-                        Description: doc.tipo || doc.DArchivoEsperado,
-                        UpdateUserName: doc.UpdateUserName,
-                        UpdateDate: doc.DFecha
-                    };
-                });
-
-            $('#dropzone').fileUploader('load', genericosMap, { EntityType: 3000, EntityId: data.presupuesto, DocumentType: 99, Description: "MapfreMas" });
-            $('#dropzone').fileUploader('setExpectedDocuments', pendientesMap);
-
-        }
+        app.EmisionAdjuntos.load($('#dropzone'), data.documentosrequeridos, data.presupuesto, 'MapfreMas');
 
         if (data.coberturas != null)
             $('#coberturasTbl').bootstrapTable('load', data.coberturas);
@@ -617,6 +542,7 @@ app.EmisionMapfreMas = (function () {
         });
 
         $('#cotizar').click(function (e) {
+            if (!app.EmisionAdjuntos.canSubmit($('#dropzone'))) { e.preventDefault(); return; }
             var others = OtherValidations();
             if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#cotizar');
@@ -635,6 +561,7 @@ app.EmisionMapfreMas = (function () {
         });
 
         $('#guardarenviar').click(function (e) {
+            if (!app.EmisionAdjuntos.canSubmit($('#dropzone'))) { e.preventDefault(); return; }
             var others = OtherValidations();
             if (app.ui.IsValid('#VisualizationsEdtForm', false) && others === 0) {
                 app.ui.ButtonDoing('#guardarenviar');
@@ -2281,18 +2208,11 @@ app.EmisionMapfreMas = (function () {
     function attachments_controls_setup() {
         $('#AttachmentTitleText').text('Documentos requeridos');
         $('#dropzone').fileUploader({
-            maxFilesize: 256,
+            maxFilesize: 30,
+            uploadFilesIndividually: true,
+            singleExpectedFile: true,
             showExpectedDocuments: true,
-            showGeneralUploadCard: true,
-            done: function (responses) {
-                //console.log('Attachments: Archivos subidos exitosamente:', responses);
-            },
-            fail: function (error, file) {
-                //console.error('Attachments: Error al subir archivo:', error, file);
-            },
-            always: function (result) {
-                //console.log('Attachments: Proceso de carga completado:', result);
-            }
+            showGeneralUploadCard: true
         });
     }
 
@@ -2325,7 +2245,6 @@ app.EmisionMapfreMas = (function () {
             app.language.translate('body', 'MapfreMas')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
             app.language.translate('#quoteBlock', '_resumen')();
-            app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
