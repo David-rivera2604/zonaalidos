@@ -845,7 +845,7 @@
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/app/js/core.language.js")"></script>
     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
-    <script src="@Url.Content("~/Scripts/Emision.Viajero.js")"></script>
+    <script src="@Url.Content("~/Scripts/Emision.Viajero.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.Viajero.js")).Ticks)"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             app.EmisionViajero.Init();

@@ -210,7 +210,7 @@ app.HogarTotal = (function () {
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
         data.propiedad = $('#propiedadTbl').bootstrapTable('getData');
         data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
-       
+
         let formulariosDatakyc = $('#formulariosTbl').bootstrapTable('getData');
         if (formulariosDatakyc.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
@@ -364,7 +364,7 @@ app.HogarTotal = (function () {
             decimalPlaces: '0',
             emptyInputBehavior: 'null'
         });
-        
+
         new AutoNumeric('#sAPerdidaderentas', {
             decimalCharacter: ',',
             decimalCharacterAlternative: '.',
@@ -1444,40 +1444,7 @@ app.HogarTotal = (function () {
     };
 
     function terceros_documentNumberCallBack(data) {
-        if (data != null) {
-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
-            $('#apellido1').val(data.LastName);
-            $('#apellido2').val(data.SecondLastName);
-            $('#PhoneNumber').val(data.PhoneNumber);
-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
-            $('#TProvincia').val(data.Province);
-            $('#correoelectronico').val(data.PrimaryEmailAddress);
-            $('#numerodetelefono').val(data.PhoneNumber);
-
-            let value = data.CivilStatus;
-            if (value == '1')
-                value = 'C';
-            else if (value == '2')
-                value = 'D';
-            else if (value == '3')
-                value = 'S';
-            else if (value == '4')
-                value = 'V';
-            $('#estadoCivil').val(value);
-
-
-
-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
-
-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
-
-            //$('#TCanton').val(data.Canton);
-            //$('#TDistrito').val(data.District);
-            $('#otrasenas').val(data.AddressDetail);
-
-        }
+        app.ui.LlenarDatosTercero(data);
     }
 
     function terceros_controls_Events() {
@@ -2508,7 +2475,7 @@ app.HogarTotal = (function () {
             terceros_table_Validations();
             terceros_controls_Events();
 
-           propiedad_controls_setup();
+            propiedad_controls_setup();
             propiedad_table_setup();
             propiedad_table_Validations();
 
@@ -2522,9 +2489,9 @@ app.HogarTotal = (function () {
             Setup();
             app.language.translate('body', 'hogartotal')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
-    app.language.translate('#quoteBlock', '_resumen')();
-    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
-    app.language.translate('#tercerosModal', '_tercero')();
+            app.language.translate('#quoteBlock', '_resumen')();
+            app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+            app.language.translate('#tercerosModal', '_tercero')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);

@@ -881,7 +881,7 @@ app.CompraSegurosE = (function () {
             app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: setupData.cantidad_riesgos * -1 } })
         });
 
-       
+
         $('.btnFP').click(function () {
             ProccessPayment(dataRequestL);
         });
@@ -1365,7 +1365,7 @@ app.CompraSegurosE = (function () {
                     formatter: 'app.ui.IntegerFormatter',
                     visible: false
                 },
-                
+
             ]
         });
 
@@ -1378,8 +1378,8 @@ app.CompraSegurosE = (function () {
 
                 let row = terceros_table_row('values');
 
-                
-              
+
+
                 // Verify Tomador(a) and User
                 if ((row.tipodeterceroDesc == "Tomador(a)" && userRow != userName) || (userRow != userName && row.tipodeterceroDesc == "Asegurado(a)" && row.elaseguradoeselmismotomador === 1)) {
                     toastr.error('El ' + row.tipodeterceroDesc + ' debe ser el mismo que el usuario registrado', '', { timeOut: 20000, closeButton: true, progressBar: true });
@@ -1419,9 +1419,9 @@ app.CompraSegurosE = (function () {
 
                     app.ui.ButtonDone('#tercerosEdtFormSave')
                     $('#tercerosModal').modal('hide');
-                   
+
                 }
-            } 
+            }
         });
 
     }
@@ -1711,41 +1711,9 @@ app.CompraSegurosE = (function () {
     };
 
     function terceros_documentNumberCallBack(data) {
-        if (data != null) {
-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
-            $('#apellido1').val(data.LastName);
-            $('#apellido2').val(data.SecondLastName);
-            $('#PhoneNumber').val(data.PhoneNumber);
+        app.ui.LlenarDatosTercero(data);
+        if (data != null)
             userRow = data.FirstName + ' ' + data.LastName + ' ' + data.SecondLastName;
-
-            if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
-                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
-            }
-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
-            $('#TProvincia').val(data.Province);
-            $('#correoelectronico').val(data.PrimaryEmailAddress);
-            $('#numerodetelefono').val(data.PhoneNumber);
-
-            let value = data.CivilStatus;
-            if (value == '1')
-                value = 'C';
-            else if (value == '2')
-                value = 'D';
-            else if (value == '3')
-                value = 'S';
-            else if (value == '4')
-                value = 'V';
-            $('#estadoCivil').val(value);
-
-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
-
-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
-
-            //$('#TCanton').val(data.Canton);
-            //$('#TDistrito').val(data.District);
-            $('#otrasenas').val(data.AddressDetail);
-        }
     }
 
     function terceros_documentTypeCallBack(data) {
@@ -2320,7 +2288,7 @@ function ProccessPayment(dataRequest, lightbox = true) {
                                                     }
                                                 }
                                             });
-                                    
+
                                     });
                                     P.init(session.ProcessUrl);
                                 })
