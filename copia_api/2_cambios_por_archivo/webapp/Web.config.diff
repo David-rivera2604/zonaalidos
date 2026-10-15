@@ -1,0 +1,15 @@
+diff --git a/webapp/Web.config b/webapp/Web.config
+index b5f8be5c..5507739c 100644
+--- a/webapp/Web.config
++++ b/webapp/Web.config
+@@ -44,6 +44,10 @@
+ 		<!-- Lista de CompanyId (separados por ';') cuyos usuarios se sincronizan con Okta -->
+ 		<add key="Okta.SyncUsers.Tenants"     value="3;4" />
+ 
++		<add key="Credid.Url"            value="https://ws.credid.net/ws/api/reporte" />
++		<add key="Credid.Token"          value="" />
++		<add key="Credid.TimeoutSeconds" value="10" />
++
+ 		<add key="Security.Login.RedirectUrl" value="/Aliados/Security/Login" />
+ 		<!-- Mensajes Settings -->
+ 		<add key="Message" value="" />

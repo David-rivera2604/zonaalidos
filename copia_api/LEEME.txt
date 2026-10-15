@@ -1,0 +1,17 @@
+Cambios de la API (Credid) - solo lo de la API, sin comentarios
+
+1_archivos_completos
+  Cada archivo completo como queda con los cambios de la API.
+  Consultas.cs es nuevo: se copia completo.
+  Los demas: comparar con el repo de Bitbucket antes de reemplazar,
+  para no borrar cambios de otras personas.
+
+2_cambios_por_archivo
+  Un .diff por archivo con exactamente lo que cambio.
+  Lineas con - se quitan, lineas con + se agregan.
+
+3_Web.config_agregar.txt
+  Las 3 llaves de Credid para el Web.config.
+
+Para aplicar todo de una vez en el repo de Bitbucket:
+  git apply --3way api-credid.patch

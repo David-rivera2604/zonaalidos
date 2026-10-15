@@ -1,0 +1,5 @@
+Agregar dentro de <appSettings> en webapp\Web.config (el token solo en el servidor, nunca en git):
+
+		<add key="Credid.Url"            value="https://ws.credid.net/ws/api/reporte" />
+		<add key="Credid.Token"          value="" />
+		<add key="Credid.TimeoutSeconds" value="10" />

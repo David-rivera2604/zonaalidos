@@ -1,0 +1,1188 @@
+diff --git a/InsurancePolicy/Architect.API.Insurance/Controllers/InsuredController.cs b/InsurancePolicy/Architect.API.Insurance/Controllers/InsuredController.cs
+index b6784325..86393f58 100644
+--- a/InsurancePolicy/Architect.API.Insurance/Controllers/InsuredController.cs
++++ b/InsurancePolicy/Architect.API.Insurance/Controllers/InsuredController.cs
+@@ -23,7 +23,7 @@ namespace Architect.API.Insurance.Controllers
+         /// Busqueda de información de residentes de Costa Rica.
+         /// </summary>
+         /// <param name="id">Identificación.</param>
+-        /// <param name="docType">Tipo de identificación.</param>                 
++        /// <param name="docType">Tipo de identificación.</param>
+         /// <returns>Información de la personal.</returns>
+         [HttpGet]
+         [Route("{id}")]
+@@ -39,12 +39,15 @@ namespace Architect.API.Insurance.Controllers
+             {
+                 return BadRequest("Debe indicar la identificación");
+             }
++
++            verbose += "->tron";
++            result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
++
+             if (result == null && tokenInfo.CompanyId == 11)   //Sur Química
+             {
+                 verbose += "->thirdparty";
+                 result = await Architect.Extend.Integrations.Aliados.Consultas.ThirdParty(id);
+             }
+-
+             if (result == null)
+             {
+                 verbose += "->Aliados";
+@@ -56,11 +59,6 @@ namespace Architect.API.Insurance.Controllers
+                 result = Architect.Extend.Integrations.Coope.Consultas.ClientePorIdentificacion(id);
+             }
+             if (result == null)
+-            {
+-                verbose += "->tron";
+-                result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+-            }
+-            if (result == null)
+             {
+                 verbose += "->padron";
+                 result = await Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
+@@ -73,6 +71,17 @@ namespace Architect.API.Insurance.Controllers
+                 }
+             }
+ 
++            if (result == null && tokenInfo.UserId > 0)
++            {
++                verbose += "->credid";
++                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
++            }
++            else if (result != null && result.Source == "Padron" && tokenInfo.UserId > 0)
++            {
++                verbose += "->credid(completar)";
++                Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId));
++            }
++
+             //if (result == null)
+             //{
+             //    Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+@@ -118,12 +127,55 @@ namespace Architect.API.Insurance.Controllers
+ 
+             if (result != null)
+             {
+-                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado"), "integrations");
++                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado " + result.Source), "integrations");
+                 result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
+             }
++            else
++            {
++                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
++            }
+             return Ok(result);
+         }
+ 
++        private static void Completar(Contracts.Policy.Insured persona, Contracts.Policy.Insured otra)
++        {
++            if (otra == null)
++            {
++                return;
++            }
++            if (persona.BirthDate.Year <= 1900 && otra.BirthDate.Year > 1900)
++            {
++                persona.BirthDate = otra.BirthDate;
++            }
++            if (persona.Gender != 1 && persona.Gender != 2 && (otra.Gender == 1 || otra.Gender == 2))
++            {
++                persona.Gender = otra.Gender;
++            }
++            if (persona.CivilStatus <= 0 && otra.CivilStatus > 0)
++            {
++                persona.CivilStatus = otra.CivilStatus;
++            }
++            if ((persona.Province <= 0 || persona.Canton <= 0 || persona.District <= 0) && otra.Province > 0 && otra.Canton > 0 && otra.District > 0)
++            {
++                persona.Province = otra.Province;
++                persona.Canton = otra.Canton;
++                persona.District = otra.District;
++            }
++            if (persona.PhoneNumber.IsEmpty() && otra.PhoneNumber.IsNotEmpty())
++            {
++                persona.PhoneNumber = otra.PhoneNumber;
++                persona.PhoneType = otra.PhoneType;
++            }
++            if (persona.PrimaryEmailAddress.IsEmpty() && otra.PrimaryEmailAddress.IsNotEmpty())
++            {
++                persona.PrimaryEmailAddress = otra.PrimaryEmailAddress;
++            }
++            if (persona.AddressDetail.IsEmpty() && otra.AddressDetail.IsNotEmpty())
++            {
++                persona.AddressDetail = otra.AddressDetail;
++            }
++        }
++
+ 
+ 
+         /// <summary>
+diff --git a/InsurancePolicy/Architect.Extend.Integrations/Architect.Extend.Integrations.csproj b/InsurancePolicy/Architect.Extend.Integrations/Architect.Extend.Integrations.csproj
+index d41b46bf..985d991c 100644
+--- a/InsurancePolicy/Architect.Extend.Integrations/Architect.Extend.Integrations.csproj
++++ b/InsurancePolicy/Architect.Extend.Integrations/Architect.Extend.Integrations.csproj
+@@ -50,6 +50,7 @@
+   <ItemGroup>
+     <Compile Include="Aliados\Consultas.cs" />
+     <Compile Include="Coope\Consultas.cs" />
++    <Compile Include="Credid\Consultas.cs" />
+     <Compile Include="GastosMedicos\ConsultaAsegurado.cs" />
+     <Compile Include="InstitutoNacionalDeSeguros\Consultas.cs" />
+     <Compile Include="My\Consultas.cs" />
+diff --git a/InsurancePolicy/Architect.Extend.Integrations/Credid/Consultas.cs b/InsurancePolicy/Architect.Extend.Integrations/Credid/Consultas.cs
+new file mode 100644
+index 00000000..d10886cf
+--- /dev/null
++++ b/InsurancePolicy/Architect.Extend.Integrations/Credid/Consultas.cs
+@@ -0,0 +1,350 @@
++using Architect.Utilities.Extensions;
++using Newtonsoft.Json;
++using Newtonsoft.Json.Linq;
++using System;
++using System.Globalization;
++using System.IO;
++using System.Linq;
++using System.Net;
++using System.Net.Http;
++using System.Threading.Tasks;
++
++namespace Architect.Extend.Integrations.Credid
++{
++    public static class Consultas
++    {
++        private static readonly CultureInfo CostaRica = CultureInfo.CreateSpecificCulture("es-CR");
++        private static readonly string[] FormatosFecha = { "dd/MM/yyyy", "d/M/yyyy", "dd/MM/yyyy HH:mm:ss", "dd-MM-yyyy", "yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss", "yyyy-MM-ddTHH:mm:ss.FFFFFFFK", "yyyyMMdd" };
++        private static readonly Lazy<HttpClient> Client = new Lazy<HttpClient>(() =>
++        {
++            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
++            return new HttpClient() { Timeout = TimeSpan.FromSeconds(Architect.Utilities.Helpers.Settings.IntegerValue("Credid.TimeoutSeconds", 10)) };
++        });
++
++        public class Respuesta
++        {
++            public Architect.API.Insurance.Contracts.Policy.Insured Persona { get; set; }
++            public string Mensaje { get; set; }
++        }
++
++        public async static Task<Architect.API.Insurance.Contracts.Policy.Insured> PersonaPorIdentificacion(string identificacion, int docType = 1, string idUsuario = null, string cedUsuario = null, string division = null)
++        {
++            return (await Consultar(identificacion, docType, idUsuario, cedUsuario, division).ConfigureAwait(false)).Persona;
++        }
++
++        public async static Task<Respuesta> Consultar(string identificacion, int docType = 1, string idUsuario = null, string cedUsuario = null, string division = null)
++        {
++            Respuesta result = new Respuesta();
++            string token = Architect.Utilities.Helpers.Settings.StringValue("Credid.Token");
++
++            if (identificacion.IsEmpty())
++            {
++                result.Mensaje = "No se indicó la identificación";
++                return result;
++            }
++            if (token.IsEmpty())
++            {
++                result.Mensaje = "Credid.Token está vacío en el Web.config";
++                Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion", result.Mensaje, "integrations");
++                return result;
++            }
++
++            string cedula = IdentificacionCredid(identificacion, docType);
++            if (cedula.IsEmpty())
++            {
++                result.Mensaje = "La identificación no es válida para Credid";
++                return result;
++            }
++
++            try
++            {
++                string url = Architect.Utilities.Helpers.Settings.StringValue("Credid.Url", "https://ws.credid.net/ws/api/reporte") + "?cedula=" + Uri.EscapeDataString(cedula);
++                if (idUsuario.IsNotEmpty())
++                {
++                    url += "&idUsuario=" + Uri.EscapeDataString(idUsuario);
++                }
++                if (cedUsuario.IsNotEmpty())
++                {
++                    url += "&cedUsuario=" + Uri.EscapeDataString(cedUsuario);
++                }
++                if (division.IsNotEmpty())
++                {
++                    url += "&division=" + Uri.EscapeDataString(division);
++                }
++                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url))
++                {
++                    request.Headers.TryAddWithoutValidation("authorization", token);
++                    using (HttpResponseMessage response = await Client.Value.SendAsync(request).ConfigureAwait(false))
++                    {
++                        string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false) ?? string.Empty;
++                        string corto = body.Length > 500 ? body.Substring(0, 500) : body;
++
++                        if (!response.IsSuccessStatusCode)
++                        {
++                            result.Mensaje = string.Format("Credid respondió HTTP {0}: {1}", (int)response.StatusCode, corto);
++                            Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion", string.Format("Identificación '{0}' {1}", cedula, result.Mensaje), "integrations");
++                            return result;
++                        }
++
++                        if (body.IsNotEmpty())
++                        {
++                            JToken respuesta;
++                            using (JsonTextReader reader = new JsonTextReader(new StringReader(body)) { DateParseHandling = DateParseHandling.None })
++                            {
++                                respuesta = JToken.ReadFrom(reader);
++                            }
++                            if (respuesta is JObject)
++                            {
++                                result.Persona = Convertir((JObject)respuesta, cedula, docType);
++                            }
++                        }
++                        if (result.Persona == null)
++                        {
++                            result.Mensaje = "Credid respondió sin datos de persona: " + (corto.IsEmpty() ? "(vacío)" : corto);
++                            Utilities.Log.WarningLog("Credid.PersonaPorIdentificacion",
++                                                     string.Format("Identificación '{0}' sin datos de persona: {1}", cedula, body.Length > 2000 ? body.Substring(0, 2000) : body), "integrations");
++                        }
++                    }
++                }
++            }
++            catch (Exception ex)
++            {
++                result.Mensaje = "No se pudo consultar Credid: " + ex.Message;
++                Utilities.Log.ErrorLog("Credid.PersonaPorIdentificacion",
++                                       string.Format("Falla al tratar de consultar a identificación '{0}'", cedula),
++                                       ex, "integrations");
++            }
++            return result;
++        }
++
++        private static string IdentificacionCredid(string identificacion, int docType)
++        {
++            if (docType == 3)
++            {
++                string pasaporte = new string(identificacion.Where(c => char.IsLetterOrDigit(c)).ToArray()).ToUpperInvariant();
++                return pasaporte.IsEmpty() ? string.Empty : "ext-" + pasaporte;
++            }
++            return identificacion.OnlyNumbers().TrimStart('0');
++        }
++
++        private static Architect.API.Insurance.Contracts.Policy.Insured Convertir(JObject reporte, string cedula, int docType)
++        {
++            Architect.API.Insurance.Contracts.Policy.Insured result = null;
++            JObject persona = reporte["FiliacionFisica"] as JObject;
++            int documentType = 1;
++
++            if (persona == null)
++            {
++                persona = reporte["FiliacionExtranjero"] as JObject;
++                documentType = docType == 3 ? 3 : 2;
++            }
++
++            if (persona != null)
++            {
++                if (Texto(persona, "Nombre").IsEmpty())
++                {
++                    return result;
++                }
++
++                result = Nuevo(documentType, cedula);
++                result.FirstName = Nombre(Texto(persona, "Nombre"));
++                result.LastName = Nombre(Texto(persona, "Apellido1"));
++                result.SecondLastName = Nombre(Texto(persona, "Apellido2"));
++                result.BirthDate = Fecha(Texto(persona, "FechaNacimiento"));
++                result.Gender = Genero(Texto(persona, "Genero"), Texto(persona, "GeneroLiteral"));
++                result.CivilStatus = EstadoCivil(Texto(persona, "EstadoCivil"), Texto(persona, "EstadoCivilLiteral"));
++                Domicilio(result, persona["DomicilioElectoral"] as JObject);
++            }
++            else
++            {
++                JObject sociedad = reporte["FiliacionJuridica"] as JObject;
++                if (sociedad == null || Texto(sociedad, "Nombre").IsEmpty())
++                {
++                    return result;
++                }
++
++                result = Nuevo(4, cedula);
++                result.FirstName = Texto(sociedad, "Nombre");
++            }
++
++            Localizacion(result, reporte["Localizacion"] as JArray);
++            return result;
++        }
++
++        private static Architect.API.Insurance.Contracts.Policy.Insured Nuevo(int documentType, string cedula)
++        {
++            return new Architect.API.Insurance.Contracts.Policy.Insured()
++            {
++                DocumentType = documentType,
++                DocumentNumber = cedula,
++                FirstName = string.Empty,
++                MiddleName = string.Empty,
++                LastName = string.Empty,
++                SecondLastName = string.Empty,
++                BirthDate = DateTime.MinValue,
++                Gender = 0,
++                CivilStatus = 0,
++                PrimaryEmailAddress = string.Empty,
++                Province = 0,
++                Canton = 0,
++                District = 0,
++                AddressDetail = string.Empty,
++                PhoneType = 0,
++                PhoneNumber = string.Empty,
++                Source = "Credid"
++            };
++        }
++
++        private static void Domicilio(Architect.API.Insurance.Contracts.Policy.Insured result, JObject domicilio)
++        {
++            if (domicilio == null)
++            {
++                return;
++            }
++
++            string provincia = Texto(domicilio, "CodigoAdministrativo_Provincia").OnlyNumbers();
++            string canton = Texto(domicilio, "CodigoAdministrativo_Canton").OnlyNumbers();
++            string distrito = Texto(domicilio, "CodigoAdministrativo_Distrito").OnlyNumbers();
++            string completo = Texto(domicilio, "CodigoAdministrativo").OnlyNumbers();
++
++            if (completo.Length == 5)
++            {
++                provincia = completo.Substring(0, 1);
++                canton = completo.Substring(0, 3);
++                distrito = completo;
++            }
++            else
++            {
++                if (provincia.Length == 1 && canton.Length > 0 && canton.Length <= 2)
++                {
++                    canton = provincia + canton.PadLeft(2, '0');
++                }
++                if (canton.Length == 3 && distrito.Length > 0 && distrito.Length <= 2)
++                {
++                    distrito = canton + distrito.PadLeft(2, '0');
++                }
++            }
++
++            int value;
++            if (provincia.Length == 1 && int.TryParse(provincia, out value))
++            {
++                result.Province = value;
++            }
++            if (canton.Length == 3 && int.TryParse(canton, out value))
++            {
++                result.Canton = value;
++            }
++            if (distrito.Length == 5 && int.TryParse(distrito, out value))
++            {
++                result.District = value;
++            }
++        }
++
++        private static void Localizacion(Architect.API.Insurance.Contracts.Policy.Insured result, JArray datos)
++        {
++            if (datos == null)
++            {
++                return;
++            }
++
++            var titular = datos.OfType<JObject>()
++                               .Where(d => Texto(d, "Relacion").IsEmpty() || Texto(d, "Relacion").IndexOf("titular", StringComparison.OrdinalIgnoreCase) >= 0)
++                               .OrderByDescending(d => Fecha(Texto(d, "Fecha")))
++                               .ToList();
++
++            foreach (string tipo in new[] { "celular", "tel" })
++            {
++                JObject telefono = titular.FirstOrDefault(d => Contiene(d, "Tipo", tipo) && Texto(d, "Dato").OnlyNumbers().Length >= 8);
++                if (telefono != null)
++                {
++                    string numero = Texto(telefono, "Dato").OnlyNumbers();
++                    numero = numero.Substring(numero.Length - 8);
++                    result.PhoneNumber = numero.Substring(0, 4) + "-" + numero.Substring(4);
++                    result.PhoneType = tipo == "celular" ? 1 : 2;
++                    break;
++                }
++            }
++
++            JObject correo = titular.FirstOrDefault(d => Contiene(d, "Tipo", "mail") && Texto(d, "Dato").Contains("@"));
++            if (correo != null)
++            {
++                result.PrimaryEmailAddress = Texto(correo, "Dato").ToLowerInvariant();
++            }
++
++            JObject direccion = titular.FirstOrDefault(d => Contiene(d, "Tipo", "direcc") && Texto(d, "Dato").IsNotEmpty());
++            if (direccion != null)
++            {
++                string detalle = Texto(direccion, "Dato");
++                result.AddressDetail = detalle.Length > 120 ? detalle.Substring(0, 120) : detalle;
++            }
++        }
++
++        private static int Genero(string genero, string literal)
++        {
++            string value = (genero.IsNotEmpty() ? genero : literal).ToUpperInvariant();
++            if (value.StartsWith("M"))
++            {
++                return 1;
++            }
++            if (value.StartsWith("F"))
++            {
++                return 2;
++            }
++            return 0;
++        }
++
++        private static int EstadoCivil(string estado, string literal)
++        {
++            string value = (literal.IsNotEmpty() ? literal : estado).ToUpperInvariant();
++            if (value.StartsWith("CAS") || value == "C")
++            {
++                return 1;
++            }
++            if (value.StartsWith("DIV") || value == "D")
++            {
++                return 2;
++            }
++            if (value.StartsWith("SOL") || value == "S")
++            {
++                return 3;
++            }
++            if (value.StartsWith("VIU") || value == "V")
++            {
++                return 4;
++            }
++            if (value.StartsWith("UNI") || value.StartsWith("ACOM") || value.Contains("LIBRE") || value == "U")
++            {
++                return 7;
++            }
++            return 0;
++        }
++
++        private static DateTime Fecha(string value)
++        {
++            DateTime result;
++            if (value.IsNotEmpty() &&
++                (DateTime.TryParseExact(value, FormatosFecha, CostaRica, DateTimeStyles.AllowWhiteSpaces, out result) ||
++                 DateTime.TryParse(value, CostaRica, DateTimeStyles.AllowWhiteSpaces, out result)))
++            {
++                return result.Date;
++            }
++            return DateTime.MinValue;
++        }
++
++        private static string Nombre(string value)
++        {
++            return value.IsEmpty() ? string.Empty : CostaRica.TextInfo.ToTitleCase(value.ToLower(CostaRica));
++        }
++
++        private static bool Contiene(JObject obj, string name, string value)
++        {
++            return Texto(obj, name).IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
++        }
++
++        private static string Texto(JObject obj, string name)
++        {
++            JToken token = obj?[name];
++            return token == null || token.Type == JTokenType.Null ? string.Empty : token.ToString().Trim();
++        }
++    }
++}
+diff --git a/webapp/Scripts/Common/Tercero.js b/webapp/Scripts/Common/Tercero.js
+index b8b58dd9..44a84a18 100644
+--- a/webapp/Scripts/Common/Tercero.js
++++ b/webapp/Scripts/Common/Tercero.js
+@@ -253,33 +253,7 @@ app.Tercero = (function () {
+     }
+ 
+     function DocumentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender === 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            $('#otrasenas').val(data.AddressDetail);
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     return {
+diff --git a/webapp/Scripts/CompraSegurosClients.js b/webapp/Scripts/CompraSegurosClients.js
+index 84e8679a..377a9546 100644
+--- a/webapp/Scripts/CompraSegurosClients.js
++++ b/webapp/Scripts/CompraSegurosClients.js
+@@ -1711,41 +1711,9 @@ app.CompraSegurosE = (function () {
+     };
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
++        app.ui.LlenarDatosTercero(data);
++        if (data != null)
+             userRow = data.FirstName + ' ' + data.LastName + ' ' + data.SecondLastName;
+-
+-            if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
+-                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            }
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-        }
+     }
+ 
+     function terceros_documentTypeCallBack(data) {
+diff --git a/webapp/Scripts/Emision.AccidentesPersonales.js b/webapp/Scripts/Emision.AccidentesPersonales.js
+index ba21e847..60b758fe 100644
+--- a/webapp/Scripts/Emision.AccidentesPersonales.js
++++ b/webapp/Scripts/Emision.AccidentesPersonales.js
+@@ -979,35 +979,7 @@ app.EmisionAccidentesPersonales = (function () {
+         });
+     };
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
+-                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            }
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+     function terceros_documentTypeCallBack(data) {
+         data = $("#DocumentNumberType").data("value");
+diff --git a/webapp/Scripts/Emision.Estudiantil.js b/webapp/Scripts/Emision.Estudiantil.js
+index 575ba9a7..9443ebcc 100644
+--- a/webapp/Scripts/Emision.Estudiantil.js
++++ b/webapp/Scripts/Emision.Estudiantil.js
+@@ -1061,39 +1061,7 @@ app.EmisionEstudiantil = (function () {
+     };
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
+-                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            }
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_documentTypeCallBack(data) {
+diff --git a/webapp/Scripts/Emision.HogarTotal.js b/webapp/Scripts/Emision.HogarTotal.js
+index b3a9cc2e..cc1348e2 100644
+--- a/webapp/Scripts/Emision.HogarTotal.js
++++ b/webapp/Scripts/Emision.HogarTotal.js
+@@ -1444,40 +1444,7 @@ app.HogarTotal = (function () {
+     };
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_controls_Events() {
+diff --git a/webapp/Scripts/Emision.MapfreMas.js b/webapp/Scripts/Emision.MapfreMas.js
+index 6f5b48f8..7aa78a41 100644
+--- a/webapp/Scripts/Emision.MapfreMas.js
++++ b/webapp/Scripts/Emision.MapfreMas.js
+@@ -1664,42 +1664,7 @@ app.EmisionMapfreMas = (function () {
+     }
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-
+-
+-
+-
+-
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_controls_Events() {
+diff --git a/webapp/Scripts/Emision.Multirriesgo.js b/webapp/Scripts/Emision.Multirriesgo.js
+index 87c7cb35..2d9dfd1a 100644
+--- a/webapp/Scripts/Emision.Multirriesgo.js
++++ b/webapp/Scripts/Emision.Multirriesgo.js
+@@ -1725,43 +1725,7 @@ app.EmisionMultirriesgo = (function () {
+     };
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 2);
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-
+-
+-
+-
+-
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_controls_Events() {
+diff --git a/webapp/Scripts/Emision.SaldoDeudor.js b/webapp/Scripts/Emision.SaldoDeudor.js
+index 76d36b64..fe3e39ad 100644
+--- a/webapp/Scripts/Emision.SaldoDeudor.js
++++ b/webapp/Scripts/Emision.SaldoDeudor.js
+@@ -1423,42 +1423,7 @@ app.EmisionSaldoDeudor = (function () {
+     }
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-
+-
+-
+-
+-
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_documentTypeCallBack(data) {
+diff --git a/webapp/Scripts/Emision.Terceros.js b/webapp/Scripts/Emision.Terceros.js
+index 503456d1..3223a462 100644
+--- a/webapp/Scripts/Emision.Terceros.js
++++ b/webapp/Scripts/Emision.Terceros.js
+@@ -479,42 +479,7 @@ app.EmisionTercero = (function () {
+     }
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-
+-
+-
+-
+-
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_documentTypeCallBack(data) {
+diff --git a/webapp/Scripts/Emision.Viajero.js b/webapp/Scripts/Emision.Viajero.js
+index 11b6d7c7..92b606bc 100644
+--- a/webapp/Scripts/Emision.Viajero.js
++++ b/webapp/Scripts/Emision.Viajero.js
+@@ -1107,39 +1107,7 @@ app.EmisionViajero = (function () {
+     };
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            if (app.ui.GetDateValue('#fechadenacimiento') === '0001-01-01T00:00:00') {
+-                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            }
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_documentTypeCallBack(data) {
+diff --git a/webapp/Scripts/HogarTotal.Emision.js b/webapp/Scripts/HogarTotal.Emision.js
+index d2dd361f..ac2b3b06 100644
+--- a/webapp/Scripts/HogarTotal.Emision.js
++++ b/webapp/Scripts/HogarTotal.Emision.js
+@@ -1431,40 +1431,7 @@ app.HogarTotal = (function () {
+     };
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_controls_Events() {
+diff --git a/webapp/Scripts/Multirriesgo.Emision.js b/webapp/Scripts/Multirriesgo.Emision.js
+index fe02d15c..7372b418 100644
+--- a/webapp/Scripts/Multirriesgo.Emision.js
++++ b/webapp/Scripts/Multirriesgo.Emision.js
+@@ -1668,7 +1668,7 @@ app.EmisionMultirriesgo = (function () {
+             }
+         });
+     };
+-    |
++
+     function terceros_controls_setup() {
+         $('#DocumentNumber').formatter({
+             pattern: '0{{9}}-{{9999}}-{{9999}}',
+@@ -1711,36 +1711,7 @@ app.EmisionMultirriesgo = (function () {
+     };
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 2);
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_controls_Events() {
+diff --git a/webapp/Scripts/Variaciones.MapfreMasOld.js b/webapp/Scripts/Variaciones.MapfreMasOld.js
+index 8bcd4bdd..cede400b 100644
+--- a/webapp/Scripts/Variaciones.MapfreMasOld.js
++++ b/webapp/Scripts/Variaciones.MapfreMasOld.js
+@@ -2826,42 +2826,7 @@ app.EmisionMapfreMas = (function () {
+     }
+ 
+     function terceros_documentNumberCallBack(data) {
+-        if (data != null) {
+-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
+-            $('#apellido1').val(data.LastName);
+-            $('#apellido2').val(data.SecondLastName);
+-            $('#PhoneNumber').val(data.PhoneNumber);
+-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 0);
+-            $('#TProvincia').val(data.Province);
+-            $('#correoelectronico').val(data.PrimaryEmailAddress);
+-            $('#numerodetelefono').val(data.PhoneNumber);
+-
+-            let value = data.CivilStatus;
+-            if (value == '1')
+-                value = 'C';
+-            else if (value == '2')
+-                value = 'D';
+-            else if (value == '3')
+-                value = 'S';
+-            else if (value == '4')
+-                value = 'V';
+-            $('#estadoCivil').val(value);
+-
+-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
+-
+-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
+-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
+-
+-            //$('#TCanton').val(data.Canton);
+-            //$('#TDistrito').val(data.District);
+-            $('#otrasenas').val(data.AddressDetail);
+-
+-
+-
+-
+-
+-        }
++        app.ui.LlenarDatosTercero(data);
+     }
+ 
+     function terceros_controls_Events() {
+diff --git a/webapp/Views/Emision/Viajero.cshtml b/webapp/Views/Emision/Viajero.cshtml
+index 02c07dbb..c22fd35f 100644
+--- a/webapp/Views/Emision/Viajero.cshtml
++++ b/webapp/Views/Emision/Viajero.cshtml
+@@ -845,7 +845,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Emision.Viajero.js")"></script>
++    <script src="@Url.Content("~/Scripts/Emision.Viajero.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.Viajero.js")).Ticks)"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+             app.EmisionViajero.Init();
+diff --git a/webapp/Web.config b/webapp/Web.config
+index b5f8be5c..5507739c 100644
+--- a/webapp/Web.config
++++ b/webapp/Web.config
+@@ -44,6 +44,10 @@
+ 		<!-- Lista de CompanyId (separados por ';') cuyos usuarios se sincronizan con Okta -->
+ 		<add key="Okta.SyncUsers.Tenants"     value="3;4" />
+ 
++		<add key="Credid.Url"            value="https://ws.credid.net/ws/api/reporte" />
++		<add key="Credid.Token"          value="" />
++		<add key="Credid.TimeoutSeconds" value="10" />
++
+ 		<add key="Security.Login.RedirectUrl" value="/Aliados/Security/Login" />
+ 		<!-- Mensajes Settings -->
+ 		<add key="Message" value="" />
+diff --git a/webapp/app/js/core.ui.js b/webapp/app/js/core.ui.js
+index 089152af..86fe6ab5 100644
+--- a/webapp/app/js/core.ui.js
++++ b/webapp/app/js/core.ui.js
+@@ -832,6 +832,48 @@ app.ui = (function () {
+                 callbackDocumentType(value);
+             }
+         },
++        LlenarDatosTercero: function (data) {
++            let conFecha = $('#fechadenacimiento_group').data('DateTimePicker') !== undefined;
++            let seleccionar = function (selector, patron) {
++                let opcion = $(selector + ' option').filter(function () { return patron.test($(this).text()); }).first();
++                if (opcion.length)
++                    $(selector).val(opcion.val());
++            };
++
++            $('#nombre, #apellido1, #apellido2, #PhoneNumber, #correoelectronico, #numerodetelefono, #otrasenas').val('');
++            $('#tercerosMca_sexo, #estadoCivil, #TProvincia').val('');
++            $('#TCanton, #TDistrito').children().remove();
++            if (conFecha)
++                app.ui.SetDateValue('#fechadenacimiento', null);
++            if (data == null)
++                return;
++
++            $('#nombre').val(((data.FirstName || '') + ' ' + (data.MiddleName || '')).trim());
++            $('#apellido1').val(data.LastName || '');
++            $('#apellido2').val(data.SecondLastName || '');
++            $('#PhoneNumber, #numerodetelefono').val(data.PhoneNumber || '');
++            $('#correoelectronico').val(data.PrimaryEmailAddress || '');
++            $('#otrasenas').val(data.AddressDetail || '');
++
++            if (conFecha && data.BirthDate && moment(data.BirthDate).year() > 1900)
++                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
++
++            if (data.Gender == 1)
++                seleccionar('#tercerosMca_sexo', /^\s*masc/i);
++            else if (data.Gender == 2)
++                seleccionar('#tercerosMca_sexo', /^\s*fem/i);
++
++            let estados = { 1: /^\s*casad/i, 2: /^\s*divorc/i, 3: /^\s*solter/i, 4: /^\s*viud/i, 6: /uni[oó]n|libre|acompa/i, 7: /uni[oó]n|libre|acompa/i };
++            if (estados[data.CivilStatus])
++                seleccionar('#estadoCivil', estados[data.CivilStatus]);
++
++            if (data.Province > 0) {
++                $('#TProvincia').val(data.Province);
++                app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton > 0 ? data.Canton : null, false, null, 'cod_pais=CRI:cod_estado=');
++                if (data.Canton > 0)
++                    app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District > 0 ? data.District : null, false, null, 'cod_pais=CRI:cod_prov=');
++            }
++        },
+         DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocType) {
+             $(documentNumberElement).formatter({
+                 pattern: '',
+@@ -860,7 +902,7 @@ app.ui = (function () {
+                             apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
+                         }
+ 
+-                        app.core.Get(apiUrl, undefined, undefined, false).done(function (data, textStatus, jqXHR) {
++                        app.core.Get(apiUrl, undefined, undefined, !!localStorage.getItem('Token')).done(function (data, textStatus, jqXHR) {
+                             if (data != null && data.FirstName !== null) {
+                                 if (data.MiddleName === null) data.MiddleName = '';
+                                 if (data.LastName === null) data.LastName = '';
+@@ -1521,6 +1563,10 @@ app.ui = (function () {
+         LabelColorFormatter: function (value, row, index, field) {
+             return '<span class="label label-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
+         },
++        HasRole: function (roleName) {
++            let roles = JSON.parse(localStorage.getItem('Roles')) || [];
++            return roles.some(function (item) { return item.toLowerCase() === roleName.toLowerCase(); });
++        },
+         CommonBehaviour: function (custom) {
+             let roles = JSON.parse(localStorage.getItem('Roles'));
+             let tenant = localStorage.getItem('Tenant');

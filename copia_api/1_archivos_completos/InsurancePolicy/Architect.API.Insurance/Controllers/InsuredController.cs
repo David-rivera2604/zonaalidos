@@ -1,0 +1,276 @@
+﻿using Architect.API.Insurance.Contracts.Policy;
+using Architect.Utilities.Extensions;
+using Asp.Versioning;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
+
+namespace Architect.API.Insurance.Controllers
+{
+    /// <summary>
+    /// Permite la consulta centralizada de información de personas.
+    /// </summary>
+    [ApiVersion("1.0")]
+    [Authorize]
+    [RoutePrefix("api/v{version:apiVersion}/Insured")]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class InsuredController : ApiController
+    {
+
+        /// <summary>
+        /// Busqueda de información de residentes de Costa Rica.
+        /// </summary>
+        /// <param name="id">Identificación.</param>
+        /// <param name="docType">Tipo de identificación.</param>
+        /// <returns>Información de la personal.</returns>
+        [HttpGet]
+        [Route("{id}")]
+        [AllowAnonymous]
+        [ResponseType(typeof(Contracts.Policy.Insured))]
+        public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            Contracts.Policy.Insured result = null;
+            string verbose = string.Empty;
+
+            if (id.IsEmpty())
+            {
+                return BadRequest("Debe indicar la identificación");
+            }
+
+            verbose += "->tron";
+            result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+
+            if (result == null && tokenInfo.CompanyId == 11)   //Sur Química
+            {
+                verbose += "->thirdparty";
+                result = await Architect.Extend.Integrations.Aliados.Consultas.ThirdParty(id);
+            }
+            if (result == null)
+            {
+                verbose += "->Aliados";
+                result = await Architect.Extend.Integrations.Aliados.Consultas.RiskRoles(id);
+            }
+            if (result == null && tokenInfo.CompanyId == 1)   //Coopeservidores
+            {
+                verbose += "->coope";
+                result = Architect.Extend.Integrations.Coope.Consultas.ClientePorIdentificacion(id);
+            }
+            if (result == null)
+            {
+                verbose += "->padron";
+                result = await Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
+                verbose += "->ins";
+                Contracts.Policy.Insured result2 = await Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id.DocumentNumber(docType.ToString()), Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.DocTypeConvert(docType));
+
+                if (result2 != null)
+                {
+                    result = result2;
+                }
+            }
+
+            if (result == null && tokenInfo.UserId > 0)
+            {
+                verbose += "->credid";
+                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
+            }
+            else if (result != null && result.Source == "Padron" && tokenInfo.UserId > 0)
+            {
+                verbose += "->credid(completar)";
+                Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId));
+            }
+
+            //if (result == null)
+            //{
+            //    Task<Contracts.Policy.Insured> tron = Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+            //    Task<Contracts.Policy.Insured> ins = Architect.Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.PersonaPorIdentificacion(id.DocumentNumber(docType.ToString()), Extend.Integrations.InstitutoNacionalDeSeguros.Consultas.DocTypeConvert(docType));
+            //    Task<Contracts.Policy.Insured> padron = Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
+
+            //    var tasks = new[] { tron, ins, padron };
+            //    var taskLabels = new Dictionary<Task<Contracts.Policy.Insured>, string>
+            //    {
+            //        { tron, "->tron" },
+            //        { ins, "->ins" },
+            //        { padron, "->padron" }
+            //    };
+
+            //    var processingTasks = tasks.ToList();
+
+            //    while (processingTasks.Any())
+            //    {
+            //        Task<Contracts.Policy.Insured> ready = await Task.WhenAny(processingTasks).ConfigureAwait(false);
+            //        processingTasks.Remove(ready);
+
+            //        if (taskLabels.TryGetValue(ready, out string label))
+            //        {
+            //            verbose += label;
+            //        }
+
+            //        if (ready.Status == TaskStatus.RanToCompletion)
+            //        {
+            //            Contracts.Policy.Insured readyResult = await ready.ConfigureAwait(false);
+            //            if (readyResult != null)
+            //            {
+            //                result = readyResult;
+            //                processingTasks.Clear();
+            //                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado"), "integrations");
+            //            }
+            //        }
+            //    }
+            //    if (result == null)
+            //    {
+            //        Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
+            //    }
+            //}
+
+            if (result != null)
+            {
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado " + result.Source), "integrations");
+                result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
+            }
+            else
+            {
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
+            }
+            return Ok(result);
+        }
+
+        private static void Completar(Contracts.Policy.Insured persona, Contracts.Policy.Insured otra)
+        {
+            if (otra == null)
+            {
+                return;
+            }
+            if (persona.BirthDate.Year <= 1900 && otra.BirthDate.Year > 1900)
+            {
+                persona.BirthDate = otra.BirthDate;
+            }
+            if (persona.Gender != 1 && persona.Gender != 2 && (otra.Gender == 1 || otra.Gender == 2))
+            {
+                persona.Gender = otra.Gender;
+            }
+            if (persona.CivilStatus <= 0 && otra.CivilStatus > 0)
+            {
+                persona.CivilStatus = otra.CivilStatus;
+            }
+            if ((persona.Province <= 0 || persona.Canton <= 0 || persona.District <= 0) && otra.Province > 0 && otra.Canton > 0 && otra.District > 0)
+            {
+                persona.Province = otra.Province;
+                persona.Canton = otra.Canton;
+                persona.District = otra.District;
+            }
+            if (persona.PhoneNumber.IsEmpty() && otra.PhoneNumber.IsNotEmpty())
+            {
+                persona.PhoneNumber = otra.PhoneNumber;
+                persona.PhoneType = otra.PhoneType;
+            }
+            if (persona.PrimaryEmailAddress.IsEmpty() && otra.PrimaryEmailAddress.IsNotEmpty())
+            {
+                persona.PrimaryEmailAddress = otra.PrimaryEmailAddress;
+            }
+            if (persona.AddressDetail.IsEmpty() && otra.AddressDetail.IsNotEmpty())
+            {
+                persona.AddressDetail = otra.AddressDetail;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Recupera la información de un cuestionario, asociado a la identificación de un asegurado.
+        /// </summary>
+        /// <param name="id">Número de documento del asegurado</param>
+        /// <param name="name">Nombre del cuestionario</param>
+        /// <returns>Información del cuestionario</returns>
+        [HttpGet]
+        [Route("{id:int}/Questionary/{name}")]
+        [ResponseType(typeof(List<Architect.API.Insurance.Contracts.Policy.RiskQuestionnaires>))]
+        public async Task<IHttpActionResult> QuestionnairyByIdentification([FromUri] string id, [FromUri] string name)
+        {
+            Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            List<Architect.API.Insurance.Contracts.Policy.RiskQuestionnaires> result = null;
+            string verbose = string.Empty;
+            if (id.IsEmpty())
+
+
+
+                if (id.IsEmpty())
+                {
+                    return BadRequest("Debe indicar la identificación");
+                }
+
+            result = Architect.API.Insurance.Business.Policy.RiskQuestionnaires.RetrieveByDocumentNumber(id, name, tokenInfo.CompanyId);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Recupera la información de un cliente directamente desde Tron (sin consultar RiskRoles).
+        /// Usado por la pantalla de Administrar Cliente para reflejar cambios recién guardados.
+        /// </summary>
+        /// <param name="id">Número de documento del cliente</param>
+        /// <param name="docType">Tipo de documento</param>
+        [HttpGet]
+        [Route("Tron/{id}")]
+        [ResponseType(typeof(Contracts.Policy.Insured))]
+        public async Task<IHttpActionResult> InsuredByIdentificationTron([FromUri] string id, int docType = 1)
+        {
+            Contracts.Policy.Insured result = null;
+
+            if (id.IsEmpty())
+            {
+                return BadRequest("Debe indicar la identificación");
+            }
+
+            result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+
+            if (result != null)
+            {
+                result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("PostCambiosCliente")]
+        [Authorize]
+        public async Task<IHttpActionResult> PostCambiosCliente([FromBody] Insured item, [FromUri] string type)
+        {
+            ChangeDatosResult newcreate = ChangeDatosClientes.UpdateDatosCliente(item);
+            ChangeDatosResult newcreate2 = ChangeDatosClientes.UpdateClienteContacto(item);
+
+            return Ok(new { DatosCliente = newcreate, ClienteContacto = newcreate2 });
+        }
+
+        public partial class ChangeDatosResult
+        {
+
+            public Insured CambioClienteResponse { get; set; }
+            public int RowsAffected { get; set; }
+        }
+
+        public static partial class ChangeDatosClientes
+        {
+            public static ChangeDatosResult UpdateDatosCliente(Insured item)
+            {
+                Insured result = item;
+
+                int rows = Architect.Extend.Integrations.Tron.UpdateCliente.UpdateDatosCliente(result);
+
+                return new ChangeDatosResult() { CambioClienteResponse = result, RowsAffected = rows };
+            }
+            public static ChangeDatosResult UpdateClienteContacto(Insured item)
+            {
+                Insured result = item;
+
+                int rows = Architect.Extend.Integrations.Tron.UpdateCliente.UpdateClienteContacto(result);
+
+                return new ChangeDatosResult() { CambioClienteResponse = result, RowsAffected = rows };
+            }
+
+        }
+    }
+}
