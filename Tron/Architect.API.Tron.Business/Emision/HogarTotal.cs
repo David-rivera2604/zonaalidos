@@ -65,30 +65,9 @@ namespace Architect.API.Tron.Business.Emision
 
                     result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("HogarTotal", null, 0, tokenInfo);
 
-                if (mode == "continue")
-                {
-                    List<Core.Contracts.General.AttachmentView> attachments = Core.Business.General.Attachment.RetrieveByEntity(3000, Convert.ToInt64(presupuesto), tokenInfo.CompanyId);
+                result.documentosrequeridos = DocumentosAdjuntos.Completar(result.documentosrequeridos,
+                    Core.Business.General.Attachment.RetrieveByEntity(3000, Convert.ToInt64(presupuesto), tokenInfo.CompanyId));
 
-                    if (attachments?.Count > 0)
-                    {
-                        foreach (Core.Contracts.General.AttachmentView attachment in attachments)
-                        {
-                            result.documentosrequeridos.Add(new Contracts.Comun.DocumentoRequerido()
-                            {
-                                DStored = attachment.FileName,
-                                documentosrequeridosId = attachment.Id,
-                                tipo = "Genérico",
-                                DArchivoEsperado = attachment.FileName,
-                                DDescripcion = attachment.Description,
-                                DNombre = attachment.FileName,
-                                DFecha = attachment.UpdateDate,
-                                DTamano = attachment.FileSize,
-                                Grupo = "F"
-                            });
-                        }
-                    }
-
-                }
             }
 
             if (tryOnTron)

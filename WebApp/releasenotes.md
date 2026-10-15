@@ -1,6 +1,22 @@
 # Release Notes - Aliados
 
-## Versión 1.6.209
+## Versión 1.6.210
+
+### Aliados - Emisión: Adjuntos estandarizados en Viajero, Hogar Total, Multirriesgo, MapfreMasPlus y Estudiantil.
+
+#### Cambios implementados:
+
+- Se ajustaron las paginas de emisión para los siguientes ramos Viajero, Hogar Total, Multirriesgo, MapfreMasPlus y Estudiantil.
+- Se hizo un ajuste menor en la pagina de emisión apara el ramo MapfreMas para que quede 100% como las paginas del punto anterior.
+- La tarea en trello "Carga documentos desde Onedrive" quedo cubierta por este release. 
+- La tarea en trello "Poder arrastrar Documentos en la emision" quedo cubierta por este release. 
+
+#### Dependencias y despliegue:
+
+1. Publicar o ajustar los JSON de reglas.
+
+--
+# Versión 1.6.209
 
 ### Aliados - Panel Purdy: No visualizacion de datos módulo de Siniestros en Zona de Aliados.
 

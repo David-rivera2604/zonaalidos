@@ -32,34 +32,24 @@
   ],
   "DocumentosRequeridos": [
     {
-      "Role": "asegurado_fisico",
+      "Role": "_default_asegurado_fisico",
       "Detalles": [
         {
           "descripcion": "Copia de la cédula de identidad",
           "archivo": "CEDULA.docx",
-          "requerido": true
-        },
-
-        {
-          "descripcion": "Comprobante de pago",
-          "archivo": "Comprobante.pdf",
-          "requerido": true
+          "requerido": false,
+          "documentType": 20
         }
       ]
     },
     {
-      "Role": "asegurado_juridico",
+      "Role": "_default_asegurado_juridico",
       "Detalles": [
         {
           "descripcion": "Copia de la cédula de identidad",
           "archivo": "CEDULA.docx",
-          "requerido": true
-        },
-
-        {
-          "descripcion": "Comprobante de pago",
-          "archivo": "Comprobante.pdf",
-          "requerido": true
+          "requerido": false,
+          "documentType": 20
         }
       ]
     }
