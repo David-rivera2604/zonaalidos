@@ -8664,3 +8664,138 @@ body.Mapfre {
         margin: 0 !important;
         min-height: 40px !important;
     }
+
+.Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-title,
+.Mapfre #page-wrapper #quoteBlock > .ibox > .float-right {
+    float: none !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px;
+    padding: 16px 18px 12px !important;
+    text-align: left !important;
+    border-bottom: 1px solid var(--mf-line, #E3E5E8) !important;
+}
+
+    .Mapfre #page-wrapper #quoteBlock .ibox-title .ibox-tools {
+        position: static !important;
+        float: none !important;
+        margin: 0 !important;
+    }
+
+    .Mapfre #page-wrapper #quoteBlock .quote-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-title h4,
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-title h5,
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .float-right h4,
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .float-right h5 {
+        margin: 0 !important;
+        text-align: left !important;
+    }
+
+    .Mapfre #page-wrapper #quoteBlock .label-success {
+        float: none !important;
+        display: inline-block;
+        max-width: 100%;
+        margin: 0 !important;
+        padding: 4px 10px !important;
+        border-radius: 999px !important;
+        font-size: 11.5px !important;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-all;
+    }
+
+.Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-content {
+    padding: 16px 18px !important;
+}
+
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-content > .row {
+        margin: 0;
+    }
+
+        .Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-content > .row > [class*="col-"] {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+
+    .Mapfre #page-wrapper #quoteBlock .ibox-content h2 {
+        margin: 2px 0 12px !important;
+        line-height: 1.1;
+    }
+
+    .Mapfre #page-wrapper #quoteBlock .ibox-content table.small {
+        width: 100%;
+        font-size: 12.5px !important;
+    }
+
+        .Mapfre #page-wrapper #quoteBlock .ibox-content table.small tr {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 7px 0;
+            border-bottom: 1px dashed var(--mf-line, #E3E5E8);
+        }
+
+            .Mapfre #page-wrapper #quoteBlock .ibox-content table.small tr:last-child {
+                border-bottom: 0;
+            }
+
+        .Mapfre #page-wrapper #quoteBlock .ibox-content table.small td {
+            padding: 0 !important;
+            white-space: nowrap;
+        }
+
+            .Mapfre #page-wrapper #quoteBlock .ibox-content table.small td:first-child {
+                text-align: right !important;
+                font-weight: 700;
+                color: #2F3337;
+            }
+
+    .Mapfre #page-wrapper #quoteBlock .ibox-content hr {
+        margin: 12px 0 !important;
+    }
+
+    .Mapfre #page-wrapper #quoteBlock .ibox-content .m-t-sm {
+        margin-top: 0 !important;
+    }
+
+    .Mapfre #page-wrapper #quoteBlock .ibox-content .btn-group {
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+
+        .Mapfre #page-wrapper #quoteBlock .ibox-content .btn-group > .btn {
+            flex: 1 1 0;
+            min-width: 100px;
+            margin: 0 !important;
+            border-radius: 8px !important;
+            white-space: normal;
+        }
+
+.Mapfre #page-wrapper #quoteBlock > .ibox > .float-right > h5:has(+ .quote-title) {
+    display: none !important;
+}
+
+.Mapfre #page-wrapper #quoteBlock .ibox-tools h5 {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.Mapfre #page-wrapper #quoteBlock .ibox-tools h5::before,
+.Mapfre #page-wrapper #quoteBlock .ibox-tools h5::after {
+    content: none !important;
+    display: none !important;
+}
