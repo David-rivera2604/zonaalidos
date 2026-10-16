@@ -8564,3 +8564,81 @@ body.Mapfre {
         padding-right: 28px !important;
     }
 }
+
+.Mapfre #page-wrapper .newEmision {
+    text-align: left !important;
+    align-items: stretch !important;
+}
+
+@media (min-width: 768px) {
+    .Mapfre #page-wrapper .form-row > .col-md-1:has(.form-control),
+    .Mapfre #page-wrapper .row > .col-md-1:has(.form-control) {
+        min-width: 120px;
+    }
+
+    .Mapfre #page-wrapper .form-row > .col-md-1:has(.input-group .form-control),
+    .Mapfre #page-wrapper .row > .col-md-1:has(.input-group .form-control) {
+        min-width: 175px;
+    }
+}
+
+.Mapfre #page-wrapper .form-row > [class*="col-"] > .form-group:has(> .desi_InCase) {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+    .Mapfre #page-wrapper .form-row > [class*="col-"] > .form-group:has(> .desi_InCase) > .lab_desiCase {
+        order: -1 !important;
+        position: static !important;
+        margin-bottom: 6px;
+        color: inherit;
+        font-size: 12px !important;
+    }
+
+    .Mapfre #page-wrapper .form-group:has(> .desi_InCase) > .bar {
+        display: none;
+    }
+
+.Mapfre #page-wrapper .desi_InCase {
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid var(--mf-line, #E3E5E8) !important;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 13.5px;
+}
+
+@media (max-width: 767px) {
+    .Mapfre #page-wrapper .box-img-mant {
+        width: auto !important;
+        left: 16px;
+        right: 16px;
+        margin: 3rem 0 !important;
+    }
+}
+
+.Mapfre #page-wrapper .form-group.row > .col-form-label {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    text-align: left !important;
+    font-weight: 600 !important;
+}
+
+.Mapfre #page-wrapper .form-group.row > [class*="col-sm-"]:not(.col-form-label) {
+    flex: 0 0 100% !important;
+    max-width: 560px !important;
+}
+
+.Mapfre #page-wrapper .input-group:has(.dropdown-toggle) {
+    flex-wrap: wrap !important;
+}
+
+    .Mapfre #page-wrapper .input-group:has(.dropdown-toggle) > .form-control {
+        min-width: 110px;
+    }
+
+.Mapfre #page-wrapper .linesparkbottom canvas {
+    max-width: 100% !important;
+}
