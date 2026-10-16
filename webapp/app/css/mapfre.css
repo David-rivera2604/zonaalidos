@@ -8642,3 +8642,25 @@ body.Mapfre {
 .Mapfre #page-wrapper .linesparkbottom canvas {
     max-width: 100% !important;
 }
+
+.Mapfre #page-wrapper .form-group > label.float-right:empty {
+    display: none !important;
+}
+
+.Mapfre #page-wrapper .form-group:has(> label.float-right) > label:first-child {
+    display: inline-block !important;
+}
+
+.Mapfre #page-wrapper .form-group > label.float-right {
+    display: inline-block !important;
+    float: right;
+}
+
+.Mapfre #page-wrapper .input-group-btn {
+    display: flex;
+}
+
+    .Mapfre #page-wrapper .input-group-btn > .btn {
+        margin: 0 !important;
+        min-height: 40px !important;
+    }

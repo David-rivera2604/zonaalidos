@@ -182,6 +182,8 @@ button:not(.btn) {
 
     .mf-register-container .input-group input.form-control {
         border-radius: 0 12px 12px 0;
+        align-self: stretch;
+        height: auto;
     }
 
     .mf-register-container .input-group-prepend .btn.dropdown-toggle {
