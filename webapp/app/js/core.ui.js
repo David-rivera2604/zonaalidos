@@ -1797,3 +1797,58 @@ app.ui = (function () {
         }
     };
 })();
+
+$(function () {
+    let pendiente = null;
+
+    function etiquetaDe(col) {
+        let grupo = col.querySelector(':scope > .form-group');
+        if (!grupo) return null;
+        let label = grupo.querySelector(':scope > label, :scope > .control-label');
+        if (!label || label.offsetParent === null) return null;
+        let campo = grupo.querySelector(':scope > .form-control, :scope > select, :scope > .input-group, :scope > .custom-select');
+        return campo ? label : null;
+    }
+
+    function alinearFilas() {
+        let pagina = document.getElementById('page-wrapper');
+        if (!pagina) return;
+        pagina.querySelectorAll('label[data-mf-alto]').forEach(function (l) {
+            l.style.minHeight = '';
+            l.removeAttribute('data-mf-alto');
+        });
+        if (window.innerWidth < 768) return;
+        pagina.querySelectorAll('.form-row, .row').forEach(function (fila) {
+            let lineas = {};
+            Array.prototype.forEach.call(fila.children, function (col) {
+                if (col.offsetParent === null) return;
+                let label = etiquetaDe(col);
+                if (!label) return;
+                let top = Math.round(col.getBoundingClientRect().top);
+                (lineas[top] = lineas[top] || []).push(label);
+            });
+            Object.keys(lineas).forEach(function (k) {
+                let labels = lineas[k];
+                if (labels.length < 2) return;
+                let alto = Math.max.apply(null, labels.map(function (l) { return l.getBoundingClientRect().height; }));
+                labels.forEach(function (l) {
+                    if (l.getBoundingClientRect().height < alto - 1) {
+                        l.style.minHeight = alto + 'px';
+                        l.setAttribute('data-mf-alto', '1');
+                    }
+                });
+            });
+        });
+    }
+
+    function programar() {
+        clearTimeout(pendiente);
+        pendiente = setTimeout(alinearFilas, 150);
+    }
+
+    let pagina = document.getElementById('page-wrapper');
+    if (!pagina) return;
+    $(window).on('load resize', programar);
+    new MutationObserver(programar).observe(pagina, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+    programar();
+});
