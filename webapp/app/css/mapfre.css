@@ -8631,13 +8631,45 @@ body.Mapfre {
     max-width: 560px !important;
 }
 
-.Mapfre #page-wrapper .input-group:has(.dropdown-toggle) {
+.Mapfre #page-wrapper .input-group:has(.dropdown-toggle),
+.Mapfre #page-wrapper #clientesEdtForm .input-group:has(.dropdown-toggle) {
     flex-wrap: wrap !important;
 }
 
+.Mapfre #page-wrapper [class*="col-"] > .form-group > .input-group:has(.dropdown-toggle) {
+    container-type: inline-size;
+}
+
+.Mapfre #page-wrapper #clientesEdtForm .input-group:has(.dropdown-toggle) > #DocumentNumber {
+    flex: 1 1 220px !important;
+    min-width: 0;
+}
+
     .Mapfre #page-wrapper .input-group:has(.dropdown-toggle) > .form-control {
-        min-width: 110px;
+        flex: 1 1 200px !important;
+        min-width: 200px;
     }
+
+@container (max-width: 400px) {
+    .Mapfre #page-wrapper .input-group:has(.dropdown-toggle) > .input-group-prepend:has(.dropdown-toggle) {
+        flex: 1 1 auto;
+    }
+
+        .Mapfre #page-wrapper .input-group:has(.dropdown-toggle) > .input-group-prepend:has(.dropdown-toggle) > .dropdown-toggle {
+            width: 100%;
+            justify-content: space-between !important;
+            border-top-right-radius: 8px !important;
+            border-bottom-right-radius: 8px !important;
+        }
+
+    .Mapfre #page-wrapper .input-group:has(.dropdown-toggle) > .form-control,
+    .Mapfre #page-wrapper #clientesEdtForm .input-group:has(.dropdown-toggle) > #DocumentNumber {
+        flex: 1 1 100% !important;
+        min-width: 0;
+        margin: 6px 0 0 0 !important;
+        border-radius: 8px !important;
+    }
+}
 
 .Mapfre #page-wrapper .linesparkbottom canvas {
     max-width: 100% !important;
