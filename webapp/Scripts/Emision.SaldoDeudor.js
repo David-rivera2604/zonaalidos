@@ -74,6 +74,7 @@ app.EmisionSaldoDeudor = (function () {
                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#SaldoDeudorEdtForm')) {
 
                     $('#NumPoliza').html(data.num_poliza);
+                    app.Cotizacion.OpcionesDePago(data);
                     $('#cotizar').addClass('d-none');
                     $('.VerificarDomicilio').addClass('d-none');
                     $('#coberturasRow').removeClass('d-none');

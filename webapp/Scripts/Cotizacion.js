@@ -7,6 +7,7 @@ app.Cotizacion = (function () {
     let _data = {};
     let _monedaField = false;
     let _prefix = '';
+    let _pago = {};
 
     return {
         Imprimir: function (name, data) {
@@ -30,6 +31,39 @@ app.Cotizacion = (function () {
                             toastr.success(data, '', { timeOut: 7000, closeButton: true, progressBar: true });
                         }
                     });
+        },
+        OpcionesDePago: function (data) {
+            _pago = { num_poliza: data?.num_poliza, plandepago: data?.plandepago || [] };
+            $('#opcionesPagoGroup').toggleClass('d-none', !(_pago.num_poliza && app.ui.HasRole('Pago')));
+        },
+        PagarRecibo: function () {
+            let num_poliza = _pago.num_poliza;
+            if (!num_poliza) {
+                return;
+            }
+            let abrir = function (row) {
+                if (row == null) {
+                    toastr.warning('La póliza ' + num_poliza + ' no tiene recibos pendientes de pago', '', { timeOut: 7000, closeButton: true, progressBar: true });
+                    return;
+                }
+                app.core.LoadScriptFile('Payment.js').then(d => { app.Payment.Recibo(row, 310, 2); });
+            };
+            let respaldo = function () {
+                let cuota = _pago.plandepago.find(p => p.recibo > 0);
+                return cuota ? { NUM_POLIZA: num_poliza, NUM_RECIBO: cuota.recibo, COD_AGT: app.Cotizacion.AgentCode() || 0 } : null;
+            };
+            $('.ibox-content').toggleClass('sk-loading');
+            app.core.Get(app.setting.apipath + 'v1/datasource/json?id=310&sequence=2&url=')
+                .done(function (data) {
+                    let recibos = (data || []).filter(r => String(r.NUM_POLIZA) === String(num_poliza))
+                        .sort((a, b) => a.NUM_RECIBO - b.NUM_RECIBO);
+                    $('.ibox-content').toggleClass('sk-loading');
+                    abrir(recibos.length > 0 ? recibos[0] : respaldo());
+                })
+                .fail(function () {
+                    $('.ibox-content').toggleClass('sk-loading');
+                    abrir(respaldo());
+                });
         },
         ImprimirPoliza: function (num_poliza, num_riesgo) {
             app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + num_poliza + "/" + num_riesgo, false, 'Mapfre Certificado.pdf');
@@ -247,3 +281,8 @@ app.Cotizacion = (function () {
         }
     };
 })();
+
+$(document).on('click', '#opcionesPago', function (e) {
+    e.preventDefault();
+    app.Cotizacion.PagarRecibo();
+});

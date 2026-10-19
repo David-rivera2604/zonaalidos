@@ -29,6 +29,7 @@ app.EmisionAccidentesPersonales = (function () {
                     $('#plandepagoRow').removeClass('d-none');
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
+                    app.Cotizacion.OpcionesDePago(data);
                     //$('#emitir').html('Emision Procesada');
                     $("#emitir").css("display", "none");
                     $('#emitir').addClass('d-none');

@@ -59,6 +59,7 @@ app.EmisionMultirriesgo = (function () {
 
 
                     $('#NumPoliza').html(data.num_poliza);
+                    app.Cotizacion.OpcionesDePago(data);
 
 
                     $('#cotizar').addClass('d-none');

@@ -136,6 +136,7 @@ app.EmisionMapfreMasPlus = (function () {
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
+                    app.Cotizacion.OpcionesDePago(data);
                     $('#cotizar').addClass('d-none');
                     $('.VerificarDomicilio').addClass('d-none');
                     ReadOnly_End();

@@ -8831,3 +8831,8 @@ body.Mapfre {
     content: none !important;
     display: none !important;
 }
+
+.Mapfre #page-wrapper #quoteBlock .ibox-content #opcionesPagoGroup,
+.Mapfre #page-wrapper #opcionesPagoGroup {
+    margin-top: 8px !important;
+}
