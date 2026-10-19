@@ -429,7 +429,7 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
     <script src="@Url.Content("~/Scripts/HogarTotal.Cotizacion.js")"></script>
     <script type="text/javascript">
         $(document).ready(function () {

@@ -34,7 +34,14 @@ app.Cotizacion = (function () {
         },
         OpcionesDePago: function (data) {
             _pago = { num_poliza: data?.num_poliza, plandepago: data?.plandepago || [] };
-            $('#opcionesPagoGroup').toggleClass('d-none', !(_pago.num_poliza && app.ui.HasRole('Pago')));
+            let roles = [];
+            try {
+                roles = JSON.parse(localStorage.getItem('Roles')) || [];
+            } catch (e) {
+                roles = [];
+            }
+            let puedePagar = roles.some(r => String(r).toLowerCase() === 'pago');
+            $('#opcionesPagoGroup').toggleClass('d-none', !(_pago.num_poliza && puedePagar));
         },
         PagarRecibo: function () {
             let num_poliza = _pago.num_poliza;

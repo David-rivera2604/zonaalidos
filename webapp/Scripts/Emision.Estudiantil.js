@@ -35,7 +35,7 @@ app.EmisionEstudiantil = (function () {
 
 
                     $('#NumPoliza').html(data.num_poliza);
-                    app.Cotizacion.OpcionesDePago(data);
+                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
                     EnviarCertificadoTomador(data);
                     //$('#emitir').html('Emision Procesada');
                     $("#emitir").css("display", "none");
