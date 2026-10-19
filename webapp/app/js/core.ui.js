@@ -13,7 +13,7 @@ app.ui = (function () {
         };
         return str.replace(/[áéíóúüñÁÉÍÓÚÜÑ]/g, char => charMap[char] || char);
     }
-    
+
     function applyIdentificationDocumentTypeFormat(element, value) {
         switch (value) {
             case 1: //Cédula física 9 
@@ -38,7 +38,7 @@ app.ui = (function () {
                 break;
         }
     }
-    
+
     function compareValues(value1, value2, options) {
         const {
             caseInsensitive = true,
@@ -265,17 +265,17 @@ app.ui = (function () {
         function triggerEventHandlers(element) {
             const $elem = $(element);
             const eventos = jQuery._data(element, 'events');
-            
+
             // Primero intenta disparar change
             if (eventos && eventos.change && eventos.change.length > 0) {
                 $elem.change();
             }
-            
+
             // Si no existe change, intenta disparar blur
             if (eventos && eventos.blur && eventos.blur.length > 0) {
                 $elem.blur();
             }
-            
+
             return false;
         }
 
@@ -832,6 +832,48 @@ app.ui = (function () {
                 callbackDocumentType(value);
             }
         },
+        LlenarDatosTercero: function (data) {
+            let conFecha = $('#fechadenacimiento_group').data('DateTimePicker') !== undefined;
+            let seleccionar = function (selector, patron) {
+                let opcion = $(selector + ' option').filter(function () { return patron.test($(this).text()); }).first();
+                if (opcion.length)
+                    $(selector).val(opcion.val());
+            };
+
+            $('#nombre, #apellido1, #apellido2, #PhoneNumber, #correoelectronico, #numerodetelefono, #otrasenas').val('');
+            $('#tercerosMca_sexo, #estadoCivil, #TProvincia').val('');
+            $('#TCanton, #TDistrito').children().remove();
+            if (conFecha)
+                app.ui.SetDateValue('#fechadenacimiento', null);
+            if (data == null)
+                return;
+
+            $('#nombre').val(((data.FirstName || '') + ' ' + (data.MiddleName || '')).trim());
+            $('#apellido1').val(data.LastName || '');
+            $('#apellido2').val(data.SecondLastName || '');
+            $('#PhoneNumber, #numerodetelefono').val(data.PhoneNumber || '');
+            $('#correoelectronico').val(data.PrimaryEmailAddress || '');
+            $('#otrasenas').val(data.AddressDetail || '');
+
+            if (conFecha && data.BirthDate && moment(data.BirthDate).year() > 1900)
+                app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
+
+            if (data.Gender == 1)
+                seleccionar('#tercerosMca_sexo', /^\s*masc/i);
+            else if (data.Gender == 2)
+                seleccionar('#tercerosMca_sexo', /^\s*fem/i);
+
+            let estados = { 1: /^\s*casad/i, 2: /^\s*divorc/i, 3: /^\s*solter/i, 4: /^\s*viud/i, 6: /uni[oó]n|libre|acompa/i, 7: /uni[oó]n|libre|acompa/i };
+            if (estados[data.CivilStatus])
+                seleccionar('#estadoCivil', estados[data.CivilStatus]);
+
+            if (data.Province > 0) {
+                $('#TProvincia').val(data.Province);
+                app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton > 0 ? data.Canton : null, false, null, 'cod_pais=CRI:cod_estado=');
+                if (data.Canton > 0)
+                    app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District > 0 ? data.District : null, false, null, 'cod_pais=CRI:cod_prov=');
+            }
+        },
         DocumentNumberHandler: function (documentNumberElement, callbackDone, callbackDocType) {
             $(documentNumberElement).formatter({
                 pattern: '',
@@ -860,7 +902,7 @@ app.ui = (function () {
                             apiUrl = app.setting.apipath + 'v1/Insured/' + (docType != 1 && docType != 2 ? encodedDocNum : parseInt(0 + $(documentNumberElement).val().replace(/-/g, ''), 10)) + '?docType=' + docType;
                         }
 
-                        app.core.Get(apiUrl, undefined, undefined).done(function (data, textStatus, jqXHR) {
+                        app.core.Get(apiUrl, undefined, undefined, !!localStorage.getItem('Token')).done(function (data, textStatus, jqXHR) {
                             if (data != null && data.FirstName !== null) {
                                 if (data.MiddleName === null) data.MiddleName = '';
                                 if (data.LastName === null) data.LastName = '';
@@ -1521,7 +1563,6 @@ app.ui = (function () {
         LabelColorFormatter: function (value, row, index, field) {
             return '<span class="label label-' + (app.ViewerQuery.state[field][value] || app.ViewerQuery.state[field]['_']) + '">' + app.ui.StringCapitalizeFormatter(value) + '</span>';
         },
-        // Chequeo de rol insensible a mayusculas/minusculas
         HasRole: function (roleName) {
             let roles = JSON.parse(localStorage.getItem('Roles')) || [];
             return roles.some(function (item) { return item.toLowerCase() === roleName.toLowerCase(); });
@@ -1756,3 +1797,58 @@ app.ui = (function () {
         }
     };
 })();
+
+$(function () {
+    let pendiente = null;
+
+    function etiquetaDe(col) {
+        let grupo = col.querySelector(':scope > .form-group');
+        if (!grupo) return null;
+        let label = grupo.querySelector(':scope > label, :scope > .control-label');
+        if (!label || label.offsetParent === null) return null;
+        let campo = grupo.querySelector(':scope > .form-control, :scope > select, :scope > .input-group, :scope > .custom-select');
+        return campo ? label : null;
+    }
+
+    function alinearFilas() {
+        let pagina = document.getElementById('page-wrapper');
+        if (!pagina) return;
+        pagina.querySelectorAll('label[data-mf-alto]').forEach(function (l) {
+            l.style.minHeight = '';
+            l.removeAttribute('data-mf-alto');
+        });
+        if (window.innerWidth < 768) return;
+        pagina.querySelectorAll('.form-row, .row').forEach(function (fila) {
+            let lineas = {};
+            Array.prototype.forEach.call(fila.children, function (col) {
+                if (col.offsetParent === null) return;
+                let label = etiquetaDe(col);
+                if (!label) return;
+                let top = Math.round(col.getBoundingClientRect().top);
+                (lineas[top] = lineas[top] || []).push(label);
+            });
+            Object.keys(lineas).forEach(function (k) {
+                let labels = lineas[k];
+                if (labels.length < 2) return;
+                let alto = Math.max.apply(null, labels.map(function (l) { return l.getBoundingClientRect().height; }));
+                labels.forEach(function (l) {
+                    if (l.getBoundingClientRect().height < alto - 1) {
+                        l.style.minHeight = alto + 'px';
+                        l.setAttribute('data-mf-alto', '1');
+                    }
+                });
+            });
+        });
+    }
+
+    function programar() {
+        clearTimeout(pendiente);
+        pendiente = setTimeout(alinearFilas, 150);
+    }
+
+    let pagina = document.getElementById('page-wrapper');
+    if (!pagina) return;
+    $(window).on('load resize', programar);
+    new MutationObserver(programar).observe(pagina, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+    programar();
+});

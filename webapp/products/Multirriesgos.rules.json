@@ -194,12 +194,14 @@
         {
           "descripcion": "Cédula de cliente por ambos lados",
           "archivo": "Cédula_del_cliente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         }
       ]
     },
@@ -209,12 +211,14 @@
         {
           "descripcion": "Cédula de cliente por ambos lados",
           "archivo": "Cédula_del_cliente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         }
       ]
     },
@@ -224,7 +228,8 @@
         {
           "descripcion": "Documentación digitalizada",
           "archivo": "Documentos.docx",
-          "requerido": true
+          "requerido": true,
+          "documentType": 23
         }
       ]
     },
@@ -234,7 +239,8 @@
         {
           "descripcion": "Documentación digitalizada",
           "archivo": "Documentos.docx",
-          "requerido": true
+          "requerido": true,
+          "documentType": 23
         }
       ]
     },
@@ -245,22 +251,26 @@
         {
           "descripcion": "Formulario de inspección",
           "archivo": "inspección.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 22
         },
         {
           "descripcion": "Fotos o facturas",
           "archivo": "fotos.pdf,facturas.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         },
         {
           "descripcion": "Solicitud de inscripción",
           "archivo": "inscripción.pdf",
-          "requerido": false
+          "requerido": false,
+          "documentType": 30
         },
         {
           "descripcion": "Solicitud de seguro firmada",
           "archivo": "SolicitudFirmada.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 28
         }
       ]
     },
@@ -271,12 +281,14 @@
         {
           "descripcion": "Factura proforma",
           "archivo": "proforma.pdf",
-          "requerido": false
+          "requerido": false,
+          "documentType": 26
         },
         {
           "descripcion": "Solicitud de seguro firmada",
           "archivo": "SolicitudFirmada.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 28
         }
       ]
     },
@@ -286,12 +298,14 @@
         {
           "descripcion": "Carta Cumplimentada",
           "archivo": "Carta-Cumplimentada.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 25
         },
         {
           "descripcion": "Factura Proforma",
           "archivo": "Factura-Proforma.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 26
         }
       ]
     },
@@ -301,12 +315,14 @@
         {
           "descripcion": "Cédula de cliente por ambos lados",
           "archivo": "Cédula_del_cliente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         }
       ]
     }

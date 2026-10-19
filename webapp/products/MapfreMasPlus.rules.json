@@ -253,16 +253,19 @@
       "Detalles": [
         {
           "descripcion": "Cédula de cliente vigente por ambos lados",
+          "documentType": 20,
           "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
           "requerido": true
         },
         {
           "descripcion": "Fotos del Riesgo",
+          "documentType": 21,
           "archivo": "Fotos_del_riesgo.pdf",
           "requerido": true
         },
         {
           "descripcion": "Formulario de Inspección",
+          "documentType": 22,
           "archivo": "Formulario_de_Inspeccion.pdf",
           "requerido": true
         }
@@ -273,16 +276,19 @@
       "Detalles": [
         {
           "descripcion": "Cédula de cliente vigente por ambos lados",
+          "documentType": 20,
           "archivo": "Cédula_del_cliente_vigente_ambos_lados.pdf",
           "requerido": true
         },
         {
           "descripcion": "Fotos del Riesgo",
+          "documentType": 21,
           "archivo": "Fotos_del_riesgo.pdf",
           "requerido": true
         },
         {
           "descripcion": "Formulario de Inspección",
+          "documentType": 22,
           "archivo": "Formulario_de_Inspeccion.pdf",
           "requerido": true
         }
@@ -293,6 +299,7 @@
       "Detalles": [
         {
           "descripcion": "Documentación digitalizada",
+          "documentType": 23,
           "archivo": "Documentos.docx",
           "requerido": true
         }
@@ -303,6 +310,7 @@
       "Detalles": [
         {
           "descripcion": "Documentación digitalizada",
+          "documentType": 23,
           "archivo": "Documentos.docx",
           "requerido": true
         }
@@ -314,21 +322,25 @@
       "Detalles": [
         {
           "descripcion": "Formulario de inspección",
+          "documentType": 22,
           "archivo": "inspección.pdf",
           "requerido": true
         },
         {
           "descripcion": "Fotos o facturas",
+          "documentType": 21,
           "archivo": "fotos.pdf,facturas.pdf",
           "requerido": true
         },
         {
           "descripcion": "Solicitud de inscripción",
+          "documentType": 30,
           "archivo": "inscripción.pdf",
           "requerido": false
         },
         {
           "descripcion": "Solicitud de seguro firmada",
+          "documentType": 28,
           "archivo": "SolicitudFirmada.pdf",
           "requerido": true
         }
@@ -340,11 +352,13 @@
       "Detalles": [
         {
           "descripcion": "Factura proforma",
+          "documentType": 26,
           "archivo": "proforma.pdf",
           "requerido": false
         },
         {
           "descripcion": "Solicitud de seguro firmada",
+          "documentType": 28,
           "archivo": "SolicitudFirmada.pdf",
           "requerido": true
         }
@@ -355,11 +369,13 @@
       "Detalles": [
         {
           "descripcion": "Carta Cumplimentada",
+          "documentType": 25,
           "archivo": "Carta-Cumplimentada.pdf",
           "requerido": true
         },
         {
           "descripcion": "Factura Proforma",
+          "documentType": 26,
           "archivo": "Factura-Proforma.pdf",
           "requerido": true
         }

@@ -23,10 +23,11 @@ namespace Architect.API.Insurance.Controllers
         /// Busqueda de información de residentes de Costa Rica.
         /// </summary>
         /// <param name="id">Identificación.</param>
-        /// <param name="docType">Tipo de identificación.</param>                 
+        /// <param name="docType">Tipo de identificación.</param>
         /// <returns>Información de la personal.</returns>
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         [ResponseType(typeof(Contracts.Policy.Insured))]
         public async Task<IHttpActionResult> InsuredByIdentification([FromUri] string id, int docType = 1)
         {
@@ -38,12 +39,15 @@ namespace Architect.API.Insurance.Controllers
             {
                 return BadRequest("Debe indicar la identificación");
             }
+
+            verbose += "->tron";
+            result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
+
             if (result == null && tokenInfo.CompanyId == 11)   //Sur Química
             {
                 verbose += "->thirdparty";
                 result = await Architect.Extend.Integrations.Aliados.Consultas.ThirdParty(id);
             }
-
             if (result == null)
             {
                 verbose += "->Aliados";
@@ -56,11 +60,6 @@ namespace Architect.API.Insurance.Controllers
             }
             if (result == null)
             {
-                verbose += "->tron";
-                result = await Architect.Extend.Integrations.Tron.Consultas.TerceroPorIdentificacion(id, docType);
-            }
-            if (result == null)
-            {
                 verbose += "->padron";
                 result = await Architect.Extend.Integrations.My.Consultas.PersonaPorIdentificacion(id);
                 verbose += "->ins";
@@ -70,6 +69,17 @@ namespace Architect.API.Insurance.Controllers
                 {
                     result = result2;
                 }
+            }
+
+            if (result == null && tokenInfo.UserId > 0)
+            {
+                verbose += "->credid";
+                result = await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId);
+            }
+            else if (result != null && result.Source == "Padron" && tokenInfo.UserId > 0)
+            {
+                verbose += "->credid(completar)";
+                Completar(result, await Architect.Extend.Integrations.Credid.Consultas.PersonaPorIdentificacion(id, docType, tokenInfo.UserName, tokenInfo.Identification, "Aliados " + tokenInfo.CompanyId));
             }
 
             //if (result == null)
@@ -117,10 +127,53 @@ namespace Architect.API.Insurance.Controllers
 
             if (result != null)
             {
-                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado"), "integrations");
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "encontrado " + result.Source), "integrations");
                 result.FullName = result.FirstName.CompleteFullName(result.MiddleName, result.LastName, result.SecondLastName);
             }
+            else
+            {
+                Utilities.Log.WarningLog("InsuredByIdentification", string.Format("{1} Id={0} {2}", id, verbose, "no encontrado"), "integrations");
+            }
             return Ok(result);
+        }
+
+        private static void Completar(Contracts.Policy.Insured persona, Contracts.Policy.Insured otra)
+        {
+            if (otra == null)
+            {
+                return;
+            }
+            if (persona.BirthDate.Year <= 1900 && otra.BirthDate.Year > 1900)
+            {
+                persona.BirthDate = otra.BirthDate;
+            }
+            if (persona.Gender != 1 && persona.Gender != 2 && (otra.Gender == 1 || otra.Gender == 2))
+            {
+                persona.Gender = otra.Gender;
+            }
+            if (persona.CivilStatus <= 0 && otra.CivilStatus > 0)
+            {
+                persona.CivilStatus = otra.CivilStatus;
+            }
+            if ((persona.Province <= 0 || persona.Canton <= 0 || persona.District <= 0) && otra.Province > 0 && otra.Canton > 0 && otra.District > 0)
+            {
+                persona.Province = otra.Province;
+                persona.Canton = otra.Canton;
+                persona.District = otra.District;
+            }
+            if (persona.PhoneNumber.IsEmpty() && otra.PhoneNumber.IsNotEmpty())
+            {
+                persona.PhoneNumber = otra.PhoneNumber;
+                persona.PhoneType = otra.PhoneType;
+            }
+            if (persona.PrimaryEmailAddress.IsEmpty() && otra.PrimaryEmailAddress.IsNotEmpty())
+            {
+                persona.PrimaryEmailAddress = otra.PrimaryEmailAddress;
+            }
+            if (persona.AddressDetail.IsEmpty() && otra.AddressDetail.IsNotEmpty())
+            {
+                persona.AddressDetail = otra.AddressDetail;
+            }
         }
 
 

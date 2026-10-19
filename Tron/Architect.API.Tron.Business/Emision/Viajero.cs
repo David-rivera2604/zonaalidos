@@ -52,6 +52,8 @@ namespace Architect.API.Tron.Business.Emision
                     result.terceros = Reglas.research.Apply_Terceros("Viajero", result.terceros, string.Empty, result.num_contrato, tokenInfo);
 
                     result.documentosrequeridos = Reglas.research.Apply_DocumentosRequeridos("Viajero", null, 0, tokenInfo);
+                    result.documentosrequeridos = DocumentosAdjuntos.Completar(result.documentosrequeridos,
+                        Core.Business.General.Attachment.RetrieveByEntity(3000, Convert.ToInt64(presupuesto), tokenInfo.CompanyId));
 
                 }
             }

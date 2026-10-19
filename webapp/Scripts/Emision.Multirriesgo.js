@@ -5,7 +5,6 @@ app.EmisionMultirriesgo = (function () {
     var workMode = '';
     var setupData = null;
     var showCalculate = false;
-    var rowDocumentosrequeridos = null;
     var pageTranslations = null;
 
     function Setup() {
@@ -68,7 +67,7 @@ app.EmisionMultirriesgo = (function () {
                     $('#anodeconstruccion').replaceWith('<div>' + $('#anodeconstruccion').val() + '</div>');
 
                     $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
-                    $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
+                    $('#dropzone').fileUploader('readOnly', true);
 
 
                     $('#mainBlock').removeClass('col-md-12');
@@ -138,15 +137,12 @@ app.EmisionMultirriesgo = (function () {
 
         //$('#tercerosNew').addClass('d-none');
         //$('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
-        //$('#documentosrequeridosNew').addClass('d-none');
-        //$('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
     };
 
     function ReadOnly_End() {
         $('#tercerosNew').addClass('d-none');
         $('#tercerosTbl').bootstrapTable('hideColumn', 'Actions');
-        $('#documentosrequeridosNew').addClass('d-none');
-        $('#documentosrequeridosTbl').bootstrapTable('hideColumn', 'Actions');
+        $('#dropzone').fileUploader('readOnly', true);
         $('#formulariosNew').addClass('d-none');
         $('#formulariosTbl').bootstrapTable('hideColumn', 'Actions');
     }
@@ -214,7 +210,7 @@ app.EmisionMultirriesgo = (function () {
         data.tip_firma = $('#tip_firma').val();
         data.tip_firmaDesc = $("#tip_firma option:selected").text();
         data.correoenvio = $('#correoenvio').val();
-        data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
+        data.documentosrequeridos = app.EmisionAdjuntos.read($('#dropzone'));
         data.kyc = null;
         let formulariosDatakyc = $('#formulariosTbl').bootstrapTable('getData');
         if (formulariosDatakyc.length > 0) {
@@ -245,10 +241,7 @@ app.EmisionMultirriesgo = (function () {
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
         else
             $('#tercerosTbl').bootstrapTable('load', {});
-        if (data.documentosrequeridos != null)
-            $('#documentosrequeridosTbl').bootstrapTable('load', data.documentosrequeridos);
-        else
-            $('#documentosrequeridosTbl').bootstrapTable('load', {});
+        app.EmisionAdjuntos.load($('#dropzone'), data.documentosrequeridos, data.presupuesto, 'Multirriesgo');
         if (data.coberturas != null)
             $('#coberturasTbl').bootstrapTable('load', data.coberturas);
         else
@@ -306,10 +299,7 @@ app.EmisionMultirriesgo = (function () {
             $('#tercerosTbl').bootstrapTable('load', data.terceros);
         else
             $('#tercerosTbl').bootstrapTable('load', {});
-        if (data.documentosrequeridos != null)
-            $('#documentosrequeridosTbl').bootstrapTable('load', data.documentosrequeridos);
-        else
-            $('#documentosrequeridosTbl').bootstrapTable('load', {});
+        app.EmisionAdjuntos.load($('#dropzone'), data.documentosrequeridos, data.presupuesto, 'Multirriesgo');
         if (data.coberturas != null)
             $('#coberturasTbl').bootstrapTable('load', data.coberturas);
         else
@@ -702,7 +692,8 @@ app.EmisionMultirriesgo = (function () {
             }
             event.preventDefault();
         });
-        $('#cotizar').click(function () {
+        $('#cotizar').click(function (event) {
+            if (!app.EmisionAdjuntos.canSubmit($('#dropzone'))) { event.preventDefault(); return; }
             var others = OtherValidations();
             var detalle = detalle_validations();
 
@@ -726,7 +717,8 @@ app.EmisionMultirriesgo = (function () {
             event.preventDefault();
         });
 
-        $('#guardarenviar').click(function () {
+        $('#guardarenviar').click(function (event) {
+            if (!app.EmisionAdjuntos.canSubmit($('#dropzone'))) { event.preventDefault(); return; }
             var others = OtherValidations();
             var detalle = detalle_validations();
 
@@ -995,7 +987,7 @@ app.EmisionMultirriesgo = (function () {
             showCalculate = false;
         }
         $('#tercerosTbl-error').addClass('d-none');
-        $('#documentosrequeridosTbl-error').addClass('d-none');
+        $('#AttachmentTbl-error').addClass('d-none');
     };
 
     function OtherValidations() {
@@ -1003,7 +995,6 @@ app.EmisionMultirriesgo = (function () {
         var grupo = 'F';
         let message = 'Debe indicar la información de terceros';
         var terceros = $('#tercerosTbl').bootstrapTable('getData');
-        var documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
         let terceroserrors = (terceros.length === 0);
 
         if (!terceroserrors && (workMode === 'draft' || workMode === 'resume')) {
@@ -1030,13 +1021,10 @@ app.EmisionMultirriesgo = (function () {
 
         if (workMode != 'draft' && workMode != 'resume') {
             var grupo = 'F';
-            let documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
-            let lista = documentosrequeridos.filter(function (row) {
-                return (row.DStored === null || row.DStored === '');
-            });
+            let lista = $('#dropzone').fileUploader('pendingExpectedDocuments');
             if (lista.length > 0) {
-                $('#documentosrequeridosTbl-error').html('Debe cargar todos los documentos pendientes');
-                $('#documentosrequeridosTbl-error').removeClass('d-none');
+                $('#AttachmentTbl-error').html('Debe cargar todos los documentos pendientes');
+                $('#AttachmentTbl-error').removeClass('d-none');
                 result = result + 1;
             }
         }
@@ -1725,43 +1713,7 @@ app.EmisionMultirriesgo = (function () {
     };
 
     function terceros_documentNumberCallBack(data) {
-        if (data != null) {
-            $('#nombre').val((data.FirstName + ' ' + data.MiddleName).trim());
-            $('#apellido1').val(data.LastName);
-            $('#apellido2').val(data.SecondLastName);
-            $('#PhoneNumber').val(data.PhoneNumber);
-            app.ui.SetDateValue('#fechadenacimiento', data.BirthDate);
-            $('#tercerosMca_sexo').val(data.Gender == 2 ? 1 : 2);
-            let value = data.CivilStatus;
-            if (value == '1')
-                value = 'C';
-            else if (value == '2')
-                value = 'D';
-            else if (value == '3')
-                value = 'S';
-            else if (value == '4')
-                value = 'V';
-            $('#estadoCivil').val(value);
-            $('#TProvincia').val(data.Province);
-            $('#correoelectronico').val(data.PrimaryEmailAddress);
-            $('#numerodetelefono').val(data.PhoneNumber);
-
-
-
-            //function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url) {
-
-            app.core.LookupDependency(data.Province, 'TCanton', 'Cantones', '', data.Canton, false, null, 'cod_pais=CRI:cod_estado=');
-            app.core.LookupDependency(data.Canton, 'TDistrito', 'Distritos', '', data.District, false, null, 'cod_pais=CRI:cod_prov=');
-
-            //$('#TCanton').val(data.Canton);
-            //$('#TDistrito').val(data.District);
-            $('#otrasenas').val(data.AddressDetail);
-
-
-
-
-
-        }
+        app.ui.LlenarDatosTercero(data);
     }
 
     function terceros_controls_Events() {
@@ -1807,386 +1759,16 @@ app.EmisionMultirriesgo = (function () {
     };
 
 
-    function documentosrequeridos_table_setup() {
-
-        $('#documentosrequeridosTbl').bootstrapTable({
-            uniqueId: 'documentosrequeridosId',
-            classes: 'table table-bordered table-hover table-index table-in-form',
-            pagination: false,
-            smartDisplay: true,
-            detailView: false,
-            detailFormatter: 'app.ui.GenericDetailFormatter',
-            columns: [
-                {
-                    field: 'DStored',
-                    title: 'Estado',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: function (value, row, index, field) {
-
-                        if (row.DStored === null || row.DStored === '') {
-                            return '<span class="label label-danger">Pendiente</span>';
-                        }
-                        else {
-                            return '<span class="label label-success">Listo</span>';
-                        }
-
-                    },
-                    visible: true,
-                    width: 10,
-                    widthUnit: '%'
-                }, {
-                    field: 'tipo',
-                    title: 'Tipo de documento',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: function (value, row, index, field) {
-                        if (row.tipo == 'Genérico') {
-                            return '<span><i class="fa fa-paperclip"></i> ' + row.DDescripcion + ' (' + value + ')</span>';
-                        }
-                        else {
-                            return '<span><i class="fa fa-paperclip"></i> ' + value + '</span>';
-                        }
-                    },
-                    visible: true,
-                    width: 40,
-                    widthUnit: '%'
-                }, {
-                    field: 'DNombre',
-                    title: 'Archivo',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: true,
-                    width: 20,
-                    widthUnit: '%'
-                }, {
-                    field: 'DArchivoEsperado',
-                    title: 'Archivoeseperado',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'Grupo',
-                    title: 'Grupo',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'left',
-                    formatter: 'app.ui.StringFormatter',
-                    visible: false
-                }, {
-                    field: 'DFecha',
-                    title: 'Fecha',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: 'app.ui.DateAndTimeFormatter',
-                    visible: true,
-                    width: 20,
-                    widthUnit: '%'
-                }, {
-                    field: 'DTamano',
-                    title: 'Tamaño',
-                    titleTooltip: '',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    formatter: function (value, row, index, field) {
-                        if (value === null || value === 0)
-                            return '';
-                        else
-                            return parseInt(value / 1024) + 'kb';
-                    },
-                    visible: true,
-                    width: 10,
-                    widthUnit: '%'
-                }, {
-                    field: 'Actions',
-                    title: 'Acciones',
-                    class: 'd-none d-sm-table-cell',
-                    titleTooltip: 'Acciones disponibles para un visualizations',
-                    sortable: false,
-                    halign: 'center',
-                    align: 'center',
-                    width: 10,
-                    widthUnit: "%",
-                    visible: true,
-                    events: 'documentosrequeridosTbl_Events',
-                    formatter: function (value, row, index, field) {
-                        var html = [];
-                        if (row.tipo == 'Genérico') {
-                            html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la edición de los datos del documento"> <i class="fa fa-pencil"></i> </button>');
-                            html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar el documento"> <i class="fa fa-eraser"></i> </button>');
-                        } else {
-                            html.push('<button type="button" class="btn btn-sm btn-white edit" title="Al hacer click permite la carga del documento requerido"> <i class="fa fa-upload"></i> </button>');
-                            html.push('<button type="button" class="btn btn-sm btn-white delete" title="Al hacer click permite eliminar el documento agregado de la fila"> <i class="fa fa-recycle"></i> </button>');
-                        }
-                        return html.join('');
-                    },
-                    cellStyle: function (value, row, index) {
-                        return {
-                            css: {
-                                'white-space': 'nowrap',
-                                'vertical-align': 'top'
-                            }
-                        }
-                    }
-                }]
+    function attachments_controls_setup() {
+        $('#AttachmentTitleText').text('Documentos requeridos');
+        $('#dropzone').fileUploader({
+            maxFilesize: 30,
+            uploadFilesIndividually: true,
+            singleExpectedFile: true,
+            showExpectedDocuments: true,
+            showGeneralUploadCard: true
         });
-
-        $('#documentosrequeridosNew').click(function () {
-            documentosrequeridos_table_row_edit(null);
-        });
-
-        $('#documentosrequeridosEdtFormSave').click(function () {
-            if (app.ui.IsValid('#documentosrequeridosEdtForm', false)) {
-                app.ui.ButtonDoing('#documentosrequeridosEdtFormSave');
-
-                var row = documentosrequeridos_table_row('values');
-
-                if (row.documentosrequeridosId === null) {
-                    row.documentosrequeridosId = 100 + Math.max.apply(Math, $('#documentosrequeridosTbl').bootstrapTable('getData').map(function (o) { return o.documentosrequeridosId == 10 ? o.documentosrequeridosId : null; }));
-                }
-                if ($('#documentosrequeridosModal').data('id') != null) {
-                    $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: row.documentosrequeridosId, row: row });
-                }
-                else {
-                    $('#documentosrequeridosTbl').bootstrapTable('append', row);
-                }
-
-                app.ui.ButtonDone('#documentosrequeridosEdtFormSave')
-                $('#documentosrequeridosModal').modal('hide');
-            }
-        });
-
-        $('#documentosrequeridosTbl').bootstrapTable('filterBy', { Grupo: ['F'] })
-    };
-
-    function documentosrequeridos_table_row(mode) {
-        if (mode == null) {
-            return {
-                documentosrequeridosId: null,
-                DStored: null,
-                tipo: 'Genérico',
-                DNombre: null,
-                DArchivoEsperado: null,
-                Grupo: 'F',
-                DFecha: null,
-                DTamano: null,
-                DDescripcion: null
-            };
-        }
-        else {
-            return {
-                documentosrequeridosId: $('#documentosrequeridosModal').data('id'),
-                DStored: $('#DStored').val(),
-                tipo: $('#tipo option:selected').text(),
-                DNombre: $('#DNombre').val(),
-                DArchivoEsperado: $('#DArchivoEsperado').val(),
-                Grupo: $('#Grupo').val(),
-                DFecha: new Date(),
-                DTamano: $('#DTamano').val(),
-                DDescripcion: $('#DDescripcion').val()
-            };
-        }
-    };
-
-    function documentosrequeridos_table_row_edit(row) {
-        if (row != null && row.tipo != 'Genérico') {
-            rowDocumentosrequeridos = row;
-            $('#fileUpload').click();
-        }
-        else {
-            var md = $('#documentosrequeridosModal').modal({ show: false });
-            var formInstance = $("#documentosrequeridosEdtForm");
-            var fvalidate = formInstance.validate();
-            fvalidate.resetForm();
-            row = row || documentosrequeridos_table_row();
-            md.data('id', row.documentosrequeridosId);
-
-            $('#DDescripcion').val(row.DDescripcion);
-            $('#DTamano').val(row.DTamano);
-            $('#DFecha').val(row.DFecha);
-            $('#Grupo').val(row.Grupo);
-            $('#DNombre').val(row.DNombre);
-
-            md.modal('show');
-        }
-    };
-
-    function documentosrequeridos_table_row_delete(row) {
-        if (row.tipo != 'Genérico') {
-            row.DNombre = '';
-            row.DStored = '';
-            row.DTamano = 0;
-            row.DFecha = null;
-            $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: row.documentosrequeridosId, row: row });
-        }
-        else {
-            $('#documentosrequeridosTbl').bootstrapTable('removeByUniqueId', row.documentosrequeridosId);
-        }
-    };
-
-    function documentosrequeridos_table_Validations() {
-        app.ui.DateValidators();
-        $("#documentosrequeridosEdtForm").validate({
-            errorPlacement: app.ui.ErrorPlacement,
-            rules: {
-                DDescripcion: {
-                    required: true
-                },
-                tipo: {
-                    required: true
-                },
-                FileName: {
-                    required: true
-                }
-            },
-            messages: {
-                DDDescripcion: {
-                    required: 'Debe indicar una descripción del archivo'
-                },
-                tipo: {
-                    required: 'Debe indicar el tipo de documento'
-                },
-                FileName: {
-                    required: 'Debe indicar un archivo'
-                }
-            }
-        });
-    };
-
-    function documentosrequeridos_controls_setup() {
-    };
-
-    function documentosrequeridos_controls_Events() {
-
-        $('#fileUploadModal').on('change', function () {
-            var index = 0;
-            var arr = $('#fileUploadModal').prop('files');
-            var message = '';
-
-            for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
-            }
-            if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
-            }
-            else {
-                app.ui.ButtonDoing('#fileUploadModal');
-                var data = new FormData();
-                data.append('EntityType', 3000);
-                data.append('EntityId', setupData.presupuesto);
-                data.append('DocumentType', 99);
-                data.append('Description', arr[0].name);
-                for (index = 0; index < arr.length; index++) {
-                    data.append('files', arr[index]);
-                }
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: app.setting.apipath + 'v1/Common/Upload',
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    timeout: 600000,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
-                    }
-                }).done(function (data, textStatus, jqXHR) {
-
-                    $('#DNombre').val(data[0].FileName);
-                    $('#DStored').val(data[0].StoredFileName);
-                    $('#DTamano').val(data[0].Size);
-                    $('#DDescripcion').val(app.ui.StringCapitalizeFormatter(data[0].FileName.substring(0, data[0].FileName.indexOf('.'))));
-                    $('#DDescripcion').select().focus()
-
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR : ", jqXHR);
-                }).always(function () {
-                    app.ui.ButtonDone('#fileUploadModal')
-                });
-            }
-        });
-
-        $('#fileUpload').on('change', function () {
-            var index = 0;
-            var arr = $('#fileUpload').prop('files');
-            var message = '';
-
-            for (index = 0; index < arr.length; index++) {
-                if (arr[index].size >= 31457280) {
-                    if (message != '') {
-                        message = message & ', ';
-                    }
-                    message = message & 'El tamaño del archivo ' + arr[index].name + 'es mayor a 30mb';
-                }
-            }
-            if (message != '') {
-                elementInstance.showErrors({ 'FileName': message });
-            }
-            else {
-                app.ui.ButtonDoing('#fileUpload');
-                var data = new FormData();
-                data.append('EntityType', 3000);
-                data.append('EntityId', setupData.presupuesto);
-                data.append('DocumentType', rowDocumentosrequeridos.documentosrequeridosId);
-                data.append('Description', rowDocumentosrequeridos.tipo);
-                for (index = 0; index < arr.length; index++) {
-                    data.append('files', arr[index]);
-                }
-                $.ajax({
-                    type: "POST",
-                    enctype: 'multipart/form-data',
-                    url: app.setting.apipath + 'v1/Common/Upload',
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    timeout: 600000,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + app.security().getCookie('Token'));
-                    }
-                }).done(function (data, textStatus, jqXHR) {
-
-                    rowDocumentosrequeridos.DNombre = data[0].FileName;
-                    rowDocumentosrequeridos.DStored = data[0].StoredFileName;
-                    rowDocumentosrequeridos.DTamano = data[0].Size;
-                    rowDocumentosrequeridos.DFecha = new Date();
-                    $('#documentosrequeridosTbl').bootstrapTable('updateByUniqueId', { id: rowDocumentosrequeridos.documentosrequeridosId, row: rowDocumentosrequeridos });
-
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR : ", jqXHR);
-                }).always(function () {
-                    app.ui.ButtonDone('#fileUpload')
-                });
-            }
-        });
-
-    };
+    }
 
     function formularios_table_setup() {
         $('#formulariosDV').attr('name', 'formulariosDVTbl');
@@ -2642,7 +2224,6 @@ app.EmisionMultirriesgo = (function () {
 
     return {
         Init: function () {
-            Setup();
             Controls_setup();
             Setup_Validations();
             coberturas_table_setup();
@@ -2654,19 +2235,22 @@ app.EmisionMultirriesgo = (function () {
             terceros_table_Validations();
             terceros_controls_Events();
 
-            documentosrequeridos_controls_setup();
-            documentosrequeridos_table_setup();
-            documentosrequeridos_table_Validations();
-            documentosrequeridos_controls_Events();
+            attachments_controls_setup();
 
             formularios_table_setup();
+            Setup();
             app.language.translate('body', 'multirriesgo', function (translations) {
                 refreshFormulariosDVTranslations(translations || null);
             }, false)();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
+<<<<<<< HEAD
+            app.language.translate('#quoteBlock', '_resumen')();
+            app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+            app.language.translate('#tercerosModal', '_tercero')();
+=======
     app.language.translate('#quoteBlock', '_resumen')();
-    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
     app.language.translate('#tercerosModal', '_tercero')();
+>>>>>>> 4e862eb05646c4f0d93a68b576f361dc3eb10119
 
 
         },
@@ -2675,12 +2259,6 @@ app.EmisionMultirriesgo = (function () {
         },
         tercerosDeleteRow: function (row) {
             terceros_table_row_delete(row);
-        },
-        documentosrequeridosEditRow: function (row) {
-            documentosrequeridos_table_row_edit(row);
-        },
-        documentosrequeridosDeleteRow: function (row) {
-            documentosrequeridos_table_row_delete(row);
         },
         formulariosEditRow: function (row) {
             formularios_table_row_edit(row);
@@ -2703,17 +2281,6 @@ window.tercerosTbl_Events = {
         e.stopPropagation();
     }
 };
-window.documentosrequeridosTbl_Events = {
-    'click .delete': function (e, value, row, index) {
-        toastr.warning("Si está seguro de querer eliminar el documento requerido '" + row.documentosrequeridosId + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMultirriesgo.documentosrequeridosDeleteRow(row); } });
-        e.stopPropagation();
-    },
-    'click .edit': function (e, value, row, index) {
-        app.EmisionMultirriesgo.documentosrequeridosEditRow(row);
-        e.stopPropagation();
-    }
-};
-
 window.formulariosTbl_Events = {
     'click .delete': function (e, value, row, index) {
         toastr.warning("Si está seguro de querer limpiar la información del formulario  '" + row.name + "' haga clic aquí", null, { timeOut: 5000, closeButton: true, progressBar: true, onclick: function () { app.EmisionMultirriesgo.formulariosDeleteRow(row); } });

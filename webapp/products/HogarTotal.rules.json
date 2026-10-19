@@ -54,12 +54,14 @@
         {
           "descripcion": "Cédula de cliente por ambos lados",
           "archivo": "Cédula_del_cliente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         }
       ]
     },
@@ -69,12 +71,14 @@
         {
           "descripcion": "Cédula de cliente por ambos lados",
           "archivo": "Cédula_del_cliente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         }
       ]
     },
@@ -84,17 +88,20 @@
         {
           "descripcion": "Solicitud de Seguro",
           "archivo": "SolicitudSeguro.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 28
         },
         {
           "descripcion": "Avalúo",
           "archivo": "Avaluo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 29
         },
 		{
           "descripcion": "Cédula del Cliente",
           "archivo": "Cedula.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         }
       ]
     },
@@ -104,12 +111,14 @@
         {
           "descripcion": "Cédula de cliente por ambos lados",
           "archivo": "Cédula_del_cliente_ambos_lados.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 20
         },
         {
           "descripcion": "Fotos del Riesgo",
           "archivo": "Fotos_del_riesgo.pdf",
-          "requerido": true
+          "requerido": true,
+          "documentType": 21
         }
       ]
     }
