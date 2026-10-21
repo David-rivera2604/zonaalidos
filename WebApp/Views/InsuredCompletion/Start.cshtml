@@ -1,0 +1,32 @@
+@{
+    Layout = null;
+    string exchangeUrl = Url.Content("~/api/v1/InsuredCompletion/exchange");
+}
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8" /><meta name="referrer" content="no-referrer" /><title>Completar solicitud</title></head>
+<body><p id="completionMessage">Validando su invitación…</p>
+<script>
+    // El secreto solo se lee del fragmento, se canjea una vez y nunca se persiste en el navegador.
+    (function () {
+        // Conserva el directorio virtual de la aplicación al resolver un destino relativo de invitación.
+        var completionBasePath = '@Url.Content("~/")';
+        var match = /(?:^|&)invite=([^&]+)/.exec(window.location.hash.substring(1));
+        if (!match) { document.getElementById('completionMessage').textContent = 'La invitación no está disponible.'; return; }
+        var secret = decodeURIComponent(match[1]);
+        window.history.replaceState(null, document.title, window.location.pathname);
+        fetch('@exchangeUrl', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ Secret: secret }) })
+            .then(function (response) { if (!response.ok) { throw new Error('not-found'); } return response.json(); })
+            .then(function (result) {
+                // El token derivado expira con la invitación y se limita a esta pestaña; nunca se usa localStorage.
+                sessionStorage.setItem('InsuredCompletionToken', result.Token);
+                sessionStorage.setItem('InsuredCompletionRoles', JSON.stringify(result.Roles || []));
+                sessionStorage.setItem('InsuredCompletionTenant', result.Tenant || 'Aliados');
+                // El servidor devuelve el destino persistido de la invitación; esta vista no conoce formularios concretos.
+                if (!result.CompletionPath || result.CompletionPath.charAt(0) !== '/') { throw new Error('invalid-destination'); }
+                sessionStorage.setItem('InsuredCompletionPath', result.CompletionPath);
+                window.location.replace(completionBasePath + result.CompletionPath.substring(1));
+            })
+            .catch(function () { document.getElementById('completionMessage').textContent = 'La invitación no está disponible.'; });
+    }());
+</script></body></html>

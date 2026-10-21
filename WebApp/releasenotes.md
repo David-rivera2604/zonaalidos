@@ -1,5 +1,57 @@
 # Release Notes - Aliados
 
+## Versión 1.6.211
+
+### Aliados - Emisión de pólizas: completado de solicitud por asegurado, firma y emisión.
+
+#### Resumen ejecutivo
+
+Se habilita un ciclo controlado para que el agente o colaborador inicie una solicitud de póliza y envíe al asegurado un enlace seguro para completar su información, sin requerirle una cuenta ni inicio de sesión en Aliados.
+
+El agente conserva el control de las condiciones comerciales y del riesgo. El asegurado únicamente completa su información personal y la de sus beneficiarios. Una vez confirmados los datos, la solicitud se bloquea para preservar el contenido que será remitido a firma electrónica. Tras la firma, el sistema procesa la emisión según el flujo configurado.
+
+#### Cambios implementados
+
+- El formulario **Emitir una póliza** incorpora acciones para guardar borrador, enviar al asegurado, reenviar o anular el enlace, retomar corrección, enviar a firma y emitir la póliza cuando corresponda.
+- El asegurado recibe un enlace temporal y restringido a una sola solicitud; puede guardar borrador o confirmar sus datos sin autenticarse en Aliados.
+- Los datos comerciales, condiciones del contrato, ramo, primas y riesgo quedan protegidos cuando la solicitud se entrega al asegurado, evitando cambios sobre información preparada por el agente.
+- Al confirmar los datos, la solicitud queda lista para firma electrónica. El monitoreo posterior actualiza el avance de firma y continúa con la emisión automática cuando la firma ha sido aprobada.
+- El agente puede dar seguimiento al estado de la solicitud y, mientras esté pendiente de complementos, reenviar el enlace, anularlo o recuperar la solicitud para corrección.
+- Se incorpora trazabilidad de las acciones relevantes del agente, asegurado y procesos automáticos.
+- El flujo queda habilitado para **Seguro de vida colectivo (ramo 117)** y **Saldo deudor (ramo 401)**, incluyendo sus formatos de solicitud correspondientes.
+
+#### Settings requeridos (`SETTINGS`)
+
+| Setting | Valor inicial | Descripción |
+|---|---:|---|
+| `PolicyProposal.Request.Tenant.Review` | `100` | Tenant o lista de tenants separados por coma que el monitor debe revisar para continuar solicitudes pendientes de firma y emisión. |
+| `PolicyProposal.InsuredCompletion.Tenant.100.UserId` | `999999006` | Cuenta técnica del tenant 100 usada exclusivamente para crear la sesión temporal y limitada del asegurado. Debe existir y estar activa en ese tenant. |
+
+> Para otro tenant, crear un setting con el mismo patrón: `PolicyProposal.InsuredCompletion.Tenant.{CompanyId}.UserId`. Estos valores se administran en la tabla `SETTINGS`; no deben agregarse a `Web.config`.
+
+#### Scripts obligatorios de despliegue
+
+Ejecutar mediante el proceso habitual de base de datos y registrar el resultado de cada paso:
+
+1. `20260824a.policy-proposal-workflow.sql` — Documenta y prepara el ciclo de estados de las solicitudes de póliza existentes.
+2. `20260817a.policy-proposal-invitation.sql` — Crea las estructuras de invitación segura, completado y auditoría.
+3. `20260817c.policy-proposal-invitation-completion-destination.sql` — Agrega el destino interno y el flujo autorizado de cada invitación.
+4. `20260817b.insured-completion-template.sql` — Registra la plantilla de correo para invitar al asegurado a completar la solicitud.
+5. `20260824b.visualization.emitirpoliza.workflow.sql` — Actualiza el formulario **Emitir una póliza** con las acciones del nuevo flujo.
+6. `20261020a.policy-proposal-branch-code.sql` — Agrega el código de ramo a las nuevas solicitudes.
+7. `20261020b.lookup.policy-proposal-changeset.sql` — Habilita la categoría de auditoría funcional de solicitudes de póliza.
+8. `20261020b.policy-proposal-request-tenant-review.sql` — Registra el tenant que será revisado por el monitor de firma y emisión.
+9. `20261020c.policy-proposal-insured-completion-user.sql` — Registra la cuenta técnica de completado del asegurado para el tenant 100.
+
+#### Consideraciones de despliegue
+
+- Publicar los formatos `117_seguro_vida_colectivo_solicitud_inclusion.repx` y `401_saldo_deudor.repx` junto con los reportes de la aplicación.
+- Confirmar que la cuenta técnica configurada tenga los permisos mínimos necesarios y que el correo del asegurado pueda recibir la invitación.
+- El script `20261006a.policy-proposal-invitation-integrity.sql` aplica únicamente a ambientes de desarrollo que hayan instalado una versión inicial de las tablas de invitación sin la relación actual con `PolicyProposal`. No se ejecuta en una instalación nueva de esta versión.
+- El script `20261019a.lookup.local-policy-proposal-simulation.sql` es exclusivo para pruebas locales y no debe ejecutarse en QA ni producción.
+
+--
+
 ## Versión 1.6.210
 
 ### Aliados - Emisión: Adjuntos estandarizados en Viajero, Hogar Total, Multirriesgo, MapfreMasPlus y Estudiantil.

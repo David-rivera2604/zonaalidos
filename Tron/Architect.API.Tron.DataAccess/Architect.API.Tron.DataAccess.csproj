@@ -102,6 +102,9 @@
     <Compile Include="Pagos\SINPEMovil.cs" />
     <Compile Include="PolicyProposalEx.cs" />
     <Compile Include="PolicyProposal.cs" />
+    <Compile Include="PolicyProposalInvitation.cs" />
+    <Compile Include="PolicyProposalCompletion.cs" />
+    <Compile Include="PolicyProposalCompletionAudit.cs" />
     <Compile Include="Poliza.cs" />
     <Compile Include="PorRamo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

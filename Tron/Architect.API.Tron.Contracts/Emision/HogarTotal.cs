@@ -46,6 +46,9 @@ namespace Architect.API.Tron.Contracts.Emision
 
         [DataMember(), JsonProperty()] public EconomicData DatosEconomicos { get; set; }
 
+        /// <summary>
+        /// Tipo de firma. F FIRMA ACEPTACION DIGITAL (Architect.API.Tron.Contracts.TipoDeFirma)
+        /// </summary>
         [DataMember(), JsonProperty()] public string tip_firma { get; set; } = "";
         [DataMember(), JsonProperty()] public string tip_firmaDesc { get; set; }
 

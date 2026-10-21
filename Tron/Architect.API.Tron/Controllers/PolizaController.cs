@@ -1,5 +1,7 @@
 ﻿using Architect.Utilities.Extensions;
 using Asp.Versioning;
+using Architect.API.Tron.Contracts.InsuredCompletion;
+using Architect.API.Tron.Filters;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -153,14 +155,24 @@ namespace Architect.API.Tron.Controllers
             });
         }
 
+        /// <summary>
+        /// Emite un alta de póliza y completa la invitación asociada cuando el asegurado obtuvo una respuesta exitosa.
+        /// </summary>
+        /// <param name="poliza">Datos de póliza enviados por el formulario del agente o del asegurado invitado.</param>
+        /// <returns>Respuesta del procedimiento almacenado de emisión.</returns>
         [HttpPost]
         [Route("Altas")]
         [Authorize]
         public async Task<IHttpActionResult> Altas([FromBody] Architect.API.Tron.Contracts.AltasBajas.Request.Poliza poliza)
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
+            InvitationSessionAccess invitationAccess = null;
+            if (Request.Properties.TryGetValue(InvitationSessionAuthorizeAttribute.SessionAccessProperty, out object accessValue))
+            {
+                invitationAccess = accessValue as InvitationSessionAccess;
+            }
 
-            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, true);
+            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, true, tokenInfo, invitationAccess);
 
             return Ok(result);
         }
@@ -172,7 +184,7 @@ namespace Architect.API.Tron.Controllers
         {
             Core.Contracts.Security.Token tokenInfo = Core.Security.Token.Info();
 
-            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, false);
+            Contracts.AltasBajas.Response.Poliza result = await Business.Backoffice.AltasBajasPoliza.AltasBajas(poliza, false, tokenInfo);
 
             return Ok(result);
         }

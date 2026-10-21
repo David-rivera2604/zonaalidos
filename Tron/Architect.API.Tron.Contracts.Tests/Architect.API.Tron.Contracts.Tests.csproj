@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\InvitationStatus.cs" Link="InsuredCompletion\InvitationStatus.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\PolicyProposalInvitation.cs" Link="InsuredCompletion\PolicyProposalInvitation.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\InvitationStateMachine.cs" Link="InsuredCompletion\InvitationStateMachine.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\PolicyProposalCompletion.cs" Link="InsuredCompletion\PolicyProposalCompletion.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\PolicyProposalCompletionAudit.cs" Link="InsuredCompletion\PolicyProposalCompletionAudit.cs" />
+    <!-- Source-linked mechanism files keep security-contract tests independent from the legacy runtime. -->
+    <Compile Include="..\Architect.API.Tron.Business\InsuredCompletion\InvitationSecret.cs" Link="InsuredCompletion\InvitationSecret.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\CreateInvitationRequest.cs" Link="InsuredCompletion\CreateInvitationRequest.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\InvitationView.cs" Link="InsuredCompletion\InvitationView.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\InvitationSession.cs" Link="InsuredCompletion\InvitationSession.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\InvitationSessionAccess.cs" Link="InsuredCompletion\InvitationSessionAccess.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\InsuredCompletionTokenScope.cs" Link="InsuredCompletion\InsuredCompletionTokenScope.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\CompletionDestination.cs" Link="InsuredCompletion\CompletionDestination.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\InsuredCompletion\CompletionFlow.cs" Link="InsuredCompletion\CompletionFlow.cs" />
+    <Compile Include="..\Architect.API.Tron.Business\InsuredCompletion\IInvitationStore.cs" Link="InsuredCompletion\IInvitationStore.cs" />
+    <Compile Include="..\Architect.API.Tron.Business\InsuredCompletion\IInvitationMailSender.cs" Link="InsuredCompletion\IInvitationMailSender.cs" />
+    <Compile Include="..\Architect.API.Tron.Business\InsuredCompletion\InvitationService.cs" Link="InsuredCompletion\InvitationService.cs" />
+    <Compile Include="..\Architect.API.Tron.Business\InsuredCompletion\InvitationSessionService.cs" Link="InsuredCompletion\InvitationSessionService.cs" />
+    <!-- Source-linked dispatch rule prevents a send-link request from falling through to policy issuance. -->
+    <Compile Include="..\Architect.API.Tron.Business\Backoffice\v2\AltasBajasOperation.cs" Link="Backoffice\AltasBajasOperation.cs" />
+    <Compile Include="..\Architect.API.Tron.Business\Backoffice\v2\PolicyProposalIdentifier.cs" Link="Backoffice\PolicyProposalIdentifier.cs" />
+    <!-- El validador de invitaciones se prueba aislado del runtime heredado. -->
+    <Compile Include="..\Architect.API.Tron.Contracts\AltasBajas\Request\Base.cs" Link="Backoffice\RequestBase.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\AltasBajas\Request\BeneficiarioBase.cs" Link="Backoffice\BeneficiarioBase.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\AltasBajas\Request\Beneficiario.cs" Link="Backoffice\Beneficiario.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\AltasBajas\Request\Poliza.cs" Link="Backoffice\RequestPoliza.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\AltasBajas\Request\SPCall.cs" Link="Backoffice\SPCall.cs" />
+    <Compile Include="..\Architect.API.Tron.Contracts\AltasBajas\Request\SPCallBeneficiario.cs" Link="Backoffice\SPCallBeneficiario.cs" />
+    <Compile Include="..\Architect.API.Tron.Business\Backoffice\v2\PolicyProposalInvitationRiskValidator.cs" Link="Backoffice\PolicyProposalInvitationRiskValidator.cs" />
+    <Compile Include="..\Architect.API.Tron.Business\Backoffice\v2\PolicyProposalSignatureDocument.cs" Link="Backoffice\PolicyProposalSignatureDocument.cs" />
+  </ItemGroup>
+</Project>

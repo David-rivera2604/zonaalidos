@@ -71,11 +71,19 @@ namespace Architect.API.Core.Security
 
             // Intentar obtener token del Authorization header (peticiones AJAX)
             string authHeader = filterContext.HttpContext.Request.Headers["Authorization"];
+            // La sesión técnica se valida en la API contra la invitación; la caché MVC puede estar en otro proceso.
+            bool technicalAuthentication = false;
 
             // Si no hay header Authorization, intentar obtener de la cookie (navegación MVC)
             if (string.IsNullOrWhiteSpace(authHeader))
             {
-                var authCookie = filterContext.HttpContext.Request.Cookies["AuthToken"];
+                // La cookie técnica es opcional: si no existe, el agente conserva su AuthToken normal en el mismo formulario.
+                bool isInsuredCompletionForm = filterContext.HttpContext.Request.Path.EndsWith("/form/EmitirPoliza", StringComparison.OrdinalIgnoreCase);
+                HttpCookie technicalCookie = isInsuredCompletionForm
+                    ? filterContext.HttpContext.Request.Cookies["InsuredCompletionAuthToken"]
+                    : null;
+                technicalAuthentication = technicalCookie != null && !string.IsNullOrWhiteSpace(technicalCookie.Value);
+                HttpCookie authCookie = technicalCookie ?? filterContext.HttpContext.Request.Cookies["AuthToken"];
                 if (authCookie != null && !string.IsNullOrWhiteSpace(authCookie.Value))
                 {
                     authHeader = authCookie.Value;
@@ -155,16 +163,16 @@ namespace Architect.API.Core.Security
             // Obtener y validar sesión
             Contracts.Security.Activity session = Session.Get(authenticationToken);
             
-            if (session.IsEmpty())
+            if (!technicalAuthentication && session.IsEmpty())
             {
                 RedirectToLogin(filterContext, "No existe una sesión activa para este token");
                 return;
             }
 
             // Validar expiración de sesión por inactividad
-            DateTime sessionExpiration = session.LastDateTime.AddMinutes(SessionTimeout);
+            DateTime sessionExpiration = technicalAuthentication ? DateTime.MaxValue : session.LastDateTime.AddMinutes(SessionTimeout);
 
-            if (DateTime.Now >= sessionExpiration)
+            if (!technicalAuthentication && DateTime.Now >= sessionExpiration)
             {
                 RedirectToLogin(filterContext, $"La sesión ha expirado por inactividad (timeout: {SessionTimeout} minutos)");
                 return;
@@ -176,7 +184,7 @@ namespace Architect.API.Core.Security
             tokenInfo.Assinged();
 
             // Refrescar sesión si hay referrer
-            if (filterContext.HttpContext.Request.UrlReferrer != null)
+            if (!technicalAuthentication && filterContext.HttpContext.Request.UrlReferrer != null)
             {
                 Session.Refresh(authenticationToken, filterContext.HttpContext.Request.UrlReferrer.AbsoluteUri);
             }
