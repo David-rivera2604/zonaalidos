@@ -1,0 +1,837 @@
+diff --git a/webapp/locales/Emision/Viajero.en.json b/webapp/locales/Emision/Viajero.en.json
+index 54f9c224a2147976bf73deb6ee4f000339f2f150..c815cdd2f6695aaa9eb521ef7b0e326d742665e6 100644
+--- a/webapp/locales/Emision/Viajero.en.json
++++ b/webapp/locales/Emision/Viajero.en.json
+@@ -86,7 +86,7 @@
+   "ViajeroIvaLabel": "VAT",
+   "ViajeroRecargoLabel": "Surcharge",
+   "ViajeroCuotasLabel": "Installments",
+-  "ViajeroEnviarCertificadoCorreoText": "Send a copy by email",
++  "ViajeroEnviarCertificadoCorreoText": "Send certificate by email",
+   "ViajeroTerceroModalTitle": "Third-party information",
+   "ViajeroTerceroModalSubtitle": "Allows adding a new third party or editing an existing one",
+   "ViajeroCuotasLink": {
+diff --git a/webapp/Scripts/Cotizacion.js b/webapp/Scripts/Cotizacion.js
+index d1af92de21b3247936a8c25bac4632262c991bc1..e5c4f52477f77799ef4ef39114ed55f961fb7162 100644
+--- a/webapp/Scripts/Cotizacion.js
++++ b/webapp/Scripts/Cotizacion.js
+@@ -7,6 +7,7 @@ app.Cotizacion = (function () {
+     let _data = {};
+     let _monedaField = false;
+     let _prefix = '';
++    let _pago = {};
+ 
+     return {
+         Imprimir: function (name, data) {
+@@ -31,6 +32,46 @@ app.Cotizacion = (function () {
+                         }
+                     });
+         },
++        OpcionesDePago: function (data) {
++            _pago = { num_poliza: data?.num_poliza, plandepago: data?.plandepago || [] };
++            let roles = [];
++            try {
++                roles = JSON.parse(localStorage.getItem('Roles')) || [];
++            } catch (e) {
++                roles = [];
++            }
++            let puedePagar = roles.some(r => String(r).toLowerCase() === 'pago');
++            $('#opcionesPagoGroup').toggleClass('d-none', !(_pago.num_poliza && puedePagar));
++        },
++        PagarRecibo: function () {
++            let num_poliza = _pago.num_poliza;
++            if (!num_poliza) {
++                return;
++            }
++            let abrir = function (row) {
++                if (row == null) {
++                    toastr.warning('La póliza ' + num_poliza + ' no tiene recibos pendientes de pago', '', { timeOut: 7000, closeButton: true, progressBar: true });
++                    return;
++                }
++                app.core.LoadScriptFile('Payment.js').then(d => { app.Payment.Recibo(row, 310, 2); });
++            };
++            let respaldo = function () {
++                let cuota = _pago.plandepago.find(p => p.recibo > 0);
++                return cuota ? { NUM_POLIZA: num_poliza, NUM_RECIBO: cuota.recibo, COD_AGT: app.Cotizacion.AgentCode() || 0 } : null;
++            };
++            $('.ibox-content').toggleClass('sk-loading');
++            app.core.Get(app.setting.apipath + 'v1/datasource/json?id=310&sequence=2&url=')
++                .done(function (data) {
++                    let recibos = (data || []).filter(r => String(r.NUM_POLIZA) === String(num_poliza))
++                        .sort((a, b) => a.NUM_RECIBO - b.NUM_RECIBO);
++                    $('.ibox-content').toggleClass('sk-loading');
++                    abrir(recibos.length > 0 ? recibos[0] : respaldo());
++                })
++                .fail(function () {
++                    $('.ibox-content').toggleClass('sk-loading');
++                    abrir(respaldo());
++                });
++        },
+         ImprimirPoliza: function (num_poliza, num_riesgo) {
+             app.core.GetPDF(app.setting.apipath + 'v1/TronCommon/ImprimirPoliza/' + num_poliza + "/" + num_riesgo, false, 'Mapfre Certificado.pdf');
+         },
+@@ -247,3 +288,8 @@ app.Cotizacion = (function () {
+         }
+     };
+ })();
++
++$(document).on('click', '#opcionesPago', function (e) {
++    e.preventDefault();
++    app.Cotizacion.PagarRecibo();
++});
+diff --git a/webapp/Scripts/Emision.AccidentesPersonales.js b/webapp/Scripts/Emision.AccidentesPersonales.js
+index 60b758fe4cdf34b699ba1b700f5a0c926709295c..31c2d5154c1bae88952dbddce5edaff758d727da 100644
+--- a/webapp/Scripts/Emision.AccidentesPersonales.js
++++ b/webapp/Scripts/Emision.AccidentesPersonales.js
+@@ -29,6 +29,7 @@ app.EmisionAccidentesPersonales = (function () {
+                     $('#plandepagoRow').removeClass('d-none');
+                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+                     $('#NumPoliza').html(data.num_poliza);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                     //$('#emitir').html('Emision Procesada');
+                     $("#emitir").css("display", "none");
+                     $('#emitir').addClass('d-none');
+diff --git a/webapp/Scripts/Emision.Estudiantil.js b/webapp/Scripts/Emision.Estudiantil.js
+index 80ed9a05a5cbfadcd2b7fe0c396db28fce9703b5..436ca6a975887983cae8043d28e04625172d47dc 100644
+--- a/webapp/Scripts/Emision.Estudiantil.js
++++ b/webapp/Scripts/Emision.Estudiantil.js
+@@ -35,7 +35,7 @@ app.EmisionEstudiantil = (function () {
+ 
+ 
+                     $('#NumPoliza').html(data.num_poliza);
+-                    EnviarCertificadoTomador(data);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                     //$('#emitir').html('Emision Procesada');
+                     $("#emitir").css("display", "none");
+ 
+@@ -72,30 +72,6 @@ app.EmisionEstudiantil = (function () {
+             });
+     };
+ 
+-    function EnviarCertificadoTomador(data) {
+-        let terceros = $('#tercerosTbl').bootstrapTable('getData');
+-        let tomador = terceros.find(t => t.tipodetercero == 0) || terceros.find(t => t.tipodetercero == 2 && t.elaseguradoeselmismotomador == 1);
+-        let correo = tomador ? $.trim(tomador.correoelectronico || '') : '';
+-        if (correo === '') {
+-            toastr.warning('El tomador no tiene correo, puede enviarlo con "Enviar copia de correo"', '', { timeOut: 7000, closeButton: true, progressBar: true });
+-            return;
+-        }
+-        app.Cotizacion.EnviarCertificado(data.num_poliza, data.cantidad_riesgos * -1, correo, '', '');
+-    }
+-
+-    function EnviarCopiaCorreo() {
+-        let copias = [$.trim($('#copiaCorreo1').val()), $.trim($('#copiaCorreo2').val())].filter(c => c !== '');
+-        if (copias.length === 0) {
+-            toastr.error('Debe indicar al menos un correo', '', { timeOut: 7000, closeButton: true, progressBar: true });
+-            return;
+-        }
+-        if (copias.some(c => !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c))) {
+-            toastr.error('Revise que los correos sean validos', '', { timeOut: 7000, closeButton: true, progressBar: true });
+-            return;
+-        }
+-        app.Cotizacion.EnviarCertificado(setupData.num_poliza, setupData.cantidad_riesgos * -1, copias[0], copias[1] || '', '');
+-    }
+-
+     function ReadOnly() {
+         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
+         $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
+@@ -268,17 +244,7 @@ app.EmisionEstudiantil = (function () {
+ 
+         $('#print').click(function () {
+             event.preventDefault();
+-            app.ui.ShowSideBar({
+-                title: 'Enviar copia de correo', subtitle: 'Póliza #{NUM_POLIZA}', isHTML: true,
+-                data: { NUM_POLIZA: setupData.num_poliza },
+-                HTML: '<div class="form-group"><label class="control-label" for="copiaCorreo1">Copia 1</label><input id="copiaCorreo1" type="email" class="form-control" maxlength="80"></div>' +
+-                    '<div class="form-group"><label class="control-label" for="copiaCorreo2">Copia 2</label><input id="copiaCorreo2" type="email" class="form-control" maxlength="80"></div>' +
+-                    '<button id="enviarCopiaCorreo" type="button" class="btn btn-primary btn-block">Enviar</button>'
+-            });
+-        });
+-
+-        $(document).on('click', '#enviarCopiaCorreo', function () {
+-            EnviarCopiaCorreo();
++            app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: setupData.cantidad_riesgos * -1 } })
+         });
+ 
+         $('input:radio[name=DomicilioVerificado]').click(function (e) {
+diff --git a/webapp/Scripts/Emision.HogarTotal.js b/webapp/Scripts/Emision.HogarTotal.js
+index cc1348e280de3e6f2f0fe487bf7ac451fbc20c80..defb2e3c3a97a2d2f26a48f0b31be61c2d54c3db 100644
+--- a/webapp/Scripts/Emision.HogarTotal.js
++++ b/webapp/Scripts/Emision.HogarTotal.js
+@@ -115,6 +115,7 @@ app.HogarTotal = (function () {
+                     $('#plandepagoRow').removeClass('d-none');
+                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+                     $('#NumPoliza').html(data.num_poliza);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                     $('#cotizar').addClass('d-none');
+                     $('.VerificarDomicilio').addClass('d-none');
+                     ReadOnly_End();
+diff --git a/webapp/Scripts/Emision.MapfreMas.js b/webapp/Scripts/Emision.MapfreMas.js
+index 894b9cd7a022f7619a84278d7950a46ef432081a..163324934f2bbf857252e1a408e881cd2a73e858 100644
+--- a/webapp/Scripts/Emision.MapfreMas.js
++++ b/webapp/Scripts/Emision.MapfreMas.js
+@@ -159,6 +159,7 @@ app.EmisionMapfreMas = (function () {
+                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+                     $('#NumPoliza').html(data.num_poliza);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                     $('.VerificarDomicilio').addClass('d-none');
+                     $('#cotizar').addClass('d-none');
+ 
+diff --git a/webapp/Scripts/Emision.MapfreMasPlus.js b/webapp/Scripts/Emision.MapfreMasPlus.js
+index 8d24da6575a3b51a02adbe2e6a6cac24bea637dc..61b7b6d43414b37687b5ccac9d478245cf4146bc 100644
+--- a/webapp/Scripts/Emision.MapfreMasPlus.js
++++ b/webapp/Scripts/Emision.MapfreMasPlus.js
+@@ -136,6 +136,7 @@ app.EmisionMapfreMasPlus = (function () {
+                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
+                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+                     $('#NumPoliza').html(data.num_poliza);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                     $('#cotizar').addClass('d-none');
+                     $('.VerificarDomicilio').addClass('d-none');
+                     ReadOnly_End();
+diff --git a/webapp/Scripts/Emision.Multirriesgo.js b/webapp/Scripts/Emision.Multirriesgo.js
+index 2d9dfd1a2942d9ed63dead820124e2af12c16d06..3a047870957117d6b84a03592fcac8f28bae931e 100644
+--- a/webapp/Scripts/Emision.Multirriesgo.js
++++ b/webapp/Scripts/Emision.Multirriesgo.js
+@@ -59,6 +59,7 @@ app.EmisionMultirriesgo = (function () {
+ 
+ 
+                     $('#NumPoliza').html(data.num_poliza);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+ 
+ 
+                     $('#cotizar').addClass('d-none');
+diff --git a/webapp/Scripts/Emision.SaldoDeudor.js b/webapp/Scripts/Emision.SaldoDeudor.js
+index fe3e39add036546410736196c3a0fe3348852ae8..3de7b1b7fcb09ba91c02522c47bfd7e5aa1f3d9f 100644
+--- a/webapp/Scripts/Emision.SaldoDeudor.js
++++ b/webapp/Scripts/Emision.SaldoDeudor.js
+@@ -74,6 +74,7 @@ app.EmisionSaldoDeudor = (function () {
+                 if (!app.ui.NotifyErrors(data.Mensaje, data.Errors, '#SaldoDeudorEdtForm')) {
+ 
+                     $('#NumPoliza').html(data.num_poliza);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                     $('#cotizar').addClass('d-none');
+                     $('.VerificarDomicilio').addClass('d-none');
+                     $('#coberturasRow').removeClass('d-none');
+diff --git a/webapp/Scripts/Emision.Viajero.js b/webapp/Scripts/Emision.Viajero.js
+index 2f0d70f4387e461b65e73c11c91566500bb7a3ec..a6b4bb2ae5f35a0d3059317dae53df068259db46 100644
+--- a/webapp/Scripts/Emision.Viajero.js
++++ b/webapp/Scripts/Emision.Viajero.js
+@@ -35,7 +35,7 @@ app.EmisionViajero = (function () {
+ 
+ 
+                     $('#NumPoliza').html(data.num_poliza);
+-                    EnviarCertificadoTomador(data);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                     //$('#emitir').html('Emision Procesada');
+                     $("#emitir").css("display", "none");
+ 
+@@ -72,30 +72,6 @@ app.EmisionViajero = (function () {
+             });
+     };
+ 
+-    function EnviarCertificadoTomador(data) {
+-        let terceros = $('#tercerosTbl').bootstrapTable('getData');
+-        let tomador = terceros.find(t => t.tipodetercero == 0) || terceros.find(t => t.tipodetercero == 2 && t.elaseguradoeselmismotomador == 1);
+-        let correo = tomador ? $.trim(tomador.correoelectronico || '') : '';
+-        if (correo === '') {
+-            toastr.warning('El tomador no tiene correo, puede enviarlo con "Enviar copia de correo"', '', { timeOut: 7000, closeButton: true, progressBar: true });
+-            return;
+-        }
+-        app.Cotizacion.EnviarCertificado(data.num_poliza, data.cantidad_riesgos * -1, correo, '', '');
+-    }
+-
+-    function EnviarCopiaCorreo() {
+-        let copias = [$.trim($('#copiaCorreo1').val()), $.trim($('#copiaCorreo2').val())].filter(c => c !== '');
+-        if (copias.length === 0) {
+-            toastr.error('Debe indicar al menos un correo', '', { timeOut: 7000, closeButton: true, progressBar: true });
+-            return;
+-        }
+-        if (copias.some(c => !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c))) {
+-            toastr.error('Revise que los correos sean validos', '', { timeOut: 7000, closeButton: true, progressBar: true });
+-            return;
+-        }
+-        app.Cotizacion.EnviarCertificado(setupData.num_poliza, setupData.cantidad_riesgos * -1, copias[0], copias[1] || '', '');
+-    }
+-
+     function ReadOnly() {
+         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
+         $('#cod_fracc_pago').replaceWith('<div>' + $('#cod_fracc_pago option:selected').text() + '</div>');
+@@ -280,17 +256,7 @@ app.EmisionViajero = (function () {
+ 
+         $('#print').click(function () {
+             event.preventDefault();
+-            app.ui.ShowSideBar({
+-                title: 'Enviar copia de correo', subtitle: 'Póliza #{NUM_POLIZA}', isHTML: true,
+-                data: { NUM_POLIZA: setupData.num_poliza },
+-                HTML: '<div class="form-group"><label class="control-label" for="copiaCorreo1">Copia 1</label><input id="copiaCorreo1" type="email" class="form-control" maxlength="80"></div>' +
+-                    '<div class="form-group"><label class="control-label" for="copiaCorreo2">Copia 2</label><input id="copiaCorreo2" type="email" class="form-control" maxlength="80"></div>' +
+-                    '<button id="enviarCopiaCorreo" type="button" class="btn btn-primary btn-block">Enviar</button>'
+-            });
+-        });
+-
+-        $(document).on('click', '#enviarCopiaCorreo', function () {
+-            EnviarCopiaCorreo();
++            app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: setupData.cantidad_riesgos * -1 } })
+         });
+ 
+         $('input:radio[name=DomicilioVerificado]').click(function (e) {
+diff --git a/webapp/Scripts/HogarTotal.Emision.js b/webapp/Scripts/HogarTotal.Emision.js
+index ac2b3b0622fd3dca998dfd1731a958e2fb109552..3bb50f1b0290c33afdb4b4b93993c72205830110 100644
+--- a/webapp/Scripts/HogarTotal.Emision.js
++++ b/webapp/Scripts/HogarTotal.Emision.js
+@@ -109,6 +109,7 @@ app.HogarTotal = (function () {
+                     $('#plandepagoRow').removeClass('d-none');
+                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
+                     $('#NumPoliza').html(data.num_poliza);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                     $('#cotizar').addClass('d-none');
+                     $('.VerificarDomicilio').addClass('d-none');
+                     ReadOnly_End();
+diff --git a/webapp/Scripts/Multirriesgo.Emision.js b/webapp/Scripts/Multirriesgo.Emision.js
+index 7372b418d45b21449ef52f214c19a38cb3d72383..3ff8097c61f528557c785f8cbcd33f8ad7af6725 100644
+--- a/webapp/Scripts/Multirriesgo.Emision.js
++++ b/webapp/Scripts/Multirriesgo.Emision.js
+@@ -57,6 +57,7 @@ app.EmisionMultirriesgo = (function () {
+ 
+ 
+                     $('#NumPoliza').html(data.num_poliza);
++                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+ 
+ 
+                     $('#cotizar').addClass('d-none');
+diff --git a/webapp/Views/Clientes/CompraSegurosC.cshtml b/webapp/Views/Clientes/CompraSegurosC.cshtml
+index 7e709740859be9323871a1722afc790f095577cb..731949b96bc58433a715cf1e5cbd1d8de15ea136 100644
+--- a/webapp/Views/Clientes/CompraSegurosC.cshtml
++++ b/webapp/Views/Clientes/CompraSegurosC.cshtml
+@@ -686,7 +686,7 @@
+ 
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/CompraSegurosClients.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Clientes/CompraSegurosE.cshtml b/webapp/Views/Clientes/CompraSegurosE.cshtml
+index 5246c1118ee2f05104dfb4d92f41581814b15af3..0ec53d80015612ff430c90107529702cb5022035 100644
+--- a/webapp/Views/Clientes/CompraSegurosE.cshtml
++++ b/webapp/Views/Clientes/CompraSegurosE.cshtml
+@@ -898,7 +898,7 @@
+ 
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/CompraSegurosClients.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Cotizacion/AccidentesPersonales.cshtml b/webapp/Views/Cotizacion/AccidentesPersonales.cshtml
+index 967ecf101112ff7693b513f1c9ae36cfe1f8e7c5..170f119b80186fae00c0e03f6eeea6381f598b19 100644
+--- a/webapp/Views/Cotizacion/AccidentesPersonales.cshtml
++++ b/webapp/Views/Cotizacion/AccidentesPersonales.cshtml
+@@ -219,7 +219,7 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.AccidentesPersonales.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Cotizacion/Estudiantil.cshtml b/webapp/Views/Cotizacion/Estudiantil.cshtml
+index 4fff7513b03c5137d8db414c421776d3303fd4c0..5eb3017c04ea32278eebf969eb3129b905e425ea 100644
+--- a/webapp/Views/Cotizacion/Estudiantil.cshtml
++++ b/webapp/Views/Cotizacion/Estudiantil.cshtml
+@@ -143,7 +143,7 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.Estudiantil.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Cotizacion/MapfreMas.cshtml b/webapp/Views/Cotizacion/MapfreMas.cshtml
+index ee3ff9fa9ba15f14c0246240afe2cf552a00940f..824a50e9723cdc258b6507ba5b318c32d6f81895 100644
+--- a/webapp/Views/Cotizacion/MapfreMas.cshtml
++++ b/webapp/Views/Cotizacion/MapfreMas.cshtml
+@@ -818,7 +818,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.MapfreMas.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.MapfreMas.js")).Ticks)"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Cotizacion/MapfreMasPlus.cshtml b/webapp/Views/Cotizacion/MapfreMasPlus.cshtml
+index 5f10eb83cda6be080ff2ae6c094b57bc11f55a90..bcc91c2398ba76c2a4c47f9e35d5d6feb4b065ee 100644
+--- a/webapp/Views/Cotizacion/MapfreMasPlus.cshtml
++++ b/webapp/Views/Cotizacion/MapfreMasPlus.cshtml
+@@ -793,7 +793,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.MapfreMasPlus.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Cotizacion/PolizaLider.cshtml b/webapp/Views/Cotizacion/PolizaLider.cshtml
+index 330aa24a68b7094acc96a22f97171a0ded1d1797..8ef3d2ec5dee447920c62f25c65963f2943d3600 100644
+--- a/webapp/Views/Cotizacion/PolizaLider.cshtml
++++ b/webapp/Views/Cotizacion/PolizaLider.cshtml
+@@ -418,7 +418,7 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.PolizaLider.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Cotizacion/SaldoDeudor.cshtml b/webapp/Views/Cotizacion/SaldoDeudor.cshtml
+index 1cee149b3e64b4829402ca6be2511c59949a3570..e1814d74565154842ba32b73e3e31de454f2a489 100644
+--- a/webapp/Views/Cotizacion/SaldoDeudor.cshtml
++++ b/webapp/Views/Cotizacion/SaldoDeudor.cshtml
+@@ -345,7 +345,7 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.SaldoDeudor.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Cotizacion/Viajero.cshtml b/webapp/Views/Cotizacion/Viajero.cshtml
+index fdfe818767cb01fa07feff60f5a1e39f60211bfd..9b1fddf1fa47f164f95f6af3c09d9c84dea89273 100644
+--- a/webapp/Views/Cotizacion/Viajero.cshtml
++++ b/webapp/Views/Cotizacion/Viajero.cshtml
+@@ -396,7 +396,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.Viajero.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+             app.CotizacionViajero.Init();
+diff --git a/webapp/Views/Cotizacion/hogartotal.cshtml b/webapp/Views/Cotizacion/hogartotal.cshtml
+index e3fa5cea8bd2012e901533728101e75efbfc1f9e..b24740f9c7f296e64a1fd75c9f5df4bba7c76a69 100644
+--- a/webapp/Views/Cotizacion/hogartotal.cshtml
++++ b/webapp/Views/Cotizacion/hogartotal.cshtml
+@@ -430,7 +430,7 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.HogarTotal.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Cotizacion/multirriesgo.cshtml b/webapp/Views/Cotizacion/multirriesgo.cshtml
+index 31d3dd6b966566e03c2691d78bfa24c0fd24edb8..3396776dbf869cd537a6da8161ca5c17147a4833 100644
+--- a/webapp/Views/Cotizacion/multirriesgo.cshtml
++++ b/webapp/Views/Cotizacion/multirriesgo.cshtml
+@@ -506,7 +506,7 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Cotizacion.Multirriesgo.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Emision/AccidentesPersonales.cshtml b/webapp/Views/Emision/AccidentesPersonales.cshtml
+index 926ba8b859f5c47341c2fc3e866946e3c3d78844..828e4435072924112e33dffef220d84209ddff72 100644
+--- a/webapp/Views/Emision/AccidentesPersonales.cshtml
++++ b/webapp/Views/Emision/AccidentesPersonales.cshtml
+@@ -305,6 +305,11 @@
+                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                     </div>
+                 </div>
++                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                    <div class="btn-group">
++                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
++                    </div>
++                </div>
+             </div>
+         </div>
+     </div>
+@@ -806,8 +811,8 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Emision.AccidentesPersonales.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
++    <script src="@Url.Content("~/Scripts/Emision.AccidentesPersonales.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.AccidentesPersonales.js")).Ticks)"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+             app.EmisionAccidentesPersonales.Init();
+diff --git a/webapp/Views/Emision/Estudiantil.cshtml b/webapp/Views/Emision/Estudiantil.cshtml
+index 67dd52331956a1ce5658a64d9da6827536d3cc35..0e5ab4d29aed9bc1eeb12c191877f3b547dcce25 100644
+--- a/webapp/Views/Emision/Estudiantil.cshtml
++++ b/webapp/Views/Emision/Estudiantil.cshtml
+@@ -293,7 +293,12 @@
+                 <hr>
+                 <div class="m-t-sm text-center">
+                     <div class="btn-group">
+-                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar copia de correo</a>
++                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
++                    </div>
++                </div>
++                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                    <div class="btn-group">
++                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
+                     </div>
+                 </div>
+             </div>
+@@ -805,8 +810,8 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Emision.Estudiantil.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
++    <script src="@Url.Content("~/Scripts/Emision.Estudiantil.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.Estudiantil.js")).Ticks)"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+             app.EmisionEstudiantil.Init();
+diff --git a/webapp/Views/Emision/MapfreMas.cshtml b/webapp/Views/Emision/MapfreMas.cshtml
+index e130dad2b74dddeddb670dcb7d62565257ff69fd..067f07eec57f2afdf44b04554af442615e3a44b5 100644
+--- a/webapp/Views/Emision/MapfreMas.cshtml
++++ b/webapp/Views/Emision/MapfreMas.cshtml
+@@ -805,6 +805,11 @@
+                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="MapfreMasEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
+                     </div>
+                 </div>
++                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                    <div class="btn-group">
++                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
++                    </div>
++                </div>
+             </div>
+         </div>
+ 
+@@ -826,7 +831,7 @@
+     <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
+     <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Emision.MapfreMas.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.MapfreMas.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Emision.Terceros.js")"></script>
+     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
+diff --git a/webapp/Views/Emision/MapfreMasPlus.cshtml b/webapp/Views/Emision/MapfreMasPlus.cshtml
+index a1ba0e1172deb41960029f96d04c4ee31081e070..736491ce0f2ac8080d24085dc1894851ff0196bc 100644
+--- a/webapp/Views/Emision/MapfreMasPlus.cshtml
++++ b/webapp/Views/Emision/MapfreMasPlus.cshtml
+@@ -808,6 +808,11 @@
+                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="MapfreMasPlusEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
+                     </div>
+                 </div>
++                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                    <div class="btn-group">
++                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
++                    </div>
++                </div>
+             </div>
+         </div>
+ 
+@@ -892,8 +897,8 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Emision.MapfreMasPlus.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
++    <script src="@Url.Content("~/Scripts/Emision.MapfreMasPlus.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.MapfreMasPlus.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Emision.Terceros.js")"></script>
+     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
+     <script type="text/javascript">
+diff --git a/webapp/Views/Emision/SaldoDeudor.cshtml b/webapp/Views/Emision/SaldoDeudor.cshtml
+index 50c5ba955be746034cac4fdb87e90dcccdec9120..cf775850a9723cf9c46cefecd91b7d8086b235f6 100644
+--- a/webapp/Views/Emision/SaldoDeudor.cshtml
++++ b/webapp/Views/Emision/SaldoDeudor.cshtml
+@@ -1736,8 +1736,8 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Emision.SaldoDeudor.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
++    <script src="@Url.Content("~/Scripts/Emision.SaldoDeudor.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.SaldoDeudor.js")).Ticks)"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+             app.EmisionSaldoDeudor.Init();
+diff --git a/webapp/Views/Emision/Viajero.cshtml b/webapp/Views/Emision/Viajero.cshtml
+index 17f6efaa7043d69bac2efcc6d7715a55b66902d2..8a5342be46540a97372ea8737d911643e0949958 100644
+--- a/webapp/Views/Emision/Viajero.cshtml
++++ b/webapp/Views/Emision/Viajero.cshtml
+@@ -332,7 +332,12 @@
+                 <hr>
+                 <div class="m-t-sm text-center">
+                     <div class="btn-group">
+-                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="ViajeroEnviarCertificadoCorreoText">Enviar copia de correo</span></a>
++                        <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="ViajeroEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
++                    </div>
++                </div>
++                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                    <div class="btn-group">
++                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
+                     </div>
+                 </div>
+             </div>
+@@ -844,7 +849,7 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Emision.Viajero.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.Viajero.js")).Ticks)"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Emision/_resumen.cshtml b/webapp/Views/Emision/_resumen.cshtml
+index f13f1e8009d182d129e348bbd43abbab4ccb1d02..9dd7bed96e4d670d25cd2473958eba27f867aa2a 100644
+--- a/webapp/Views/Emision/_resumen.cshtml
++++ b/webapp/Views/Emision/_resumen.cshtml
+@@ -32,6 +32,11 @@
+                     <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="SummarySendCertificateEmailText">Enviar certificado por correo</span></a>
+                 </div>
+             </div>
++            <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                <div class="btn-group">
++                    <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
++                </div>
++            </div>
+         </div>
+     </div>
+ </div>
+diff --git a/webapp/Views/Emision/hogartotal.cshtml b/webapp/Views/Emision/hogartotal.cshtml
+index 86fc4f2d4570bd314613ab3485aed84d83540e4f..2ece1dad46b54b3ed2e0156a9357b970b2fc61e7 100644
+--- a/webapp/Views/Emision/hogartotal.cshtml
++++ b/webapp/Views/Emision/hogartotal.cshtml
+@@ -606,6 +606,11 @@
+                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="HogarTotalEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
+                     </div>
+                 </div>
++                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                    <div class="btn-group">
++                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
++                    </div>
++                </div>
+             </div>
+         </div>
+ 
+@@ -1495,8 +1500,8 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Emision.HogarTotal.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
++    <script src="@Url.Content("~/Scripts/Emision.HogarTotal.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.HogarTotal.js")).Ticks)"></script>
+     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Emision/multirriesgo.cshtml b/webapp/Views/Emision/multirriesgo.cshtml
+index 430509d93f6e319f25789b416988079739099437..f7a16a136aff621de777fe6cefdd945fa944d57e 100644
+--- a/webapp/Views/Emision/multirriesgo.cshtml
++++ b/webapp/Views/Emision/multirriesgo.cshtml
+@@ -54,6 +54,11 @@
+                                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="MultirriesgoEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
+                                     </div>
+                                 </div>
++                                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                                    <div class="btn-group">
++                                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
++                                    </div>
++                                </div>
+                             </div>
+                         </div>
+ 
+@@ -1517,8 +1522,8 @@
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Emision.Multirriesgo.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
++    <script src="@Url.Content("~/Scripts/Emision.Multirriesgo.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.Multirriesgo.js")).Ticks)"></script>
+     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Funerario/Cotizacion.cshtml b/webapp/Views/Funerario/Cotizacion.cshtml
+index d42e08b9ee3232202f8a3295586f9ba8f4cbbfa9..d4ef362896967e3bce3e31fc5454364abf4f85e5 100644
+--- a/webapp/Views/Funerario/Cotizacion.cshtml
++++ b/webapp/Views/Funerario/Cotizacion.cshtml
+@@ -138,7 +138,7 @@
+     <script src="@Url.Content("~/app/js/core.frm.js")"></script>
+     <script src="@Url.Content("~/Scripts/Funerario/Cotizacion.js")"></script>
+     <script src="@Url.Content("~/Scripts/Common/Tercero.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+             app.Funerario.Init();
+diff --git a/webapp/Views/HogarTotal/Cotizacion.cshtml b/webapp/Views/HogarTotal/Cotizacion.cshtml
+index f818aec331362d7fddcbff38ef515853b107d4b8..5c59ad80762b56272c8b55a251f0e1baf4dabeca 100644
+--- a/webapp/Views/HogarTotal/Cotizacion.cshtml
++++ b/webapp/Views/HogarTotal/Cotizacion.cshtml
+@@ -429,7 +429,7 @@
+ </div>
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/HogarTotal.Cotizacion.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/HogarTotal/Emision.cshtml b/webapp/Views/HogarTotal/Emision.cshtml
+index 3991922e228b6ffe7c6b87ee82d543ae79e2c856..75a8d1b8d3f60260bae6df04dbff357691650756 100644
+--- a/webapp/Views/HogarTotal/Emision.cshtml
++++ b/webapp/Views/HogarTotal/Emision.cshtml
+@@ -608,6 +608,11 @@
+                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                     </div>
+                 </div>
++                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                    <div class="btn-group">
++                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
++                    </div>
++                </div>
+             </div>
+         </div>
+ 
+@@ -1495,8 +1500,8 @@
+ </div>
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/HogarTotal.Emision.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
++    <script src="@Url.Content("~/Scripts/HogarTotal.Emision.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/HogarTotal.Emision.js")).Ticks)"></script>
+     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Multirriesgo/Cotizacion.cshtml b/webapp/Views/Multirriesgo/Cotizacion.cshtml
+index c8f0f6649e52a8320e52c60d8b8b9c1ac8f388e8..8ad9f4da2bdd7269c6e3b373e7dc2fad6a9d6b29 100644
+--- a/webapp/Views/Multirriesgo/Cotizacion.cshtml
++++ b/webapp/Views/Multirriesgo/Cotizacion.cshtml
+@@ -526,7 +526,7 @@
+ </div>
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Multirriesgo.Cotizacion.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Multirriesgo/Emision.cshtml b/webapp/Views/Multirriesgo/Emision.cshtml
+index 778c42e20db4acaa76c58a9b1734e55389e147fe..697280cb1a3095671e3e975b4c611b215c13653e 100644
+--- a/webapp/Views/Multirriesgo/Emision.cshtml
++++ b/webapp/Views/Multirriesgo/Emision.cshtml
+@@ -58,6 +58,11 @@
+                                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> Enviar certificado por correo</a>
+                                     </div>
+                                 </div>
++                                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
++                                    <div class="btn-group">
++                                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
++                                    </div>
++                                </div>
+                             </div>
+                         </div>
+ 
+@@ -1520,8 +1525,8 @@
+ </div>
+ @section Scripts {
+     @Scripts.Render("~/bundles/jsCRUD")
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Multirriesgo.Emision.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
++    <script src="@Url.Content("~/Scripts/Multirriesgo.Emision.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Multirriesgo.Emision.js")).Ticks)"></script>
+     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+diff --git a/webapp/Views/Variaciones/HogarTotal.cshtml b/webapp/Views/Variaciones/HogarTotal.cshtml
+index aeeb212552efd7bd67f2fea220dd8f67e4c27a8e..e7beca6a6e32447989ba73f5c51e7a3ad3f2b350 100644
+--- a/webapp/Views/Variaciones/HogarTotal.cshtml
++++ b/webapp/Views/Variaciones/HogarTotal.cshtml
+@@ -776,7 +776,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+ 
+     <script src="@Url.Content("~/Scripts/Variaciones.Coberturas.js")"></script>
+     <script src="@Url.Content("~/Scripts/Variaciones.SumasAseguradas.js")"></script>
+diff --git a/webapp/Views/Variaciones/HogarTotalPlus.cshtml b/webapp/Views/Variaciones/HogarTotalPlus.cshtml
+index 564b0f58b70530c00e0688d19d5ee781e94ae4fe..753dded318cb98bb6cdbca3c43ead074cb2ca260 100644
+--- a/webapp/Views/Variaciones/HogarTotalPlus.cshtml
++++ b/webapp/Views/Variaciones/HogarTotalPlus.cshtml
+@@ -1012,7 +1012,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+ 
+     <script src="@Url.Content("~/Scripts/Variaciones.Coberturas.js")"></script>
+     <script src="@Url.Content("~/Scripts/Variaciones.SumasAseguradas.js")"></script>
+diff --git a/webapp/Views/Variaciones/MapfreMasOld.cshtml b/webapp/Views/Variaciones/MapfreMasOld.cshtml
+index b5bb0edb6aa6b35a2edc670f7029a8b25b4a32bb..35db746528659bd95b4cc81c87008d3a5c2886a8 100644
+--- a/webapp/Views/Variaciones/MapfreMasOld.cshtml
++++ b/webapp/Views/Variaciones/MapfreMasOld.cshtml
+@@ -1011,7 +1011,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Variaciones.MapfreMasOld.js")"></script>
+     <script src="@Url.Content("~/Scripts/Emision.Terceros.js")"></script>
+     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
+diff --git a/webapp/Views/Variaciones/MapfreMasPlus.cshtml b/webapp/Views/Variaciones/MapfreMasPlus.cshtml
+index b21c7f5f3a6d4981955ac2dd91543073d1bd0e87..59a1efc295e369ef96c2943693757a84568a4f09 100644
+--- a/webapp/Views/Variaciones/MapfreMasPlus.cshtml
++++ b/webapp/Views/Variaciones/MapfreMasPlus.cshtml
+@@ -955,7 +955,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+     <script src="@Url.Content("~/Scripts/Variaciones.MapfreMasPlus.js")"></script>
+     <script src="@Url.Content("~/Scripts/Emision.Terceros.js")"></script>
+     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
+diff --git a/webapp/Views/Variaciones/Multirriesgo.cshtml b/webapp/Views/Variaciones/Multirriesgo.cshtml
+index 5dc606d2e188e8b2b794dc97cd3effa12e408c8a..e67c05888e51d6723a00b5a6895fc2e524aef681 100644
+--- a/webapp/Views/Variaciones/Multirriesgo.cshtml
++++ b/webapp/Views/Variaciones/Multirriesgo.cshtml
+@@ -930,7 +930,7 @@
+     @Scripts.Render("~/bundles/jsCRUD")
+     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
+     <script src="@Url.Content("~/app/js/core.language.js")"></script>
+-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
++    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+ 
+     <script src="@Url.Content("~/Scripts/Variaciones.Coberturas.js")"></script>
+     <script src="@Url.Content("~/Scripts/Variaciones.SumasAseguradas.js")"></script>
+diff --git a/webapp/app/css/mapfre.css b/webapp/app/css/mapfre.css
+index 300eb1996c2a58fcf8fb364be54333fca028bc04..1be3d7dba24020323af7767b3b54b8137eb0a87f 100644
+--- a/webapp/app/css/mapfre.css
++++ b/webapp/app/css/mapfre.css
+@@ -8831,3 +8831,8 @@ body.Mapfre {
+     content: none !important;
+     display: none !important;
+ }
++
++.Mapfre #page-wrapper #quoteBlock .ibox-content #opcionesPagoGroup,
++.Mapfre #page-wrapper #opcionesPagoGroup {
++    margin-top: 8px !important;
++}
