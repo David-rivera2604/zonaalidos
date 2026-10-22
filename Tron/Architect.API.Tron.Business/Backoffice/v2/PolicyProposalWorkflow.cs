@@ -16,6 +16,12 @@ namespace Architect.API.Tron.Business.Backoffice
     public static class PolicyProposalWorkflow
     {
         /// <summary>
+        /// Ramas cuyos borradores y firmas pertenecen al flujo de altas y bajas.
+        /// Los monitores heredados las excluyen para no procesar dos veces la misma solicitud.
+        /// </summary>
+        public static readonly int[] AltasBajasBranchCodes = { 117, 401 };
+
+        /// <summary>
         /// Guarda un borrador que pertenece al agente o empleado autenticado.
         /// </summary>
         /// <param name="poliza">Datos de la solicitud que se guardará.</param>
@@ -30,17 +36,16 @@ namespace Architect.API.Tron.Business.Backoffice
 
             bool creatingProposal = !poliza.ProposalId.HasValue || poliza.ProposalId.Value <= 0;
             Contracts.PolicyProposal proposal = RetrieveOrCreate(poliza, tokenInfo);
-            string proposalData = JsonConvert.SerializeObject(poliza);
 
             if (proposal.Status == PolicyProposalStatus.Incompleta ||
                 proposal.Status == PolicyProposalStatus.PendientePorComplementos)
             {
-                if (!DataAccess.PolicyProposal.TrySaveSnapshotAndTransition(
-                    proposal.Id,
+                if (!TrySaveAltasBajasSnapshotAndTransition(
+                    proposal,
                     tokenInfo.CompanyId,
                     proposal.Status,
                     proposal.Status,
-                    proposalData,
+                    poliza,
                     tokenInfo.UserId,
                     null))
                 {
@@ -52,7 +57,6 @@ namespace Architect.API.Tron.Business.Backoffice
                 throw new InvalidOperationException("La solicitud no permite guardar borradores en su estado actual.");
             }
 
-            proposal.ProposalData = proposalData;
             if (creatingProposal)
             {
                 PolicyProposalAudit.Create(proposal, tokenInfo, "Solicitud creada", "El agente creó una nueva solicitud de póliza.");
@@ -78,21 +82,19 @@ namespace Architect.API.Tron.Business.Backoffice
             PolicyProposalInvitationRiskValidator.ValidateInsuredMayNotChangeAgentData(almacenada, poliza);
             PolicyProposalInvitationRiskValidator.PreserveAgentDescriptions(almacenada, poliza);
             PolicyProposalInvitationRiskValidator.ValidateForInvitation(poliza);
-            string proposalData = JsonConvert.SerializeObject(poliza);
 
-            if (!DataAccess.PolicyProposal.TrySaveSnapshotAndTransition(
-                proposal.Id,
+            if (!TrySaveAltasBajasSnapshotAndTransition(
+                proposal,
                 invitationAccess.CompanyId,
                 PolicyProposalStatus.PendientePorComplementos,
                 PolicyProposalStatus.PendientePorComplementos,
-                proposalData,
+                poliza,
                 tokenInfo.UserId,
                 null))
             {
                 throw new InvalidOperationException("La solicitud ya no está disponible para guardar datos.");
             }
 
-            proposal.ProposalData = proposalData;
             PolicyProposalAudit.Create(proposal, tokenInfo, "Información del asegurado guardada", "El asegurado invitado guardó la información completada.");
             return proposal;
         }
@@ -201,18 +203,17 @@ namespace Architect.API.Tron.Business.Backoffice
             {
                 PolicyProposalSignatureDocument.ValidateTemplate(poliza);
             }
-            string proposalData = JsonConvert.SerializeObject(poliza);
 
             using (Session session = new Session("Research"))
             {
                 try
                 {
-                    if (!DataAccess.PolicyProposal.TrySaveSnapshotAndTransition(
-                        proposal.Id,
+                    if (!TrySaveAltasBajasSnapshotAndTransition(
+                        proposal,
                         invitationAccess.CompanyId,
                         PolicyProposalStatus.PendientePorComplementos,
                         PolicyProposalStatus.PendientePorFirma,
-                        proposalData,
+                        poliza,
                         tokenInfo.UserId,
                         session.dbConnection))
                     {
@@ -233,7 +234,6 @@ namespace Architect.API.Tron.Business.Backoffice
                 }
             }
 
-            proposal.ProposalData = proposalData;
             proposal.Status = PolicyProposalStatus.PendientePorFirma;
             PolicyProposalAudit.Create(proposal, tokenInfo, "Datos confirmados por el asegurado", "El asegurado invitado confirmó los datos definitivos.");
             PolicyProposalSignatureService.DeliverPending(proposal.Id, invitationAccess.CompanyId, tokenInfo);
@@ -309,6 +309,52 @@ namespace Architect.API.Tron.Business.Backoffice
         }
 
         /// <summary>
+        /// Persiste la instantánea de Altas y Bajas junto con las columnas que las consultas existentes
+        /// usan para identificar, mostrar y contactar al asegurado. No aplica a otros productos.
+        /// </summary>
+        /// <param name="proposal">Solicitud de póliza que se actualizará.</param>
+        /// <param name="companyId">Compañía propietaria de la solicitud.</param>
+        /// <param name="expectedStatus">Estado que debe conservar la solicitud antes del cambio.</param>
+        /// <param name="nextStatus">Estado que se asignará a la solicitud.</param>
+        /// <param name="poliza">Planilla de Altas y Bajas con la información vigente del asegurado.</param>
+        /// <param name="userId">Usuario responsable del guardado.</param>
+        /// <param name="connection">Conexión transaccional opcional.</param>
+        /// <returns><c>true</c> cuando se actualizó la solicitud esperada.</returns>
+        private static bool TrySaveAltasBajasSnapshotAndTransition(
+            Contracts.PolicyProposal proposal,
+            int companyId,
+            int expectedStatus,
+            int nextStatus,
+            RequestPoliza poliza,
+            int userId,
+            System.Data.IDbConnection connection)
+        {
+            string insuredName = poliza.NOM_TERCERO_ASEG.CompleteFullName(poliza.APE_TERCERO_ASEG);
+            string proposalData = JsonConvert.SerializeObject(poliza);
+            bool saved = DataAccess.PolicyProposal.TrySaveAltasBajasSnapshotAndTransition(
+                proposal.Id,
+                companyId,
+                expectedStatus,
+                nextStatus,
+                proposalData,
+                poliza.COD_DOCUM_ASEG,
+                insuredName,
+                poliza.EMAIL_ASEG,
+                userId,
+                connection);
+
+            if (saved)
+            {
+                proposal.ProposalData = proposalData;
+                proposal.InsuredId = poliza.COD_DOCUM_ASEG;
+                proposal.InsuredName = insuredName;
+                proposal.PrimaryEmailAddress = poliza.EMAIL_ASEG;
+            }
+
+            return saved;
+        }
+
+        /// <summary>
         /// Recupera una solicitud existente de la compañía o crea su primer borrador.
         /// </summary>
         /// <param name="poliza">Datos de solicitud suministrados por el agente.</param>
@@ -370,8 +416,7 @@ namespace Architect.API.Tron.Business.Backoffice
                 string.IsNullOrWhiteSpace(poliza.NOM_TERCERO_ASEG) ||
                 string.IsNullOrWhiteSpace(poliza.APE_TERCERO_ASEG) ||
                 string.IsNullOrWhiteSpace(poliza.EMAIL_ASEG) ||
-                string.IsNullOrWhiteSpace(poliza.TLF_NUMERO_ASEG) ||
-                poliza.NAC_ASEG == DateTime.MinValue)
+                string.IsNullOrWhiteSpace(poliza.TLF_NUMERO_ASEG))
             {
                 throw new InvalidOperationException("Debe completar los datos personales obligatorios antes de enviar la solicitud a firma o emitirla.");
             }

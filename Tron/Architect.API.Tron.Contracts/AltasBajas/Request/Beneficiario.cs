@@ -14,6 +14,12 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
     public class Beneficiario : BeneficiarioBase
     {
         /// <summary>
+        /// Identificador de fila que la tabla dinámica utiliza para editar el beneficiario existente.
+        /// Se conserva en la propuesta para que una recarga no convierta una edición en una inserción.
+        /// </summary>
+        public int BeneficiariosId { get; set; }
+
+        /// <summary>
         /// Texto visible del tipo de documento del beneficiario.
         /// </summary>
         public string COD_DOCUM_BENEFTypeDesc { get; set; }

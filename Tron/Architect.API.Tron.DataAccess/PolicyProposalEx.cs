@@ -18,16 +18,55 @@ namespace Architect.API.Tron.DataAccess
         /// </summary>
         /// <param name="companyId">Identificación de la compañia propietaria.</param>
         /// <param name="status">Estado del presupuesto.</param>
+        /// <param name="branchCodes">Ramos que deben incluirse o excluirse; sin valores se conserva la consulta histórica.</param>
+        /// <param name="excludeBranchCodes"><c>true</c> para excluir los ramos indicados y conservar también los registros sin ramo.</param>
         /// <returns>Lista de instancias de PolicyProposal</returns>
-        public static List<Architect.API.Tron.Contracts.PolicyProposal> RetrieveByStatus(int companyId, int status)
+        public static List<Architect.API.Tron.Contracts.PolicyProposal> RetrieveByStatus(
+            int companyId,
+            int status,
+            IEnumerable<int> branchCodes = null,
+            bool excludeBranchCodes = false)
         {
             List<Architect.API.Tron.Contracts.PolicyProposal> result = new List<Architect.API.Tron.Contracts.PolicyProposal>();
-            Database.Select("SELECT Id, SigningRequestId, ProposalId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3" +
-                             " FROM PolicyProposal " +
-                             "WHERE CompanyId=:CompanyId AND Status=:Status")
-                        .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
-                        .AddParameter("Status", DbType.Decimal, 5, status)
-                        .Query(null, "Research", new Action<System.Data.IDataReader>((reader) =>
+            List<int> distinctBranchCodes = new List<int>();
+            if (branchCodes != null)
+            {
+                foreach (int branchCode in branchCodes)
+                {
+                    if (!distinctBranchCodes.Contains(branchCode))
+                    {
+                        distinctBranchCodes.Add(branchCode);
+                    }
+                }
+            }
+
+            string branchFilter = string.Empty;
+            if (distinctBranchCodes.Count > 0)
+            {
+                List<string> parameters = new List<string>();
+                for (int index = 0; index < distinctBranchCodes.Count; index++)
+                {
+                    parameters.Add(":BranchCode" + index);
+                }
+
+                string branchCodesSql = string.Join(", ", parameters);
+                branchFilter = excludeBranchCodes
+                    ? " AND (BranchCode IS NULL OR BranchCode NOT IN (" + branchCodesSql + "))"
+                    : " AND BranchCode IN (" + branchCodesSql + ")";
+            }
+
+            var select = Database.Select("SELECT Id, SigningRequestId, ProposalId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3" +
+                                         " FROM PolicyProposal " +
+                                         "WHERE CompanyId=:CompanyId AND Status=:Status" + branchFilter)
+                                 .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                                 .AddParameter("Status", DbType.Decimal, 5, status);
+
+            for (int index = 0; index < distinctBranchCodes.Count; index++)
+            {
+                select.AddParameter("BranchCode" + index, DbType.Decimal, 5, distinctBranchCodes[index]);
+            }
+
+            select.Query(null, "Research", new Action<System.Data.IDataReader>((reader) =>
                         {
                             result.Add(new Architect.API.Tron.Contracts.PolicyProposal()
                             {
@@ -181,6 +220,53 @@ namespace Architect.API.Tron.DataAccess
                                               "UpdateUserCode=:UserId, UpdateDate=:UpdateDate " +
                                         "WHERE Id=:Id AND CompanyId=:CompanyId AND Status=:ExpectedStatus")
                 .AddParameter("ProposalData", DbType.Clob, 0, proposalData)
+                .AddParameter("NextStatus", DbType.Decimal, 5, nextStatus)
+                .AddParameter("UserId", DbType.Decimal, 9, userId)
+                .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                .AddParameter("Id", DbType.Decimal, 9, id)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("ExpectedStatus", DbType.Decimal, 5, expectedStatus)
+                .Execute(connection, "Research");
+
+            return updated == 1;
+        }
+
+        /// <summary>
+        /// Guarda la instantánea y la proyección relacional del asegurado exclusivamente para el flujo de Altas y Bajas.
+        /// No interpreta el contenido JSON para mantener independientes los demás productos que usan PolicyProposal.
+        /// </summary>
+        /// <param name="id">Identificador NUMBER(9) de la solicitud.</param>
+        /// <param name="companyId">Compañía propietaria de la solicitud.</param>
+        /// <param name="expectedStatus">Estado que debe conservar la solicitud antes del cambio.</param>
+        /// <param name="nextStatus">Estado que se asignará a la solicitud.</param>
+        /// <param name="proposalData">Instantánea JSON propia de Altas y Bajas.</param>
+        /// <param name="insuredId">Identificación vigente del asegurado.</param>
+        /// <param name="insuredName">Nombre completo vigente del asegurado.</param>
+        /// <param name="primaryEmailAddress">Correo vigente del asegurado.</param>
+        /// <param name="userId">Usuario responsable de la transición.</param>
+        /// <param name="connection">Conexión transaccional compartida.</param>
+        /// <returns><c>true</c> si se actualizó una única solicitud.</returns>
+        public static bool TrySaveAltasBajasSnapshotAndTransition(
+            int id,
+            int companyId,
+            int expectedStatus,
+            int nextStatus,
+            string proposalData,
+            string insuredId,
+            string insuredName,
+            string primaryEmailAddress,
+            int userId,
+            IDbConnection connection)
+        {
+            int updated = Database.Update("UPDATE PolicyProposal " +
+                                          "SET ProposalData=:ProposalData, InsuredId=:InsuredId, " +
+                                              "InsuredName=:InsuredName, PrimaryEmailAddress=:PrimaryEmailAddress, " +
+                                              "Status=:NextStatus, UpdateUserCode=:UserId, UpdateDate=:UpdateDate " +
+                                        "WHERE Id=:Id AND CompanyId=:CompanyId AND Status=:ExpectedStatus")
+                .AddParameter("ProposalData", DbType.Clob, 0, proposalData)
+                .AddParameter("InsuredId", DbType.AnsiString, 30, insuredId)
+                .AddParameter("InsuredName", DbType.AnsiString, 120, insuredName)
+                .AddParameter("PrimaryEmailAddress", DbType.AnsiString, 80, primaryEmailAddress)
                 .AddParameter("NextStatus", DbType.Decimal, 5, nextStatus)
                 .AddParameter("UserId", DbType.Decimal, 9, userId)
                 .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)

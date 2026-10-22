@@ -258,9 +258,32 @@ app.Form_Ext_Altas = (function () {
         $('#OCUPACION_ASEG').trigger('change.select2');
     }
 
+    // Conserva la llave requerida por la tabla dinámica; propuestas antiguas no la contienen y la reciben solo al cargarse.
+    function ensureBeneficiaryRowIds(beneficiaries) {
+        const rows = Array.isArray(beneficiaries) ? beneficiaries : [];
+        const assigned = {};
+        let nextId = 1;
+
+        rows.forEach(function (beneficiario) {
+            let rowId = Number(beneficiario.BeneficiariosId);
+            if (!Number.isInteger(rowId) || rowId <= 0 || assigned[rowId]) {
+                while (assigned[nextId]) {
+                    nextId++;
+                }
+                rowId = nextId;
+            }
+
+            beneficiario.BeneficiariosId = rowId;
+            assigned[rowId] = true;
+            nextId = Math.max(nextId, rowId + 1);
+        });
+
+        return rows;
+    }
+
     // Restaura controles compuestos y catálogos dependientes que el asignador genérico del formulario no administra.
     function restoreInsuredDependentFields(proposal) {
-        $('#beneficiariosTbl').bootstrapTable('load', proposal.Beneficiarios || []);
+        $('#beneficiariosTbl').bootstrapTable('load', ensureBeneficiaryRowIds(proposal.Beneficiarios));
 
         restoreProposalOccupation(proposal);
 

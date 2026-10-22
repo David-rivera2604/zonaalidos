@@ -38,7 +38,10 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <param name="companyId">Compañía propietaria de las solicitudes.</param>
         private static void ProcessPendingDeliveries(int companyId)
         {
-            foreach (Contracts.PolicyProposal proposal in DataAccess.PolicyProposal.RetrieveByStatus(companyId, PolicyProposalStatus.PendientePorFirma))
+            foreach (Contracts.PolicyProposal proposal in DataAccess.PolicyProposal.RetrieveByStatus(
+                companyId,
+                PolicyProposalStatus.PendientePorFirma,
+                PolicyProposalWorkflow.AltasBajasBranchCodes))
             {
                 try
                 {
@@ -57,7 +60,10 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <param name="companyId">Compañía propietaria de las solicitudes.</param>
         private static void ProcessSignatureReplies(int companyId)
         {
-            foreach (Contracts.PolicyProposal proposal in DataAccess.PolicyProposal.RetrieveByStatus(companyId, PolicyProposalStatus.PorAceptar))
+            foreach (Contracts.PolicyProposal proposal in DataAccess.PolicyProposal.RetrieveByStatus(
+                companyId,
+                PolicyProposalStatus.PorAceptar,
+                PolicyProposalWorkflow.AltasBajasBranchCodes))
             {
                 try
                 {
@@ -134,7 +140,10 @@ namespace Architect.API.Tron.Business.Backoffice
         /// <param name="companyId">Compañía propietaria de las solicitudes.</param>
         private static void ProcessPendingIssuance(int companyId)
         {
-            foreach (Contracts.PolicyProposal candidate in DataAccess.PolicyProposal.RetrieveByStatus(companyId, PolicyProposalStatus.ParaEmitir))
+            foreach (Contracts.PolicyProposal candidate in DataAccess.PolicyProposal.RetrieveByStatus(
+                companyId,
+                PolicyProposalStatus.ParaEmitir,
+                PolicyProposalWorkflow.AltasBajasBranchCodes))
             {
                 try
                 {
@@ -260,14 +269,14 @@ namespace Architect.API.Tron.Business.Backoffice
         }
 
         /// <summary>
-        /// Determina si la instantánea pertenece al contrato de altas y bajas creado por este mecanismo.
+        /// Determina si la solicitud pertenece a uno de los ramos administrados por Altas/Bajas.
         /// </summary>
         /// <param name="proposal">Solicitud almacenada.</param>
-        /// <returns><c>true</c> cuando contiene el identificador interno de solicitud del contrato de altas.</returns>
+        /// <returns><c>true</c> cuando conserva un código de ramo propio de este flujo.</returns>
         private static bool IsAltasBajasProposal(Contracts.PolicyProposal proposal)
         {
-            return proposal != null && !string.IsNullOrWhiteSpace(proposal.ProposalData) &&
-                proposal.ProposalData.Contains("\"ProposalId\"");
+            return proposal != null && proposal.BranchCode.HasValue &&
+                PolicyProposalWorkflow.AltasBajasBranchCodes.Contains(proposal.BranchCode.Value);
         }
 
         /// <summary>

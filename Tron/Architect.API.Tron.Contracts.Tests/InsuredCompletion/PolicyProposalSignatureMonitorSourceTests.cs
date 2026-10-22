@@ -98,5 +98,27 @@ namespace Architect.API.Tron.Contracts.Tests.InsuredCompletion
             StringAssert.Contains(File.ReadAllText(migrationPath), "'100' AS VALUE");
             StringAssert.Contains(File.ReadAllText(migrationPath), "Descripción funcional");
         }
+
+        /// <summary>
+        /// Garantiza que las solicitudes nuevas de Altas/Bajas se separen de las solicitudes
+        /// históricas que el monitor existente continúa revisando sin código de ramo.
+        /// </summary>
+        [TestMethod]
+        public void Monitores_DeFirma_SeparanLosRamosDeAltasBajasDeLasSolicitudesHistoricas()
+        {
+            string root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", ".."));
+            string monitorSource = File.ReadAllText(Path.Combine(root, "Tron", "Architect.API.Tron.Business", "Backoffice", "v2", "PolicyProposalSignatureMonitor.cs"));
+            string legacyMonitorSource = File.ReadAllText(Path.Combine(root, "Tron", "Architect.API.Tron.Business", "Emision", "MapfreMas.cs"));
+            string dataAccessSource = File.ReadAllText(Path.Combine(root, "Tron", "Architect.API.Tron.DataAccess", "PolicyProposalEx.cs"));
+            string persistenceSource = File.ReadAllText(Path.Combine(root, "Tron", "Architect.API.Tron.DataAccess", "PolicyProposal.cs"));
+
+            StringAssert.Contains(monitorSource, "PolicyProposalWorkflow.AltasBajasBranchCodes");
+            StringAssert.Contains(legacyMonitorSource, "PolicyProposalWorkflow.AltasBajasBranchCodes");
+            StringAssert.Contains(legacyMonitorSource, "excludeBranchCodes: true");
+            StringAssert.Contains(dataAccessSource, "IEnumerable<int> branchCodes = null");
+            StringAssert.Contains(dataAccessSource, "BranchCode IN");
+            StringAssert.Contains(dataAccessSource, "BranchCode IS NULL OR BranchCode NOT IN");
+            StringAssert.Contains(persistenceSource, "BranchCode=NVL(:BranchCode, BranchCode)");
+        }
     }
 }

@@ -203,7 +203,7 @@ namespace Architect.API.Tron.DataAccess
                 policyproposalItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE PolicyProposal " +
-                                      "SET CompanyId=:CompanyId, AgentCode=:AgentCode, BranchCode=:BranchCode, ProposalId=:ProposalId, InsuredId=:InsuredId, InsuredName=:InsuredName, Summary=:Summary, IssueDate=:IssueDate, ProposalData=:ProposalData, SigningType=:SigningType, PrimaryEmailAddress=:PrimaryEmailAddress, SigningRequestId=:SigningRequestId, SignedRequest1=:SignedRequest1, SigningRequest2Id=:SigningRequest2Id, SignedRequest2=:SignedRequest2, SigningRequest3Id=:SigningRequest3Id, SignedRequest3=:SignedRequest3, PolicyId=:PolicyId, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET CompanyId=:CompanyId, AgentCode=:AgentCode, BranchCode=NVL(:BranchCode, BranchCode), ProposalId=:ProposalId, InsuredId=:InsuredId, InsuredName=:InsuredName, Summary=:Summary, IssueDate=:IssueDate, ProposalData=:ProposalData, SigningType=:SigningType, PrimaryEmailAddress=:PrimaryEmailAddress, SigningRequestId=:SigningRequestId, SignedRequest1=:SignedRequest1, SigningRequest2Id=:SigningRequest2Id, SignedRequest2=:SignedRequest2, SigningRequest3Id=:SigningRequest3Id, SignedRequest3=:SignedRequest3, PolicyId=:PolicyId, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, policyproposalItem.CompanyId)
                                 .AddParameter("AgentCode", DbType.Decimal, 9, policyproposalItem.AgentCode)

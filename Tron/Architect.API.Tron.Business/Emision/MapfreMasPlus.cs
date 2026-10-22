@@ -262,7 +262,11 @@ namespace Architect.API.Tron.Business.Emision
                 {
                     int companyId = Convert.ToInt32(companyIdForReview);
                     int userId = 666;
-                    foreach (Contracts.PolicyProposal item in DataAccess.PolicyProposal.RetrieveByStatus(companyId, 4))
+                    foreach (Contracts.PolicyProposal item in DataAccess.PolicyProposal.RetrieveByStatus(
+                        companyId,
+                        4,
+                        Architect.API.Tron.Business.Backoffice.PolicyProposalWorkflow.AltasBajasBranchCodes,
+                        excludeBranchCodes: true))
                     {
                         eviSignInf = DocuSign.Integrations.DocuSign.Query(item.SigningRequestId, true).GetAwaiter().GetResult();
                         if (eviSignInf != null)
