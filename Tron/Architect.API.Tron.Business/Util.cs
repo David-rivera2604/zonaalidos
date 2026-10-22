@@ -175,11 +175,11 @@ namespace Architect.API.Tron.Business
                     Core.Contracts.General.LookupValue contrato = contratosMaster.Lkp.Find(y => y.Code == quoteTron.num_contrato.ToString());
                     if (contrato != null)
                     {
-                        string vcto_poliza = (string)contrato["FEC_VCTO_POLIZA"];
-                        if (vcto_poliza.IsNotEmpty())
-                        {
-                            fecha_vec = DateTime.Parse(vcto_poliza, CultureInfo.CreateSpecificCulture("es-CR"));
-                        }
+                        //string vcto_poliza = (string)contrato["FEC_VCTO_POLIZA"];
+                        //if (vcto_poliza.IsNotEmpty())
+                        //{
+                        //    fecha_vec = DateTime.Parse(vcto_poliza, CultureInfo.CreateSpecificCulture("es-CR"));
+                        //}
                     }
                 }
             }
