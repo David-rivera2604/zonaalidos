@@ -88,6 +88,17 @@
     <Compile Include="Backoffice\Emision\Generico.cs" />
     <Compile Include="Backoffice\Emision\MapfreMas.cs" />
     <Compile Include="Backoffice\v2\AltasBajasPoliza.cs" />
+    <!-- Explicit dispatch rule prevents invitation requests from reaching issuance or cancellation. -->
+    <Compile Include="Backoffice\v2\AltasBajasOperation.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalIdentifier.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalInvitationRiskValidator.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalAgentWorkflow.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalAudit.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalWorkflow.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalSignatureDocument.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalSimulationSettings.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalSignatureMonitor.cs" />
+    <Compile Include="Backoffice\v2\PolicyProposalSignatureService.cs" />
     <Compile Include="Backoffice\v2\Pagos.cs" />
     <Compile Include="Clientes\Support.cs" />
     <Compile Include="Cotizacion\AccidentesPersonales.cs" />
@@ -181,6 +192,15 @@
     <Compile Include="Variaciones\MapfreMasPlusConvertFrom.cs" />
     <Compile Include="Variaciones\VariacionesServiceCommon.cs" />
     <Compile Include="Variaciones\MapfreVariacionesCommon.cs" />
+    <!-- Scoped invitation mechanism: secrets, persistence/delivery ports, and issuance orchestration. -->
+    <Compile Include="InsuredCompletion\InvitationSecret.cs" />
+    <Compile Include="InsuredCompletion\IInvitationStore.cs" />
+    <Compile Include="InsuredCompletion\IInvitationMailSender.cs" />
+    <Compile Include="InsuredCompletion\InvitationMailSender.cs" />
+    <Compile Include="InsuredCompletion\InvitationStore.cs" />
+    <Compile Include="InsuredCompletion\InvitationService.cs" />
+    <Compile Include="InsuredCompletion\InvitationSessionService.cs" />
+    <Compile Include="InsuredCompletion\ProposalOwnership.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Architect.API.Core.Business\Architect.API.Core.Business.csproj">

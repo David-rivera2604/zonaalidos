@@ -25,6 +25,20 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
         public int NUM_CONTRATO { get; set; }
 
         /// <summary>
+        /// Texto descriptivo del contrato seleccionado por el agente.
+        /// Se conserva en la solicitud para mostrarlo al asegurado sin consultar contratos por agente.
+        /// </summary>
+        [StringLength(200)]
+        public string NUM_CONTRATODesc { get; set; }
+
+        /// <summary>
+        /// Nombre de la moneda asociada al contrato seleccionado por el agente.
+        /// Se conserva en la solicitud para mostrarla al asegurado sin consultar contratos por agente.
+        /// </summary>
+        [StringLength(50)]
+        public string MONEDA { get; set; }
+
+        /// <summary>
         /// Código del ramo.
         /// </summary>
         public int RAMO { get; set; }

@@ -172,9 +172,10 @@ namespace Architect.API.Core.Business.General
                 ref title,
                 targetPath);
 
+            // Scheduled reports retain the normal operational-mail logging policy; they do not carry capability secrets.
             Mail.EnqueueSend(
                 "Default", 0, 0, 0, job.MailTemplate, null, null, null, null,
-                new[] { string.Format("{0};{1}", attachFileName, outputFileName) }, true);
+                new[] { string.Format("{0};{1}", attachFileName, outputFileName) }, true, false);
         }
 
         /// <summary>

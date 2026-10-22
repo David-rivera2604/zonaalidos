@@ -11,7 +11,7 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
     /// <summary>
     /// Solicitud con formato de salida hacia el procedimiento almacenado de altas y bajas.
     /// </summary>
-    public class SPCall: Base
+    public class SPCall : Base
     {
         /// <summary>
         /// Tipo de proceso: N para alta y A para baja.

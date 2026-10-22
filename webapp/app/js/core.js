@@ -15,6 +15,35 @@ app.state = { entityType: 0 };
 
 app.DateEmpty = '0001-01-01T00:00:00';
 
+// Determina si la pestaña está en el destino que el servidor autorizó para la invitación actual.
+function isInsuredCompletionDestination() {
+    var completionPath = sessionStorage.getItem('InsuredCompletionPath');
+    if (!completionPath || completionPath.charAt(0) !== '/') {
+        return false;
+    }
+    // CompletionPath es relativo a la aplicación, no al dominio: conserva /Aliados/ cuando existe directorio virtual.
+    var completionUrl = new URL(completionPath.substring(1), window.location.origin + app.setting.basepath);
+    return completionUrl.pathname.toLowerCase() === window.location.pathname.toLowerCase();
+}
+
+// El formulario de invitación conserva el contexto técnico por pestaña para no reemplazar el estado compartido del agente.
+(function () {
+    const localStorageGetItem = Storage.prototype.getItem;
+    Storage.prototype.getItem = function (key) {
+        const isInsuredCompletionForm = this === window.localStorage && isInsuredCompletionDestination();
+        if (isInsuredCompletionForm && key === 'Roles') {
+            return sessionStorage.getItem('InsuredCompletionRoles') || localStorageGetItem.call(this, key);
+        }
+        if (isInsuredCompletionForm && key === 'Tenant') {
+            return sessionStorage.getItem('InsuredCompletionTenant') || localStorageGetItem.call(this, key);
+        }
+        if (isInsuredCompletionForm && key === 'Token') {
+            return sessionStorage.getItem('InsuredCompletionToken') || localStorageGetItem.call(this, key);
+        }
+        return localStorageGetItem.call(this, key);
+    };
+}());
+
 String.prototype.format = function () {
     var args = arguments;
     return this.replace(/\{\{|\}\}|\{(\d+)\}/g, function (m, n) {
@@ -52,7 +81,32 @@ app.core = (function () {
     let lookupData = [];
     let loadingScripts = {};
 
+    // Habilita catálogos locales con prefijo s_ exclusivamente durante pruebas en localhost.
+    function isLocalLookupSimulation() {
+        return window.location.hostname.toLowerCase() === 'localhost' &&
+            localStorage.getItem('Lookup.LocalSimulation') === 'true';
+    }
+
+    // Conserva parámetros extendidos después de ':' y evita anteponer dos veces el prefijo de simulación.
+    function resolveLookupKey(lookupKey) {
+        if (!isLocalLookupSimulation() || lookupKey.indexOf('s_') === 0) {
+            return lookupKey;
+        }
+
+        const separator = lookupKey.indexOf(':');
+        const masterKey = separator < 0 ? lookupKey : lookupKey.substring(0, separator);
+        const suffix = separator < 0 ? '' : lookupKey.substring(separator);
+        return `s_${masterKey}${suffix}`;
+    }
+
     function getAuthToken() {
+        // La invitación usa un token temporal aislado por pestaña solo durante el formulario autorizado.
+        if (isInsuredCompletionDestination()) {
+            let insuredCompletionToken = sessionStorage.getItem("InsuredCompletionToken");
+            if (insuredCompletionToken) {
+                return insuredCompletionToken;
+            }
+        }
         return localStorage.getItem("Token");
         token = app.security().getCookie('AuthToken');
         if (token != null && token != '') {
@@ -366,6 +420,7 @@ app.core = (function () {
 
     function Lookups(keys, callback, url, path, alterToken) {
         var onlyKeys = [];
+        var cacheKeys = [];
         var ctrls = [];
         var ctrlName = [];
         var emptyValues = [];
@@ -376,11 +431,13 @@ app.core = (function () {
         $.each(keys, function (index, value) {
             if (value.split('.')[0].startsWith('@')) {
                 selectCtrol.push(false);
-                onlyKeys.push(value.split('.')[0].substring(1));
+                cacheKeys.push(value.split('.')[0].substring(1));
+                onlyKeys.push(resolveLookupKey(value.split('.')[0].substring(1)));
             }
             else {
                 selectCtrol.push(true);
-                onlyKeys.push(value.split('.')[0]);
+                cacheKeys.push(value.split('.')[0]);
+                onlyKeys.push(resolveLookupKey(value.split('.')[0]));
             }
 
             if (value.split('.').length > 1)
@@ -412,6 +469,8 @@ app.core = (function () {
                 var key = '', ctrl = '';
 
                 $.each(data, function (index, values) {
+                    // La API devuelve la clave s_; se conserva la clave solicitada para no obligar a cada formulario a conocer la simulación.
+                    values.Key = cacheKeys[index];
                     let current = lookupData.filter(i => i.Key === values.Key)
                     if (current.length > 0) {
                         lookupData.splice(lookupData.indexOf(current[0]), 1);
@@ -452,6 +511,8 @@ app.core = (function () {
 
     function LookupDependency(parentValue, childId, lookupKey, emptyValue, newValue, triggerChange, callback, url, path) {
         var childElement = $('select#' + childId);
+        // Toda dependencia utiliza la misma resolución que las listas iniciales del formulario.
+        lookupKey = resolveLookupKey(lookupKey);
         if (parentValue !== null && parentValue !== '0') {
             childElement.children().remove();
             childElement.append($('<option />').val('0').text(' Cargando...'));

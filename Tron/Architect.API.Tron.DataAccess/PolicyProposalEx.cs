@@ -116,6 +116,108 @@ namespace Architect.API.Tron.DataAccess
         }
 
         /// <summary>
+        /// Cambia el estado de una solicitud únicamente cuando conserva el estado esperado dentro de la compañía indicada.
+        /// </summary>
+        /// <param name="id">Identificador NUMBER(9) de la solicitud.</param>
+        /// <param name="companyId">Compañía propietaria de la solicitud.</param>
+        /// <param name="expectedStatus">Estado que debe conservar la solicitud antes del cambio.</param>
+        /// <param name="nextStatus">Estado que se asignará a la solicitud.</param>
+        /// <param name="userId">Usuario responsable de la transición.</param>
+        /// <param name="signingRequestId">Identificador externo de firma que se conservará cuando se indique.</param>
+        /// <param name="policyId">Identificador de póliza que se conservará cuando se indique.</param>
+        /// <param name="connection">Instancia de una conexión compartida.</param>
+        /// <returns><c>true</c> si se actualizó una única solicitud.</returns>
+        public static bool TryTransition(
+            int id,
+            int companyId,
+            int expectedStatus,
+            int nextStatus,
+            int userId,
+            string signingRequestId = null,
+            string policyId = null,
+            IDbConnection connection = null)
+        {
+            int updated = Database.Update("UPDATE PolicyProposal " +
+                                          "SET Status=:NextStatus, " +
+                                              "SigningRequestId=NVL(:SigningRequestId, SigningRequestId), " +
+                                              "PolicyId=NVL(:PolicyId, PolicyId), " +
+                                              "UpdateUserCode=:UserId, UpdateDate=:UpdateDate " +
+                                        "WHERE Id=:Id AND CompanyId=:CompanyId AND Status=:ExpectedStatus")
+                .AddParameter("NextStatus", DbType.Decimal, 5, nextStatus)
+                .AddParameter("SigningRequestId", DbType.AnsiString, 40, signingRequestId)
+                .AddParameter("PolicyId", DbType.AnsiString, 13, policyId)
+                .AddParameter("UserId", DbType.Decimal, 9, userId)
+                .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                .AddParameter("Id", DbType.Decimal, 9, id)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("ExpectedStatus", DbType.Decimal, 5, expectedStatus)
+                .Execute(connection, "Research");
+
+            return updated == 1;
+        }
+
+        /// <summary>
+        /// Guarda la instantánea definitiva y cambia el estado solo si la solicitud conserva el estado esperado.
+        /// </summary>
+        /// <param name="id">Identificador NUMBER(9) de la solicitud.</param>
+        /// <param name="companyId">Compañía propietaria de la solicitud.</param>
+        /// <param name="expectedStatus">Estado que debe conservar la solicitud antes del cambio.</param>
+        /// <param name="nextStatus">Estado que se asignará a la solicitud.</param>
+        /// <param name="proposalData">Instantánea JSON que se almacenará.</param>
+        /// <param name="userId">Usuario responsable de la transición.</param>
+        /// <param name="connection">Conexión transaccional compartida.</param>
+        /// <returns><c>true</c> si se actualizó una única solicitud.</returns>
+        public static bool TrySaveSnapshotAndTransition(
+            int id,
+            int companyId,
+            int expectedStatus,
+            int nextStatus,
+            string proposalData,
+            int userId,
+            IDbConnection connection)
+        {
+            int updated = Database.Update("UPDATE PolicyProposal " +
+                                          "SET ProposalData=:ProposalData, Status=:NextStatus, " +
+                                              "UpdateUserCode=:UserId, UpdateDate=:UpdateDate " +
+                                        "WHERE Id=:Id AND CompanyId=:CompanyId AND Status=:ExpectedStatus")
+                .AddParameter("ProposalData", DbType.Clob, 0, proposalData)
+                .AddParameter("NextStatus", DbType.Decimal, 5, nextStatus)
+                .AddParameter("UserId", DbType.Decimal, 9, userId)
+                .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                .AddParameter("Id", DbType.Decimal, 9, id)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("ExpectedStatus", DbType.Decimal, 5, expectedStatus)
+                .Execute(connection, "Research");
+
+            return updated == 1;
+        }
+
+        /// <summary>
+        /// Actualiza la instantánea y el correo del asegurado sin modificar ningún otro dato de la solicitud.
+        /// </summary>
+        /// <param name="id">Identificador técnico de la solicitud.</param>
+        /// <param name="companyId">Compañía propietaria de la solicitud.</param>
+        /// <param name="proposalData">Instantánea JSON con el correo corregido.</param>
+        /// <param name="recipientEmail">Correo actualizado del asegurado.</param>
+        /// <param name="userId">Usuario responsable del cambio.</param>
+        /// <returns><c>true</c> cuando la solicitud aún está pendiente por complementos.</returns>
+        public static bool TryUpdateRecipientEmailAndSnapshot(int id, int companyId, string proposalData, string recipientEmail, int userId)
+        {
+            int updated = Database.Update("UPDATE PolicyProposal SET ProposalData=:ProposalData, PrimaryEmailAddress=:RecipientEmail, " +
+                                          "UpdateUserCode=:UserId, UpdateDate=:UpdateDate " +
+                                          "WHERE Id=:Id AND CompanyId=:CompanyId AND Status=:Status")
+                .AddParameter("ProposalData", DbType.Clob, 0, proposalData)
+                .AddParameter("RecipientEmail", DbType.AnsiString, 80, recipientEmail)
+                .AddParameter("UserId", DbType.Decimal, 9, userId)
+                .AddParameter("UpdateDate", DbType.DateTime, 0, DateTime.Now)
+                .AddParameter("Id", DbType.Decimal, 9, id)
+                .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
+                .AddParameter("Status", DbType.Decimal, 5, Contracts.PolicyProposalStatus.PendientePorComplementos)
+                .Execute(null, "Research");
+            return updated == 1;
+        }
+
+        /// <summary>
         /// Elimina un registro en la tabla PolicyProposal por medio del numero de propuesta.
         /// </summary>
         /// <returns>Cantidad de registros eliminados.</returns>

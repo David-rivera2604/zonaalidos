@@ -1495,6 +1495,7 @@
     <Compile Include="Controllers\GeneralController.cs" />
     <Compile Include="Controllers\CoreController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
+    <Compile Include="Controllers\InsuredCompletionController.cs" />
     <Compile Include="Controllers\PolicyController.cs" />
     <Compile Include="Filters\SetThemeAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -2019,6 +2020,8 @@
     <Content Include="Views\Cases\_references.cshtml" />
     <Content Include="Views\Bayer\Carnet.cshtml" />
     <Content Include="Reports\CarnetDigital.repx" />
+    <Content Include="Reports\117_seguro_vida_colectivo_solicitud_inclusion.repx" />
+    <Content Include="Reports\401_saldo_deudor.repx" />
     <Content Include="Views\Viewer\Form.cshtml" />
     <Content Include="Views\Emision\_verificardomicilio.cshtml" />
     <Content Include="Views\Process\diagram.cshtml" />
@@ -2196,6 +2199,7 @@
     <Content Include="Views\Funerario\_terceros.cshtml" />
     <Content Include="Views\Funerario\Cotizacion.cshtml" />
     <Content Include="Views\Viewer\_ViewerFormContent.cshtml" />
+    <Content Include="Views\InsuredCompletion\Start.cshtml" />
     <Content Include="Views\Acceso\aliados.cshtml" />
     <Content Include="Views\Acceso\mapfre.cshtml" />
     <Content Include="Views\Acceso\purdy.cshtml" />

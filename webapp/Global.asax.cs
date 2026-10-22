@@ -34,6 +34,35 @@ namespace aliados
             yield return new BackgroundJobServer(options);
         }
 
+        /// <summary>
+        /// Programa el monitor del ciclo de firma de propuestas con la frecuencia común de Evicertia.
+        /// Este registro se reutiliza tanto en operación normal como en la simulación local controlada.
+        /// </summary>
+        /// <param name="interval">Frecuencia de revisión en minutos.</param>
+        private static void SchedulePolicyProposalSignatureMonitor(int interval)
+        {
+            if (interval <= 0)
+            {
+                return;
+            }
+
+            RecurringJob.AddOrUpdate("PolicyProposal.SignatureMonitor", () =>
+                Architect.API.Tron.Business.Backoffice.PolicyProposalSignatureMonitor.Run(),
+                Cron.MinuteInterval(interval));
+        }
+
+        /// <summary>
+        /// Indica si el ambiente local autorizó expresamente la simulación del proveedor de firma.
+        /// Una clave ausente o inválida conserva el comportamiento seguro de no ejecutar trabajos externos en Development.
+        /// </summary>
+        /// <returns><c>true</c> solo cuando la configuración contiene el valor booleano verdadero.</returns>
+        private static bool IsLocalPolicyProposalSignatureSimulationEnabled()
+        {
+            bool enableLocalSimulation;
+            return bool.TryParse(ConfigurationManager.AppSettings["PolicyProposal.SignatureSimulation.Enabled"], out enableLocalSimulation) &&
+                   enableLocalSimulation;
+        }
+
         void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
@@ -54,7 +83,11 @@ namespace aliados
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time");
             var fechaCentroamerica = TimeZoneInfo.ConvertTime(DateTime.UtcNow, timeZone);
 
-            if (!Architect.Utilities.Helpers.Settings.StringValue("Working.Mode", "Development").Equals("Development", StringComparison.CurrentCultureIgnoreCase))
+            bool isDevelopment = Architect.Utilities.Helpers.Settings.StringValue("Working.Mode", "Development")
+                .Equals("Development", StringComparison.CurrentCultureIgnoreCase);
+            bool enableLocalSimulation = IsLocalPolicyProposalSignatureSimulationEnabled();
+
+            if (!isDevelopment)
             {
 
 
@@ -68,6 +101,8 @@ namespace aliados
                     RecurringJob.AddOrUpdate("MapfreMas.EvicertiaSigned", () =>
                         Architect.API.Tron.Business.Emision.MapfreMas.EvicertiaSigned(),
                         Cron.MinuteInterval(interval));
+                    // Revisa las solicitudes de altas enviadas a firma y emite las que Evicertia confirmó.
+                    SchedulePolicyProposalSignatureMonitor(interval);
                 }
 
 
@@ -140,6 +175,13 @@ namespace aliados
                 //BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
                 // BackgroundJob.Enqueue(() => test());
                 //var recurringJobs = Hangfire.JobStorage.Current.GetConnection().GetRecurringJobs().ToList();                
+            }
+            else if (enableLocalSimulation)
+            {
+                // En Development solo se habilita este trabajo cuando la simulación fue solicitada explícitamente.
+                // No se registran los monitores que invocan integraciones externas.
+                int interval = Convert.ToInt32(ConfigurationManager.AppSettings["Evicertia.Interval.Review"]);
+                SchedulePolicyProposalSignatureMonitor(interval);
             }
 
         }

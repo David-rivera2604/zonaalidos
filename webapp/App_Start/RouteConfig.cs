@@ -13,6 +13,13 @@ namespace aliados
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Punto público único: el secreto permanece en el fragmento y nunca llega al servidor en esta navegación.
+            routes.MapRoute(
+                name: "InsuredCompletionStart",
+                url: "Completar",
+                defaults: new { controller = "InsuredCompletion", action = "Start" }
+            );
+
 
             routes.MapRoute(
                 name: "ViewerForm",

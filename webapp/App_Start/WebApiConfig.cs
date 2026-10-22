@@ -47,6 +47,8 @@ namespace aliados
                 defaults: new { id = RouteParameter.Optional }
             );
             config.Filters.Add(new Architect.API.Core.Security.AuthorizeExtendAttribute());
+            // Revalida sesión e invitación cuando el JWT pertenece a la cuenta técnica de completado.
+            config.Filters.Add(new Architect.API.Tron.Filters.InsuredCompletionTokenAuthorizeAttribute());
 
             //var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
             //config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);

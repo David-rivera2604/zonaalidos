@@ -167,6 +167,25 @@
     <Compile Include="Presupuesto\Ocurrencia.cs" />
     <Compile Include="Presupuesto\DatoFijo.cs" />
     <Compile Include="PolicyProposal.cs" />
+    <Compile Include="PolicyProposalStatus.cs" />
+    <Compile Include="InsuredCompletion\InvitationStatus.cs" />
+    <Compile Include="InsuredCompletion\AgentPolicyProposalView.cs" />
+    <Compile Include="InsuredCompletion\InvitationSummaryView.cs" />
+    <Compile Include="InsuredCompletion\ResendInvitationRequest.cs" />
+    <Compile Include="InsuredCompletion\RevokeInvitationRequest.cs" />
+    <Compile Include="InsuredCompletion\PolicyProposalInvitation.cs" />
+    <Compile Include="InsuredCompletion\InvitationStateMachine.cs" />
+    <Compile Include="InsuredCompletion\PolicyProposalCompletion.cs" />
+    <Compile Include="InsuredCompletion\PolicyProposalCompletionAudit.cs" />
+    <!-- Agent request and non-secret response contracts for insured-completion invitations. -->
+    <Compile Include="InsuredCompletion\CreateInvitationRequest.cs" />
+    <Compile Include="InsuredCompletion\CompletionDestination.cs" />
+    <Compile Include="InsuredCompletion\CompletionFlow.cs" />
+    <Compile Include="InsuredCompletion\InvitationView.cs" />
+    <Compile Include="InsuredCompletion\InvitationSession.cs" />
+    <Compile Include="InsuredCompletion\InvitationSessionAccess.cs" />
+    <Compile Include="InsuredCompletion\InsuredCompletionTokenScope.cs" />
+    <Compile Include="InsuredCompletion\ExchangeInvitationRequest.cs" />
     <Compile Include="Presupuesto\Riesgo.cs" />
     <Compile Include="Presupuesto\Cobertura.cs" />
     <Compile Include="Presupuesto\Tercero.cs" />

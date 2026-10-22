@@ -32,5 +32,3 @@ namespace Architect.API.Tron.Contracts.AltasBajas.Request
     }
 
 }
-
-

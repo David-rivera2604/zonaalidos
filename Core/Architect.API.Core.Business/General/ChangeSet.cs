@@ -49,10 +49,12 @@ namespace Architect.API.Core.Business.General
                 UpdateUserCode = userId,
                 UpdateDate = DateTime.Now
             };
-            //item.Id = Core.DataAccess.General.ChangeSet.Create(item);
+            item.Id = Core.DataAccess.General.ChangeSet.Create(item);
+            Core.DataAccess.General.ChangeSet.Create(item);
 
-            //Task.Run(() => Rule.Runtime(companyId, userId, entityType, action, entitySource));
-            //_ = Rule.Runtime(companyId, userId, entityType, action, entitySource);
+            Task.Run(() => Rule.Runtime(companyId, userId, entityType, action, entitySource));
+            _ = Rule.Runtime(companyId, userId, entityType, action, entitySource);
+
         }
 
 

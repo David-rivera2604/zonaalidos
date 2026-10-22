@@ -25,11 +25,12 @@ namespace Architect.API.Tron.DataAccess
             {
                 policyproposalItem.UpdateDate = DateTime.Now;
             }
-            return Database.Insert("INSERT INTO PolicyProposal (Id, CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, UpdateUserCode, UpdateDate) " +
-                                                 "VALUES(:Id, :CompanyId, :AgentCode, :ProposalId, :InsuredId, :InsuredName, :Summary, :IssueDate, :ProposalData, :SigningType, :PrimaryEmailAddress, :SigningRequestId, :SignedRequest1, :SigningRequest2Id, :SignedRequest2, :SigningRequest3Id, :SignedRequest3, :PolicyId, :Status, :UpdateUserCode, :UpdateDate)")
+            return Database.Insert("INSERT INTO PolicyProposal (Id, CompanyId, AgentCode, BranchCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, UpdateUserCode, UpdateDate) " +
+                                                 "VALUES(:Id, :CompanyId, :AgentCode, :BranchCode, :ProposalId, :InsuredId, :InsuredName, :Summary, :IssueDate, :ProposalData, :SigningType, :PrimaryEmailAddress, :SigningRequestId, :SignedRequest1, :SigningRequest2Id, :SignedRequest2, :SigningRequest3Id, :SignedRequest3, :PolicyId, :Status, :UpdateUserCode, :UpdateDate)")
                             .AddParameter("Id", DbType.Decimal, 9, policyproposalItem.Id)
                             .AddParameter("CompanyId", DbType.Decimal, 5, policyproposalItem.CompanyId)
                             .AddParameter("AgentCode", DbType.Decimal, 9, policyproposalItem.AgentCode)
+                            .AddParameter("BranchCode", DbType.Decimal, 5, policyproposalItem.BranchCode)
                             .AddParameter("ProposalId", DbType.AnsiString, 13, policyproposalItem.ProposalId)
                             .AddParameter("InsuredId", DbType.AnsiString, 20, policyproposalItem.InsuredId)
                             .AddParameter("InsuredName", DbType.AnsiString, 120, policyproposalItem.InsuredName)
@@ -89,7 +90,7 @@ namespace Architect.API.Tron.DataAccess
         public static Architect.API.Tron.Contracts.PolicyProposal Retrieve(int id, int companyId, IDbConnection connection = null)
         {
             Architect.API.Tron.Contracts.PolicyProposal result = null;
-            Database.Select("SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
+            Database.Select("SELECT Id, PolicyProposal.CompanyId, AgentCode, BranchCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
                               "FROM PolicyProposal LEFT JOIN UserMember um ON um.UserId = PolicyProposal.UpdateUserCode " +
                              "WHERE PolicyProposal.Id=:Id AND PolicyProposal.CompanyId=:CompanyId")
                         .AddParameter("Id", DbType.Decimal, 9, id)
@@ -112,7 +113,7 @@ namespace Architect.API.Tron.DataAccess
         public static List<Architect.API.Tron.Contracts.PolicyProposal> RetrieveAll(int companyId, string filter, List<DataFactory.Contracts.Parameter> parameters = null, IDbConnection connection = null)
         {
             List<Architect.API.Tron.Contracts.PolicyProposal> result = new List<Architect.API.Tron.Contracts.PolicyProposal>();
-            Database.Select("SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
+            Database.Select("SELECT Id, PolicyProposal.CompanyId, AgentCode, BranchCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
                               "FROM PolicyProposal LEFT JOIN UserMember um ON um.UserId = PolicyProposal.UpdateUserCode " +
                              "WHERE PolicyProposal.CompanyId=:CompanyId" + filter)
                         .AddParameter("CompanyId", DbType.Decimal, 5, companyId)
@@ -146,7 +147,7 @@ namespace Architect.API.Tron.DataAccess
                 endIndex = int.MaxValue;
             }
             Database.Select("SELECT * FROM (" +
-                            "SELECT Id, PolicyProposal.CompanyId, AgentCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
+                            "SELECT Id, PolicyProposal.CompanyId, AgentCode, BranchCode, ProposalId, InsuredId, InsuredName, Summary, IssueDate, ProposalData, SigningType, PrimaryEmailAddress, SigningRequestId, SignedRequest1, SigningRequest2Id, SignedRequest2, SigningRequest3Id, SignedRequest3, PolicyId, Status, PolicyProposal.UpdateUserCode, um.FirstName || ' ' || um.LastName AS UpdateUserName, PolicyProposal.UpdateDate " +
                                    ", ROW_NUMBER() OVER (ORDER BY PolicyProposal.Id DESC) RowNumber " +
                               "FROM PolicyProposal LEFT JOIN UserMember um ON um.UserId = PolicyProposal.UpdateUserCode " +
                              "WHERE PolicyProposal.CompanyId=:CompanyId" + filter +
@@ -202,10 +203,11 @@ namespace Architect.API.Tron.DataAccess
                 policyproposalItem.UpdateDate = DateTime.Now;
             }
             return Database.Update("UPDATE PolicyProposal " +
-                                      "SET CompanyId=:CompanyId, AgentCode=:AgentCode, ProposalId=:ProposalId, InsuredId=:InsuredId, InsuredName=:InsuredName, Summary=:Summary, IssueDate=:IssueDate, ProposalData=:ProposalData, SigningType=:SigningType, PrimaryEmailAddress=:PrimaryEmailAddress, SigningRequestId=:SigningRequestId, SignedRequest1=:SignedRequest1, SigningRequest2Id=:SigningRequest2Id, SignedRequest2=:SignedRequest2, SigningRequest3Id=:SigningRequest3Id, SignedRequest3=:SignedRequest3, PolicyId=:PolicyId, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
+                                      "SET CompanyId=:CompanyId, AgentCode=:AgentCode, BranchCode=:BranchCode, ProposalId=:ProposalId, InsuredId=:InsuredId, InsuredName=:InsuredName, Summary=:Summary, IssueDate=:IssueDate, ProposalData=:ProposalData, SigningType=:SigningType, PrimaryEmailAddress=:PrimaryEmailAddress, SigningRequestId=:SigningRequestId, SignedRequest1=:SignedRequest1, SigningRequest2Id=:SigningRequest2Id, SignedRequest2=:SignedRequest2, SigningRequest3Id=:SigningRequest3Id, SignedRequest3=:SignedRequest3, PolicyId=:PolicyId, Status=:Status, UpdateUserCode=:UpdateUserCode, UpdateDate=:UpdateDate " +
                                     "WHERE Id=:Id")
                                 .AddParameter("CompanyId", DbType.Decimal, 5, policyproposalItem.CompanyId)
                                 .AddParameter("AgentCode", DbType.Decimal, 9, policyproposalItem.AgentCode)
+                                .AddParameter("BranchCode", DbType.Decimal, 5, policyproposalItem.BranchCode)
                                 .AddParameter("ProposalId", DbType.AnsiString, 13, policyproposalItem.ProposalId)
                                 .AddParameter("InsuredId", DbType.AnsiString, 20, policyproposalItem.InsuredId)
                                 .AddParameter("InsuredName", DbType.AnsiString, 120, policyproposalItem.InsuredName)
@@ -349,6 +351,9 @@ namespace Architect.API.Tron.DataAccess
             item.Id = reader.IntegerValue("Id");
             item.CompanyId = reader.IntegerValue("CompanyId");
             item.AgentCode = reader.IntegerValue("AgentCode");
+            item.BranchCode = reader.IsDBNull(reader.GetOrdinal("BranchCode"))
+                ? (int?)null
+                : reader.IntegerValue("BranchCode");
             item.ProposalId = reader.StringValue("ProposalId");
             item.InsuredId = reader.StringValue("InsuredId");
             item.InsuredName = reader.StringValue("InsuredName");

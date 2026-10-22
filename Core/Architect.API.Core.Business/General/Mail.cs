@@ -68,17 +68,53 @@ namespace Architect.API.Core.Business.General
 
         public static void SendByTemplate(string mailServer, string templateKey, int companyId, int userId, object entity, Dictionary<string, string> toAddressList, string[] attachments = null)
         {
-            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend(mailServer, companyId, userId, 0, templateKey, toAddressList, null, null, entity, attachments, false));
+            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend(mailServer, companyId, userId, 0, templateKey, toAddressList, null, null, entity, attachments, false, false));
+        }
+
+        /// <summary>
+        /// Encola un correo basado en plantilla cuyo destinatario y contexto renderizado no deben escribirse en los registros de la aplicación.
+        /// Se utiliza para enlaces de capacidad y otras comunicaciones sensibles enviadas desde la cuenta de correo configurada.
+        /// </summary>
+        /// <param name="mailServer">Prefijo de cuenta de correo configurado fuera del control de código fuente.</param>
+        /// <param name="templateKey">Clave de plantilla aprobada.</param>
+        /// <param name="companyId">Contexto de empresa usado para resolver la plantilla.</param>
+        /// <param name="userId">Identificador opcional del usuario que inicia la acción.</param>
+        /// <param name="ownerId">Identificador opcional del propietario expuesto en el contexto de plantilla.</param>
+        /// <param name="entity">Datos de plantilla que pueden contener valores sensibles.</param>
+        /// <param name="toAddressList">Destinatarios que esta operación no debe registrar.</param>
+        /// <param name="attachments">Rutas opcionales de adjuntos.</param>
+        public static void SendSensitiveByTemplate(string mailServer, string templateKey, int companyId, int userId, int ownerId, object entity, Dictionary<string, string> toAddressList, string[] attachments = null)
+        {
+            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend(mailServer, companyId, userId, ownerId, templateKey, toAddressList, null, null, entity, attachments, false, true));
+        }
+
+        /// <summary>
+        /// Conserva el contrato original de correo encolado para los llamadores existentes que no manejan datos sensibles de capacidad.
+        /// </summary>
+        /// <param name="mailServer">Prefijo de cuenta de correo.</param>
+        /// <param name="companyId">Contexto de empresa usado para resolver la plantilla.</param>
+        /// <param name="userId">Identificador opcional del usuario que inicia la acción.</param>
+        /// <param name="ownerId">Identificador opcional del propietario.</param>
+        /// <param name="templateKey">Clave de plantilla, si existe.</param>
+        /// <param name="toAddressList">Colección de destinatarios.</param>
+        /// <param name="subject">Asunto directo cuando no se usa plantilla.</param>
+        /// <param name="body">Cuerpo directo cuando no se usa plantilla.</param>
+        /// <param name="entity">Contexto de plantilla.</param>
+        /// <param name="attachments">Rutas opcionales de adjuntos.</param>
+        /// <param name="direct">Indica si un error de envío debe propagarse.</param>
+        public static void EnqueueSend(string mailServer, int companyId, int userId, int ownerId, string templateKey, Dictionary<string, string> toAddressList, string subject, string body, object entity, string[] attachments, bool direct)
+        {
+            EnqueueSend(mailServer, companyId, userId, ownerId, templateKey, toAddressList, subject, body, entity, attachments, direct, false);
         }
 
         public static void SendByTemplate(string templateKey, int companyId, object entity, Dictionary<string, string> toAddressList = null, string[] attachments = null)
         {
-            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, 0, 0, templateKey, toAddressList, null, null, entity, attachments, false));
+            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, 0, 0, templateKey, toAddressList, null, null, entity, attachments, false, false));
         }
 
         public static void SendByTemplate(string templateKey, int companyId, int userId, int ownerId, object entity, Dictionary<string, string> toAddressList = null, string[] attachments = null)
         {
-            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, userId, ownerId, templateKey, toAddressList, null, null, entity, attachments, false));
+            Hangfire.BackgroundJob.Enqueue(() => EnqueueSend("Default", companyId, userId, ownerId, templateKey, toAddressList, null, null, entity, attachments, false, false));
         }
 
         public static void SendEmail(Dictionary<string, string> toAddressList, string subject, string body, string[] attachments = null)
@@ -86,8 +122,24 @@ namespace Architect.API.Core.Business.General
             Hangfire.BackgroundJob.Enqueue(() => SendAngular(toAddressList, subject, body, attachments));
         }
 
+        /// <summary>
+        /// Resuelve y envía un correo encolado de plantilla o directo.
+        /// Las invocaciones sensibles suprimen el registro de destinatario y contexto, pero conservan el reporte operativo de errores.
+        /// </summary>
+        /// <param name="mailServer">Prefijo de cuenta de correo.</param>
+        /// <param name="companyId">Contexto de empresa usado para resolver la plantilla.</param>
+        /// <param name="userId">Identificador opcional del usuario que inicia la acción.</param>
+        /// <param name="ownerId">Identificador opcional del propietario.</param>
+        /// <param name="templateKey">Clave de plantilla, si existe.</param>
+        /// <param name="toAddressList">Colección de destinatarios.</param>
+        /// <param name="subject">Asunto directo cuando no se usa plantilla.</param>
+        /// <param name="body">Cuerpo directo cuando no se usa plantilla.</param>
+        /// <param name="entity">Contexto de plantilla.</param>
+        /// <param name="attachments">Rutas opcionales de adjuntos.</param>
+        /// <param name="direct">Indica si un error de envío debe propagarse.</param>
+        /// <param name="suppressSensitiveLogging">Indica si se prohíbe registrar el destinatario y el contexto renderizado.</param>
         [AutomaticRetry(Attempts = 0)]
-        public static void EnqueueSend(string mailServer, int companyId, int userId, int ownerId, string templateKey, Dictionary<string, string> toAddressList, string subject, string body, object entity, string[] attachments, bool direct )
+        public static void EnqueueSend(string mailServer, int companyId, int userId, int ownerId, string templateKey, Dictionary<string, string> toAddressList, string subject, string body, object entity, string[] attachments, bool direct, bool suppressSensitiveLogging)
         {
 
             Architect.API.Core.Contracts.Security.UserMember currentUserInfo = new Contracts.Security.UserMember();
@@ -118,7 +170,7 @@ namespace Architect.API.Core.Business.General
                 app = new { url = ConfigurationManager.AppSettings["Aliados.URL.Base"] }
             };
 
-            // If a templateKey is provided and no explicit subject, resolve template
+            // Si se proporciona una clave de plantilla y no hay asunto explícito, se resuelve la plantilla.
             if (!string.IsNullOrEmpty(templateKey) && string.IsNullOrEmpty(subject))
             {
                 Contracts.General.InternalTemplate tmpl = DataAccess.General.InternalTemplate.Retrieve(companyId, templateKey);
@@ -213,7 +265,7 @@ namespace Architect.API.Core.Business.General
                 catch (Exception ex)
                 {
                     //ex.Data?.Add("context", context);
-                    Architect.Utilities.Log.ErrorLog("SendMail", $"Ha ocurrido un error tratando de resolver el 'subject': {subject}", ex);
+                    Architect.Utilities.Log.ErrorLog("SendMail", suppressSensitiveLogging ? "No fue posible resolver el asunto de un correo sensible." : $"Ha ocurrido un error tratando de resolver el 'subject': {subject}", ex);
                     return;
                 }
                 try
@@ -223,7 +275,7 @@ namespace Architect.API.Core.Business.General
                 catch (Exception ex)
                 {
                     //ex.Data?.Add("context", context);
-                    Architect.Utilities.Log.ErrorLog("SendMail", $"Ha ocurrido un error tratando de resolver el 'body': {body}", ex);
+                    Architect.Utilities.Log.ErrorLog("SendMail", suppressSensitiveLogging ? "No fue posible resolver el cuerpo de un correo sensible." : $"Ha ocurrido un error tratando de resolver el 'body': {body}", ex);
                     return;
                 }
 
@@ -310,7 +362,10 @@ namespace Architect.API.Core.Business.General
                         mail.Bcc.Add(new MailAddress(entry.Key, entry.Value));
                     }
                 }
-                Architect.Utilities.Log.WarningLog(entry.Key, subject, "Mail");
+                if (!suppressSensitiveLogging)
+                {
+                    Architect.Utilities.Log.WarningLog(entry.Key, subject, "Mail");
+                }
                 index++;
             }
 
@@ -368,7 +423,7 @@ namespace Architect.API.Core.Business.General
             try
             {
                 SmtpServer.Send(mail);
-                if (testEmail.IsNotEmpty())
+                if (testEmail.IsNotEmpty() && !suppressSensitiveLogging)
                 {
                     Utilities.Log.WarningLog("Context", JsonConvert.SerializeObject(context), "Mail");
                 }

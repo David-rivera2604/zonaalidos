@@ -16,6 +16,10 @@ namespace Architect.API.Tron.Contracts
         /// </summary>
         [DataMember(), JsonProperty()] public int CompanyId { get; set; }
         [DataMember(), JsonProperty()] public int AgentCode { get; set; }
+        /// <summary>
+        /// Código del ramo de seguros que originó la solicitud cuando el flujo lo informa.
+        /// </summary>
+        [DataMember(), JsonProperty()] public int? BranchCode { get; set; }
         [DataMember(), JsonProperty()] public string ProposalId { get; set; }
         [DataMember(), JsonProperty()] public string InsuredId { get; set; }
         [DataMember(), JsonProperty()] public string InsuredName { get; set; }
@@ -28,6 +32,9 @@ namespace Architect.API.Tron.Contracts
         /// Datos personalizables.
         /// </summary>
         [DataMember(), JsonProperty()] public string ProposalData { get; set; }
+        /// <summary>
+        /// Tipo de firma. F FIRMA ACEPTACION DIGITAL (Architect.API.Tron.Contracts.TipoDeFirma)
+        /// </summary>
         [DataMember(), JsonProperty()] public string SigningType { get; set; }
         /// <summary>
         /// Dirección de correo electrónico (principal)

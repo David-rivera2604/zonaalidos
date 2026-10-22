@@ -49,3 +49,4 @@ Beneficiarios|tabla
  Cantón+|tron.Cantón|name=PROVINCIA_BENEF
  Distrito+|tron.Distrito|name=LOCALIDAD_BENEF
 ',NULL,'EmitirPoliza','Form.Ext.Altas.js',NULL);
+

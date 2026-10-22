@@ -91,12 +91,14 @@ namespace Architect.API.Process.WebApi.Controllers
         }
 
         /// <summary>
-        /// Navegación permitida según los roles asociados al usuario del token
+        /// Navegación permitida según los roles asociados al usuario del token.
+        /// Conserva la ruta histórica con la grafía original y admite su variante corregida para clientes ya publicados.
         /// </summary>
         /// <returns></returns>
         /// <response code="401">Unauthorized. No se ha indicado o es incorrecto el Token acceso.</response>
         [HttpGet]
         [Route("NavegationAllowed")]
+        [Route("NavigationAllowed")]
         [Authorize]
         [ApiExplorerSettings(IgnoreApi = true)]
         public IHttpActionResult NavegationAllowed()

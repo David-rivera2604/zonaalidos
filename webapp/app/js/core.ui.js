@@ -1177,6 +1177,36 @@ app.ui = (function () {
             }
             return true;
         },
+        // Presenta errores seleccionados por un flujo específico con el mismo resumen e indicadores usados por la validación estándar.
+        ShowValidationErrors: function (formId, errors) {
+            if (errors == null || errors.length === 0) {
+                return false;
+            }
+
+            toastr.remove();
+            const form = $(formId);
+            const validator = form.validate();
+            const messages = {};
+            let errorHtml = '<small>';
+
+            errors.forEach(function (item) {
+                const message = `Debe indicar ${item.label}`;
+                messages[item.field] = message;
+                errorHtml += '<label id="' + item.field + '-error" for="' + item.field + '">' + message + '</label>';
+            });
+
+            validator.showErrors(messages);
+
+            const title = (errors.length > 1 ? 'Existen ' + errors.length + ' errores' : 'Existe 1 error') +
+                ' que necesitan su atención';
+            toastr.error(errorHtml + '</small>', title, { timeOut: 9000, closeButton: true, progressBar: true });
+
+            const firstControl = form.find('#' + errors[0].field + ', [name="' + errors[0].field + '"]').first();
+            if (firstControl.length > 0) {
+                firstControl.focus();
+            }
+            return true;
+        },
         ShowSideBarEx: function (options) {
             var $offCanvas;
             var $offCanvasHeader = $("<div />").attr({ id: "off-canvas-header" }).addClass("border-bottom");
