@@ -36,7 +36,6 @@ app.EmisionViajero = (function () {
 
                     $('#NumPoliza').html(data.num_poliza);
                     if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
-                    EnviarCertificadoTomador(data);
                     //$('#emitir').html('Emision Procesada');
                     $("#emitir").css("display", "none");
 
@@ -72,30 +71,6 @@ app.EmisionViajero = (function () {
                 app.ui.ButtonDone('#emitir');
             });
     };
-
-    function EnviarCertificadoTomador(data) {
-        let terceros = $('#tercerosTbl').bootstrapTable('getData');
-        let tomador = terceros.find(t => t.tipodetercero == 0) || terceros.find(t => t.tipodetercero == 2 && t.elaseguradoeselmismotomador == 1);
-        let correo = tomador ? $.trim(tomador.correoelectronico || '') : '';
-        if (correo === '') {
-            toastr.warning('El tomador no tiene correo, puede enviarlo con "Enviar copia de correo"', '', { timeOut: 7000, closeButton: true, progressBar: true });
-            return;
-        }
-        app.Cotizacion.EnviarCertificado(data.num_poliza, data.cantidad_riesgos * -1, correo, '', '');
-    }
-
-    function EnviarCopiaCorreo() {
-        let copias = [$.trim($('#copiaCorreo1').val()), $.trim($('#copiaCorreo2').val())].filter(c => c !== '');
-        if (copias.length === 0) {
-            toastr.error('Debe indicar al menos un correo', '', { timeOut: 7000, closeButton: true, progressBar: true });
-            return;
-        }
-        if (copias.some(c => !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c))) {
-            toastr.error('Revise que los correos sean validos', '', { timeOut: 7000, closeButton: true, progressBar: true });
-            return;
-        }
-        app.Cotizacion.EnviarCertificado(setupData.num_poliza, setupData.cantidad_riesgos * -1, copias[0], copias[1] || '', '');
-    }
 
     function ReadOnly() {
         $('#cod_mon').replaceWith('<div>' + $('#cod_mon option:selected').text() + '</div>');
@@ -281,17 +256,7 @@ app.EmisionViajero = (function () {
 
         $('#print').click(function () {
             event.preventDefault();
-            app.ui.ShowSideBar({
-                title: 'Enviar copia de correo', subtitle: 'Póliza #{NUM_POLIZA}', isHTML: true,
-                data: { NUM_POLIZA: setupData.num_poliza },
-                HTML: '<div class="form-group"><label class="control-label" for="copiaCorreo1">Copia 1</label><input id="copiaCorreo1" type="email" class="form-control" maxlength="80"></div>' +
-                    '<div class="form-group"><label class="control-label" for="copiaCorreo2">Copia 2</label><input id="copiaCorreo2" type="email" class="form-control" maxlength="80"></div>' +
-                    '<button id="enviarCopiaCorreo" type="button" class="btn btn-primary btn-block">Enviar</button>'
-            });
-        });
-
-        $(document).on('click', '#enviarCopiaCorreo', function () {
-            EnviarCopiaCorreo();
+            app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: setupData.cantidad_riesgos * -1 } })
         });
 
         $('input:radio[name=DomicilioVerificado]').click(function (e) {

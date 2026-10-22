@@ -86,7 +86,7 @@
   "ViajeroIvaLabel": "VAT",
   "ViajeroRecargoLabel": "Surcharge",
   "ViajeroCuotasLabel": "Installments",
-  "ViajeroEnviarCertificadoCorreoText": "Send a copy by email",
+  "ViajeroEnviarCertificadoCorreoText": "Send certificate by email",
   "ViajeroTerceroModalTitle": "Third-party information",
   "ViajeroTerceroModalSubtitle": "Allows adding a new third party or editing an existing one",
   "ViajeroCuotasLink": {
