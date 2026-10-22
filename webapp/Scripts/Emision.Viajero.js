@@ -35,6 +35,7 @@ app.EmisionViajero = (function () {
 
 
                     $('#NumPoliza').html(data.num_poliza);
+                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
                     //$('#emitir').html('Emision Procesada');
                     $("#emitir").css("display", "none");
 

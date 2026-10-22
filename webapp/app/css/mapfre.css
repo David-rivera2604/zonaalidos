@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --mapfrered1: #C31F09;
     --mapfrered2: #A11A08;
 }
@@ -1733,10 +1733,10 @@ div .input-group-prepend {
     padding: 18px;
 }
 
-    .Casos_St .Inputs {
-        gap: 14px;
-        margin-bottom: 16px;
-    }
+.Casos_St .Inputs {
+    gap: 14px;
+    margin-bottom: 16px;
+}
 
 .info_table_top2 p {
     margin: 10px
@@ -5163,10 +5163,10 @@ body.Mapfre {
         z-index: 1;
     }
 
-.Mapfre.modal-open .wrapper-content > .row,
-.Mapfre.modal-open .wrapper-content > * {
-    z-index: auto;
-}
+    .Mapfre.modal-open .wrapper-content > .row,
+    .Mapfre.modal-open .wrapper-content > * {
+        z-index: auto;
+    }
 
 .Mapfre .aliados ul.menu-dropdown {
     padding: 6px !important;
@@ -6034,35 +6034,35 @@ body.Mapfre {
         font-size: 13px !important;
     }
 
-    .Mapfre #page-wrapper h4 .mf-clear-selection {
-        margin-left: auto !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        padding: 3px 9px !important;
-        border: 1px solid var(--mf-line) !important;
-        border-radius: 20px !important;
-        background: #fff !important;
-        color: var(--mf-muted, #80868D) !important;
-        font-family: var(--mf-font-text, inherit) !important;
-        font-size: 10.5px !important;
-        font-weight: 700 !important;
-        letter-spacing: 0 !important;
-        text-decoration: none !important;
-        white-space: nowrap !important;
-        transition: color .13s ease, border-color .13s ease, background .13s ease !important;
+.Mapfre #page-wrapper h4 .mf-clear-selection {
+    margin-left: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 3px 9px !important;
+    border: 1px solid var(--mf-line) !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+    color: var(--mf-muted, #80868D) !important;
+    font-family: var(--mf-font-text, inherit) !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0 !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    transition: color .13s ease, border-color .13s ease, background .13s ease !important;
+}
+
+    .Mapfre #page-wrapper h4 .mf-clear-selection:hover {
+        color: var(--mf-red) !important;
+        border-color: var(--mf-red) !important;
+        background: var(--mf-red-soft, #FBEAE8) !important;
     }
 
-        .Mapfre #page-wrapper h4 .mf-clear-selection:hover {
-            color: var(--mf-red) !important;
-            border-color: var(--mf-red) !important;
-            background: var(--mf-red-soft, #FBEAE8) !important;
-        }
-
-        .Mapfre #page-wrapper h4 .mf-clear-selection i {
-            color: currentColor !important;
-            font-size: 11px !important;
-        }
+    .Mapfre #page-wrapper h4 .mf-clear-selection i {
+        color: currentColor !important;
+        font-size: 11px !important;
+    }
 
 .Mapfre #page-wrapper .form-control,
 .Mapfre #page-wrapper select.form-control {
@@ -6304,7 +6304,11 @@ body.Mapfre {
     opacity: 1 !important;
     filter: none !important;
     background-color: var(--mf-canvas) !important;
-    background-image: linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.45) 32%, rgba(255,255,255,0) 65%), radial-gradient(920px 660px at 92% -6%, color-mix(in srgb, var(--mf-red) 30%, transparent) 0%, transparent 65%), radial-gradient(760px 620px at -4% 102%, color-mix(in srgb, var(--mf-red) 22%, transparent) 0%, transparent 62%), radial-gradient(560px 420px at 62% 58%, color-mix(in srgb, var(--mf-red) 11%, transparent) 0%, transparent 70%) !important;
+    background-image:
+    linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.45) 32%, rgba(255,255,255,0) 65%),
+    radial-gradient(920px 660px at 92% -6%, color-mix(in srgb, var(--mf-red) 30%, transparent) 0%, transparent 65%),
+    radial-gradient(760px 620px at -4% 102%, color-mix(in srgb, var(--mf-red) 22%, transparent) 0%, transparent 62%),
+    radial-gradient(560px 420px at 62% 58%, color-mix(in srgb, var(--mf-red) 11%, transparent) 0%, transparent 70%) !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
 }
@@ -6905,9 +6909,9 @@ body.Mapfre {
 }
 
 @media (max-width: 575px) {
-    .Mapfre #imgHead img {
-        max-height: 27px !important;
-    }
+        .Mapfre #imgHead img {
+            max-height: 27px !important;
+        }
 
     .Mapfre #UserNameMaster {
         display: none !important;
@@ -7258,10 +7262,10 @@ body.Mapfre {
             margin: 0 !important;
         }
 
-            .Mapfre #imgHead .mf-brand-logo img {
-                width: auto !important;
-                max-height: 44px !important;
-            }
+        .Mapfre #imgHead .mf-brand-logo img {
+            width: auto !important;
+            max-height: 44px !important;
+        }
 
     .Mapfre .mf-brand-name {
         display: none !important;
@@ -7279,9 +7283,9 @@ body.Mapfre {
 }
 
 @media (max-width: 575px) {
-    .Mapfre #imgHead .mf-brand-logo img {
-        max-height: 34px !important;
-    }
+        .Mapfre #imgHead .mf-brand-logo img {
+            max-height: 34px !important;
+        }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -7309,68 +7313,68 @@ body.Mapfre {
         border-color: #D8D3D3 !important;
     }
 
-    .Mapfre #page-wrapper .res_bo .ibox-content {
-        max-width: none !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 18px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 12px !important;
-    }
+.Mapfre #page-wrapper .res_bo .ibox-content {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
 
-    .Mapfre #page-wrapper .res_bo .items {
+.Mapfre #page-wrapper .res_bo .items {
+    display: block !important;
+}
+
+    .Mapfre #page-wrapper .res_bo .items label {
+        float: none !important;
         display: block !important;
-    }
-
-        .Mapfre #page-wrapper .res_bo .items label {
-            float: none !important;
-            display: block !important;
-            width: auto !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: none !important;
-            font-family: var(--mf-font-display);
-            font-size: 10.5px !important;
-            font-weight: 800 !important;
-            letter-spacing: .06em !important;
-            text-transform: uppercase !important;
-            color: var(--mf-muted, #80868D) !important;
-        }
-
-    .Mapfre #page-wrapper .res_bo .info {
+        width: auto !important;
+        margin: 0 !important;
         padding: 0 !important;
-    }
-
-        .Mapfre #page-wrapper .res_bo .info p {
-            display: flex !important;
-            align-items: center !important;
-            gap: 13px !important;
-            margin: 0 !important;
-        }
-
-    .Mapfre #page-wrapper .res_bo .iconboxes {
-        flex: 0 0 auto !important;
-        width: 46px !important;
-        height: 46px !important;
-        margin: 0 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border-radius: 12px !important;
-        background: color-mix(in srgb, currentColor 13%, white) !important;
-        font-size: 19px !important;
-    }
-
-    .Mapfre #page-wrapper .res_bo .num {
-        margin: 0 !important;
+        background: none !important;
         font-family: var(--mf-font-display);
-        font-size: 25px !important;
+        font-size: 10.5px !important;
         font-weight: 800 !important;
-        letter-spacing: -.02em !important;
-        color: var(--mf-ink, #1A1D21) !important;
-        font-variant-numeric: tabular-nums !important;
+        letter-spacing: .06em !important;
+        text-transform: uppercase !important;
+        color: var(--mf-muted, #80868D) !important;
     }
+
+.Mapfre #page-wrapper .res_bo .info {
+    padding: 0 !important;
+}
+
+    .Mapfre #page-wrapper .res_bo .info p {
+        display: flex !important;
+        align-items: center !important;
+        gap: 13px !important;
+        margin: 0 !important;
+    }
+
+.Mapfre #page-wrapper .res_bo .iconboxes {
+    flex: 0 0 auto !important;
+    width: 46px !important;
+    height: 46px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+    background: color-mix(in srgb, currentColor 13%, white) !important;
+    font-size: 19px !important;
+}
+
+.Mapfre #page-wrapper .res_bo .num {
+    margin: 0 !important;
+    font-family: var(--mf-font-display);
+    font-size: 25px !important;
+    font-weight: 800 !important;
+    letter-spacing: -.02em !important;
+    color: var(--mf-ink, #1A1D21) !important;
+    font-variant-numeric: tabular-nums !important;
+}
 
 @supports not (background: color-mix(in srgb, red 10%, white)) {
     .Mapfre #page-wrapper .res_bo .iconboxes {
@@ -7456,9 +7460,9 @@ body.Mapfre {
     box-shadow: inset 0 1px 2px rgba(20, 24, 29, .04) !important;
 }
 
-    .Mapfre #page-wrapper fieldset .form-control:focus {
-        box-shadow: inset 0 1px 2px rgba(20, 24, 29, .04), 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
-    }
+.Mapfre #page-wrapper fieldset .form-control:focus {
+    box-shadow: inset 0 1px 2px rgba(20, 24, 29, .04), 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
+}
 
 .Mapfre #page-wrapper fieldset .btn-primary:not(.btn-sm):not(.btn-xs):not(.dropdown-toggle),
 .Mapfre #page-wrapper fieldset .btn-default:not(.btn-sm):not(.btn-xs):not(.dropdown-toggle):not(.fileinput-button) {
@@ -7499,30 +7503,30 @@ body.Mapfre {
     border-top: 1px solid var(--mf-line, #E7EAEC) !important;
 }
 
-.Mapfre #page-wrapper .ult_in > div > .info_table_top:first-child,
-.Mapfre #page-wrapper .ult_in > div > .info_table_top2:first-child {
-    border-top: 0 !important;
-    padding-top: 2px !important;
-}
+    .Mapfre #page-wrapper .ult_in > div > .info_table_top:first-child,
+    .Mapfre #page-wrapper .ult_in > div > .info_table_top2:first-child {
+        border-top: 0 !important;
+        padding-top: 2px !important;
+    }
 
-.Mapfre #page-wrapper .info_table_top strong,
-.Mapfre #page-wrapper .info_table_top2 strong {
-    font-family: var(--mf-font-display);
-    font-size: 12.5px !important;
-    font-weight: 800 !important;
-    letter-spacing: -.01em !important;
-    color: var(--mf-ink, #1A1D21) !important;
-}
+    .Mapfre #page-wrapper .info_table_top strong,
+    .Mapfre #page-wrapper .info_table_top2 strong {
+        font-family: var(--mf-font-display);
+        font-size: 12.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: -.01em !important;
+        color: var(--mf-ink, #1A1D21) !important;
+    }
 
-.Mapfre #page-wrapper .info_table_top small,
-.Mapfre #page-wrapper .info_table_top2 small {
-    float: none !important;
-    flex: 0 0 auto !important;
-    font-size: 10.5px !important;
-    font-weight: 600 !important;
-    color: var(--mf-muted, #80868D) !important;
-    white-space: nowrap !important;
-}
+    .Mapfre #page-wrapper .info_table_top small,
+    .Mapfre #page-wrapper .info_table_top2 small {
+        float: none !important;
+        flex: 0 0 auto !important;
+        font-size: 10.5px !important;
+        font-weight: 600 !important;
+        color: var(--mf-muted, #80868D) !important;
+        white-space: nowrap !important;
+    }
 
 .Mapfre #page-wrapper .info_table_body,
 .Mapfre #page-wrapper .info_table_body2 {
@@ -7537,15 +7541,15 @@ body.Mapfre {
         color: var(--mf-text, #3C424A) !important;
     }
 
-.Mapfre #page-wrapper .title_table_body {
-    display: inline-block !important;
-    margin: 0 6px 4px 0 !important;
-    font-size: 9.5px !important;
-    font-weight: 800 !important;
-    letter-spacing: .05em !important;
-    text-transform: uppercase !important;
-    color: var(--mf-red) !important;
-}
+    .Mapfre #page-wrapper .title_table_body {
+        display: inline-block !important;
+        margin: 0 6px 4px 0 !important;
+        font-size: 9.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: .05em !important;
+        text-transform: uppercase !important;
+        color: var(--mf-red) !important;
+    }
 
 .Mapfre #page-wrapper .info_table_footer,
 .Mapfre #page-wrapper .info_table_footer2 {
@@ -7577,14 +7581,14 @@ body.Mapfre {
         white-space: nowrap !important;
     }
 
-    .Mapfre #page-wrapper .info_table_top:hover,
-    .Mapfre #page-wrapper .info_table_top2:hover,
-    .Mapfre #page-wrapper .info_table_body:hover,
-    .Mapfre #page-wrapper .info_table_body2:hover,
-    .Mapfre #page-wrapper .info_table_footer:hover,
-    .Mapfre #page-wrapper .info_table_footer2:hover {
-        background: var(--mf-hover, #F6F6F7) !important;
-    }
+.Mapfre #page-wrapper .info_table_top:hover,
+.Mapfre #page-wrapper .info_table_top2:hover,
+.Mapfre #page-wrapper .info_table_body:hover,
+.Mapfre #page-wrapper .info_table_body2:hover,
+.Mapfre #page-wrapper .info_table_footer:hover,
+.Mapfre #page-wrapper .info_table_footer2:hover {
+    background: var(--mf-hover, #F6F6F7) !important;
+}
 
 .Mapfre #page-wrapper .ult_in br {
     display: none !important;
@@ -7598,39 +7602,39 @@ body.Mapfre {
     font-size: 12px !important;
 }
 
-    .Mapfre .bootstrap-datetimepicker-widget table th.picker-switch,
-    .Mapfre .bootstrap-datetimepicker-widget table th.prev,
-    .Mapfre .bootstrap-datetimepicker-widget table th.next {
-        border-radius: 7px !important;
-        color: var(--mf-ink, #1A1D21) !important;
-        font-weight: 700 !important;
-    }
+.Mapfre .bootstrap-datetimepicker-widget table th.picker-switch,
+.Mapfre .bootstrap-datetimepicker-widget table th.prev,
+.Mapfre .bootstrap-datetimepicker-widget table th.next {
+    border-radius: 7px !important;
+    color: var(--mf-ink, #1A1D21) !important;
+    font-weight: 700 !important;
+}
 
-    .Mapfre .bootstrap-datetimepicker-widget table th:hover {
-        background: var(--mf-red-soft, #FBEAE8) !important;
-        color: var(--mf-red) !important;
-    }
+.Mapfre .bootstrap-datetimepicker-widget table th:hover {
+    background: var(--mf-red-soft, #FBEAE8) !important;
+    color: var(--mf-red) !important;
+}
 
-    .Mapfre .bootstrap-datetimepicker-widget table td span:hover,
-    .Mapfre .bootstrap-datetimepicker-widget table td.day:hover {
-        background: var(--mf-red-soft, #FBEAE8) !important;
-    }
+.Mapfre .bootstrap-datetimepicker-widget table td span:hover,
+.Mapfre .bootstrap-datetimepicker-widget table td.day:hover {
+    background: var(--mf-red-soft, #FBEAE8) !important;
+}
 
-    .Mapfre .bootstrap-datetimepicker-widget table td.active,
-    .Mapfre .bootstrap-datetimepicker-widget table td.active:hover,
-    .Mapfre .bootstrap-datetimepicker-widget table td span.active {
-        background: var(--mf-red, #C31F09) !important;
-        color: #fff !important;
-        text-shadow: none !important;
-    }
+.Mapfre .bootstrap-datetimepicker-widget table td.active,
+.Mapfre .bootstrap-datetimepicker-widget table td.active:hover,
+.Mapfre .bootstrap-datetimepicker-widget table td span.active {
+    background: var(--mf-red, #C31F09) !important;
+    color: #fff !important;
+    text-shadow: none !important;
+}
 
-    .Mapfre .bootstrap-datetimepicker-widget table td.today:before {
-        border-bottom-color: var(--mf-red, #C31F09) !important;
-    }
+.Mapfre .bootstrap-datetimepicker-widget table td.today:before {
+    border-bottom-color: var(--mf-red, #C31F09) !important;
+}
 
-    .Mapfre .bootstrap-datetimepicker-widget table td.active.today:before {
-        border-bottom-color: #fff !important;
-    }
+.Mapfre .bootstrap-datetimepicker-widget table td.active.today:before {
+    border-bottom-color: #fff !important;
+}
 
 .Mapfre #toast-container > div {
     border-radius: 10px !important;
@@ -7640,10 +7644,10 @@ body.Mapfre {
     opacity: 1 !important;
 }
 
-    .Mapfre #toast-container > div:hover {
-        box-shadow: 0 14px 32px rgba(20, 24, 29, .24) !important;
-        opacity: 1 !important;
-    }
+.Mapfre #toast-container > div:hover {
+    box-shadow: 0 14px 32px rgba(20, 24, 29, .24) !important;
+    opacity: 1 !important;
+}
 
 .Mapfre .toast-success {
     background-color: #1F8A4C !important;
@@ -7661,15 +7665,15 @@ body.Mapfre {
     background-color: #B4790C !important;
 }
 
-    .Mapfre .toast-success::before,
-    .Mapfre .toast-error::before,
-    .Mapfre .toast-info::before,
-    .Mapfre .toast-warning::before {
-        font: normal normal normal 17px/1 FontAwesome !important;
-        position: absolute !important;
-        left: 15px !important;
-        top: 15px !important;
-    }
+.Mapfre .toast-success::before,
+.Mapfre .toast-error::before,
+.Mapfre .toast-info::before,
+.Mapfre .toast-warning::before {
+    font: normal normal normal 17px/1 FontAwesome !important;
+    position: absolute !important;
+    left: 15px !important;
+    top: 15px !important;
+}
 
 .Mapfre .toast-success::before {
     content: "\f058" !important;
@@ -7696,13 +7700,13 @@ body.Mapfre {
     padding-right: 12px !important;
 }
 
-    .Mapfre .was-validated .form-control:valid:focus,
-    .Mapfre .form-control.is-valid:focus,
-    .Mapfre .was-validated .custom-select:valid:focus,
-    .Mapfre .custom-select.is-valid:focus {
-        border-color: #2E9D5C !important;
-        box-shadow: 0 0 0 3px rgba(46, 157, 92, .16) !important;
-    }
+.Mapfre .was-validated .form-control:valid:focus,
+.Mapfre .form-control.is-valid:focus,
+.Mapfre .was-validated .custom-select:valid:focus,
+.Mapfre .custom-select.is-valid:focus {
+    border-color: #2E9D5C !important;
+    box-shadow: 0 0 0 3px rgba(46, 157, 92, .16) !important;
+}
 
 .Mapfre .was-validated .form-control:invalid,
 .Mapfre .form-control.is-invalid,
@@ -7713,13 +7717,13 @@ body.Mapfre {
     padding-right: 12px !important;
 }
 
-    .Mapfre .was-validated .form-control:invalid:focus,
-    .Mapfre .form-control.is-invalid:focus,
-    .Mapfre .was-validated .custom-select:invalid:focus,
-    .Mapfre .custom-select.is-invalid:focus {
-        border-color: var(--mf-red, #C31F09) !important;
-        box-shadow: 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
-    }
+.Mapfre .was-validated .form-control:invalid:focus,
+.Mapfre .form-control.is-invalid:focus,
+.Mapfre .was-validated .custom-select:invalid:focus,
+.Mapfre .custom-select.is-invalid:focus {
+    border-color: var(--mf-red, #C31F09) !important;
+    box-shadow: 0 0 0 3px var(--mf-red-soft, #FBEAE8) !important;
+}
 
 .Mapfre .was-validated .custom-control-input:valid ~ .custom-control-label::before,
 .Mapfre .custom-control-input.is-valid ~ .custom-control-label::before {
@@ -7757,84 +7761,84 @@ body.Mapfre {
     font-size: 14.5px;
 }
 
-    .Mapfre #page-wrapper label.control-label,
-    .Mapfre #page-wrapper .form-label,
-    .Mapfre #page-wrapper .control-label {
-        font-size: 13.5px !important;
-        line-height: 1.35 !important;
-    }
+.Mapfre #page-wrapper label.control-label,
+.Mapfre #page-wrapper .form-label,
+.Mapfre #page-wrapper .control-label {
+    font-size: 13.5px !important;
+    line-height: 1.35 !important;
+}
 
-    .Mapfre #page-wrapper .form-control,
-    .Mapfre #page-wrapper select.form-control,
-    .Mapfre #page-wrapper textarea.form-control,
-    .Mapfre #page-wrapper input.form-control,
-    .Mapfre #page-wrapper fieldset select.form-control {
-        min-height: 44px !important;
-        padding: 10px 12px !important;
-        font-size: 15px !important;
-        line-height: 1.4 !important;
-    }
+.Mapfre #page-wrapper .form-control,
+.Mapfre #page-wrapper select.form-control,
+.Mapfre #page-wrapper textarea.form-control,
+.Mapfre #page-wrapper input.form-control,
+.Mapfre #page-wrapper fieldset select.form-control {
+    min-height: 44px !important;
+    padding: 10px 12px !important;
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+}
 
-    .Mapfre #page-wrapper select.form-control,
-    .Mapfre #page-wrapper fieldset select.form-control {
-        min-height: 38px !important;
-    }
+.Mapfre #page-wrapper select.form-control,
+.Mapfre #page-wrapper fieldset select.form-control {
+    min-height: 38px !important;
+}
 
-    .Mapfre #page-wrapper .custom-select,
-    .Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection,
-    .Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection--single {
-        min-height: 44px !important;
-    }
+.Mapfre #page-wrapper .custom-select,
+.Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection,
+.Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection--single {
+    min-height: 44px !important;
+}
 
-    .Mapfre #page-wrapper .required-mark {
-        font-size: 14px !important;
-    }
+.Mapfre #page-wrapper .required-mark {
+    font-size: 14px !important;
+}
 
-    .Mapfre #page-wrapper .custom-control-label {
-        font-size: 14.5px !important;
-        line-height: 1.35 !important;
-    }
+.Mapfre #page-wrapper .custom-control-label {
+    font-size: 14.5px !important;
+    line-height: 1.35 !important;
+}
 
-        .Mapfre #page-wrapper .custom-control-label::before,
-        .Mapfre #page-wrapper .custom-control-label::after {
-            width: 20px !important;
-            height: 20px !important;
-        }
+.Mapfre #page-wrapper .custom-control-label::before,
+.Mapfre #page-wrapper .custom-control-label::after {
+    width: 20px !important;
+    height: 20px !important;
+}
 
-    .Mapfre #page-wrapper .custom-control {
-        min-height: 44px !important;
-        padding-left: 34px !important;
-    }
+.Mapfre #page-wrapper .custom-control {
+    min-height: 44px !important;
+    padding-left: 34px !important;
+}
 
-    .Mapfre #page-wrapper input[type="radio"],
-    .Mapfre #page-wrapper input[type="checkbox"] {
-        width: 20px !important;
-        height: 20px !important;
-    }
+.Mapfre #page-wrapper input[type="radio"],
+.Mapfre #page-wrapper input[type="checkbox"] {
+    width: 20px !important;
+    height: 20px !important;
+}
 
-    .Mapfre #page-wrapper .radio label,
-    .Mapfre #page-wrapper .checkbox label,
-    .Mapfre #page-wrapper .form-check label {
-        font-size: 14.5px !important;
-    }
+.Mapfre #page-wrapper .radio label,
+.Mapfre #page-wrapper .checkbox label,
+.Mapfre #page-wrapper .form-check label {
+    font-size: 14.5px !important;
+}
 
-    .Mapfre #page-wrapper .btn {
-        min-height: 44px !important;
-        padding: 10px 18px !important;
-        font-size: 14px !important;
-    }
+.Mapfre #page-wrapper .btn {
+    min-height: 44px !important;
+    padding: 10px 18px !important;
+    font-size: 14px !important;
+}
 
-    .Mapfre #page-wrapper h4,
-    .Mapfre #page-wrapper .titulosMant {
-        font-size: 15.5px !important;
-    }
+.Mapfre #page-wrapper h4,
+.Mapfre #page-wrapper .titulosMant {
+    font-size: 15.5px !important;
+}
 
-    .Mapfre #page-wrapper .form-group .error,
-    .Mapfre #page-wrapper .form-group .LabelValidate,
-    .Mapfre #page-wrapper .form-text,
-    .Mapfre #page-wrapper .help-block {
-        font-size: 12.5px !important;
-    }
+.Mapfre #page-wrapper .form-group .error,
+.Mapfre #page-wrapper .form-group .LabelValidate,
+.Mapfre #page-wrapper .form-text,
+.Mapfre #page-wrapper .help-block {
+    font-size: 12.5px !important;
+}
 /* En caso de agregar mas lineas, considerablemente hacerlo separado para mejores manteninmientos 
 */
 @media (max-width: 991px) {
@@ -8254,33 +8258,33 @@ body.Mapfre {
     box-shadow: 0 22px 45px -24px rgba(0, 0, 0, .45);
 }
 
-.Mapfre #page-wrapper .clients-square .carousel,
-.Mapfre #page-wrapper .clients-square .carousel-inner,
-.Mapfre #page-wrapper .clients-square .carousel-item {
-    height: 100%;
-}
-
-.Mapfre #page-wrapper .clients-square .carousel-item {
-    overflow: hidden;
-}
-
-    .Mapfre #page-wrapper .clients-square .carousel-item::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg, rgba(15, 15, 15, .82) 0%, rgba(15, 15, 15, .55) 32%, rgba(15, 15, 15, .08) 62%, rgba(15, 15, 15, 0) 100%);
-        pointer-events: none;
+    .Mapfre #page-wrapper .clients-square .carousel,
+    .Mapfre #page-wrapper .clients-square .carousel-inner,
+    .Mapfre #page-wrapper .clients-square .carousel-item {
+        height: 100%;
     }
 
-    .Mapfre #page-wrapper .clients-square .carousel-item img {
-        height: 100% !important;
-        width: 100% !important;
-        opacity: 1 !important;
-        max-width: none !important;
-        transform: none !important;
-        object-fit: cover;
-        object-position: center 30%;
+    .Mapfre #page-wrapper .clients-square .carousel-item {
+        overflow: hidden;
     }
+
+        .Mapfre #page-wrapper .clients-square .carousel-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(15, 15, 15, .82) 0%, rgba(15, 15, 15, .55) 32%, rgba(15, 15, 15, .08) 62%, rgba(15, 15, 15, 0) 100%);
+            pointer-events: none;
+        }
+
+        .Mapfre #page-wrapper .clients-square .carousel-item img {
+            height: 100% !important;
+            width: 100% !important;
+            opacity: 1 !important;
+            max-width: none !important;
+            transform: none !important;
+            object-fit: cover;
+            object-position: center 30%;
+        }
 
 .Mapfre #page-wrapper .clients-square .box-img {
     position: absolute !important;
@@ -8398,11 +8402,11 @@ body.Mapfre {
         opacity: 1;
     }
 
-.Mapfre #page-wrapper .clients-square .carousel-control-prev-icon,
-.Mapfre #page-wrapper .clients-square .carousel-control-next-icon {
-    width: 16px;
-    height: 16px;
-}
+    .Mapfre #page-wrapper .clients-square .carousel-control-prev-icon,
+    .Mapfre #page-wrapper .clients-square .carousel-control-next-icon {
+        width: 16px;
+        height: 16px;
+    }
 
 .Mapfre #page-wrapper .clients-square .carousel-indicators {
     z-index: 3;
@@ -8449,9 +8453,9 @@ body.Mapfre {
         border-radius: 14px;
     }
 
-    .Mapfre #page-wrapper .clients-square .carousel-item::after {
-        background: linear-gradient(0deg, rgba(15, 15, 15, .9) 0%, rgba(15, 15, 15, .6) 45%, rgba(15, 15, 15, .05) 80%);
-    }
+        .Mapfre #page-wrapper .clients-square .carousel-item::after {
+            background: linear-gradient(0deg, rgba(15, 15, 15, .9) 0%, rgba(15, 15, 15, .6) 45%, rgba(15, 15, 15, .05) 80%);
+        }
 
     .Mapfre #page-wrapper .clients-square .box-img,
     .Mapfre #page-wrapper .clients-square .box-img:hover {
@@ -8481,94 +8485,94 @@ body.Mapfre {
     font-size: 13px;
 }
 
-    .Mapfre #page-wrapper label,
-    .Mapfre #page-wrapper label.control-label,
-    .Mapfre #page-wrapper .form-label,
-    .Mapfre #page-wrapper .control-label {
-        font-size: 12px !important;
-    }
+.Mapfre #page-wrapper label,
+.Mapfre #page-wrapper label.control-label,
+.Mapfre #page-wrapper .form-label,
+.Mapfre #page-wrapper .control-label {
+    font-size: 12px !important;
+}
 
-    .Mapfre #page-wrapper .form-control,
-    .Mapfre #page-wrapper select.form-control,
-    .Mapfre #page-wrapper textarea.form-control,
-    .Mapfre #page-wrapper input.form-control,
-    .Mapfre #page-wrapper fieldset select.form-control,
-    .Mapfre #page-wrapper .custom-select {
-        min-height: 40px !important;
-        padding: 8px 12px !important;
-        font-size: 13.5px !important;
-    }
+.Mapfre #page-wrapper .form-control,
+.Mapfre #page-wrapper select.form-control,
+.Mapfre #page-wrapper textarea.form-control,
+.Mapfre #page-wrapper input.form-control,
+.Mapfre #page-wrapper fieldset select.form-control,
+.Mapfre #page-wrapper .custom-select {
+    min-height: 40px !important;
+    padding: 8px 12px !important;
+    font-size: 13.5px !important;
+}
 
-    .Mapfre #page-wrapper .input-group > .form-control,
-    .Mapfre #page-wrapper .input-group-append > .btn,
-    .Mapfre #page-wrapper .input-group-prepend > .btn,
-    .Mapfre #page-wrapper .input-group-append > .input-group-text,
-    .Mapfre #page-wrapper .input-group-prepend > .input-group-text,
-    .Mapfre #page-wrapper .input-group-addon {
-        min-height: 40px !important;
-        height: auto !important;
-    }
+.Mapfre #page-wrapper .input-group > .form-control,
+.Mapfre #page-wrapper .input-group-append > .btn,
+.Mapfre #page-wrapper .input-group-prepend > .btn,
+.Mapfre #page-wrapper .input-group-append > .input-group-text,
+.Mapfre #page-wrapper .input-group-prepend > .input-group-text,
+.Mapfre #page-wrapper .input-group-addon {
+    min-height: 40px !important;
+    height: auto !important;
+}
 
-    .Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection,
-    .Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection--single {
-        min-height: 40px !important;
-        font-size: 13.5px !important;
-    }
+.Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection,
+.Mapfre #page-wrapper .select2-container--bootstrap4 .select2-selection--single {
+    min-height: 40px !important;
+    font-size: 13.5px !important;
+}
 
-    .Mapfre #page-wrapper .required-mark {
-        font-size: 12.5px !important;
-    }
+.Mapfre #page-wrapper .required-mark {
+    font-size: 12.5px !important;
+}
 
-    .Mapfre #page-wrapper .custom-control-label,
-    .Mapfre #page-wrapper .radio label,
-    .Mapfre #page-wrapper .checkbox label,
-    .Mapfre #page-wrapper .form-check label {
-        font-size: 13px !important;
-    }
+.Mapfre #page-wrapper .custom-control-label,
+.Mapfre #page-wrapper .radio label,
+.Mapfre #page-wrapper .checkbox label,
+.Mapfre #page-wrapper .form-check label {
+    font-size: 13px !important;
+}
 
-    .Mapfre #page-wrapper .custom-control {
-        min-height: 40px !important;
-    }
+.Mapfre #page-wrapper .custom-control {
+    min-height: 40px !important;
+}
 
-    .Mapfre #page-wrapper .btn {
-        min-height: 40px !important;
-        padding: 8px 16px !important;
-        font-size: 12.5px !important;
-    }
+.Mapfre #page-wrapper .btn {
+    min-height: 40px !important;
+    padding: 8px 16px !important;
+    font-size: 12.5px !important;
+}
 
-    .Mapfre #page-wrapper .btn-sm {
-        min-height: 34px !important;
-        padding: 6px 12px !important;
-        font-size: 11.5px !important;
-    }
+.Mapfre #page-wrapper .btn-sm {
+    min-height: 34px !important;
+    padding: 6px 12px !important;
+    font-size: 11.5px !important;
+}
 
-    .Mapfre #page-wrapper .btn-xs {
-        min-height: 28px !important;
-        padding: 3px 9px !important;
-        font-size: 10.5px !important;
-    }
+.Mapfre #page-wrapper .btn-xs {
+    min-height: 28px !important;
+    padding: 3px 9px !important;
+    font-size: 10.5px !important;
+}
 
-    .Mapfre #page-wrapper h4,
-    .Mapfre #page-wrapper .titulosMant {
-        font-size: 14px !important;
-    }
+.Mapfre #page-wrapper h4,
+.Mapfre #page-wrapper .titulosMant {
+    font-size: 14px !important;
+}
 
-    .Mapfre #page-wrapper .form-group .error,
-    .Mapfre #page-wrapper .form-group .LabelValidate,
-    .Mapfre #page-wrapper .form-text,
-    .Mapfre #page-wrapper .help-block {
-        font-size: 11px !important;
-    }
+.Mapfre #page-wrapper .form-group .error,
+.Mapfre #page-wrapper .form-group .LabelValidate,
+.Mapfre #page-wrapper .form-text,
+.Mapfre #page-wrapper .help-block {
+    font-size: 11px !important;
+}
 
-    .Mapfre #page-wrapper table,
-    .Mapfre #page-wrapper .bootstrap-table .table {
-        font-size: 12.5px;
-    }
+.Mapfre #page-wrapper table,
+.Mapfre #page-wrapper .bootstrap-table .table {
+    font-size: 12.5px;
+}
 
-    .Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) {
-        width: 100% !important;
-        flex: 1 1 auto !important;
-    }
+.Mapfre #page-wrapper .ibox-title .Title_Prin:has(> .T2) {
+    width: 100% !important;
+    flex: 1 1 auto !important;
+}
 
 @media (min-width: 1800px) {
     .Mapfre #page-wrapper .wrapper-content > .row {
@@ -8613,9 +8617,9 @@ body.Mapfre {
         font-size: 12px !important;
     }
 
-.Mapfre #page-wrapper .form-group:has(> .desi_InCase) > .bar {
-    display: none;
-}
+    .Mapfre #page-wrapper .form-group:has(> .desi_InCase) > .bar {
+        display: none;
+    }
 
 .Mapfre #page-wrapper .desi_InCase {
     min-height: 40px;
@@ -8663,10 +8667,10 @@ body.Mapfre {
     min-width: 0;
 }
 
-.Mapfre #page-wrapper .input-group:has(.dropdown-toggle) > .form-control {
-    flex: 1 1 200px !important;
-    min-width: 200px;
-}
+    .Mapfre #page-wrapper .input-group:has(.dropdown-toggle) > .form-control {
+        flex: 1 1 200px !important;
+        min-width: 200px;
+    }
 
 @container (max-width: 400px) {
     .Mapfre #page-wrapper .input-group:has(.dropdown-toggle) > .input-group-prepend:has(.dropdown-toggle) {
@@ -8728,40 +8732,40 @@ body.Mapfre {
     border-bottom: 1px solid var(--mf-line, #E3E5E8) !important;
 }
 
-.Mapfre #page-wrapper #quoteBlock .ibox-title .ibox-tools {
-    position: static !important;
-    float: none !important;
-    margin: 0 !important;
-}
+    .Mapfre #page-wrapper #quoteBlock .ibox-title .ibox-tools {
+        position: static !important;
+        float: none !important;
+        margin: 0 !important;
+    }
 
-.Mapfre #page-wrapper #quoteBlock .quote-title {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    width: 100%;
-}
+    .Mapfre #page-wrapper #quoteBlock .quote-title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
 
-.Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-title h4,
-.Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-title h5,
-.Mapfre #page-wrapper #quoteBlock > .ibox > .float-right h4,
-.Mapfre #page-wrapper #quoteBlock > .ibox > .float-right h5 {
-    margin: 0 !important;
-    text-align: left !important;
-}
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-title h4,
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-title h5,
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .float-right h4,
+    .Mapfre #page-wrapper #quoteBlock > .ibox > .float-right h5 {
+        margin: 0 !important;
+        text-align: left !important;
+    }
 
-.Mapfre #page-wrapper #quoteBlock .label-success {
-    float: none !important;
-    display: inline-block;
-    max-width: 100%;
-    margin: 0 !important;
-    padding: 4px 10px !important;
-    border-radius: 999px !important;
-    font-size: 11.5px !important;
-    line-height: 1.3;
-    white-space: normal;
-    word-break: break-all;
-}
+    .Mapfre #page-wrapper #quoteBlock .label-success {
+        float: none !important;
+        display: inline-block;
+        max-width: 100%;
+        margin: 0 !important;
+        padding: 4px 10px !important;
+        border-radius: 999px !important;
+        font-size: 11.5px !important;
+        line-height: 1.3;
+        white-space: normal;
+        word-break: break-all;
+    }
 
 .Mapfre #page-wrapper #quoteBlock > .ibox > .ibox-content {
     padding: 16px 18px !important;
@@ -8777,63 +8781,63 @@ body.Mapfre {
             padding: 0 !important;
         }
 
-.Mapfre #page-wrapper #quoteBlock .ibox-content h2 {
-    margin: 2px 0 12px !important;
-    line-height: 1.1;
-}
-
-.Mapfre #page-wrapper #quoteBlock .ibox-content table.small {
-    width: 100%;
-    font-size: 12.5px !important;
-}
-
-    .Mapfre #page-wrapper #quoteBlock .ibox-content table.small tr {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 7px 0;
-        border-bottom: 1px dashed var(--mf-line, #E3E5E8);
+    .Mapfre #page-wrapper #quoteBlock .ibox-content h2 {
+        margin: 2px 0 12px !important;
+        line-height: 1.1;
     }
 
-        .Mapfre #page-wrapper #quoteBlock .ibox-content table.small tr:last-child {
-            border-bottom: 0;
+    .Mapfre #page-wrapper #quoteBlock .ibox-content table.small {
+        width: 100%;
+        font-size: 12.5px !important;
+    }
+
+        .Mapfre #page-wrapper #quoteBlock .ibox-content table.small tr {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 7px 0;
+            border-bottom: 1px dashed var(--mf-line, #E3E5E8);
         }
 
-    .Mapfre #page-wrapper #quoteBlock .ibox-content table.small td {
-        padding: 0 !important;
-        white-space: nowrap;
-    }
+            .Mapfre #page-wrapper #quoteBlock .ibox-content table.small tr:last-child {
+                border-bottom: 0;
+            }
 
-        .Mapfre #page-wrapper #quoteBlock .ibox-content table.small td:first-child {
-            text-align: right !important;
-            font-weight: 700;
-            color: #2F3337;
+        .Mapfre #page-wrapper #quoteBlock .ibox-content table.small td {
+            padding: 0 !important;
+            white-space: nowrap;
         }
 
-.Mapfre #page-wrapper #quoteBlock .ibox-content hr {
-    margin: 12px 0 !important;
-}
+            .Mapfre #page-wrapper #quoteBlock .ibox-content table.small td:first-child {
+                text-align: right !important;
+                font-weight: 700;
+                color: #2F3337;
+            }
 
-.Mapfre #page-wrapper #quoteBlock .ibox-content .m-t-sm {
-    margin-top: 0 !important;
-}
-
-.Mapfre #page-wrapper #quoteBlock .ibox-content .btn-group {
-    display: flex !important;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-}
-
-    .Mapfre #page-wrapper #quoteBlock .ibox-content .btn-group > .btn {
-        flex: 1 1 0;
-        min-width: 100px;
-        margin: 0 !important;
-        border-radius: 8px !important;
-        white-space: normal;
+    .Mapfre #page-wrapper #quoteBlock .ibox-content hr {
+        margin: 12px 0 !important;
     }
+
+    .Mapfre #page-wrapper #quoteBlock .ibox-content .m-t-sm {
+        margin-top: 0 !important;
+    }
+
+    .Mapfre #page-wrapper #quoteBlock .ibox-content .btn-group {
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+
+        .Mapfre #page-wrapper #quoteBlock .ibox-content .btn-group > .btn {
+            flex: 1 1 0;
+            min-width: 100px;
+            margin: 0 !important;
+            border-radius: 8px !important;
+            white-space: normal;
+        }
 
 .Mapfre #page-wrapper #quoteBlock > .ibox > .float-right > h5:has(+ .quote-title) {
     display: none !important;
@@ -8844,8 +8848,13 @@ body.Mapfre {
     padding: 0 !important;
 }
 
-    .Mapfre #page-wrapper #quoteBlock .ibox-tools h5::before,
-    .Mapfre #page-wrapper #quoteBlock .ibox-tools h5::after {
-        content: none !important;
-        display: none !important;
-    }
+.Mapfre #page-wrapper #quoteBlock .ibox-tools h5::before,
+.Mapfre #page-wrapper #quoteBlock .ibox-tools h5::after {
+    content: none !important;
+    display: none !important;
+}
+
+.Mapfre #page-wrapper #quoteBlock .ibox-content #opcionesPagoGroup,
+.Mapfre #page-wrapper #opcionesPagoGroup {
+    margin-top: 8px !important;
+}

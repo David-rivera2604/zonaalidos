@@ -61,6 +61,7 @@ app.EmisionMultirriesgo = (function () {
 
 
                     $('#cotizar').addClass('d-none');
+                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data)
                     $('.VerificarDomicilio').addClass('d-none');
                     $('#tercerosNew').addClass('d-none');
 

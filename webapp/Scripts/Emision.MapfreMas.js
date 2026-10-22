@@ -143,6 +143,7 @@ app.EmisionMapfreMas = (function () {
                     $('#coberturasTbl').bootstrapTable('load', data.coberturas);
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
+                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
                     $('.VerificarDomicilio').addClass('d-none');
                     $('#cotizar').addClass('d-none');
 

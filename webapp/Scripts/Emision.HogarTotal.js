@@ -114,6 +114,7 @@ app.HogarTotal = (function () {
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
                     $('#cotizar').addClass('d-none');
+                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
                     $('.VerificarDomicilio').addClass('d-none');
                     ReadOnly_End();
 

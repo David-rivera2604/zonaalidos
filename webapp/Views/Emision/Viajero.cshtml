@@ -216,7 +216,7 @@
                                     <!-- documentosrequeridos Grid -->
                                     <div class="form-row documentosrequeridosGrid">
                                         <div class="col-lg-12">
-                                            @Html.Partial("../Common/_attachments_grid_v2")
+                                                                                        @Html.Partial("../Common/_attachments_grid_v2")
                                         </div>
                                     </div>
 
@@ -318,6 +318,11 @@
                 <div class="m-t-sm text-center">
                     <div class="btn-group">
                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="ViajeroEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
+                    </div>
+                </div>
+                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
+                    <div class="btn-group">
+                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
                     </div>
                 </div>
             </div>
@@ -748,15 +753,12 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jsCRUD")
     <script src="@Url.Content("~/app/js/core.language.js")"></script>
-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
-<<<<<<< HEAD
-    <script src="@Url.Content("~/Scripts/Emision.Viajero.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.Viajero.js")).Ticks)"></script>
-=======
-    <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+        <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
     <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.Adjuntos.js")"></script>
     <script src="@Url.Content("~/Scripts/Emision.Viajero.js")"></script>
->>>>>>> 4e862eb05646c4f0d93a68b576f361dc3eb10119
+    <script src="@Url.Content("~/Scripts/Emision.Viajero.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.Viajero.js")).Ticks)"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             app.EmisionViajero.Init();

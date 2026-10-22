@@ -805,6 +805,11 @@
                         <a id="print" href="#" class="btn btn-white btn-sm"><i class="fa fa-envelope-o"></i> <span id="MapfreMasEnviarCertificadoCorreoText">Enviar certificado por correo</span></a>
                     </div>
                 </div>
+                <div id="opcionesPagoGroup" class="m-t-sm text-center d-none">
+                    <div class="btn-group">
+                        <a id="opcionesPago" href="#" class="btn btn-white btn-sm"><i class="fa fa-shopping-cart"></i> Opciones de pago</a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -825,10 +830,9 @@
     <script src="@Url.Content("~/Scripts/Common.Attachments.js")"></script>
     <script src="@Url.Content("~/assets/dropzone/js/dropzone.min.js")"></script>
     <script src="@Url.Content("~/app/js/file.uploader.js")"></script>
-    <script src="@Url.Content("~/Scripts/Emision.Adjuntos.js")"></script>
     <script src="@Url.Content("~/assets/js/plugins/typehead/bootstrap3-typeahead.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/Cotizacion.js")"></script>
-    <script src="@Url.Content("~/Scripts/Emision.MapfreMas.js")"></script>
+    <script src="@Url.Content("~/Scripts/Cotizacion.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Cotizacion.js")).Ticks)"></script>
+    <script src="@Url.Content("~/Scripts/Emision.MapfreMas.js")?v=@(System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Scripts/Emision.MapfreMas.js")).Ticks)"></script>
     <script src="@Url.Content("~/Scripts/Emision.Terceros.js")"></script>
     <script src="@Url.Content("~/assets/js/multimodal.js")"></script>
     <script type="text/javascript">

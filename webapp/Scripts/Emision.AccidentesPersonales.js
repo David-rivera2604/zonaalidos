@@ -29,6 +29,7 @@ app.EmisionAccidentesPersonales = (function () {
                     $('#plandepagoRow').removeClass('d-none');
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
+                    if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
                     //$('#emitir').html('Emision Procesada');
                     $("#emitir").css("display", "none");
                     $('#emitir').addClass('d-none');
@@ -1438,9 +1439,9 @@ app.EmisionAccidentesPersonales = (function () {
             Setup();
             app.language.translate('body', 'AccidentesPersonales')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
-            app.language.translate('#quoteBlock', '_resumen')();
-            app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
-            app.language.translate('#tercerosModal', '_tercero')();
+    app.language.translate('#quoteBlock', '_resumen')();
+    app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
+    app.language.translate('#tercerosModal', '_tercero')();
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
