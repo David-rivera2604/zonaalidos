@@ -2244,14 +2244,9 @@ app.EmisionMultirriesgo = (function () {
                 refreshFormulariosDVTranslations(translations || null);
             }, false)();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
-<<<<<<< HEAD
             app.language.translate('#quoteBlock', '_resumen')();
             app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
             app.language.translate('#tercerosModal', '_tercero')();
-=======
-    app.language.translate('#quoteBlock', '_resumen')();
-    app.language.translate('#tercerosModal', '_tercero')();
->>>>>>> 4e862eb05646c4f0d93a68b576f361dc3eb10119
 
 
         },

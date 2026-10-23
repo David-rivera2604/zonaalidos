@@ -2169,25 +2169,6 @@ app.EmisionMapfreMas = (function () {
         //return ((workMode === 'draft' || workMode === 'resume') && !localStorage.getItem('Roles').includes('Purdy'));
         }
 
-<<<<<<< HEAD
-        function attachments_controls_setup() {
-            $('#AttachmentTitleText').text('Documentos requeridos');
-            $('#dropzone').fileUploader({
-                maxFilesize: 256,
-                showExpectedDocuments: true,
-                showGeneralUploadCard: true,
-                done: function (responses) {
-                    //console.log('Attachments: Archivos subidos exitosamente:', responses);
-                },
-                fail: function (error, file) {
-                    //console.error('Attachments: Error al subir archivo:', error, file);
-                },
-                always: function (result) {
-                    //console.log('Attachments: Proceso de carga completado:', result);
-                }
-            });
-        }
-=======
     function attachments_controls_setup() {
         $('#AttachmentTitleText').text('Documentos requeridos');
         $('#dropzone').fileUploader({
@@ -2198,7 +2179,6 @@ app.EmisionMapfreMas = (function () {
             showGeneralUploadCard: true
         });
     }
->>>>>>> 4e862eb05646c4f0d93a68b576f361dc3eb10119
 
     return {
         Data: function () {

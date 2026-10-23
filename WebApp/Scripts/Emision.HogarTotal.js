@@ -206,13 +206,8 @@ app.HogarTotal = (function () {
 
         data.terceros = $('#tercerosTbl').bootstrapTable('getData');
         data.propiedad = $('#propiedadTbl').bootstrapTable('getData');
-<<<<<<< HEAD
-        data.documentosrequeridos = $('#documentosrequeridosTbl').bootstrapTable('getData');
-
-=======
         data.documentosrequeridos = app.EmisionAdjuntos.read($('#dropzone'));
        
->>>>>>> 4e862eb05646c4f0d93a68b576f361dc3eb10119
         let formulariosDatakyc = $('#formulariosTbl').bootstrapTable('getData');
         if (formulariosDatakyc.length > 0) {
             data.kyc = $('#formulariosTbl').bootstrapTable('getData')[0].data;
@@ -2114,14 +2109,9 @@ app.HogarTotal = (function () {
             Setup();
             app.language.translate('body', 'hogartotal')();
             app.language.translate('.VerificarDomicilio', 'verificardomicilio')();
-<<<<<<< HEAD
             app.language.translate('#quoteBlock', '_resumen')();
             app.language.translate('#documentosrequeridosModal', '_documentorequerido')();
             app.language.translate('#tercerosModal', '_tercero')();
-=======
-    app.language.translate('#quoteBlock', '_resumen')();
-    app.language.translate('#tercerosModal', '_tercero')();
->>>>>>> 4e862eb05646c4f0d93a68b576f361dc3eb10119
         },
         tercerosEditRow: function (row) {
             terceros_table_row_edit(row);
