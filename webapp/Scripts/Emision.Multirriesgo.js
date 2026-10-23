@@ -62,6 +62,7 @@ app.EmisionMultirriesgo = (function () {
 
                     $('#cotizar').addClass('d-none');
                     if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data)
+                    if (typeof app.Cotizacion.EnviarCertificadoTomador === 'function') app.Cotizacion.EnviarCertificadoTomador(data.num_poliza, 1);
                     $('.VerificarDomicilio').addClass('d-none');
                     $('#tercerosNew').addClass('d-none');
 
@@ -758,7 +759,7 @@ app.EmisionMultirriesgo = (function () {
 
         $('#print').click(function () {
             event.preventDefault();
-            app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: 1 } })
+            app.Cotizacion.CopiaCorreo(setupData.num_poliza, 1);
         });
 
         $('input:radio[name=DomicilioVerificado]').click(function (e) {

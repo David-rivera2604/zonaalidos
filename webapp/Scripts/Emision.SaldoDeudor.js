@@ -75,6 +75,8 @@ app.EmisionSaldoDeudor = (function () {
 
                     $('#NumPoliza').html(data.num_poliza);
                     if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                    if (typeof app.Cotizacion.EnviarCertificadoTomador === 'function') app.Cotizacion.EnviarCertificadoTomador(data.num_poliza, 1);
+                    $('#SummarySendCertificateEmailText').text('Enviar copia de correo');
                     $('#cotizar').addClass('d-none');
                     $('.VerificarDomicilio').addClass('d-none');
                     $('#coberturasRow').removeClass('d-none');
@@ -370,6 +372,13 @@ app.EmisionSaldoDeudor = (function () {
     };
 
     function Controls_Events() {
+        $('#print').click(function (e) {
+            e.preventDefault();
+            if (window.quoteData && window.quoteData.num_poliza) {
+                app.Cotizacion.CopiaCorreo(window.quoteData.num_poliza, 1);
+            }
+        });
+
         $(".input-group.date").on('dp.change', function (e) {
             data_changed();
         });

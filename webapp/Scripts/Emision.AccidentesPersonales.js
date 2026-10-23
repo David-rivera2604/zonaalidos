@@ -30,6 +30,7 @@ app.EmisionAccidentesPersonales = (function () {
                     $('#plandepagoTbl').bootstrapTable('load', data.plandepago);
                     $('#NumPoliza').html(data.num_poliza);
                     if (typeof app.Cotizacion.OpcionesDePago === 'function') app.Cotizacion.OpcionesDePago(data);
+                    if (typeof app.Cotizacion.EnviarCertificadoTomador === 'function') app.Cotizacion.EnviarCertificadoTomador(data.num_poliza, data.cantidad_riesgos * -1);
                     //$('#emitir').html('Emision Procesada');
                     $("#emitir").css("display", "none");
                     $('#emitir').addClass('d-none');
@@ -213,7 +214,7 @@ app.EmisionAccidentesPersonales = (function () {
         });
         $('#print').click(function () {
             event.preventDefault();
-            app.ui.ShowSideBar({ title: 'Enviar certificado por correo', subtitle: 'Póliza #{NUM_POLIZA}', id: 9000, data: { NUM_POLIZA: setupData.num_poliza, NUM_RIESGO: setupData.cantidad_riesgos * -1 } })
+            app.Cotizacion.CopiaCorreo(setupData.num_poliza, setupData.cantidad_riesgos * -1);
         });
     };
     function data_changed() {

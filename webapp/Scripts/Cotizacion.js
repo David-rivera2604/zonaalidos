@@ -8,6 +8,7 @@ app.Cotizacion = (function () {
     let _monedaField = false;
     let _prefix = '';
     let _pago = {};
+    let _copia = {};
 
     return {
         Imprimir: function (name, data) {
@@ -31,6 +32,46 @@ app.Cotizacion = (function () {
                             toastr.success(data, '', { timeOut: 7000, closeButton: true, progressBar: true });
                         }
                     });
+        },
+        CorreoTomador: function () {
+            let terceros = $('#tercerosTbl').length > 0 ? ($('#tercerosTbl').bootstrapTable('getData') || []) : [];
+            let conCorreo = t => $.trim(t.correoelectronico || '') !== '';
+            let tomador = terceros.find(t => t.tipodetercero == 0 && conCorreo(t)) ||
+                terceros.find(t => t.tipodetercero == 2 && (t.elaseguradoeselmismotomador == 1 || t.eltomadoreselmismoasegurado == 1) && conCorreo(t));
+            return tomador ? $.trim(tomador.correoelectronico) : '';
+        },
+        EnviarCertificadoTomador: function (num_poliza, num_riesgo) {
+            if (!num_poliza) {
+                return;
+            }
+            let correo = app.Cotizacion.CorreoTomador();
+            if (correo === '') {
+                toastr.warning('El tomador no tiene correo, puede enviarlo con "Enviar copia de correo"', '', { timeOut: 7000, closeButton: true, progressBar: true });
+                return;
+            }
+            app.Cotizacion.EnviarCertificado(num_poliza, num_riesgo, correo, '', '');
+        },
+        CopiaCorreo: function (num_poliza, num_riesgo) {
+            _copia = { num_poliza: num_poliza, num_riesgo: num_riesgo };
+            app.ui.ShowSideBar({
+                title: 'Enviar copia de correo', subtitle: 'Póliza #{NUM_POLIZA}', isHTML: true,
+                data: { NUM_POLIZA: num_poliza },
+                HTML: '<div class="form-group"><label class="control-label" for="copiaCorreo1">Copia 1</label><input id="copiaCorreo1" type="email" class="form-control" maxlength="80"></div>' +
+                    '<div class="form-group"><label class="control-label" for="copiaCorreo2">Copia 2</label><input id="copiaCorreo2" type="email" class="form-control" maxlength="80"></div>' +
+                    '<button id="enviarCopiaCorreo" type="button" class="btn btn-primary btn-block">Enviar</button>'
+            });
+        },
+        EnviarCopiaCorreo: function () {
+            let copias = [$.trim($('#copiaCorreo1').val()), $.trim($('#copiaCorreo2').val())].filter(c => c !== '');
+            if (copias.length === 0) {
+                toastr.error('Debe indicar al menos un correo', '', { timeOut: 7000, closeButton: true, progressBar: true });
+                return;
+            }
+            if (copias.some(c => !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c))) {
+                toastr.error('Revise que los correos sean validos', '', { timeOut: 7000, closeButton: true, progressBar: true });
+                return;
+            }
+            app.Cotizacion.EnviarCertificado(_copia.num_poliza, _copia.num_riesgo, copias[0], copias[1] || '', '');
         },
         OpcionesDePago: function (data) {
             _pago = { num_poliza: data?.num_poliza, plandepago: data?.plandepago || [] };
@@ -292,4 +333,9 @@ app.Cotizacion = (function () {
 $(document).on('click', '#opcionesPago', function (e) {
     e.preventDefault();
     app.Cotizacion.PagarRecibo();
+});
+
+$(document).on('click', '#enviarCopiaCorreo', function (e) {
+    e.preventDefault();
+    app.Cotizacion.EnviarCopiaCorreo();
 });
