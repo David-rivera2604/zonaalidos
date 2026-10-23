@@ -7172,7 +7172,7 @@ body.Mapfre {
 
 .Mapfre .wrapper-content .ibox,
 .Mapfre .wrapper-content .widget.style1 {
-    animation: mfCardIn .38s cubic-bezier(.2,.7,.3,1) both;
+    animation: mfCardIn .38s cubic-bezier(.2,.7,.3,1) backwards;
 }
 
 .Mapfre .wrapper-content [class*="col-"]:nth-child(1) .ibox,
@@ -9108,4 +9108,10 @@ body.Mapfre {
     top: 0 !important;
     margin: 0 !important;
     padding-top: 0 !important;
+}
+
+.Mapfre.modal-open #page-wrapper :has(.modal.show) {
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
 }
